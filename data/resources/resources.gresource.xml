@@ -18,6 +18,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-user-page.ui">ui/account-settings-user-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings.ui">ui/account-settings.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="add-account-row.ui">ui/add-account-row.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="attachment-dialog.ui">ui/attachment-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="avatar-with-selection.ui">ui/avatar-with-selection.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-action-button.ui">ui/components-action-button.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-audio-player.ui">ui/components-audio-player.ui</file>

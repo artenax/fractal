@@ -11,12 +11,13 @@ mod reaction_list;
 mod room_type;
 mod timeline;
 
-use std::{cell::RefCell, convert::TryInto, path::PathBuf, sync::Arc};
+use std::{cell::RefCell, convert::TryInto, ops::Deref, path::PathBuf, str::FromStr, sync::Arc};
 
 use gettextrs::gettext;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, info, warn};
 use matrix_sdk::{
+    attachment::AttachmentConfig,
     deserialized_responses::{JoinedRoom, LeftRoom, SyncRoomEvent},
     room::Room as MatrixRoom,
     ruma::{
@@ -1181,6 +1182,25 @@ impl Room {
         self.notify("successor");
 
         Some(())
+    }
+
+    pub fn send_attachment(&self, bytes: &glib::Bytes, mime: &str, body: &str) {
+        let matrix_room = self.matrix_room();
+
+        if let MatrixRoom::Joined(matrix_room) = matrix_room {
+            let mime = mime::Mime::from_str(&mime.to_owned()).unwrap();
+            let body = body.to_string();
+            spawn_tokio!(glib::clone!(@strong bytes => async move {
+                let config = AttachmentConfig::default();
+                let mut cursor = std::io::Cursor::new(bytes.deref());
+                matrix_room
+                    // TODO This should be added to pending messages instead of
+                    // sending it directly.
+                    .send_attachment(&body, &mime, &mut cursor, config)
+                    .await
+                    .unwrap();
+            }));
+        }
     }
 
     pub async fn invite(&self, users: &[User]) {

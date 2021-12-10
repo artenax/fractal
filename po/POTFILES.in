@@ -11,6 +11,7 @@ data/resources/ui/account-settings-device-row.ui
 data/resources/ui/account-settings-devices-page.ui
 data/resources/ui/account-settings-user-page.ui
 data/resources/ui/account-settings.ui
+data/resources/ui/attachment-dialog.ui
 data/resources/ui/components-auth-dialog.ui
 data/resources/ui/components-loading-listbox-row.ui
 data/resources/ui/content-explore.ui
@@ -57,6 +58,7 @@ src/session/content/room_history/item_row.rs
 src/session/content/room_history/message_row/audio.rs
 src/session/content/room_history/message_row/media.rs
 src/session/content/room_history/message_row/mod.rs
+src/session/content/room_history/mod.rs
 src/session/content/room_history/state_row/creation.rs
 src/session/content/room_history/state_row/mod.rs
 src/session/content/room_history/verification_info_bar.rs

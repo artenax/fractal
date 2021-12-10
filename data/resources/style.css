@@ -508,3 +508,8 @@ message-reactions .reaction-count {
   border-radius: 9999px;
   padding: 2px;
 }
+
+dragoverlay statuspage {
+  background-color: alpha(@accent_bg_color, 0.5);
+  color: @accent_fg_color;
+}

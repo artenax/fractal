@@ -130,6 +130,22 @@
             <child>
               <object class="GtkOverlay" id="content">
                 <child type="overlay">
+                  <object class="GtkRevealer" id="drag_revealer">
+                    <property name="can-target">False</property>
+                    <property name="transition_type">crossfade</property>
+                    <property name="reveal_child">False</property>
+                    <child>
+                      <object class="AdwStatusPage">
+                        <property name="icon-name">document-send-symbolic</property>
+                        <property name="title" translatable="yes">Drop Here to Send</property>
+                        <style>
+                          <class name="drag-n-drop-overlay"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="overlay">
                   <object class="GtkRevealer" id="scroll_btn_revealer">
                     <property name="transition_type">crossfade</property>
                     <property name="reveal_child" bind-source="ContentRoomHistory" bind-property="sticky" bind-flags="sync-create | invert-boolean"/>
