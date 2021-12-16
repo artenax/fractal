@@ -12,7 +12,7 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct ItemList {
-        pub list: OnceCell<[SidebarItem; 8]>,
+        pub list: OnceCell<[SidebarItem; 9]>,
         pub room_list: OnceCell<RoomList>,
         pub verification_list: OnceCell<VerificationList>,
         /// The `CategoryType` to show all compatible categories for.
@@ -90,11 +90,12 @@ mod imp {
             let room_list = obj.room_list();
             let verification_list = obj.verification_list();
 
-            let list: [SidebarItem; 8] = [
+            let list: [SidebarItem; 9] = [
                 Entry::new(EntryType::Explore).upcast(),
                 Category::new(CategoryType::VerificationRequest, verification_list).upcast(),
                 Category::new(CategoryType::Invited, room_list).upcast(),
                 Category::new(CategoryType::Favorite, room_list).upcast(),
+                Category::new(CategoryType::Direct, room_list).upcast(),
                 Category::new(CategoryType::Normal, room_list).upcast(),
                 Category::new(CategoryType::LowPriority, room_list).upcast(),
                 Category::new(CategoryType::Left, room_list).upcast(),

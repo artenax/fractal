@@ -377,6 +377,16 @@ impl Room {
         self.imp().room_id.get().unwrap()
     }
 
+    /// Whether this room is a DM
+    pub fn is_direct(&self) -> bool {
+        self.imp()
+            .matrix_room
+            .borrow()
+            .as_ref()
+            .unwrap()
+            .is_direct()
+    }
+
     fn matrix_room(&self) -> MatrixRoom {
         self.imp().matrix_room.borrow().as_ref().unwrap().clone()
     }
@@ -518,6 +528,15 @@ impl Room {
                     RoomType::Left => room.reject_invitation().await,
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
+                    RoomType::Direct => {
+                        if !room.is_direct() {
+                            // TODO: mark as direct by adding it to account data
+                        }
+
+                        room.accept_invitation().await?;
+
+                        Ok(())
+                    }
                 },
                 MatrixRoom::Joined(room) => match category {
                     RoomType::Invited => Ok(()),
@@ -529,6 +548,10 @@ impl Room {
                         Ok(())
                     }
                     RoomType::Normal => {
+                        if room.is_direct() {
+                            // TODO: remove the room from the list of direct
+                            // rooms via the account data
+                        }
                         match previous_category {
                             RoomType::Favorite => {
                                 room.remove_tag(TagName::Favorite).await?;
@@ -550,6 +573,22 @@ impl Room {
                     RoomType::Left => room.leave().await,
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
+                    RoomType::Direct => {
+                        if !room.is_direct() {
+                            // TODO: Mark as direct by adding it to account data
+                        }
+
+                        if let Some(tags) = room.tags().await? {
+                            if tags.contains_key(&TagName::LowPriority) {
+                                room.remove_tag(TagName::LowPriority).await?;
+                            }
+                            if tags.contains_key(&TagName::Favorite) {
+                                room.remove_tag(TagName::Favorite).await?;
+                            }
+                        }
+
+                        Ok(())
+                    }
                 },
                 MatrixRoom::Left(room) => match category {
                     RoomType::Invited => Ok(()),
@@ -568,6 +607,23 @@ impl Room {
                     RoomType::Left => Ok(()),
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
+                    RoomType::Direct => {
+                        if !room.is_direct() {
+                            // TODO: Mark as direct by adding it to account data
+                        }
+
+                        if let Some(tags) = room.tags().await? {
+                            if tags.contains_key(&TagName::LowPriority) {
+                                room.remove_tag(TagName::LowPriority).await?;
+                            }
+                            if tags.contains_key(&TagName::Favorite) {
+                                room.remove_tag(TagName::Favorite).await?;
+                            }
+                        }
+
+                        room.join().await?;
+                        Ok(())
+                    }
                 },
             }
         });
@@ -617,12 +673,17 @@ impl Room {
                 if matrix_room.is_space() {
                     self.set_category_internal(RoomType::Space);
                 } else {
+                    let is_direct = matrix_room.is_direct();
                     let handle = spawn_tokio!(async move { matrix_room.tags().await });
 
                     spawn!(
                         glib::PRIORITY_DEFAULT_IDLE,
                         clone!(@weak self as obj => async move {
-                            let mut category = RoomType::Normal;
+                            let mut category = if is_direct {
+                                        RoomType::Direct
+                                    } else {
+                                        RoomType::Normal
+                                    };
 
                             if let Ok(Some(tags)) = handle.await.unwrap() {
                                 if tags.get(&TagName::Favorite).is_some() {

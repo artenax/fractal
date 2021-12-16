@@ -16,6 +16,7 @@ pub enum CategoryType {
     Left = 5,
     Outdated = 6,
     Space = 7,
+    Direct = 8,
 }
 
 impl Default for CategoryType {
@@ -37,6 +38,7 @@ impl ToString for CategoryType {
             // Translators: This shouldn't ever be visible to the user,
             CategoryType::Outdated => gettext("Outdated"),
             CategoryType::Space => gettext("Spaces"),
+            CategoryType::Direct => gettext("People"),
         }
     }
 }
@@ -57,6 +59,7 @@ impl From<&RoomType> for CategoryType {
             RoomType::Left => Self::Left,
             RoomType::Outdated => Self::Outdated,
             RoomType::Space => Self::Space,
+            RoomType::Direct => Self::Direct,
         }
     }
 }

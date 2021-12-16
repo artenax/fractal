@@ -47,6 +47,11 @@
         <attribute name="hidden-when">action-disabled</attribute>
       </item>
       <item>
+        <attribute name="label" translatable="yes">Move to _People</attribute>
+        <attribute name="action">room-row.set-direct</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes">Move to Low _Priority</attribute>
         <attribute name="action">room-row.set-lowpriority</attribute>
         <attribute name="hidden-when">action-disabled</attribute>

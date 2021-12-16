@@ -39,7 +39,7 @@ mod imp {
             klass.set_accessible_role(gtk::AccessibleRole::Group);
 
             klass.install_action("room-row.accept-invite", None, move |widget, _, _| {
-                widget.room().unwrap().set_category(RoomType::Normal)
+                widget.set_room_as_normal_or_direct();
             });
             klass.install_action("room-row.reject-invite", None, move |widget, _, _| {
                 widget.room().unwrap().set_category(RoomType::Left)
@@ -54,12 +54,15 @@ mod imp {
             klass.install_action("room-row.set-lowpriority", None, move |widget, _, _| {
                 widget.room().unwrap().set_category(RoomType::LowPriority);
             });
+            klass.install_action("room-row.set-direct", None, move |widget, _, _| {
+                widget.room().unwrap().set_category(RoomType::Direct);
+            });
 
             klass.install_action("room-row.leave", None, move |widget, _, _| {
                 widget.room().unwrap().set_category(RoomType::Left);
             });
             klass.install_action("room-row.join", None, move |widget, _, _| {
-                widget.room().unwrap().set_category(RoomType::Normal)
+                widget.set_room_as_normal_or_direct();
             });
             klass.install_action("room-row.forget", None, move |widget, _, _| {
                 widget.room().unwrap().forget();
@@ -250,6 +253,7 @@ impl RoomRow {
                     self.action_set_enabled("room-row.leave", false);
                     self.action_set_enabled("room-row.join", false);
                     self.action_set_enabled("room-row.forget", false);
+                    self.action_set_enabled("room-row.set-direct", false);
                     return;
                 }
                 RoomType::Favorite => {
@@ -261,6 +265,7 @@ impl RoomRow {
                     self.action_set_enabled("room-row.leave", true);
                     self.action_set_enabled("room-row.join", false);
                     self.action_set_enabled("room-row.forget", false);
+                    self.action_set_enabled("room-row.set-direct", true);
                     return;
                 }
                 RoomType::Normal => {
@@ -272,6 +277,7 @@ impl RoomRow {
                     self.action_set_enabled("room-row.leave", true);
                     self.action_set_enabled("room-row.join", false);
                     self.action_set_enabled("room-row.forget", false);
+                    self.action_set_enabled("room-row.set-direct", true);
                     return;
                 }
                 RoomType::LowPriority => {
@@ -283,6 +289,7 @@ impl RoomRow {
                     self.action_set_enabled("room-row.leave", true);
                     self.action_set_enabled("room-row.join", false);
                     self.action_set_enabled("room-row.forget", false);
+                    self.action_set_enabled("room-row.set-direct", true);
                     return;
                 }
                 RoomType::Left => {
@@ -294,10 +301,23 @@ impl RoomRow {
                     self.action_set_enabled("room-row.leave", false);
                     self.action_set_enabled("room-row.join", true);
                     self.action_set_enabled("room-row.forget", true);
+                    self.action_set_enabled("room-row.set-direct", false);
                     return;
                 }
                 RoomType::Outdated => {}
                 RoomType::Space => {}
+                RoomType::Direct => {
+                    self.action_set_enabled("room-row.accept-invite", false);
+                    self.action_set_enabled("room-row.reject-invite", false);
+                    self.action_set_enabled("room-row.set-favorite", true);
+                    self.action_set_enabled("room-row.set-normal", true);
+                    self.action_set_enabled("room-row.set-lowpriority", true);
+                    self.action_set_enabled("room-row.leave", true);
+                    self.action_set_enabled("room-row.join", false);
+                    self.action_set_enabled("room-row.forget", false);
+                    self.action_set_enabled("room-row.set-direct", false);
+                    return;
+                }
             }
         }
 
@@ -309,6 +329,7 @@ impl RoomRow {
         self.action_set_enabled("room-row.leave", false);
         self.action_set_enabled("room-row.join", false);
         self.action_set_enabled("room-row.forget", false);
+        self.action_set_enabled("room-row.set-direct", false);
     }
 
     fn drag_prepare(&self, drag: &gtk::DragSource, x: f64, y: f64) -> Option<gdk::ContentProvider> {
@@ -331,6 +352,15 @@ impl RoomRow {
         self.activate_action("sidebar.set-drop-source-type", None)
             .unwrap();
         self.parent().unwrap().remove_css_class("drag");
+    }
+
+    fn set_room_as_normal_or_direct(&self) {
+        let room = self.room().unwrap();
+        if room.is_direct() {
+            room.set_category(RoomType::Direct);
+        } else {
+            room.set_category(RoomType::Normal);
+        }
     }
 }
 

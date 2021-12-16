@@ -10,7 +10,7 @@ mod sidebar;
 mod user;
 pub mod verification;
 
-use std::{convert::TryFrom, fs, path::Path, time::Duration};
+use std::{collections::HashSet, convert::TryFrom, fs, path::Path, time::Duration};
 
 use adw::subclass::prelude::BinImpl;
 use futures::StreamExt;
@@ -35,7 +35,9 @@ use matrix_sdk::{
             },
             error::{FromHttpResponseError, ServerError},
         },
-        assign, RoomId,
+        assign,
+        events::{direct::DirectEventContent, GlobalAccountDataEvent},
+        RoomId,
     },
     store::{make_store_config, OpenStoreError},
     Client, ClientBuildError, Error, HttpError,
@@ -473,6 +475,7 @@ impl Session {
                 priv_.info.set(session).unwrap();
 
                 self.room_list().load();
+                self.setup_direct_room_handler();
 
                 self.sync();
 
@@ -844,6 +847,39 @@ impl Session {
         })
         .await
         .unwrap()
+    }
+
+    fn setup_direct_room_handler(&self) {
+        spawn!(
+            glib::PRIORITY_DEFAULT_IDLE,
+            clone!(@weak self as obj => async move {
+                let obj_weak = glib::SendWeakRef::from(obj.downgrade());
+                    obj.client().register_event_handler(
+                        move |event: GlobalAccountDataEvent<DirectEventContent>| {
+                            let obj_weak = obj_weak.clone();
+                            async move {
+                                let ctx = glib::MainContext::default();
+                                ctx.spawn(async move {
+                                    spawn!(async move {
+                                        if let Some(session) = obj_weak.upgrade() {
+                                            let room_ids = event.content.iter().fold(HashSet::new(), |mut acc, (_, rooms)| {
+                                                acc.extend(&*rooms);
+                                                acc
+                                            });
+                                            for room_id in room_ids {
+                                                if let Some(room) = session.room_list().get(room_id) {
+                                                    room.load_category();
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        },
+                    )
+                    .await;
+            })
+        );
     }
 }
 
