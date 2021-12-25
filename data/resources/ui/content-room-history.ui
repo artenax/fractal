@@ -130,22 +130,6 @@
             <child>
               <object class="GtkOverlay" id="content">
                 <child type="overlay">
-                  <object class="GtkRevealer" id="drag_revealer">
-                    <property name="can-target">False</property>
-                    <property name="transition_type">crossfade</property>
-                    <property name="reveal_child">False</property>
-                    <child>
-                      <object class="AdwStatusPage">
-                        <property name="icon-name">document-send-symbolic</property>
-                        <property name="title" translatable="yes">Drop Here to Send</property>
-                        <style>
-                          <class name="drag-n-drop-overlay"/>
-                        </style>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="overlay">
                   <object class="GtkRevealer" id="scroll_btn_revealer">
                     <property name="transition_type">crossfade</property>
                     <property name="reveal_child" bind-source="ContentRoomHistory" bind-property="sticky" bind-flags="sync-create | invert-boolean"/>
@@ -169,30 +153,35 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkScrolledWindow" id="scrolled_window">
-                    <property name="vexpand">True</property>
-                    <property name="hscrollbar-policy">never</property>
-                    <style>
-                      <class name="room-history"/>
-                    </style>
+                  <object class="DragOverlay" id="drag_overlay">
+                    <property name="title" translatable="yes">Drop Here to Send</property>
                     <property name="child">
-                      <object class="AdwClampScrollable">
+                      <object class="GtkScrolledWindow" id="scrolled_window">
                         <property name="vexpand">True</property>
-                        <property name="hexpand">True</property>
+                        <property name="hscrollbar-policy">never</property>
+                        <style>
+                          <class name="room-history"/>
+                        </style>
                         <property name="child">
-                          <object class="GtkListView" id="listview">
-                            <style>
-                              <class name="navigation-sidebar"/>
-                            </style>
-                            <property name="factory">
-                              <object class="GtkBuilderListItemFactory">
-                                <property name="resource">/org/gnome/FractalNext/content-item.ui</property>
+                          <object class="AdwClampScrollable">
+                            <property name="vexpand">True</property>
+                            <property name="hexpand">True</property>
+                            <property name="child">
+                              <object class="GtkListView" id="listview">
+                                <style>
+                                  <class name="navigation-sidebar"/>
+                                </style>
+                                <property name="factory">
+                                  <object class="GtkBuilderListItemFactory">
+                                    <property name="resource">/org/gnome/FractalNext/content-item.ui</property>
+                                  </object>
+                                </property>
+                                <property name="single-click-activate">True</property>
+                                <accessibility>
+                                  <property name="label" translatable="yes">Room History</property>
+                                </accessibility>
                               </object>
                             </property>
-                            <property name="single-click-activate">True</property>
-                            <accessibility>
-                              <property name="label" translatable="yes">Room History</property>
-                            </accessibility>
                           </object>
                         </property>
                       </object>

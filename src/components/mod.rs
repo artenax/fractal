@@ -6,6 +6,7 @@ mod badge;
 mod button_row;
 mod context_menu_bin;
 mod custom_entry;
+mod drag_overlay;
 mod editable_avatar;
 mod entry_row;
 mod in_app_notification;
@@ -29,6 +30,7 @@ pub use self::{
     button_row::ButtonRow,
     context_menu_bin::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl},
     custom_entry::CustomEntry,
+    drag_overlay::DragOverlay,
     editable_avatar::EditableAvatar,
     entry_row::EntryRow,
     in_app_notification::InAppNotification,

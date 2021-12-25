@@ -26,7 +26,7 @@ use self::{
 };
 use crate::spawn;
 use crate::{
-    components::{CustomEntry, Pill, RoomTitle},
+    components::{CustomEntry, DragOverlay, Pill, RoomTitle},
     session::{
         content::{MarkdownPopover, RoomDetails},
         room::{Item, Room, RoomType, Timeline, TimelineState},
@@ -90,7 +90,7 @@ mod imp {
         pub stack: TemplateChild<gtk::Stack>,
         pub is_loading: Cell<bool>,
         #[template_child]
-        pub drag_revealer: TemplateChild<gtk::Revealer>,
+        pub drag_overlay: TemplateChild<DragOverlay>,
     }
 
     #[glib::object_subclass]
@@ -758,12 +758,7 @@ impl RoomHistory {
             }),
         );
 
-        target.connect_current_drop_notify(glib::clone!(@weak self as obj => move |target| {
-            let priv_ = imp::RoomHistory::from_instance(&obj);
-            priv_.drag_revealer.set_reveal_child(target.current_drop().is_some());
-        }));
-
-        priv_.scrolled_window.add_controller(&target);
+        priv_.drag_overlay.set_drop_target(&target);
     }
 
     fn open_attach_dialog(&self, bytes: Vec<u8>, mime: &str, title: &str) {
