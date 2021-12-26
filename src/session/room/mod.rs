@@ -11,7 +11,7 @@ mod reaction_list;
 mod room_type;
 mod timeline;
 
-use std::{cell::RefCell, convert::TryInto, ops::Deref, path::PathBuf, str::FromStr, sync::Arc};
+use std::{cell::RefCell, convert::TryInto, ops::Deref, path::PathBuf, sync::Arc};
 
 use gettextrs::gettext;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
@@ -1184,11 +1184,10 @@ impl Room {
         Some(())
     }
 
-    pub fn send_attachment(&self, bytes: &glib::Bytes, mime: &str, body: &str) {
+    pub fn send_attachment(&self, bytes: &glib::Bytes, mime: mime::Mime, body: &str) {
         let matrix_room = self.matrix_room();
 
         if let MatrixRoom::Joined(matrix_room) = matrix_room {
-            let mime = mime::Mime::from_str(&mime.to_owned()).unwrap();
             let body = body.to_string();
             spawn_tokio!(glib::clone!(@strong bytes => async move {
                 let config = AttachmentConfig::default();

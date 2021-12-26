@@ -5,6 +5,8 @@ mod message_row;
 mod state_row;
 mod verification_info_bar;
 
+use std::str::FromStr;
+
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
 use gtk::{
@@ -24,7 +26,6 @@ use self::{
     attachment_dialog::AttachmentDialog, divider_row::DividerRow, item_row::ItemRow,
     state_row::StateRow, verification_info_bar::VerificationInfoBar,
 };
-use crate::spawn;
 use crate::{
     components::{CustomEntry, DragOverlay, Pill, RoomTitle},
     session::{
@@ -364,7 +365,8 @@ impl RoomHistory {
         if let Ok((stream, mime)) = res {
             log::debug!("Found a {} in the clipboard", &mime);
             if let Ok(bytes) = read_stream(&stream).await {
-                self.open_attach_dialog(bytes, &mime, &body);
+                let mime = mime::Mime::from_str(&mime).unwrap();
+                self.open_attach_dialog(bytes, mime, &body);
 
                 return;
             }
@@ -732,7 +734,8 @@ impl RoomHistory {
                                         // TODO Get the actual name of the file by reading
                                         // the text/plain mime type.
                                         let body = gettext("Image");
-                                        obj.open_attach_dialog(bytes, &mime, &body);
+                                        let mime = mime::Mime::from_str(&mime).unwrap();
+                                        obj.open_attach_dialog(bytes, mime, &body);
                                     }
                                 }));
                             }
@@ -761,30 +764,27 @@ impl RoomHistory {
         priv_.drag_overlay.set_drop_target(&target);
     }
 
-    fn open_attach_dialog(&self, bytes: Vec<u8>, mime: &str, title: &str) {
+    fn open_attach_dialog(&self, bytes: Vec<u8>, mime: mime::Mime, title: &str) {
         let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
         let dialog = AttachmentDialog::new(&window);
-        let gbytes = glib::Bytes::from_owned(bytes.clone());
+        let gbytes = glib::Bytes::from_owned(bytes);
         if let Ok(texture) = gdk::Texture::from_bytes(&gbytes) {
             dialog.set_texture(&texture);
         }
 
-        let mime = mime.to_string();
         dialog.set_title(Some(title));
         let title = title.to_string();
-        dialog
-            .connect_local(
-                "send",
-                false,
-                glib::clone!(@weak self as obj => @default-return None, move |_| {
-                    if let Some(room) = obj.room() {
-                        room.send_attachment(&gbytes, &mime, &title);
-                    }
+        dialog.connect_local(
+            "send",
+            false,
+            glib::clone!(@weak self as obj => @default-return None, move |_| {
+                if let Some(room) = obj.room() {
+                    room.send_attachment(&gbytes, mime.clone(), &title);
+                }
 
-                    None
-                }),
-            )
-            .unwrap();
+                None
+            }),
+        );
         dialog.present();
     }
 
@@ -836,9 +836,10 @@ impl RoomHistory {
         } else {
             "text/plain".to_string()
         };
+        let mime = mime::Mime::from_str(&mime).unwrap();
 
         match file.load_contents_future().await {
-            Ok((bytes, _tag)) => self.open_attach_dialog(bytes, &mime, &filename),
+            Ok((bytes, _tag)) => self.open_attach_dialog(bytes, mime, &filename),
             Err(err) => log::debug!("Could not read file: {}", err),
         }
     }
