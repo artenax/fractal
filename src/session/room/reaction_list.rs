@@ -125,6 +125,15 @@ impl ReactionList {
             .unwrap();
         self.items_changed(pos as u32, 1, 0);
     }
+
+    /// Removes all reactions.
+    pub fn clear(&self) {
+        let mut reactions = self.imp().reactions.borrow_mut();
+        let len = reactions.len();
+        reactions.clear();
+        std::mem::drop(reactions);
+        self.items_changed(0, len as u32, 0);
+    }
 }
 
 impl Default for ReactionList {

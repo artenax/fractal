@@ -478,7 +478,11 @@ impl Event {
     }
 
     pub fn prepend_replacing_events(&self, events: Vec<Event>) {
-        self.imp().replacing_events.borrow_mut().splice(..0, events);
+        let priv_ = self.imp();
+        priv_.replacing_events.borrow_mut().splice(..0, events);
+        if self.redacted() {
+            priv_.reactions.clear();
+        }
     }
 
     pub fn append_replacing_events(&self, events: Vec<Event>) {
@@ -508,7 +512,9 @@ impl Event {
                         }),
                     )));
             }
-
+            if self.redacted() {
+                priv_.reactions.clear();
+            }
             self.notify("source");
         }
     }
@@ -558,7 +564,9 @@ impl Event {
 
     /// Add reactions to this event.
     pub fn add_reactions(&self, reactions: Vec<Event>) {
-        self.imp().reactions.add_reactions(reactions);
+        if !self.redacted() {
+            self.imp().reactions.add_reactions(reactions);
+        }
     }
 
     /// The content of this matrix event.

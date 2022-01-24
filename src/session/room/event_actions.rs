@@ -5,7 +5,11 @@ use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageEventConten
 use once_cell::sync::Lazy;
 
 use crate::{
-    session::{event_source_dialog::EventSourceDialog, room::Event},
+    session::{
+        event_source_dialog::EventSourceDialog,
+        room::{Event, RoomAction},
+        user::UserExt,
+    },
     spawn,
     utils::cache_dir,
     Error, UserFacingError, Window,
@@ -86,6 +90,29 @@ where
         );
 
         if let Some(AnyMessageEventContent::RoomMessage(message)) = event.message_content() {
+            let user_id = event
+                .room()
+                .session()
+                .user()
+                .map(|user| user.user_id())
+                .unwrap();
+            let user = event.room().members().member_by_id(user_id);
+            if event.sender() == user
+                || event
+                    .room()
+                    .power_levels()
+                    .min_level_for_room_action(&RoomAction::Redact)
+                    <= user.power_level()
+            {
+                // Remove message
+                gtk_macros::action!(
+                    &action_group,
+                    "remove",
+                    clone!(@weak event, => move |_, _| {
+                        event.room().redact(event.matrix_event_id(), None);
+                    })
+                );
+            }
             // Send/redact a reaction
             gtk_macros::action!(
                 &action_group,
