@@ -115,7 +115,7 @@
                     <child>
                       <object class="GtkBox">
                         <property name="orientation">vertical</property>
-                        <property name="spacing">30</property>    
+                        <property name="spacing">30</property>
                         <child>
                           <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -182,10 +182,54 @@
                                 <property name="use_underline">True</property>
                                 <property name="label" translatable="yes">_Forgot Password?</property>
                                 <property name="uri">https://app.element.io/#/forgot_password</property>
+                                <property name="halign">center</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="sso_box">
+                                <property name="visible">false</property>
+                                <property name="orientation">horizontal</property>
+                                <property name="spacing">12</property>
+                                <property name="homogeneous">true</property>
+                                <property name="hexpand">true</property>
+                                <property name="vexpand">true</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="more_sso_option">
+                                <style>
+                                  <class name="pill"/>
+                                </style>
+                                <property name="halign">center</property>
+                                <property name="label">More SSO Providers</property>
                               </object>
                             </child>
                           </object>
                         </child>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">sso_message_page</property>
+                <property name="child">
+                  <object class="AdwClamp">
+                    <property name="maximum-size">360</property>
+                    <property name="tightening-threshold">360</property>
+                    <property name="valign">center</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="valign">center</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                        <property name="label" translatable="yes">Please follow the steps in the browser.</property>
+                        <style>
+                          <class name="title-1"/>
+                        </style>
                       </object>
                     </child>
                   </object>
@@ -198,3 +242,5 @@
     </child>
   </template>
 </interface>
+
+

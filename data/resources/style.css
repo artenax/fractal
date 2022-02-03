@@ -184,6 +184,12 @@ login entry {
   padding: 18px 24px;
 }
 
+.sso-button {
+  padding: 4px;
+  -gtk-icon-size: 26px;
+  min-height: 34px;
+}
+
 /* Session */
 
 .session-loading-spinner {

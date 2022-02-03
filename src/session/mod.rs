@@ -361,6 +361,62 @@ impl Session {
         self.handle_login_result(handle.await.unwrap(), true).await;
     }
 
+    pub async fn login_with_sso(&self, homeserver: Url, idp_id: Option<String>) {
+        self.imp().logout_on_dispose.set(true);
+        let mut path = glib::user_data_dir();
+        path.push(glib::uuid_string_random().as_str());
+        let passphrase: String = {
+            let mut rng = thread_rng();
+            (&mut rng)
+                .sample_iter(Alphanumeric)
+                .take(30)
+                .map(char::from)
+                .collect()
+        };
+        let handle = spawn_tokio!(async move {
+            let client = create_client(&homeserver, &path, &passphrase, true).await?;
+
+            let response = client
+                .login_with_sso(
+                    |sso_url| async move {
+                        let ctx = glib::MainContext::default();
+                        ctx.spawn(async move {
+                            gtk::show_uri(gtk::Window::NONE, &sso_url, gdk::CURRENT_TIME);
+                        });
+                        Ok(())
+                    },
+                    None,
+                    None,
+                    None,
+                    Some("Fractal Next"),
+                    idp_id.as_deref(),
+                )
+                .await;
+            match response {
+                Ok(response) => Ok((
+                    client,
+                    StoredSession {
+                        homeserver,
+                        path,
+                        user_id: response.user_id,
+                        device_id: response.device_id,
+                        secret: Secret {
+                            passphrase,
+                            access_token: response.access_token,
+                        },
+                    },
+                )),
+                Err(error) => {
+                    // Remove the store created by Client::new()
+                    fs::remove_dir_all(path).unwrap();
+                    Err(error.into())
+                }
+            }
+        });
+
+        self.handle_login_result(handle.await.unwrap(), true).await;
+    }
+
     pub async fn login_with_previous_session(&self, session: StoredSession) {
         let handle = spawn_tokio!(async move {
             let client = create_client(

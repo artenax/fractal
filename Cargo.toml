@@ -66,5 +66,6 @@ features = [
     "encryption",
     "sled_cryptostore",
     "sled_state_store",
+    "sso_login",
     "markdown",
 ]

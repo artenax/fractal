@@ -11,6 +11,7 @@ mod components;
 mod contrib;
 mod error_page;
 mod greeter;
+mod idp_button;
 mod login;
 mod login_advanced_dialog;
 mod secret;

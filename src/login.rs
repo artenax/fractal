@@ -5,7 +5,14 @@ use log::{debug, warn};
 use matrix_sdk::{
     config::RequestConfig,
     ruma::{
-        api::client::discover::get_supported_versions, identifiers::Error as IdentifierError,
+        api::client::{
+            discover::get_supported_versions,
+            session::get_login_types::v3::{
+                LoginType::{Password, Sso},
+                SsoLoginType,
+            },
+        },
+        identifiers::Error as IdentifierError,
         ServerName,
     },
     Client, Result as MatrixResult,
@@ -15,6 +22,7 @@ use url::{ParseError, Url};
 
 use crate::{
     components::{SpinnerButton, Toast},
+    idp_button::IdpButton,
     login_advanced_dialog::LoginAdvancedDialog,
     spawn, spawn_tokio,
     user_facing_error::UserFacingError,
@@ -52,11 +60,16 @@ mod imp {
         pub username_entry: TemplateChild<gtk::Entry>,
         #[template_child]
         pub password_entry: TemplateChild<gtk::PasswordEntry>,
+        #[template_child]
+        pub sso_box: TemplateChild<gtk::Box>,
+        #[template_child]
+        pub more_sso_option: TemplateChild<gtk::Button>,
         pub prepared_source_id: RefCell<Option<SignalHandlerId>>,
         pub logged_out_source_id: RefCell<Option<SignalHandlerId>>,
         pub ready_source_id: RefCell<Option<SignalHandlerId>>,
         /// Whether auto-discovery is enabled.
         pub autodiscovery: Cell<bool>,
+        pub supports_password: Cell<bool>,
         /// The homeserver to log into.
         pub homeserver: RefCell<Option<Url>>,
     }
@@ -159,6 +172,8 @@ mod imp {
                 .connect_changed(clone!(@weak obj => move |_| obj.update_next_action()));
             self.password_entry
                 .connect_changed(clone!(@weak obj => move |_| obj.update_next_action()));
+            self.more_sso_option
+                .connect_clicked(clone!(@weak obj => move |_| obj.login_with_sso(None)));
         }
     }
 
@@ -180,6 +195,37 @@ impl Login {
 
     pub fn homeserver(&self) -> Option<Url> {
         self.imp().homeserver.borrow().clone()
+    }
+
+    fn reload_sso_panel(&self, login_types: &SsoLoginType) {
+        let priv_ = &mut imp::Login::from_instance(self);
+        let mut child = priv_.sso_box.first_child();
+        while child.is_some() {
+            priv_.sso_box.remove(&child.unwrap());
+            child = priv_.sso_box.first_child();
+        }
+        let mut has_unknown_methods = false;
+        let mut has_known_methods = false;
+        let homeserver: Url = self.homeserver().unwrap();
+        for provider in login_types.identity_providers.iter() {
+            let opt_brand = provider.brand.as_ref();
+            if opt_brand.is_none() {
+                has_unknown_methods = true;
+                continue;
+            }
+            let btn = IdpButton::new_from_identity_provider(homeserver.clone(), provider);
+            if let Some(real) = btn {
+                self.imp().sso_box.append(&real);
+                real.connect_clicked(
+                    clone!(@weak self as obj => move |btn| obj.login_with_sso(btn.id())),
+                );
+                has_known_methods = true;
+            } else {
+                has_unknown_methods = true;
+            }
+        }
+        priv_.sso_box.set_visible(has_known_methods);
+        priv_.more_sso_option.set_visible(has_unknown_methods);
     }
 
     pub fn homeserver_pretty(&self) -> Option<String> {
@@ -253,6 +299,13 @@ impl Login {
     fn backward(&self) {
         match self.visible_child().as_ref() {
             "password" => self.set_visible_child("homeserver"),
+            "sso_message_page" => {
+                self.set_visible_child(if self.imp().supports_password.get() {
+                    "password"
+                } else {
+                    "homeserver"
+                });
+            }
             _ => {
                 self.activate_action("app.show-greeter", None).unwrap();
             }
@@ -307,7 +360,7 @@ impl Login {
                     Ok(client) => {
                         let homeserver = client.homeserver().await;
                         obj.set_homeserver(Some(homeserver));
-                        obj.show_password_page();
+                        obj.check_login_types(client).await;
                     }
                     Err(error) => {
                         warn!("Failed to discover homeserver: {}", error);
@@ -317,6 +370,42 @@ impl Login {
                 obj.unfreeze();
             })
         );
+    }
+
+    fn switch_off_sso(&self) {
+        let priv_ = self.imp();
+        priv_.sso_box.set_visible(false);
+        priv_.more_sso_option.set_visible(false);
+    }
+
+    async fn check_login_types(&self, client: Client) {
+        let login_types = spawn_tokio!(async move { client.get_login_types().await })
+            .await
+            .unwrap()
+            .unwrap();
+        let sso = login_types
+            .flows
+            .iter()
+            .find(|flow| matches!(flow, Sso(_sso_providers)));
+        let password = login_types
+            .flows
+            .iter()
+            .find(|flow| matches!(flow, Password(_)));
+        let has_sso = sso.is_some();
+        let has_password = password.is_some();
+        self.imp().supports_password.replace(has_password);
+        if has_sso && has_password {
+            if let Sso(login_type) = sso.unwrap() {
+                self.reload_sso_panel(login_type);
+            }
+        } else if !has_sso {
+            self.switch_off_sso();
+        }
+        if has_password {
+            self.show_password_page();
+        } else {
+            self.login_with_sso(None);
+        }
     }
 
     fn check_homeserver(&self) {
@@ -392,6 +481,23 @@ impl Login {
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak session => async move {
                 session.login_with_password(homeserver, username, password, autodiscovery).await;
+            })
+        );
+        priv_.current_session.replace(Some(session));
+    }
+
+    fn login_with_sso(&self, idp_id: Option<String>) {
+        let priv_ = imp::Login::from_instance(self);
+        let homeserver = self.homeserver().unwrap();
+        self.set_visible_child("sso_message_page");
+
+        let session = Session::new();
+        self.set_handler_for_prepared_session(&session);
+        spawn!(
+            glib::PRIORITY_DEFAULT_IDLE,
+            clone!(@weak session, @weak self as s => async move {
+                session.login_with_sso(homeserver, idp_id).await;
+                s.set_visible_child("homeserver");
             })
         );
         priv_.current_session.replace(Some(session));

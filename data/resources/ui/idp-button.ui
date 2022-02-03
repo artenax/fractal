@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="IdpButton" parent="GtkButton">
+    <style>
+      <class name="card"/>
+      <class name="sso-button"/>
+    </style>
+  </template>
+</interface>
+

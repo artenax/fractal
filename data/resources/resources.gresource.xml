@@ -5,6 +5,15 @@
     <file preprocess="xml-stripblanks">assets/other-device.svg</file>
     <file preprocess="xml-stripblanks">assets/setup-complete.svg</file>
     <file preprocess="xml-stripblanks">assets/welcome.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/idp-apple-dark.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/idp-apple.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/idp-facebook.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/idp-github-dark.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/idp-github.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/idp-gitlab.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/idp-google-dark.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/idp-google.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/idp-twitter.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/send-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/status/devices-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/status/empty-page.svg</file>
@@ -64,6 +73,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="event-source-dialog.ui">ui/event-source-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="greeter.ui">ui/greeter.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="identity-verification-widget.ui">ui/identity-verification-widget.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="idp-button.ui">ui/idp-button.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="in-app-notification.ui">ui/in-app-notification.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="login-advanced-dialog.ui">ui/login-advanced-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="login.ui">ui/login.ui</file>
