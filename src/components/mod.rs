@@ -1,3 +1,4 @@
+mod audio_player;
 mod auth_dialog;
 mod avatar;
 mod badge;
@@ -14,6 +15,7 @@ mod video_player;
 mod video_player_renderer;
 
 pub use self::{
+    audio_player::AudioPlayer,
     auth_dialog::{AuthData, AuthDialog},
     avatar::Avatar,
     badge::Badge,

@@ -45,6 +45,7 @@ src/session/content/explore/public_room_row.rs
 src/session/content/room_details/member_page/mod.rs
 src/session/content/room_details/mod.rs
 src/session/content/room_history/item_row.rs
+src/session/content/room_history/message_row/audio.rs
 src/session/content/room_history/message_row/media.rs
 src/session/content/room_history/message_row/mod.rs
 src/session/content/room_history/state_row/creation.rs

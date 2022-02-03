@@ -1,3 +1,4 @@
+mod audio;
 mod file;
 mod media;
 mod reaction;
@@ -20,8 +21,8 @@ use matrix_sdk::ruma::events::{
 };
 
 use self::{
-    file::MessageFile, media::MessageMedia, reaction_list::MessageReactionList,
-    reply::MessageReply, text::MessageText,
+    audio::MessageAudio, file::MessageFile, media::MessageMedia,
+    reaction_list::MessageReactionList, reply::MessageReply, text::MessageText,
 };
 use crate::{
     components::Avatar, prelude::*, session::room::Event, spawn, utils::filename_for_mime,
@@ -245,7 +246,18 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
                 message.msgtype
             };
             match msgtype {
-                MessageType::Audio(_message) => {}
+                MessageType::Audio(message) => {
+                    let child = if let Some(Ok(child)) =
+                        parent.child().map(|w| w.downcast::<MessageAudio>())
+                    {
+                        child
+                    } else {
+                        let child = MessageAudio::new();
+                        parent.set_child(Some(&child));
+                        child
+                    };
+                    child.audio(message, &event.room().session(), compact);
+                }
                 MessageType::Emote(message) => {
                     let child = if let Some(Ok(child)) =
                         parent.child().map(|w| w.downcast::<MessageText>())

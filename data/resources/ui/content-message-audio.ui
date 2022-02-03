@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ContentMessageAudio" parent="AdwBin">
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox">
+            <property name="margin-top">6</property>
+            <property name="spacing">6</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible" bind-source="ContentMessageAudio" bind-property="compact" bind-flags="sync-create"/>
+                <property name="icon-name">audio-x-generic-symbolic</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="ellipsize">end</property>
+                <property name="xalign">0.0</property>
+                <property name="hexpand">true</property>
+                <property name="label" bind-source="ContentMessageAudio" bind-property="body" bind-flags="sync-create"/>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkSpinner" id="state_spinner">
+                <property name="spinning">true</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkImage" id="state_error">
+                <property name="icon-name">dialog-error-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="ComponentsAudioPlayer" id="player">
+            <property name="visible" bind-source="ContentMessageAudio" bind-property="compact" bind-flags="sync-create|invert-boolean"/>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

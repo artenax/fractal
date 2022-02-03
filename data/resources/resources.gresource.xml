@@ -16,6 +16,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings.ui">ui/account-settings.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="add-account-row.ui">ui/add-account-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="avatar-with-selection.ui">ui/avatar-with-selection.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="components-audio-player.ui">ui/components-audio-player.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-auth-dialog.ui">ui/components-auth-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-avatar.ui">ui/components-avatar.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-loading-listbox-row.ui">ui/components-loading-listbox-row.ui</file>
@@ -33,6 +34,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="content-member-item.ui">ui/content-member-item.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-member-page.ui">ui/content-member-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-member-row.ui">ui/content-member-row.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="content-message-audio.ui">ui/content-message-audio.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-message-file.ui">ui/content-message-file.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-message-media.ui">ui/content-message-media.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-message-reaction-list.ui">ui/content-message-reaction-list.ui</file>
