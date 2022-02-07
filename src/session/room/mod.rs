@@ -35,11 +35,10 @@ use matrix_sdk::{
             AnySyncMessageEvent, AnySyncRoomEvent, AnySyncStateEvent, EventType, SyncMessageEvent,
             Unsigned,
         },
-        identifiers::{EventId, RoomId, UserId},
+        identifiers::{EventId, RoomId, TransactionId, UserId},
         serde::Raw,
         MilliSecondsSinceUnixEpoch,
     },
-    uuid::Uuid,
 };
 use serde_json::value::RawValue;
 
@@ -75,7 +74,7 @@ mod imp {
 
     use super::*;
 
-    #[derive(Debug, Default)]
+    #[derive(Default)]
     pub struct Room {
         pub room_id: OnceCell<Box<RoomId>>,
         pub matrix_room: RefCell<Option<MatrixRoom>>,
@@ -318,6 +317,14 @@ mod imp {
             obj.bind_property("display-name", obj.avatar(), "display-name")
                 .flags(glib::BindingFlags::SYNC_CREATE)
                 .build();
+
+            // Load the room history when idle
+            spawn!(
+                glib::source::PRIORITY_LOW,
+                clone!(@weak obj => async move {
+                    obj.timeline().load().await;
+                })
+            );
         }
     }
 }
@@ -491,30 +498,28 @@ impl Room {
                 MatrixRoom::Joined(room) => match category {
                     RoomType::Invited => Ok(()),
                     RoomType::Favorite => {
-                        room.set_tag(TagName::Favorite.as_ref(), TagInfo::new())
-                            .await?;
+                        room.set_tag(TagName::Favorite, TagInfo::new()).await?;
                         if previous_category == RoomType::LowPriority {
-                            room.remove_tag(TagName::LowPriority.as_ref()).await?;
+                            room.remove_tag(TagName::LowPriority).await?;
                         }
                         Ok(())
                     }
                     RoomType::Normal => {
                         match previous_category {
                             RoomType::Favorite => {
-                                room.remove_tag(TagName::Favorite.as_ref()).await?;
+                                room.remove_tag(TagName::Favorite).await?;
                             }
                             RoomType::LowPriority => {
-                                room.remove_tag(TagName::LowPriority.as_ref()).await?;
+                                room.remove_tag(TagName::LowPriority).await?;
                             }
                             _ => {}
                         }
                         Ok(())
                     }
                     RoomType::LowPriority => {
-                        room.set_tag(TagName::LowPriority.as_ref(), TagInfo::new())
-                            .await?;
+                        room.set_tag(TagName::LowPriority, TagInfo::new()).await?;
                         if previous_category == RoomType::Favorite {
-                            room.remove_tag(TagName::Favorite.as_ref()).await?;
+                            room.remove_tag(TagName::Favorite).await?;
                         }
                         Ok(())
                     }
@@ -793,7 +798,7 @@ impl Room {
         self.notify("inviter");
     }
 
-    /// Add new events to the timeline
+    /// Update the room state based on the new sync response
     pub fn append_events(&self, batch: Vec<Event>) {
         let priv_ = self.imp();
 
@@ -832,7 +837,6 @@ impl Room {
             }
         }
 
-        priv_.timeline.get().unwrap().append(batch);
         priv_.latest_change.replace(latest_change);
         self.notify("latest-change");
         self.emit_by_name::<()>("order-changed", &[]);
@@ -907,7 +911,7 @@ impl Room {
     }
 
     /// Send the given `event` in this room, with the temporary ID `txn_id`.
-    fn send_room_message_event(&self, event: AnySyncMessageEvent, txn_id: Uuid) {
+    fn send_room_message_event(&self, event: AnySyncMessageEvent, txn_id: Box<TransactionId>) {
         if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
             let content = event.content();
             let json = serde_json::to_string(&AnySyncRoomEvent::Message(event)).unwrap();
@@ -918,9 +922,10 @@ impl Room {
                 .timeline
                 .get()
                 .unwrap()
-                .append_pending(txn_id, event);
+                .append_pending(&txn_id, event);
 
-            let handle = spawn_tokio!(async move { matrix_room.send(content, Some(txn_id)).await });
+            let handle =
+                spawn_tokio!(async move { matrix_room.send(content, Some(&txn_id)).await });
 
             spawn!(
                 glib::PRIORITY_DEFAULT_IDLE,
@@ -989,7 +994,7 @@ impl Room {
                 .timeline
                 .get()
                 .unwrap()
-                .append_pending(txn_id, event);
+                .append_pending(&txn_id, event);
 
             let handle = spawn_tokio!(async move {
                 matrix_room
@@ -1103,7 +1108,6 @@ impl Room {
 
     pub fn handle_left_response(&self, response_room: LeftRoom) {
         self.set_matrix_room(self.session().client().get_room(self.room_id()).unwrap());
-
         self.append_events(
             response_room
                 .timeline

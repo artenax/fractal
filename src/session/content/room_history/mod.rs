@@ -29,6 +29,7 @@ use crate::{
         room::{Item, Room, RoomType, Timeline, TimelineState},
         user::UserExt,
     },
+    spawn,
 };
 
 mod imp {
@@ -76,6 +77,7 @@ mod imp {
         pub error: TemplateChild<adw::StatusPage>,
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
+        pub is_loading: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -245,13 +247,13 @@ mod imp {
                 } else {
                     obj.set_sticky(adj.value() + adj.page_size() == adj.upper());
                 }
-                obj.load_more_messages(adj);
+                obj.start_loading();
             }));
-            adj.connect_upper_notify(clone!(@weak obj => move |adj| {
+            adj.connect_upper_notify(clone!(@weak obj => move |_| {
                 if obj.sticky() {
                     obj.scroll_down();
                 }
-                obj.load_more_messages(adj);
+                obj.start_loading();
             }));
 
             let key_events = gtk::EventControllerKey::new();
@@ -318,19 +320,15 @@ impl RoomHistory {
             return;
         }
 
-        if let Some(category_handler) = priv_.category_handler.take() {
-            if let Some(room) = self.room() {
+        if let Some(room) = self.room() {
+            if let Some(category_handler) = priv_.category_handler.take() {
                 room.disconnect(category_handler);
             }
-        }
 
-        if let Some(empty_timeline_handler) = priv_.empty_timeline_handler.take() {
-            if let Some(room) = self.room() {
+            if let Some(empty_timeline_handler) = priv_.empty_timeline_handler.take() {
                 room.timeline().disconnect(empty_timeline_handler);
             }
-        }
 
-        if let Some(room) = self.room() {
             if let Some(state_timeline_handler) = priv_.state_timeline_handler.take() {
                 room.timeline().disconnect(state_timeline_handler);
             }
@@ -373,10 +371,10 @@ impl RoomHistory {
             .map(|room| gtk::NoSelection::new(Some(room.timeline())));
 
         priv_.listview.set_model(model.as_ref());
+        priv_.is_loading.set(false);
         priv_.room.replace(room);
-        let adj = priv_.listview.vadjustment().unwrap();
-        self.load_more_messages(&adj);
         self.update_view();
+        self.start_loading();
         self.update_room_state();
         self.notify("room");
         self.notify("empty");
@@ -537,17 +535,57 @@ impl RoomHistory {
         }
     }
 
-    fn load_more_messages(&self, adj: &gtk::Adjustment) {
+    fn need_messages(&self) -> bool {
+        let adj = self.imp().listview.vadjustment().unwrap();
         // Load more messages when the user gets close to the end of the known room
         // history Use the page size twice to detect if the user gets close to
-        // the end
-        if let Some(room) = self.room() {
-            if adj.value() < adj.page_size() * 2.0
-                || adj.upper() <= adj.page_size() / 2.0
-                || room.timeline().is_empty()
-            {
-                room.timeline().load_previous_events();
+        // the endload_timeline
+        adj.value() < adj.page_size() * 2.0 || adj.upper() <= adj.page_size() / 2.0
+    }
+
+    fn start_loading(&self) {
+        let priv_ = self.imp();
+        if !priv_.is_loading.get() {
+            let room = if let Some(room) = self.room() {
+                room
+            } else {
+                return;
+            };
+
+            if !self.need_messages() && !room.timeline().is_empty() {
+                return;
             }
+
+            priv_.is_loading.set(true);
+
+            let obj_weak = self.downgrade();
+            spawn!(async move {
+                loop {
+                    // We don't want to hold a strong ref to `obj` on `await`
+                    let need = if let Some(obj) = obj_weak.upgrade() {
+                        if obj.room().as_ref() == Some(&room) {
+                            obj.need_messages() || room.timeline().is_empty()
+                        } else {
+                            return;
+                        }
+                    } else {
+                        return;
+                    };
+
+                    if need {
+                        if !room.timeline().load().await {
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                // Remove the task
+                if let Some(obj) = obj_weak.upgrade() {
+                    obj.imp().is_loading.set(false);
+                }
+            });
         }
     }
 
@@ -585,9 +623,7 @@ impl RoomHistory {
     }
 
     fn try_again(&self) {
-        if let Some(room) = self.room() {
-            room.timeline().load_previous_events();
-        }
+        self.start_loading();
     }
 }
 

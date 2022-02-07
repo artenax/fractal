@@ -69,8 +69,7 @@ use gtk::{
 };
 use matrix_sdk::{
     media::MediaType,
-    ruma::{EventId, UInt},
-    uuid::Uuid,
+    ruma::{EventId, TransactionId, UInt},
 };
 use mime::Mime;
 
@@ -209,8 +208,8 @@ pub fn filename_for_mime(mime_type: Option<&str>, fallback: Option<mime::Name>) 
 ///
 /// Returns a `(transaction_id, event_id)` tuple. The `event_id` is derived from
 /// the `transaction_id`.
-pub fn pending_event_ids() -> (Uuid, Box<EventId>) {
-    let txn_id = Uuid::new_v4();
+pub fn pending_event_ids() -> (Box<TransactionId>, Box<EventId>) {
+    let txn_id = TransactionId::new();
     let event_id = EventId::parse(format!("${}:fractal.gnome.org", txn_id)).unwrap();
     (txn_id, event_id)
 }

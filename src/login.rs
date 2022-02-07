@@ -331,7 +331,7 @@ impl Login {
         self.freeze();
 
         let handle: JoinHandle<MatrixResult<_>> = spawn_tokio!(async move {
-            let client = Client::new(homeserver_clone)?;
+            let client = Client::new(homeserver_clone).await?;
             Ok(client
                 .send(
                     get_supported_versions::Request::new(),

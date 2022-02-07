@@ -16,7 +16,7 @@ use matrix_sdk::{
             AnyMessageEventContent, AnySyncMessageEvent, AnySyncRoomEvent, AnySyncStateEvent,
             Unsigned,
         },
-        identifiers::{EventId, UserId},
+        identifiers::{EventId, TransactionId, UserId},
         MilliSecondsSinceUnixEpoch,
     },
     Error as MatrixError,
@@ -255,7 +255,7 @@ impl Event {
         }
     }
 
-    pub fn matrix_transaction_id(&self) -> Option<String> {
+    pub fn matrix_transaction_id(&self) -> Option<Box<TransactionId>> {
         self.imp()
             .pure_event
             .borrow()

@@ -40,7 +40,6 @@ use matrix_sdk::{
         assign,
         identifiers::RoomId,
     },
-    uuid::Uuid,
     Client, Error as MatrixError, HttpError,
 };
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
@@ -293,11 +292,7 @@ impl Session {
     ) {
         self.imp().logout_on_dispose.set(true);
         let mut path = glib::user_data_dir();
-        path.push(
-            &Uuid::new_v4()
-                .to_hyphenated()
-                .encode_lower(&mut Uuid::encode_buffer()),
-        );
+        path.push(glib::uuid_string_random().as_str());
 
         let handle = spawn_tokio!(async move {
             let passphrase: String = {
@@ -322,7 +317,7 @@ impl Session {
                 config
             };
 
-            let client = Client::new_with_config(homeserver.clone(), config).unwrap();
+            let client = Client::new_with_config(homeserver.clone(), config).await?;
             let response = client
                 .login(&username, &password, None, Some("Fractal Next"))
                 .await;
@@ -371,7 +366,7 @@ impl Session {
                 .passphrase(session.secret.passphrase.clone())
                 .store_path(session.path.clone());
 
-            let client = Client::new_with_config(session.homeserver.clone(), config).unwrap();
+            let client = Client::new_with_config(session.homeserver.clone(), config).await?;
             client
                 .restore_login(matrix_sdk::Session {
                     user_id: session.user_id.clone(),
