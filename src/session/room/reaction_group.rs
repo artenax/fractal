@@ -86,7 +86,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// Reactions groupped by a given key.
+    /// Reactions grouped by a given key.
     pub struct ReactionGroup(ObjectSubclass<imp::ReactionGroup>);
 }
 
