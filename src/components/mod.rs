@@ -1,3 +1,4 @@
+mod action_button;
 mod audio_player;
 mod auth_dialog;
 mod avatar;
@@ -16,6 +17,7 @@ mod video_player;
 mod video_player_renderer;
 
 pub use self::{
+    action_button::{ActionButton, ActionState},
     audio_player::AudioPlayer,
     auth_dialog::{AuthData, AuthDialog, AuthError},
     avatar::Avatar,

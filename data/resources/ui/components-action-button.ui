@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ComponentsActionButton" parent="AdwBin">
+    <child>
+      <object class="GtkStack" id="stack">
+        <property name="transition-type">crossfade</property>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">default</property>
+            <property name="child">
+              <object class="GtkButton" id="button_default">
+                <style>
+                  <class name="circular"/>
+                </style>
+                <property name="valign">center</property>
+                <property name="icon-name" bind-source="ComponentsActionButton" bind-property="icon-name" bind-flags="sync-create"/>
+                <property name="action-name" bind-source="ComponentsActionButton" bind-property="action-name" bind-flags="sync-create"/>
+                <property name="action-target" bind-source="ComponentsActionButton" bind-property="action-target" bind-flags="sync-create"/>
+                <signal name="clicked" handler="button_clicked" swapped="true"/>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">confirm</property>
+            <property name="child">
+              <object class="GtkButton">
+                <style>
+                  <class name="opaque"/>
+                  <class name="circular"/>
+                  <class name="suggested-action"/>
+                </style>
+                <property name="valign">center</property>
+                <property name="icon-name">emblem-ok-symbolic</property>
+                <property name="action-name" bind-source="ComponentsActionButton" bind-property="action-name" bind-flags="sync-create"/>
+                <property name="action-target" bind-source="ComponentsActionButton" bind-property="action-target" bind-flags="sync-create"/>
+                <signal name="clicked" handler="button_clicked" swapped="true"/>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">retry</property>
+            <property name="child">
+              <object class="GtkButton">
+                <style>
+                  <class name="opaque"/>
+                  <class name="circular"/>
+                  <class name="suggested-action"/>
+                </style>
+                <property name="valign">center</property>
+                <property name="icon-name">view-refresh-symbolic</property>
+                <property name="action-name" bind-source="ComponentsActionButton" bind-property="action-name" bind-flags="sync-create"/>
+                <property name="action-target" bind-source="ComponentsActionButton" bind-property="action-target" bind-flags="sync-create"/>
+                <signal name="clicked" handler="button_clicked" swapped="true"/>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">loading</property>
+            <property name="child">
+              <object class="GtkButton">
+                <style>
+                  <class name="circular"/>
+                </style>
+                <property name="focusable">false</property>
+                <property name="can-target">false</property>
+                <property name="valign">center</property>
+                <child>
+                  <object class="GtkSpinner">
+                    <property name="spinning">true</property>
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">success</property>
+            <property name="child">
+              <object class="GtkButton">
+                <style>
+                  <class name="opaque"/>
+                  <class name="circular"/>
+                  <class name="success"/>
+                </style>
+                <property name="focusable">false</property>
+                <property name="can-target">false</property>
+                <property name="valign">center</property>
+                <property name="icon-name">emblem-ok-symbolic</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">warning</property>
+            <property name="child">
+              <object class="GtkButton" id="button_warning">
+                <style>
+                  <class name="circular"/>
+                  <class name="warning"/>
+                </style>
+                <property name="focusable">false</property>
+                <property name="can-target">false</property>
+                <property name="valign">center</property>
+                <property name="icon-name">dialog-warning-symbolic</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">error</property>
+            <property name="child">
+              <object class="GtkButton">
+                <style>
+                  <class name="circular"/>
+                  <class name="error"/>
+                </style>
+                <property name="focusable">false</property>
+                <property name="can-target">false</property>
+                <property name="valign">center</property>
+                <property name="icon-name">dialog-error-symbolic</property>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
