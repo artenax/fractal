@@ -5,6 +5,7 @@ mod avatar;
 mod badge;
 mod context_menu_bin;
 mod custom_entry;
+mod editable_avatar;
 mod in_app_notification;
 mod label_with_widgets;
 mod loading_listbox_row;
@@ -24,6 +25,7 @@ pub use self::{
     badge::Badge,
     context_menu_bin::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl},
     custom_entry::CustomEntry,
+    editable_avatar::EditableAvatar,
     in_app_notification::InAppNotification,
     label_with_widgets::LabelWithWidgets,
     loading_listbox_row::LoadingListBoxRow,

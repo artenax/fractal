@@ -20,6 +20,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="components-audio-player.ui">ui/components-audio-player.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-auth-dialog.ui">ui/components-auth-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-avatar.ui">ui/components-avatar.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="components-editable-avatar.ui">ui/components-editable-avatar.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-loading-listbox-row.ui">ui/components-loading-listbox-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-reaction-chooser.ui">ui/components-reaction-chooser.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-video-player.ui">ui/components-video-player.ui</file>

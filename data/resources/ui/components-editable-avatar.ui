@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ComponentsEditableAvatar" parent="AdwBin">
+    <child>
+      <object class="GtkOverlay">
+        <property name="halign">center</property>
+        <child>
+          <object class="GtkStack" id="stack">
+            <property name="transition-type">crossfade</property>
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">default</property>
+                <property name="child">
+                  <object class="ComponentsAvatar">
+                    <property name="size">128</property>
+                    <property name="item" bind-source="ComponentsEditableAvatar" bind-property="avatar" bind-flags="sync-create"/>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">temp</property>
+                <property name="child">
+                  <object class="AdwAvatar">
+                    <property name="size">128</property>
+                    <property name="show-initials">true</property>
+                    <binding name="text">
+                      <lookup name="display-name">
+                        <lookup name="avatar">
+                          ComponentsEditableAvatar
+                        </lookup>
+                      </lookup>
+                    </binding>
+                    <property name="custom-image" bind-source="ComponentsEditableAvatar" bind-property="temp-image" bind-flags="sync-create"/>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="overlay">
+          <object class="AdwBin">
+            <style>
+              <class name="cutout-button" />
+            </style>
+            <property name="visible" bind-source="ComponentsEditableAvatar" bind-property="removable" bind-flags="sync-create"/>
+            <property name="halign">end</property>
+            <property name="valign">start</property>
+            <child>
+              <object class="ComponentsActionButton" id="button_remove">
+                <property name="icon-name">user-trash-symbolic</property>
+                <property name="action-name">editable-avatar.remove-avatar</property>
+                <property name="state" bind-source="ComponentsEditableAvatar" bind-property="remove-state" bind-flags="sync-create"/>
+                <property name="sensitive" bind-source="ComponentsEditableAvatar" bind-property="remove-sensitive" bind-flags="sync-create"/>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="overlay">
+          <object class="AdwBin">
+            <style>
+              <class name="cutout-button" />
+            </style>
+            <property name="visible" bind-source="ComponentsEditableAvatar" bind-property="editable" bind-flags="sync-create"/>
+            <property name="halign">end</property>
+            <property name="valign">end</property>
+            <child>
+              <object class="ComponentsActionButton">
+                <property name="icon-name">document-edit-symbolic</property>
+                <property name="action-name">editable-avatar.edit-avatar</property>
+                <property name="state" bind-source="ComponentsEditableAvatar" bind-property="edit-state" bind-flags="sync-create"/>
+                <property name="sensitive" bind-source="ComponentsEditableAvatar" bind-property="edit-sensitive" bind-flags="sync-create"/>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
