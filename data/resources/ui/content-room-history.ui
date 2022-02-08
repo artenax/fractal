@@ -212,6 +212,7 @@
                             <property name="accepts-tab">False</property>
                             <property name="top-margin">7</property>
                             <property name="bottom-margin">7</property>
+                            <property name="wrap-mode">word</property>
                           </object>
                         </property>
                       </object>
