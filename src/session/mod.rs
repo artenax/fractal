@@ -695,11 +695,11 @@ impl Session {
         let stack = &self.imp().stack;
         self.emit_by_name::<()>("logged-out", &[]);
 
-        debug!("The session is about to be logout");
+        debug!("The session is about to be logged out");
 
         // First stop the verification in progress
-        if let Some(session_verificiation) = stack.child_by_name("session-verification") {
-            stack.remove(&session_verificiation);
+        if let Some(session_verification) = stack.child_by_name("session-verification") {
+            stack.remove(&session_verification);
         }
 
         let client = self.client();
