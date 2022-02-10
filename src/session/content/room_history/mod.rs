@@ -26,7 +26,7 @@ use crate::{
     components::{CustomEntry, Pill, RoomTitle},
     session::{
         content::{MarkdownPopover, RoomDetails},
-        room::{Item, Room, RoomType, Timeline},
+        room::{Item, Room, RoomType, Timeline, TimelineState},
         user::UserExt,
     },
 };
@@ -46,7 +46,7 @@ mod imp {
         pub room: RefCell<Option<Room>>,
         pub category_handler: RefCell<Option<SignalHandlerId>>,
         pub empty_timeline_handler: RefCell<Option<SignalHandlerId>>,
-        pub loading_timeline_handler: RefCell<Option<SignalHandlerId>>,
+        pub state_timeline_handler: RefCell<Option<SignalHandlerId>>,
         pub md_enabled: Cell<bool>,
         pub is_auto_scrolling: Cell<bool>,
         pub sticky: Cell<bool>,
@@ -72,6 +72,8 @@ mod imp {
         pub markdown_button: TemplateChild<gtk::MenuButton>,
         #[template_child]
         pub loading: TemplateChild<gtk::Spinner>,
+        #[template_child]
+        pub error: TemplateChild<adw::StatusPage>,
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
     }
@@ -99,6 +101,10 @@ mod imp {
             );
             klass.install_action("room-history.leave", None, move |widget, _, _| {
                 widget.leave();
+            });
+
+            klass.install_action("room-history.try-again", None, move |widget, _, _| {
+                widget.try_again();
             });
 
             klass.install_action("room-history.details", None, move |widget, _, _| {
@@ -324,9 +330,9 @@ impl RoomHistory {
             }
         }
 
-        if let Some(loading_timeline_handler) = priv_.loading_timeline_handler.take() {
-            if let Some(room) = self.room() {
-                room.timeline().disconnect(loading_timeline_handler);
+        if let Some(room) = self.room() {
+            if let Some(state_timeline_handler) = priv_.state_timeline_handler.take() {
+                room.timeline().disconnect(state_timeline_handler);
             }
         }
 
@@ -343,24 +349,20 @@ impl RoomHistory {
             let handler_id = room.timeline().connect_notify_local(
                 Some("empty"),
                 clone!(@weak self as obj => move |_, _| {
-                        obj.set_empty_timeline();
+                        obj.update_view();
                 }),
             );
 
             priv_.empty_timeline_handler.replace(Some(handler_id));
 
             let handler_id = room.timeline().connect_notify_local(
-                Some("loading"),
-                clone!(@weak self as obj => move |timeline, _| {
-                    // We need to make sure that we loaded enough events to fill the `ScrolledWindow`
-                    if !timeline.loading() {
-                        let adj = obj.imp().listview.vadjustment().unwrap();
-                        obj.load_more_messages(&adj);
-                    }
+                Some("state"),
+                clone!(@weak self as obj => move |_, _| {
+                        obj.update_view();
                 }),
             );
 
-            priv_.loading_timeline_handler.replace(Some(handler_id));
+            priv_.state_timeline_handler.replace(Some(handler_id));
 
             room.load_members();
         }
@@ -374,8 +376,8 @@ impl RoomHistory {
         priv_.room.replace(room);
         let adj = priv_.listview.vadjustment().unwrap();
         self.load_more_messages(&adj);
+        self.update_view();
         self.update_room_state();
-        self.set_empty_timeline();
         self.notify("room");
         self.notify("empty");
     }
@@ -519,12 +521,16 @@ impl RoomHistory {
         }
     }
 
-    fn set_empty_timeline(&self) {
+    fn update_view(&self) {
         let priv_ = self.imp();
 
         if let Some(room) = &*priv_.room.borrow() {
             if room.timeline().is_empty() {
-                priv_.stack.set_visible_child(&*priv_.loading);
+                if room.timeline().state() == TimelineState::Error {
+                    priv_.stack.set_visible_child(&*priv_.error);
+                } else {
+                    priv_.stack.set_visible_child(&*priv_.loading);
+                }
             } else {
                 priv_.stack.set_visible_child(&*priv_.content);
             }
@@ -576,6 +582,12 @@ impl RoomHistory {
         priv_
             .scrolled_window
             .emit_by_name::<bool>("scroll-child", &[&gtk::ScrollType::End, &false]);
+    }
+
+    fn try_again(&self) {
+        if let Some(room) = self.room() {
+            room.timeline().load_previous_events();
+        }
     }
 }
 

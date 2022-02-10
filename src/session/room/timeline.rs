@@ -23,6 +23,23 @@ use crate::{
     spawn, spawn_tokio,
 };
 
+#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[repr(u32)]
+#[enum_type(name = "TimelineState")]
+pub enum TimelineState {
+    Initial,
+    Loading,
+    Ready,
+    Error,
+    Complete,
+}
+
+impl Default for TimelineState {
+    fn default() -> Self {
+        TimelineState::Initial
+    }
+}
+
 mod imp {
     use std::{
         cell::{Cell, RefCell},
@@ -48,9 +65,8 @@ mod imp {
         pub pending_events: RefCell<HashMap<String, Box<EventId>>>,
         /// A Hashset of `EventId`s that where just redacted.
         pub redacted_events: RefCell<HashSet<Box<EventId>>>,
-        pub loading: Cell<bool>,
-        pub complete: Cell<bool>,
         pub oldest_event: RefCell<Option<Box<EventId>>>,
+        pub state: Cell<TimelineState>,
         /// The most recent verification request event
         pub verification: RefCell<Option<IdentityVerification>>,
     }
@@ -75,24 +91,18 @@ mod imp {
                         glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
                     ),
                     glib::ParamSpecBoolean::new(
-                        "loading",
-                        "Loading",
-                        "Whether a response is loaded or not",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
                         "empty",
                         "Empty",
                         "Whether the timeline is empty",
                         false,
                         glib::ParamFlags::READABLE,
                     ),
-                    glib::ParamSpecBoolean::new(
-                        "complete",
-                        "Complete",
-                        "Whether the full timeline is loaded",
-                        false,
+                    glib::ParamSpecEnum::new(
+                        "state",
+                        "State",
+                        "The state the timeline is in",
+                        TimelineState::static_type(),
+                        TimelineState::default() as i32,
                         glib::ParamFlags::READABLE,
                     ),
                     glib::ParamSpecObject::new(
@@ -127,9 +137,8 @@ mod imp {
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "room" => obj.room().to_value(),
-                "loading" => obj.loading().to_value(),
                 "empty" => obj.is_empty().to_value(),
-                "complete" => obj.is_complete().to_value(),
+                "state" => obj.state().to_value(),
                 "verification" => obj.verification().to_value(),
                 _ => unimplemented!(),
             }
@@ -680,41 +689,27 @@ impl Timeline {
         self.imp().room.get().unwrap().upgrade().unwrap()
     }
 
-    fn set_loading(&self, loading: bool) {
+    fn set_state(&self, state: TimelineState) {
         let priv_ = self.imp();
 
-        if loading == priv_.loading.get() {
+        if state == self.state() {
             return;
         }
 
-        priv_.loading.set(loading);
+        priv_.state.set(state);
 
-        self.notify("loading");
+        self.notify("state");
     }
 
-    fn set_complete(&self, complete: bool) {
-        let priv_ = self.imp();
-
-        if complete == priv_.complete.get() {
-            return;
-        }
-
-        priv_.complete.set(complete);
-        self.notify("complete");
-    }
-
-    // Whether the timeline is fully loaded
-    pub fn is_complete(&self) -> bool {
-        self.imp().complete.get()
-    }
-
-    pub fn loading(&self) -> bool {
-        self.imp().loading.get()
+    // The state of the timeline
+    pub fn state(&self) -> TimelineState {
+        self.imp().state.get()
     }
 
     pub fn is_empty(&self) -> bool {
         let priv_ = self.imp();
-        priv_.list.borrow().is_empty() || (priv_.list.borrow().len() == 1 && self.loading())
+        priv_.list.borrow().is_empty()
+            || (priv_.list.borrow().len() == 1 && self.state() == TimelineState::Loading)
     }
 
     fn oldest_event(&self) -> Option<Box<EventId>> {
@@ -734,11 +729,14 @@ impl Timeline {
     }
 
     pub fn load_previous_events(&self) {
-        if self.loading() || self.is_complete() {
+        if matches!(
+            self.state(),
+            TimelineState::Loading | TimelineState::Complete
+        ) {
             return;
         }
 
-        self.set_loading(true);
+        self.set_state(TimelineState::Loading);
         self.add_loading_spinner();
 
         let matrix_room = self.room().matrix_room();
@@ -770,15 +768,24 @@ impl Timeline {
                                            .into_iter()
                                            .map(|event| Event::new(event, &obj.room())).collect()
                             };
-                            obj.set_complete(events.iter().any(|event| matches!(event.matrix_event(), Some(AnySyncRoomEvent::State(AnySyncStateEvent::RoomCreate(_))))));
-                            obj.prepend(events)
+
+                            if events.iter().any(|event| matches!(event.matrix_event(), Some(AnySyncRoomEvent::State(AnySyncStateEvent::RoomCreate(_))))) {
+                                obj.set_state(TimelineState::Complete);
+                            } else {
+                                obj.set_state(TimelineState::Ready);
+                            }
+
+                            obj.prepend(events);
                        },
                        Ok(None) => {
                            error!("The start event wasn't found in the timeline for room {}.", obj.room().room_id());
+                           obj.set_state(TimelineState::Error);
                        },
-                       Err(error) => error!("Couldn't load previous events for room {}: {}", error, obj.room().room_id()),
+                       Err(error) => {
+                           error!("Couldn't load previous events for room {}: {}", error, obj.room().room_id());
+                           obj.set_state(TimelineState::Error);
+                       }
                }
-               obj.set_loading(false);
             })
         );
     }

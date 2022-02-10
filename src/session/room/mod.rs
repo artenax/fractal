@@ -54,7 +54,7 @@ pub use self::{
     reaction_group::ReactionGroup,
     reaction_list::ReactionList,
     room_type::RoomType,
-    timeline::Timeline,
+    timeline::{Timeline, TimelineState},
 };
 use crate::{
     components::{LabelWithWidgets, Pill},
