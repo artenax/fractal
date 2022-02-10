@@ -17,7 +17,7 @@ use gettextrs::gettext;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, info, warn};
 use matrix_sdk::{
-    deserialized_responses::{JoinedRoom, LeftRoom},
+    deserialized_responses::{JoinedRoom, LeftRoom, SyncRoomEvent},
     room::Room as MatrixRoom,
     ruma::{
         api::client::r0::sync::sync_events::InvitedRoom,
@@ -799,14 +799,15 @@ impl Room {
     }
 
     /// Update the room state based on the new sync response
-    pub fn append_events(&self, batch: Vec<Event>) {
+    /// FIXME: We should use the sdk's event handler to get updates
+    pub fn update_for_events(&self, batch: Vec<SyncRoomEvent>) {
         let priv_ = self.imp();
 
         // FIXME: notify only when the count has changed
         self.notify_notification_count();
 
         let mut latest_change = self.latest_change();
-        for event in batch.iter().flat_map(Event::matrix_event) {
+        for event in batch.iter().flat_map(|e| e.event.deserialize().ok()) {
             match &event {
                 AnySyncRoomEvent::State(AnySyncStateEvent::RoomMember(event)) => {
                     self.members().update_member_for_member_event(event)
@@ -1108,14 +1109,7 @@ impl Room {
 
     pub fn handle_left_response(&self, response_room: LeftRoom) {
         self.set_matrix_room(self.session().client().get_room(self.room_id()).unwrap());
-        self.append_events(
-            response_room
-                .timeline
-                .events
-                .into_iter()
-                .map(|event| Event::new(event, self))
-                .collect(),
-        );
+        self.update_for_events(response_room.timeline.events);
     }
 
     pub fn handle_joined_response(&self, response_room: JoinedRoom) {
@@ -1130,14 +1124,7 @@ impl Room {
             self.load_category();
         }
 
-        self.append_events(
-            response_room
-                .timeline
-                .events
-                .into_iter()
-                .map(|event| Event::new(event, self))
-                .collect(),
-        );
+        self.update_for_events(response_room.timeline.events);
     }
 
     pub fn handle_invited_response(&self, response_room: InvitedRoom) {
