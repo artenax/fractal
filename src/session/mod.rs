@@ -309,10 +309,7 @@ impl Session {
                     .collect()
             };
             let config = ClientConfig::new()
-                // force_auth option to solve an issue with some servers configuration to require
-                // auth for profiles:
-                // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
-                .request_config(RequestConfig::new().retry_limit(2).force_auth())
+                .request_config(RequestConfig::new().retry_limit(2))
                 .passphrase(passphrase.clone())
                 .store_path(path.clone());
 
@@ -364,10 +361,7 @@ impl Session {
     pub fn login_with_previous_session(&self, session: StoredSession) {
         let handle = spawn_tokio!(async move {
             let config = ClientConfig::new()
-                // force_auth option to solve an issue with some servers configuration to require
-                // auth for profiles:
-                // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
-                .request_config(RequestConfig::new().retry_limit(2).force_auth())
+                .request_config(RequestConfig::new().retry_limit(2))
                 .passphrase(session.secret.passphrase.clone())
                 .store_path(session.path.clone());
 
