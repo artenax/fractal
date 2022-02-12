@@ -197,7 +197,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// Button showing a spinner, revealing its label once loaded.
+    /// Dialog to guide the user through an authentication flow.
     pub struct AuthDialog(ObjectSubclass<imp::AuthDialog>)
         @extends gtk::Widget, adw::Window, gtk::Dialog, gtk::Window, @implements gtk::Accessible;
 }
@@ -212,6 +212,10 @@ impl AuthDialog {
         self.imp().session.get().unwrap().upgrade().unwrap()
     }
 
+    /// Authenticates the user to the server via an authentication flow.
+    ///
+    /// The type of flow and the required stages are negotiated at time of
+    /// authentication. Returns the last server response on success.
     pub async fn authenticate<
         Response: Send + 'static,
         F1: Future<Output = Result<Response, Error>> + Send + 'static,
@@ -294,6 +298,7 @@ impl AuthDialog {
         }
     }
 
+    /// Lets the user complete the current stage.
     async fn show_and_wait_for_response(&self) -> bool {
         let (sender, receiver) = futures::channel::oneshot::channel();
         let sender = Cell::new(Some(sender));
