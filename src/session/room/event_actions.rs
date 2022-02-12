@@ -163,6 +163,17 @@ where
                         })
                     );
                 }
+                MessageType::Emote(message) => {
+                    gtk_macros::action!(
+                        &action_group,
+                        "copy-text",
+                        clone!(@weak self as widget, @weak event => move |_, _| {
+                            let display_name = event.sender().display_name();
+                            let message = display_name + " " + &message.body;
+                            widget.clipboard().set_text(&message);
+                        })
+                    );
+                }
                 _ => {}
             }
         }
