@@ -10,7 +10,7 @@ use matrix_sdk::{
             client::{
                 error::ErrorBody,
                 r0::uiaa::{
-                    AuthData as MatrixAuthData,
+                    AuthData as MatrixAuthData, AuthType,
                     FallbackAcknowledgement as MatrixFallbackAcknowledgement,
                     Password as MatrixPassword, UiaaInfo, UiaaResponse, UserIdentifier,
                 },
@@ -260,9 +260,10 @@ impl AuthDialog {
                 .find(|flow| flow.stages.starts_with(&uiaa_info.completed))
                 .ok_or(AuthError::NoStageToChoose)?;
 
-            match flow.stages[uiaa_info.completed.len()].as_ref() {
-                "m.login.password" => {
-                    priv_.stack.set_visible_child_name("m.login.password");
+            match flow.stages[uiaa_info.completed.len()] {
+                AuthType::Password => {
+                    let stack = &priv_.stack;
+                    stack.set_visible_child_name(AuthType::Password.as_ref());
                     if self.show_and_wait_for_response().await.is_ok() {
                         let user_id = self.session().user().unwrap().user_id().to_string();
                         let password = priv_.password.text().to_string();
