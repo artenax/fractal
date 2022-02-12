@@ -233,7 +233,6 @@ impl AuthDialog {
         &self,
         callback: FN,
     ) -> Result<Response, AuthError> {
-        let priv_ = self.imp();
         let client = self.session().client();
         let mut auth_data = None;
 
@@ -262,52 +261,56 @@ impl AuthDialog {
 
             match flow.stages[uiaa_info.completed.len()] {
                 AuthType::Password => {
-                    let stack = &priv_.stack;
-                    stack.set_visible_child_name(AuthType::Password.as_ref());
-                    if self.show_and_wait_for_response().await.is_ok() {
-                        let user_id = self.session().user().unwrap().user_id().to_string();
-                        let password = priv_.password.text().to_string();
-                        let session = uiaa_info.session;
-
-                        auth_data = Some(AuthData::Password(Password {
-                            user_id,
-                            password,
-                            session,
-                        }));
-
-                        continue;
-                    }
+                    auth_data = Some(self.perform_password_stage(uiaa_info.session).await?);
+                    continue;
                 }
                 // TODO implement other authentication types
                 // See: https://gitlab.gnome.org/GNOME/fractal/-/issues/835
                 _ => {
-                    if let Some(session) = uiaa_info.session {
-                        priv_.stack.set_visible_child_name("fallback");
-                        let client_clone = client.clone();
-                        let homeserver =
-                            spawn_tokio!(async move { client_clone.homeserver().await })
-                                .await
-                                .unwrap();
-                        let first_stage = flow.stages.first();
-                        self.setup_fallback_page(
-                            homeserver.as_str(),
-                            first_stage.ok_or(AuthError::NoStageToChoose)?.as_ref(),
-                            &session,
-                        );
-                        if self.show_and_wait_for_response().await.is_ok() {
-                            auth_data =
-                                Some(AuthData::FallbackAcknowledgement(FallbackAcknowledgement {
-                                    session,
-                                }));
+                    let session = uiaa_info.session.ok_or(AuthError::MalformedResponse)?;
+                    let first_stage = flow.stages.first();
+                    let stage = first_stage.ok_or(AuthError::NoStageToChoose)?;
+                    auth_data = Some(self.perform_fallback(session, stage).await?);
 
-                            continue;
-                        }
-                    }
+                    continue;
                 }
             }
-
-            return Err(AuthError::UserCancelled);
         }
+    }
+
+    /// Performs the password stage.
+    async fn perform_password_stage(&self, session: Option<String>) -> Result<AuthData, AuthError> {
+        let stack = &self.imp().stack;
+        stack.set_visible_child_name(AuthType::Password.as_ref());
+        self.show_and_wait_for_response().await?;
+
+        let user_id = self.session().user().unwrap().user_id().to_string();
+        let password = self.imp().password.text().to_string();
+
+        Ok(AuthData::Password(Password {
+            user_id,
+            password,
+            session,
+        }))
+    }
+
+    /// Performs a web-based fallback for the given stage.
+    async fn perform_fallback(
+        &self,
+        session: String,
+        stage: &AuthType,
+    ) -> Result<AuthData, AuthError> {
+        let client = self.session().client();
+        let homeserver = spawn_tokio!(async move { client.homeserver().await })
+            .await
+            .unwrap();
+        self.imp().stack.set_visible_child_name("fallback");
+        self.setup_fallback_page(homeserver.as_str(), stage.as_ref(), &session);
+        self.show_and_wait_for_response().await?;
+
+        Ok(AuthData::FallbackAcknowledgement(FallbackAcknowledgement {
+            session,
+        }))
     }
 
     /// Lets the user complete the current stage.
