@@ -118,9 +118,7 @@ impl DevicesPage {
                 Some(&device_list),
                 clone!(@weak device_list => @default-panic, move |item| {
                     match item.downcast_ref::<DeviceItem>().unwrap().type_() {
-                        device_item::ItemType::Device(device) => {
-                            DeviceRow::new(device).upcast::<gtk::Widget>()
-                        }
+                        device_item::ItemType::Device(device) => DeviceRow::new(device, false).upcast::<gtk::Widget>(),
                         device_item::ItemType::Error(error) => {
                             let row = LoadingListBoxRow::new();
                             row.set_error(Some(error));
@@ -174,7 +172,9 @@ impl DevicesPage {
             priv_.current_session.remove(&child);
         }
         let row = match device_list.current_device().type_() {
-            device_item::ItemType::Device(device) => DeviceRow::new(device).upcast::<gtk::Widget>(),
+            device_item::ItemType::Device(device) => {
+                DeviceRow::new(device, true).upcast::<gtk::Widget>()
+            }
             device_item::ItemType::Error(error) => {
                 let row = LoadingListBoxRow::new();
                 row.set_error(Some(error));

@@ -51,9 +51,7 @@
           <object class="GtkBox">
             <property name="spacing">6</property>
             <child>
-              <object class="SpinnerButton" id="delete_button">
-                <property name="label" translatable="yes">Delete Session</property>
-              </object>
+              <object class="SpinnerButton" id="delete_logout_button"/>
             </child>
             <child>
               <object class="SpinnerButton" id="verify_button">

@@ -10,7 +10,7 @@ use crate::{
 };
 
 mod imp {
-    use std::cell::RefCell;
+    use std::cell::{Cell, RefCell};
 
     use glib::subclass::InitializingObject;
     use once_cell::sync::Lazy;
@@ -29,10 +29,11 @@ mod imp {
         #[template_child]
         pub last_seen_ts: TemplateChild<gtk::Label>,
         #[template_child]
-        pub delete_button: TemplateChild<SpinnerButton>,
+        pub delete_logout_button: TemplateChild<SpinnerButton>,
         #[template_child]
         pub verify_button: TemplateChild<SpinnerButton>,
         pub device: RefCell<Option<Device>>,
+        pub is_current_device: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -53,13 +54,22 @@ mod imp {
     impl ObjectImpl for DeviceRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "device",
-                    "Device",
-                    "The device this row is showing",
-                    Device::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![
+                    glib::ParamSpecObject::new(
+                        "device",
+                        "Device",
+                        "The device this row is showing",
+                        Device::static_type(),
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                    ),
+                    glib::ParamSpecBoolean::new(
+                        "is-current-device",
+                        "Is Current Device",
+                        "Whether this is the device of the current session",
+                        false,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                    ),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -76,6 +86,9 @@ mod imp {
                 "device" => {
                     obj.set_device(value.get().unwrap());
                 }
+                "is-current-device" => {
+                    obj.set_current_device(value.get().unwrap());
+                }
                 _ => unimplemented!(),
             }
         }
@@ -83,6 +96,7 @@ mod imp {
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "device" => obj.device().to_value(),
+                "is-current-device" => obj.is_current_device().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -90,9 +104,23 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            self.delete_button
+            match &obj.is_current_device() {
+                false => self
+                    .delete_logout_button
+                    .set_label(&gettext("Delete Session")),
+                true => {
+                    self.delete_logout_button.set_label(&gettext("Log Out"));
+                    self.delete_logout_button
+                        .add_css_class("destructive-action");
+                }
+            }
+
+            self.delete_logout_button
                 .connect_clicked(clone!(@weak obj => move |_| {
-                    obj.delete();
+                    match &obj.is_current_device() {
+                        false=> obj.delete(),
+                        true => obj.confirm_logout()
+                    }
                 }));
 
             self.verify_button
@@ -111,8 +139,12 @@ glib::wrapper! {
 }
 
 impl DeviceRow {
-    pub fn new(device: &Device) -> Self {
-        glib::Object::new(&[("device", device)]).expect("Failed to create DeviceRow")
+    pub fn new(device: &Device, is_current_device: bool) -> Self {
+        glib::Object::new(&[
+            ("device", device),
+            ("is-current-device", &is_current_device),
+        ])
+        .expect("Failed to create DeviceRow")
     }
 
     pub fn device(&self) -> Option<Device> {
@@ -154,8 +186,21 @@ impl DeviceRow {
         self.notify("device");
     }
 
+    fn set_current_device(&self, input_bool: bool) {
+        let priv_ = self.imp();
+        if priv_.is_current_device.get() == input_bool {
+            return;
+        }
+        priv_.is_current_device.replace(input_bool);
+        self.notify("is-current-device");
+    }
+
+    pub fn is_current_device(&self) -> bool {
+        self.imp().is_current_device.get()
+    }
+
     fn delete(&self) {
-        self.imp().delete_button.set_loading(true);
+        self.imp().delete_logout_button.set_loading(true);
 
         if let Some(device) = self.device() {
             spawn!(clone!(@weak self as obj => async move {
@@ -172,9 +217,38 @@ impl DeviceRow {
                         }
                     },
                 }
-                obj.imp().delete_button.set_loading(false);
+                obj.imp().delete_logout_button.set_loading(false);
             }));
         }
+    }
+
+    fn confirm_logout(&self) {
+        self.imp().delete_logout_button.set_loading(true);
+
+        let window: Option<gtk::Window> = self.root().and_then(|root| root.downcast().ok());
+        let dialog = gtk::MessageDialog::new(window.as_ref(), gtk::DialogFlags::MODAL, gtk::MessageType::Info, gtk::ButtonsType::OkCancel, &gettext("Fractal's support for encryption is unstable so you might lose access to your encrypted message history. It is recommended to backup your encryption keys from another Matrix client before proceeding."));
+        dialog.show();
+        dialog.connect_response(
+            clone!(@weak self as obj, @weak dialog => move |_, response| {
+                match &response {
+                    gtk::ResponseType::Ok => {
+                        obj.logout();
+                    }
+                    _ => {
+                        obj.imp().delete_logout_button.set_loading(false);
+                    }
+                }
+                dialog.destroy();
+            }),
+        );
+    }
+
+    fn logout(&self) {
+        spawn!(clone!(@weak self as obj => async move {
+            if let Some(device) = obj.device() {
+                device.session().logout(true).await;
+            }
+        }));
     }
 }
 
