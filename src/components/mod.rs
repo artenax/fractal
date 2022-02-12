@@ -16,7 +16,7 @@ mod video_player_renderer;
 
 pub use self::{
     audio_player::AudioPlayer,
-    auth_dialog::{AuthData, AuthDialog},
+    auth_dialog::{AuthData, AuthDialog, AuthError},
     avatar::Avatar,
     badge::Badge,
     context_menu_bin::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl},

@@ -5,7 +5,7 @@ use log::error;
 
 use super::IdentityVerificationWidget;
 use crate::{
-    components::{AuthDialog, SpinnerButton},
+    components::{AuthDialog, AuthError, SpinnerButton},
     session::verification::{IdentityVerification, VerificationState},
     spawn, Error, Session, Window,
 };
@@ -303,14 +303,14 @@ impl SessionVerification {
 
 
             let error_message = match result {
-                Some(Ok(_)) => None,
-                Some(Err(error)) => {
-                    error!("Failed to bootstrap cross-signing: {}", error);
-                    Some(gettext("An error occurred during the creation of the encryption keys."))
-                },
-                None => {
+                Ok(_) => None,
+                Err(AuthError::UserCancelled) => {
                     error!("Failed to bootstrap cross-signing: User cancelled the authentication");
                     Some(gettext("You cancelled the authentication needed to create the encryption keys."))
+                },
+                Err(error) => {
+                    error!("Failed to bootstrap cross-signing: {:?}", error);
+                    Some(gettext("An error occurred during the creation of the encryption keys."))
                 },
             };
 

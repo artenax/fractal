@@ -64,6 +64,15 @@ impl AuthData {
     }
 }
 
+#[derive(Debug)]
+pub enum AuthError {
+    ServerResponse(Box<Error>),
+    MalformedResponse,
+    StageFailed,
+    NoStageToChoose,
+    UserCancelled,
+}
+
 mod imp {
     use std::cell::RefCell;
 
@@ -223,7 +232,7 @@ impl AuthDialog {
     >(
         &self,
         callback: FN,
-    ) -> Option<Result<Response, Error>> {
+    ) -> Result<Response, AuthError> {
         let priv_ = self.imp();
         let client = self.session().client();
         let mut auth_data = None;
@@ -235,11 +244,11 @@ impl AuthDialog {
             let response = handle.await.unwrap();
 
             let uiaa_info: UiaaInfo = match response {
-                Ok(result) => return Some(Ok(result)),
+                Ok(result) => return Ok(result),
                 Err(Error::Http(UiaaError(FromHttpResponseError::Http(ServerError::Known(
                     UiaaResponse::AuthResponse(uiaa_info),
                 ))))) => uiaa_info,
-                Err(error) => return Some(Err(error)),
+                Err(error) => return Err(AuthError::ServerResponse(Box::new(error))),
             };
 
             self.show_auth_error(&uiaa_info.auth_error);
@@ -248,12 +257,13 @@ impl AuthDialog {
             let flow = uiaa_info
                 .flows
                 .iter()
-                .find(|flow| flow.stages.starts_with(&uiaa_info.completed))?;
+                .find(|flow| flow.stages.starts_with(&uiaa_info.completed))
+                .ok_or(AuthError::NoStageToChoose)?;
 
             match flow.stages[uiaa_info.completed.len()].as_ref() {
                 "m.login.password" => {
                     priv_.stack.set_visible_child_name("m.login.password");
-                    if self.show_and_wait_for_response().await {
+                    if self.show_and_wait_for_response().await.is_ok() {
                         let user_id = self.session().user().unwrap().user_id().to_string();
                         let password = priv_.password.text().to_string();
                         let session = uiaa_info.session;
@@ -277,12 +287,13 @@ impl AuthDialog {
                             spawn_tokio!(async move { client_clone.homeserver().await })
                                 .await
                                 .unwrap();
+                        let first_stage = flow.stages.first();
                         self.setup_fallback_page(
                             homeserver.as_str(),
-                            flow.stages.first()?.as_ref(),
+                            first_stage.ok_or(AuthError::NoStageToChoose)?.as_ref(),
                             &session,
                         );
-                        if self.show_and_wait_for_response().await {
+                        if self.show_and_wait_for_response().await.is_ok() {
                             auth_data =
                                 Some(AuthData::FallbackAcknowledgement(FallbackAcknowledgement {
                                     session,
@@ -294,12 +305,12 @@ impl AuthDialog {
                 }
             }
 
-            return None;
+            return Err(AuthError::UserCancelled);
         }
     }
 
     /// Lets the user complete the current stage.
-    async fn show_and_wait_for_response(&self) -> bool {
+    async fn show_and_wait_for_response(&self) -> Result<(), AuthError> {
         let (sender, receiver) = futures::channel::oneshot::channel();
         let sender = Cell::new(Some(sender));
 
@@ -315,7 +326,7 @@ impl AuthDialog {
         self.disconnect(handler_id);
         self.close();
 
-        result
+        result.then(|| ()).ok_or(AuthError::UserCancelled)
     }
 
     fn show_auth_error(&self, auth_error: &Option<ErrorBody>) {

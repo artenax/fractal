@@ -1,8 +1,13 @@
+use adw::{self, prelude::*};
 use gettextrs::gettext;
-use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{glib, glib::clone, subclass::prelude::*, CompositeTemplate};
+use log::error;
 
 use super::Device;
-use crate::{components::SpinnerButton, spawn};
+use crate::{
+    components::{AuthError, SpinnerButton},
+    spawn,
+};
 
 mod imp {
     use std::cell::RefCell;
@@ -155,12 +160,19 @@ impl DeviceRow {
         if let Some(device) = self.device() {
             spawn!(clone!(@weak self as obj => async move {
                 let window: Option<gtk::Window> = obj.root().and_then(|root| root.downcast().ok());
-                let success = device.delete(window.as_ref()).await;
-                obj.imp().delete_button.set_loading(false);
-
-                if success {
-                    obj.hide();
+                match device.delete(window.as_ref()).await {
+                    Ok(_) => obj.hide(),
+                    Err(AuthError::UserCancelled) => {},
+                    Err(err) => {
+                        error!("Failed to delete device {}: {err:?}", device.device_id());
+                        if let Some(adw_window) = window.and_then(|w| w.downcast::<adw::PreferencesWindow>().ok()) {
+                            let device_name = device.display_name();
+                            let error_message = gettext!("Failed to delete device “{}”", device_name);
+                            adw_window.add_toast(&adw::Toast::new(&error_message));
+                        }
+                    },
                 }
+                obj.imp().delete_button.set_loading(false);
             }));
         }
     }

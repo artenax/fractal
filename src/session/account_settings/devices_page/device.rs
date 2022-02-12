@@ -1,5 +1,4 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
-use log::error;
 use matrix_sdk::{
     encryption::identities::Device as CryptoDevice,
     ruma::{
@@ -9,7 +8,10 @@ use matrix_sdk::{
     },
 };
 
-use crate::{components::AuthDialog, session::Session};
+use crate::{
+    components::{AuthDialog, AuthError},
+    session::Session,
+};
 
 mod imp {
     use glib::object::WeakRef;
@@ -173,16 +175,17 @@ impl Device {
             })
     }
 
-    /// Delete the `Device`
-    ///
-    /// Returns `true` for success
-    pub async fn delete(&self, transient_for: Option<&impl IsA<gtk::Window>>) -> bool {
+    /// Deletes the `Device`.
+    pub async fn delete(
+        &self,
+        transient_for: Option<&impl IsA<gtk::Window>>,
+    ) -> Result<(), AuthError> {
         let session = self.session();
         let device_id = self.device_id().to_owned();
 
         let dialog = AuthDialog::new(transient_for, &session);
 
-        let result = dialog
+        dialog
             .authenticate(move |client, auth_data| {
                 let device_id = device_id.clone();
                 async move {
@@ -196,16 +199,8 @@ impl Device {
                     }
                 }
             })
-            .await;
-        match result {
-            Some(Ok(_)) => true,
-            Some(Err(err)) => {
-                // TODO: show error message to the user
-                error!("Failed to delete device: {}", err);
-                false
-            }
-            None => false,
-        }
+            .await?;
+        Ok(())
     }
 
     pub fn is_verified(&self) -> bool {
