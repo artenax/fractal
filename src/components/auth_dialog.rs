@@ -2,7 +2,12 @@ use std::{cell::Cell, fmt::Debug, future::Future};
 
 use adw::subclass::prelude::*;
 use gtk::{
-    gdk, gio::prelude::*, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate,
+    gdk,
+    gio::prelude::*,
+    glib::{self, clone},
+    prelude::*,
+    subclass::prelude::*,
+    CompositeTemplate,
 };
 use matrix_sdk::{
     ruma::{
@@ -252,29 +257,51 @@ impl AuthDialog {
 
             self.show_auth_error(&uiaa_info.auth_error);
 
-            // Find the first flow that matches the completed flow
-            let flow = uiaa_info
+            let stage_nr = uiaa_info.completed.len();
+            let possible_stages: Vec<&AuthType> = uiaa_info
                 .flows
                 .iter()
-                .find(|flow| flow.stages.starts_with(&uiaa_info.completed))
-                .ok_or(AuthError::NoStageToChoose)?;
+                .filter(|flow| flow.stages.starts_with(&uiaa_info.completed))
+                .flat_map(|flow| flow.stages.get(stage_nr))
+                .collect();
 
-            match flow.stages[uiaa_info.completed.len()] {
-                AuthType::Password => {
-                    auth_data = Some(self.perform_password_stage(uiaa_info.session).await?);
-                    continue;
-                }
-                // TODO implement other authentication types
-                // See: https://gitlab.gnome.org/GNOME/fractal/-/issues/835
-                _ => {
-                    let session = uiaa_info.session.ok_or(AuthError::MalformedResponse)?;
-                    let first_stage = flow.stages.first();
-                    let stage = first_stage.ok_or(AuthError::NoStageToChoose)?;
-                    auth_data = Some(self.perform_fallback(session, stage).await?);
+            let session = uiaa_info.session;
+            auth_data = Some(self.perform_next_stage(&session, &possible_stages).await?);
+        }
+    }
 
-                    continue;
-                }
+    /// Performs the most preferred one of the given stages.
+    ///
+    /// Stages that Fractal actually implements are preferred.
+    async fn perform_next_stage(
+        &self,
+        session: &Option<String>,
+        stages: &[&AuthType],
+    ) -> Result<AuthData, AuthError> {
+        // Default to first stage if non is supported.
+        let a_stage = stages.first().ok_or(AuthError::NoStageToChoose)?;
+        for stage in stages {
+            if let Some(auth_result) = self.try_perform_stage(session, stage).await {
+                return auth_result;
             }
+        }
+        let session = session.clone().ok_or(AuthError::MalformedResponse)?;
+        self.perform_fallback(session, a_stage).await
+    }
+
+    /// Tries to perform the given stage.
+    ///
+    /// Returns None if the stage is not implemented by Fractal.
+    async fn try_perform_stage(
+        &self,
+        session: &Option<String>,
+        stage: &AuthType,
+    ) -> Option<Result<AuthData, AuthError>> {
+        match stage {
+            AuthType::Password => Some(self.perform_password_stage(session.clone()).await),
+            // TODO implement other authentication types
+            // See: https://gitlab.gnome.org/GNOME/fractal/-/issues/835
+            _ => None,
         }
     }
 
