@@ -36,6 +36,14 @@ button.opaque.success {
   background-color: @success_bg_color;
 }
 
+.extra-large-icon {
+  -gtk-icon-size: 128px;
+}
+
+.extra-large-icon.error {
+  color: @error_bg_color;
+}
+
 
 /* Components */
 
@@ -82,6 +90,82 @@ button.opaque.success {
 .badge.mod {
   background-color: @yellow_5;
 }
+
+row.entry {
+  transition-property: outline, outline-width, outline-offset, outline-color;
+  transition-duration: 300ms;
+  animation-timing-function: ease-in-out;
+  outline: 0 solid transparent;
+  outline-offset: 2px;
+  border-top: 1px solid transparent;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+}
+
+row.entry:focus-within {
+  outline-color: alpha(@accent_color, 0.5);
+  outline-width: 2px;
+  outline-offset: -2px;
+}
+
+row.entry.success {
+  border: 1px solid @success_color;
+}
+
+row.entry.success:focus-within {
+  outline-color: @success_color;
+}
+
+row.entry.warning {
+  border: 1px solid @warning_color;
+}
+
+row.entry.warning:focus-within {
+  outline-color: @warning_color;
+}
+
+row.entry.error {
+  border: 1px solid @error_color;
+}
+
+row.entry.error:focus-within {
+  outline-color: @error_color;
+}
+
+row.entry .hint {
+  font-size: 0.8em;
+}
+
+row.entry .header {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+row.entry text:disabled,
+row.entry text placeholder {
+  opacity: 0.5;
+}
+
+row.entry levelbar.discrete block {
+  min-height: 5px;
+}
+
+row.entry.accent levelbar.discrete block.filled {
+  background-color: @accent_color;
+}
+
+row.entry.success levelbar.discrete block.filled {
+  background-color: @success_color;
+}
+
+row.entry.warning levelbar.discrete block.filled {
+  background-color: @warning_color;
+}
+
+row.entry.error levelbar.discrete block.filled {
+  background-color: @error_color;
+}
+
 
 /* Login */
 

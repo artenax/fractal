@@ -235,3 +235,13 @@ pub async fn timeout_future<T>(
         _ => Err(TimeoutFuture::Timeout),
     }
 }
+
+pub struct TemplateCallbacks {}
+
+#[gtk::template_callbacks(functions)]
+impl TemplateCallbacks {
+    #[template_callback]
+    fn string_not_empty(string: Option<&str>) -> bool {
+        !string.unwrap_or_default().is_empty()
+    }
+}
