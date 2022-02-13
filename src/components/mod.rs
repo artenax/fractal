@@ -3,6 +3,7 @@ mod audio_player;
 mod auth_dialog;
 mod avatar;
 mod badge;
+mod button_row;
 mod context_menu_bin;
 mod custom_entry;
 mod editable_avatar;
@@ -25,6 +26,7 @@ pub use self::{
     auth_dialog::{AuthData, AuthDialog, AuthError},
     avatar::Avatar,
     badge::Badge,
+    button_row::ButtonRow,
     context_menu_bin::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl},
     custom_entry::CustomEntry,
     editable_avatar::EditableAvatar,

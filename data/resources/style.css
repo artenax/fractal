@@ -166,6 +166,10 @@ row.entry.error levelbar.discrete block.filled {
   background-color: @error_color;
 }
 
+row .heading {
+  font-weight: 600;
+}
+
 
 /* Login */
 

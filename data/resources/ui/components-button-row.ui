@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ComponentsButtonRow" parent="AdwPreferencesRow">
+    <property name="activatable">true</property>
+    <property name="selectable">false</property>
+    <child>
+      <object class="GtkBox">
+        <style>
+          <class name="header"/>
+        </style>
+        <property name="spacing">6</property>
+        <property name="valign">center</property>
+        <property name="halign">center</property>
+        <child>
+          <object class="GtkLabel">
+            <style>
+              <class name="heading"/>
+            </style>
+            <property name="label" bind-source="ComponentsButtonRow" bind-property="title" bind-flags="sync-create"/>
+            <property name="ellipsize">end</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkImage">
+            <property name="visible" bind-source="ComponentsButtonRow" bind-property="to-subpage" bind-flags="sync-create"/>
+            <property name="icon-name">go-next-symbolic</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
