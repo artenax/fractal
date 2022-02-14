@@ -1,13 +1,66 @@
-use std::{path::PathBuf, string::FromUtf8Error};
+use std::{collections::HashMap, fmt, path::PathBuf, string::FromUtf8Error};
 
 use gettextrs::gettext;
+use gtk::glib;
+use libsecret::{
+    password_clear_future, password_search_future, password_store_binary_future, prelude::*,
+    Retrievable, Schema, SchemaAttributeType, SchemaFlags, SearchFlags, Value, COLLECTION_DEFAULT,
+};
+use log::error;
 use matrix_sdk::ruma::identifiers::{DeviceId, UserId};
-use secret_service::{EncryptionType, SecretService};
 use serde::{Deserialize, Serialize};
 use serde_json::error::Error as JsonError;
 use url::Url;
 
-use crate::config::APP_ID;
+use crate::{config::APP_ID, ErrorSubpage};
+
+/// Any error that can happen when interacting with the secret service.
+#[derive(Debug, Clone)]
+pub enum SecretError {
+    CorruptSession((String, Retrievable)),
+    Libsecret(glib::Error),
+    Unknown,
+}
+
+impl SecretError {
+    /// Get the error subpage that matches `self`.
+    pub fn error_subpage(&self) -> ErrorSubpage {
+        match self {
+            Self::CorruptSession(_) => ErrorSubpage::SecretErrorSession,
+            _ => ErrorSubpage::SecretErrorOther,
+        }
+    }
+}
+
+impl From<glib::Error> for SecretError {
+    fn from(error: glib::Error) -> Self {
+        Self::Libsecret(error)
+    }
+}
+
+impl fmt::Display for SecretError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                Self::CorruptSession((message, _)) => message.to_owned(),
+                Self::Libsecret(error) if error.is::<libsecret::Error>() => {
+                    match error.kind::<libsecret::Error>() {
+                        Some(libsecret::Error::Protocol) => error.message().to_owned(),
+                        Some(libsecret::Error::IsLocked) => {
+                            gettext("Could not unlock the secret storage")
+                        }
+                        _ => gettext(
+                            "An unknown error occurred when interacting with the secret storage",
+                        ),
+                    }
+                }
+                _ => gettext("An unknown error occurred when interacting with the secret storage"),
+            }
+        )
+    }
+}
 
 #[derive(Debug, Clone)]
 pub struct StoredSession {
@@ -18,7 +71,125 @@ pub struct StoredSession {
     pub secret: Secret,
 }
 
+impl StoredSession {
+    /// Build self from a secret.
+    pub async fn try_from_secret_item(item: Retrievable) -> Result<Self, SecretError> {
+        let attr = item.attributes();
+
+        let homeserver = match attr.get("homeserver") {
+            Some(string) => match Url::parse(string) {
+                Ok(homeserver) => homeserver,
+                Err(err) => {
+                    error!(
+                        "Could not parse 'homeserver' attribute in stored session: {:?}",
+                        err
+                    );
+                    return Err(SecretError::CorruptSession((
+                        gettext("Malformed homeserver in stored session"),
+                        item,
+                    )));
+                }
+            },
+            None => {
+                return Err(SecretError::CorruptSession((
+                    gettext("Could not find homeserver in stored session"),
+                    item,
+                )));
+            }
+        };
+        let user_id = match attr.get("user") {
+            Some(string) => match UserId::parse(string.as_str()) {
+                Ok(user_id) => user_id,
+                Err(err) => {
+                    error!(
+                        "Could not parse 'user' attribute in stored session: {:?}",
+                        err
+                    );
+                    return Err(SecretError::CorruptSession((
+                        gettext("Malformed user ID in stored session"),
+                        item,
+                    )));
+                }
+            },
+            None => {
+                return Err(SecretError::CorruptSession((
+                    gettext("Could not find user ID in stored session"),
+                    item,
+                )));
+            }
+        };
+        let device_id = match attr.get("device-id") {
+            Some(string) => <&DeviceId>::from(string.as_str()).to_owned(),
+            None => {
+                return Err(SecretError::CorruptSession((
+                    gettext("Could not find device ID in stored session"),
+                    item,
+                )));
+            }
+        };
+        let path = match attr.get("db-path") {
+            Some(string) => PathBuf::from(string),
+            None => {
+                return Err(SecretError::CorruptSession((
+                    gettext("Could not find database path in stored session"),
+                    item,
+                )));
+            }
+        };
+        let secret = match item.retrieve_secret_future().await {
+            Ok(Some(value)) => match Secret::from_utf8(value.get()) {
+                Ok(secret) => secret,
+                Err(err) => {
+                    error!("Could not parse secret in stored session: {:?}", err);
+                    return Err(SecretError::CorruptSession((
+                        gettext("Malformed secret in stored session"),
+                        item,
+                    )));
+                }
+            },
+            Ok(None) => {
+                return Err(SecretError::CorruptSession((
+                    gettext("No secret in stored session"),
+                    item,
+                )));
+            }
+            Err(err) => {
+                error!("Could not get secret in stored session: {:?}", err);
+                return Err(SecretError::CorruptSession((
+                    gettext("Could not get secret in stored session"),
+                    item,
+                )));
+            }
+        };
+
+        Ok(Self {
+            homeserver,
+            user_id,
+            device_id,
+            path,
+            secret,
+        })
+    }
+
+    /// Build a secret from `self`.
+    ///
+    /// Returns an (attributes, secret) tuple.
+    pub fn to_secret_item(&self) -> (HashMap<&str, &str>, Value) {
+        let attributes = HashMap::from([
+            ("homeserver", self.homeserver.as_str()),
+            ("user", self.user_id.as_str()),
+            ("device-id", self.device_id.as_str()),
+            ("db-path", self.path.to_str().unwrap()),
+        ]);
+
+        let secret = Value::new(&self.secret.to_string(), "application/json");
+
+        (attributes, secret)
+    }
+}
+
 /// A possible error value when converting a `Secret` from a UTF-8 byte vector.
+#[derive(Debug)]
 pub enum FromUtf8SecretError {
     Str(FromUtf8Error),
     Json(JsonError),
@@ -44,11 +215,6 @@ pub struct Secret {
 }
 
 impl Secret {
-    /// Returns a byte vec of this `Secret`’s contents.
-    pub fn as_bytes(&self) -> Vec<u8> {
-        serde_json::to_string(self).unwrap().as_bytes().to_vec()
-    }
-
     /// Converts a vector of bytes to a `Secret`.
     pub fn from_utf8(vec: Vec<u8>) -> Result<Self, FromUtf8SecretError> {
         let s = String::from_utf8(vec)?;
@@ -56,101 +222,77 @@ impl Secret {
     }
 }
 
+impl fmt::Display for Secret {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+
+/// The `Schema` of the items in the `SecretService`.
+fn schema() -> Schema {
+    let attributes = HashMap::from([
+        ("homeserver", SchemaAttributeType::String),
+        ("user", SchemaAttributeType::String),
+        ("device-id", SchemaAttributeType::String),
+        ("db-path", SchemaAttributeType::String),
+    ]);
+
+    Schema::new(APP_ID, SchemaFlags::NONE, attributes)
+}
+
 /// Retrieves all sessions stored to the `SecretService`
-pub fn restore_sessions() -> Result<Vec<StoredSession>, secret_service::Error> {
-    let ss = SecretService::new(EncryptionType::Dh)?;
-    let collection = get_default_collection_unlocked(&ss)?;
+pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
+    let items = password_search_future(
+        Some(&schema()),
+        HashMap::new(),
+        SearchFlags::ALL | SearchFlags::UNLOCK | SearchFlags::LOAD_SECRETS,
+    )
+    .await?;
+    let mut sessions = Vec::with_capacity(items.len());
 
-    // Sessions that contain or produce errors are ignored.
-    // TODO: Return error for corrupt sessions
+    for item in items {
+        sessions.push(StoredSession::try_from_secret_item(item).await?);
+    }
 
-    let res = collection
-        .search_items([("xdg:schema", APP_ID)].into())?
-        .iter()
-        .filter_map(|item| {
-            let attr = item.get_attributes().ok()?;
-
-            let homeserver = Url::parse(attr.get("homeserver")?).ok()?;
-            let user_id = UserId::parse(attr.get("user")?.as_str()).ok()?;
-            let device_id = <&DeviceId>::from(attr.get("device-id")?.as_str()).to_owned();
-            let path = PathBuf::from(attr.get("db-path")?);
-            let secret = Secret::from_utf8(item.get_secret().ok()?).ok()?;
-
-            Some(StoredSession {
-                homeserver,
-                path,
-                user_id,
-                device_id,
-                secret,
-            })
-        })
-        .collect();
-
-    Ok(res)
+    Ok(sessions)
 }
 
 /// Writes a session to the `SecretService`, overwriting any previously stored
 /// session with the same `homeserver`, `username` and `device-id`.
-pub fn store_session(session: &StoredSession) -> Result<(), secret_service::Error> {
-    let ss = SecretService::new(EncryptionType::Dh)?;
-    let collection = get_default_collection_unlocked(&ss)?;
+pub async fn store_session(session: &StoredSession) -> Result<(), SecretError> {
+    let (attributes, secret) = session.to_secret_item();
 
-    let attributes = [
-        ("xdg:schema", APP_ID),
-        ("homeserver", session.homeserver.as_str()),
-        ("user", session.user_id.as_str()),
-        ("device-id", session.device_id.as_str()),
-        ("db-path", session.path.to_str().unwrap()),
-    ]
-    .into();
-
-    collection.create_item(
+    password_store_binary_future(
+        Some(&schema()),
+        attributes,
+        Some(&COLLECTION_DEFAULT),
         // Translators: The parameter is a Matrix User ID
         &gettext!("Fractal: Matrix credentials for {}", session.user_id),
-        attributes,
-        &session.secret.as_bytes(),
-        true,
-        "application/json",
-    )?;
+        &secret,
+    )
+    .await?;
 
     Ok(())
 }
 
 /// Removes a session from the `SecretService`
-pub fn remove_session(session: &StoredSession) -> Result<(), secret_service::Error> {
-    let ss = SecretService::new(EncryptionType::Dh)?;
-    let collection = get_default_collection_unlocked(&ss)?;
+pub async fn remove_session(session: &StoredSession) -> Result<(), SecretError> {
+    let (attributes, _) = session.to_secret_item();
 
-    let attributes = [
-        ("xdg:schema", APP_ID),
-        ("homeserver", session.homeserver.as_str()),
-        ("user", session.user_id.as_str()),
-        ("device-id", session.device_id.as_str()),
-        ("db-path", session.path.to_str().unwrap()),
-    ]
-    .into();
-
-    let items = collection.search_items(attributes)?;
-
-    for item in items {
-        item.delete()?;
-    }
+    password_clear_future(Some(&schema()), attributes).await?;
 
     Ok(())
 }
 
-fn get_default_collection_unlocked<'a>(
-    secret_service: &'a SecretService,
-) -> Result<secret_service::Collection<'a>, secret_service::Error> {
-    let collection = match secret_service.get_default_collection() {
-        Ok(col) => col,
-        Err(secret_service::Error::NoResult) => {
-            secret_service.create_collection("default", "default")?
-        }
-        Err(error) => return Err(error),
-    };
+/// Removes an item from the `SecretService`
+pub async fn remove_item(item: &Retrievable) -> Result<(), SecretError> {
+    let attributes = item.attributes();
+    let mut attr = HashMap::with_capacity(attributes.len());
 
-    collection.unlock()?;
+    for (key, value) in attributes.iter() {
+        attr.insert(key.as_str(), value.as_str());
+    }
+    password_clear_future(Some(&schema()), attr).await?;
 
-    Ok(collection)
+    Ok(())
 }

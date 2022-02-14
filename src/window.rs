@@ -7,7 +7,8 @@ use log::warn;
 use crate::{
     components::{InAppNotification, Toast},
     config::{APP_ID, PROFILE},
-    secret, Application, Greeter, Login, Session, UserFacingError,
+    secret::{self, SecretError},
+    spawn, Application, ErrorPage, Greeter, Login, Session,
 };
 
 mod imp {
@@ -27,6 +28,8 @@ mod imp {
         pub greeter: TemplateChild<Greeter>,
         #[template_child]
         pub login: TemplateChild<Login>,
+        #[template_child]
+        pub error_page: TemplateChild<ErrorPage>,
         #[template_child]
         pub sessions: TemplateChild<gtk::Stack>,
         #[template_child]
@@ -85,19 +88,6 @@ mod imp {
             }
 
             obj.load_window_size();
-            obj.restore_sessions();
-
-            self.login
-                .connect_new_session(clone!(@weak obj => move |_login, session| {
-                    obj.add_session(&session);
-                    obj.switch_to_loading_page();
-                }));
-
-            self.main_stack.connect_visible_child_notify(
-                clone!(@weak obj => move |_| obj.set_default_by_child()),
-            );
-
-            obj.set_default_by_child();
 
             // Ask for the toggle fullscreen state
             let fullscreen = gio::SimpleAction::new("toggle-fullscreen", None);
@@ -109,6 +99,10 @@ mod imp {
                 }
             }));
             obj.add_action(&fullscreen);
+
+            spawn!(clone!(@weak obj => async move {
+                obj.restore_sessions().await;
+            }));
         }
     }
 
@@ -170,8 +164,8 @@ impl Window {
         }
     }
 
-    fn restore_sessions(&self) {
-        match secret::restore_sessions() {
+    pub async fn restore_sessions(&self) {
+        match secret::restore_sessions().await {
             Ok(sessions) => {
                 if sessions.is_empty() {
                     self.switch_to_greeter_page(false);
@@ -182,13 +176,27 @@ impl Window {
                         self.add_session(&session);
                     }
                 }
+
+                let priv_ = self.imp();
+                priv_.login.connect_new_session(
+                    clone!(@weak self as obj => move |_login, session| {
+                        obj.add_session(&session);
+                        obj.switch_to_loading_page();
+                    }),
+                );
+
+                priv_.main_stack.connect_visible_child_notify(
+                    clone!(@weak self as obj => move |_| obj.set_default_by_child()),
+                );
+
+                self.set_default_by_child();
             }
             Err(error) => {
                 warn!("Failed to restore previous sessions: {:?}", error);
-                self.add_toast(&Toast::new(&gettext!(
-                    "Unable to restore previous sessions: {}",
-                    &error.to_user_facing()
-                )));
+                self.switch_to_error_page(
+                    &gettext!("Failed to restore previous sessions: {}", error),
+                    error,
+                );
             }
         }
     }
@@ -260,6 +268,12 @@ impl Window {
             priv_.login.clean();
         }
         priv_.main_stack.set_visible_child(&*priv_.greeter);
+    }
+
+    pub fn switch_to_error_page(&self, message: &str, error: SecretError) {
+        let priv_ = self.imp();
+        priv_.error_page.display_secret_error(message, error);
+        priv_.main_stack.set_visible_child(&*priv_.error_page);
     }
 
     /// This appends a new toast to the list

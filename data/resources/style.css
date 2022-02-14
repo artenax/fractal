@@ -44,7 +44,8 @@ button.opaque.success {
   color: @error_bg_color;
 }
 
-preferencesgroup .body {
+preferencesgroup .body,
+.large-line-height {
   line-height: 140%;
 }
 

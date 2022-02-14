@@ -57,13 +57,3 @@ impl UserFacingError for Error {
         }
     }
 }
-
-impl UserFacingError for secret_service::Error {
-    fn to_user_facing(self) -> String {
-        use secret_service::Error::*;
-        match self {
-            Locked => gettext("Keychain locked."),
-            _ => gettext("Secret Service error."),
-        }
-    }
-}

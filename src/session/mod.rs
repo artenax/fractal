@@ -127,7 +127,7 @@ mod imp {
             klass.install_action("session.logout", None, move |session, _, _| {
                 spawn!(clone!(@weak session => async move {
                     session.imp().logout_on_dispose.set(false);
-                    session.logout().await
+                    session.logout(true).await
                 }));
             });
 
@@ -248,7 +248,7 @@ mod imp {
             }
 
             if self.logout_on_dispose.get() {
-                glib::MainContext::default().block_on(obj.logout());
+                glib::MainContext::default().block_on(obj.logout(true));
             }
         }
     }
@@ -347,7 +347,7 @@ impl Session {
         spawn!(
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
-                obj.handle_login_result(handle.await.unwrap(), true);
+                obj.handle_login_result(handle.await.unwrap(), true).await;
             })
         );
     }
@@ -381,12 +381,12 @@ impl Session {
         spawn!(
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
-                obj.handle_login_result(handle.await.unwrap(), false);
+                obj.handle_login_result(handle.await.unwrap(), false).await;
             })
         );
     }
 
-    fn handle_login_result(
+    async fn handle_login_result(
         &self,
         result: Result<(Client, StoredSession), matrix_sdk::Error>,
         store_session: bool,
@@ -401,19 +401,19 @@ impl Session {
 
                 self.update_user_profile();
 
-                let res = if store_session {
-                    match secret::store_session(&session) {
-                        Ok(()) => None,
-                        Err(error) => {
-                            warn!("Couldn't store session: {:?}", error);
-                            Some(Toast::new(&gettext!(
-                                "Unable to store session: {}",
-                                &error.to_user_facing()
-                            )))
+                if store_session {
+                    if let Err(error) = secret::store_session(&session).await {
+                        warn!("Couldn't store session: {:?}", error);
+                        if let Some(window) = self.parent_window() {
+                            window.switch_to_error_page(
+                                &gettext!("Unable to store session: {}", error),
+                                error,
+                            );
                         }
+                        self.logout(false).await;
+                        fs::remove_dir_all(session.path).unwrap();
+                        return;
                     }
-                } else {
-                    None
                 };
 
                 priv_.info.set(session).unwrap();
@@ -422,7 +422,7 @@ impl Session {
 
                 self.sync();
 
-                res
+                None
             }
             Err(error) => {
                 error!("Failed to prepare the session: {}", error);
@@ -686,7 +686,7 @@ impl Session {
         window.show();
     }
 
-    pub async fn logout(&self) {
+    pub async fn logout(&self, cleanup: bool) {
         let stack = &self.imp().stack;
         self.emit_by_name::<()>("logged-out", &[]);
 
@@ -704,7 +704,11 @@ impl Session {
         });
 
         match handle.await.unwrap() {
-            Ok(_) => self.cleanup_session(),
+            Ok(_) => {
+                if cleanup {
+                    self.cleanup_session().await
+                }
+            }
             Err(error) => {
                 error!("Couldn’t logout the session {}", error);
                 if let Some(window) = self.parent_window() {
@@ -720,10 +724,15 @@ impl Session {
     /// `Session::logout`.
     pub fn handle_logged_out(&self) {
         self.emit_by_name::<()>("logged-out", &[]);
-        self.cleanup_session();
+        spawn!(
+            glib::PRIORITY_LOW,
+            clone!(@strong self as obj => async move {
+                obj.cleanup_session().await;
+            })
+        );
     }
 
-    fn cleanup_session(&self) {
+    async fn cleanup_session(&self) {
         let priv_ = self.imp();
         let info = priv_.info.get().unwrap();
 
@@ -737,7 +746,7 @@ impl Session {
             handle.abort();
         }
 
-        if let Err(error) = secret::remove_session(info) {
+        if let Err(error) = secret::remove_session(info).await {
             error!(
                 "Failed to remove credentials from SecretService after logout: {}",
                 error

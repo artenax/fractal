@@ -15,7 +15,6 @@
         "--share=network",
         "--share=ipc",
         "--device=dri",
-        "--talk-name=org.freedesktop.secrets",
         "--env=RUST_LOG=fractal=debug",
         "--env=G_MESSAGES_DEBUG=none",
         "--env=RUST_BACKTRACE=1"

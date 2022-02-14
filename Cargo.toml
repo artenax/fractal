@@ -24,7 +24,7 @@ serde = "1.0.130"
 serde_json = "1.0"
 tokio = { version = "1.15", features = ["rt", "rt-multi-thread", "sync"] }
 url = "2.2"
-secret-service = "2.0"
+libsecret = { version = "0.1.3", features = ["v0_19"] }
 html2pango = "0.4"
 futures = "0.3"
 rand = "0.8"
@@ -47,11 +47,11 @@ num_enum = "0.5.6"
 
 [dependencies.sourceview]
 package = "sourceview5"
-version = "0.4.0"
+version = "0.4.1"
 
 [dependencies.gtk]
 package = "gtk4"
-version = "0.4.4"
+version = "0.4.6"
 features = ["v4_6"]
 
 [dependencies.adw]

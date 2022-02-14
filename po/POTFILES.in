@@ -24,6 +24,7 @@ data/resources/ui/content-room-history.ui
 data/resources/ui/content-state-creation.ui
 data/resources/ui/content-state-tombstone.ui
 data/resources/ui/content.ui
+data/resources/ui/error-page.ui
 data/resources/ui/event-menu.ui
 data/resources/ui/event-source-dialog.ui
 data/resources/ui/greeter.ui
@@ -41,6 +42,7 @@ data/resources/ui/qr-code-scanner.ui
 # Rust files
 src/application.rs
 src/components/editable_avatar.rs
+src/error_page.rs
 src/login.rs
 src/secret.rs
 src/session/account_settings/devices_page/device_list.rs

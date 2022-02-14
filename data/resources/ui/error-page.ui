@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ErrorPage" parent="AdwBin">
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkHeaderBar">
+            <property name="title-widget">
+              <object class="AdwWindowTitle">
+                <property name="title">Error</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwStatusPage" id="page">
+            <property name="title">Secret Service Error</property>
+            <property name="icon-name">dialog-password-symbolic</property>
+            <property name="vexpand">true</property>
+            <child>
+              <object class="AdwClamp">
+                <child>
+                  <object class="GtkStack" id="stack">
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">secret-error-session</property>
+                        <property name="child">
+                          <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">24</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <style>
+                                  <class name="large-line-height"/>
+                                </style>
+                                <property name="wrap">true</property>
+                                <property name="wrap-mode">word-char</property>
+                                <property name="xalign">0.0</property>   
+                                <property name="label" translatable="yes">It seems like one of the Fractal sessions stored in the Secret Service is corrupted. If you know how to fix it you should do so.</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <style>
+                                  <class name="large-line-height"/>
+                                </style>
+                                <property name="wrap">true</property>
+                                <property name="wrap-mode">word-char</property>
+                                <property name="xalign">0.0</property>
+                                <property name="label" translatable="yes">Alternatively, we could delete this session for you. This means you will have to login again and you will lose access to your encrypted messages, unless you have a session open in another client or you have already backed up your encryption keys.</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <style>
+                                  <class name="warning"/>
+                                </style>
+                                <property name="halign">center</property>
+                                <property name="spacing">6</property>
+                                <child>
+                                  <object class="GtkImage">
+                                    <property name="icon-name">dialog-warning-symbolic</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <style>
+                                      <class name="large-line-height"/>
+                                    </style>
+                                    <property name="wrap">true</property>
+                                    <property name="wrap-mode">word-char</property>
+                                    <property name="xalign">0.0</property>
+                                    <property name="label" translatable="yes">Clicking this button might delete more than one session!</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <style>
+                                  <class name="destructive-action"/>
+                                  <class name="pill"/>
+                                </style>
+                                <property name="halign">center</property>
+                                <property name="label" translatable="yes">Delete the corrupted session</property>
+                                <property name="action-name">error-page.remove-secret-error-session</property>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">secret-error-other</property>
+                        <property name="child">
+                          <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">24</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <style>
+                                  <class name="large-line-height"/>
+                                </style>
+                                <property name="wrap">true</property>
+                                <property name="wrap-mode">word-char</property>
+                                <property name="xalign">0.0</property>   
+                                <property name="label" translatable="yes">Fractal relies on a Secret Service Provider to manage your sensitive session information and an error occurred while we where trying to store or get your session.</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">12</property>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <style>
+                                      <class name="large-line-height"/>
+                                    </style>
+                                    <property name="wrap">true</property>
+                                    <property name="wrap-mode">word-char</property>
+                                    <property name="xalign">0.0</property>
+                                    <property name="label" translatable="yes">Here are a few things that might help you fix issues with the Secret Service:</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="spacing">6</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <style>
+                                          <class name="large-line-height"/>
+                                        </style>
+                                        <property name="valign">start</property>
+                                        <property name="label">•</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <style>
+                                          <class name="large-line-height"/>
+                                        </style>
+                                        <property name="wrap">true</property>
+                                        <property name="wrap-mode">word-char</property>
+                                        <property name="xalign">0.0</property>
+                                        <property name="label" translatable="yes">Make sure you have a Secret Service Provider installed, like gnome-keyring.</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="spacing">6</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <style>
+                                          <class name="large-line-height"/>
+                                        </style>
+                                        <property name="valign">start</property>
+                                        <property name="label">•</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <style>
+                                          <class name="large-line-height"/>
+                                        </style>
+                                        <property name="wrap">true</property>
+                                        <property name="wrap-mode">word-char</property>
+                                        <property name="xalign">0.0</property>
+                                        <property name="label" translatable="yes">Check that you have a default keyring and that is is unlocked.</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <style>
+                                  <class name="large-line-height"/>
+                                </style>
+                                <property name="wrap">true</property>
+                                <property name="wrap-mode">word-char</property>
+                                <property name="xalign">0.0</property>   
+                                <property name="label" translatable="yes">Check the application logs and your distribution's documentation for more details.</property>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

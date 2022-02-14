@@ -58,6 +58,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="content-verification-info-bar.ui">ui/content-verification-info-bar.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content.ui">ui/content.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="context-menu-bin.ui">ui/context-menu-bin.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="error-page.ui">ui/error-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="event-menu.ui">ui/event-menu.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="event-source-dialog.ui">ui/event-source-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="greeter.ui">ui/greeter.ui</file>
