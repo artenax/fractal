@@ -193,6 +193,13 @@ impl Member {
         self.set_display_name(event.display_name());
         self.avatar().set_url(event.avatar_url());
         self.set_membership((&event.content().membership).into());
+
+        let session = self.session();
+        if let Some(user) = session.user() {
+            if user.user_id() == self.user_id() {
+                session.update_user_profile();
+            }
+        }
     }
 }
 

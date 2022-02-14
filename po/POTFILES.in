@@ -5,8 +5,11 @@ data/org.gnome.FractalNext.gschema.xml.in
 data/org.gnome.FractalNext.metainfo.xml.in.in
 
 # UI files
+data/resources/ui/account-settings-change-password-subpage.ui
+data/resources/ui/account-settings-deactivate-account-subpage.ui
 data/resources/ui/account-settings-device-row.ui
 data/resources/ui/account-settings-devices-page.ui
+data/resources/ui/account-settings-user-page.ui
 data/resources/ui/account-settings.ui
 data/resources/ui/components-auth-dialog.ui
 data/resources/ui/components-loading-listbox-row.ui
@@ -42,6 +45,9 @@ src/login.rs
 src/secret.rs
 src/session/account_settings/devices_page/device_list.rs
 src/session/account_settings/devices_page/device_row.rs
+src/session/account_settings/user_page/change_password_subpage.rs
+src/session/account_settings/user_page/deactivate_account_subpage.rs
+src/session/account_settings/user_page/mod.rs
 src/session/content/explore/public_room_row.rs
 src/session/content/room_details/member_page/mod.rs
 src/session/content/room_details/mod.rs

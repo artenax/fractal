@@ -2,14 +2,21 @@
 <interface>
   <template class="AccountSettings" parent="AdwPreferencesWindow">
     <property name="title" translatable="yes">Account Settings</property>
-    <property name="search-enabled">False</property>
+    <property name="search-enabled">false</property>
+    <property name="default-height">630</property>
+    <child>
+      <object class="UserPage">
+        <property name="session" bind-source="AccountSettings" bind-property="session" bind-flags="sync-create"/>
+      </object>
+    </child>
     <child>
       <object class="DevicesPage">
         <binding name="user">
-          <lookup name="user">AccountSettings</lookup>
+          <lookup name="user">
+            <lookup name="session">AccountSettings</lookup>
+          </lookup>
         </binding>
       </object>
     </child>
   </template>
 </interface>
-

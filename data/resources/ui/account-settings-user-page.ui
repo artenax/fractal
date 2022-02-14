@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="UserPage" parent="AdwPreferencesPage">
+    <property name="icon-name">preferences-system-symbolic</property>
+    <property name="title" translatable="yes">General</property>
+    <property name="name">general</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <child>
+          <object class="ComponentsEditableAvatar" id="avatar">
+            <binding name="avatar">
+              <lookup name="avatar">
+                <lookup name="user">
+                  <lookup name="session">UserPage</lookup>
+                </lookup>
+              </lookup>
+            </binding>
+            <property name="editable">true</property>
+            <binding name="removable">
+              <closure type="gboolean" function="object_is_some">
+                <lookup name="image">
+                  <lookup name="avatar">
+                    <lookup name="user">
+                      <lookup name="session">UserPage</lookup>
+                    </lookup>
+                  </lookup>
+                </lookup>
+              </closure>
+            </binding>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <child>
+          <object class="ComponentsEntryRow" id="display_name">
+            <property name="title" translatable="yes">Name</property>
+            <binding name="text">
+              <lookup name="display-name">
+                <lookup name="user">
+                  <lookup name="session">UserPage</lookup>
+                </lookup>
+              </lookup>
+            </binding>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup" id="change_password_group">
+        <child>
+          <object class="ComponentsButtonRow">
+            <property name="title" translatable="yes">Change Password</property>
+            <property name="to-subpage">true</property>
+            <signal name="activated" handler="show_change_password" swapped="yes"/>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Advanced Information</property>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Homeserver</property>
+            <child>
+              <object class="GtkLabel" id="homeserver">
+                <style>
+                  <class name="dim-label"/>
+                </style>
+                <property name="ellipsize">end</property>
+                <property name="selectable">true</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Matrix User ID</property>
+            <child>
+              <object class="GtkLabel" id="user_id">
+                <style>
+                  <class name="dim-label"/>
+                </style>
+                <property name="ellipsize">end</property>
+                <property name="selectable">true</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Session ID</property>
+            <child>
+              <object class="GtkLabel" id="session_id">
+                <style>
+                  <class name="dim-label"/>
+                </style>
+                <property name="ellipsize">end</property>
+                <property name="selectable">true</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <child>
+          <object class="ComponentsButtonRow">
+            <style>
+              <class name="error"/>
+            </style>
+            <property name="title" translatable="yes">Deactivate Account</property>
+            <property name="to-subpage">true</property>
+            <signal name="activated" handler="show_deactivate_account" swapped="yes"/>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+  <object class="ChangePasswordSubpage" id="change_password_subpage">
+    <property name="session" bind-source="UserPage" bind-property="session" bind-flags="sync-create"/>
+  </object>
+  <object class="DeactivateAccountSubpage" id="deactivate_account_subpage">
+    <property name="session" bind-source="UserPage" bind-property="session" bind-flags="sync-create"/>
+  </object>
+</interface>

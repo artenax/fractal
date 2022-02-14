@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="DeactivateAccountSubpage" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkHeaderBar">
+        <property name="title-widget">
+          <object class="GtkLabel">
+            <property name="label" translatable="yes">Deactivate Account</property>
+            <property name="single-line-mode">True</property>
+            <property name="ellipsize">end</property>
+            <property name="width-chars">5</property>
+            <style>
+              <class name="title"/>
+            </style>
+          </object>
+        </property>
+        <child type="start">
+          <object class="GtkButton" id="back">
+            <property name="icon-name">go-previous-symbolic</property>
+            <property name="action-name">win.close-subpage</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesPage">
+        <style>
+          <class name="status-page"/>
+        </style>
+        <property name="vexpand">true</property>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child>
+              <object class="GtkImage">
+                <style>
+                  <class name="extra-large-icon"/>
+                  <class name="error"/>
+                </style>
+                <property name="icon-name">dialog-warning-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child>
+              <object class="GtkLabel">
+                <style>
+                  <class name="body"/>
+                </style>
+                <property name="label">Deactivating your account means you will lose access to all your messages, contacts, files, and more, forever.</property>
+                <property name="wrap">True</property>
+                <property name="wrap-mode">word-char</property>
+                <property name="xalign">0.0</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child>
+              <object class="GtkLabel">
+                <style>
+                  <class name="body"/>
+                </style>
+                <property name="label">To confirm that you really want to deactivate this account, type in your Matrix user ID:</property>
+                <property name="wrap">True</property>
+                <property name="wrap-mode">word-char</property>
+                <property name="xalign">0.0</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child>
+              <object class="ComponentsEntryRow" id="confirmation">
+                <property name="title" translatable="yes">Matrix User ID</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child>
+              <object class="SpinnerButton" id="button">
+                <style>
+                  <class name="row"/>
+                  <class name="destructive-action"/>
+                </style>
+                <property name="label" translatable="yes">Continue</property>
+                <property name="sensitive">false</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

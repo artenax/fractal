@@ -1,22 +1,24 @@
-use adw::subclass::prelude::*;
-use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+use adw::{prelude::*, subclass::prelude::*};
+use gtk::{glib, glib::FromVariant, subclass::prelude::*, CompositeTemplate};
 
 mod devices_page;
+mod user_page;
 use devices_page::DevicesPage;
+use user_page::UserPage;
 
-use crate::session::User;
+use super::Session;
 
 mod imp {
     use std::cell::RefCell;
 
-    use glib::subclass::InitializingObject;
+    use glib::{subclass::InitializingObject, WeakRef};
 
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/FractalNext/account-settings.ui")]
     pub struct AccountSettings {
-        pub user: RefCell<Option<User>>,
+        pub session: RefCell<Option<WeakRef<Session>>>,
     }
 
     #[glib::object_subclass]
@@ -27,7 +29,23 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             DevicesPage::static_type();
+            UserPage::static_type();
             Self::bind_template(klass);
+
+            klass.install_action("account-settings.close", None, |obj, _, _| {
+                obj.close();
+            });
+
+            klass.install_action("win.add-toast", Some("s"), |obj, _, message| {
+                if let Some(message) = message.and_then(String::from_variant) {
+                    let toast = adw::Toast::new(&message);
+                    obj.add_toast(&toast);
+                }
+            });
+
+            klass.install_action("win.close-subpage", None, |obj, _, _| {
+                obj.close_subpage();
+            });
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -40,11 +58,11 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![glib::ParamSpecObject::new(
-                    "user",
-                    "User",
-                    "The user of this account",
-                    User::static_type(),
-                    glib::ParamFlags::READWRITE,
+                    "session",
+                    "Session",
+                    "The session",
+                    Session::static_type(),
+                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                 )]
             });
 
@@ -59,14 +77,14 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "user" => obj.set_user(value.get().unwrap()),
+                "session" => obj.set_session(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "user" => obj.user().to_value(),
+                "session" => obj.session().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -85,21 +103,27 @@ glib::wrapper! {
 }
 
 impl AccountSettings {
-    pub fn new(parent_window: Option<&impl IsA<gtk::Window>>, user: &User) -> Self {
-        glib::Object::new(&[("transient-for", &parent_window), ("user", user)])
+    pub fn new(parent_window: Option<&impl IsA<gtk::Window>>, session: &Session) -> Self {
+        glib::Object::new(&[("transient-for", &parent_window), ("session", session)])
             .expect("Failed to create AccountSettings")
     }
 
-    pub fn user(&self) -> Option<User> {
-        self.imp().user.borrow().clone()
+    pub fn session(&self) -> Option<Session> {
+        self.imp()
+            .session
+            .borrow()
+            .clone()
+            .and_then(|session| session.upgrade())
     }
 
-    fn set_user(&self, user: Option<User>) {
-        if self.user() == user {
+    pub fn set_session(&self, session: Option<Session>) {
+        if self.session() == session {
             return;
         }
 
-        self.imp().user.replace(user);
-        self.notify("user");
+        self.imp()
+            .session
+            .replace(session.map(|session| session.downgrade()));
+        self.notify("session");
     }
 }

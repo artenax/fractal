@@ -11,8 +11,11 @@
     <file preprocess="xml-stripblanks">icons/scalable/status/explore-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/status/verified-symbolic.svg</file>
     <file compressed="true">style.css</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-change-password-subpage.ui">ui/account-settings-change-password-subpage.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-deactivate-account-subpage.ui">ui/account-settings-deactivate-account-subpage.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-device-row.ui">ui/account-settings-device-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-devices-page.ui">ui/account-settings-devices-page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-user-page.ui">ui/account-settings-user-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings.ui">ui/account-settings.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="add-account-row.ui">ui/add-account-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="avatar-with-selection.ui">ui/avatar-with-selection.ui</file>

@@ -362,14 +362,14 @@ impl EditableAvatar {
                     } else {
                         error!("The chosen file is not an image");
                         let _ = self.activate_action(
-                            "win.message",
+                            "win.add-toast",
                             Some(&gettext("The chosen file is not an image").to_variant()),
                         );
                     }
                 } else {
                     error!("Could not get the content type of the file");
                     let _ = self.activate_action(
-                        "win.message",
+                        "win.add-toast",
                         Some(
                             &gettext("Could not determine the type of the chosen file")
                                 .to_variant(),
@@ -379,7 +379,7 @@ impl EditableAvatar {
             } else {
                 error!("No file chosen");
                 let _ = self.activate_action(
-                    "win.message",
+                    "win.add-toast",
                     Some(&gettext("No file was chosen").to_variant()),
                 );
             }

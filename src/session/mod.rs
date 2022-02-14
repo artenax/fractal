@@ -40,7 +40,7 @@ use matrix_sdk::{
         assign,
         identifiers::RoomId,
     },
-    Client, Error as MatrixError, HttpError,
+    Client, HttpError,
 };
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use tokio::task::JoinHandle;
@@ -394,28 +394,12 @@ impl Session {
         let priv_ = self.imp();
         let error = match result {
             Ok((client, session)) => {
-                priv_.client.replace(Some(client.clone()));
+                priv_.client.replace(Some(client));
                 let user = User::new(self, &session.user_id);
-                priv_.user.set(user.clone()).unwrap();
+                priv_.user.set(user).unwrap();
                 self.notify("user");
 
-                let handle = spawn_tokio!(async move {
-                    let account = client.account();
-                    let display_name = account.get_display_name().await?;
-                    let avatar_url = account.get_avatar_url().await?;
-                    let result: Result<_, MatrixError> = Ok((display_name, avatar_url));
-                    result
-                });
-
-                spawn!(glib::PRIORITY_LOW, async move {
-                    match handle.await.unwrap() {
-                        Ok((display_name, avatar_url)) => {
-                            user.set_display_name(display_name);
-                            user.set_avatar_url(avatar_url);
-                        }
-                        Err(error) => error!("Couldn’t fetch account metadata: {}", error),
-                    }
-                });
+                self.update_user_profile();
 
                 let res = if store_session {
                     match secret::store_session(&session) {
@@ -567,8 +551,29 @@ impl Session {
             .get_or_init(|| ItemList::new(&RoomList::new(self), &VerificationList::new(self)))
     }
 
+    /// The user of this session.
     pub fn user(&self) -> Option<&User> {
         self.imp().user.get()
+    }
+
+    /// Update the profile of this session’s user.
+    ///
+    /// Fetches the updated profile and updates the local data.
+    pub fn update_user_profile(&self) {
+        let client = self.client();
+        let user = self.user().unwrap().to_owned();
+
+        let handle = spawn_tokio!(async move { client.account().get_profile().await });
+
+        spawn!(glib::PRIORITY_LOW, async move {
+            match handle.await.unwrap() {
+                Ok(res) => {
+                    user.set_display_name(res.displayname);
+                    user.set_avatar_url(res.avatar_url);
+                }
+                Err(error) => error!("Couldn’t fetch account metadata: {}", error),
+            }
+        });
     }
 
     pub fn client(&self) -> Client {
@@ -652,8 +657,7 @@ impl Session {
                 ))) = error
                 {
                     if let ErrorKind::UnknownToken { soft_logout: _ } = error.kind {
-                        self.emit_by_name::<()>("logged-out", &[]);
-                        self.cleanup_session();
+                        self.handle_logged_out();
                     }
                 }
                 error!("Failed to perform sync: {:?}", error);
@@ -673,10 +677,8 @@ impl Session {
     }
 
     fn open_account_settings(&self) {
-        if let Some(user) = self.user() {
-            let window = AccountSettings::new(self.parent_window().as_ref(), user);
-            window.show();
-        }
+        let window = AccountSettings::new(self.parent_window().as_ref(), self);
+        window.show();
     }
 
     fn show_room_creation_dialog(&self) {
@@ -710,6 +712,15 @@ impl Session {
                 }
             }
         }
+    }
+
+    /// Handle that the session has been logged out.
+    ///
+    /// This should only be called if the session has been logged out without
+    /// `Session::logout`.
+    pub fn handle_logged_out(&self) {
+        self.emit_by_name::<()>("logged-out", &[]);
+        self.cleanup_session();
     }
 
     fn cleanup_session(&self) {
