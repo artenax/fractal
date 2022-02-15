@@ -318,13 +318,15 @@ mod imp {
                 .flags(glib::BindingFlags::SYNC_CREATE)
                 .build();
 
-            // Load the room history when idle
-            spawn!(
-                glib::source::PRIORITY_LOW,
-                clone!(@weak obj => async move {
-                    obj.timeline().load().await;
-                })
-            );
+            if !matches!(obj.category(), RoomType::Left | RoomType::Outdated) {
+                // Load the room history when idle
+                spawn!(
+                    glib::source::PRIORITY_LOW,
+                    clone!(@weak obj => async move {
+                        obj.timeline().load().await;
+                    })
+                );
+            }
         }
     }
 }
