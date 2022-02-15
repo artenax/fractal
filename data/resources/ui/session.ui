@@ -4,36 +4,8 @@
     <property name="focusable">true</property>
     <property name="child">
       <object class="GtkStack" id="stack">
-        <property name="visible-child">loading</property>
+        <property name="visible-child">content</property>
         <property name="transition-type">crossfade</property>
-        <child>
-          <object class="GtkWindowHandle" id="loading">
-            <property name="child">
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkHeaderBar">
-                    <property name="show-title-buttons">True</property>
-                    <style>
-                      <class name="flat"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkSpinner">
-                    <property name="spinning">True</property>
-                    <property name="valign">center</property>
-                    <property name="halign">center</property>
-                    <property name="vexpand">True</property>
-                    <style>
-                      <class name="session-loading-spinner"/>
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </property>
-          </object>
-        </child>
         <child>
           <object class="AdwLeaflet" id="content">
             <property name="fold-threshold-policy">minimum</property>

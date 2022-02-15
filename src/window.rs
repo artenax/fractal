@@ -22,6 +22,8 @@ mod imp {
         #[template_child]
         pub main_stack: TemplateChild<gtk::Stack>,
         #[template_child]
+        pub loading: TemplateChild<gtk::WindowHandle>,
+        #[template_child]
         pub greeter: TemplateChild<Greeter>,
         #[template_child]
         pub login: TemplateChild<Login>,
@@ -88,7 +90,7 @@ mod imp {
             self.login
                 .connect_new_session(clone!(@weak obj => move |_login, session| {
                     obj.add_session(&session);
-                    obj.switch_to_sessions_page();
+                    obj.switch_to_loading_page();
                 }));
 
             self.main_stack.connect_visible_child_notify(
@@ -171,11 +173,14 @@ impl Window {
     fn restore_sessions(&self) {
         match secret::restore_sessions() {
             Ok(sessions) => {
-                for stored_session in sessions {
-                    let session = Session::new();
-                    session.login_with_previous_session(stored_session);
-                    self.add_session(&session);
-                    self.switch_to_sessions_page();
+                if sessions.is_empty() {
+                    self.switch_to_greeter_page(false);
+                } else {
+                    for stored_session in sessions {
+                        let session = Session::new();
+                        session.login_with_previous_session(stored_session);
+                        self.add_session(&session);
+                    }
                 }
             }
             Err(error) => {
@@ -232,6 +237,11 @@ impl Window {
         } else {
             self.set_default_widget(gtk::Widget::NONE);
         }
+    }
+
+    pub fn switch_to_loading_page(&self) {
+        let priv_ = self.imp();
+        priv_.main_stack.set_visible_child(&*priv_.loading);
     }
 
     pub fn switch_to_sessions_page(&self) {

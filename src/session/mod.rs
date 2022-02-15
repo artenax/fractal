@@ -492,6 +492,9 @@ impl Session {
         let widget = SessionVerification::new(self);
         stack.add_named(&widget, Some("session-verification"));
         stack.set_visible_child(&widget);
+        if let Some(window) = self.parent_window() {
+            window.switch_to_sessions_page();
+        }
     }
 
     fn mark_ready(&self) {
@@ -529,6 +532,9 @@ impl Session {
                     let handle = spawn_tokio!(async move { client.bootstrap_cross_signing(None).await });
                     if handle.await.is_ok() {
                         priv_.stack.set_visible_child(&*priv_.content);
+                        if let Some(window) = obj.parent_window() {
+                            window.switch_to_sessions_page();
+                        }
                         return;
                     }
                 }
@@ -737,10 +743,12 @@ impl Session {
     /// Show the content of the session
     pub fn show_content(&self) {
         let priv_ = self.imp();
-
         // FIXME: we should actually check if we have now the keys
         priv_.stack.set_visible_child(&*priv_.content);
         priv_.logout_on_dispose.set(false);
+        if let Some(window) = self.parent_window() {
+            window.switch_to_sessions_page();
+        }
 
         if let Some(session_verificiation) = priv_.stack.child_by_name("session-verification") {
             priv_.stack.remove(&session_verificiation);
