@@ -195,7 +195,7 @@ where
                     Ok(res) => res,
                     Err(err) => {
                         error!("Could not get file: {}", err);
-                        window.append_error(&Toast::new(&err.to_user_facing()));
+                        window.add_toast(&Toast::new(&err.to_user_facing()));
 
                         return;
                     }
@@ -244,7 +244,7 @@ where
                     Ok(res) => res,
                     Err(err) => {
                         error!("Could not get file: {}", err);
-                        window.append_error(&Toast::new(&err.to_user_facing()));
+                        window.add_toast(&Toast::new(&err.to_user_facing()));
 
                         return;
                     }

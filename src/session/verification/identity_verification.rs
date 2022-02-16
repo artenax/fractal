@@ -655,7 +655,7 @@ impl IdentityVerification {
         });
 
         if let Some(window) = self.session().parent_window() {
-            window.append_error(&Toast::new(&error_message));
+            window.add_toast(&Toast::new(&error_message));
         }
     }
 

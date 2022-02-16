@@ -700,7 +700,7 @@ impl Session {
             Err(error) => {
                 error!("Couldn’t logout the session {}", error);
                 if let Some(window) = self.parent_window() {
-                    window.append_error(&Toast::new(&gettext("Failed to logout the session.")));
+                    window.add_toast(&Toast::new(&gettext("Failed to logout the session.")));
                 }
             }
         }

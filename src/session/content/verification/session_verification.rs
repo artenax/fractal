@@ -316,7 +316,7 @@ impl SessionVerification {
 
             if let Some(error_message) = error_message {
                 if let Some(window) = obj.parent_window() {
-                    window.append_error(&Toast::new(&error_message));
+                    window.add_toast(&Toast::new(&error_message));
                 }
             } else {
                 // TODO tell user that the a crypto identity was created

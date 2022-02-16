@@ -180,7 +180,7 @@ impl Window {
             }
             Err(error) => {
                 warn!("Failed to restore previous sessions: {:?}", error);
-                self.append_error(&Toast::new(&gettext!(
+                self.add_toast(&Toast::new(&gettext!(
                     "Unable to restore previous sessions: {}",
                     &error.to_user_facing()
                 )));
@@ -252,8 +252,8 @@ impl Window {
         priv_.main_stack.set_visible_child(&*priv_.greeter);
     }
 
-    /// This appends a new error to the list of errors
-    pub fn append_error(&self, error: &Toast) {
-        self.imp().error_list.append(error);
+    /// This appends a new toast to the list
+    pub fn add_toast(&self, toast: &Toast) {
+        self.imp().error_list.append(toast);
     }
 }

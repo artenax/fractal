@@ -415,7 +415,7 @@ impl Room {
                                 .build();
 
                             if let Some(window) = obj.session().parent_window() {
-                                window.append_error(&error);
+                                window.add_toast(&error);
                             }
 
                             // Load the previous category
@@ -565,7 +565,7 @@ impl Room {
                                     .build();
 
                                 if let Some(window) = obj.session().parent_window() {
-                                    window.append_error(&error);
+                                    window.add_toast(&error);
                                 }
 
                                 // Load the previous category
@@ -1067,7 +1067,7 @@ impl Room {
                         .build();
 
                     if let Some(window) = self.session().parent_window() {
-                        window.append_error(&error);
+                        window.add_toast(&error);
                     }
 
                     Err(error)
@@ -1099,7 +1099,7 @@ impl Room {
                         .build();
 
                     if let Some(window) = self.session().parent_window() {
-                        window.append_error(&error);
+                        window.add_toast(&error);
                     }
 
                     Err(error)
@@ -1256,7 +1256,7 @@ impl Room {
                     .build();
 
                 if let Some(window) = self.session().parent_window() {
-                    window.append_error(&error);
+                    window.add_toast(&error);
                 }
             }
         } else {

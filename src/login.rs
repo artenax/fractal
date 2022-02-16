@@ -311,7 +311,7 @@ impl Login {
                     }
                     Err(error) => {
                         warn!("Failed to discover homeserver: {}", error);
-                        obj.parent_window().append_error(&Toast::new(&error.to_user_facing()));
+                        obj.parent_window().add_toast(&Toast::new(&error.to_user_facing()));
                     }
                 };
                 obj.unfreeze();
@@ -345,7 +345,7 @@ impl Login {
                     }
                     Err(error) => {
                         warn!("Failed to check homeserver: {}", error);
-                        obj.parent_window().append_error(&Toast::new(&error.to_user_facing()));
+                        obj.parent_window().add_toast(&Toast::new(&error.to_user_facing()));
                     }
                 };
                 obj.unfreeze();
@@ -459,7 +459,7 @@ impl Login {
                 clone!(@weak self as login => move |session, error| {
                     match error {
                         Some(e) => {
-                            login.parent_window().append_error(&e);
+                            login.parent_window().add_toast(&e);
                             login.unfreeze();
                         },
                         None => {
