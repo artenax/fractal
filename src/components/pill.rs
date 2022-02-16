@@ -103,8 +103,12 @@ glib::wrapper! {
 }
 
 impl Pill {
-    pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create Pill")
+    pub fn for_user(user: &User) -> Self {
+        glib::Object::new(&[("user", user)]).expect("Failed to create Pill")
+    }
+
+    pub fn for_room(room: &Room) -> Self {
+        glib::Object::new(&[("room", room)]).expect("Failed to create Pill")
     }
 
     pub fn set_user(&self, user: Option<User>) {
@@ -169,11 +173,5 @@ impl Pill {
 
     pub fn room(&self) -> Option<Room> {
         self.imp().room.borrow().clone()
-    }
-}
-
-impl Default for Pill {
-    fn default() -> Self {
-        Self::new()
     }
 }

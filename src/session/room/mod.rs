@@ -407,8 +407,7 @@ impl Room {
                     Err(error) => {
                             error!("Couldn’t forget the room: {}", error);
 
-                            let room_pill = Pill::new();
-                            room_pill.set_room(Some(obj.clone()));
+                            let room_pill = Pill::for_room(&obj);
                             let error = Toast::builder()
                                 .title(&gettext("Failed to forget <widget>."))
                                 .widgets(&[&room_pill])
@@ -553,8 +552,7 @@ impl Room {
                         Err(error) => {
                                 error!("Couldn’t set the room category: {}", error);
 
-                                let room_pill = Pill::new();
-                                room_pill.set_room(Some(obj.clone()));
+                                let room_pill = Pill::for_room(&obj);
                                 let error = Toast::builder()
                                     .title(&gettext!(
                                         "Failed to move <widget> from {} to {}.",
@@ -1057,8 +1055,7 @@ impl Room {
                 Err(error) => {
                     error!("Accepting invitation failed: {}", error);
 
-                    let room_pill = Pill::new();
-                    room_pill.set_room(Some(self.clone()));
+                    let room_pill = Pill::for_room(self);
                     let error = Toast::builder()
                         .title(&gettext(
                             "Failed to accept invitation for <widget>. Try again later.",
@@ -1089,8 +1086,7 @@ impl Room {
                 Err(error) => {
                     error!("Rejecting invitation failed: {}", error);
 
-                    let room_pill = Pill::new();
-                    room_pill.set_room(Some(self.clone()));
+                    let room_pill = Pill::for_room(self);
                     let error = Toast::builder()
                         .title(&gettext(
                             "Failed to reject invitation for <widget>. Try again later.",
@@ -1246,10 +1242,8 @@ impl Room {
                 } else {
                     gettext("Failed to invite <widget> and some other users to <widget>. Try again later.")
                 };
-                let user_pill = Pill::new();
-                user_pill.set_user(Some(first_failed.clone()));
-                let room_pill = Pill::new();
-                room_pill.set_room(Some(self.clone()));
+                let user_pill = Pill::for_user(first_failed);
+                let room_pill = Pill::for_room(self);
                 let error = Toast::builder()
                     .title(&error_message)
                     .widgets(&[&user_pill, &room_pill])

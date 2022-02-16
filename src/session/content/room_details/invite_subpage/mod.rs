@@ -253,10 +253,9 @@ impl InviteSubpage {
     fn add_user_pill(&self, user: &Invitee) {
         let priv_ = self.imp();
 
-        let pill = Pill::new();
+        let pill = Pill::for_user(user.upcast_ref());
         pill.set_margin_start(3);
         pill.set_margin_end(3);
-        pill.set_user(Some(user.clone().upcast()));
 
         let (mut start_iter, mut end_iter) = priv_.text_buffer.bounds();
 
