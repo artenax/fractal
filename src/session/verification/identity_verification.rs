@@ -22,9 +22,10 @@ use tokio::sync::mpsc;
 
 use super::{VERIFICATION_CREATION_TIMEOUT, VERIFICATION_RECEIVE_TIMEOUT};
 use crate::{
+    components::Toast,
     contrib::Camera,
     session::{user::UserExt, Session, User},
-    spawn, spawn_tokio, Error,
+    spawn, spawn_tokio,
 };
 
 #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
@@ -653,7 +654,7 @@ impl IdentityVerification {
             gettext("An unknown error occurred during the verification process.")
         });
 
-        let error = Error::new(move |_| {
+        let error = Toast::new(move |_| {
             let error_label = gtk::Label::builder()
                 .label(&error_message)
                 .wrap(true)

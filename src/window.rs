@@ -5,9 +5,9 @@ use gtk::{self, gio, glib, glib::clone, prelude::*, subclass::prelude::*, Compos
 use log::warn;
 
 use crate::{
-    components::InAppNotification,
+    components::{InAppNotification, Toast},
     config::{APP_ID, PROFILE},
-    secret, Application, Error, Greeter, Login, Session, UserFacingError,
+    secret, Application, Greeter, Login, Session, UserFacingError,
 };
 
 mod imp {
@@ -38,7 +38,7 @@ mod imp {
         type ParentType = adw::ApplicationWindow;
 
         fn class_init(klass: &mut Self::Class) {
-            Error::static_type();
+            Toast::static_type();
             InAppNotification::static_type();
             Self::bind_template(klass);
         }
@@ -181,7 +181,7 @@ impl Window {
             Err(error) => {
                 warn!("Failed to restore previous sessions: {:?}", error);
                 let error_string = error.to_user_facing();
-                self.append_error(&Error::new(move |_| {
+                self.append_error(&Toast::new(move |_| {
                     let error_label = gtk::Label::builder()
                         .label(
                             &(gettext("Unable to restore previous sessions")
@@ -261,7 +261,7 @@ impl Window {
     }
 
     /// This appends a new error to the list of errors
-    pub fn append_error(&self, error: &Error) {
+    pub fn append_error(&self, error: &Toast) {
         self.imp().error_list.append(error);
     }
 }

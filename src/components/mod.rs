@@ -11,6 +11,7 @@ mod pill;
 mod reaction_chooser;
 mod room_title;
 mod spinner_button;
+mod toast;
 mod video_player;
 mod video_player_renderer;
 
@@ -28,6 +29,7 @@ pub use self::{
     reaction_chooser::ReactionChooser,
     room_title::RoomTitle,
     spinner_button::SpinnerButton,
+    toast::Toast,
     video_player::VideoPlayer,
     video_player_renderer::VideoPlayerRenderer,
 };

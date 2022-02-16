@@ -9,7 +9,6 @@ mod prelude;
 
 mod components;
 mod contrib;
-mod error;
 mod greeter;
 mod login;
 mod login_advanced_dialog;
@@ -25,7 +24,7 @@ use gtk::{gdk::Display, gio, IconTheme};
 use once_cell::sync::Lazy;
 
 use self::{
-    application::Application, error::Error, greeter::Greeter, login::Login, session::Session,
+    application::Application, greeter::Greeter, login::Login, session::Session,
     user_facing_error::UserFacingError, window::Window,
 };
 

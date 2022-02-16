@@ -10,8 +10,9 @@ use matrix_sdk::{
 };
 
 use crate::{
+    components::Toast,
     session::{room::Room, Session},
-    spawn, spawn_tokio, Error,
+    spawn, spawn_tokio,
 };
 
 mod imp {
@@ -321,7 +322,7 @@ impl RoomList {
                     Err(error) => {
                         obj.pending_rooms_remove(&identifier);
                         error!("Joining room {} failed: {}", identifier, error);
-                        let error = Error::new(
+                        let error = Toast::new(
                             clone!(@strong obj => move |_| {
                                     let error_message = gettext!(
                                         "Failed to join room {}. Try again later.", identifier

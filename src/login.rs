@@ -14,8 +14,11 @@ use tokio::task::JoinHandle;
 use url::{ParseError, Url};
 
 use crate::{
-    components::SpinnerButton, error::Error, login_advanced_dialog::LoginAdvancedDialog, spawn,
-    spawn_tokio, user_facing_error::UserFacingError, Session,
+    components::{SpinnerButton, Toast},
+    login_advanced_dialog::LoginAdvancedDialog,
+    spawn, spawn_tokio,
+    user_facing_error::UserFacingError,
+    Session,
 };
 
 mod imp {
@@ -310,7 +313,7 @@ impl Login {
                         warn!("Failed to discover homeserver: {}", error);
                         let error_string = error.to_user_facing();
 
-                        obj.parent_window().append_error(&Error::new(move |_| {
+                        obj.parent_window().append_error(&Toast::new(move |_| {
                             let error_label = gtk::Label::builder()
                                 .label(&error_string)
                                 .wrap(true)
@@ -352,7 +355,7 @@ impl Login {
                         warn!("Failed to check homeserver: {}", error);
                         let error_string = error.to_user_facing();
 
-                        obj.parent_window().append_error(&Error::new(move |_| {
+                        obj.parent_window().append_error(&Toast::new(move |_| {
                             let error_label = gtk::Label::builder()
                                 .label(&error_string)
                                 .wrap(true)

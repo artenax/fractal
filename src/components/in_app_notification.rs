@@ -1,7 +1,7 @@
 use adw::subclass::prelude::*;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 
-use crate::Error;
+use crate::components::Toast;
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -154,7 +154,7 @@ impl InAppNotification {
             .borrow()
             .as_ref()
             .and_then(|error_list| error_list.item(0))
-            .and_then(|obj| obj.downcast::<Error>().ok())
+            .and_then(|obj| obj.downcast::<Toast>().ok())
             .and_then(|error| error.widget())
         {
             if let Some(current_widget) = priv_.current_widget.take() {

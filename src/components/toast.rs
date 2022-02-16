@@ -1,6 +1,6 @@
 use gtk::{glib, subclass::prelude::*};
 
-type WidgetBuilderFn = Box<dyn Fn(&super::Error) -> Option<gtk::Widget> + 'static>;
+type WidgetBuilderFn = Box<dyn Fn(&super::Toast) -> Option<gtk::Widget> + 'static>;
 
 mod imp {
     use std::cell::RefCell;
@@ -8,28 +8,28 @@ mod imp {
     use super::*;
 
     #[derive(Default)]
-    pub struct Error {
+    pub struct Toast {
         pub widget_builder: RefCell<Option<WidgetBuilderFn>>,
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for Error {
-        const NAME: &'static str = "Error";
-        type Type = super::Error;
+    impl ObjectSubclass for Toast {
+        const NAME: &'static str = "ComponentsToast";
+        type Type = super::Toast;
         type ParentType = glib::Object;
     }
 
-    impl ObjectImpl for Error {}
+    impl ObjectImpl for Toast {}
 }
 
 glib::wrapper! {
-    /// An `Error` that can be shown in the UI.
-    pub struct Error(ObjectSubclass<imp::Error>);
+    /// A `Toast` that can be shown in the UI.
+    pub struct Toast(ObjectSubclass<imp::Toast>);
 }
 
-impl Error {
+impl Toast {
     pub fn new<F: Fn(&Self) -> Option<gtk::Widget> + 'static>(f: F) -> Self {
-        let obj: Self = glib::Object::new(&[]).expect("Failed to create Error");
+        let obj: Self = glib::Object::new(&[]).expect("Failed to create Toast");
         obj.set_widget_builder(f);
         obj
     }

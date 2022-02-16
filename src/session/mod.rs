@@ -61,10 +61,11 @@ pub use self::{
     user::{User, UserActions, UserExt},
 };
 use crate::{
+    components::Toast,
     secret,
     secret::{Secret, StoredSession},
     session::sidebar::ItemList,
-    spawn, spawn_tokio, Error, UserFacingError, Window,
+    spawn, spawn_tokio, UserFacingError, Window,
 };
 
 mod imp {
@@ -209,7 +210,7 @@ mod imp {
                 vec![
                     Signal::builder(
                         "prepared",
-                        &[Option::<Error>::static_type().into()],
+                        &[Option::<Toast>::static_type().into()],
                         <()>::static_type().into(),
                     )
                     .build(),
@@ -422,7 +423,7 @@ impl Session {
                         Err(error) => {
                             warn!("Couldn't store session: {:?}", error);
                             let error_string = error.to_user_facing();
-                            Some(Error::new(move |_| {
+                            Some(Toast::new(move |_| {
                                 let error_label = gtk::Label::builder()
                                     .label(
                                         &(gettext("Unable to store session")
@@ -454,7 +455,7 @@ impl Session {
 
                 let error_string = error.to_user_facing();
 
-                Some(Error::new(move |_| {
+                Some(Toast::new(move |_| {
                     let error_label = gtk::Label::builder()
                         .label(&error_string)
                         .wrap(true)
@@ -610,13 +611,13 @@ impl Session {
     }
 
     /// Connects the prepared signals to the function f given in input
-    pub fn connect_prepared<F: Fn(&Self, Option<Error>) + 'static>(
+    pub fn connect_prepared<F: Fn(&Self, Option<Toast>) + 'static>(
         &self,
         f: F,
     ) -> glib::SignalHandlerId {
         self.connect_local("prepared", true, move |values| {
             let obj = values[0].get::<Self>().unwrap();
-            let err = values[1].get::<Option<Error>>().unwrap();
+            let err = values[1].get::<Option<Toast>>().unwrap();
 
             f(&obj, err);
 
@@ -714,7 +715,7 @@ impl Session {
             Ok(_) => self.cleanup_session(),
             Err(error) => {
                 error!("Couldn’t logout the session {}", error);
-                let error = Error::new(move |_| {
+                let error = Toast::new(move |_| {
                     let label = gtk::Label::new(Some(&gettext("Failed to logout the session.")));
                     Some(label.upcast())
                 });

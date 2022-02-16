@@ -5,6 +5,7 @@ use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageEventConten
 use once_cell::sync::Lazy;
 
 use crate::{
+    components::Toast,
     session::{
         event_source_dialog::EventSourceDialog,
         room::{Event, RoomAction},
@@ -12,7 +13,7 @@ use crate::{
     },
     spawn,
     utils::cache_dir,
-    Error, UserFacingError, Window,
+    UserFacingError, Window,
 };
 
 // This is only save because the trait `EventActions` can
@@ -196,7 +197,7 @@ where
                         error!("Could not get file: {}", err);
 
                         let error_message = err.to_user_facing();
-                        let error = Error::new(move |_| {
+                        let error = Toast::new(move |_| {
                             let error_label = gtk::Label::builder()
                                 .label(&error_message)
                                 .wrap(true)
@@ -254,7 +255,7 @@ where
                         error!("Could not get file: {}", err);
 
                         let error_message = err.to_user_facing();
-                        let error = Error::new(move |_| {
+                        let error = Toast::new(move |_| {
                             let error_label = gtk::Label::builder()
                                 .label(&error_message)
                                 .wrap(true)

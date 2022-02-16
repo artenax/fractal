@@ -56,14 +56,13 @@ pub use self::{
     timeline::{Timeline, TimelineState},
 };
 use crate::{
-    components::{LabelWithWidgets, Pill},
+    components::{LabelWithWidgets, Pill, Toast},
     prelude::*,
     session::{
         avatar::update_room_avatar_from_file, room::member_list::MemberList, Avatar, Session, User,
     },
     spawn, spawn_tokio,
     utils::pending_event_ids,
-    Error,
 };
 
 mod imp {
@@ -407,7 +406,7 @@ impl Room {
                     }
                     Err(error) => {
                             error!("Couldn’t forget the room: {}", error);
-                            let error = Error::new(
+                            let error = Toast::new(
                                     clone!(@weak obj => @default-return None, move |_| {
                                             let error_message = gettext(
                                                 "Failed to forget <widget>."
@@ -558,7 +557,7 @@ impl Room {
                         Ok(_) => {},
                         Err(error) => {
                                 error!("Couldn’t set the room category: {}", error);
-                                let error = Error::new(
+                                let error = Toast::new(
                                         clone!(@weak obj => @default-return None, move |_| {
                                                 let error_message = gettext!(
                                                     "Failed to move <widget> from {} to {}.",
@@ -1056,7 +1055,7 @@ impl Room {
         );
     }
 
-    pub async fn accept_invite(&self) -> Result<(), Error> {
+    pub async fn accept_invite(&self) -> Result<(), Toast> {
         let matrix_room = self.matrix_room();
 
         if let MatrixRoom::Invited(matrix_room) = matrix_room {
@@ -1065,7 +1064,7 @@ impl Room {
                 Ok(result) => Ok(result),
                 Err(error) => {
                     error!("Accepting invitation failed: {}", error);
-                    let error = Error::new(clone!(@strong self as room => move |_| {
+                    let error = Toast::new(clone!(@strong self as room => move |_| {
                             let error_message = gettext("Failed to accept invitation for <widget>. Try again later.");
                             let room_pill = Pill::new();
                             room_pill.set_room(Some(room.clone()));
@@ -1086,7 +1085,7 @@ impl Room {
         }
     }
 
-    pub async fn reject_invite(&self) -> Result<(), Error> {
+    pub async fn reject_invite(&self) -> Result<(), Toast> {
         let matrix_room = self.matrix_room();
 
         if let MatrixRoom::Invited(matrix_room) = matrix_room {
@@ -1095,7 +1094,7 @@ impl Room {
                 Ok(result) => Ok(result),
                 Err(error) => {
                     error!("Rejecting invitation failed: {}", error);
-                    let error = Error::new(clone!(@strong self as room => move |_| {
+                    let error = Toast::new(clone!(@strong self as room => move |_| {
                             let error_message = gettext("Failed to reject invitation for <widget>. Try again later.");
                             let room_pill = Pill::new();
                             room_pill.set_room(Some(room.clone()));
@@ -1242,7 +1241,7 @@ impl Room {
             if !failed_invites.is_empty() {
                 let no_failed = failed_invites.len();
                 let first_failed = failed_invites.first().unwrap();
-                let error = Error::new(
+                let error = Toast::new(
                     clone!(@strong self as room, @strong first_failed => move |_| {
                             // TODO: should we show all the failed users?
                             let error_message = if no_failed == 1 {

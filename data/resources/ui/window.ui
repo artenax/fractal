@@ -9,7 +9,7 @@
           <object class="InAppNotification">
             <property name="error-list">
               <object class="GListStore" id="error_list">
-                <property name="item-type">Error</property>
+                <property name="item-type">ComponentsToast</property>
               </object>
             </property>
           </object>

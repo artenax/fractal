@@ -5,9 +5,9 @@ use log::error;
 
 use super::IdentityVerificationWidget;
 use crate::{
-    components::{AuthDialog, AuthError, SpinnerButton},
+    components::{AuthDialog, AuthError, SpinnerButton, Toast},
     session::verification::{IdentityVerification, VerificationState},
-    spawn, Error, Session, Window,
+    spawn, Session, Window,
 };
 
 mod imp {
@@ -315,7 +315,7 @@ impl SessionVerification {
             };
 
             if let Some(error_message) = error_message {
-                let error = Error::new(move |_| {
+                let error = Toast::new(move |_| {
                     let error_label = gtk::Label::builder()
                         .label(&error_message)
                         .wrap(true)
