@@ -195,16 +195,7 @@ where
                     Ok(res) => res,
                     Err(err) => {
                         error!("Could not get file: {}", err);
-
-                        let error_message = err.to_user_facing();
-                        let error = Toast::new(move |_| {
-                            let error_label = gtk::Label::builder()
-                                .label(&error_message)
-                                .wrap(true)
-                                .build();
-                            Some(error_label.upcast())
-                        });
-                        window.append_error(&error);
+                        window.append_error(&Toast::new(&err.to_user_facing()));
 
                         return;
                     }
@@ -253,16 +244,7 @@ where
                     Ok(res) => res,
                     Err(err) => {
                         error!("Could not get file: {}", err);
-
-                        let error_message = err.to_user_facing();
-                        let error = Toast::new(move |_| {
-                            let error_label = gtk::Label::builder()
-                                .label(&error_message)
-                                .wrap(true)
-                                .build();
-                            Some(error_label.upcast())
-                        });
-                        window.append_error(&error);
+                        window.append_error(&Toast::new(&err.to_user_facing()));
 
                         return;
                     }

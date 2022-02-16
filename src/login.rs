@@ -311,15 +311,7 @@ impl Login {
                     }
                     Err(error) => {
                         warn!("Failed to discover homeserver: {}", error);
-                        let error_string = error.to_user_facing();
-
-                        obj.parent_window().append_error(&Toast::new(move |_| {
-                            let error_label = gtk::Label::builder()
-                                .label(&error_string)
-                                .wrap(true)
-                                .build();
-                            Some(error_label.upcast())
-                        }));
+                        obj.parent_window().append_error(&Toast::new(&error.to_user_facing()));
                     }
                 };
                 obj.unfreeze();
@@ -353,15 +345,7 @@ impl Login {
                     }
                     Err(error) => {
                         warn!("Failed to check homeserver: {}", error);
-                        let error_string = error.to_user_facing();
-
-                        obj.parent_window().append_error(&Toast::new(move |_| {
-                            let error_label = gtk::Label::builder()
-                                .label(&error_string)
-                                .wrap(true)
-                                .build();
-                            Some(error_label.upcast())
-                        }));
+                        obj.parent_window().append_error(&Toast::new(&error.to_user_facing()));
                     }
                 };
                 obj.unfreeze();

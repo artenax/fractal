@@ -1,15 +1,18 @@
-use gtk::{glib, subclass::prelude::*};
+use gtk::{glib, prelude::*, subclass::prelude::*};
 
-type WidgetBuilderFn = Box<dyn Fn(&super::Toast) -> Option<gtk::Widget> + 'static>;
+use crate::components::LabelWithWidgets;
 
 mod imp {
     use std::cell::RefCell;
+
+    use once_cell::sync::Lazy;
 
     use super::*;
 
     #[derive(Default)]
     pub struct Toast {
-        pub widget_builder: RefCell<Option<WidgetBuilderFn>>,
+        pub title: RefCell<Option<String>>,
+        pub widgets: RefCell<Vec<gtk::Widget>>,
     }
 
     #[glib::object_subclass]
@@ -19,7 +22,41 @@ mod imp {
         type ParentType = glib::Object;
     }
 
-    impl ObjectImpl for Toast {}
+    impl ObjectImpl for Toast {
+        fn properties() -> &'static [glib::ParamSpec] {
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecString::new(
+                    "title",
+                    "Title",
+                    "The title of the toast",
+                    None,
+                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
+                )]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "title" => obj.set_title(value.get().unwrap()),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "title" => obj.title().to_value(),
+                _ => unimplemented!(),
+            }
+        }
+    }
 }
 
 glib::wrapper! {
@@ -28,22 +65,88 @@ glib::wrapper! {
 }
 
 impl Toast {
-    pub fn new<F: Fn(&Self) -> Option<gtk::Widget> + 'static>(f: F) -> Self {
-        let obj: Self = glib::Object::new(&[]).expect("Failed to create Toast");
-        obj.set_widget_builder(f);
-        obj
+    pub fn new(title: &str) -> Self {
+        glib::Object::new(&[("title", &title)]).expect("Failed to create Toast")
     }
 
-    /// Set a function that builds the widget used to display this error in the
-    /// UI
-    pub fn set_widget_builder<F: Fn(&Self) -> Option<gtk::Widget> + 'static>(&self, f: F) {
-        self.imp().widget_builder.replace(Some(Box::new(f)));
+    pub fn builder() -> ToastBuilder {
+        ToastBuilder::new()
     }
 
-    /// Produces a widget via the function set in `Self::set_widget_builder()`
-    pub fn widget(&self) -> Option<gtk::Widget> {
-        let widget_builder = self.imp().widget_builder.borrow();
-        let widget_builder = widget_builder.as_ref()?;
-        widget_builder(self)
+    pub fn title(&self) -> Option<String> {
+        self.imp().title.borrow().clone()
+    }
+
+    pub fn set_title(&self, title: Option<&str>) {
+        let priv_ = self.imp();
+        if priv_.title.borrow().as_deref() == title {
+            return;
+        }
+
+        priv_.title.replace(title.map(ToOwned::to_owned));
+        self.notify("title");
+    }
+
+    pub fn widgets(&self) -> Vec<gtk::Widget> {
+        self.imp().widgets.borrow().clone()
+    }
+
+    pub fn set_widgets(&self, widgets: &[&impl IsA<gtk::Widget>]) {
+        self.imp()
+            .widgets
+            .replace(widgets.iter().map(|w| w.upcast_ref().clone()).collect());
+    }
+
+    pub fn widget(&self) -> gtk::Widget {
+        if self.widgets().is_empty() {
+            gtk::Label::builder()
+                .wrap(true)
+                .label(&self.title().unwrap_or_default())
+                .build()
+                .upcast()
+        } else {
+            LabelWithWidgets::new(&self.title().unwrap_or_default(), self.widgets()).upcast()
+        }
+    }
+}
+
+impl From<Toast> for adw::Toast {
+    fn from(toast: Toast) -> Self {
+        if toast.widgets().is_empty() {
+            adw::Toast::new(&toast.title().unwrap_or_default())
+        } else {
+            // When AdwToast supports custom titles.
+            todo!()
+        }
+    }
+}
+
+#[derive(Debug, Default, Clone)]
+pub struct ToastBuilder {
+    title: Option<String>,
+    widgets: Option<Vec<gtk::Widget>>,
+}
+
+impl ToastBuilder {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    pub fn title(mut self, title: &str) -> Self {
+        self.title = Some(title.to_owned());
+        self
+    }
+
+    pub fn widgets(mut self, widgets: &[&impl IsA<gtk::Widget>]) -> Self {
+        self.widgets = Some(widgets.iter().map(|w| w.upcast_ref().clone()).collect());
+        self
+    }
+
+    pub fn build(&self) -> Toast {
+        let toast = Toast::new(self.title.as_ref().unwrap());
+        if let Some(widgets) = &self.widgets {
+            toast.set_widgets(widgets.iter().collect::<Vec<_>>().as_slice());
+        }
+        toast
     }
 }

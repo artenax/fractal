@@ -315,16 +315,8 @@ impl SessionVerification {
             };
 
             if let Some(error_message) = error_message {
-                let error = Toast::new(move |_| {
-                    let error_label = gtk::Label::builder()
-                        .label(&error_message)
-                        .wrap(true)
-                        .build();
-                    Some(error_label.upcast())
-                });
-
                 if let Some(window) = obj.parent_window() {
-                    window.append_error(&error);
+                    window.append_error(&Toast::new(&error_message));
                 }
             } else {
                 // TODO tell user that the a crypto identity was created

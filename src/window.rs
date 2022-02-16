@@ -180,18 +180,10 @@ impl Window {
             }
             Err(error) => {
                 warn!("Failed to restore previous sessions: {:?}", error);
-                let error_string = error.to_user_facing();
-                self.append_error(&Toast::new(move |_| {
-                    let error_label = gtk::Label::builder()
-                        .label(
-                            &(gettext("Unable to restore previous sessions")
-                                + ": "
-                                + &error_string),
-                        )
-                        .wrap(true)
-                        .build();
-                    Some(error_label.upcast())
-                }));
+                self.append_error(&Toast::new(&gettext!(
+                    "Unable to restore previous sessions: {}",
+                    &error.to_user_facing()
+                )));
             }
         }
     }

@@ -323,13 +323,7 @@ impl RoomList {
                         obj.pending_rooms_remove(&identifier);
                         error!("Joining room {} failed: {}", identifier, error);
                         let error = Toast::new(
-                            clone!(@strong obj => move |_| {
-                                    let error_message = gettext!(
-                                        "Failed to join room {}. Try again later.", identifier
-                                    );
-                                    let error_label = gtk::Label::builder().label(&error_message).wrap(true).build();
-                                    Some(error_label.upcast())
-                            }),
+                            &gettext!("Failed to join room {}. Try again later.", identifier)
                         );
 
                         if let Some(window) = obj.session().parent_window() {

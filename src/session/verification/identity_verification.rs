@@ -654,16 +654,8 @@ impl IdentityVerification {
             gettext("An unknown error occurred during the verification process.")
         });
 
-        let error = Toast::new(move |_| {
-            let error_label = gtk::Label::builder()
-                .label(&error_message)
-                .wrap(true)
-                .build();
-            Some(error_label.upcast())
-        });
-
         if let Some(window) = self.session().parent_window() {
-            window.append_error(&error);
+            window.append_error(&Toast::new(&error_message));
         }
     }
 

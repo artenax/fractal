@@ -56,7 +56,7 @@ pub use self::{
     timeline::{Timeline, TimelineState},
 };
 use crate::{
-    components::{LabelWithWidgets, Pill, Toast},
+    components::{Pill, Toast},
     prelude::*,
     session::{
         avatar::update_room_avatar_from_file, room::member_list::MemberList, Avatar, Session, User,
@@ -406,18 +406,13 @@ impl Room {
                     }
                     Err(error) => {
                             error!("Couldn’t forget the room: {}", error);
-                            let error = Toast::new(
-                                    clone!(@weak obj => @default-return None, move |_| {
-                                            let error_message = gettext(
-                                                "Failed to forget <widget>."
-                                            );
-                                            let room_pill = Pill::new();
-                                            room_pill.set_room(Some(obj));
-                                            let label = LabelWithWidgets::new(&error_message, vec![room_pill]);
 
-                                            Some(label.upcast())
-                                    }),
-                            );
+                            let room_pill = Pill::new();
+                            room_pill.set_room(Some(obj.clone()));
+                            let error = Toast::builder()
+                                .title(&gettext("Failed to forget <widget>."))
+                                .widgets(&[&room_pill])
+                                .build();
 
                             if let Some(window) = obj.session().parent_window() {
                                 window.append_error(&error);
@@ -557,20 +552,17 @@ impl Room {
                         Ok(_) => {},
                         Err(error) => {
                                 error!("Couldn’t set the room category: {}", error);
-                                let error = Toast::new(
-                                        clone!(@weak obj => @default-return None, move |_| {
-                                                let error_message = gettext!(
-                                                    "Failed to move <widget> from {} to {}.",
-                                                    previous_category.to_string(),
-                                                    category.to_string()
-                                                );
-                                                let room_pill = Pill::new();
-                                                room_pill.set_room(Some(obj));
-                                                let label = LabelWithWidgets::new(&error_message, vec![room_pill]);
 
-                                                Some(label.upcast())
-                                        }),
-                                );
+                                let room_pill = Pill::new();
+                                room_pill.set_room(Some(obj.clone()));
+                                let error = Toast::builder()
+                                    .title(&gettext!(
+                                        "Failed to move <widget> from {} to {}.",
+                                        previous_category.to_string(),
+                                        category.to_string()
+                                    ))
+                                    .widgets(&[&room_pill])
+                                    .build();
 
                                 if let Some(window) = obj.session().parent_window() {
                                     window.append_error(&error);
@@ -1064,13 +1056,15 @@ impl Room {
                 Ok(result) => Ok(result),
                 Err(error) => {
                     error!("Accepting invitation failed: {}", error);
-                    let error = Toast::new(clone!(@strong self as room => move |_| {
-                            let error_message = gettext("Failed to accept invitation for <widget>. Try again later.");
-                            let room_pill = Pill::new();
-                            room_pill.set_room(Some(room.clone()));
-                            let error_label = LabelWithWidgets::new(&error_message, vec![room_pill]);
-                            Some(error_label.upcast())
-                    }));
+
+                    let room_pill = Pill::new();
+                    room_pill.set_room(Some(self.clone()));
+                    let error = Toast::builder()
+                        .title(&gettext(
+                            "Failed to accept invitation for <widget>. Try again later.",
+                        ))
+                        .widgets(&[&room_pill])
+                        .build();
 
                     if let Some(window) = self.session().parent_window() {
                         window.append_error(&error);
@@ -1094,13 +1088,15 @@ impl Room {
                 Ok(result) => Ok(result),
                 Err(error) => {
                     error!("Rejecting invitation failed: {}", error);
-                    let error = Toast::new(clone!(@strong self as room => move |_| {
-                            let error_message = gettext("Failed to reject invitation for <widget>. Try again later.");
-                            let room_pill = Pill::new();
-                            room_pill.set_room(Some(room.clone()));
-                            let error_label = LabelWithWidgets::new(&error_message, vec![room_pill]);
-                            Some(error_label.upcast())
-                    }));
+
+                    let room_pill = Pill::new();
+                    room_pill.set_room(Some(self.clone()));
+                    let error = Toast::builder()
+                        .title(&gettext(
+                            "Failed to reject invitation for <widget>. Try again later.",
+                        ))
+                        .widgets(&[&room_pill])
+                        .build();
 
                     if let Some(window) = self.session().parent_window() {
                         window.append_error(&error);
@@ -1241,25 +1237,23 @@ impl Room {
             if !failed_invites.is_empty() {
                 let no_failed = failed_invites.len();
                 let first_failed = failed_invites.first().unwrap();
-                let error = Toast::new(
-                    clone!(@strong self as room, @strong first_failed => move |_| {
-                            // TODO: should we show all the failed users?
-                            let error_message = if no_failed == 1 {
-                                gettext("Failed to invite <widget> to <widget>. Try again later.")
-                            } else if no_failed == 2 {
-                                gettext("Failed to invite <widget> and some other user to <widget>. Try again later.")
-                            } else {
-                               gettext("Failed to invite <widget> and some other users to <widget>. Try again later.")
-                            };
 
-                            let user_pill = Pill::new();
-                            user_pill.set_user(Some(first_failed.clone()));
-                            let room_pill = Pill::new();
-                            room_pill.set_room(Some(room.clone()));
-                            let error_label = LabelWithWidgets::new(&error_message, vec![user_pill, room_pill]);
-                            Some(error_label.upcast())
-                    }),
-                );
+                // TODO: should we show all the failed users?
+                let error_message = if no_failed == 1 {
+                    gettext("Failed to invite <widget> to <widget>. Try again later.")
+                } else if no_failed == 2 {
+                    gettext("Failed to invite <widget> and some other user to <widget>. Try again later.")
+                } else {
+                    gettext("Failed to invite <widget> and some other users to <widget>. Try again later.")
+                };
+                let user_pill = Pill::new();
+                user_pill.set_user(Some(first_failed.clone()));
+                let room_pill = Pill::new();
+                room_pill.set_room(Some(self.clone()));
+                let error = Toast::builder()
+                    .title(&error_message)
+                    .widgets(&[&user_pill, &room_pill])
+                    .build();
 
                 if let Some(window) = self.session().parent_window() {
                     window.append_error(&error);

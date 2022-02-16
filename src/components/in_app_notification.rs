@@ -155,7 +155,7 @@ impl InAppNotification {
             .as_ref()
             .and_then(|error_list| error_list.item(0))
             .and_then(|obj| obj.downcast::<Toast>().ok())
-            .and_then(|error| error.widget())
+            .map(|error| error.widget())
         {
             if let Some(current_widget) = priv_.current_widget.take() {
                 priv_.box_.remove(&current_widget);

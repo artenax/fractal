@@ -422,18 +422,10 @@ impl Session {
                         Ok(()) => None,
                         Err(error) => {
                             warn!("Couldn't store session: {:?}", error);
-                            let error_string = error.to_user_facing();
-                            Some(Toast::new(move |_| {
-                                let error_label = gtk::Label::builder()
-                                    .label(
-                                        &(gettext("Unable to store session")
-                                            + ": "
-                                            + &error_string),
-                                    )
-                                    .wrap(true)
-                                    .build();
-                                Some(error_label.upcast())
-                            }))
+                            Some(Toast::new(&gettext!(
+                                "Unable to store session: {}",
+                                &error.to_user_facing()
+                            )))
                         }
                     }
                 } else {
@@ -453,15 +445,7 @@ impl Session {
 
                 priv_.logout_on_dispose.set(false);
 
-                let error_string = error.to_user_facing();
-
-                Some(Toast::new(move |_| {
-                    let error_label = gtk::Label::builder()
-                        .label(&error_string)
-                        .wrap(true)
-                        .build();
-                    Some(error_label.upcast())
-                }))
+                Some(Toast::new(&error.to_user_facing()))
             }
         };
 
@@ -715,13 +699,8 @@ impl Session {
             Ok(_) => self.cleanup_session(),
             Err(error) => {
                 error!("Couldn’t logout the session {}", error);
-                let error = Toast::new(move |_| {
-                    let label = gtk::Label::new(Some(&gettext("Failed to logout the session.")));
-                    Some(label.upcast())
-                });
-
                 if let Some(window) = self.parent_window() {
-                    window.append_error(&error);
+                    window.append_error(&Toast::new(&gettext("Failed to logout the session.")));
                 }
             }
         }
