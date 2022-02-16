@@ -5,7 +5,7 @@ use log::error;
 
 use super::Device;
 use crate::{
-    components::{AuthError, SpinnerButton},
+    components::{AuthError, SpinnerButton, Toast},
     spawn,
 };
 
@@ -168,7 +168,7 @@ impl DeviceRow {
                         if let Some(adw_window) = window.and_then(|w| w.downcast::<adw::PreferencesWindow>().ok()) {
                             let device_name = device.display_name();
                             let error_message = gettext!("Failed to delete device “{}”", device_name);
-                            adw_window.add_toast(&adw::Toast::new(&error_message));
+                            adw_window.add_toast(&Toast::new(&error_message).into());
                         }
                     },
                 }
