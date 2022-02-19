@@ -293,6 +293,7 @@ impl RoomRow {
                     return;
                 }
                 RoomType::Outdated => {}
+                RoomType::Space => {}
             }
         }
 

@@ -496,6 +496,7 @@ impl Room {
                     }
                     RoomType::Left => room.reject_invitation().await,
                     RoomType::Outdated => unimplemented!(),
+                    RoomType::Space => unimplemented!(),
                 },
                 MatrixRoom::Joined(room) => match category {
                     RoomType::Invited => Ok(()),
@@ -527,6 +528,7 @@ impl Room {
                     }
                     RoomType::Left => room.leave().await,
                     RoomType::Outdated => unimplemented!(),
+                    RoomType::Space => unimplemented!(),
                 },
                 MatrixRoom::Left(room) => match category {
                     RoomType::Invited => Ok(()),
@@ -544,6 +546,7 @@ impl Room {
                     }
                     RoomType::Left => Ok(()),
                     RoomType::Outdated => unimplemented!(),
+                    RoomType::Space => unimplemented!(),
                 },
             }
         });
@@ -594,24 +597,28 @@ impl Room {
 
         match matrix_room {
             MatrixRoom::Joined(_) => {
-                let handle = spawn_tokio!(async move { matrix_room.tags().await });
+                if matrix_room.is_space() {
+                    self.set_category_internal(RoomType::Space);
+                } else {
+                    let handle = spawn_tokio!(async move { matrix_room.tags().await });
 
-                spawn!(
-                    glib::PRIORITY_DEFAULT_IDLE,
-                    clone!(@weak self as obj => async move {
-                        let mut category = RoomType::Normal;
+                    spawn!(
+                        glib::PRIORITY_DEFAULT_IDLE,
+                        clone!(@weak self as obj => async move {
+                            let mut category = RoomType::Normal;
 
-                        if let Ok(Some(tags)) = handle.await.unwrap() {
-                            if tags.get(&TagName::Favorite).is_some() {
-                                category = RoomType::Favorite;
-                            } else if tags.get(&TagName::LowPriority).is_some() {
-                                category = RoomType::LowPriority;
+                            if let Ok(Some(tags)) = handle.await.unwrap() {
+                                if tags.get(&TagName::Favorite).is_some() {
+                                    category = RoomType::Favorite;
+                                } else if tags.get(&TagName::LowPriority).is_some() {
+                                    category = RoomType::LowPriority;
+                                }
                             }
-                        }
 
-                        obj.set_category_internal(category);
-                    })
-                );
+                            obj.set_category_internal(category);
+                        })
+                    );
+                }
             }
             MatrixRoom::Invited(_) => self.set_category_internal(RoomType::Invited),
             MatrixRoom::Left(_) => self.set_category_internal(RoomType::Left),

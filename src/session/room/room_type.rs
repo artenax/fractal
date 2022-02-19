@@ -16,6 +16,7 @@ pub enum RoomType {
     LowPriority = 3,
     Left = 4,
     Outdated = 5,
+    Space = 6,
 }
 
 impl RoomType {
@@ -41,6 +42,7 @@ impl RoomType {
                 matches!(category, Self::Favorite | Self::Normal | Self::LowPriority)
             }
             Self::Outdated => false,
+            Self::Space => false,
         }
     }
 }
@@ -80,6 +82,7 @@ impl TryFrom<&CategoryType> for RoomType {
             CategoryType::VerificationRequest => {
                 Err("CategoryType::VerificationRequest cannot be a RoomType")
             }
+            CategoryType::Space => Ok(Self::Space),
         }
     }
 }

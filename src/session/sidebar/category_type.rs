@@ -15,6 +15,7 @@ pub enum CategoryType {
     LowPriority = 4,
     Left = 5,
     Outdated = 6,
+    Space = 7,
 }
 
 impl Default for CategoryType {
@@ -35,20 +36,14 @@ impl ToString for CategoryType {
             CategoryType::Left => gettext("Historical"),
             // Translators: This shouldn't ever be visible to the user,
             CategoryType::Outdated => gettext("Outdated"),
+            CategoryType::Space => gettext("Spaces"),
         }
     }
 }
 
 impl From<RoomType> for CategoryType {
     fn from(room_type: RoomType) -> Self {
-        match room_type {
-            RoomType::Invited => Self::Invited,
-            RoomType::Favorite => Self::Favorite,
-            RoomType::Normal => Self::Normal,
-            RoomType::LowPriority => Self::LowPriority,
-            RoomType::Left => Self::Left,
-            RoomType::Outdated => Self::Outdated,
-        }
+        Self::from(&room_type)
     }
 }
 
@@ -61,6 +56,7 @@ impl From<&RoomType> for CategoryType {
             RoomType::LowPriority => Self::LowPriority,
             RoomType::Left => Self::Left,
             RoomType::Outdated => Self::Outdated,
+            RoomType::Space => Self::Space,
         }
     }
 }
