@@ -60,7 +60,7 @@ version = "0.1.0"
 
 [dependencies.matrix-sdk]
 git = "https://github.com/jsparber/matrix-rust-sdk.git"
-branch = "timeline_stream"
+branch = "enable_ruma_unstable_pre_spec"
 features = [
     "socks",
     "encryption",

@@ -399,8 +399,9 @@ impl Session {
                 self.notify("user");
 
                 let handle = spawn_tokio!(async move {
-                    let display_name = client.display_name().await?;
-                    let avatar_url = client.avatar_url().await?;
+                    let account = client.account();
+                    let display_name = account.get_display_name().await?;
+                    let avatar_url = account.get_avatar_url().await?;
                     let result: Result<_, MatrixError> = Ok((display_name, avatar_url));
                     result
                 });
