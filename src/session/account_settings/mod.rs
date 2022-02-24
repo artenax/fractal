@@ -1,5 +1,10 @@
 use adw::{prelude::*, subclass::prelude::*};
-use gtk::{glib, glib::FromVariant, subclass::prelude::*, CompositeTemplate};
+use gtk::{
+    glib,
+    glib::{clone, FromVariant},
+    subclass::prelude::*,
+    CompositeTemplate,
+};
 
 mod devices_page;
 mod user_page;
@@ -19,6 +24,7 @@ mod imp {
     #[template(resource = "/org/gnome/FractalNext/account-settings.ui")]
     pub struct AccountSettings {
         pub session: RefCell<Option<WeakRef<Session>>>,
+        pub session_handler: RefCell<Option<glib::SignalHandlerId>>,
     }
 
     #[glib::object_subclass]
@@ -88,6 +94,14 @@ mod imp {
                 _ => unimplemented!(),
             }
         }
+
+        fn dispose(&self, _obj: &Self::Type) {
+            if let Some(session) = self.session.take().and_then(|session| session.upgrade()) {
+                if let Some(handler) = self.session_handler.take() {
+                    session.disconnect(handler);
+                }
+            }
+        }
     }
 
     impl WidgetImpl for AccountSettings {}
@@ -117,8 +131,26 @@ impl AccountSettings {
     }
 
     pub fn set_session(&self, session: Option<Session>) {
-        if self.session() == session {
+        let prev_session = self.session();
+        if prev_session == session {
             return;
+        }
+
+        let priv_ = self.imp();
+        if let Some(session) = prev_session {
+            if let Some(handler) = priv_.session_handler.take() {
+                session.disconnect(handler);
+            }
+        }
+
+        if let Some(session) = &session {
+            priv_
+                .session_handler
+                .replace(Some(session.connect_logged_out(
+                    clone!(@weak self as obj => move |_| {
+                        obj.close();
+                    }),
+                )));
         }
 
         self.imp()
