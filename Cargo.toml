@@ -59,8 +59,7 @@ package = "libadwaita"
 version = "0.1.0"
 
 [dependencies.matrix-sdk]
-git = "https://github.com/jsparber/matrix-rust-sdk.git"
-branch = "enable_ruma_unstable_pre_spec"
+git = "https://github.com/matrix-org/matrix-rust-sdk.git"
 features = [
     "socks",
     "encryption",

@@ -54,7 +54,7 @@ impl Camera {
         let proxy = camera::CameraProxy::new(&self.connection().await?).await?;
         proxy.access_camera().await?;
         let stream_fd = proxy.open_pipe_wire_remote().await?;
-        let node_id = camera::pipewire_node_id(stream_fd).await.ok();
+        let node_id = camera::pipewire_node_id(stream_fd).await.ok().flatten();
 
         Ok((stream_fd, node_id))
     }
