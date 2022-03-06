@@ -1,9 +1,9 @@
 use std::{collections::HashMap, fmt, path::PathBuf, string::FromUtf8Error};
 
 use gettextrs::gettext;
-use gtk::glib;
+use gtk::{gio, glib};
 use libsecret::{
-    password_clear_future, password_search_future, password_store_binary_future, prelude::*,
+    password_clear_future, password_search_sync, password_store_binary_future, prelude::*,
     Retrievable, Schema, SchemaAttributeType, SchemaFlags, SearchFlags, Value, COLLECTION_DEFAULT,
 };
 use log::error;
@@ -242,12 +242,12 @@ fn schema() -> Schema {
 
 /// Retrieves all sessions stored to the `SecretService`
 pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
-    let items = password_search_future(
+    let items = password_search_sync(
         Some(&schema()),
         HashMap::new(),
         SearchFlags::ALL | SearchFlags::UNLOCK | SearchFlags::LOAD_SECRETS,
-    )
-    .await?;
+        gio::Cancellable::NONE,
+    )?;
     let mut sessions = Vec::with_capacity(items.len());
 
     for item in items {
