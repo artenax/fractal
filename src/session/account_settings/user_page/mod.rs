@@ -9,7 +9,7 @@ use gtk::{
     CompositeTemplate,
 };
 use log::error;
-use matrix_sdk::ruma::{api::client::r0::capabilities::get_capabilities, MxcUri};
+use matrix_sdk::ruma::{api::client::capabilities::get_capabilities, MxcUri};
 
 mod change_password_subpage;
 mod deactivate_account_subpage;
@@ -450,7 +450,7 @@ impl UserPage {
 
                 // Check whether the user can change their password.
                 let handle = spawn_tokio!(async move {
-                    client.send(get_capabilities::Request::new(), None).await
+                    client.send(get_capabilities::v3::Request::new(), None).await
                 });
                 match handle.await.unwrap() {
                     Ok(res) => {

@@ -10,7 +10,7 @@ use log::warn;
 use matrix_sdk::{
     media::{MediaEventContent, MediaThumbnailSize},
     ruma::{
-        api::client::r0::media::get_content_thumbnail::Method,
+        api::client::media::get_content_thumbnail::v3::Method,
         events::{
             room::message::{ImageMessageEventContent, VideoMessageEventContent},
             sticker::StickerEventContent,

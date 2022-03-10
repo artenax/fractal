@@ -6,7 +6,7 @@ use matrix_sdk::{
     media::{MediaFormat, MediaRequest, MediaThumbnailSize, MediaType},
     room::Room as MatrixRoom,
     ruma::{
-        api::client::r0::media::get_content_thumbnail::Method,
+        api::client::media::get_content_thumbnail::v3::Method,
         events::{room::avatar::RoomAvatarEventContent, AnyStateEventContent},
         identifiers::MxcUri,
     },

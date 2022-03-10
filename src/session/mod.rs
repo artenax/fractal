@@ -30,16 +30,15 @@ use matrix_sdk::{
         api::{
             client::{
                 error::ErrorKind,
-                r0::{
-                    filter::{FilterDefinition, LazyLoadOptions, RoomEventFilter, RoomFilter},
-                    session::logout,
-                },
+                filter::{FilterDefinition, LazyLoadOptions, RoomEventFilter, RoomFilter},
+                session::logout,
             },
             error::{FromHttpResponseError, ServerError},
         },
         assign,
         identifiers::RoomId,
     },
+    store::make_store_config,
     Client, HttpError,
 };
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
@@ -304,13 +303,13 @@ impl Session {
                     .map(char::from)
                     .collect()
             };
-            let config = ClientConfig::new()
+            let store_config = make_store_config(path.as_path(), Some(&passphrase))
+                .map_err::<matrix_sdk::StoreError, _>(Into::into)?;
+            let config = ClientConfig::with_store_config(store_config)
                 // force_auth option to solve an issue with some servers configuration to require
                 // auth for profiles:
                 // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
-                .request_config(RequestConfig::new().retry_limit(2).force_auth())
-                .passphrase(passphrase.clone())
-                .store_path(path.clone());
+                .request_config(RequestConfig::new().retry_limit(2).force_auth());
 
             let config = if use_discovery {
                 config.use_discovery_response()
@@ -359,13 +358,14 @@ impl Session {
 
     pub fn login_with_previous_session(&self, session: StoredSession) {
         let handle = spawn_tokio!(async move {
-            let config = ClientConfig::new()
+            let store_config =
+                make_store_config(session.path.as_path(), Some(&session.secret.passphrase))
+                    .map_err::<matrix_sdk::StoreError, _>(Into::into)?;
+            let config = ClientConfig::with_store_config(store_config)
                 // force_auth option to solve an issue with some servers configuration to require
                 // auth for profiles:
                 // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
-                .request_config(RequestConfig::new().retry_limit(2).force_auth())
-                .passphrase(session.secret.passphrase.clone())
-                .store_path(session.path.clone());
+                .request_config(RequestConfig::new().retry_limit(2).force_auth());
 
             let client = Client::new_with_config(session.homeserver.clone(), config).await?;
             client
@@ -699,7 +699,7 @@ impl Session {
 
         let client = self.client();
         let handle = spawn_tokio!(async move {
-            let request = logout::Request::new();
+            let request = logout::v3::Request::new();
             client.send(request, None).await
         });
 

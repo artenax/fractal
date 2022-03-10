@@ -9,7 +9,7 @@ use matrix_sdk::{
         api::{
             client::{
                 error::ErrorKind as RumaClientErrorKind,
-                r0::room::{create_room, Visibility},
+                room::{create_room, Visibility},
             },
             error::{FromHttpResponseError, ServerError},
         },
@@ -226,7 +226,7 @@ impl RoomCreation {
             // We don't allow invalid room names to be entered by the user
             let name = room_name.as_str().try_into().unwrap();
 
-            let request = assign!(create_room::Request::new(),
+            let request = assign!(create_room::v3::Request::new(),
             {
                 name: Some(name),
                 visibility,

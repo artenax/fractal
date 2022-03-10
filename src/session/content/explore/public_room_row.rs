@@ -171,9 +171,6 @@ impl PublicRoomRow {
                 let has_alias = if let Some(ref alias) = matrix_public_room.canonical_alias {
                     priv_.alias.set_text(alias.as_str());
                     true
-                } else if let Some(alias) = matrix_public_room.aliases.get(0) {
-                    priv_.alias.set_text(alias.as_str());
-                    true
                 } else {
                     false
                 };

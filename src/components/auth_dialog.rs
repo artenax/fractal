@@ -14,7 +14,7 @@ use matrix_sdk::{
         api::{
             client::{
                 error::ErrorBody,
-                r0::uiaa::{
+                uiaa::{
                     AuthData as MatrixAuthData, AuthType,
                     FallbackAcknowledgement as MatrixFallbackAcknowledgement,
                     Password as MatrixPassword, UiaaInfo, UiaaResponse, UserIdentifier,
@@ -59,7 +59,7 @@ impl AuthData {
                 password,
                 session,
             }) => MatrixAuthData::Password(assign!(MatrixPassword::new(
-                                UserIdentifier::MatrixId(user_id),
+                                UserIdentifier::UserIdOrLocalpart(user_id),
                                 password,
                             ), { session: session.as_deref() })),
             AuthData::FallbackAcknowledgement(FallbackAcknowledgement { session }) => {

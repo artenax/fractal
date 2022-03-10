@@ -2,7 +2,7 @@ use gtk::{glib, prelude::*, subclass::prelude::*};
 use matrix_sdk::{
     encryption::identities::Device as CryptoDevice,
     ruma::{
-        api::client::r0::device::{delete_device, Device as MatrixDevice},
+        api::client::device::{delete_device, Device as MatrixDevice},
         assign,
         identifiers::DeviceId,
     },
@@ -191,10 +191,11 @@ impl Device {
                 async move {
                     if let Some(auth) = auth_data {
                         let auth = Some(auth.as_matrix_auth_data());
-                        let request = assign!(delete_device::Request::new(&device_id), { auth });
+                        let request =
+                            assign!(delete_device::v3::Request::new(&device_id), { auth });
                         client.send(request, None).await.map_err(Into::into)
                     } else {
-                        let request = delete_device::Request::new(&device_id);
+                        let request = delete_device::v3::Request::new(&device_id);
                         client.send(request, None).await.map_err(Into::into)
                     }
                 }

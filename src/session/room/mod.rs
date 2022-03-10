@@ -20,7 +20,7 @@ use matrix_sdk::{
     deserialized_responses::{JoinedRoom, LeftRoom, SyncRoomEvent},
     room::Room as MatrixRoom,
     ruma::{
-        api::client::r0::sync::sync_events::InvitedRoom,
+        api::client::sync::sync_events::v3::InvitedRoom,
         events::{
             reaction::{Relation, SyncReactionEvent},
             room::{
@@ -32,15 +32,14 @@ use matrix_sdk::{
             },
             tag::{TagInfo, TagName},
             AnyRoomAccountDataEvent, AnyStateEventContent, AnyStrippedStateEvent,
-            AnySyncMessageEvent, AnySyncRoomEvent, AnySyncStateEvent, EventType, SyncMessageEvent,
-            Unsigned,
+            AnySyncMessageEvent, AnySyncRoomEvent, AnySyncStateEvent, StateEventType,
+            SyncMessageEvent, Unsigned,
         },
         identifiers::{EventId, RoomId, TransactionId, UserId},
         serde::Raw,
         MilliSecondsSinceUnixEpoch,
     },
 };
-use serde_json::value::RawValue;
 
 pub use self::{
     event::Event,
@@ -878,7 +877,7 @@ impl Room {
         let matrix_room = self.matrix_room();
         let handle = spawn_tokio!(async move {
             let state_event = match matrix_room
-                .get_state_event(EventType::RoomPowerLevels, "")
+                .get_state_event(StateEventType::RoomPowerLevels, "")
                 .await
             {
                 Ok(state_event) => state_event,
@@ -913,9 +912,7 @@ impl Room {
     fn send_room_message_event(&self, event: AnySyncMessageEvent, txn_id: Box<TransactionId>) {
         if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
             let content = event.content();
-            let json = serde_json::to_string(&AnySyncRoomEvent::Message(event)).unwrap();
-            let raw_event: Raw<AnySyncRoomEvent> =
-                Raw::from_json(RawValue::from_string(json).unwrap());
+            let raw_event: Raw<AnySyncRoomEvent> = Raw::new(&content).unwrap().cast();
             let event = Event::new(raw_event.into(), self);
             self.imp()
                 .timeline
@@ -975,19 +972,17 @@ impl Room {
         } else {
             RoomRedactionEventContent::new()
         };
-        let event = AnySyncMessageEvent::RoomRedaction(SyncRoomRedactionEvent {
+        let event = SyncRoomRedactionEvent {
             content,
             redacts: redacted_event_id.clone(),
             event_id,
             sender: self.session().user().unwrap().user_id().as_ref().to_owned(),
             origin_server_ts: MilliSecondsSinceUnixEpoch::now(),
             unsigned: Unsigned::default(),
-        });
+        };
 
         if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
-            let json = serde_json::to_string(&AnySyncRoomEvent::Message(event)).unwrap();
-            let raw_event: Raw<AnySyncRoomEvent> =
-                Raw::from_json(RawValue::from_string(json).unwrap());
+            let raw_event: Raw<AnySyncRoomEvent> = Raw::new(&event).unwrap().cast();
             let event = Event::new(raw_event.into(), self);
             self.imp()
                 .timeline

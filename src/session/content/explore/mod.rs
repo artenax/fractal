@@ -5,7 +5,7 @@ mod public_room_row;
 use adw::subclass::prelude::*;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 use log::error;
-use matrix_sdk::ruma::api::client::r0::thirdparty::get_protocols;
+use matrix_sdk::ruma::api::client::thirdparty::get_protocols;
 
 pub use self::{
     public_room::PublicRoom, public_room_list::PublicRoomList, public_room_row::PublicRoomRow,
@@ -209,7 +209,7 @@ impl Explore {
         }
     }
 
-    fn set_protocols(&self, protocols: get_protocols::Response) {
+    fn set_protocols(&self, protocols: get_protocols::v3::Response) {
         for protocol in protocols
             .protocols
             .into_iter()
@@ -231,7 +231,7 @@ impl Explore {
         network_menu.set_active(Some(0));
 
         let handle =
-            spawn_tokio!(async move { client.send(get_protocols::Request::new(), None).await });
+            spawn_tokio!(async move { client.send(get_protocols::v3::Request::new(), None).await });
 
         spawn!(
             glib::PRIORITY_DEFAULT_IDLE,

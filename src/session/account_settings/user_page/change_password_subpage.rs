@@ -9,7 +9,7 @@ use log::error;
 use matrix_sdk::{
     ruma::{
         api::{
-            client::r0::account::change_password,
+            client::account::change_password,
             error::{FromHttpResponseError, ServerError},
         },
         assign,
@@ -295,10 +295,11 @@ impl ChangePasswordSubpage {
                 async move {
                     if let Some(auth) = auth_data {
                         let auth = Some(auth.as_matrix_auth_data());
-                        let request = assign!(change_password::Request::new(&password), { auth });
+                        let request =
+                            assign!(change_password::v3::Request::new(&password), { auth });
                         client.send(request, None).await.map_err(Into::into)
                     } else {
-                        let request = change_password::Request::new(&password);
+                        let request = change_password::v3::Request::new(&password);
                         client.send(request, None).await.map_err(Into::into)
                     }
                 }

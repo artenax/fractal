@@ -3,7 +3,7 @@ use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::error;
 use matrix_sdk::{
     encryption::identities::UserDevices as CryptoDevices,
-    ruma::api::client::r0::device::Device as MatrixDevice, Error,
+    ruma::api::client::device::Device as MatrixDevice, Error,
 };
 
 use super::{Device, DeviceItem};

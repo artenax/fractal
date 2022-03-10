@@ -6,7 +6,7 @@ use gtk::{
     CompositeTemplate,
 };
 use log::error;
-use matrix_sdk::ruma::{api::client::r0::account::deactivate, assign};
+use matrix_sdk::ruma::{api::client::account::deactivate, assign};
 
 use crate::{
     components::{AuthDialog, EntryRow, SpinnerButton, Toast},
@@ -182,10 +182,10 @@ impl DeactivateAccountSubpage {
             .authenticate(move |client, auth_data| async move {
                 if let Some(auth) = auth_data {
                     let auth = Some(auth.as_matrix_auth_data());
-                    let request = assign!(deactivate::Request::new(), { auth });
+                    let request = assign!(deactivate::v3::Request::new(), { auth });
                     client.send(request, None).await.map_err(Into::into)
                 } else {
-                    let request = deactivate::Request::new();
+                    let request = deactivate::v3::Request::new();
                     client.send(request, None).await.map_err(Into::into)
                 }
             })

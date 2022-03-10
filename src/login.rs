@@ -5,7 +5,7 @@ use log::{debug, warn};
 use matrix_sdk::{
     config::RequestConfig,
     ruma::{
-        api::client::unversioned::get_supported_versions, identifiers::Error as IdentifierError,
+        api::client::discover::get_supported_versions, identifiers::Error as IdentifierError,
         ServerName, UserId,
     },
     Client, Result as MatrixResult,

@@ -3,7 +3,7 @@ use std::convert::TryFrom;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::error;
 use matrix_sdk::ruma::{
-    api::client::r0::directory::get_public_rooms_filtered::{
+    api::client::directory::get_public_rooms_filtered::v3::{
         Request as PublicRoomsRequest, Response as PublicRoomsResponse,
     },
     assign,

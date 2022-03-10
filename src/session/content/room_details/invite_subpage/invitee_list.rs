@@ -3,7 +3,7 @@ use std::sync::Arc;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::error;
 use matrix_sdk::{
-    ruma::{api::client::r0::user_directory::search_users, identifiers::UserId},
+    ruma::{api::client::user_directory::search_users, identifiers::UserId},
     HttpError,
 };
 
@@ -227,7 +227,7 @@ impl InviteeList {
     fn finish_search(
         &self,
         search_term: String,
-        response: Result<search_users::Response, HttpError>,
+        response: Result<search_users::v3::Response, HttpError>,
     ) {
         let session = self.room().session();
         let member_list = self.room().members();
@@ -307,7 +307,7 @@ impl InviteeList {
 
         let search_term_clone = search_term.clone();
         let handle = spawn_tokio!(async move {
-            let request = search_users::Request::new(&search_term_clone);
+            let request = search_users::v3::Request::new(&search_term_clone);
             client.send(request, None).await
         });
 

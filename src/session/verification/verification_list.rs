@@ -3,7 +3,7 @@ use std::sync::Arc;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, warn};
 use matrix_sdk::ruma::{
-    api::client::r0::sync::sync_events::ToDevice, events::AnyToDeviceEvent, identifiers::UserId,
+    api::client::sync::sync_events::v3::ToDevice, events::AnyToDeviceEvent, identifiers::UserId,
 };
 
 use crate::session::{
