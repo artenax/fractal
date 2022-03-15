@@ -477,7 +477,7 @@ impl RoomHistory {
             })
         });
 
-        self.room().unwrap().send_message(content);
+        self.room().unwrap().send_room_message_event(content);
         buffer.set_text("");
     }
 

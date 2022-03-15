@@ -22,20 +22,18 @@ use matrix_sdk::{
     ruma::{
         api::client::sync::sync_events::v3::InvitedRoom,
         events::{
-            reaction::{Relation, SyncReactionEvent},
+            reaction::{ReactionEventContent, Relation},
             room::{
                 member::MembershipState,
-                message::RoomMessageEventContent,
                 name::RoomNameEventContent,
                 redaction::{RoomRedactionEventContent, SyncRoomRedactionEvent},
                 topic::RoomTopicEventContent,
             },
             tag::{TagInfo, TagName},
-            AnyRoomAccountDataEvent, AnyStateEventContent, AnyStrippedStateEvent,
-            AnySyncMessageEvent, AnySyncRoomEvent, AnySyncStateEvent, StateEventType,
-            SyncMessageEvent, Unsigned,
+            AnyRoomAccountDataEvent, AnyStateEventContent, AnyStrippedStateEvent, AnySyncRoomEvent,
+            AnySyncStateEvent, MessageEventContent, StateEventType, SyncMessageEvent, Unsigned,
         },
-        identifiers::{EventId, RoomId, TransactionId, UserId},
+        identifiers::{EventId, RoomId, UserId},
         serde::Raw,
         MilliSecondsSinceUnixEpoch,
     },
@@ -908,17 +906,27 @@ impl Room {
         );
     }
 
-    /// Send the given `event` in this room, with the temporary ID `txn_id`.
-    fn send_room_message_event(&self, event: AnySyncMessageEvent, txn_id: Box<TransactionId>) {
+    /// Send a message with the given `content` in this room.
+    pub fn send_room_message_event(&self, content: impl MessageEventContent + Send + 'static) {
         if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
-            let content = event.content();
-            let raw_event: Raw<AnySyncRoomEvent> = Raw::new(&content).unwrap().cast();
+            let (txn_id, event_id) = pending_event_ids();
+            let matrix_event = SyncMessageEvent {
+                content,
+                event_id,
+                sender: self.session().user().unwrap().user_id().as_ref().to_owned(),
+                origin_server_ts: MilliSecondsSinceUnixEpoch::now(),
+                unsigned: Unsigned::default(),
+            };
+
+            let raw_event: Raw<AnySyncRoomEvent> = Raw::new(&matrix_event).unwrap().cast();
             let event = Event::new(raw_event.into(), self);
             self.imp()
                 .timeline
                 .get()
                 .unwrap()
                 .append_pending(&txn_id, event);
+
+            let content = matrix_event.content;
 
             let handle =
                 spawn_tokio!(async move { matrix_room.send(content, Some(&txn_id)).await });
@@ -936,32 +944,9 @@ impl Room {
         }
     }
 
-    /// Send a message with the given `content` in this room.
-    pub fn send_message(&self, content: RoomMessageEventContent) {
-        let (txn_id, event_id) = pending_event_ids();
-        let event = AnySyncMessageEvent::RoomMessage(SyncMessageEvent {
-            content,
-            event_id,
-            sender: self.session().user().unwrap().user_id().as_ref().to_owned(),
-            origin_server_ts: MilliSecondsSinceUnixEpoch::now(),
-            unsigned: Unsigned::default(),
-        });
-
-        self.send_room_message_event(event, txn_id);
-    }
-
     /// Send a `key` reaction for the `relates_to` event ID in this room.
     pub fn send_reaction(&self, key: String, relates_to: Box<EventId>) {
-        let (txn_id, event_id) = pending_event_ids();
-        let event = AnySyncMessageEvent::Reaction(SyncReactionEvent {
-            content: Relation::new(relates_to, key).into(),
-            event_id,
-            sender: self.session().user().unwrap().user_id().as_ref().to_owned(),
-            origin_server_ts: MilliSecondsSinceUnixEpoch::now(),
-            unsigned: Unsigned::default(),
-        });
-
-        self.send_room_message_event(event, txn_id);
+        self.send_room_message_event(ReactionEventContent::new(Relation::new(relates_to, key)));
     }
 
     /// Redact `redacted_event_id` in this room because of `reason`.
