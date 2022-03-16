@@ -167,9 +167,9 @@ impl User {
     }
 
     pub async fn crypto_identity(&self) -> Option<UserIdentity> {
-        let client = self.session().client();
+        let encryption = self.session().client().encryption();
         let user_id = self.user_id();
-        let handle = spawn_tokio!(async move { client.get_user_identity(&user_id).await });
+        let handle = spawn_tokio!(async move { encryption.get_user_identity(&user_id).await });
 
         match handle.await.unwrap() {
             Ok(identity) => identity,

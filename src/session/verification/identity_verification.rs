@@ -774,7 +774,7 @@ macro_rules! wait {
         {
             loop {
                 // FIXME: add method to the sdk to check if a SAS verification was started
-                if let Some(Verification::SasV1(sas)) = $this.client.get_verification($this.request.other_user_id(), $this.request.flow_id()).await {
+                if let Some(Verification::SasV1(sas)) = $this.client.encryption().get_verification($this.request.other_user_id(), $this.request.flow_id()).await {
                     return $this.continue_sas(sas).await;
                 }
 
@@ -893,7 +893,10 @@ impl Context {
         sync_receiver: mpsc::Receiver<Message>,
         supported_methods: SupportedMethods,
     ) -> Option<Self> {
-        let request = client.get_verification_request(user_id, flow_id).await?;
+        let request = client
+            .encryption()
+            .get_verification_request(user_id, flow_id)
+            .await?;
 
         Some(Self {
             client,

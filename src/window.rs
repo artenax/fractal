@@ -172,7 +172,12 @@ impl Window {
                 } else {
                     for stored_session in sessions {
                         let session = Session::new();
-                        session.login_with_previous_session(stored_session);
+                        spawn!(
+                            glib::PRIORITY_DEFAULT_IDLE,
+                            clone!(@weak session => async move {
+                                session.login_with_previous_session(stored_session).await;
+                            })
+                        );
                         self.add_session(&session);
                     }
                 }

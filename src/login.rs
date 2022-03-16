@@ -6,7 +6,7 @@ use matrix_sdk::{
     config::RequestConfig,
     ruma::{
         api::client::discover::get_supported_versions, identifiers::Error as IdentifierError,
-        ServerName, UserId,
+        ServerName,
     },
     Client, Result as MatrixResult,
 };
@@ -294,11 +294,11 @@ impl Login {
 
     fn try_autodiscovery(&self) {
         let server = build_server_name(self.imp().homeserver_entry.text().as_str()).unwrap();
-        let mxid = UserId::parse_with_server_name("user", &server).unwrap();
 
         self.freeze();
 
-        let handle = spawn_tokio!(async move { Client::new_from_user_id(&mxid).await });
+        let handle =
+            spawn_tokio!(async move { Client::builder().server_name(&server).build().await });
 
         spawn!(
             glib::PRIORITY_DEFAULT_IDLE,
@@ -381,13 +381,19 @@ impl Login {
         let homeserver = self.homeserver().unwrap();
         let username = priv_.username_entry.text().to_string();
         let password = priv_.password_entry.text().to_string();
+        let autodiscovery = self.autodiscovery();
 
         self.freeze();
 
         let session = Session::new();
         self.set_handler_for_prepared_session(&session);
 
-        session.login_with_password(homeserver, username, password, self.autodiscovery());
+        spawn!(
+            glib::PRIORITY_DEFAULT_IDLE,
+            clone!(@weak session => async move {
+                session.login_with_password(homeserver, username, password, autodiscovery).await;
+            })
+        );
         priv_.current_session.replace(Some(session));
     }
 

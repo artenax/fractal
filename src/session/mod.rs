@@ -10,7 +10,7 @@ mod sidebar;
 mod user;
 pub mod verification;
 
-use std::{convert::TryFrom, fs, time::Duration};
+use std::{convert::TryFrom, fs, path::Path, time::Duration};
 
 use adw::subclass::prelude::BinImpl;
 use futures::StreamExt;
@@ -24,7 +24,7 @@ use gtk::{
 };
 use log::{debug, error, warn};
 use matrix_sdk::{
-    config::{ClientConfig, RequestConfig, SyncSettings},
+    config::{RequestConfig, SyncSettings},
     deserialized_responses::SyncResponse,
     ruma::{
         api::{
@@ -38,10 +38,11 @@ use matrix_sdk::{
         assign,
         identifiers::RoomId,
     },
-    store::make_store_config,
-    Client, HttpError,
+    store::{make_store_config, OpenStoreError},
+    Client, ClientBuildError, Error, HttpError,
 };
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
+use thiserror::Error;
 use tokio::task::JoinHandle;
 use url::Url;
 
@@ -66,6 +67,26 @@ use crate::{
     session::sidebar::ItemList,
     spawn, spawn_tokio, UserFacingError, Window,
 };
+
+#[derive(Error, Debug)]
+pub enum ClientSetupError {
+    #[error(transparent)]
+    Store(#[from] OpenStoreError),
+    #[error(transparent)]
+    Client(#[from] ClientBuildError),
+    #[error(transparent)]
+    Sdk(#[from] Error),
+}
+
+impl UserFacingError for ClientSetupError {
+    fn to_user_facing(self) -> String {
+        match self {
+            ClientSetupError::Store(err) => err.to_user_facing(),
+            ClientSetupError::Client(err) => err.to_user_facing(),
+            ClientSetupError::Sdk(err) => err.to_user_facing(),
+        }
+    }
+}
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -283,7 +304,12 @@ impl Session {
         }
     }
 
-    pub fn login_with_password(
+    fn toggle_room_search(&self) {
+        let room_search = self.imp().sidebar.room_search_bar();
+        room_search.set_search_mode(!room_search.is_search_mode());
+    }
+
+    pub async fn login_with_password(
         &self,
         homeserver: Url,
         username: String,
@@ -291,33 +317,22 @@ impl Session {
         use_discovery: bool,
     ) {
         self.imp().logout_on_dispose.set(true);
+
         let mut path = glib::user_data_dir();
         path.push(glib::uuid_string_random().as_str());
 
+        let passphrase: String = {
+            let mut rng = thread_rng();
+            (&mut rng)
+                .sample_iter(Alphanumeric)
+                .take(30)
+                .map(char::from)
+                .collect()
+        };
+
         let handle = spawn_tokio!(async move {
-            let passphrase: String = {
-                let mut rng = thread_rng();
-                (&mut rng)
-                    .sample_iter(Alphanumeric)
-                    .take(30)
-                    .map(char::from)
-                    .collect()
-            };
-            let store_config = make_store_config(path.as_path(), Some(&passphrase))
-                .map_err::<matrix_sdk::StoreError, _>(Into::into)?;
-            let config = ClientConfig::with_store_config(store_config)
-                // force_auth option to solve an issue with some servers configuration to require
-                // auth for profiles:
-                // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
-                .request_config(RequestConfig::new().retry_limit(2).force_auth());
+            let client = create_client(&homeserver, &path, &passphrase, use_discovery).await?;
 
-            let config = if use_discovery {
-                config.use_discovery_response()
-            } else {
-                config
-            };
-
-            let client = Client::new_with_config(homeserver.clone(), config).await?;
             let response = client
                 .login(&username, &password, None, Some("Fractal Next"))
                 .await;
@@ -338,36 +353,24 @@ impl Session {
                 Err(error) => {
                     // Remove the store created by Client::new()
                     fs::remove_dir_all(path).unwrap();
-                    Err(error)
+                    Err(error.into())
                 }
             }
         });
 
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                obj.handle_login_result(handle.await.unwrap(), true).await;
-            })
-        );
+        self.handle_login_result(handle.await.unwrap(), true).await;
     }
 
-    fn toggle_room_search(&self) {
-        let room_search = self.imp().sidebar.room_search_bar();
-        room_search.set_search_mode(!room_search.is_search_mode());
-    }
-
-    pub fn login_with_previous_session(&self, session: StoredSession) {
+    pub async fn login_with_previous_session(&self, session: StoredSession) {
         let handle = spawn_tokio!(async move {
-            let store_config =
-                make_store_config(session.path.as_path(), Some(&session.secret.passphrase))
-                    .map_err::<matrix_sdk::StoreError, _>(Into::into)?;
-            let config = ClientConfig::with_store_config(store_config)
-                // force_auth option to solve an issue with some servers configuration to require
-                // auth for profiles:
-                // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
-                .request_config(RequestConfig::new().retry_limit(2).force_auth());
+            let client = create_client(
+                &session.homeserver,
+                &session.path,
+                &session.secret.passphrase,
+                false,
+            )
+            .await?;
 
-            let client = Client::new_with_config(session.homeserver.clone(), config).await?;
             client
                 .restore_login(matrix_sdk::Session {
                     user_id: session.user_id.clone(),
@@ -376,19 +379,15 @@ impl Session {
                 })
                 .await
                 .map(|_| (client, session))
+                .map_err(Into::into)
         });
 
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                obj.handle_login_result(handle.await.unwrap(), false).await;
-            })
-        );
+        self.handle_login_result(handle.await.unwrap(), false).await;
     }
 
     async fn handle_login_result(
         &self,
-        result: Result<(Client, StoredSession), matrix_sdk::Error>,
+        result: Result<(Client, StoredSession), ClientSetupError>,
         store_session: bool,
     ) {
         let priv_ = self.imp();
@@ -487,8 +486,9 @@ impl Session {
 
         self.imp().is_ready.set(true);
 
+        let encryption = client.encryption();
         let has_cross_signing_keys = spawn_tokio!(async move {
-            if let Some(cross_signing_status) = client.cross_signing_status().await {
+            if let Some(cross_signing_status) = encryption.cross_signing_status().await {
                 cross_signing_status.has_master
                     && cross_signing_status.has_self_signing
                     && cross_signing_status.has_user_signing
@@ -497,11 +497,11 @@ impl Session {
             }
         });
 
-        let client = self.client();
+        let encryption = client.encryption();
         let need_new_identity = spawn_tokio!(async move {
             // If there is an error just assume we don't need a new identity since
             // we will try again during the session verification
-            client
+            encryption
                 .get_user_identity(&user_id)
                 .await
                 .map_or(false, |identity| identity.is_none())
@@ -511,9 +511,9 @@ impl Session {
             let priv_ = obj.imp();
             if !has_cross_signing_keys.await.unwrap() {
                 if need_new_identity.await.unwrap() {
-                    let client = obj.client();
+                    let encryption = obj.client().encryption();
 
-                    let handle = spawn_tokio!(async move { client.bootstrap_cross_signing(None).await });
+                    let handle = spawn_tokio!(async move { encryption.bootstrap_cross_signing(None).await });
                     if handle.await.is_ok() {
                         priv_.stack.set_visible_child(&*priv_.content);
                         if let Some(window) = obj.parent_window() {
@@ -790,4 +790,24 @@ impl Default for Session {
     fn default() -> Self {
         Self::new()
     }
+}
+
+async fn create_client(
+    homeserver: &Url,
+    path: &Path,
+    passphrase: &str,
+    use_discovery: bool,
+) -> Result<Client, ClientSetupError> {
+    let store_config = make_store_config(path, Some(passphrase))?;
+    Client::builder()
+        .homeserver_url(homeserver)
+        .store_config(store_config)
+        // force_auth option to solve an issue with some servers configuration to require
+        // auth for profiles:
+        // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
+        .request_config(RequestConfig::new().retry_limit(2).force_auth())
+        .respect_login_well_known(use_discovery)
+        .build()
+        .await
+        .map_err(Into::into)
 }

@@ -294,9 +294,9 @@ impl SessionVerification {
             .authenticate(move |client, auth_data| async move {
                 if let Some(auth) = auth_data {
                     let auth = Some(auth.as_matrix_auth_data());
-                    client.bootstrap_cross_signing(auth).await
+                    client.encryption().bootstrap_cross_signing(auth).await
                 } else {
-                    client.bootstrap_cross_signing(None).await
+                    client.encryption().bootstrap_cross_signing(None).await
                 }
             })
             .await;

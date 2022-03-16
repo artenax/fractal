@@ -4,7 +4,8 @@ use matrix_sdk::{
         client::error::ErrorKind::{Forbidden, LimitExceeded, UserDeactivated},
         error::{FromHttpResponseError, ServerError},
     },
-    Error, HttpError,
+    store::OpenStoreError,
+    ClientBuildError, Error, HttpError,
 };
 
 pub trait UserFacingError {
@@ -53,6 +54,23 @@ impl UserFacingError for Error {
         match self {
             Error::DecryptorError(_) => gettext("Could not decrypt the event"),
             Error::Http(http_error) => http_error.to_user_facing(),
+            _ => gettext("An unknown error occurred."),
+        }
+    }
+}
+
+impl UserFacingError for OpenStoreError {
+    fn to_user_facing(self) -> String {
+        gettext("Could not open the store.")
+    }
+}
+
+impl UserFacingError for ClientBuildError {
+    fn to_user_facing(self) -> String {
+        match self {
+            ClientBuildError::Url(_) => gettext("This is not a valid URL"),
+            ClientBuildError::Http(err) => err.to_user_facing(),
+            ClientBuildError::SledStore(err) => err.to_user_facing(),
             _ => gettext("An unknown error occurred."),
         }
     }

@@ -204,7 +204,7 @@ impl DeviceList {
 
         let handle = spawn_tokio!(async move {
             let user_id = client.user_id().await.unwrap();
-            let crypto_devices = client.get_user_devices(&user_id).await;
+            let crypto_devices = client.encryption().get_user_devices(&user_id).await;
 
             let crypto_devices = match crypto_devices {
                 Ok(crypto_devices) => crypto_devices,
