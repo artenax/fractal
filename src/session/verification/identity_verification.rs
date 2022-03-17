@@ -997,6 +997,8 @@ impl Context {
             return self.start_sas().await;
         };
 
+        wait![self, request.has_been_scanned()];
+
         // FIXME: we should automatically confirm
         request.confirm().await?;
 
