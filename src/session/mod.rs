@@ -487,17 +487,6 @@ impl Session {
         self.imp().is_ready.set(true);
 
         let encryption = client.encryption();
-        let has_cross_signing_keys = spawn_tokio!(async move {
-            if let Some(cross_signing_status) = encryption.cross_signing_status().await {
-                cross_signing_status.has_master
-                    && cross_signing_status.has_self_signing
-                    && cross_signing_status.has_user_signing
-            } else {
-                false
-            }
-        });
-
-        let encryption = client.encryption();
         let need_new_identity = spawn_tokio!(async move {
             // If there is an error just assume we don't need a new identity since
             // we will try again during the session verification
@@ -509,7 +498,7 @@ impl Session {
 
         spawn!(clone!(@weak self as obj => async move {
             let priv_ = obj.imp();
-            if !has_cross_signing_keys.await.unwrap() {
+            if !obj.has_cross_signing_keys().await {
                 if need_new_identity.await.unwrap() {
                     let encryption = obj.client().encryption();
 
@@ -764,6 +753,9 @@ impl Session {
     pub fn show_content(&self) {
         let priv_ = self.imp();
         // FIXME: we should actually check if we have now the keys
+        spawn!(clone!(@weak self as obj => async move {
+            obj.has_cross_signing_keys().await;
+        }));
         priv_.stack.set_visible_child(&*priv_.content);
         priv_.logout_on_dispose.set(false);
         if let Some(window) = self.parent_window() {
@@ -783,6 +775,23 @@ impl Session {
         priv_.media_viewer.set_event(Some(event.clone()));
 
         priv_.stack.set_visible_child(&*priv_.media_viewer);
+    }
+
+    async fn has_cross_signing_keys(&self) -> bool {
+        let encryption = self.client().encryption();
+        spawn_tokio!(async move {
+            if let Some(cross_signing_status) = encryption.cross_signing_status().await {
+                debug!("Cross signing keys status: {:?}", cross_signing_status);
+                cross_signing_status.has_master
+                    && cross_signing_status.has_self_signing
+                    && cross_signing_status.has_user_signing
+            } else {
+                debug!("Session doesn't have needed cross signing keys");
+                false
+            }
+        })
+        .await
+        .unwrap()
     }
 }
 
