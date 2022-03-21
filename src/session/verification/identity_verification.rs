@@ -795,8 +795,11 @@ macro_rules! wait {
                         }
                         return Ok(State::Cancelled);
                     },
-                    Message::UserAction(UserAction::Cancel) | Message::UserAction(UserAction::NotMatch) => {
+                    Message::UserAction(UserAction::Cancel) => {
                         return $this.cancel_request().await;
+                    },
+                     Message::UserAction(UserAction::NotMatch) => {
+                        return $this.sas_mismatch().await;
                     },
                     Message::UserAction(UserAction::Accept) => {
                         if true $(&& $allow_action)? {
@@ -857,7 +860,7 @@ macro_rules! wait_without_scanning_sas {
                         return $this.cancel_request().await;
                     }
                     Message::UserAction(UserAction::NotMatch) => {
-                        return $this.cancel_request().await;
+                        return $this.sas_mismatch().await;
                     },
                     Message::UserAction(UserAction::Accept) => {
                         break;
@@ -1076,6 +1079,23 @@ impl Context {
 
         if let Some(info) = self.request.cancel_info() {
             self.send_cancel_info(info);
+        }
+
+        Ok(State::Cancelled)
+    }
+
+    async fn sas_mismatch(self) -> Result<State, RequestVerificationError> {
+        if let Some(Verification::SasV1(sas_verification)) = self
+            .client
+            .encryption()
+            .get_verification(self.request.other_user_id(), self.request.flow_id())
+            .await
+        {
+            sas_verification.mismatch().await?;
+
+            if let Some(info) = sas_verification.cancel_info() {
+                self.send_cancel_info(info);
+            }
         }
 
         Ok(State::Cancelled)
