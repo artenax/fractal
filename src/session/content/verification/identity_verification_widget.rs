@@ -568,7 +568,7 @@ impl IdentityVerificationWidget {
                     "Ask <b>{}</b> to accept the verification request.",
                     name
                 ));
-                priv_.label16.set_label(&gettext!(
+                priv_.label16.set_markup(&gettext!(
                     "Does <b>{}</b> see a confirmation shield on there session?",
                     name
                 ));
