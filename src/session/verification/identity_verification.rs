@@ -37,6 +37,7 @@ pub enum State {
     SasV1,
     QrV1Show,
     QrV1Scan,
+    QrV1Scanned,
     Completed,
     Cancelled,
     Dismissed,
@@ -132,6 +133,7 @@ pub enum UserAction {
     Cancel,
     StartSas,
     Scanned(QrVerificationData),
+    ConfirmScanning,
 }
 
 #[derive(Debug, PartialEq)]
@@ -581,6 +583,18 @@ impl IdentityVerification {
         }
     }
 
+    pub fn confirm_scanning(&self) {
+        if self.state() == State::QrV1Scanned {
+            if let Some(sync_sender) = &*self.imp().sync_sender.borrow() {
+                let result = sync_sender.try_send(Message::UserAction(UserAction::ConfirmScanning));
+
+                if let Err(error) = result {
+                    error!("Failed to send message to tokio runtime: {}", error);
+                }
+            }
+        }
+    }
+
     pub fn state(&self) -> State {
         self.imp().state.get()
     }
@@ -806,6 +820,9 @@ macro_rules! wait {
                             break;
                         }
                     },
+                    Message::UserAction(UserAction::ConfirmScanning) => {
+                        break;
+                    },
                     Message::UserAction(UserAction::StartSas) => {
                         if true $(&& $allow_action)? {
                             return $this.start_sas().await;
@@ -866,6 +883,9 @@ macro_rules! wait_without_scanning_sas {
                         break;
                     },
                     Message::UserAction(UserAction::StartSas) => {
+                    },
+                    Message::UserAction(UserAction::ConfirmScanning) => {
+                        break;
                     },
                     Message::UserAction(UserAction::Match) => {
                         if $this.request.is_passive() {
@@ -1002,7 +1022,10 @@ impl Context {
 
         wait![self, request.has_been_scanned()];
 
-        // FIXME: we should automatically confirm
+        self.send_state(State::QrV1Scanned);
+
+        wait![self];
+
         request.confirm().await?;
 
         debug!("Wait for done state");
@@ -1021,7 +1044,6 @@ impl Context {
             .await?
             .expect("Scanning Qr Code should be supported");
 
-        // FIXME: we should automatically confirm
         request.confirm().await?;
 
         debug!("Wait for done state");

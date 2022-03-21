@@ -59,6 +59,10 @@ mod imp {
         pub name_handler: RefCell<Option<SignalHandlerId>>,
         pub supported_methods_handler: RefCell<Option<SignalHandlerId>>,
         #[template_child]
+        pub confirm_scanning_btn: TemplateChild<SpinnerButton>,
+        #[template_child]
+        pub cancel_scanning_btn: TemplateChild<SpinnerButton>,
+        #[template_child]
         pub label1: TemplateChild<gtk::Label>,
         #[template_child]
         pub label2: TemplateChild<gtk::Label>,
@@ -84,6 +88,8 @@ mod imp {
         pub label14: TemplateChild<gtk::Label>,
         #[template_child]
         pub label15: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub label16: TemplateChild<gtk::Label>,
     }
 
     #[glib::object_subclass]
@@ -204,6 +210,24 @@ mod imp {
                     }
                 }
             }));
+
+            self.confirm_scanning_btn
+                .connect_clicked(clone!(@weak obj => move |button| {
+                    button.set_loading(true);
+                    obj.imp().cancel_scanning_btn.set_sensitive(false);
+                    if let Some(request) = obj.request() {
+                        request.confirm_scanning();
+                    }
+                }));
+
+            self.cancel_scanning_btn
+                .connect_clicked(clone!(@weak obj => move |button| {
+                    button.set_loading(true);
+                    obj.imp().confirm_scanning_btn.set_sensitive(false);
+                    if let Some(request) = obj.request() {
+                        request.cancel(true);
+                    }
+                }));
 
             self.qr_code_scanner
                 .connect_code_detected(clone!(@weak obj => move |_, data| {
@@ -327,6 +351,10 @@ impl IdentityVerificationWidget {
         priv_.start_emoji_btn.set_sensitive(true);
         priv_.start_emoji_btn2.set_loading(false);
         priv_.start_emoji_btn2.set_sensitive(true);
+        priv_.confirm_scanning_btn.set_loading(false);
+        priv_.confirm_scanning_btn.set_sensitive(true);
+        priv_.cancel_scanning_btn.set_loading(false);
+        priv_.cancel_scanning_btn.set_sensitive(true);
 
         self.clean_emoji();
     }
@@ -378,6 +406,11 @@ impl IdentityVerificationWidget {
                 }
                 VerificationState::QrV1Scan => {
                     self.start_scanning();
+                }
+                VerificationState::QrV1Scanned => {
+                    priv_
+                        .main_stack
+                        .set_visible_child_name("confirm-scanned-qr-code");
                 }
                 VerificationState::SasV1 => {
                     self.clean_emoji();
@@ -473,6 +506,9 @@ impl IdentityVerificationWidget {
                     "This session is ready to send and receive secure messages.",
                 ));
                 priv_.done_btn.set_label(&gettext("Get Started"));
+                priv_.label16.set_label(&gettext(
+                    "Does the other session show a confirmation shield?",
+                ));
             }
             VerificationMode::OtherSession => {
                 priv_
@@ -499,6 +535,9 @@ impl IdentityVerificationWidget {
                 priv_.label14.set_label(&gettext("Get Another Device"));
                 priv_.label15.set_label(&gettext(
                     "Accept the verification request from another session or device.",
+                ));
+                priv_.label16.set_label(&gettext(
+                    "Does the other session show a confirmation shield?",
                 ));
             }
             VerificationMode::User => {
@@ -527,6 +566,10 @@ impl IdentityVerificationWidget {
                 priv_.label14.set_markup(&gettext!("Waiting for {}", name));
                 priv_.label15.set_markup(&gettext!(
                     "Ask <b>{}</b> to accept the verification request.",
+                    name
+                ));
+                priv_.label16.set_label(&gettext!(
+                    "Does <b>{}</b> see a confirmation shield on there session?",
                     name
                 ));
             }
