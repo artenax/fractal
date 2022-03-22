@@ -288,6 +288,7 @@ mod imp {
                 "flow-id" => obj.set_flow_id(value.get().unwrap()),
                 "start-time" => obj.set_start_time(value.get().unwrap()),
                 "supported-methods" => obj.set_supported_methods(value.get().unwrap()),
+                "force-current-session" => obj.set_force_current_session(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
