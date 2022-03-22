@@ -1,7 +1,7 @@
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
-use log::error;
+use log::{debug, error};
 
 use super::IdentityVerificationWidget;
 use crate::{
@@ -247,8 +247,18 @@ impl SessionVerification {
             .set_visible_child_name("wait-for-device");
 
         spawn!(clone!(@weak self as obj => async move {
-            let request = IdentityVerification::create(&obj.session(), None).await;
-            obj.session().verification_list().add(request.clone());
+            let session = obj.session();
+            let verification_list = session.verification_list();
+            let request = if let Some(request) = verification_list.get_session() {
+                debug!("Use session verification started by another session");
+                request.set_force_current_session(true);
+                request
+            } else {
+                let request = IdentityVerification::create(&session, None).await;
+                debug!("Start a new session verification");
+                verification_list.add(request.clone());
+                request
+            };
             obj.set_request(Some(request));
         }));
     }

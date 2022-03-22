@@ -181,6 +181,7 @@ mod imp {
         pub start_time: OnceCell<glib::DateTime>,
         pub receive_time: OnceCell<glib::DateTime>,
         pub hide_error: Cell<bool>,
+        pub force_current_session: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -222,7 +223,7 @@ mod imp {
                         "The mode of this verification",
                         Mode::static_type(),
                         Mode::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                        glib::ParamFlags::READABLE,
                     ),
                     glib::ParamSpecFlags::new(
                         "supported-methods",
@@ -260,6 +261,13 @@ mod imp {
                         glib::DateTime::static_type(),
                         glib::ParamFlags::READABLE,
                     ),
+                    glib::ParamSpecBoolean::new(
+                        "force-current-session",
+                        "Force Current Session",
+                        "Whether this should be automatically accepted and treated as a Mode::CurrentSession",
+                        false,
+                        glib::ParamFlags::READWRITE| glib::ParamFlags::EXPLICIT_NOTIFY,
+                    ),
                 ]
             });
 
@@ -277,7 +285,6 @@ mod imp {
                 "user" => obj.set_user(value.get().unwrap()),
                 "session" => obj.set_session(value.get().unwrap()),
                 "state" => obj.set_state(value.get().unwrap()),
-                "mode" => obj.set_mode(value.get().unwrap()),
                 "flow-id" => obj.set_flow_id(value.get().unwrap()),
                 "start-time" => obj.set_start_time(value.get().unwrap()),
                 "supported-methods" => obj.set_supported_methods(value.get().unwrap()),
@@ -296,6 +303,7 @@ mod imp {
                 "supported-methods" => obj.supported_methods().to_value(),
                 "start-time" => obj.start_time().to_value(),
                 "receive-time" => obj.receive_time().to_value(),
+                "force-current-session" => obj.force_current_session().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -353,10 +361,9 @@ glib::wrapper! {
 }
 
 impl IdentityVerification {
-    fn for_error(mode: Mode, session: &Session, user: &User, start_time: &glib::DateTime) -> Self {
+    fn for_error(session: &Session, user: &User, start_time: &glib::DateTime) -> Self {
         glib::Object::new(&[
             ("state", &State::Error),
-            ("mode", &mode),
             ("session", session),
             ("user", user),
             ("start-time", start_time),
@@ -386,10 +393,10 @@ impl IdentityVerification {
     /// If `User` is `None` a new session verification is started for our own
     /// user and send to other devices
     pub async fn create(session: &Session, user: Option<&User>) -> Self {
-        let (mode, user) = if let Some(user) = user {
-            (Mode::User, user)
+        let user = if let Some(user) = user {
+            user
         } else {
-            (Mode::CurrentSession, session.user().unwrap())
+            session.user().unwrap()
         };
 
         let supported_methods =
@@ -406,7 +413,6 @@ impl IdentityVerification {
                 Ok(request) => {
                     let obj = glib::Object::new(&[
                         ("state", &State::RequestSend),
-                        ("mode", &mode),
                         ("supported-methods", &supported_methods),
                         ("flow-id", &request.flow_id()),
                         ("session", session),
@@ -425,7 +431,7 @@ impl IdentityVerification {
             error!("Starting a verification failed: Crypto identity wasn't found");
         }
 
-        Self::for_error(mode, session, user, &glib::DateTime::now_local().unwrap())
+        Self::for_error(session, user, &glib::DateTime::now_local().unwrap())
     }
 
     fn start_handler(&self) {
@@ -489,6 +495,23 @@ impl IdentityVerification {
 
     fn set_user(&self, user: User) {
         self.imp().user.set(user).unwrap()
+    }
+
+    pub fn force_current_session(&self) -> bool {
+        self.imp().force_current_session.get()
+    }
+
+    /// Force that this `IdentityVerification` is considered a
+    /// `Mode::CurrentSession`. This is usfull that incoming requests during
+    /// setup are accepted directly.
+    pub fn set_force_current_session(&self, force: bool) {
+        if self.force_current_session() == force {
+            return;
+        }
+
+        self.imp().force_current_session.set(force);
+        self.accept();
+        self.notify("force-current-session");
     }
 
     /// The current `Session`.
@@ -614,19 +637,17 @@ impl IdentityVerification {
     }
 
     pub fn mode(&self) -> Mode {
-        *self.imp().mode.get_or_init(|| {
-            let session = self.session();
-            let our_user = session.user().unwrap();
-            if our_user.user_id() == self.user().user_id() {
-                Mode::OtherSession
+        let session = self.session();
+        let our_user = session.user().unwrap();
+        if our_user.user_id() == self.user().user_id() {
+            if self.force_current_session() {
+                Mode::CurrentSession
             } else {
-                Mode::User
+                Mode::OtherSession
             }
-        })
-    }
-
-    fn set_mode(&self, mode: Mode) {
-        self.imp().mode.set(mode).unwrap();
+        } else {
+            Mode::User
+        }
     }
 
     /// Whether this request is finished

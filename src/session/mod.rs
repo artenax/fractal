@@ -633,12 +633,13 @@ impl Session {
         debug!("Received sync response");
         match response {
             Ok(response) => {
-                if !self.is_ready() {
-                    self.mark_ready();
-                }
                 self.room_list().handle_response_rooms(response.rooms);
                 self.verification_list()
                     .handle_response_to_device(response.to_device);
+
+                if !self.is_ready() {
+                    self.mark_ready();
+                }
             }
             Err(error) => {
                 if let matrix_sdk::Error::Http(HttpError::ClientApi(FromHttpResponseError::Http(

@@ -243,6 +243,7 @@ impl VerificationList {
             );
             length as u32
         };
+
         self.items_changed(length, 0, 1)
     }
 
@@ -270,5 +271,20 @@ impl VerificationList {
     ) -> Option<IdentityVerification> {
         let flow_id = FlowIdUnowned::new(user_id, flow_id.as_ref());
         self.imp().list.borrow().get(&flow_id).cloned()
+    }
+
+    // Returns the first valid session verification if any
+    pub fn get_session(&self) -> Option<IdentityVerification> {
+        let list = self.imp().list.borrow();
+        let session = self.session();
+        let user_id = session.user().unwrap().user_id();
+
+        for (_, item) in list.iter() {
+            if !item.is_finished() && item.user().user_id() == user_id {
+                return Some(item.to_owned());
+            }
+        }
+
+        None
     }
 }
