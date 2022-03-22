@@ -251,7 +251,6 @@ impl SessionVerification {
             let verification_list = session.verification_list();
             let request = if let Some(request) = verification_list.get_session() {
                 debug!("Use session verification started by another session");
-                request.set_force_current_session(true);
                 request
             } else {
                 let request = IdentityVerification::create(&session, None).await;
@@ -259,6 +258,8 @@ impl SessionVerification {
                 verification_list.add(request.clone());
                 request
             };
+
+            request.set_force_current_session(true);
             obj.set_request(Some(request));
         }));
     }
