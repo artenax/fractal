@@ -489,14 +489,16 @@ impl IdentityVerificationWidget {
                 // label1 and label2 won't be shown
                 priv_
                     .label2
-                    .set_label(&gettext("Verify the new session with the current session."));
+                    .set_label(&gettext("Verify the new session from the current session."));
                 priv_.label3.set_label(&gettext("Verify Session"));
-                priv_.label4.set_label(&gettext("Scan the QR code with this session from another session logged into this account."));
+                priv_.label4.set_label(&gettext(
+                    "Scan the QR code from another session logged into this account.",
+                ));
                 priv_.label5.set_label(&gettext("You scanned to qr code successfully. You may need to confirm the verification in the other session."));
                 priv_.label8.set_label(&gettext("Verify Session"));
                 priv_
                     .label9
-                    .set_label(&gettext("Scan this QR code with the other session."));
+                    .set_label(&gettext("Scan this QR code from the other session."));
                 priv_.label10.set_label(&gettext("Verify Session"));
                 priv_.label11.set_label(&gettext(
                     "Check if the same emoji appear in the same order on the other device.",
@@ -516,13 +518,13 @@ impl IdentityVerificationWidget {
                     .set_label(&gettext("Login Request From Another Session"));
                 priv_
                     .label2
-                    .set_label(&gettext("Verify the new session with the current session."));
+                    .set_label(&gettext("Verify the new session from the current session."));
                 priv_.label3.set_label(&gettext("Verify Session"));
-                priv_.label4.set_label(&gettext("Scan the QR code with this session from another session logged into this account."));
+                priv_.label4.set_label(&gettext("Scan the QR code from this session from another session logged into this account."));
                 priv_.label5.set_label(&gettext("You scanned to qr code successfully. You may need to confirm the verification in the other session."));
                 priv_.label8.set_label(&gettext("Verify Session"));
                 priv_.label9.set_label(&gettext(
-                    "Scan this QR code with the newly logged in session.",
+                    "Scan this QR code from the newly logged in session.",
                 ));
                 priv_.label10.set_label(&gettext("Verify Session"));
                 priv_.label11.set_label(&gettext(
@@ -554,7 +556,7 @@ impl IdentityVerificationWidget {
                 priv_.label5.set_markup(&gettext!("You scanned the QR code successfully. <b>{}</b> may need to confirm the verification.", name));
                 priv_.label8.set_markup(&gettext("Verification Request"));
                 priv_.label9.set_markup(&gettext(
-                    "Ask <b>{}</b> to scan this QR code with their device.",
+                    "Ask <b>{}</b> to scan this QR code from their session.",
                 ));
                 priv_.label10.set_markup(&gettext("Verification Request"));
                 priv_.label11.set_markup(&gettext!(
