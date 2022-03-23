@@ -2233,7 +2233,7 @@ checksum = "a3e378b66a060d48947b590737b30a1be76706c8dd7b8ba0f2fe3989c68a853f"
 [[package]]
 name = "matrix-qrcode"
 version = "0.2.0"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#c83f8f2a45c83b2e2ec6e1bb08425ef036c54e97"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#9ff6c1bc168d0e4a46ada9f3d8e4ade12206213b"
 dependencies = [
  "base64",
  "byteorder",
@@ -2248,7 +2248,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk"
 version = "0.4.1"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#c83f8f2a45c83b2e2ec6e1bb08425ef036c54e97"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#9ff6c1bc168d0e4a46ada9f3d8e4ade12206213b"
 dependencies = [
  "anymap2",
  "async-stream",
@@ -2281,7 +2281,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk-base"
 version = "0.4.1"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#c83f8f2a45c83b2e2ec6e1bb08425ef036c54e97"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#9ff6c1bc168d0e4a46ada9f3d8e4ade12206213b"
 dependencies = [
  "anyhow",
  "async-stream",
@@ -2308,7 +2308,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk-common"
 version = "0.4.1"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#c83f8f2a45c83b2e2ec6e1bb08425ef036c54e97"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#9ff6c1bc168d0e4a46ada9f3d8e4ade12206213b"
 dependencies = [
  "async-lock",
  "async-trait",
@@ -2324,7 +2324,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk-crypto"
 version = "0.4.1"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#c83f8f2a45c83b2e2ec6e1bb08425ef036c54e97"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#9ff6c1bc168d0e4a46ada9f3d8e4ade12206213b"
 dependencies = [
  "aes",
  "aes-gcm",
@@ -2354,7 +2354,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk-sled"
 version = "0.1.0"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#c83f8f2a45c83b2e2ec6e1bb08425ef036c54e97"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#9ff6c1bc168d0e4a46ada9f3d8e4ade12206213b"
 dependencies = [
  "anyhow",
  "async-stream",
