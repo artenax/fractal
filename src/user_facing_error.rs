@@ -70,7 +70,7 @@ impl UserFacingError for ClientBuildError {
         match self {
             ClientBuildError::Url(_) => gettext("This is not a valid URL"),
             ClientBuildError::AutoDiscovery(_) => {
-                gettext("This does not appear to be a Matrix homeserver.")
+                gettext("Homeserver auto-discovery failed. Try entering the full URL manually.")
             }
             ClientBuildError::Http(err) => err.to_user_facing(),
             ClientBuildError::SledStore(err) => err.to_user_facing(),
