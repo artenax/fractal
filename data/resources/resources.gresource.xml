@@ -73,9 +73,9 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="event-source-dialog.ui">ui/event-source-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="greeter.ui">ui/greeter.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="identity-verification-widget.ui">ui/identity-verification-widget.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks" alias="idp-button.ui">ui/idp-button.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="in-app-notification.ui">ui/in-app-notification.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="login-advanced-dialog.ui">ui/login-advanced-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="login-idp-button.ui">ui/login-idp-button.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="login.ui">ui/login.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="media-viewer.ui">ui/media-viewer.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="member-menu.ui">ui/member-menu.ui</file>

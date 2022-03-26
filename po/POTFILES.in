@@ -44,7 +44,7 @@ data/resources/ui/qr-code-scanner.ui
 src/application.rs
 src/components/editable_avatar.rs
 src/error_page.rs
-src/login.rs
+src/login/mod.rs
 src/secret.rs
 src/session/account_settings/devices_page/device_list.rs
 src/session/account_settings/devices_page/device_row.rs

@@ -20,10 +20,14 @@ use matrix_sdk::{
 use tokio::task::JoinHandle;
 use url::{ParseError, Url};
 
+mod idp_button;
+mod login_advanced_dialog;
+
+use idp_button::IdpButton;
+use login_advanced_dialog::LoginAdvancedDialog;
+
 use crate::{
     components::{SpinnerButton, Toast},
-    idp_button::IdpButton,
-    login_advanced_dialog::LoginAdvancedDialog,
     spawn, spawn_tokio,
     user_facing_error::UserFacingError,
     Session,

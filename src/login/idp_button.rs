@@ -73,7 +73,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/idp-button.ui")]
+    #[template(resource = "/org/gnome/FractalNext/login-idp-button.ui")]
     pub struct IdpButton {
         pub brand: Cell<IdpBrand>,
         pub id: RefCell<Option<String>>,
