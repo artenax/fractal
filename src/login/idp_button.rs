@@ -17,6 +17,34 @@ pub enum IdpBrand {
     Google = 4,
     Twitter = 5,
 }
+
+impl IdpBrand {
+    /// Get the icon name of this brand, according to the current theme.
+    pub fn icon(&self) -> &'static str {
+        let dark = adw::StyleManager::default().is_dark();
+        match self {
+            IdpBrand::Apple => {
+                if dark {
+                    "idp-apple-dark"
+                } else {
+                    "idp-apple"
+                }
+            }
+            IdpBrand::Facebook => "idp-facebook",
+            IdpBrand::GitHub => {
+                if dark {
+                    "idp-github-dark"
+                } else {
+                    "idp-github"
+                }
+            }
+            IdpBrand::GitLab => "idp-gitlab",
+            IdpBrand::Google => "idp-google",
+            IdpBrand::Twitter => "idp-twitter",
+        }
+    }
+}
+
 impl Default for IdpBrand {
     fn default() -> Self {
         IdpBrand::Apple
@@ -38,6 +66,7 @@ impl TryFrom<&IdentityProviderBrand> for IdpBrand {
         }
     }
 }
+
 impl From<IdpBrand> for &str {
     fn from(val: IdpBrand) -> Self {
         let dark = adw::StyleManager::default().is_dark();
@@ -127,6 +156,7 @@ mod imp {
 
             PROPERTIES.as_ref()
         }
+
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "id" => obj.id().unwrap().to_value(),
@@ -135,6 +165,7 @@ mod imp {
                 _ => unimplemented!(),
             }
         }
+
         fn set_property(
             &self,
             obj: &Self::Type,
@@ -168,33 +199,41 @@ mod imp {
 
     impl ButtonImpl for IdpButton {}
 }
+
 glib::wrapper! {
     pub struct IdpButton(ObjectSubclass<imp::IdpButton>)
         @extends gtk::Widget, gtk::Button, @implements gtk::Accessible;
 }
+
 impl IdpButton {
     pub fn update_icon(&self) {
-        self.set_icon_name(brand_to_icon(self.brand()));
+        self.set_icon_name(self.brand().icon());
     }
 
     pub fn set_id(&self, id: String) {
         self.imp().id.replace(Some(id));
     }
+
     pub fn set_homeserver(&self, url: String) {
         self.imp().homeserver.replace(Some(url));
     }
+
     pub fn set_brand(&self, brand: IdpBrand) {
         self.imp().brand.replace(brand);
     }
+
     pub fn id(&self) -> Option<String> {
         self.imp().id.borrow().clone()
     }
+
     pub fn homeserver(&self) -> Option<String> {
         self.imp().homeserver.borrow().clone()
     }
+
     pub fn brand(&self) -> IdpBrand {
         self.imp().brand.get()
     }
+
     pub fn new_from_identity_provider(homeserver: Url, idp: &IdentityProvider) -> Option<Self> {
         let gidp: IdpBrand = idp.brand.as_ref()?.try_into().ok()?;
         let ret: IdpButton = glib::Object::new(&[
@@ -204,28 +243,5 @@ impl IdpButton {
         ])
         .expect("Failed to create IdpButton");
         Some(ret)
-    }
-}
-fn brand_to_icon(brand: IdpBrand) -> &'static str {
-    let dark = adw::StyleManager::default().is_dark();
-    match brand {
-        IdpBrand::Apple => {
-            if dark {
-                "idp-apple-dark"
-            } else {
-                "idp-apple"
-            }
-        }
-        IdpBrand::Facebook => "idp-facebook",
-        IdpBrand::GitHub => {
-            if dark {
-                "idp-github-dark"
-            } else {
-                "idp-github"
-            }
-        }
-        IdpBrand::GitLab => "idp-gitlab",
-        IdpBrand::Google => "idp-google",
-        IdpBrand::Twitter => "idp-twitter",
     }
 }
