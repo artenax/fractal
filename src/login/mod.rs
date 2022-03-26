@@ -5,19 +5,15 @@ use log::{debug, warn};
 use matrix_sdk::{
     config::RequestConfig,
     ruma::{
-        api::client::{
-            discover::get_supported_versions,
-            session::get_login_types::v3::{
-                LoginType::{Password, Sso},
-                SsoLoginType,
-            },
+        api::client::session::get_login_types::v3::{
+            LoginType::{Password, Sso},
+            SsoLoginType,
         },
         identifiers::Error as IdentifierError,
         ServerName,
     },
-    Client, Result as MatrixResult,
+    Client,
 };
-use tokio::task::JoinHandle;
 use url::{ParseError, Url};
 
 mod idp_button;
@@ -418,23 +414,21 @@ impl Login {
 
         self.freeze();
 
-        let handle: JoinHandle<MatrixResult<_>> = spawn_tokio!(async move {
-            let client = Client::new(homeserver_clone).await?;
-            Ok(client
-                .send(
-                    get_supported_versions::Request::new(),
-                    Some(RequestConfig::new().disable_retry()),
-                )
-                .await?)
+        let handle = spawn_tokio!(async move {
+            Client::builder()
+                .homeserver_url(homeserver_clone)
+                .request_config(RequestConfig::new().disable_retry())
+                .build()
+                .await
         });
 
         spawn!(
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
-                    Ok(_) => {
+                    Ok(client) => {
                         obj.set_homeserver(Some(homeserver));
-                        obj.show_password_page();
+                        obj.check_login_types(client).await;
                     }
                     Err(error) => {
                         warn!("Failed to check homeserver: {}", error);
