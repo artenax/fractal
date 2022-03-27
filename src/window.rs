@@ -265,6 +265,7 @@ impl Window {
     pub fn switch_to_login_page(&self) {
         let priv_ = self.imp();
         priv_.main_stack.set_visible_child(&*priv_.login);
+        priv_.login.focus_default();
     }
 
     pub fn switch_to_greeter_page(&self, clean: bool) {

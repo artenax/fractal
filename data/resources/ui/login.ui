@@ -38,23 +38,18 @@
                 <property name="child">
                   <object class="AdwClamp">
                     <property name="maximum-size">360</property>
-                    <property name="tightening-threshold">360</property>
-                    <property name="margin-top">0</property>
+                    <property name="margin-top">24</property>
                     <property name="margin-bottom">24</property>
-                    <property name="margin-start">24</property>
-                    <property name="margin-end">24</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
                     <property name="child">
                       <object class="GtkBox">
                         <property name="orientation">vertical</property>
                         <property name="valign">center</property>
                         <property name="spacing">24</property>
                         <child>
-                          <object class="AdwClamp">
-                            <property name="child">
-                              <object class="GtkPicture">
-                                <property name="file">resource:///org/gnome/FractalNext/assets/homeserver.svg</property>
-                              </object>
-                            </property>
+                          <object class="GtkPicture">
+                            <property name="file">resource:///org/gnome/FractalNext/assets/homeserver.svg</property>
                           </object>
                         </child>
                         <child>
@@ -62,14 +57,10 @@
                             <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
-                              <object class="GtkEntry" id="homeserver_entry">
+                              <object class="ComponentsEntryRow" id="homeserver_entry">
                                 <style>
                                   <class name="card"/>
                                 </style>
-                                <property name="activates-default">true</property>
-                                <property name="secondary-icon-name">document-edit-symbolic</property>
-                                <property name="secondary-icon-sensitive">false</property>
-                                <property name="secondary-icon-activatable">false</property>
                               </object>
                             </child>
                             <child>
@@ -110,7 +101,10 @@
                 <property name="child">
                   <object class="AdwClamp">
                     <property name="maximum-size">360</property>
-                    <property name="tightening-threshold">360</property>
+                    <property name="margin-top">24</property>
+                    <property name="margin-bottom">24</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
                     <property name="valign">center</property>
                     <child>
                       <object class="GtkBox">
@@ -152,15 +146,11 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="username_entry">
+                          <object class="ComponentsEntryRow" id="username_entry">
                             <style>
                               <class name="card"/>
                             </style>
-                            <property name="activates-default">true</property>
-                            <property name="placeholder-text" translatable="true">Matrix Username</property>
-                            <property name="secondary-icon-name">document-edit-symbolic</property>
-                            <property name="secondary-icon-sensitive">false</property>
-                            <property name="secondary-icon-activatable">false</property>
+                            <property name="title" translatable="true">Matrix Username</property>
                           </object>
                         </child>
                         <child>
@@ -168,13 +158,11 @@
                             <property name="orientation">vertical</property>
                             <property name="spacing">12</property>
                             <child>
-                              <object class="GtkPasswordEntry" id="password_entry">
+                              <object class="ComponentsPasswordEntryRow" id="password_entry">
                                 <style>
                                   <class name="card"/>
                                 </style>
-                                <property name="activates-default">True</property>
-                                <property name="show-peek-icon">True</property>
-                                <property name="placeholder-text" translatable="true">Password</property>
+                                <property name="title" translatable="true">Password</property>
                               </object>
                             </child>
                             <child>
@@ -185,25 +173,24 @@
                                 <property name="halign">center</property>
                               </object>
                             </child>
-                            <child>
-                              <object class="GtkBox" id="sso_box">
-                                <property name="visible">false</property>
-                                <property name="orientation">horizontal</property>
-                                <property name="spacing">12</property>
-                                <property name="homogeneous">true</property>
-                                <property name="hexpand">true</property>
-                                <property name="vexpand">true</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="more_sso_option">
-                                <style>
-                                  <class name="pill"/>
-                                </style>
-                                <property name="halign">center</property>
-                                <property name="label">More SSO Providers</property>
-                              </object>
-                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="sso_box">
+                            <property name="visible">false</property>
+                            <property name="spacing">12</property>
+                            <property name="homogeneous">true</property>
+                            <property name="hexpand">true</property>
+                            <property name="vexpand">true</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="more_sso_option">
+                            <style>
+                              <class name="pill"/>
+                            </style>
+                            <property name="halign">center</property>
+                            <property name="label">More SSO Providers</property>
                           </object>
                         </child>
                       </object>
@@ -242,5 +229,3 @@
     </child>
   </template>
 </interface>
-
-

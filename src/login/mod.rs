@@ -23,7 +23,7 @@ use idp_button::IdpButton;
 use login_advanced_dialog::LoginAdvancedDialog;
 
 use crate::{
-    components::{SpinnerButton, Toast},
+    components::{EntryRow, PasswordEntryRow, SpinnerButton, Toast},
     spawn, spawn_tokio,
     user_facing_error::UserFacingError,
     Session,
@@ -51,15 +51,15 @@ mod imp {
         #[template_child]
         pub main_stack: TemplateChild<gtk::Stack>,
         #[template_child]
-        pub homeserver_entry: TemplateChild<gtk::Entry>,
+        pub homeserver_entry: TemplateChild<EntryRow>,
         #[template_child]
         pub homeserver_help: TemplateChild<gtk::Label>,
         #[template_child]
         pub password_title: TemplateChild<gtk::Label>,
         #[template_child]
-        pub username_entry: TemplateChild<gtk::Entry>,
+        pub username_entry: TemplateChild<EntryRow>,
         #[template_child]
-        pub password_entry: TemplateChild<gtk::PasswordEntry>,
+        pub password_entry: TemplateChild<PasswordEntryRow>,
         #[template_child]
         pub sso_box: TemplateChild<gtk::Box>,
         #[template_child]
@@ -162,14 +162,27 @@ mod imp {
 
             self.main_stack
                 .connect_visible_child_notify(clone!(@weak obj => move |_|
-                    obj.update_next_action()
+                    obj.update_next_action();
+                    obj.focus_default();
                 ));
             obj.update_next_action();
 
             self.homeserver_entry
+                .connect_activated(clone!(@weak obj => move|_| {
+                    obj.default_widget().activate();
+                }));
+            self.homeserver_entry
                 .connect_changed(clone!(@weak obj => move |_| obj.update_next_action()));
             self.username_entry
+                .connect_activated(clone!(@weak obj => move|_| {
+                    obj.default_widget().activate();
+                }));
+            self.username_entry
                 .connect_changed(clone!(@weak obj => move |_| obj.update_next_action()));
+            self.password_entry
+                .connect_activated(clone!(@weak obj => move|_| {
+                    obj.default_widget().activate();
+                }));
             self.password_entry
                 .connect_changed(clone!(@weak obj => move |_| obj.update_next_action()));
             self.more_sso_option
@@ -271,7 +284,7 @@ impl Login {
                 priv_.next_button.set_visible(true);
             }
             "password" => {
-                let username_length = priv_.username_entry.text_length();
+                let username_length = priv_.username_entry.text().len();
                 let password_length = priv_.password_entry.text().len();
                 self.action_set_enabled("login.next", username_length != 0 && password_length != 0);
                 priv_.next_button.set_visible(true);
@@ -321,16 +334,12 @@ impl Login {
 
         priv_.autodiscovery.set(autodiscovery);
         if autodiscovery {
-            priv_
-                .homeserver_entry
-                .set_placeholder_text(Some(&gettext("Domain Name…")));
+            priv_.homeserver_entry.set_title(&gettext("Domain Name"));
             priv_.homeserver_help.set_markup(&gettext(
                 "The domain of your Matrix homeserver, for example gnome.org",
             ));
         } else {
-            priv_
-                .homeserver_entry
-                .set_placeholder_text(Some(&gettext("Homeserver URL…")));
+            priv_.homeserver_entry.set_title(&gettext("Homeserver URL"));
             priv_.homeserver_help.set_markup(&gettext("The URL of your Matrix homeserver, for example <span segment=\"word\">https://gnome.modular.im</span>"));
         }
         self.update_next_action();
@@ -559,6 +568,20 @@ impl Login {
 
     pub fn default_widget(&self) -> gtk::Widget {
         self.imp().next_button.get().upcast()
+    }
+
+    /// Set focus to the proper widget of the current page.
+    pub fn focus_default(&self) {
+        let priv_ = self.imp();
+        match self.visible_child().as_ref() {
+            "homeserver" => {
+                priv_.homeserver_entry.grab_focus();
+            }
+            "password" => {
+                priv_.username_entry.grab_focus();
+            }
+            _ => {}
+        }
     }
 
     fn set_handler_for_prepared_session(&self, session: &Session) {
