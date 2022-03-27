@@ -137,11 +137,10 @@ impl Category {
             });
             let filter_model = gtk::FilterListModel::new(Some(&model), Some(&filter));
 
-            let sorter = gtk::CustomSorter::new(|a, b| {
-                let a = a.downcast_ref::<Room>().unwrap();
-                let b = b.downcast_ref::<Room>().unwrap();
-                b.latest_change().cmp(&a.latest_change()).into()
-            });
+            let sorter = gtk::NumericSorter::builder()
+                .expression(Room::this_expression("latest-change"))
+                .sort_order(gtk::SortType::Descending)
+                .build();
             let sort_model = gtk::SortListModel::new(Some(&filter_model), Some(&sorter));
             sort_model.upcast()
         } else {

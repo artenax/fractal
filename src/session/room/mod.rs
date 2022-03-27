@@ -86,7 +86,7 @@ mod imp {
         pub inviter: RefCell<Option<Member>>,
         pub members_loaded: Cell<bool>,
         pub power_levels: RefCell<PowerLevels>,
-        pub latest_change: RefCell<Option<glib::DateTime>>,
+        pub latest_change: Cell<u64>,
         pub predecessor: OnceCell<Box<RoomId>>,
         pub successor: OnceCell<Box<RoomId>>,
     }
@@ -176,11 +176,13 @@ mod imp {
                         None,
                         glib::ParamFlags::READWRITE,
                     ),
-                    glib::ParamSpecBoxed::new(
+                    glib::ParamSpecUInt64::new(
                         "latest-change",
                         "Latest Change",
-                        "Latest origin_server_ts of all loaded invents",
-                        glib::DateTime::static_type(),
+                        "Timestamp of the latest message",
+                        u64::MIN,
+                        u64::MAX,
+                        u64::default(),
                         glib::ParamFlags::READABLE,
                     ),
                     glib::ParamSpecObject::new(
@@ -797,12 +799,9 @@ impl Room {
     /// Update the room state based on the new sync response
     /// FIXME: We should use the sdk's event handler to get updates
     pub fn update_for_events(&self, batch: Vec<SyncRoomEvent>) {
-        let priv_ = self.imp();
-
         // FIXME: notify only when the count has changed
         self.notify_notification_count();
 
-        let mut latest_change = self.latest_change();
         for event in batch.iter().flat_map(|e| e.event.deserialize().ok()) {
             match &event {
                 AnySyncRoomEvent::State(AnySyncStateEvent::RoomMember(event)) => {
@@ -826,22 +825,27 @@ impl Room {
                 }
                 _ => {}
             }
-            let event_is_join_or_leave = matches!(&event, AnySyncRoomEvent::State(AnySyncStateEvent::RoomMember(event))
-                if event.content.membership == MembershipState::Join || event.content.membership == MembershipState::Leave);
-            if !event_is_join_or_leave {
-                let event_ts = glib::DateTime::from_unix_millis_utc(event.origin_server_ts());
-                latest_change = latest_change.max(event_ts.ok());
-            }
         }
 
-        priv_.latest_change.replace(latest_change);
         self.notify("latest-change");
         self.emit_by_name::<()>("order-changed", &[]);
     }
 
-    /// Returns the point in time this room received its latest event.
-    pub fn latest_change(&self) -> Option<glib::DateTime> {
-        self.imp().latest_change.borrow().clone()
+    /// The timestamp of the room's latest message.
+    ///
+    /// If it is not known, it will return 0.
+    pub fn latest_change(&self) -> u64 {
+        self.imp().latest_change.get()
+    }
+
+    /// Set the timestamp of the room's latest message.
+    pub fn set_latest_change(&self, latest_change: u64) {
+        if latest_change == self.latest_change() {
+            return;
+        }
+
+        self.imp().latest_change.set(latest_change);
+        self.notify("latest-change");
     }
 
     pub fn load_members(&self) {

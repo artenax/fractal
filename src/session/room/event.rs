@@ -12,7 +12,10 @@ use matrix_sdk::{
     media::MediaEventContent,
     ruma::{
         events::{
-            room::message::{MessageType, Relation},
+            room::{
+                member::MembershipState,
+                message::{MessageType, Relation},
+            },
             AnyMessageEventContent, AnySyncMessageEvent, AnySyncRoomEvent, AnySyncStateEvent,
             Unsigned,
         },
@@ -25,7 +28,7 @@ use matrix_sdk::{
 use crate::{
     session::{
         room::{Member, ReactionList},
-        Room,
+        Room, UserExt,
     },
     spawn_tokio,
     utils::{filename_for_mime, media_type_uid},
@@ -266,6 +269,24 @@ impl Event {
             .ok()
             .and_then(|opt| opt)
             .and_then(|unsigned| unsigned.transaction_id)
+    }
+
+    /// The original timestamp of this event.
+    pub fn matrix_origin_server_ts(&self) -> MilliSecondsSinceUnixEpoch {
+        let priv_ = self.imp();
+        if let Some(event) = priv_.event.borrow().as_ref() {
+            event.origin_server_ts().to_owned()
+        } else {
+            priv_
+                .pure_event
+                .borrow()
+                .as_ref()
+                .unwrap()
+                .event
+                .get_field::<MilliSecondsSinceUnixEpoch>("origin_server_ts")
+                .unwrap()
+                .unwrap()
+        }
     }
 
     /// The pretty-formatted JSON of this matrix event.
@@ -720,5 +741,23 @@ impl Event {
             .fetch_event_by_id(&related_event_id)
             .await?;
         Ok(Some(event))
+    }
+
+    /// Whether this `Event` can be used as the `latest_change` of a room.
+    ///
+    /// This means that the event is a message, or it is the state event of the
+    /// user joining the room, which should be the oldest possible change.
+    pub fn can_be_latest_change(&self) -> bool {
+        if let Some(event) = self.matrix_event() {
+            matches!(event, AnySyncRoomEvent::Message(_))
+                || matches!(event, AnySyncRoomEvent::State(AnySyncStateEvent::RoomMember(event))
+                    if event.state_key == self.room().session().user().unwrap().user_id().to_string()
+                    && event.content.membership == MembershipState::Join
+                    && event.prev_content.as_ref()
+                            .filter(|content| content.membership == MembershipState::Join).is_none()
+                )
+        } else {
+            false
+        }
     }
 }
