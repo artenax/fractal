@@ -245,8 +245,6 @@ mod imp {
         }
 
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            let matrix_room = self.matrix_room.borrow();
-            let matrix_room = matrix_room.as_ref().unwrap();
             match pspec.name() {
                 "room-id" => obj.room_id().as_str().to_value(),
                 "session" => obj.session().to_value(),
@@ -258,17 +256,7 @@ mod imp {
                 "highlight" => obj.highlight().to_value(),
                 "topic" => obj.topic().to_value(),
                 "members" => obj.members().to_value(),
-                "notification-count" => {
-                    let highlight = matrix_room.unread_notification_counts().highlight_count;
-                    let notification = matrix_room.unread_notification_counts().notification_count;
-
-                    if highlight > 0 {
-                        highlight
-                    } else {
-                        notification
-                    }
-                    .to_value()
-                }
+                "notification-count" => obj.notification_count().to_value(),
                 "latest-change" => obj.latest_change().to_value(),
                 "predecessor" => obj.predecessor().map_or_else(
                     || {
@@ -673,6 +661,16 @@ impl Room {
                 };
             })
         );
+    }
+
+    /// The number of unread notifications of this room.
+    pub fn notification_count(&self) -> u64 {
+        let matrix_room = self.imp().matrix_room.borrow();
+        matrix_room
+            .as_ref()
+            .unwrap()
+            .unread_notification_counts()
+            .notification_count
     }
 
     /// Updates the Matrix room with the given name.
