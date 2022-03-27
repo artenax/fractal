@@ -639,7 +639,7 @@ impl Room {
         if count > 0 {
             HighlightFlags::HIGHLIGHT
         } else {
-            HighlightFlags::NONE
+            HighlightFlags::empty()
         }
     }
 

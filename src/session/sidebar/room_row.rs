@@ -187,44 +187,40 @@ impl RoomRow {
             priv_.signal_handler.replace(Some(room.connect_notify_local(
                 Some("highlight"),
                 clone!(@weak self as obj => move |_, _| {
-                        obj.set_highlight();
+                        obj.update_highlight();
                 }),
             )));
 
             if room.category() == RoomType::Left {
                 priv_.display_name.add_css_class("dim-label");
             }
-
-            self.set_highlight();
         }
         priv_.room.replace(room);
 
+        self.update_highlight();
         self.update_actions();
         self.notify("room");
     }
 
-    fn set_highlight(&self) {
+    fn update_highlight(&self) {
         let priv_ = self.imp();
         if let Some(room) = &*priv_.room.borrow() {
-            match room.highlight() {
-                HighlightFlags::NONE => {
-                    priv_.notification_count.remove_css_class("highlight");
-                    priv_.display_name.remove_css_class("bold");
-                }
-                HighlightFlags::HIGHLIGHT => {
-                    priv_.notification_count.add_css_class("highlight");
-                    priv_.display_name.remove_css_class("bold");
-                }
-                HighlightFlags::BOLD => {
-                    priv_.display_name.add_css_class("bold");
-                    priv_.notification_count.remove_css_class("highlight");
-                }
-                HighlightFlags::HIGHLIGHT_BOLD => {
-                    priv_.notification_count.add_css_class("highlight");
-                    priv_.display_name.add_css_class("bold");
-                }
-                _ => {}
-            };
+            let flags = room.highlight();
+
+            if flags.contains(HighlightFlags::HIGHLIGHT) {
+                priv_.notification_count.add_css_class("highlight");
+            } else {
+                priv_.notification_count.remove_css_class("highlight");
+            }
+
+            if flags.contains(HighlightFlags::BOLD) {
+                priv_.display_name.add_css_class("bold");
+            } else {
+                priv_.display_name.remove_css_class("bold");
+            }
+        } else {
+            priv_.notification_count.remove_css_class("highlight");
+            priv_.display_name.remove_css_class("bold");
         }
     }
 
