@@ -320,7 +320,7 @@ impl ChangePasswordSubpage {
                 AuthError::UserCancelled => {}
                 AuthError::ServerResponse(error)
                     if matches!(error.as_ref(), MatrixError::Http(HttpError::ClientApi(
-                    FromHttpResponseError::Http(ServerError::Known(error)),
+                    FromHttpResponseError::Server(ServerError::Known(error)),
                 )) if error.kind.as_ref() == "M_WEAK_PASSWORD") =>
                 {
                     error!("Weak password: {:?}", error);

@@ -3,7 +3,7 @@ use std::sync::Arc;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::error;
 use matrix_sdk::{
-    ruma::{api::client::user_directory::search_users, identifiers::UserId},
+    ruma::{api::client::user_directory::search_users, UserId},
     HttpError,
 };
 

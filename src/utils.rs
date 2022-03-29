@@ -18,7 +18,7 @@ macro_rules! fn_event {
 macro_rules! event_from_sync_event {
     ( $event:ident, $room_id:ident) => {
         match $event {
-            AnySyncRoomEvent::Message(event) => {
+            AnySyncRoomEvent::MessageLike(event) => {
                 AnyRoomEvent::Message(event.into_full_event($room_id.clone()))
             }
             AnySyncRoomEvent::State(event) => {
@@ -67,10 +67,7 @@ use gtk::{
     gio::{self, prelude::*},
     glib::{self, closure, Object},
 };
-use matrix_sdk::{
-    media::MediaType,
-    ruma::{EventId, TransactionId, UInt},
-};
+use matrix_sdk::ruma::{events::room::MediaSource, EventId, TransactionId, UInt};
 use mime::Mime;
 
 // Returns an expression that is the and’ed result of the given boolean
@@ -151,17 +148,17 @@ pub fn style_scheme() -> Option<sourceview::StyleScheme> {
     sourceview::StyleSchemeManager::default().scheme(scheme_name)
 }
 
-/// Get the unique id of the given `MediaType`.
+/// Get the unique id of the given `MediaSource`.
 ///
 /// It is built from the underlying `MxcUri` and can be safely used in a
 /// filename.
 ///
 /// The id is not guaranteed to be unique for malformed `MxcUri`s.
-pub fn media_type_uid(media_type: Option<MediaType>) -> String {
+pub fn media_type_uid(media_type: Option<MediaSource>) -> String {
     if let Some(mxc) = media_type
         .map(|media_type| match media_type {
-            MediaType::Uri(uri) => uri,
-            MediaType::Encrypted(file) => file.url,
+            MediaSource::Plain(uri) => uri,
+            MediaSource::Encrypted(file) => file.url,
         })
         .filter(|mxc| mxc.is_valid())
     {

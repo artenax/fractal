@@ -249,7 +249,7 @@ impl AuthDialog {
 
             let uiaa_info: UiaaInfo = match response {
                 Ok(result) => return Ok(result),
-                Err(Error::Http(UiaaError(FromHttpResponseError::Http(ServerError::Known(
+                Err(Error::Http(UiaaError(FromHttpResponseError::Server(ServerError::Known(
                     UiaaResponse::AuthResponse(uiaa_info),
                 ))))) => uiaa_info,
                 Err(error) => return Err(AuthError::ServerResponse(Box::new(error))),

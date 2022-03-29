@@ -23,7 +23,7 @@ impl UserFacingError for HttpError {
                     gettext("Unable to connect to the homeserver.")
                 }
             }
-            HttpError::ClientApi(FromHttpResponseError::Http(ServerError::Known(error))) => {
+            HttpError::ClientApi(FromHttpResponseError::Server(ServerError::Known(error))) => {
                 match error.kind {
                     Forbidden => gettext("The provided username or password is invalid."),
                     UserDeactivated => gettext("The user is deactivated."),

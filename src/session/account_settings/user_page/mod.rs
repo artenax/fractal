@@ -9,7 +9,7 @@ use gtk::{
     CompositeTemplate,
 };
 use log::error;
-use matrix_sdk::ruma::{api::client::capabilities::get_capabilities, MxcUri};
+use matrix_sdk::ruma::{api::client::discovery::get_capabilities, MxcUri};
 
 mod change_password_subpage;
 mod deactivate_account_subpage;

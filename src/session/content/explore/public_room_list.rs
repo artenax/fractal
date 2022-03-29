@@ -8,8 +8,7 @@ use matrix_sdk::ruma::{
     },
     assign,
     directory::{Filter, RoomNetwork},
-    identifiers::ServerName,
-    uint,
+    uint, ServerName,
 };
 
 use crate::{

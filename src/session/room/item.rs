@@ -1,10 +1,7 @@
 use std::sync::Arc;
 
 use gtk::{glib, glib::DateTime, prelude::*, subclass::prelude::*};
-use matrix_sdk::ruma::{
-    events::AnySyncRoomEvent,
-    identifiers::{EventId, UserId},
-};
+use matrix_sdk::ruma::{events::AnySyncRoomEvent, EventId, UserId};
 
 use crate::session::room::Event;
 

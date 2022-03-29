@@ -3,12 +3,15 @@ use std::path::Path;
 use gtk::{gdk, gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, info};
 use matrix_sdk::{
-    media::{MediaFormat, MediaRequest, MediaThumbnailSize, MediaType},
+    media::{MediaFormat, MediaRequest, MediaThumbnailSize},
     room::Room as MatrixRoom,
     ruma::{
         api::client::media::get_content_thumbnail::v3::Method,
-        events::{room::avatar::RoomAvatarEventContent, AnyStateEventContent},
-        identifiers::MxcUri,
+        events::{
+            room::{avatar::RoomAvatarEventContent, MediaSource},
+            AnyStateEventContent,
+        },
+        MxcUri,
     },
     Client,
 };
@@ -165,7 +168,7 @@ impl Avatar {
             let client = self.session().client();
             let needed_size = self.needed_size();
             let request = MediaRequest {
-                media_type: MediaType::Uri(url),
+                source: MediaSource::Plain(url),
                 format: MediaFormat::Thumbnail(MediaThumbnailSize {
                     width: needed_size.into(),
                     height: needed_size.into(),

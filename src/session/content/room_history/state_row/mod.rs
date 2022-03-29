@@ -76,7 +76,7 @@ impl StateRow {
 
                 match event.membership {
                     MembershipState::Join => {
-                        let message = match state.prev_content() {
+                        let message = match state.unsigned().prev_content {
                             Some(AnyStateEventContent::RoomMember(prev))
                                 if event.membership != prev.membership =>
                             {
@@ -132,7 +132,7 @@ impl StateRow {
                         ))
                     }
                     MembershipState::Leave => {
-                        let message = match state.prev_content() {
+                        let message = match state.unsigned().prev_content {
                             Some(AnyStateEventContent::RoomMember(prev))
                                 if prev.membership == MembershipState::Invite =>
                             {

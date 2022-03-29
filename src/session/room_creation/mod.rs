@@ -14,7 +14,8 @@ use matrix_sdk::{
             error::{FromHttpResponseError, ServerError},
         },
         assign,
-        identifiers::{Error, RoomName},
+        common::RoomName,
+        IdParseError,
     },
     HttpError,
 };
@@ -266,7 +267,7 @@ impl RoomCreation {
         priv_.cancel_button.set_sensitive(true);
 
         // Treat the room address already taken error special
-        if let HttpError::ClientApi(FromHttpResponseError::Http(ServerError::Known(
+        if let HttpError::ClientApi(FromHttpResponseError::Server(ServerError::Known(
             ref client_error,
         ))) = error
         {
@@ -293,8 +294,8 @@ impl RoomCreation {
         let (is_name_valid, has_error) =
             match <&RoomName>::try_from(priv_.room_name.text().as_str()) {
                 Ok(_) => (true, false),
-                Err(Error::EmptyRoomName) => (false, false),
-                Err(Error::MaximumLengthExceeded) => {
+                Err(IdParseError::EmptyRoomName) => (false, false),
+                Err(IdParseError::MaximumLengthExceeded) => {
                     priv_
                         .room_name_error
                         .set_text(&gettext("Too long. Use a shorter name."));

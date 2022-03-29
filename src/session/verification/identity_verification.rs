@@ -13,7 +13,7 @@ use matrix_sdk::{
     },
     ruma::{
         events::key::verification::{cancel::CancelCode, VerificationMethod},
-        identifiers::UserId,
+        UserId,
     },
     Client,
 };
@@ -132,7 +132,7 @@ pub enum UserAction {
     NotMatch,
     Cancel,
     StartSas,
-    Scanned(QrVerificationData),
+    Scanned(Box<QrVerificationData>),
     ConfirmScanning,
 }
 
@@ -745,7 +745,8 @@ impl IdentityVerification {
 
     pub fn scanned_qr_code(&self, data: QrVerificationData) {
         if let Some(sync_sender) = &*self.imp().sync_sender.borrow() {
-            let result = sync_sender.try_send(Message::UserAction(UserAction::Scanned(data)));
+            let result =
+                sync_sender.try_send(Message::UserAction(UserAction::Scanned(Box::new(data))));
 
             if let Err(error) = result {
                 error!("Failed to send message to tokio runtime: {}", error);
@@ -1058,11 +1059,11 @@ impl Context {
 
     async fn finish_scanning(
         mut self,
-        data: QrVerificationData,
+        data: Box<QrVerificationData>,
     ) -> Result<State, RequestVerificationError> {
         let request = self
             .request
-            .scan_qr_code(data)
+            .scan_qr_code(*data)
             .await?
             .expect("Scanning Qr Code should be supported");
 

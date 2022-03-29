@@ -9,8 +9,7 @@ use matrix_sdk::{
             LoginType::{Password, Sso},
             SsoLoginType,
         },
-        identifiers::Error as IdentifierError,
-        ServerName,
+        IdParseError, ServerName,
     },
     Client,
 };
@@ -633,7 +632,7 @@ impl Default for Login {
     }
 }
 
-fn build_server_name(server: &str) -> Result<Box<ServerName>, IdentifierError> {
+fn build_server_name(server: &str) -> Result<Box<ServerName>, IdParseError> {
     let server = server
         .strip_prefix("http://")
         .or_else(|| server.strip_prefix("https://"))

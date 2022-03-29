@@ -69,3 +69,8 @@ features = [
     "sso_login",
     "markdown",
 ]
+
+[dependencies.ruma]
+git = "https://github.com/ruma/ruma.git"
+rev = "deea762b8"
+features = ["unstable-pre-spec", "client-api-c"]

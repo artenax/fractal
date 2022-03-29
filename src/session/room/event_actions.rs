@@ -1,7 +1,7 @@
 use gettextrs::gettext;
 use gtk::{gio, glib, glib::clone, prelude::*};
 use log::error;
-use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageEventContent};
+use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventContent};
 use once_cell::sync::Lazy;
 
 use crate::{
@@ -90,7 +90,7 @@ where
             })
         );
 
-        if let Some(AnyMessageEventContent::RoomMessage(message)) = event.message_content() {
+        if let Some(AnyMessageLikeEventContent::RoomMessage(message)) = event.message_content() {
             let user_id = event
                 .room()
                 .session()

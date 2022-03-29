@@ -7,7 +7,7 @@ use libsecret::{
     Retrievable, Schema, SchemaAttributeType, SchemaFlags, SearchFlags, Value, COLLECTION_DEFAULT,
 };
 use log::error;
-use matrix_sdk::ruma::identifiers::{DeviceId, UserId};
+use matrix_sdk::ruma::{DeviceId, UserId};
 use serde::{Deserialize, Serialize};
 use serde_json::error::Error as JsonError;
 use url::Url;

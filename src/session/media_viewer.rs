@@ -2,7 +2,7 @@ use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::warn;
-use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageEventContent};
+use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventContent};
 
 use super::room::EventActions;
 use crate::{session::room::Event, spawn, utils::cache_dir, Window};
@@ -220,7 +220,8 @@ impl MediaViewer {
     fn build(&self) {
         if let Some(event) = self.event() {
             self.set_event_actions(Some(&event));
-            if let Some(AnyMessageEventContent::RoomMessage(content)) = event.message_content() {
+            if let Some(AnyMessageLikeEventContent::RoomMessage(content)) = event.message_content()
+            {
                 match content.msgtype {
                     MessageType::Image(image) => {
                         self.set_body(Some(image.body));

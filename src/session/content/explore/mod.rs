@@ -5,7 +5,7 @@ mod public_room_row;
 use adw::subclass::prelude::*;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 use log::error;
-use matrix_sdk::ruma::api::client::thirdparty::get_protocols;
+use ruma::api::client::thirdparty::get_protocols;
 
 pub use self::{
     public_room::PublicRoom, public_room_list::PublicRoomList, public_room_row::PublicRoomRow,

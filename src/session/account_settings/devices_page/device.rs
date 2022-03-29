@@ -3,8 +3,7 @@ use matrix_sdk::{
     encryption::identities::Device as CryptoDevice,
     ruma::{
         api::client::device::{delete_device, Device as MatrixDevice},
-        assign,
-        identifiers::DeviceId,
+        assign, DeviceId,
     },
 };
 

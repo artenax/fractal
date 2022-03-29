@@ -9,7 +9,7 @@ use gtk::{
     subclass::prelude::*,
     CompositeTemplate,
 };
-use matrix_sdk::ruma::events::EventType;
+use matrix_sdk::ruma::events::RoomEventType;
 
 pub use self::{invite_subpage::InviteSubpage, member_page::MemberPage};
 use crate::{
@@ -156,7 +156,7 @@ impl RoomDetails {
             ));
 
         let room_avatar_changeable =
-            room.new_allowed_expr(RoomAction::StateEvent(EventType::RoomAvatar));
+            room.new_allowed_expr(RoomAction::StateEvent(RoomEventType::RoomAvatar));
         let room_avatar_removable = and_expr(&room_avatar_changeable, &room_avatar_exists);
 
         room_avatar_removable.bind(&avatar_remove_button.get(), "visible", gtk::Widget::NONE);
@@ -200,9 +200,9 @@ impl RoomDetails {
         // Hide edit controls when the user is not eligible to perform the actions.
         let room = self.room();
         let room_name_changeable =
-            room.new_allowed_expr(RoomAction::StateEvent(EventType::RoomName));
+            room.new_allowed_expr(RoomAction::StateEvent(RoomEventType::RoomName));
         let room_topic_changeable =
-            room.new_allowed_expr(RoomAction::StateEvent(EventType::RoomTopic));
+            room.new_allowed_expr(RoomAction::StateEvent(RoomEventType::RoomTopic));
 
         let edit_toggle_visible = or_expr(room_name_changeable, room_topic_changeable);
         edit_toggle_visible.bind(&edit_toggle.get(), "visible", gtk::Widget::NONE);

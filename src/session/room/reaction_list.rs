@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use matrix_sdk::ruma::events::AnyMessageEventContent;
+use matrix_sdk::ruma::events::AnyMessageLikeEventContent;
 
 use super::{Event, ReactionGroup};
 
@@ -68,10 +68,10 @@ impl ReactionList {
         // Group reactions by key
         let mut grouped_reactions: HashMap<String, Vec<Event>> = HashMap::new();
         for event in new_reactions {
-            if let Some(AnyMessageEventContent::Reaction(reaction)) = event.message_content() {
+            if let Some(AnyMessageLikeEventContent::Reaction(reaction)) = event.message_content() {
                 let relation = reaction.relates_to;
                 grouped_reactions
-                    .entry(relation.emoji)
+                    .entry(relation.key)
                     .or_default()
                     .push(event);
             }

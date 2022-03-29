@@ -32,11 +32,11 @@ use matrix_sdk::{
             },
             tag::{TagInfo, TagName},
             AnyRoomAccountDataEvent, AnyStateEventContent, AnyStrippedStateEvent, AnySyncRoomEvent,
-            AnySyncStateEvent, MessageEventContent, StateEventType, SyncMessageEvent, Unsigned,
+            AnySyncStateEvent, EventContent, MessageLikeEventType, MessageLikeUnsigned,
+            StateEventType, SyncMessageLikeEvent,
         },
-        identifiers::{EventId, RoomId, UserId},
         serde::Raw,
-        MilliSecondsSinceUnixEpoch,
+        EventId, MilliSecondsSinceUnixEpoch, RoomId, UserId,
     },
 };
 
@@ -910,15 +910,18 @@ impl Room {
     }
 
     /// Send a message with the given `content` in this room.
-    pub fn send_room_message_event(&self, content: impl MessageEventContent + Send + 'static) {
+    pub fn send_room_message_event(
+        &self,
+        content: impl EventContent<EventType = MessageLikeEventType> + Send + 'static,
+    ) {
         if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
             let (txn_id, event_id) = pending_event_ids();
-            let matrix_event = SyncMessageEvent {
+            let matrix_event = SyncMessageLikeEvent {
                 content,
                 event_id,
                 sender: self.session().user().unwrap().user_id().as_ref().to_owned(),
                 origin_server_ts: MilliSecondsSinceUnixEpoch::now(),
-                unsigned: Unsigned::default(),
+                unsigned: MessageLikeUnsigned::default(),
             };
 
             let raw_event: Raw<AnySyncRoomEvent> = Raw::new(&matrix_event).unwrap().cast();
@@ -966,7 +969,7 @@ impl Room {
             event_id,
             sender: self.session().user().unwrap().user_id().as_ref().to_owned(),
             origin_server_ts: MilliSecondsSinceUnixEpoch::now(),
-            unsigned: Unsigned::default(),
+            unsigned: MessageLikeUnsigned::default(),
         };
 
         if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {

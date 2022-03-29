@@ -211,7 +211,7 @@ impl MessageAudio {
         self.set_state(MediaState::Loading);
 
         let mut path = glib::tmp_dir();
-        path.push(media_type_uid(audio.file()));
+        path.push(media_type_uid(audio.source()));
         let file = gio::File::for_path(path);
 
         if file.query_exists(gio::Cancellable::NONE) {

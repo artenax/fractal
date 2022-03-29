@@ -1,5 +1,5 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
-use matrix_sdk::ruma::identifiers::{MxcUri, UserId};
+use matrix_sdk::ruma::{MxcUri, UserId};
 
 use crate::session::{user::UserExt, Session, User};
 

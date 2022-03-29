@@ -4,7 +4,7 @@ use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::error;
 use matrix_sdk::{
     encryption::identities::UserIdentity,
-    ruma::identifiers::{MxcUri, UserId},
+    ruma::{MxcUri, UserId},
 };
 
 use crate::{

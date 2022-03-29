@@ -17,7 +17,7 @@ use gtk::{
 use log::warn;
 use matrix_sdk::ruma::events::{
     room::message::{MessageType, Relation},
-    AnyMessageEventContent,
+    AnyMessageLikeEventContent,
 };
 
 use self::{
@@ -239,7 +239,7 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
     // TODO: display reaction events from event.relates_to()
     // TODO: we should reuse the already present child widgets when possible
     match event.content() {
-        Some(AnyMessageEventContent::RoomMessage(message)) => {
+        Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
             let msgtype = if let Some(Relation::Replacement(replacement)) = message.relates_to {
                 replacement.new_content.msgtype
             } else {
@@ -382,7 +382,7 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
                 }
             }
         }
-        Some(AnyMessageEventContent::Sticker(content)) => {
+        Some(AnyMessageLikeEventContent::Sticker(content)) => {
             let child =
                 if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageMedia>()) {
                     child
@@ -393,7 +393,7 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
                 };
             child.sticker(content, &event.room().session(), compact);
         }
-        Some(AnyMessageEventContent::RoomEncrypted(content)) => {
+        Some(AnyMessageLikeEventContent::RoomEncrypted(content)) => {
             warn!("Couldn't decrypt event {:?}", content);
             let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
             {
@@ -405,7 +405,7 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
             };
             child.text(gettext("Fractal couldn't decrypt this message."));
         }
-        Some(AnyMessageEventContent::RoomRedaction(_)) => {
+        Some(AnyMessageLikeEventContent::RoomRedaction(_)) => {
             let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
             {
                 child

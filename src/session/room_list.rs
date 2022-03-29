@@ -6,7 +6,7 @@ use indexmap::map::IndexMap;
 use log::error;
 use matrix_sdk::{
     deserialized_responses::Rooms as ResponseRooms,
-    ruma::identifiers::{RoomId, RoomOrAliasId},
+    ruma::{RoomId, RoomOrAliasId},
 };
 
 use crate::{

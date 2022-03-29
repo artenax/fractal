@@ -12,18 +12,15 @@ use matrix_sdk::{
     media::MediaEventContent,
     ruma::{
         events::{
-            room::{
-                member::MembershipState,
-                message::{MessageType, Relation},
-            },
-            AnyMessageEventContent, AnySyncMessageEvent, AnySyncRoomEvent, AnySyncStateEvent,
-            Unsigned,
+            room::message::{MessageType, Relation},
+            AnyMessageLikeEventContent, AnySyncMessageLikeEvent, AnySyncRoomEvent,
+            AnySyncStateEvent, MessageLikeUnsigned,
         },
-        identifiers::{EventId, TransactionId, UserId},
-        MilliSecondsSinceUnixEpoch,
+        EventId, MilliSecondsSinceUnixEpoch, TransactionId, UserId,
     },
     Error as MatrixError,
 };
+use ruma::events::room::member::MembershipState;
 
 use crate::{
     session::{
@@ -265,9 +262,9 @@ impl Event {
             .as_ref()
             .unwrap()
             .event
-            .get_field::<Unsigned>("unsigned")
+            .get_field::<MessageLikeUnsigned>("unsigned")
             .ok()
-            .and_then(|opt| opt)
+            .flatten()
             .and_then(|unsigned| unsigned.transaction_id)
     }
 
@@ -358,11 +355,11 @@ impl Event {
     /// Find the related event if any
     pub fn related_matrix_event(&self) -> Option<Box<EventId>> {
         match self.imp().event.borrow().as_ref()? {
-            AnySyncRoomEvent::Message(ref message) => match message {
-                AnySyncMessageEvent::RoomRedaction(event) => Some(event.redacts.clone()),
+            AnySyncRoomEvent::MessageLike(ref message) => match message {
+                AnySyncMessageLikeEvent::RoomRedaction(event) => Some(event.redacts.clone()),
                 _ => match message.content() {
-                    AnyMessageEventContent::Reaction(event) => Some(event.relates_to.event_id),
-                    AnyMessageEventContent::RoomMessage(event) => match event.relates_to {
+                    AnyMessageLikeEventContent::Reaction(event) => Some(event.relates_to.event_id),
+                    AnyMessageLikeEventContent::RoomMessage(event) => match event.relates_to {
                         Some(relates_to) => match relates_to {
                             // TODO: Figure out Relation::Annotation(), Relation::Reference() but
                             // they are pre-specs for now See: https://github.com/uhoreg/matrix-doc/blob/aggregations-reactions/proposals/2677-reactions.md
@@ -386,8 +383,8 @@ impl Event {
         let priv_ = self.imp();
 
         if self.related_matrix_event().is_some() {
-            if let Some(AnySyncRoomEvent::Message(message)) = priv_.event.borrow().as_ref() {
-                if let AnyMessageEventContent::RoomMessage(content) = message.content() {
+            if let Some(AnySyncRoomEvent::MessageLike(message)) = priv_.event.borrow().as_ref() {
+                if let AnyMessageLikeEventContent::RoomMessage(content) = message.content() {
                     if let Some(Relation::Reply { in_reply_to: _ }) = content.relates_to {
                         return false;
                     }
@@ -400,21 +397,21 @@ impl Event {
 
         // List of all events to be hidden.
         match event.as_ref() {
-            Some(AnySyncRoomEvent::Message(message)) => matches!(
+            Some(AnySyncRoomEvent::MessageLike(message)) => matches!(
                 message,
-                AnySyncMessageEvent::CallAnswer(_)
-                    | AnySyncMessageEvent::CallInvite(_)
-                    | AnySyncMessageEvent::CallHangup(_)
-                    | AnySyncMessageEvent::CallCandidates(_)
-                    | AnySyncMessageEvent::KeyVerificationReady(_)
-                    | AnySyncMessageEvent::KeyVerificationStart(_)
-                    | AnySyncMessageEvent::KeyVerificationCancel(_)
-                    | AnySyncMessageEvent::KeyVerificationAccept(_)
-                    | AnySyncMessageEvent::KeyVerificationKey(_)
-                    | AnySyncMessageEvent::KeyVerificationMac(_)
-                    | AnySyncMessageEvent::KeyVerificationDone(_)
-                    | AnySyncMessageEvent::RoomMessageFeedback(_)
-                    | AnySyncMessageEvent::RoomRedaction(_)
+                AnySyncMessageLikeEvent::CallAnswer(_)
+                    | AnySyncMessageLikeEvent::CallInvite(_)
+                    | AnySyncMessageLikeEvent::CallHangup(_)
+                    | AnySyncMessageLikeEvent::CallCandidates(_)
+                    | AnySyncMessageLikeEvent::KeyVerificationReady(_)
+                    | AnySyncMessageLikeEvent::KeyVerificationStart(_)
+                    | AnySyncMessageLikeEvent::KeyVerificationCancel(_)
+                    | AnySyncMessageLikeEvent::KeyVerificationAccept(_)
+                    | AnySyncMessageLikeEvent::KeyVerificationKey(_)
+                    | AnySyncMessageLikeEvent::KeyVerificationMac(_)
+                    | AnySyncMessageLikeEvent::KeyVerificationDone(_)
+                    | AnySyncMessageLikeEvent::RoomMessageFeedback(_)
+                    | AnySyncMessageLikeEvent::RoomRedaction(_)
             ),
             Some(AnySyncRoomEvent::State(state)) => matches!(
                 state,
@@ -434,7 +431,7 @@ impl Event {
                     | AnySyncStateEvent::SpaceParent(_)
                     | AnySyncStateEvent::SpaceChild(_)
             ),
-            Some(AnySyncRoomEvent::RedactedMessage(_)) => true,
+            Some(AnySyncRoomEvent::RedactedMessageLike(_)) => true,
             Some(AnySyncRoomEvent::RedactedState(_)) => true,
             _ => false,
         }
@@ -456,16 +453,16 @@ impl Event {
     /// The content of this message.
     ///
     /// Returns `None` if this is not a message.
-    pub fn message_content(&self) -> Option<AnyMessageEventContent> {
+    pub fn message_content(&self) -> Option<AnyMessageLikeEventContent> {
         match self.matrix_event() {
-            Some(AnySyncRoomEvent::Message(message)) => Some(message.content()),
+            Some(AnySyncRoomEvent::MessageLike(message)) => Some(message.content()),
             _ => None,
         }
     }
 
     pub fn can_hide_header(&self) -> bool {
         match self.message_content() {
-            Some(AnyMessageEventContent::RoomMessage(message)) => {
+            Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
                 matches!(
                     message.msgtype,
                     MessageType::Audio(_)
@@ -477,7 +474,7 @@ impl Event {
                         | MessageType::Video(_)
                 )
             }
-            Some(AnyMessageEventContent::Sticker(_)) => true,
+            Some(AnyMessageLikeEventContent::Sticker(_)) => true,
             _ => false,
         }
     }
@@ -490,10 +487,10 @@ impl Event {
     /// - `RoomMessage` with `Relation::Replacement`
     pub fn is_replacing_event(&self) -> bool {
         match self.matrix_event() {
-            Some(AnySyncRoomEvent::Message(AnySyncMessageEvent::RoomMessage(message))) => {
+            Some(AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(message))) => {
                 matches!(message.content.relates_to, Some(Relation::Replacement(_)))
             }
-            Some(AnySyncRoomEvent::Message(AnySyncMessageEvent::RoomRedaction(_))) => true,
+            Some(AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomRedaction(_))) => true,
             _ => false,
         }
     }
@@ -562,8 +559,8 @@ impl Event {
             .filter(|event| {
                 matches!(
                     event.matrix_event(),
-                    Some(AnySyncRoomEvent::Message(
-                        AnySyncMessageEvent::RoomRedaction(_)
+                    Some(AnySyncRoomEvent::MessageLike(
+                        AnySyncMessageLikeEvent::RoomRedaction(_)
                     ))
                 )
             })
@@ -574,7 +571,7 @@ impl Event {
     pub fn is_reaction(&self) -> bool {
         matches!(
             self.message_content(),
-            Some(AnyMessageEventContent::Reaction(_))
+            Some(AnyMessageLikeEventContent::Reaction(_))
         )
     }
 
@@ -591,9 +588,9 @@ impl Event {
     }
 
     /// The content of this matrix event.
-    pub fn original_content(&self) -> Option<AnyMessageEventContent> {
+    pub fn original_content(&self) -> Option<AnyMessageLikeEventContent> {
         match self.matrix_event()? {
-            AnySyncRoomEvent::Message(message) => Some(message.content()),
+            AnySyncRoomEvent::MessageLike(message) => Some(message.content()),
             _ => None,
         }
     }
@@ -602,7 +599,7 @@ impl Event {
     ///
     /// If this matrix event has been replaced, returns the replacing `Event`'s
     /// content.
-    pub fn content(&self) -> Option<AnyMessageEventContent> {
+    pub fn content(&self) -> Option<AnyMessageLikeEventContent> {
         self.replacement()
             .and_then(|replacement| replacement.content())
             .or_else(|| self.original_content())
@@ -627,11 +624,11 @@ impl Event {
     /// error occurred while fetching the content. Panics on an incompatible
     /// event. `uid` is a unique identifier for this media.
     pub async fn get_media_content(&self) -> Result<(String, String, Vec<u8>), matrix_sdk::Error> {
-        if let AnyMessageEventContent::RoomMessage(content) = self.message_content().unwrap() {
+        if let AnyMessageLikeEventContent::RoomMessage(content) = self.message_content().unwrap() {
             let client = self.room().session().client();
             match content.msgtype {
                 MessageType::File(content) => {
-                    let uid = media_type_uid(content.file());
+                    let uid = media_type_uid(content.source());
                     let filename = content
                         .filename
                         .as_ref()
@@ -653,7 +650,7 @@ impl Event {
                     return Ok((uid, filename, data));
                 }
                 MessageType::Image(content) => {
-                    let uid = media_type_uid(content.file());
+                    let uid = media_type_uid(content.source());
                     let filename = if content.body.is_empty() {
                         filename_for_mime(
                             content
@@ -670,7 +667,7 @@ impl Event {
                     return Ok((uid, filename, data));
                 }
                 MessageType::Video(content) => {
-                    let uid = media_type_uid(content.file());
+                    let uid = media_type_uid(content.source());
                     let filename = if content.body.is_empty() {
                         filename_for_mime(
                             content
@@ -696,7 +693,7 @@ impl Event {
     /// Whether this is a media event that can be viewed.
     pub fn can_view_media(&self) -> bool {
         match self.message_content() {
-            Some(AnyMessageEventContent::RoomMessage(message)) => {
+            Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
                 matches!(
                     message.msgtype,
                     MessageType::Image(_) | MessageType::Video(_)
@@ -709,7 +706,7 @@ impl Event {
     /// Get the id of the event this `Event` replies to, if any.
     pub fn reply_to_id(&self) -> Option<Box<EventId>> {
         match self.original_content()? {
-            AnyMessageEventContent::RoomMessage(message) => {
+            AnyMessageLikeEventContent::RoomMessage(message) => {
                 if let Some(Relation::Reply { in_reply_to }) = message.relates_to {
                     Some(in_reply_to.event_id)
                 } else {
@@ -749,11 +746,11 @@ impl Event {
     /// user joining the room, which should be the oldest possible change.
     pub fn can_be_latest_change(&self) -> bool {
         if let Some(event) = self.matrix_event() {
-            matches!(event, AnySyncRoomEvent::Message(_))
+            matches!(event, AnySyncRoomEvent::MessageLike(_))
                 || matches!(event, AnySyncRoomEvent::State(AnySyncStateEvent::RoomMember(event))
                     if event.state_key == self.room().session().user().unwrap().user_id().to_string()
                     && event.content.membership == MembershipState::Join
-                    && event.prev_content.as_ref()
+                    && event.unsigned.prev_content.as_ref()
                             .filter(|content| content.membership == MembershipState::Join).is_none()
                 )
         } else {

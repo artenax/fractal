@@ -35,8 +35,7 @@ use matrix_sdk::{
             },
             error::{FromHttpResponseError, ServerError},
         },
-        assign,
-        identifiers::RoomId,
+        assign, RoomId,
     },
     store::{make_store_config, OpenStoreError},
     Client, ClientBuildError, Error, HttpError,
@@ -698,9 +697,9 @@ impl Session {
                 }
             }
             Err(error) => {
-                if let matrix_sdk::Error::Http(HttpError::ClientApi(FromHttpResponseError::Http(
-                    ServerError::Known(ref error),
-                ))) = error
+                if let matrix_sdk::Error::Http(HttpError::ClientApi(
+                    FromHttpResponseError::Server(ServerError::Known(ref error)),
+                )) = error
                 {
                     if let ErrorKind::UnknownToken { soft_logout: _ } = error.kind {
                         self.handle_logged_out();

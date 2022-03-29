@@ -5,7 +5,7 @@ use matrix_sdk::{
             room::member::{MembershipState, RoomMemberEventContent},
             StrippedStateEvent, SyncStateEvent,
         },
-        identifiers::{MxcUri, UserId},
+        MxcUri, UserId,
     },
     RoomMember,
 };

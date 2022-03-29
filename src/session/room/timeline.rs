@@ -10,8 +10,8 @@ use log::{error, warn};
 use matrix_sdk::{
     deserialized_responses::SyncRoomEvent,
     ruma::{
-        events::{room::message::MessageType, AnySyncMessageEvent, AnySyncRoomEvent},
-        identifiers::{EventId, TransactionId},
+        events::{room::message::MessageType, AnySyncMessageLikeEvent, AnySyncRoomEvent},
+        EventId, TransactionId,
     },
     Error as MatrixError,
 };
@@ -846,7 +846,7 @@ impl Timeline {
     }
 
     fn handle_verification(&self, event: &Event) {
-        let message = if let Some(AnySyncRoomEvent::Message(message)) = event.matrix_event() {
+        let message = if let Some(AnySyncRoomEvent::MessageLike(message)) = event.matrix_event() {
             message
         } else {
             return;
@@ -856,7 +856,7 @@ impl Timeline {
         let verification_list = session.verification_list();
 
         let request = match message {
-            AnySyncMessageEvent::RoomMessage(message) => {
+            AnySyncMessageLikeEvent::RoomMessage(message) => {
                 if let MessageType::VerificationRequest(request) = message.content.msgtype {
                     // Ignore request that are too old
                     if let Some(time) = message.origin_server_ts.to_system_time() {
@@ -914,25 +914,25 @@ impl Timeline {
 
                 return;
             }
-            AnySyncMessageEvent::KeyVerificationReady(e) => {
+            AnySyncMessageLikeEvent::KeyVerificationReady(e) => {
                 verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
             }
-            AnySyncMessageEvent::KeyVerificationStart(e) => {
+            AnySyncMessageLikeEvent::KeyVerificationStart(e) => {
                 verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
             }
-            AnySyncMessageEvent::KeyVerificationCancel(e) => {
+            AnySyncMessageLikeEvent::KeyVerificationCancel(e) => {
                 verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
             }
-            AnySyncMessageEvent::KeyVerificationAccept(e) => {
+            AnySyncMessageLikeEvent::KeyVerificationAccept(e) => {
                 verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
             }
-            AnySyncMessageEvent::KeyVerificationKey(e) => {
+            AnySyncMessageLikeEvent::KeyVerificationKey(e) => {
                 verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
             }
-            AnySyncMessageEvent::KeyVerificationMac(e) => {
+            AnySyncMessageLikeEvent::KeyVerificationMac(e) => {
                 verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
             }
-            AnySyncMessageEvent::KeyVerificationDone(e) => {
+            AnySyncMessageLikeEvent::KeyVerificationDone(e) => {
                 verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
             }
             _ => {

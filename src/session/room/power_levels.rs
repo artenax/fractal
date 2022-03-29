@@ -1,6 +1,6 @@
 use gtk::{glib, glib::closure, prelude::*, subclass::prelude::*};
 use matrix_sdk::ruma::events::{
-    room::power_levels::RoomPowerLevelsEventContent, EventType, SyncStateEvent,
+    room::power_levels::RoomPowerLevelsEventContent, RoomEventType, SyncStateEvent,
 };
 
 use crate::session::room::Member;
@@ -128,7 +128,7 @@ fn min_level_for_room_action(
             .events
             .get(event_type)
             .unwrap_or(&content.state_default),
-        RoomAction::MessageEvent(event_type) => *content
+        RoomAction::MessageLikeEvent(event_type) => *content
             .events
             .get(event_type)
             .unwrap_or(&content.events_default),
@@ -143,6 +143,6 @@ pub enum RoomAction {
     Kick,
     Redact,
     RoomNotification,
-    StateEvent(EventType),
-    MessageEvent(EventType),
+    StateEvent(RoomEventType),
+    MessageLikeEvent(RoomEventType),
 }

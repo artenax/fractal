@@ -382,29 +382,30 @@ impl MessageMedia {
 
         let client = session.client();
         let handle = spawn_tokio!(async move {
-            let thumbnail = if media_type != MediaType::Video && content.thumbnail().is_some() {
-                client
-                    .get_thumbnail(
-                        content.clone(),
-                        MediaThumbnailSize {
-                            method: Method::Scale,
-                            width: uint!(320),
-                            height: uint!(240),
-                        },
-                        true,
-                    )
-                    .await
-                    .ok()
-                    .flatten()
-            } else {
-                None
-            };
+            let thumbnail =
+                if media_type != MediaType::Video && content.thumbnail_source().is_some() {
+                    client
+                        .get_thumbnail(
+                            content.clone(),
+                            MediaThumbnailSize {
+                                method: Method::Scale,
+                                width: uint!(320),
+                                height: uint!(240),
+                            },
+                            true,
+                        )
+                        .await
+                        .ok()
+                        .flatten()
+                } else {
+                    None
+                };
 
             if let Some(data) = thumbnail {
-                let id = media_type_uid(content.thumbnail());
+                let id = media_type_uid(content.thumbnail_source());
                 Ok((Some(data), id))
             } else {
-                let id = media_type_uid(content.file());
+                let id = media_type_uid(content.source());
                 client.get_file(content, true).await.map(|data| (data, id))
             }
         });
