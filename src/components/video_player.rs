@@ -14,7 +14,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/components-video-player.ui")]
+    #[template(resource = "/org/gnome/Fractal/components-video-player.ui")]
     pub struct VideoPlayer {
         /// Whether this player should be displayed in a compact format.
         pub compact: Cell<bool>,

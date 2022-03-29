@@ -12,7 +12,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/sidebar-category-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/sidebar-category-row.ui")]
     pub struct CategoryRow {
         /// The category of this row.
         pub category: RefCell<Option<Category>>,

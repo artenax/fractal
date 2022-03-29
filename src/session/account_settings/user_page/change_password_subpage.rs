@@ -31,7 +31,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/account-settings-change-password-subpage.ui")]
+    #[template(resource = "/org/gnome/Fractal/account-settings-change-password-subpage.ui")]
     pub struct ChangePasswordSubpage {
         pub session: OnceCell<WeakRef<Session>>,
         #[template_child]

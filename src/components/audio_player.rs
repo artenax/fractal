@@ -10,7 +10,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/components-audio-player.ui")]
+    #[template(resource = "/org/gnome/Fractal/components-audio-player.ui")]
     pub struct AudioPlayer {
         /// The media file to play.
         pub media_file: RefCell<Option<gtk::MediaFile>>,

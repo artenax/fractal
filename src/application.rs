@@ -79,7 +79,7 @@ impl Application {
         glib::Object::new(&[
             ("application-id", &Some(config::APP_ID)),
             ("flags", &ApplicationFlags::default()),
-            ("resource-base-path", &Some("/org/gnome/FractalNext/")),
+            ("resource-base-path", &Some("/org/gnome/Fractal/")),
         ])
         .expect("Application initialization failed")
     }

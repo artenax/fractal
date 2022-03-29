@@ -21,7 +21,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/account-settings.ui")]
+    #[template(resource = "/org/gnome/Fractal/account-settings.ui")]
     pub struct AccountSettings {
         pub session: RefCell<Option<WeakRef<Session>>>,
         pub session_handler: RefCell<Option<glib::SignalHandlerId>>,

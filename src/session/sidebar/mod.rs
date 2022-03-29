@@ -44,7 +44,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/sidebar.ui")]
+    #[template(resource = "/org/gnome/Fractal/sidebar.ui")]
     pub struct Sidebar {
         pub compact: Cell<bool>,
         pub selected_item: RefCell<Option<glib::Object>>,

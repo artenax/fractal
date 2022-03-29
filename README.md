@@ -60,13 +60,13 @@ Move inside the `build-aux` folder and then build and install the app:
 
 ```
 cd build-aux
-flatpak-builder --user --install app org.gnome.FractalNext.Devel.json
+flatpak-builder --user --install app org.gnome.Fractal.Devel.json
 ```
 
 Fractal Next can then be entirely removed from your system with:
 
 ```
-flatpak remove org.gnome.FractalNext.Devel.json`
+flatpak remove org.gnome.Fractal.Devel.json`
 ```
 
 ### GNU/Linux

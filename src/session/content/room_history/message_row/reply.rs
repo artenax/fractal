@@ -9,7 +9,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/content-message-reply.ui")]
+    #[template(resource = "/org/gnome/Fractal/content-message-reply.ui")]
     pub struct MessageReply {
         #[template_child]
         pub pill: TemplateChild<Pill>,

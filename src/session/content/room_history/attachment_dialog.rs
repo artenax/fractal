@@ -7,7 +7,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/attachment-dialog.ui")]
+    #[template(resource = "/org/gnome/Fractal/attachment-dialog.ui")]
     pub struct AttachmentDialog {
         pub file: RefCell<Option<gio::File>>,
         pub texture: RefCell<Option<gdk::Texture>>,

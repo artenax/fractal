@@ -12,7 +12,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/sidebar-verification-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/sidebar-verification-row.ui")]
     pub struct VerificationRow {
         pub verification: RefCell<Option<IdentityVerification>>,
     }

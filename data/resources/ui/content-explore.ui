@@ -90,7 +90,7 @@
                             </style>
                             <property name="factory">
                               <object class="GtkBuilderListItemFactory">
-                                <property name="resource">/org/gnome/FractalNext/content-explore-item.ui</property>
+                                <property name="resource">/org/gnome/Fractal/content-explore-item.ui</property>
                               </object>
                             </property>
                             <accessibility>

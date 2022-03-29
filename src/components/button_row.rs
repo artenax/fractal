@@ -16,7 +16,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/components-button-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/components-button-row.ui")]
     pub struct ButtonRow {
         /// Whether activating this button opens a subpage.
         pub to_subpage: Cell<bool>,

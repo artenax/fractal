@@ -19,7 +19,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/components-password-entry-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/components-password-entry-row.ui")]
     pub struct PasswordEntryRow {
         #[template_child]
         pub entry: TemplateChild<gtk::Text>,

@@ -40,7 +40,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/login.ui")]
+    #[template(resource = "/org/gnome/Fractal/login.ui")]
     pub struct Login {
         pub current_session: RefCell<Option<Session>>,
         #[template_child]

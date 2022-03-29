@@ -7,7 +7,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/content-divider-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/content-divider-row.ui")]
     pub struct DividerRow {
         #[template_child]
         pub label: TemplateChild<gtk::Label>,

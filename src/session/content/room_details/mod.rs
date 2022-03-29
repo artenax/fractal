@@ -25,7 +25,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/content-room-details.ui")]
+    #[template(resource = "/org/gnome/Fractal/content-room-details.ui")]
     pub struct RoomDetails {
         pub room: OnceCell<Room>,
         pub avatar_chooser: OnceCell<gtk::FileChooserNative>,

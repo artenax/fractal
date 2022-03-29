@@ -32,7 +32,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/account-settings-user-page.ui")]
+    #[template(resource = "/org/gnome/Fractal/account-settings-user-page.ui")]
     pub struct UserPage {
         pub session: RefCell<Option<WeakRef<Session>>>,
         #[template_child]

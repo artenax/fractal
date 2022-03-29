@@ -11,7 +11,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/sidebar-entry-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/sidebar-entry-row.ui")]
     pub struct EntryRow {
         pub entry: RefCell<Option<Entry>>,
     }

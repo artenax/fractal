@@ -37,7 +37,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/content-message-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/content-message-row.ui")]
     pub struct MessageRow {
         #[template_child]
         pub avatar: TemplateChild<Avatar>,

@@ -7,7 +7,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/add-account-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/add-account-row.ui")]
     pub struct AddAccountRow;
 
     #[glib::object_subclass]

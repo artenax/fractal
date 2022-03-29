@@ -15,7 +15,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/sidebar-room-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/sidebar-room-row.ui")]
     pub struct RoomRow {
         pub room: RefCell<Option<Room>>,
         pub binding: RefCell<Option<glib::Binding>>,

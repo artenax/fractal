@@ -19,7 +19,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/session-verification.ui")]
+    #[template(resource = "/org/gnome/Fractal/session-verification.ui")]
     pub struct SessionVerification {
         pub request: RefCell<Option<IdentityVerification>>,
         pub session: OnceCell<WeakRef<Session>>,

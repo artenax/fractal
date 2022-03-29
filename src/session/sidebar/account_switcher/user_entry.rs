@@ -13,7 +13,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/user-entry-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/user-entry-row.ui")]
     pub struct UserEntryRow {
         #[template_child]
         pub account_avatar: TemplateChild<AvatarWithSelection>,

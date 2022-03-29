@@ -19,7 +19,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/components-entry-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/components-entry-row.ui")]
     pub struct EntryRow {
         #[template_child]
         pub entry: TemplateChild<gtk::Text>,

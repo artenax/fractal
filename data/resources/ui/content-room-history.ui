@@ -173,7 +173,7 @@
                                 </style>
                                 <property name="factory">
                                   <object class="GtkBuilderListItemFactory">
-                                    <property name="resource">/org/gnome/FractalNext/content-item.ui</property>
+                                    <property name="resource">/org/gnome/Fractal/content-item.ui</property>
                                   </object>
                                 </property>
                                 <property name="single-click-activate">True</property>

@@ -10,7 +10,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/components-loading-listbox-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/components-loading-listbox-row.ui")]
     pub struct LoadingListBoxRow {
         #[template_child]
         pub spinner: TemplateChild<gtk::Spinner>,

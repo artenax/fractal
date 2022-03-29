@@ -21,7 +21,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/account-settings-deactivate-account-subpage.ui")]
+    #[template(resource = "/org/gnome/Fractal/account-settings-deactivate-account-subpage.ui")]
     pub struct DeactivateAccountSubpage {
         pub session: OnceCell<WeakRef<Session>>,
         #[template_child]

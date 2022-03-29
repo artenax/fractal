@@ -1,5 +1,5 @@
 #![doc(
-    html_logo_url = "https://gitlab.gnome.org/GNOME/fractal/-/raw/fractal-next/data/icons/org.gnome.FractalNext.svg?inline=false"
+    html_logo_url = "https://gitlab.gnome.org/GNOME/fractal/-/raw/fractal-next/data/icons/org.gnome.Fractal.svg?inline=false"
 )]
 
 mod application;
@@ -56,7 +56,7 @@ fn main() {
     gio::resources_register(&res);
 
     IconTheme::for_display(&Display::default().unwrap())
-        .add_resource_path("/org/gnome/FractalNext/icons");
+        .add_resource_path("/org/gnome/Fractal/icons");
 
     let app = Application::new();
     app.run();

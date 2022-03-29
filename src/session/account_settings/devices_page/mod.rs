@@ -22,7 +22,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/account-settings-devices-page.ui")]
+    #[template(resource = "/org/gnome/Fractal/account-settings-devices-page.ui")]
     pub struct DevicesPage {
         pub user: RefCell<Option<User>>,
         #[template_child]

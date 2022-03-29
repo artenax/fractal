@@ -11,7 +11,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/in-app-notification.ui")]
+    #[template(resource = "/org/gnome/Fractal/in-app-notification.ui")]
     pub struct InAppNotification {
         pub error_list: RefCell<Option<gio::ListStore>>,
         pub handler: RefCell<Option<SignalHandlerId>>,

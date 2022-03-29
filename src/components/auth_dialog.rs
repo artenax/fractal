@@ -91,7 +91,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/components-auth-dialog.ui")]
+    #[template(resource = "/org/gnome/Fractal/components-auth-dialog.ui")]
     pub struct AuthDialog {
         pub session: OnceCell<WeakRef<Session>>,
         #[template_child]

@@ -43,7 +43,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/components-action-button.ui")]
+    #[template(resource = "/org/gnome/Fractal/components-action-button.ui")]
     pub struct ActionButton {
         /// The icon used in the default state.
         pub icon_name: RefCell<String>,

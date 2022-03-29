@@ -67,7 +67,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/content-message-media.ui")]
+    #[template(resource = "/org/gnome/Fractal/content-message-media.ui")]
     pub struct MessageMedia {
         /// The intended display width of the media.
         pub width: Cell<i32>,

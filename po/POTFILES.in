@@ -1,8 +1,8 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-data/org.gnome.FractalNext.desktop.in.in
-data/org.gnome.FractalNext.gschema.xml.in
-data/org.gnome.FractalNext.metainfo.xml.in.in
+data/org.gnome.Fractal.desktop.in.in
+data/org.gnome.Fractal.gschema.xml.in
+data/org.gnome.Fractal.metainfo.xml.in.in
 
 # UI files
 data/resources/ui/account-settings-change-password-subpage.ui

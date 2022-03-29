@@ -87,7 +87,7 @@
                 <property name="single-click-activate">true</property>
                 <property name="factory">
                   <object class="GtkBuilderListItemFactory">
-                    <property name="resource">/org/gnome/FractalNext/sidebar-item.ui</property>
+                    <property name="resource">/org/gnome/Fractal/sidebar-item.ui</property>
                   </object>
                 </property>
                 <accessibility>

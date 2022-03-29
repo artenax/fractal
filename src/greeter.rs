@@ -7,7 +7,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/greeter.ui")]
+    #[template(resource = "/org/gnome/Fractal/greeter.ui")]
     pub struct Greeter {
         #[template_child]
         pub back_button: TemplateChild<gtk::Button>,

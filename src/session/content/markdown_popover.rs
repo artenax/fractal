@@ -8,7 +8,7 @@ pub mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/content-markdown-popover.ui")]
+    #[template(resource = "/org/gnome/Fractal/content-markdown-popover.ui")]
     pub struct MarkdownPopover {
         pub markdown_enabled: Cell<bool>,
     }

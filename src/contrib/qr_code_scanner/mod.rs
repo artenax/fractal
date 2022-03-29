@@ -18,7 +18,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/org/gnome/FractalNext/qr-code-scanner.ui")]
+    #[template(resource = "/org/gnome/Fractal/qr-code-scanner.ui")]
     pub struct QrCodeScanner {
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,

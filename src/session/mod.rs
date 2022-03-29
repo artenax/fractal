@@ -96,7 +96,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/session.ui")]
+    #[template(resource = "/org/gnome/Fractal/session.ui")]
     pub struct Session {
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
@@ -333,7 +333,7 @@ impl Session {
             let client = create_client(&homeserver, &path, &passphrase, use_discovery).await?;
 
             let response = client
-                .login(&username, &password, None, Some("Fractal Next"))
+                .login(&username, &password, None, Some("Fractal"))
                 .await;
             match response {
                 Ok(response) => Ok((
@@ -387,7 +387,7 @@ impl Session {
                     None,
                     None,
                     None,
-                    Some("Fractal Next"),
+                    Some("Fractal"),
                     idp_id.as_deref(),
                 )
                 .await;

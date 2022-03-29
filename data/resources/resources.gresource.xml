@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/org/gnome/FractalNext/">
+  <gresource prefix="/org/gnome/Fractal/">
     <file preprocess="xml-stripblanks">assets/homeserver.svg</file>
     <file preprocess="xml-stripblanks">assets/other-device.svg</file>
     <file preprocess="xml-stripblanks">assets/setup-complete.svg</file>

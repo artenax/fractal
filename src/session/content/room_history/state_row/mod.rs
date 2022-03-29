@@ -17,7 +17,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/content-state-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/content-state-row.ui")]
     pub struct StateRow {
         #[template_child]
         pub timestamp: TemplateChild<gtk::Label>,

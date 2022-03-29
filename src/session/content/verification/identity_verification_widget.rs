@@ -26,7 +26,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/FractalNext/identity-verification-widget.ui")]
+    #[template(resource = "/org/gnome/Fractal/identity-verification-widget.ui")]
     pub struct IdentityVerificationWidget {
         pub request: RefCell<Option<IdentityVerification>>,
         #[template_child]

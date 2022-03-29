@@ -1,5 +1,5 @@
 {
-    "app-id" : "org.gnome.FractalNext.Devel",
+    "app-id" : "org.gnome.Fractal.Devel",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "master",
     "sdk" : "org.gnome.Sdk",

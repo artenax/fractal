@@ -10,9 +10,9 @@ flatpak:
     - flatpak
   variables:
     BUNDLE: "fractal-nightly.flatpak"
-    MANIFEST_PATH: "build-aux/org.gnome.FractalNext.Devel.json"
+    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
     FLATPAK_MODULE: "fractal"
-    APP_ID: "org.gnome.FractalNext.Devel"
+    APP_ID: "org.gnome.Fractal.Devel"
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
   script:
     - >
@@ -46,7 +46,7 @@ cargo-clippy:
   tags:
     - flatpak
   variables:
-    MANIFEST_PATH: "build-aux/org.gnome.FractalNext.Devel.json"
+    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
     FLATPAK_MODULE: "fractal"
   script:
     - flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
@@ -69,7 +69,7 @@ pages:
   tags:
     - flatpak
   variables:
-    MANIFEST_PATH: "build-aux/org.gnome.FractalNext.Devel.json"
+    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
     FLATPAK_MODULE: "fractal"
   script:
     - flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
