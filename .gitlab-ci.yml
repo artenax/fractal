@@ -82,3 +82,27 @@ pages:
   only:
     refs:
       - fractal-next
+
+
+
+.publish_nightly:
+  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/flat-manager-client'
+  stage: 'deploy'
+  timeout: '100m'
+  dependencies: ['flatpak']
+  needs: ['flatpak']
+  script:
+    - tar xf repo.tar
+    - flatpak build-update-repo --generate-static-deltas repo/
+    - BUILD_ID=$(flat-manager-client create ${FLAT_MANAGER_URL} ${FLATPAK_REPO})
+    - flat-manager-client push --commit --publish --wait ${BUILD_ID} repo/ || result=$?
+    - flat-manager-client purge ${BUILD_ID}
+    - exit $result
+  variables:
+    FLAT_MANAGER_URL: https://flat-manager.gnome.org/
+    FLATPAK_REPO: nightly
+  only:
+    refs:
+      - 'main'
+    variables:
+      - $REPO_TOKEN
