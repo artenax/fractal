@@ -2,6 +2,7 @@ stages:
   - check
   - test
   - doc
+  - deploy
 
 flatpak:
   image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master'
@@ -85,7 +86,7 @@ pages:
 
 
 
-.publish_nightly:
+publish_nightly:
   image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/flat-manager-client'
   stage: 'deploy'
   timeout: '100m'
