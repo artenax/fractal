@@ -1,36 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Daniel García Moreno 2019 <danigm@wadobo.com> -->
+<!-- Copyright 2019 Daniel Garcia Moreno <danigm@gnome.org> -->
+<!-- Copyright 2022 Julian Sparber <julian@sparber.net> -->
 <component type="desktop-application">
   <id>@app-id@</id>
   <metadata_license>CC0</metadata_license>
   <project_license>GPL-3.0+</project_license>
+  <developer_name>Julian Sparber</developer_name>
   <name>Fractal</name>
-  <summary>A GTK + Rust application template.</summary>
+  <summary>Matrix group messaging app</summary>
   <description>
-    <p>A boilerplate template for GTK + Rust. It uses Meson as a build system and has flatpak support by default.</p>
+  <p>
+    Fractal is a Matrix messaging app for GNOME written in Rust. Its interface is optimized for collaboration in large groups, such as free software projects.
+  </p>
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>https://gitlab.gnome.org/GNOME/fractal/raw/master/data/resources/screenshots/screenshot1.png</image>
-      <caption>Main Window</caption>
+      <image type="source">https://gitlab.gnome.org/GNOME/fractal/raw/main/screenshots/fractal.png</image>
     </screenshot>
   </screenshots>
-  <url type="homepage">https://gitlab.gnome.org/GNOME/fractal</url>
-  <url type="bugtracker">https://gitlab.gnome.org/GNOME/fractal/issues</url>
-  <content_rating type="oars-1.0" />
   <releases>
-    <release version="0.0.1" date="2019-07-11" />
+    <release version="4.4" type="stable" date="2020-08-07" urgency="high">
+      <description>
+        <p>This new major release is the result of 10 months of hard work.</p>
+        <p>New features:</p>
+        <ul>
+          <li>Videos now have a preview directly in history</li>
+          <li>New videos player: click on a preview to open it</li>
+          <li>Improved audio file support, with a nicer presentation and seeking</li>
+          <li>Redacted messages are removed from history</li>
+          <li>Edited messages are replaced with their new content and show a small icon</li>
+          <li>Translations have been updated</li>
+          <li>Spellcheck language is saved per room</li>
+          <li>New swipe-back gesture to go back from room to room list in narrow view</li>
+          <li>New swipe left and right gesture to navigate through media in media view</li>
+          <li>SOCKS proxy are now also supported</li>
+        </ul>
+        <p>Bugfixes:</p>
+        <ul>
+          <li>Thumbnail for pasted images have been fixed</li>
+          <li>File type detection for uploads is more reliable</li>
+          <li>Typing notifications are now only sent when text is actually typed in the message input</li>
+        </ul>
+        <p>Under the hood:</p>
+        <ul>
+          <li>Code refactor is still going</li>
+          <li>Some improvements to logging, including access token removal for privacy</li>
+        </ul>
+      </description>
+    </release>
+    <release version="4.2.2" type="stable" date="2019-11-27" urgency="high">
+      <description>
+        <p>This new minor release is the result of 2 months of hard work.</p>
+        <p>New features:</p>
+        <ul>
+          <li>Translation strings have been updated</li>
+        </ul>
+        <p>Bugfixes:</p>
+        <ul>
+          <li>Newlines now work when markdown is enabled</li>
+          <li>Account settings can be accessed again</li>
+          <li>Redaction is working again</li>
+          <li>Compatibility with HTTP-only (non HTTPS) servers has been restored</li>
+          <li>Some crashes fixed</li>
+        </ul>
+        <p>Under the hood:</p>
+        <ul>
+          <li>Code refactor is still going</li>
+        </ul>
+      </description>
+    </release>
+    <release version="4.2.1" type="stable" date="2019-09-21" urgency="high">
+      <description>
+        <p>This new minor release is the result of 2 months of hard work.</p>
+        <p>New features:</p>
+        <ul>
+          <li>Autocompletion popover position fix</li>
+          <li>Translation strings have been updated</li>
+          <li>Disable the textbox when there are no write permissions</li>
+        </ul>
+        <p>Bugfixes:</p>
+        <ul>
+          <li>Fix crash on logout and login with wrong credentials</li>
+        </ul>
+        <p>Under the hood:</p>
+        <ul>
+          <li>Code refactor continues</li>
+        </ul>
+      </description>
+    </release>
+    <release version="4.2.0" type="stable" date="2019-07-27" urgency="high">
+      <description>
+        <p>This new major release is the result of 7 months of hard work by 37 contributors pushing over 200 commits.</p>
+        <p>New features:</p>
+        <ul>
+          <li>Adaptive window, mobile friendly</li>
+          <li>Window size and position are remembered</li>
+          <li>Redesigned login</li>
+          <li>Spellcheck</li>
+          <li>Network proxy support</li>
+          <li>Typing notifications</li>
+          <li>Badges are shown for operators and moderators</li>
+          <li>Keyboard shortcuts for easier navigation across rooms</li>
+          <li>Better uploads:
+            <ul>
+              <li>Audio and video files are now tagged correctly</li>
+              <li>Image files have a thumbnail</li>
+              <li>Various tweaks to the file chooser</li>
+            </ul>
+          </li>
+        </ul>
+        <p>Bugfixes:</p>
+        <ul>
+          <li>Logs actually output something now</li>
+          <li>A few issues with invites and direct chats have been resolved</li>
+          <li>More reliable scrolling</li>
+          <li>Some crashes fixed</li>
+        </ul>
+        <p>Under the hood:</p>
+        <ul>
+          <li>Code refactor continues</li>
+          <li>We’re now using Rust 2018</li>
+          <li>Many improvements to the build system and CI</li>
+        </ul>
+      </description>
+    </release>
+    <release version="4.0.0" type="stable" date="2018-12-22" urgency="high">
+      <description>
+        <p>This new major release is the result of 3 months of hard work by 25 contributors pushing over 340 commits.</p>
+        <p>New features:</p>
+        <ul>
+          <li>Enhanced history view with adaptive layout, day divider</li>
+          <li>Reorganised headerbar, app menu merged with user menu</li>
+          <li>Larger display of emoji-only messages</li>
+          <li>Some performance improvements</li>
+          <li>Opening a room jumps to first unread message</li>
+        </ul>
+        <p>Bugfixes:</p>
+        <ul>
+          <li>More reliable notifications</li>
+          <li>Fixed display bug for avatars</li>
+        </ul>
+        <p>Under the hood:</p>
+        <ul>
+          <li>Large code refactor</li>
+          <li>Logging infrastructure</li>
+          <li>Continuous integration</li>
+          <li>More informative build output</li>
+        </ul>
+      </description>
+    </release>
   </releases>
+  <launchable type="desktop-id">@appid@.desktop</launchable>
+  <update_contact>jsparber@gnome.org</update_contact>
+  <url type="homepage">https://gitlab.gnome.org/GNOME/fractal</url>
+  <url type="bugtracker">https://gitlab.gnome.org/GNOME/fractal/issues/</url>
+  <url type="donation">https://www.gnome.org/donate/</url>
+  <translation type="gettext">fractal</translation>
+  <project_group>GNOME</project_group>
   <kudos>
-     <!--
-       GNOME Software kudos:
-       https://gitlab.gnome.org/GNOME/gnome-software/blob/master/doc/kudos.md
-     -->
-     <kudo>ModernToolkit</kudo>
-     <kudo>HiDpiIcon</kudo>
+    <kudo>HiDpiIcon</kudo>
+    <kudo>ModernToolkit</kudo>
+    <kudo>Notifications</kudo>
   </kudos>
-  <developer_name>Daniel García Moreno</developer_name>
-  <update_contact>danigm@wadobo.com</update_contact>
-  <translation type="gettext">@gettext-package@</translation>
-  <launchable type="desktop-id">@app-id@.desktop</launchable>
+  <content_rating type="oars-1.1">
+    <content_attribute id="social-chat">intense</content_attribute>
+    <content_attribute id="social-audio">intense</content_attribute>
+  </content_rating>
+  <custom>
+    <value key="Purism::form_factor">workstation</value>
+    <value key="Purism::form_factor">mobile</value>
+  </custom>
 </component>
