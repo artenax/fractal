@@ -1,6 +1,6 @@
 [package]
 name = "fractal"
-version = "0.0.1"
+version = "5.0.0-alpha"
 authors = ["Julian Sparber <julian@sparber.net>"]
 edition = "2018"
 
