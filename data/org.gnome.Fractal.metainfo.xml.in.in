@@ -155,7 +155,7 @@
       </description>
     </release>
   </releases>
-  <launchable type="desktop-id">@appid@.desktop</launchable>
+  <launchable type="desktop-id">@app-id@.desktop</launchable>
   <update_contact>jsparber@gnome.org</update_contact>
   <url type="homepage">https://gitlab.gnome.org/GNOME/fractal</url>
   <url type="bugtracker">https://gitlab.gnome.org/GNOME/fractal/issues/</url>
