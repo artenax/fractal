@@ -19,6 +19,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="5.alpha" type="development" date="2022-03-30" urgency="high">
+      <description>
+        <p>Nightly preview of Fractal.</p>
+      </description>
+    </release>
     <release version="4.4" type="stable" date="2020-08-07" urgency="high">
       <description>
         <p>This new major release is the result of 10 months of hard work.</p>
