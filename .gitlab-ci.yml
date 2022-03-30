@@ -23,6 +23,7 @@ flatpak:
     - mkdir logs
     - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-logs/meson-log.txt logs/
     - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-logs/testlog.txt logs/
+    - tar cf repo.tar repo/
 
   artifacts:
     name: 'Flatpak artifacts'
@@ -30,6 +31,7 @@ flatpak:
     when: 'always'
     paths:
       - "${BUNDLE}"
+      - 'repo.tar'
       - 'logs'
     expire_in: 14 days
 
