@@ -50,7 +50,7 @@ Flatpak is the recommended way of building and installing Fractal.
 
 First you need to make sure you have the GNOME SDK and Rust toolchain installed.
 
-```
+```sh
 # Add Flathub and the gnome-nightly repo
 flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
@@ -67,14 +67,14 @@ flatpak install --user flathub org.freedesktop.Sdk.Extension.llvm12//21.08
 
 Move inside the `build-aux` folder and then build and install the app:
 
-```
+```sh
 cd build-aux
 flatpak-builder --user --install app org.gnome.Fractal.Devel.json
 ```
 
 Fractal Next can then be entirely removed from your system with:
 
-```
+```sh
 flatpak remove org.gnome.Fractal.Devel.json
 ```
 
