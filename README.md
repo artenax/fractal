@@ -1,11 +1,10 @@
-[![Docs Badge](https://img.shields.io/badge/%F0%9F%95%AE-Docs-blue)](https://gnome.pages.gitlab.gnome.org/fractal/fractal/)
+[![Our chat room](https://img.shields.io/matrix/fractal-gtk:matrix.org?color=blue&label=%23fractal%3Agnome.org&logo=matrix)](https://matrix.to/#/#fractal:gnome.org)
+[![Our Gitlab project](https://img.shields.io/badge/gitlab.gnome.org%2F-GNOME%2FFractal-green?logo=gitlab)](https://gitlab.gnome.org/GNOME/fractal/)
+[![Our documentation](https://img.shields.io/badge/%F0%9F%95%AE-Docs-B7410E?logo=rust)](https://gnome.pages.gitlab.gnome.org/fractal/fractal/)
 
 # Fractal
 
 Fractal is a Matrix messaging app for GNOME written in Rust. Its interface is optimized for collaboration in large groups, such as free software projects.
-
-* Come talk to us on Matrix: <https://matrix.to/#/#fractal:gnome.org>
-* Main repository: <https://gitlab.gnome.org/GNOME/fractal/>
 
 ![screenshot](https://gitlab.gnome.org/GNOME/fractal/raw/main/screenshots/fractal.png)
 
