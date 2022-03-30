@@ -2,22 +2,21 @@
 
 # Fractal
 
-Fractal is a Matrix messaging app for GNOME written in Rust. Its interface is optimized for collaboration in large groups, such as free software projects. The current development focus is on Fractal Next, a rewrite based on modern technologies.
+Fractal is a Matrix messaging app for GNOME written in Rust. Its interface is optimized for collaboration in large groups, such as free software projects.
 
 * Come talk to us on Matrix: <https://matrix.to/#/#fractal:gnome.org>
 * Main repository: <https://gitlab.gnome.org/GNOME/fractal/>
 
-![screenshot](https://gitlab.gnome.org/GNOME/fractal/raw/fractal-next/screenshots/fractal.png)
+![screenshot](https://gitlab.gnome.org/GNOME/fractal/raw/main/screenshots/fractal.png)
 
 
 ## Work in Progress
-
-We are working on rewriting [Fractal](https://gitlab.gnome.org/GNOME/fractal/) from scratch using [GTK4](https://www.gtk.org/) and the [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk). This effort is called fractal-next.
-
 We already talked several times in the past about rewriting the application, but for different reasons we didn't do it. Now that the [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk) exists, which does a lot of the heavy lifting for us, we have a good starting point to build Fractal without the need to implement every single feature from the Matrix API. Finally with the release of GTK4 we would need to rework most of Fractal's code anyways. Therefore, it just makes sense to start over and build Fractal with all the features (e.g end-to-end encryption) we have in mind.
 
-The main development branch is [fractal-next](https://gitlab.gnome.org/GNOME/fractal/-/tree/fractal-next). Issues that target fractal-next should be labelled accordingly as "Fractal-next".
-Our current work focuses on getting the same level of features as we already have in the stable version. Then fractal-next will replace our current codebase, merging it into the main git branch and becoming the new nightly version. You can follow along our progress towards that goal by looking at the [feature parity milestone](https://gitlab.gnome.org/GNOME/fractal/-/milestones/18).
+A year ago we started working on rewriting [Fractal](https://gitlab.gnome.org/GNOME/fractal/) from scratch using [GTK4](https://www.gtk.org/) and the [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk). This effort was called fractal-next.
+
+Fractal-next now replaced our previous codebase, and has become the new nightly version. It isn't yet ready for a release and you can follow along our progress towards it by looking at the [feature parity milestone](https://gitlab.gnome.org/GNOME/fractal/-/milestones/18) and [Fractal v5 (fractal-next)](https://gitlab.gnome.org/GNOME/fractal/-/milestones/21).
+
 
 ## Installation instructions
 
