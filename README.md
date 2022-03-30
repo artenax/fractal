@@ -20,7 +20,7 @@ over and build Fractal with all the features (e.g end-to-end encryption) we have
 
 A year ago we started working on rewriting [Fractal](https://gitlab.gnome.org/GNOME/fractal/) from
 scratch using [GTK4](https://www.gtk.org/) and the [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk).
-This effort was called fractal-next.
+This effort was called Fractal-next.
 
 Fractal-next now replaced our previous codebase, and has become the new nightly version. It isn't
 yet ready for a release and you can follow along our progress towards it by looking at the
@@ -29,7 +29,7 @@ yet ready for a release and you can follow along our progress towards it by look
 
 ## Installation instructions
 
-Flatpak is the recommended installation method. Until Fractal Next is ready, you can get the official
+Flatpak is the recommended installation method. Until Fractal-next is ready, you can get the official
 Fractal Flatpak on Flathub.
 
 <a href="https://flathub.org/apps/details/org.gnome.Fractal">
