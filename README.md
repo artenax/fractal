@@ -24,8 +24,8 @@ This effort was called fractal-next.
 
 Fractal-next now replaced our previous codebase, and has become the new nightly version. It isn't
 yet ready for a release and you can follow along our progress towards it by looking at the
-[feature parity milestone](https://gitlab.gnome.org/GNOME/fractal/-/milestones/18) and
-[Fractal v5 (fractal-next)](https://gitlab.gnome.org/GNOME/fractal/-/milestones/21).
+[feature parity](https://gitlab.gnome.org/GNOME/fractal/-/milestones/18) and
+[Fractal v5 (fractal-next)](https://gitlab.gnome.org/GNOME/fractal/-/milestones/21) milestones.
 
 ## Installation instructions
 
@@ -75,7 +75,7 @@ flatpak-builder --user --install app org.gnome.Fractal.Devel.json
 Fractal Next can then be entirely removed from your system with:
 
 ```
-flatpak remove org.gnome.Fractal.Devel.json`
+flatpak remove org.gnome.Fractal.Devel.json
 ```
 
 ### GNU/Linux
