@@ -179,6 +179,7 @@ impl Application {
                 "Eisha Chen-yen-su".to_string(),
                 "Jordan Petridis".to_string(),
                 "Julian Sparber".to_string(),
+                "Kévin Commaille".to_string(),
                 "Saurav Sachidanand".to_string(),
             ])
             .artists(vec!["Tobias Bernard".to_string()])
