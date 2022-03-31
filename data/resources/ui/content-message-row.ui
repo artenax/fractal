@@ -32,7 +32,7 @@
                 <child type="end">
                   <object class="GtkLabel" id="timestamp">
                     <style>
-                      <class name="heading"/>
+                      <class name="caption"/>
                       <class name="timestamp"/>
                       <class name="dim-label"/>
                     </style>
