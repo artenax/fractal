@@ -1,5 +1,6 @@
 #![doc(
-    html_logo_url = "https://gitlab.gnome.org/GNOME/fractal/-/raw/fractal-next/data/icons/org.gnome.Fractal.svg?inline=false"
+    html_logo_url = "https://gitlab.gnome.org/GNOME/fractal/-/raw/main/data/icons/org.gnome.Fractal.svg?inline=false",
+    html_favicon_url = "https://gitlab.gnome.org/GNOME/fractal/-/raw/main/data/icons/org.gnome.Fractal-symbolic.svg?inline=false"
 )]
 
 mod application;
