@@ -1,0 +1,2402 @@
+# German translation for fractal.
+# Copyright (C) 2018 fractal's COPYRIGHT HOLDER
+# This file is distributed under the same license as the fractal package.
+#
+#
+# Tim Sabsch <tim@sabsch.com>, 2018.
+# Felix Häcker <felix.haecker@posteo.de>, 2019.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2018-2019.
+# Philipp Kiemle <philipp.kiemle@gmail.com>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: fractal master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:14+0200\n"
+"PO-Revision-Date: 2021-03-01 17:13+0100\n"
+"Last-Translator: Philipp Kiemle <philipp.kiemle@gmail.com>\n"
+"Language-Team: Deutsch <translation-team-de@lists.sourceforge.net>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.4.1\n"
+
+#: data/org.gnome.Fractal.desktop.in.in:3
+#: data/org.gnome.Fractal.metainfo.xml.in.in:9
+msgid "Fractal"
+msgstr "Fractal"
+
+#: data/org.gnome.Fractal.desktop.in.in:4
+msgid ""
+"Fractal is a decentralized, secure messaging client for collaborative group "
+"communication."
+msgstr ""
+"Fractal ist ein dezentrales, sicheres Nachrichtenprogramm für "
+"gemeinschaftliche Gruppenkommunikation."
+
+#: data/org.gnome.Fractal.desktop.in.in:5
+msgid "Fractal group messaging"
+msgstr "Fractal Gruppenkommunikation"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Fractal.desktop.in.in:14
+msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
+msgstr ""
+"Matrix;matrix.org;chat;irc;communications;talk;riot;element;Unterhaltung;"
+"Kommunikation;Gespräch;"
+
+#: data/org.gnome.Fractal.gschema.xml.in:6
+#: data/org.gnome.Fractal.gschema.xml.in:7
+msgid "Default window width"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:11
+#: data/org.gnome.Fractal.gschema.xml.in:12
+msgid "Default window height"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:16
+msgid "Default window maximized behaviour"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:21
+msgid "Enable markdown formatting"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:22
+msgid "Whether or not to do markdown formatting when sending messages"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:8
+msgid "Julian Sparber"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
+msgid "Matrix group messaging app"
+msgstr "Matrix-Gruppenkommunikations-Anwendung"
+
+# Ich musste hier mal etwas weiter ausholen, denn die Sequenz »GNOME in Rust« sagt den meisten Leuten sicherlich gar nichts.
+# Wobei noch anzuweifeln wäre, ob diese Zusatzinfo für den typischen Benutzer einer neumodischen Softwareverwaltung (für die die Appdata-Strings verwendet werden) überhaupt in irgendeiner Form relevant ist.
+#: data/org.gnome.Fractal.metainfo.xml.in.in:12
+msgid ""
+"Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
+"is optimized for collaboration in large groups, such as free software "
+"projects."
+msgstr ""
+"Fractal ist eine in der Programmiersprache Rust geschriebene Matrix-"
+"Nachrichtenanwendung für GNOME. Ihre Benutzeroberfläche ist für die "
+"Zusammenarbeit in großen Gruppen, wie bei freien Software-Projekten, "
+"optimiert."
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:24
+msgid "Nightly preview of Fractal."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:29
+msgid "This new major release is the result of 10 months of hard work."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:30
+#: data/org.gnome.Fractal.metainfo.xml.in.in:59
+#: data/org.gnome.Fractal.metainfo.xml.in.in:80
+#: data/org.gnome.Fractal.metainfo.xml.in.in:99
+#: data/org.gnome.Fractal.metainfo.xml.in.in:135
+#, fuzzy
+msgid "New features:"
+msgstr "Neue Nachrichten"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:32
+msgid "Videos now have a preview directly in history"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:33
+msgid "New videos player: click on a preview to open it"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:34
+msgid "Improved audio file support, with a nicer presentation and seeking"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:35
+msgid "Redacted messages are removed from history"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:36
+msgid ""
+"Edited messages are replaced with their new content and show a small icon"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:37
+msgid "Translations have been updated"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:38
+msgid "Spellcheck language is saved per room"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:39
+msgid "New swipe-back gesture to go back from room to room list in narrow view"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:40
+msgid ""
+"New swipe left and right gesture to navigate through media in media view"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:41
+msgid "SOCKS proxy are now also supported"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:43
+#: data/org.gnome.Fractal.metainfo.xml.in.in:63
+#: data/org.gnome.Fractal.metainfo.xml.in.in:86
+#: data/org.gnome.Fractal.metainfo.xml.in.in:117
+#: data/org.gnome.Fractal.metainfo.xml.in.in:143
+msgid "Bugfixes:"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:45
+msgid "Thumbnail for pasted images have been fixed"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:46
+msgid "File type detection for uploads is more reliable"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:47
+msgid ""
+"Typing notifications are now only sent when text is actually typed in the "
+"message input"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:49
+#: data/org.gnome.Fractal.metainfo.xml.in.in:71
+#: data/org.gnome.Fractal.metainfo.xml.in.in:90
+#: data/org.gnome.Fractal.metainfo.xml.in.in:124
+#: data/org.gnome.Fractal.metainfo.xml.in.in:148
+msgid "Under the hood:"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:51
+#: data/org.gnome.Fractal.metainfo.xml.in.in:73
+msgid "Code refactor is still going"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:52
+msgid ""
+"Some improvements to logging, including access token removal for privacy"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:58
+#: data/org.gnome.Fractal.metainfo.xml.in.in:79
+msgid "This new minor release is the result of 2 months of hard work."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:61
+#: data/org.gnome.Fractal.metainfo.xml.in.in:83
+msgid "Translation strings have been updated"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:65
+msgid "Newlines now work when markdown is enabled"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:66
+#, fuzzy
+msgid "Account settings can be accessed again"
+msgstr "Entschuldigung, die Kontoeinstellungen können nicht geladen werden."
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:67
+msgid "Redaction is working again"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:68
+msgid "Compatibility with HTTP-only (non HTTPS) servers has been restored"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:69
+#: data/org.gnome.Fractal.metainfo.xml.in.in:122
+msgid "Some crashes fixed"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:82
+msgid "Autocompletion popover position fix"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:84
+msgid "Disable the textbox when there are no write permissions"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:88
+msgid "Fix crash on logout and login with wrong credentials"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:92
+#: data/org.gnome.Fractal.metainfo.xml.in.in:126
+msgid "Code refactor continues"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:98
+msgid ""
+"This new major release is the result of 7 months of hard work by 37 "
+"contributors pushing over 200 commits."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:101
+msgid "Adaptive window, mobile friendly"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:102
+msgid "Window size and position are remembered"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:103
+msgid "Redesigned login"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:104
+msgid "Spellcheck"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:105
+msgid "Network proxy support"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:106
+#, fuzzy
+msgid "Typing notifications"
+msgstr "Benachrichtigungen"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:107
+msgid "Badges are shown for operators and moderators"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:108
+msgid "Keyboard shortcuts for easier navigation across rooms"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:111
+msgid "Audio and video files are now tagged correctly"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:112
+msgid "Image files have a thumbnail"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:113
+msgid "Various tweaks to the file chooser"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:119
+msgid "Logs actually output something now"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:120
+msgid "A few issues with invites and direct chats have been resolved"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:121
+msgid "More reliable scrolling"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:127
+msgid "We’re now using Rust 2018"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:128
+msgid "Many improvements to the build system and CI"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:134
+msgid ""
+"This new major release is the result of 3 months of hard work by 25 "
+"contributors pushing over 340 commits."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:137
+msgid "Enhanced history view with adaptive layout, day divider"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:138
+msgid "Reorganised headerbar, app menu merged with user menu"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:139
+msgid "Larger display of emoji-only messages"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:140
+msgid "Some performance improvements"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:141
+#, fuzzy
+msgid "Opening a room jumps to first unread message"
+msgstr "Den vorherigen Raum in der Liste mit ungelesenen Nachrichten öffnen"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:145
+#, fuzzy
+msgid "More reliable notifications"
+msgstr "Benachrichtigungen"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:146
+msgid "Fixed display bug for avatars"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:150
+msgid "Large code refactor"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:151
+msgid "Logging infrastructure"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:152
+msgid "Continuous integration"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:153
+msgid "More informative build output"
+msgstr ""
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:54
+#, fuzzy
+msgid "Change Password"
+msgstr "_Neues Passwort"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:76
+#, fuzzy
+msgid "New Password"
+msgstr "_Neues Passwort"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:81
+#, fuzzy
+msgid "Confirm New Password"
+msgstr "_Neues Passwort"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:94
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
+#: src/session/content/room_history/verification_info_bar.rs:174
+msgid "Continue"
+msgstr "Weiter"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:115
+msgid "Deactivate Account"
+msgstr "Konto deaktivieren"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:79
+#: data/resources/ui/account-settings-user-page.ui:80
+#, fuzzy
+msgid "Matrix User ID"
+msgstr "Matrix-Kennung"
+
+#: data/resources/ui/account-settings-device-row.ui:59
+#: src/session/content/verification/identity_verification_widget.rs:493
+#: src/session/content/verification/identity_verification_widget.rs:498
+#: src/session/content/verification/identity_verification_widget.rs:502
+#: src/session/content/verification/identity_verification_widget.rs:522
+#: src/session/content/verification/identity_verification_widget.rs:525
+#: src/session/content/verification/identity_verification_widget.rs:529
+#, fuzzy
+msgid "Verify Session"
+msgstr "Neues Passwort über_prüfen"
+
+#: data/resources/ui/account-settings-devices-page.ui:5
+msgid "Sessions"
+msgstr ""
+
+#: data/resources/ui/account-settings-devices-page.ui:9
+#: data/resources/ui/account-settings-devices-page.ui:13
+#, fuzzy
+msgid "Current Session"
+msgstr "A_ktuelles Passwort"
+
+#: data/resources/ui/account-settings-devices-page.ui:24
+#: data/resources/ui/account-settings-devices-page.ui:28
+msgid "Other Active Sessions"
+msgstr ""
+
+#: data/resources/ui/account-settings-user-page.ui:5
+#: data/resources/ui/content-room-details.ui:9
+#, fuzzy
+msgid "General"
+msgstr "Allgemein"
+
+#: data/resources/ui/account-settings-user-page.ui:38
+msgid "Name"
+msgstr "Name"
+
+#: data/resources/ui/account-settings-user-page.ui:63
+msgid "Advanced Information"
+msgstr "Erweiterte Informationen"
+
+#: data/resources/ui/account-settings-user-page.ui:66
+msgid "Homeserver"
+msgstr "Heimserver"
+
+#: data/resources/ui/account-settings-user-page.ui:94
+msgid "Session ID"
+msgstr ""
+
+#: data/resources/ui/account-settings.ui:4
+msgid "Account Settings"
+msgstr "Kontoeinstellungen"
+
+#: data/resources/ui/attachment-dialog.ui:14
+#: data/resources/ui/content-invite-subpage.ui:12
+#: data/resources/ui/room-creation.ui:16
+msgid "_Cancel"
+msgstr "_Abbrechen"
+
+#: data/resources/ui/attachment-dialog.ui:21
+#, fuzzy
+msgid "_Send"
+msgstr "Senden"
+
+#: data/resources/ui/attachment-dialog.ui:36
+msgid "No Preview Available"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:20
+msgid "Authentication"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:43
+msgid "Please authenticate the operation with your password"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:70
+msgid ""
+"Please authenticate the operation via the browser and once completed press "
+"confirm."
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:80
+msgid "Authenticate via Browser"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:113
+#: data/resources/ui/identity-verification-widget.ui:455
+#: src/components/editable_avatar.rs:344
+#: src/session/content/room_history/verification_info_bar.rs:175
+#: src/session/room/event_actions.rs:210
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: data/resources/ui/components-auth-dialog.ui:118
+#: data/resources/ui/identity-verification-widget.ui:445
+msgid "Confirm"
+msgstr ""
+
+#: data/resources/ui/components-loading-listbox-row.ui:32
+msgid "Retry"
+msgstr ""
+
+#: data/resources/ui/content-explore.ui:64
+#, fuzzy
+msgid "No rooms matching the search where found"
+msgstr "Keine passenden Teilnehmer gefunden"
+
+#: data/resources/ui/content-explore.ui:97
+#, fuzzy
+msgid "Room List"
+msgstr "Räume"
+
+#: data/resources/ui/content-invite-subpage.ui:18
+#, fuzzy
+msgid "I_nvite"
+msgstr "Einladen"
+
+#: data/resources/ui/content-invite-subpage.ui:87
+msgid "Search for users to invite them to this room."
+msgstr ""
+
+#: data/resources/ui/content-invite-subpage.ui:123
+#, fuzzy
+msgid "No users matching the search where found."
+msgstr "Keine passenden Teilnehmer gefunden"
+
+#: data/resources/ui/content-invite-subpage.ui:132
+#, fuzzy
+msgid "An error occurred while searching for matches"
+msgstr "Fehler bei der Suche nach Räumen"
+
+#: data/resources/ui/content-invite.ui:26
+#: data/resources/ui/content-invite.ui:51
+msgid "Invite"
+msgstr "Einladen"
+
+#: data/resources/ui/content-invite.ui:90
+msgid "<widget> invited you"
+msgstr ""
+
+#: data/resources/ui/content-invite.ui:109
+#: data/resources/ui/sidebar-room-row.ui:11
+#, fuzzy
+msgid "_Reject"
+msgstr "Ablehnen"
+
+#: data/resources/ui/content-invite.ui:119
+#: data/resources/ui/sidebar-room-row.ui:6
+#, fuzzy
+msgid "_Accept"
+msgstr "Annehmen"
+
+#: data/resources/ui/content-markdown-popover.ui:17
+#, fuzzy
+msgid "_Markdown"
+msgstr "Markdown"
+
+#: data/resources/ui/content-markdown-popover.ui:37
+msgid "> quote"
+msgstr "> Zitat"
+
+#: data/resources/ui/content-markdown-popover.ui:46
+msgid "**bold**"
+msgstr "**fett**"
+
+#: data/resources/ui/content-markdown-popover.ui:59
+msgid "`code`"
+msgstr "`code`"
+
+#: data/resources/ui/content-markdown-popover.ui:69
+msgid "*italic*"
+msgstr "*kursiv*"
+
+#: data/resources/ui/content-member-page.ui:5
+#, fuzzy
+msgid "Members"
+msgstr "Teilnehmer"
+
+#: data/resources/ui/content-member-page.ui:24
+#, fuzzy
+msgid "Invite new member"
+msgstr "Neuen Teilnehmer einladen"
+
+#: data/resources/ui/content-member-page.ui:33
+msgid "Search for room members"
+msgstr "Nach Raumteilnehmern suchen"
+
+#: data/resources/ui/content-message-file.ui:21
+msgid "Open"
+msgstr "Öffnen"
+
+#: data/resources/ui/content-message-file.ui:28
+#: src/session/room/event_actions.rs:209
+msgid "Save"
+msgstr "Speichern"
+
+#: data/resources/ui/content-room-details.ui:4
+#: src/session/content/room_details/mod.rs:250
+msgid "Room Details"
+msgstr "Raumdetails"
+
+#: data/resources/ui/content-room-history.ui:6
+#, fuzzy
+msgid "Room _Details"
+msgstr "Raumdetails"
+
+#: data/resources/ui/content-room-history.ui:11
+#, fuzzy
+msgid "_Invite New Member"
+msgstr "Neuen Teilnehmer einladen"
+
+#: data/resources/ui/content-room-history.ui:18
+#: data/resources/ui/sidebar-room-row.ui:40
+#, fuzzy
+msgid "_Leave Room"
+msgstr "Raum verlassen"
+
+#: data/resources/ui/content-room-history.ui:116
+msgid "Unable to load room"
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:117
+msgid "Check your network connection."
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:120
+msgid "Try Again"
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:145
+msgid "Scroll to bottom"
+msgstr "Nach unten rollen"
+
+#: data/resources/ui/content-room-history.ui:157
+msgid "Drop Here to Send"
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:181
+#, fuzzy
+msgid "Room History"
+msgstr "Raumordner"
+
+#: data/resources/ui/content-state-creation.ui:19
+#, fuzzy
+msgid "Previous room"
+msgstr "Raum verlassen"
+
+#: data/resources/ui/content-state-tombstone.ui:14
+msgid "This room was upgraded."
+msgstr ""
+
+#: data/resources/ui/content-state-tombstone.ui:19
+msgid "Switch to new Room"
+msgstr ""
+
+#: data/resources/ui/content.ui:35
+msgid "No Room Selected"
+msgstr "Kein Raum ausgewählt"
+
+#: data/resources/ui/content.ui:36
+msgid "Join a room to start chatting."
+msgstr "Treten Sie einem Raum bei und beginnen Sie eine Unterhaltung."
+
+#: data/resources/ui/error-page.ui:40
+msgid ""
+"It seems like one of the Fractal sessions stored in the Secret Service is "
+"corrupted. If you know how to fix it you should do so."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:51
+msgid ""
+"Alternatively, we could delete this session for you. This means you will "
+"have to login again and you will lose access to your encrypted messages, "
+"unless you have a session open in another client or you have already backed "
+"up your encryption keys."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:74
+msgid "Clicking this button might delete more than one session!"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:86
+msgid "Delete the corrupted session"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:109
+msgid ""
+"Fractal relies on a Secret Service Provider to manage your sensitive session "
+"information and an error occurred while we where trying to store or get your "
+"session."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:124
+msgid ""
+"Here are a few things that might help you fix issues with the Secret Service:"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:147
+msgid ""
+"Make sure you have a Secret Service Provider installed, like gnome-keyring."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:172
+msgid "Check that you have a default keyring and that is is unlocked."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:187
+msgid ""
+"Check the application logs and your distribution's documentation for more "
+"details."
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:11
+#, fuzzy
+msgid "_Reply"
+msgstr "Antworten"
+
+#: data/resources/ui/event-menu.ui:16
+msgid "_Edit"
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:86
+msgid "_Forward"
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:93
+msgid "_Select"
+msgstr "Aus_wählen"
+
+#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
+#, fuzzy
+msgid "_Copy Text"
+msgstr "Text kopieren"
+
+#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
+#, fuzzy
+msgid "_Copy Image"
+msgstr "Bild kopieren"
+
+#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
+#, fuzzy
+msgid "S_ave Image"
+msgstr "Bild speichern unter …"
+
+#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:106
+msgid "_Permalink"
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
+#, fuzzy
+msgid "_View Source"
+msgstr "Quelle zeigen"
+
+#: data/resources/ui/event-menu.ui:63 data/resources/ui/event-menu.ui:118
+msgid "Re_move"
+msgstr ""
+
+#: data/resources/ui/event-source-dialog.ui:5
+#, fuzzy
+msgid "Event Source"
+msgstr "Quelle zeigen"
+
+#: data/resources/ui/greeter.ui:43
+msgid ""
+"You are running an early stage development version. Be aware it is a work in "
+"progress and far from complete yet."
+msgstr ""
+
+#. Fractal is the application name and shouldn't be translated
+#: data/resources/ui/greeter.ui:83
+msgid "Welcome to Fractal"
+msgstr "Willkommen bei Fractal"
+
+#: data/resources/ui/identity-verification-widget.ui:50
+#: src/session/content/room_history/verification_info_bar.rs:170
+msgid "Decline"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:60
+#: src/session/content/room_history/verification_info_bar.rs:169
+msgid "Verify"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:115
+#: data/resources/ui/identity-verification-widget.ui:216
+msgid "Can't scan QR code?"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:123
+#: data/resources/ui/identity-verification-widget.ui:233
+msgid "Compare Emoji"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:150
+msgid "Scan Complete"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:225
+msgid "Scan QR code with this session"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:293
+msgid "Do Not Match"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:303
+msgid "Match"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:353
+msgid "Done"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:422
+msgid "Confirm Scan"
+msgstr ""
+
+#: data/resources/ui/login-advanced-dialog.ui:5
+#, fuzzy
+msgid "Homeserver Discovery"
+msgstr "Heimserver"
+
+#: data/resources/ui/login-advanced-dialog.ui:14
+msgid ""
+"Auto-discovery, also known as \"well-known lookup\", allows to discover the "
+"URL of a Matrix homeserver from a domain name. This should only be disabled "
+"if your homeserver doesn’t support auto-discovery or if you want to provide "
+"the URL yourself."
+msgstr ""
+
+#: data/resources/ui/login-advanced-dialog.ui:17
+msgid "_Auto-discovery"
+msgstr ""
+
+#: data/resources/ui/login.ui:23
+msgid "_Next"
+msgstr "_Weiter"
+
+#: data/resources/ui/login.ui:130 src/login/mod.rs:341
+msgid "Homeserver URL"
+msgstr "Adresse des Heimservers"
+
+#: data/resources/ui/login.ui:171
+msgid "_Forgot Password?"
+msgstr "Passwort _vergessen?"
+
+#: data/resources/ui/login.ui:216
+msgid "Please follow the steps in the browser."
+msgstr ""
+
+#: data/resources/ui/member-menu.ui:6
+msgid "_Verify"
+msgstr ""
+
+#: data/resources/ui/member-menu.ui:14
+msgid "Make _Mod"
+msgstr ""
+
+#: data/resources/ui/member-menu.ui:20
+#, fuzzy
+msgid "Make _Admin"
+msgstr "Administrator"
+
+#: data/resources/ui/member-menu.ui:26
+msgid "_Kick"
+msgstr ""
+
+#: data/resources/ui/room-creation.ui:4
+#, fuzzy
+msgid "Create new Room"
+msgstr "Neuen Raum erstellen"
+
+#: data/resources/ui/room-creation.ui:22
+#, fuzzy
+msgid "C_reate"
+msgstr "Erstellen"
+
+#: data/resources/ui/room-creation.ui:58
+#, fuzzy
+msgid "Room Name"
+msgstr "Raumname"
+
+#: data/resources/ui/room-creation.ui:93
+msgid "Visibility"
+msgstr "Sichtbarkeit"
+
+#: data/resources/ui/room-creation.ui:103
+#, fuzzy
+msgid "_Private"
+msgstr "Privat"
+
+#: data/resources/ui/room-creation.ui:110
+#, fuzzy
+msgid "P_ublic"
+msgstr "Öffentlich"
+
+#: data/resources/ui/room-creation.ui:122
+#, fuzzy
+msgid "Room Address"
+msgstr "Adressen beitreten"
+
+#: data/resources/ui/session-verification.ui:49
+#: src/session/content/verification/identity_verification_widget.rs:537
+msgid "Get Another Device"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:60
+#: src/session/content/verification/identity_verification_widget.rs:539
+msgid "Accept the verification request from another session or device."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:73
+msgid "No other devices logged into this account?"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:81
+#: data/resources/ui/session-verification.ui:171
+msgid "Recovery"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:91
+#: src/session/content/verification/session_verification.rs:240
+msgid "Reset"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:123
+msgid "Setup Encryption Identity"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:134
+msgid ""
+"You need to setup an encryption identity, since this is the first time you "
+"logged into your account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:142
+msgid "Setup"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:182
+msgid ""
+"Without another device you need a recovery passphrase or key to access your "
+"messages"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:190
+#: data/resources/ui/session-verification.ui:245
+msgid "Recovery Passphrase"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:199
+#: data/resources/ui/session-verification.ui:306
+msgid "Recovery Key"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:208
+msgid ""
+"If you don't have any of these you can rest your identity, but be aware this "
+"makes your old messages inacessible forever."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:217
+msgid "Reset Identity"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:256
+msgid ""
+"Your Recovery Passphrase was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:264
+msgid "If you opted for a Recovery Key instead go back and choose that option."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:272
+msgid "Passphrase"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:278
+#: data/resources/ui/session-verification.ui:342
+#, fuzzy
+msgid "Next"
+msgstr "_Weiter"
+
+#: data/resources/ui/session-verification.ui:317
+msgid "Your Recovery Key was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:325
+msgid ""
+"If you opted for a Recovery Passphrase instead go back and choose that "
+"option."
+msgstr ""
+
+#: data/resources/ui/shortcuts.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Allgemein"
+
+#: data/resources/ui/shortcuts.ui:14
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Tastenkombinationen"
+
+#: data/resources/ui/shortcuts.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Beenden"
+
+#: data/resources/ui/shortcuts.ui:26
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Search Room List"
+msgstr "Nach Raumteilnehmern suchen"
+
+#: data/resources/ui/shortcuts.ui:32
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Close Room"
+msgstr "Neuer Raum"
+
+#: data/resources/ui/sidebar-room-row.ui:18
+#, fuzzy
+msgid "Mark as _Favorite"
+msgstr "Favoriten"
+
+#: data/resources/ui/sidebar-room-row.ui:23
+msgid "Unmark as _Favorite"
+msgstr ""
+
+#: data/resources/ui/sidebar-room-row.ui:28
+msgid "Mark as Low _Priority"
+msgstr ""
+
+#: data/resources/ui/sidebar-room-row.ui:33
+msgid "Unmark as Low _Priority"
+msgstr ""
+
+#: data/resources/ui/sidebar-room-row.ui:45
+#, fuzzy
+msgid "Re_join Room"
+msgstr "Raum beitreten"
+
+#: data/resources/ui/sidebar-room-row.ui:50
+#, fuzzy
+msgid "_Forget Room"
+msgstr "Neuer Raum"
+
+#: data/resources/ui/sidebar.ui:6
+#, fuzzy
+msgid "_New Room"
+msgstr "Neuer Raum"
+
+#: data/resources/ui/sidebar.ui:12
+msgid "_Preferences"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:16
+#, fuzzy
+msgid "_Keyboard Shortcuts"
+msgstr "Tastenkombinationen"
+
+#: data/resources/ui/sidebar.ui:20
+msgid "_About Fractal"
+msgstr "_Info zu Fractal"
+
+#: data/resources/ui/sidebar.ui:94
+msgid "Sidebar"
+msgstr ""
+
+#: data/resources/ui/qr-code-scanner.ui:21
+msgid "Unable to connect to Camera"
+msgstr ""
+
+#: src/application.rs:167
+msgid "Learn more about Fractal"
+msgstr "Erfahren Sie mehr über Fractal"
+
+#: src/application.rs:171
+#, fuzzy
+msgid "A Matrix client for GNOME"
+msgstr "Eine Matrix.org-Anwendung für GNOME"
+
+#: src/application.rs:172
+msgid "© 2017-2021 The Fractal Team"
+msgstr ""
+
+#: src/application.rs:186
+msgid "translator-credits"
+msgstr ""
+"Tim Sabsch <tim@sabsch.com>, 2018\n"
+"Mario Blättermann <mario.blaettermann@gmail.com>, 2018-2019\n"
+"Felix Häcker <haeckerfelix@gnome.org>, 2019\n"
+"Philipp Kiemle <philipp.kiemle@gmail.com>, 2021"
+
+#. This can't be added via the builder
+#: src/application.rs:190
+msgid "Name by"
+msgstr "Nach Name"
+
+#: src/components/editable_avatar.rs:334
+#, fuzzy
+msgid "Choose Avatar"
+msgstr "Anbieter auswählen"
+
+#: src/components/editable_avatar.rs:343
+msgid "Choose"
+msgstr ""
+
+#: src/components/editable_avatar.rs:366
+msgid "The chosen file is not an image"
+msgstr ""
+
+#: src/components/editable_avatar.rs:374
+msgid "Could not determine the type of the chosen file"
+msgstr ""
+
+#: src/components/editable_avatar.rs:383
+msgid "No file was chosen"
+msgstr ""
+
+#: src/error_page.rs:108
+msgid "Session removed successfully."
+msgstr ""
+
+#: src/error_page.rs:120
+msgid "Could not remove session from secret storage"
+msgstr ""
+
+#: src/login/mod.rs:336
+msgid "Domain Name"
+msgstr ""
+
+#: src/login/mod.rs:338
+msgid "The domain of your Matrix homeserver, for example gnome.org"
+msgstr ""
+
+#: src/login/mod.rs:342
+msgid ""
+"The URL of your Matrix homeserver, for example <span segment=\"word"
+"\">https://gnome.modular.im</span>"
+msgstr ""
+
+#: src/secret.rs:52
+#, fuzzy
+msgid "Could not unlock the secret storage"
+msgstr "Datei konnte nicht heruntergeladen werden"
+
+#: src/secret.rs:55 src/secret.rs:59
+msgid "An unknown error occurred when interacting with the secret storage"
+msgstr ""
+
+#: src/secret.rs:88
+msgid "Malformed homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:95
+msgid "Could not find homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:109
+msgid "Malformed user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:116
+msgid "Could not find user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:125
+msgid "Could not find device ID in stored session"
+msgstr ""
+
+#: src/secret.rs:134
+msgid "Could not find database path in stored session"
+msgstr ""
+
+#: src/secret.rs:145
+msgid "Malformed secret in stored session"
+msgstr ""
+
+#: src/secret.rs:152
+msgid "No secret in stored session"
+msgstr ""
+
+#: src/secret.rs:159
+msgid "Could not get secret in stored session"
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:147
+msgid "Failed to load connected device."
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:192
+msgid "Failed to load connected devices."
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_row.rs:110
+#, fuzzy
+msgid "Delete Session"
+msgstr "Nachricht löschen"
+
+#: src/session/account_settings/devices_page/device_row.rs:112
+msgid "Log Out"
+msgstr "Abmelden"
+
+#: src/session/account_settings/devices_page/device_row.rs:229
+msgid ""
+"Fractal's support for encryption is unstable so you might lose access to "
+"your encrypted message history. It is recommended to backup your encryption "
+"keys from another Matrix client before proceeding."
+msgstr ""
+
+#. Translators: Time in 24h format
+#: src/session/account_settings/devices_page/device_row.rs:287
+msgid "Last seen at %H:%M"
+msgstr ""
+
+#. Translators: Time in 12h format
+#: src/session/account_settings/devices_page/device_row.rs:290
+msgid "Last seen at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:299
+#, no-c-format
+msgid "Last seen Yesterday at %H:%M"
+msgstr ""
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:304
+#, no-c-format
+msgid "Last seen Yesterday at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the name of the week day followed by
+#. a time in 24h format. i.e. "Last seen Monday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:313
+#, no-c-format
+msgid "Last seen %A at %H:%M"
+msgstr ""
+
+#. Translators: this is the week day name followed by
+#. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:318
+#, no-c-format
+msgid "Last seen %A at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 24h format i.e. "Last seen February 3 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:326
+#, no-c-format
+msgid "Last seen %B %-e at %H:%M"
+msgstr ""
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 12h format i.e. "Last seen February 3 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:332
+#, no-c-format
+msgid "Last seen %B %-e at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:339
+#, no-c-format
+msgid "Last seen %B %-e %Y at %H:%M"
+msgstr ""
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:345
+#, no-c-format
+msgid "Last seen %B %-e %Y at %l:%M %p"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:217
+msgid "Password must be at least 8 characters long"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:220
+msgid "Password must have at least one lower-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:224
+msgid "Password must have at least one upper-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:227
+msgid "Password must have at least one digit"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:229
+msgid "Password must have at least one symbol"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:255
+#, fuzzy
+msgid "Passwords do not match"
+msgstr "Die Passwörter stimmen nicht überein."
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:313
+msgid "Password changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:329
+msgid "Password rejected for being too weak"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:336
+#, fuzzy
+msgid "Could not change password"
+msgstr "Passwort konnte nicht geändert werden"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:200
+msgid "Account successfully deactivated"
+msgstr ""
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:210
+#, fuzzy
+msgid "Could not deactivate account"
+msgstr "Konto konnte nicht gelöscht werden"
+
+#: src/session/account_settings/user_page/mod.rs:227
+msgid "Avatar removed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/mod.rs:245
+msgid "Avatar changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/mod.rs:291
+#, fuzzy
+msgid "Could not upload avatar"
+msgstr "Datei konnte nicht heruntergeladen werden"
+
+#: src/session/account_settings/user_page/mod.rs:316
+#, fuzzy
+msgid "Could not change avatar"
+msgstr "Passwort konnte nicht geändert werden"
+
+#: src/session/account_settings/user_page/mod.rs:348
+#, fuzzy
+msgid "Could not remove avatar"
+msgstr "Datei konnte nicht gespeichert werden"
+
+#: src/session/account_settings/user_page/mod.rs:397
+msgid "Name changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/mod.rs:436
+#, fuzzy
+msgid "Could not change display name"
+msgstr "Datei konnte nicht gespeichert werden"
+
+#: src/session/content/explore/public_room_row.rs:222
+msgid "View"
+msgstr ""
+
+#: src/session/content/explore/public_room_row.rs:224
+msgid "Join"
+msgstr "Beitreten"
+
+#: src/session/content/room_details/mod.rs:169
+#, fuzzy
+msgid "Save Details"
+msgstr "Details"
+
+#: src/session/content/room_details/mod.rs:170
+#, fuzzy
+msgid "Edit Details"
+msgstr "Details"
+
+#: src/session/content/room_details/mod.rs:213
+#, fuzzy
+msgid "Choose avatar"
+msgstr "Anbieter auswählen"
+
+#: src/session/content/room_details/mod.rs:244
+#, fuzzy
+msgid "Invite new Members"
+msgstr "Neuen Teilnehmer einladen"
+
+#. Translators: This is a date format in the day divider without the year
+#: src/session/content/room_history/item_row.rs:169
+#, fuzzy
+msgid "%A, %B %e"
+msgstr "%e. %B"
+
+#. Translators: This is a date format in the day divider with the year
+#: src/session/content/room_history/item_row.rs:172
+#, fuzzy
+msgid "%A, %B %e, %Y"
+msgstr "%e. %B %Y"
+
+#: src/session/content/room_history/item_row.rs:190
+msgid "New Messages"
+msgstr "Neue Nachrichten"
+
+#: src/session/content/room_history/message_row/audio.rs:245
+#: src/session/content/room_history/message_row/audio.rs:249
+#, fuzzy
+msgid "Could not retrieve audio file"
+msgstr "Datei-Adresse konnte nicht empfangen werden"
+
+#: src/session/content/room_history/message_row/audio.rs:262
+#, fuzzy
+msgid "Error reading audio file"
+msgstr "Fehler beim Senden der Nachricht"
+
+#: src/session/content/room_history/message_row/media.rs:445
+#: src/session/media_viewer.rs:244
+msgid "Image file not supported"
+msgstr ""
+
+#: src/session/content/room_history/message_row/media.rs:484
+#: src/session/content/room_history/message_row/media.rs:489
+#, fuzzy
+msgid "Could not retrieve media"
+msgstr "Datei-Adresse konnte nicht empfangen werden"
+
+#: src/session/content/room_history/message_row/mod.rs:368
+msgid "Identity verification was started"
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:381
+#: src/session/content/room_history/message_row/mod.rs:428
+msgid "Unsupported event"
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:406
+msgid "Fractal couldn't decrypt this message."
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:417
+#, fuzzy
+msgid "This message was removed."
+msgstr "Diese Nachricht hat keine Quelle."
+
+#. TODO Get the actual name of the file by reading
+#. the text/plain mime type.
+#: src/session/content/room_history/mod.rs:363
+#: src/session/content/room_history/mod.rs:736
+#, fuzzy
+msgid "Image"
+msgstr "Bilder"
+
+#: src/session/content/room_history/state_row/creation.rs:62
+msgid "This is the continuation of an upgraded room."
+msgstr ""
+
+#: src/session/content/room_history/state_row/creation.rs:68
+msgid "The beginning of this room."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:69
+msgid "This room is now encrypted."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:166
+msgid "An unsupported room member event was received."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:182
+msgid "An unsupported state event was received."
+msgstr ""
+
+#: src/session/content/room_history/verification_info_bar.rs:173
+msgid "Verification in progress"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:492
+#: src/session/content/verification/identity_verification_widget.rs:521
+msgid "Verify the new session from the current session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:495
+msgid "Scan the QR code from another session logged into this account."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:497
+#: src/session/content/verification/identity_verification_widget.rs:524
+msgid ""
+"You scanned to qr code successfully. You may need to confirm the "
+"verification in the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:501
+msgid "Scan this QR code from the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:504
+#: src/session/content/verification/identity_verification_widget.rs:531
+msgid "Check if the same emoji appear in the same order on the other device."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:506
+#: src/session/content/verification/identity_verification_widget.rs:533
+msgid "Request Complete"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:508
+msgid "This session is ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:510
+msgid "Get Started"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:512
+#: src/session/content/verification/identity_verification_widget.rs:542
+msgid "Does the other session show a confirmation shield?"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:518
+msgid "Login Request From Another Session"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:523
+msgid ""
+"Scan the QR code from this session from another session logged into this "
+"account."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:527
+msgid "Scan this QR code from the newly logged in session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:535
+msgid "The new session is now ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:547
+#: src/session/content/verification/identity_verification_widget.rs:551
+#: src/session/content/verification/identity_verification_widget.rs:557
+#: src/session/content/verification/identity_verification_widget.rs:561
+#, fuzzy
+msgid "Verification Request"
+msgstr "Benachrichtigungs-Ton"
+
+#: src/session/content/verification/identity_verification_widget.rs:559
+msgid "Ask <b>{}</b> to scan this QR code from their session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:566
+msgid "Verification Complete"
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:237
+msgid ""
+"If you lost access to all other session you can create a new crypto "
+"identity. Be care full because this will reset all verified users and make "
+"previously encrypted conversations unreadable."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:320
+msgid "You cancelled the authentication needed to create the encryption keys."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:324
+msgid "An error occurred during the creation of the encryption keys."
+msgstr ""
+
+#: src/session/media_viewer.rs:251
+#, fuzzy
+msgid "Could not retrieve image"
+msgstr "Datei-Adresse konnte nicht empfangen werden"
+
+#: src/session/media_viewer.rs:288
+#, fuzzy
+msgid "Could not retrieve video"
+msgstr "Datei-Adresse konnte nicht empfangen werden"
+
+#: src/session/mod.rs:760
+msgid "Failed to logout the session."
+msgstr ""
+
+#: src/session/room/event_actions.rs:205
+#, fuzzy
+msgid "Save File"
+msgstr "Speichern"
+
+#: src/session/room/member_role.rs:48
+msgid "Admin"
+msgstr "Administrator"
+
+#: src/session/room/member_role.rs:49
+msgid "Moderator"
+msgstr "Moderator"
+
+#: src/session/room/member_role.rs:50
+msgid "Normal user"
+msgstr ""
+
+#: src/session/room/mod.rs:399
+msgid "Failed to forget <widget>."
+msgstr ""
+
+#: src/session/room/mod.rs:637
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: src/session/room/mod.rs:1046
+msgid "Failed to accept invitation for <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1077
+msgid "Failed to reject invitation for <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1242
+msgid "Failed to invite <widget> to <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1244
+msgid ""
+"Failed to invite <widget> and some other user to <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1246
+msgid ""
+"Failed to invite <widget> and some other users to <widget>. Try again later."
+msgstr ""
+
+#: src/session/room_creation/mod.rs:278
+msgid "The address is already taken."
+msgstr ""
+
+#: src/session/room_creation/mod.rs:301
+msgid "Too long. Use a shorter name."
+msgstr ""
+
+#: src/session/room_creation/mod.rs:329
+msgid "Can't contain `:`"
+msgstr ""
+
+#: src/session/room_creation/mod.rs:334
+msgid "Can't contain `#`"
+msgstr ""
+
+#: src/session/room_creation/mod.rs:339
+msgid "Too long. Use a shorter address."
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:161
+#, fuzzy
+msgid "Join Room as Favorite"
+msgstr "Raum beitreten"
+
+#: src/session/sidebar/category_row.rs:162
+msgid "Join Room"
+msgstr "Raum beitreten"
+
+#: src/session/sidebar/category_row.rs:163
+msgid "Join Room as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:164
+#, fuzzy
+msgid "Reject Invite"
+msgstr "Ablehnen"
+
+#: src/session/sidebar/category_row.rs:168
+msgid "Unmark as Favorite"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:169
+#: src/session/sidebar/category_row.rs:175
+msgid "Mark as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:170
+#: src/session/sidebar/category_row.rs:176
+#: src/session/sidebar/category_row.rs:182
+msgid "Leave Room"
+msgstr "Raum verlassen"
+
+#: src/session/sidebar/category_row.rs:174
+#: src/session/sidebar/category_row.rs:180
+#, fuzzy
+msgid "Mark as Favorite"
+msgstr "Favoriten"
+
+#: src/session/sidebar/category_row.rs:181
+msgid "Unmark as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:186
+msgid "Rejoin Room as Favorite"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:187
+#, fuzzy
+msgid "Rejoin Room"
+msgstr "Raum beitreten"
+
+#: src/session/sidebar/category_row.rs:188
+msgid "Rejoin Room as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:31
+#, fuzzy
+msgid "Verifications"
+msgstr "Benachrichtigungen"
+
+#: src/session/sidebar/category_type.rs:32
+#, fuzzy
+msgid "Invited"
+msgstr "Einladen"
+
+#: src/session/sidebar/category_type.rs:33
+#, fuzzy
+msgid "Favorite"
+msgstr "Favoriten"
+
+#: src/session/sidebar/category_type.rs:34
+msgid "Rooms"
+msgstr "Räume"
+
+#: src/session/sidebar/category_type.rs:35
+msgid "Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:36
+msgid "Historical"
+msgstr ""
+
+#. Translators: This shouldn't ever be visible to the user,
+#: src/session/sidebar/category_type.rs:38
+msgid "Outdated"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:39
+msgid "Spaces"
+msgstr ""
+
+#: src/session/sidebar/entry_type.rs:21
+msgid "Explore"
+msgstr ""
+
+#: src/session/sidebar/entry_type.rs:22
+#, fuzzy
+msgid "Forget Room"
+msgstr "Neuer Raum"
+
+#: src/session/verification/identity_verification.rs:672
+msgid "You cancelled the verification process."
+msgstr ""
+
+#: src/session/verification/identity_verification.rs:674
+msgid "The verification process failed because it reached a timeout."
+msgstr ""
+
+#: src/session/verification/identity_verification.rs:677
+msgid "You accepted the request from an other session."
+msgstr ""
+
+#: src/session/verification/identity_verification.rs:680
+#, fuzzy
+msgid "The emoji did not match."
+msgstr "Die Passwörter stimmen nicht überein."
+
+#: src/session/verification/identity_verification.rs:689
+msgid "An unknown error occurred during the verification process."
+msgstr ""
+
+#: src/user_facing_error.rs:21
+msgid "The connection timed out. Try again later."
+msgstr ""
+
+#: src/user_facing_error.rs:23
+msgid "Unable to connect to the homeserver."
+msgstr ""
+
+#: src/user_facing_error.rs:28
+#, fuzzy
+msgid "The provided username or password is invalid."
+msgstr "Ungültiger Benutzername oder Passwort"
+
+#: src/user_facing_error.rs:29
+msgid "The user is deactivated."
+msgstr ""
+
+#: src/user_facing_error.rs:37
+msgid "You exceeded the homeserver’s rate limit, try again later."
+msgstr ""
+
+#: src/user_facing_error.rs:47
+msgid "An unknown connection error occurred."
+msgstr ""
+
+#: src/user_facing_error.rs:55
+#, fuzzy
+msgid "Could not decrypt the event"
+msgstr "Datei konnte nicht gespeichert werden"
+
+#: src/user_facing_error.rs:57 src/user_facing_error.rs:77
+msgid "An unknown error occurred."
+msgstr ""
+
+#: src/user_facing_error.rs:64
+#, fuzzy
+msgid "Could not open the store."
+msgstr "Datei konnte nicht gespeichert werden"
+
+#: src/user_facing_error.rs:71
+msgid "This is not a valid URL"
+msgstr ""
+
+#: src/user_facing_error.rs:73
+msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
+msgstr ""
+
+#. Translators: Default name for image files.
+#: src/utils.rs:190
+msgid "image"
+msgstr "Bild"
+
+#. Translators: Default name for video files.
+#: src/utils.rs:192
+#, fuzzy
+msgid "video"
+msgstr "Videos"
+
+#. Translators: Default name for audio files.
+#: src/utils.rs:194
+msgid "audio"
+msgstr ""
+
+#. Translators: Default name for files.
+#: src/utils.rs:196
+msgid "file"
+msgstr ""
+
+#~ msgctxt "shortcut window"
+#~ msgid "Close the active room"
+#~ msgstr "Aktiven Raum schließen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open main menu"
+#~ msgstr "Hauptmenü öffnen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open / close the room sidebar search"
+#~ msgstr "Seiten-Suchleiste des Raums öffnen/schließen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room in the list"
+#~ msgstr "Den vorherigen Raum in der Liste öffnen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room in the list"
+#~ msgstr "Den nächsten Raum in der Liste öffnen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room with unread messages in the list"
+#~ msgstr "Den vorherigen Raum in der Liste mit ungelesenen Nachrichten öffnen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room with unread messages in the list"
+#~ msgstr "Den nächsten Raum in der Liste mit ungelesenen Nachrichten öffnen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the first room of the list"
+#~ msgstr "Den ersten Raum in der Liste öffnen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the last room of the list"
+#~ msgstr "Den letzten Raum in der Liste öffnen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View older messages"
+#~ msgstr "Ältere Nachrichten ansehen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View newer messages"
+#~ msgstr "Neuere Nachrichten ansehen"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Composing a new message"
+#~ msgstr "Neue Nachricht verfassen"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Write on a new line"
+#~ msgstr "Neue Zeile schreiben"
+
+#~ msgid "Type of password and token storage"
+#~ msgstr "Typ der Passwort- und Token-Speicherung"
+
+#~ msgid "Type of password and token storage, default value is: Secret Service"
+#~ msgstr ""
+#~ "Typ der Passwort- und Token-Speicherung, Vorgabewert ist: »Secret Service«"
+
+#~ msgid "If markdown sending is active"
+#~ msgstr "Markdown aktiviert"
+
+#~ msgid "Whether support for sending markdown messages is on"
+#~ msgstr ""
+#~ "Gibt an, ob die Unterstützung für das Senden Markdown-formatierter "
+#~ "Nachrichten aktiviert ist"
+
+#~ msgid "X position of the main window on startup"
+#~ msgstr "X-Position des Hauptfensters beim Start"
+
+#~ msgid "Y position of the main window on startup"
+#~ msgstr "Y-Position des Hauptfensters beim Start"
+
+#~ msgid "Width of the main window on startup"
+#~ msgstr "Breite des Hauptfensters beim Start"
+
+#~ msgid "Height of the main window on startup"
+#~ msgstr "Höhe des Hauptfensters beim Start"
+
+#~ msgid "Whether the main window is maximized on startup"
+#~ msgstr "Legt fest, ob das Hauptfenster beim Start maximiert ist"
+
+#~ msgid "Daniel García Moreno"
+#~ msgstr "Daniel García Moreno"
+
+#~ msgid "Back"
+#~ msgstr "Zurück"
+
+#~ msgid "Other people can find you by searching for any of these identifiers."
+#~ msgstr ""
+#~ "Andere Personen können Sie durch Suchen nach diesen Identifikatoren "
+#~ "finden."
+
+#~ msgid "Type in your name"
+#~ msgstr "Tippen Sie Ihren Namen ein"
+
+#~ msgid "Email"
+#~ msgstr "E-Mail"
+
+#~ msgid "Phone"
+#~ msgstr "Telefon"
+
+#~ msgid "Password"
+#~ msgstr "Passwort"
+
+#~ msgid "Device ID"
+#~ msgstr "Geräte-Kennung"
+
+#~ msgid ""
+#~ "Deactivating your account means that you will lose all your messages, "
+#~ "contacts, and files."
+#~ msgstr ""
+#~ "Mit der Deaktivierung Ihres Kontos verlieren Sie all Ihre Nachrichten, "
+#~ "Kontakte und Dateien."
+
+#~ msgid ""
+#~ "To confirm that you really want to deactivate this account type in your "
+#~ "password:"
+#~ msgstr ""
+#~ "Tippen Sie Ihr Passwort ein, um zu bestätigen, dass Sie wirklich Ihr "
+#~ "Konto deaktivieren wollen:"
+
+#~ msgid "Also erase all messages"
+#~ msgstr "Alle Nachrichten ebenfalls löschen"
+
+#~ msgid "Check your email"
+#~ msgstr "E-Mail überprüfen"
+
+#~ msgid "Apply"
+#~ msgstr "Anwenden"
+
+# Eigentlich müsste hier »Unterhaltung« statt »Chat« stehen, darauf hatten wir uns vor langer Zeit mal für das mittlerweile verwaiste Empathy geeinigt (im aktuellen Polari wird Chat und Unterhaltung gleichermaßen verwendet). Außerdem würde ich es angesichts der Zielgruppe des Programms sowieso lieber beim englischen Original belassen.
+#~ msgid "New Direct Chat"
+#~ msgstr "Neuer Direkt-Chat"
+
+#~ msgid "Play"
+#~ msgstr "Wiedergeben"
+
+# Eigentlich müsste hier »Unterhaltung« statt »Chat« stehen, darauf hatten wir uns vor langer Zeit mal für das mittlerweile verwaiste Empathy geeinigt (im aktuellen Polari wird Chat und Unterhaltung gleichermaßen verwendet). Außerdem würde ich es angesichts der Zielgruppe des Programms sowieso lieber beim englischen Original belassen.
+#~ msgid "New direct chat"
+#~ msgstr "Neuer Direkt-Chat"
+
+#~ msgid "Start chat"
+#~ msgstr "Chat starten"
+
+#~ msgid "Invitation"
+#~ msgstr "Einladung"
+
+#~ msgid "ID or Alias"
+#~ msgstr "Kennung oder Alias"
+
+#~ msgid "Join room"
+#~ msgstr "Raum beitreten"
+
+#~ msgid "Close"
+#~ msgstr "Schließen"
+
+#~ msgid "Leave?"
+#~ msgstr "Verlassen?"
+
+#~ msgid ""
+#~ "Once you leave, you won’t be able to interact with people in the room "
+#~ "anymore."
+#~ msgstr ""
+#~ "Nach dem Verlassen können Sie nicht länger mit den Teilnehmern des Raums "
+#~ "interagieren."
+
+#~ msgid "_Log In"
+#~ msgstr "_Anmelden"
+
+#~ msgid "_Create Account"
+#~ msgstr "Benutzerkonto _erstellen"
+
+#~ msgid "What is your Provider?"
+#~ msgstr "Wer ist Ihr Anbieter?"
+
+#~ msgid "Matrix provider domain, e.g. myserver.co"
+#~ msgstr "Matrix-Anbieter-Domain, z.B. meinserver.co"
+
+#~ msgid "The domain may not be empty."
+#~ msgstr "Die Domain darf nicht leer sein."
+
+#~ msgid "Log In"
+#~ msgstr "Anmelden"
+
+#~ msgid "_User ID"
+#~ msgstr "_Benutzer-ID"
+
+#~ msgid "_Password"
+#~ msgstr "_Passwort"
+
+#~ msgid "User name, email, or phone number"
+#~ msgstr "Benutzername, E-Mail oder Telefonnummer"
+
+#~ msgid "Keyboard _Shortcuts"
+#~ msgstr "Tasten_kombinationen"
+
+#~ msgid "User"
+#~ msgstr "Benutzer"
+
+#~ msgid "Add"
+#~ msgstr "Hinzufügen"
+
+#~ msgid "Room search"
+#~ msgstr "Raumsuche"
+
+#~ msgid "Room Menu"
+#~ msgstr "Raummenü"
+
+#~ msgid "No room"
+#~ msgstr "Kein Raum"
+
+#~ msgid "Default Matrix Server"
+#~ msgstr "Vorgegebener Matrix-Server"
+
+#~ msgid "Toggle fullscreen"
+#~ msgstr "Vollbildmodus umschalten"
+
+#~ msgid "Loading more media"
+#~ msgstr "Mehr Medien werden geladen"
+
+#~ msgid "Open With…"
+#~ msgstr "Öffnen mit …"
+
+#~ msgid "Save Video As…"
+#~ msgstr "Video speichern unter …"
+
+#~ msgid "Copy Selection"
+#~ msgstr "Auswahl kopieren"
+
+#~ msgid "Message Source"
+#~ msgstr "Quelltext der Nachricht"
+
+#~ msgid "Copy To Clipboard"
+#~ msgstr "In die Zwischenablage kopieren"
+
+#~ msgid "Ch_ange"
+#~ msgstr "_Ändern"
+
+#~ msgid "Invite to This Room"
+#~ msgstr "In diesen Raum einladen"
+
+#~ msgid "Add name"
+#~ msgstr "Name hinzufügen"
+
+#~ msgid "Add topic"
+#~ msgstr "Thema hinzufügen"
+
+#~ msgid "Type in your room topic"
+#~ msgstr "Tippen Sie Ihr Raumthema ein"
+
+#~ msgid "No room description"
+#~ msgstr "Keine Raumbeschreibung"
+
+#~ msgid "For all messages"
+#~ msgstr "Für alle Nachrichten"
+
+#~ msgid "Only for mentions"
+#~ msgstr "Nur für Erwähnungen"
+
+#~ msgid "Shared Media"
+#~ msgstr "Geteilte Medien"
+
+#~ msgid "photos"
+#~ msgstr "Fotos"
+
+#~ msgid "documents"
+#~ msgstr "Dokumente"
+
+#~ msgid "New members can see"
+#~ msgstr "Neue Teilnehmer können sehen"
+
+#~ msgid "All room history"
+#~ msgstr "Gesamte Raumverlauf"
+
+#~ msgid "History after they were invited"
+#~ msgstr "Verlauf ab der Einladung"
+
+#~ msgid "Room Visibility"
+#~ msgstr "Raum-Sichtbarkeit"
+
+#~ msgid "Allow guests"
+#~ msgstr "Gäste erlauben"
+
+#~ msgid "Allow joining without invite"
+#~ msgstr "Beitritt ohne Einladung erlauben"
+
+#~ msgid "Publish in room directory"
+#~ msgstr "In Raumordner veröffentlichen"
+
+#~ msgid "Show rooms from:"
+#~ msgstr "Räume anzeigen aus:"
+
+#~ msgid "Your homeserver"
+#~ msgstr "Ihr Heimserver"
+
+#~ msgid "Other Protocol"
+#~ msgstr "Anderes Protokoll"
+
+#~ msgid "Other Homeserver"
+#~ msgstr "Anderer Heimserver"
+
+#~ msgid "Select a new avatar"
+#~ msgstr "Neuen Avatar auswählen"
+
+#~ msgid "Select a file"
+#~ msgstr "Eine Datei auswählen"
+
+#~ msgid "Couldn’t save file"
+#~ msgstr "Datei konnte nicht gespeichert werden"
+
+#~ msgid "Couldn’t open file"
+#~ msgstr "Datei konnte nicht geöffnet werden"
+
+#~ msgid "The validation code is not correct."
+#~ msgstr "Der Überprüfungscode ist nicht korrekt."
+
+#~ msgid "Enter the code received via SMS"
+#~ msgstr "Den per SMS empfangenen Code eingeben"
+
+#~ msgid ""
+#~ "In order to add this email address, go to your inbox and follow the link "
+#~ "you received. Once you’ve done that, click Continue."
+#~ msgstr ""
+#~ "Um diese E-Mail-Adresse hinzuzufügen, öffnen Sie Ihren Posteingang und "
+#~ "folgen Sie dem empfangenen Link. Sobald Sie dies getan haben, klicken Sie "
+#~ "auf »Weiter«."
+
+#~ msgid "Are you sure you want to delete your account?"
+#~ msgstr "Sind Sie sicher, dass Sie Ihr Konto löschen wollen?"
+
+#~ msgid "Fractal [{}]"
+#~ msgstr "Fractal [{}]"
+
+#~ msgid "An audio file has been added to the conversation."
+#~ msgstr "Eine Audio-Datei wurde zur Unterhaltung hinzugefügt."
+
+#~ msgid "An image has been added to the conversation."
+#~ msgstr "Ein Bild wurde zur Unterhaltung hinzugefügt."
+
+#~ msgid "A video has been added to the conversation."
+#~ msgstr "Ein Video wurde zur Unterhaltung hinzugefügt."
+
+#~ msgid "A file has been added to the conversation."
+#~ msgstr "Eine Datei wurde zur Unterhaltung hinzugefügt."
+
+#~ msgid " (direct message)"
+#~ msgstr " (direkte Nachricht)"
+
+#~ msgid "Leave {room_name}?"
+#~ msgstr "{room_name} verlassen?"
+
+#~ msgid "The room ID is malformed"
+#~ msgstr "Ungültige Raum-ID"
+
+#~ msgid "EMPTY ROOM"
+#~ msgstr "LEERER RAUM"
+
+#~ msgid "{m1} and {m2}"
+#~ msgstr "{m1} und {m2}"
+
+#~ msgid "{m1} and Others"
+#~ msgstr "{m1} und andere"
+
+#~ msgid "Several users are typing…"
+#~ msgstr "Mehrere Benutzer schreiben gerade …"
+
+#~ msgid "<b>{}</b> is typing…"
+#~ msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+#~ msgstr[0] "<b>{}</b> schreibt gerade …"
+#~ msgstr[1] "<b>{}</b> und <b>{}</b> schreiben gerade …"
+
+#~ msgid "Syncing, this could take a while"
+#~ msgstr "Wird synchronisiert, dies kann einen Moment dauern"
+
+#~ msgid "Can’t login, try again"
+#~ msgstr "Anmeldung fehlgeschlagen, versuchen Sie es erneut"
+
+#~ msgid "Error deleting message"
+#~ msgstr "Fehler beim Löschen der Nachricht"
+
+#~ msgid "Can’t join the room, try again."
+#~ msgstr "Raum konnte nicht beigetreten werden, versuchen Sie es erneut."
+
+#~ msgid "Can’t create the room, try again"
+#~ msgstr "Raum konnte nicht erstellt werden, versuchen Sie es erneut"
+
+#~ msgid "Sorry, account settings can’t be loaded."
+#~ msgstr "Entschuldigung, die Kontoeinstellungen können nicht geladen werden."
+
+#~ msgid "Email is already in use"
+#~ msgstr "E-Mail wird bereits verwendet"
+
+#~ msgid "Please enter a valid email address."
+#~ msgstr "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+
+#~ msgid "Couldn’t add the email address."
+#~ msgstr "E-Mail-Adresse konnte nicht hinzugefügt werden."
+
+#~ msgid "Phone number is already in use"
+#~ msgstr "Telefonnummer wird bereits verwendet"
+
+#~ msgid ""
+#~ "Please enter your phone number in the format: \n"
+#~ " + your country code and your phone number."
+#~ msgstr ""
+#~ "Bitte geben Sie Ihre Telefonnummer in diesem Format ein: \n"
+#~ " + Ihr Ländercode und Ihre Telefonnummer."
+
+#~ msgid "Couldn’t add the phone number."
+#~ msgstr "Telefonnummer konnte nicht hinzugefügt werden."
+
+#~ msgid "© 2017–2020 Daniel García Moreno, et al."
+#~ msgstr "© 2017–2020 Daniel García Moreno, et al."
+
+#~ msgid "Image from Clipboard"
+#~ msgstr "Bild aus Zwischenablage"
+
+#~ msgid "Invite to {name}"
+#~ msgstr "Zu {name} einladen"
+
+#~ msgid "Join {room_name}?"
+#~ msgstr "{room_name} beitreten?"
+
+#~ msgid ""
+#~ "You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</"
+#~ "b>"
+#~ msgstr ""
+#~ "Sie wurden von <b>{sender_name}</b> eingeladen, dem Raum <b>{room_name}</"
+#~ "b> beizutreten"
+
+#~ msgid "You’ve been invited to join <b>{room_name}</b>"
+#~ msgstr "Sie wurden eingeladen, dem Raum <b>{room_name}</b> beizutreten"
+
+#~ msgid "You don’t have permission to post to this room"
+#~ msgstr "Sie haben nicht die Berechtigung, in diesem Raum zu schreiben"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Room · {} member"
+#~ msgid_plural "Room · {} members"
+#~ msgstr[0] "Raum · {} Teilnehmer"
+#~ msgstr[1] "Raum · {} Teilnehmer"
+
+#~ msgid "{} member"
+#~ msgid_plural "{} members"
+#~ msgstr[0] "{} Teilnehmer"
+#~ msgstr[1] "{} Teilnehmer"
+
+#~ msgid "Save media as"
+#~ msgstr "Medien speichern unter"
+
+#~ msgid "_Save"
+#~ msgstr "_Speichern"
+
+#~ msgid "You have been kicked from {}"
+#~ msgstr "Sie wurden aus »{}« hinausgeworfen."
+
+#~ msgid ""
+#~ "Kicked by: {}\n"
+#~ " “{}”"
+#~ msgstr ""
+#~ "Hinausgeworfen von: {}\n"
+#~ "»{}«"
+
+#~ msgid "Malformed server URL"
+#~ msgstr "Ungültige Server-Adresse"
+
+#~ msgid "Error while loading previous media"
+#~ msgstr "Fehler beim Laden vorheriger Medien"
+
+#~ msgid "Privileged"
+#~ msgstr "Privilegiert"
+
+#, c-format
+#~ msgid "Last edited %c"
+#~ msgstr "Zuletzt bearbeitet %c"
+
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgid "%R"
+#~ msgstr "%R"
+
+#~ msgid "Invites"
+#~ msgstr "Einladungen"
+
+#~ msgid "You don’t have any invitations"
+#~ msgstr "Sie haben keine Einladungen"
+
+#~ msgid "Drag and drop rooms here to add them to your favorites"
+#~ msgstr ""
+#~ "Ziehen und legen Sie Räume hier ab, um sie Ihren Favoriten hinzuzufügen"
+
+#~ msgid "You don’t have any rooms yet"
+#~ msgstr "Sie haben noch keine Räume"
+
+#~ msgid "@icon@"
+#~ msgstr "@icon@"
+
+#~ msgid "None"
+#~ msgstr "Keine"
+
+#~ msgid "Select room image file"
+#~ msgstr "Bilddatei für den Raum auswählen"
+
+#~ msgid "You’ve been invited to join \"\", you can accept or reject"
+#~ msgstr ""
+#~ "Sie wurden eingeladen, »« beizutreten. Sie können annehmen oder ablehnen"
+
+#~ msgid "Chat"
+#~ msgstr "Chat"
+
+#~ msgid "Directory"
+#~ msgstr "Ordner"
+
+#~ msgid "Loading"
+#~ msgstr "Wird geladen"
+
+#~ msgid "Username"
+#~ msgstr "Benutzername"
+
+#~ msgctxt "login button"
+#~ msgid "Log In"
+#~ msgstr "Anmelden"
+
+#~ msgid "Identity server URL"
+#~ msgstr "Adresse des Identitätsservers"
+
+#~ msgid "Matrix Server"
+#~ msgstr "Matrix-Server"
+
+#~ msgid "Identity server"
+#~ msgstr "Identitätsserver"
+
+#~ msgid "Advanced"
+#~ msgstr "Erweitert"
+
+#~ msgid "Reset Password"
+#~ msgstr "Passwort zurücksetzen"
+
+#~ msgid "Log In as Guest"
+#~ msgstr "Als Gast anmelden"
+
+#~ msgid "Login"
+#~ msgstr "Anmelden"
+
+#~ msgid "Room topic"
+#~ msgstr "Raumthema"
+
+#~ msgid "Media viewer"
+#~ msgstr "Medien-Betrachter"
+
+#~ msgid "Save as…"
+#~ msgstr "Speichern unter …"
+
+#~ msgid "Private Chat"
+#~ msgstr "Privater Chat"
+
+#~ msgid "Unknown Error"
+#~ msgstr "Unbekannter Fehler"
+
+#~ msgid "Passwords didn’t match, try again"
+#~ msgstr "Die Passwörter stimmen nicht überein, erneut versuchen"

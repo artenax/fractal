@@ -1,0 +1,2342 @@
+# Croatian translation for fractal.
+# Copyright (C) 2020 fractal's COPYRIGHT HOLDER
+# This file is distributed under the same license as the fractal package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: fractal master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:14+0200\n"
+"PO-Revision-Date: 2021-10-01 16:17+0200\n"
+"Last-Translator: gogo <trebelnik2@gmail.com>\n"
+"Language-Team: Croatian <hr@li.org>\n"
+"Language: hr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 2.3\n"
+
+#: data/org.gnome.Fractal.desktop.in.in:3
+#: data/org.gnome.Fractal.metainfo.xml.in.in:9
+msgid "Fractal"
+msgstr "Fractal"
+
+#: data/org.gnome.Fractal.desktop.in.in:4
+msgid ""
+"Fractal is a decentralized, secure messaging client for collaborative group "
+"communication."
+msgstr ""
+"Fractal je decentraliziran, siguran klijent za razmjenu poruka za zajedničku "
+"grupnu komunikaciju."
+
+#: data/org.gnome.Fractal.desktop.in.in:5
+msgid "Fractal group messaging"
+msgstr "Fractal grupna razmjenu poruka"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Fractal.desktop.in.in:14
+msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
+msgstr "Matrix;matrix.org;chat;irc;komunikacija;razgovor;riot;element;"
+
+#: data/org.gnome.Fractal.gschema.xml.in:6
+#: data/org.gnome.Fractal.gschema.xml.in:7
+msgid "Default window width"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:11
+#: data/org.gnome.Fractal.gschema.xml.in:12
+msgid "Default window height"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:16
+msgid "Default window maximized behaviour"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:21
+msgid "Enable markdown formatting"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:22
+msgid "Whether or not to do markdown formatting when sending messages"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:8
+msgid "Julian Sparber"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
+msgid "Matrix group messaging app"
+msgstr "Matrix aplikacija za grupnu razmjenu poruka"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:12
+msgid ""
+"Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
+"is optimized for collaboration in large groups, such as free software "
+"projects."
+msgstr ""
+"Fractal je Matrix aplikacija razmjene poruka za GNOME, napisana u Rustu. "
+"Sučelje je optimizirano za suradnju u velikim grupama, poput projekata "
+"slobodnog softvera."
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:24
+msgid "Nightly preview of Fractal."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:29
+msgid "This new major release is the result of 10 months of hard work."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:30
+#: data/org.gnome.Fractal.metainfo.xml.in.in:59
+#: data/org.gnome.Fractal.metainfo.xml.in.in:80
+#: data/org.gnome.Fractal.metainfo.xml.in.in:99
+#: data/org.gnome.Fractal.metainfo.xml.in.in:135
+#, fuzzy
+msgid "New features:"
+msgstr "Nova poruka"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:32
+msgid "Videos now have a preview directly in history"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:33
+msgid "New videos player: click on a preview to open it"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:34
+msgid "Improved audio file support, with a nicer presentation and seeking"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:35
+msgid "Redacted messages are removed from history"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:36
+msgid ""
+"Edited messages are replaced with their new content and show a small icon"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:37
+msgid "Translations have been updated"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:38
+msgid "Spellcheck language is saved per room"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:39
+msgid "New swipe-back gesture to go back from room to room list in narrow view"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:40
+msgid ""
+"New swipe left and right gesture to navigate through media in media view"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:41
+msgid "SOCKS proxy are now also supported"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:43
+#: data/org.gnome.Fractal.metainfo.xml.in.in:63
+#: data/org.gnome.Fractal.metainfo.xml.in.in:86
+#: data/org.gnome.Fractal.metainfo.xml.in.in:117
+#: data/org.gnome.Fractal.metainfo.xml.in.in:143
+msgid "Bugfixes:"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:45
+msgid "Thumbnail for pasted images have been fixed"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:46
+msgid "File type detection for uploads is more reliable"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:47
+msgid ""
+"Typing notifications are now only sent when text is actually typed in the "
+"message input"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:49
+#: data/org.gnome.Fractal.metainfo.xml.in.in:71
+#: data/org.gnome.Fractal.metainfo.xml.in.in:90
+#: data/org.gnome.Fractal.metainfo.xml.in.in:124
+#: data/org.gnome.Fractal.metainfo.xml.in.in:148
+msgid "Under the hood:"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:51
+#: data/org.gnome.Fractal.metainfo.xml.in.in:73
+msgid "Code refactor is still going"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:52
+msgid ""
+"Some improvements to logging, including access token removal for privacy"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:58
+#: data/org.gnome.Fractal.metainfo.xml.in.in:79
+msgid "This new minor release is the result of 2 months of hard work."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:61
+#: data/org.gnome.Fractal.metainfo.xml.in.in:83
+msgid "Translation strings have been updated"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:65
+msgid "Newlines now work when markdown is enabled"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:66
+#, fuzzy
+msgid "Account settings can be accessed again"
+msgstr "Nažalost, postavke računa se ne mogu učitati."
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:67
+msgid "Redaction is working again"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:68
+msgid "Compatibility with HTTP-only (non HTTPS) servers has been restored"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:69
+#: data/org.gnome.Fractal.metainfo.xml.in.in:122
+msgid "Some crashes fixed"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:82
+msgid "Autocompletion popover position fix"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:84
+msgid "Disable the textbox when there are no write permissions"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:88
+msgid "Fix crash on logout and login with wrong credentials"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:92
+#: data/org.gnome.Fractal.metainfo.xml.in.in:126
+msgid "Code refactor continues"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:98
+msgid ""
+"This new major release is the result of 7 months of hard work by 37 "
+"contributors pushing over 200 commits."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:101
+msgid "Adaptive window, mobile friendly"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:102
+msgid "Window size and position are remembered"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:103
+msgid "Redesigned login"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:104
+msgid "Spellcheck"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:105
+msgid "Network proxy support"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:106
+#, fuzzy
+msgid "Typing notifications"
+msgstr "Obavijesti"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:107
+msgid "Badges are shown for operators and moderators"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:108
+msgid "Keyboard shortcuts for easier navigation across rooms"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:111
+msgid "Audio and video files are now tagged correctly"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:112
+msgid "Image files have a thumbnail"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:113
+msgid "Various tweaks to the file chooser"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:119
+msgid "Logs actually output something now"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:120
+msgid "A few issues with invites and direct chats have been resolved"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:121
+msgid "More reliable scrolling"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:127
+msgid "We’re now using Rust 2018"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:128
+msgid "Many improvements to the build system and CI"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:134
+msgid ""
+"This new major release is the result of 3 months of hard work by 25 "
+"contributors pushing over 340 commits."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:137
+msgid "Enhanced history view with adaptive layout, day divider"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:138
+msgid "Reorganised headerbar, app menu merged with user menu"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:139
+msgid "Larger display of emoji-only messages"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:140
+msgid "Some performance improvements"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:141
+#, fuzzy
+msgid "Opening a room jumps to first unread message"
+msgstr "Otvori prijašnju sobu s nepročitanim porukama u popisu"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:145
+#, fuzzy
+msgid "More reliable notifications"
+msgstr "Obavijesti"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:146
+msgid "Fixed display bug for avatars"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:150
+msgid "Large code refactor"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:151
+msgid "Logging infrastructure"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:152
+msgid "Continuous integration"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:153
+msgid "More informative build output"
+msgstr ""
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:54
+#, fuzzy
+msgid "Change Password"
+msgstr "_Nova lozinka"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:76
+#, fuzzy
+msgid "New Password"
+msgstr "_Nova lozinka"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:81
+#, fuzzy
+msgid "Confirm New Password"
+msgstr "_Nova lozinka"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:94
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
+#: src/session/content/room_history/verification_info_bar.rs:174
+msgid "Continue"
+msgstr "Nastavi"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:115
+msgid "Deactivate Account"
+msgstr "Deaktiviraj račun"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:79
+#: data/resources/ui/account-settings-user-page.ui:80
+#, fuzzy
+msgid "Matrix User ID"
+msgstr "ID Matrixa"
+
+#: data/resources/ui/account-settings-device-row.ui:59
+#: src/session/content/verification/identity_verification_widget.rs:493
+#: src/session/content/verification/identity_verification_widget.rs:498
+#: src/session/content/verification/identity_verification_widget.rs:502
+#: src/session/content/verification/identity_verification_widget.rs:522
+#: src/session/content/verification/identity_verification_widget.rs:525
+#: src/session/content/verification/identity_verification_widget.rs:529
+#, fuzzy
+msgid "Verify Session"
+msgstr "_Potvrdi novu lozinku"
+
+#: data/resources/ui/account-settings-devices-page.ui:5
+msgid "Sessions"
+msgstr ""
+
+#: data/resources/ui/account-settings-devices-page.ui:9
+#: data/resources/ui/account-settings-devices-page.ui:13
+#, fuzzy
+msgid "Current Session"
+msgstr "Trenutna _lozinka"
+
+#: data/resources/ui/account-settings-devices-page.ui:24
+#: data/resources/ui/account-settings-devices-page.ui:28
+msgid "Other Active Sessions"
+msgstr ""
+
+#: data/resources/ui/account-settings-user-page.ui:5
+#: data/resources/ui/content-room-details.ui:9
+#, fuzzy
+msgid "General"
+msgstr "Općenito"
+
+#: data/resources/ui/account-settings-user-page.ui:38
+msgid "Name"
+msgstr "Ime"
+
+#: data/resources/ui/account-settings-user-page.ui:63
+msgid "Advanced Information"
+msgstr "Napredne informacije"
+
+#: data/resources/ui/account-settings-user-page.ui:66
+msgid "Homeserver"
+msgstr "Kućni poslužitelj"
+
+#: data/resources/ui/account-settings-user-page.ui:94
+msgid "Session ID"
+msgstr ""
+
+#: data/resources/ui/account-settings.ui:4
+msgid "Account Settings"
+msgstr "Postavke računa"
+
+#: data/resources/ui/attachment-dialog.ui:14
+#: data/resources/ui/content-invite-subpage.ui:12
+#: data/resources/ui/room-creation.ui:16
+msgid "_Cancel"
+msgstr "_Odustani"
+
+#: data/resources/ui/attachment-dialog.ui:21
+#, fuzzy
+msgid "_Send"
+msgstr "Pošalji"
+
+#: data/resources/ui/attachment-dialog.ui:36
+msgid "No Preview Available"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:20
+msgid "Authentication"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:43
+msgid "Please authenticate the operation with your password"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:70
+msgid ""
+"Please authenticate the operation via the browser and once completed press "
+"confirm."
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:80
+msgid "Authenticate via Browser"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:113
+#: data/resources/ui/identity-verification-widget.ui:455
+#: src/components/editable_avatar.rs:344
+#: src/session/content/room_history/verification_info_bar.rs:175
+#: src/session/room/event_actions.rs:210
+msgid "Cancel"
+msgstr "Odustani"
+
+#: data/resources/ui/components-auth-dialog.ui:118
+#: data/resources/ui/identity-verification-widget.ui:445
+msgid "Confirm"
+msgstr ""
+
+#: data/resources/ui/components-loading-listbox-row.ui:32
+msgid "Retry"
+msgstr ""
+
+#: data/resources/ui/content-explore.ui:64
+#, fuzzy
+msgid "No rooms matching the search where found"
+msgstr "Nema podudarajućih članova"
+
+#: data/resources/ui/content-explore.ui:97
+#, fuzzy
+msgid "Room List"
+msgstr "Sobe"
+
+#: data/resources/ui/content-invite-subpage.ui:18
+#, fuzzy
+msgid "I_nvite"
+msgstr "Pozovi"
+
+#: data/resources/ui/content-invite-subpage.ui:87
+msgid "Search for users to invite them to this room."
+msgstr ""
+
+#: data/resources/ui/content-invite-subpage.ui:123
+#, fuzzy
+msgid "No users matching the search where found."
+msgstr "Nema podudarajućih članova"
+
+#: data/resources/ui/content-invite-subpage.ui:132
+#, fuzzy
+msgid "An error occurred while searching for matches"
+msgstr "Greška pretraživanja soba"
+
+#: data/resources/ui/content-invite.ui:26
+#: data/resources/ui/content-invite.ui:51
+msgid "Invite"
+msgstr "Pozovi"
+
+#: data/resources/ui/content-invite.ui:90
+msgid "<widget> invited you"
+msgstr ""
+
+#: data/resources/ui/content-invite.ui:109
+#: data/resources/ui/sidebar-room-row.ui:11
+#, fuzzy
+msgid "_Reject"
+msgstr "Odbij"
+
+#: data/resources/ui/content-invite.ui:119
+#: data/resources/ui/sidebar-room-row.ui:6
+#, fuzzy
+msgid "_Accept"
+msgstr "Prihvati"
+
+#: data/resources/ui/content-markdown-popover.ui:17
+#, fuzzy
+msgid "_Markdown"
+msgstr "Markdown"
+
+#: data/resources/ui/content-markdown-popover.ui:37
+msgid "> quote"
+msgstr "> citat"
+
+#: data/resources/ui/content-markdown-popover.ui:46
+msgid "**bold**"
+msgstr "**podebljano**"
+
+#: data/resources/ui/content-markdown-popover.ui:59
+msgid "`code`"
+msgstr "`kôd`"
+
+#: data/resources/ui/content-markdown-popover.ui:69
+msgid "*italic*"
+msgstr "*kurziv*"
+
+#: data/resources/ui/content-member-page.ui:5
+#, fuzzy
+msgid "Members"
+msgstr "članovi"
+
+#: data/resources/ui/content-member-page.ui:24
+#, fuzzy
+msgid "Invite new member"
+msgstr "Pozovi novog člana"
+
+#: data/resources/ui/content-member-page.ui:33
+msgid "Search for room members"
+msgstr "Pretraga članova sobe"
+
+#: data/resources/ui/content-message-file.ui:21
+msgid "Open"
+msgstr "Otvori"
+
+#: data/resources/ui/content-message-file.ui:28
+#: src/session/room/event_actions.rs:209
+msgid "Save"
+msgstr "Spremi"
+
+#: data/resources/ui/content-room-details.ui:4
+#: src/session/content/room_details/mod.rs:250
+msgid "Room Details"
+msgstr "Pojedinosti sobe"
+
+#: data/resources/ui/content-room-history.ui:6
+#, fuzzy
+msgid "Room _Details"
+msgstr "Pojedinosti sobe"
+
+#: data/resources/ui/content-room-history.ui:11
+#, fuzzy
+msgid "_Invite New Member"
+msgstr "Pozovi novog člana"
+
+#: data/resources/ui/content-room-history.ui:18
+#: data/resources/ui/sidebar-room-row.ui:40
+#, fuzzy
+msgid "_Leave Room"
+msgstr "Napusti sobu"
+
+#: data/resources/ui/content-room-history.ui:116
+msgid "Unable to load room"
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:117
+msgid "Check your network connection."
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:120
+msgid "Try Again"
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:145
+msgid "Scroll to bottom"
+msgstr "Pomiči do dna"
+
+#: data/resources/ui/content-room-history.ui:157
+msgid "Drop Here to Send"
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:181
+#, fuzzy
+msgid "Room History"
+msgstr "Imenik soba"
+
+#: data/resources/ui/content-state-creation.ui:19
+#, fuzzy
+msgid "Previous room"
+msgstr "Napusti sobu"
+
+#: data/resources/ui/content-state-tombstone.ui:14
+msgid "This room was upgraded."
+msgstr ""
+
+#: data/resources/ui/content-state-tombstone.ui:19
+msgid "Switch to new Room"
+msgstr ""
+
+#: data/resources/ui/content.ui:35
+msgid "No Room Selected"
+msgstr "Nijedna soba nije odabrana"
+
+#: data/resources/ui/content.ui:36
+msgid "Join a room to start chatting."
+msgstr "Pristupite sobi i započnite razgovor."
+
+#: data/resources/ui/error-page.ui:40
+msgid ""
+"It seems like one of the Fractal sessions stored in the Secret Service is "
+"corrupted. If you know how to fix it you should do so."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:51
+msgid ""
+"Alternatively, we could delete this session for you. This means you will "
+"have to login again and you will lose access to your encrypted messages, "
+"unless you have a session open in another client or you have already backed "
+"up your encryption keys."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:74
+msgid "Clicking this button might delete more than one session!"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:86
+msgid "Delete the corrupted session"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:109
+msgid ""
+"Fractal relies on a Secret Service Provider to manage your sensitive session "
+"information and an error occurred while we where trying to store or get your "
+"session."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:124
+msgid ""
+"Here are a few things that might help you fix issues with the Secret Service:"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:147
+msgid ""
+"Make sure you have a Secret Service Provider installed, like gnome-keyring."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:172
+msgid "Check that you have a default keyring and that is is unlocked."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:187
+msgid ""
+"Check the application logs and your distribution's documentation for more "
+"details."
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:11
+#, fuzzy
+msgid "_Reply"
+msgstr "Odgovori"
+
+#: data/resources/ui/event-menu.ui:16
+msgid "_Edit"
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:86
+msgid "_Forward"
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:93
+msgid "_Select"
+msgstr "_Odaberi"
+
+#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
+#, fuzzy
+msgid "_Copy Text"
+msgstr "Kopiraj tekst"
+
+#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
+#, fuzzy
+msgid "_Copy Image"
+msgstr "Kopiraj sliku"
+
+#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
+#, fuzzy
+msgid "S_ave Image"
+msgstr "Spremi sliku kao…"
+
+#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:106
+msgid "_Permalink"
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
+#, fuzzy
+msgid "_View Source"
+msgstr "Pogledaj izvor"
+
+#: data/resources/ui/event-menu.ui:63 data/resources/ui/event-menu.ui:118
+msgid "Re_move"
+msgstr ""
+
+#: data/resources/ui/event-source-dialog.ui:5
+#, fuzzy
+msgid "Event Source"
+msgstr "Pogledaj izvor"
+
+#: data/resources/ui/greeter.ui:43
+msgid ""
+"You are running an early stage development version. Be aware it is a work in "
+"progress and far from complete yet."
+msgstr ""
+
+#. Fractal is the application name and shouldn't be translated
+#: data/resources/ui/greeter.ui:83
+msgid "Welcome to Fractal"
+msgstr "Dobrodošli u Fractal"
+
+#: data/resources/ui/identity-verification-widget.ui:50
+#: src/session/content/room_history/verification_info_bar.rs:170
+msgid "Decline"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:60
+#: src/session/content/room_history/verification_info_bar.rs:169
+msgid "Verify"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:115
+#: data/resources/ui/identity-verification-widget.ui:216
+msgid "Can't scan QR code?"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:123
+#: data/resources/ui/identity-verification-widget.ui:233
+msgid "Compare Emoji"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:150
+msgid "Scan Complete"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:225
+msgid "Scan QR code with this session"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:293
+msgid "Do Not Match"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:303
+msgid "Match"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:353
+msgid "Done"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:422
+msgid "Confirm Scan"
+msgstr ""
+
+#: data/resources/ui/login-advanced-dialog.ui:5
+#, fuzzy
+msgid "Homeserver Discovery"
+msgstr "Kućni poslužitelj"
+
+#: data/resources/ui/login-advanced-dialog.ui:14
+msgid ""
+"Auto-discovery, also known as \"well-known lookup\", allows to discover the "
+"URL of a Matrix homeserver from a domain name. This should only be disabled "
+"if your homeserver doesn’t support auto-discovery or if you want to provide "
+"the URL yourself."
+msgstr ""
+
+#: data/resources/ui/login-advanced-dialog.ui:17
+msgid "_Auto-discovery"
+msgstr ""
+
+#: data/resources/ui/login.ui:23
+msgid "_Next"
+msgstr "_Sljedeće"
+
+#: data/resources/ui/login.ui:130 src/login/mod.rs:341
+msgid "Homeserver URL"
+msgstr "URL kućnog poslužitelja"
+
+#: data/resources/ui/login.ui:171
+msgid "_Forgot Password?"
+msgstr "_Zaboravili ste lozinku?"
+
+#: data/resources/ui/login.ui:216
+msgid "Please follow the steps in the browser."
+msgstr ""
+
+#: data/resources/ui/member-menu.ui:6
+msgid "_Verify"
+msgstr ""
+
+#: data/resources/ui/member-menu.ui:14
+msgid "Make _Mod"
+msgstr ""
+
+#: data/resources/ui/member-menu.ui:20
+#, fuzzy
+msgid "Make _Admin"
+msgstr "Administrator"
+
+#: data/resources/ui/member-menu.ui:26
+msgid "_Kick"
+msgstr ""
+
+#: data/resources/ui/room-creation.ui:4
+#, fuzzy
+msgid "Create new Room"
+msgstr "Stvori novu sobu"
+
+#: data/resources/ui/room-creation.ui:22
+#, fuzzy
+msgid "C_reate"
+msgstr "Stvori"
+
+#: data/resources/ui/room-creation.ui:58
+#, fuzzy
+msgid "Room Name"
+msgstr "Naziv sobe"
+
+#: data/resources/ui/room-creation.ui:93
+msgid "Visibility"
+msgstr "Vidljivost"
+
+#: data/resources/ui/room-creation.ui:103
+#, fuzzy
+msgid "_Private"
+msgstr "Privatno"
+
+#: data/resources/ui/room-creation.ui:110
+#, fuzzy
+msgid "P_ublic"
+msgstr "Javno"
+
+#: data/resources/ui/room-creation.ui:122
+#, fuzzy
+msgid "Room Address"
+msgstr "Pristupi adresama"
+
+#: data/resources/ui/session-verification.ui:49
+#: src/session/content/verification/identity_verification_widget.rs:537
+msgid "Get Another Device"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:60
+#: src/session/content/verification/identity_verification_widget.rs:539
+msgid "Accept the verification request from another session or device."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:73
+msgid "No other devices logged into this account?"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:81
+#: data/resources/ui/session-verification.ui:171
+msgid "Recovery"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:91
+#: src/session/content/verification/session_verification.rs:240
+msgid "Reset"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:123
+msgid "Setup Encryption Identity"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:134
+msgid ""
+"You need to setup an encryption identity, since this is the first time you "
+"logged into your account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:142
+msgid "Setup"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:182
+msgid ""
+"Without another device you need a recovery passphrase or key to access your "
+"messages"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:190
+#: data/resources/ui/session-verification.ui:245
+msgid "Recovery Passphrase"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:199
+#: data/resources/ui/session-verification.ui:306
+msgid "Recovery Key"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:208
+msgid ""
+"If you don't have any of these you can rest your identity, but be aware this "
+"makes your old messages inacessible forever."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:217
+msgid "Reset Identity"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:256
+msgid ""
+"Your Recovery Passphrase was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:264
+msgid "If you opted for a Recovery Key instead go back and choose that option."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:272
+msgid "Passphrase"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:278
+#: data/resources/ui/session-verification.ui:342
+#, fuzzy
+msgid "Next"
+msgstr "_Sljedeće"
+
+#: data/resources/ui/session-verification.ui:317
+msgid "Your Recovery Key was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:325
+msgid ""
+"If you opted for a Recovery Passphrase instead go back and choose that "
+"option."
+msgstr ""
+
+#: data/resources/ui/shortcuts.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Općenito"
+
+#: data/resources/ui/shortcuts.ui:14
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Prečaci tipkovnice"
+
+#: data/resources/ui/shortcuts.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Zatvori"
+
+#: data/resources/ui/shortcuts.ui:26
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Search Room List"
+msgstr "Pretraga članova sobe"
+
+#: data/resources/ui/shortcuts.ui:32
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Close Room"
+msgstr "Nova soba"
+
+#: data/resources/ui/sidebar-room-row.ui:18
+#, fuzzy
+msgid "Mark as _Favorite"
+msgstr "Omiljeno"
+
+#: data/resources/ui/sidebar-room-row.ui:23
+msgid "Unmark as _Favorite"
+msgstr ""
+
+#: data/resources/ui/sidebar-room-row.ui:28
+msgid "Mark as Low _Priority"
+msgstr ""
+
+#: data/resources/ui/sidebar-room-row.ui:33
+msgid "Unmark as Low _Priority"
+msgstr ""
+
+#: data/resources/ui/sidebar-room-row.ui:45
+#, fuzzy
+msgid "Re_join Room"
+msgstr "Pristupi sobi"
+
+#: data/resources/ui/sidebar-room-row.ui:50
+#, fuzzy
+msgid "_Forget Room"
+msgstr "Nova soba"
+
+#: data/resources/ui/sidebar.ui:6
+#, fuzzy
+msgid "_New Room"
+msgstr "Nova soba"
+
+#: data/resources/ui/sidebar.ui:12
+msgid "_Preferences"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:16
+#, fuzzy
+msgid "_Keyboard Shortcuts"
+msgstr "Prečaci tipkovnice"
+
+#: data/resources/ui/sidebar.ui:20
+msgid "_About Fractal"
+msgstr "_O Fractalu"
+
+#: data/resources/ui/sidebar.ui:94
+msgid "Sidebar"
+msgstr ""
+
+#: data/resources/ui/qr-code-scanner.ui:21
+msgid "Unable to connect to Camera"
+msgstr ""
+
+#: src/application.rs:167
+msgid "Learn more about Fractal"
+msgstr "Saznajte više o Fractalu"
+
+#: src/application.rs:171
+#, fuzzy
+msgid "A Matrix client for GNOME"
+msgstr "Matrix.org klijent za GNOME"
+
+#: src/application.rs:172
+msgid "© 2017-2021 The Fractal Team"
+msgstr ""
+
+#: src/application.rs:186
+msgid "translator-credits"
+msgstr ""
+"Milo Ivir <mail@milotype.de>, 2020.\n"
+"Launchpad Contributions:\n"
+"  gogo https://launchpad.net/~trebelnik-stefina"
+
+#. This can't be added via the builder
+#: src/application.rs:190
+msgid "Name by"
+msgstr "Ime po"
+
+#: src/components/editable_avatar.rs:334
+#, fuzzy
+msgid "Choose Avatar"
+msgstr "Odaberi pružatelja usluge"
+
+#: src/components/editable_avatar.rs:343
+msgid "Choose"
+msgstr ""
+
+#: src/components/editable_avatar.rs:366
+msgid "The chosen file is not an image"
+msgstr ""
+
+#: src/components/editable_avatar.rs:374
+msgid "Could not determine the type of the chosen file"
+msgstr ""
+
+#: src/components/editable_avatar.rs:383
+msgid "No file was chosen"
+msgstr ""
+
+#: src/error_page.rs:108
+msgid "Session removed successfully."
+msgstr ""
+
+#: src/error_page.rs:120
+msgid "Could not remove session from secret storage"
+msgstr ""
+
+#: src/login/mod.rs:336
+msgid "Domain Name"
+msgstr ""
+
+#: src/login/mod.rs:338
+msgid "The domain of your Matrix homeserver, for example gnome.org"
+msgstr ""
+
+#: src/login/mod.rs:342
+msgid ""
+"The URL of your Matrix homeserver, for example <span segment=\"word"
+"\">https://gnome.modular.im</span>"
+msgstr ""
+
+#: src/secret.rs:52
+#, fuzzy
+msgid "Could not unlock the secret storage"
+msgstr "Nemoguće preuzimanje datoteke"
+
+#: src/secret.rs:55 src/secret.rs:59
+msgid "An unknown error occurred when interacting with the secret storage"
+msgstr ""
+
+#: src/secret.rs:88
+msgid "Malformed homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:95
+msgid "Could not find homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:109
+msgid "Malformed user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:116
+msgid "Could not find user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:125
+msgid "Could not find device ID in stored session"
+msgstr ""
+
+#: src/secret.rs:134
+msgid "Could not find database path in stored session"
+msgstr ""
+
+#: src/secret.rs:145
+msgid "Malformed secret in stored session"
+msgstr ""
+
+#: src/secret.rs:152
+msgid "No secret in stored session"
+msgstr ""
+
+#: src/secret.rs:159
+msgid "Could not get secret in stored session"
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:147
+msgid "Failed to load connected device."
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:192
+msgid "Failed to load connected devices."
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_row.rs:110
+#, fuzzy
+msgid "Delete Session"
+msgstr "Obriši poruku"
+
+#: src/session/account_settings/devices_page/device_row.rs:112
+msgid "Log Out"
+msgstr "Odjava"
+
+#: src/session/account_settings/devices_page/device_row.rs:229
+msgid ""
+"Fractal's support for encryption is unstable so you might lose access to "
+"your encrypted message history. It is recommended to backup your encryption "
+"keys from another Matrix client before proceeding."
+msgstr ""
+
+#. Translators: Time in 24h format
+#: src/session/account_settings/devices_page/device_row.rs:287
+msgid "Last seen at %H:%M"
+msgstr ""
+
+#. Translators: Time in 12h format
+#: src/session/account_settings/devices_page/device_row.rs:290
+msgid "Last seen at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:299
+#, no-c-format
+msgid "Last seen Yesterday at %H:%M"
+msgstr ""
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:304
+#, no-c-format
+msgid "Last seen Yesterday at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the name of the week day followed by
+#. a time in 24h format. i.e. "Last seen Monday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:313
+#, no-c-format
+msgid "Last seen %A at %H:%M"
+msgstr ""
+
+#. Translators: this is the week day name followed by
+#. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:318
+#, no-c-format
+msgid "Last seen %A at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 24h format i.e. "Last seen February 3 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:326
+#, no-c-format
+msgid "Last seen %B %-e at %H:%M"
+msgstr ""
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 12h format i.e. "Last seen February 3 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:332
+#, no-c-format
+msgid "Last seen %B %-e at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:339
+#, no-c-format
+msgid "Last seen %B %-e %Y at %H:%M"
+msgstr ""
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:345
+#, no-c-format
+msgid "Last seen %B %-e %Y at %l:%M %p"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:217
+msgid "Password must be at least 8 characters long"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:220
+msgid "Password must have at least one lower-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:224
+msgid "Password must have at least one upper-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:227
+msgid "Password must have at least one digit"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:229
+msgid "Password must have at least one symbol"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:255
+#, fuzzy
+msgid "Passwords do not match"
+msgstr "Lozinka se ne podudara."
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:313
+msgid "Password changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:329
+msgid "Password rejected for being too weak"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:336
+#, fuzzy
+msgid "Could not change password"
+msgstr "Nemoguća promjena lozinke"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:200
+msgid "Account successfully deactivated"
+msgstr ""
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:210
+#, fuzzy
+msgid "Could not deactivate account"
+msgstr "Nemoguće brisanje računa"
+
+#: src/session/account_settings/user_page/mod.rs:227
+msgid "Avatar removed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/mod.rs:245
+msgid "Avatar changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/mod.rs:291
+#, fuzzy
+msgid "Could not upload avatar"
+msgstr "Nemoguće preuzimanje datoteke"
+
+#: src/session/account_settings/user_page/mod.rs:316
+#, fuzzy
+msgid "Could not change avatar"
+msgstr "Nemoguća promjena lozinke"
+
+#: src/session/account_settings/user_page/mod.rs:348
+#, fuzzy
+msgid "Could not remove avatar"
+msgstr "Nemoguće primanje URI datoteke"
+
+#: src/session/account_settings/user_page/mod.rs:397
+msgid "Name changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/mod.rs:436
+msgid "Could not change display name"
+msgstr ""
+
+#: src/session/content/explore/public_room_row.rs:222
+msgid "View"
+msgstr ""
+
+#: src/session/content/explore/public_room_row.rs:224
+msgid "Join"
+msgstr "Pristupi"
+
+#: src/session/content/room_details/mod.rs:169
+#, fuzzy
+msgid "Save Details"
+msgstr "Pojediosti"
+
+#: src/session/content/room_details/mod.rs:170
+#, fuzzy
+msgid "Edit Details"
+msgstr "Pojediosti"
+
+#: src/session/content/room_details/mod.rs:213
+#, fuzzy
+msgid "Choose avatar"
+msgstr "Odaberi pružatelja usluge"
+
+#: src/session/content/room_details/mod.rs:244
+#, fuzzy
+msgid "Invite new Members"
+msgstr "Pozovi novog člana"
+
+#. Translators: This is a date format in the day divider without the year
+#: src/session/content/room_history/item_row.rs:169
+#, fuzzy
+msgid "%A, %B %e"
+msgstr "%e. %b"
+
+#. Translators: This is a date format in the day divider with the year
+#: src/session/content/room_history/item_row.rs:172
+#, fuzzy
+msgid "%A, %B %e, %Y"
+msgstr "%e. %B, %Y"
+
+#: src/session/content/room_history/item_row.rs:190
+msgid "New Messages"
+msgstr "Nova poruka"
+
+#: src/session/content/room_history/message_row/audio.rs:245
+#: src/session/content/room_history/message_row/audio.rs:249
+#, fuzzy
+msgid "Could not retrieve audio file"
+msgstr "Nemoguće primanje URI datoteke"
+
+#: src/session/content/room_history/message_row/audio.rs:262
+#, fuzzy
+msgid "Error reading audio file"
+msgstr "Prijenos zvučne datoteke."
+
+#: src/session/content/room_history/message_row/media.rs:445
+#: src/session/media_viewer.rs:244
+msgid "Image file not supported"
+msgstr ""
+
+#: src/session/content/room_history/message_row/media.rs:484
+#: src/session/content/room_history/message_row/media.rs:489
+#, fuzzy
+msgid "Could not retrieve media"
+msgstr "Nemoguće primanje URI datoteke"
+
+#: src/session/content/room_history/message_row/mod.rs:368
+msgid "Identity verification was started"
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:381
+#: src/session/content/room_history/message_row/mod.rs:428
+msgid "Unsupported event"
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:406
+msgid "Fractal couldn't decrypt this message."
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:417
+#, fuzzy
+msgid "This message was removed."
+msgstr "Ova poruka nema izvor."
+
+#. TODO Get the actual name of the file by reading
+#. the text/plain mime type.
+#: src/session/content/room_history/mod.rs:363
+#: src/session/content/room_history/mod.rs:736
+#, fuzzy
+msgid "Image"
+msgstr "Slike"
+
+#: src/session/content/room_history/state_row/creation.rs:62
+msgid "This is the continuation of an upgraded room."
+msgstr ""
+
+#: src/session/content/room_history/state_row/creation.rs:68
+msgid "The beginning of this room."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:69
+msgid "This room is now encrypted."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:166
+msgid "An unsupported room member event was received."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:182
+msgid "An unsupported state event was received."
+msgstr ""
+
+#: src/session/content/room_history/verification_info_bar.rs:173
+msgid "Verification in progress"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:492
+#: src/session/content/verification/identity_verification_widget.rs:521
+msgid "Verify the new session from the current session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:495
+msgid "Scan the QR code from another session logged into this account."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:497
+#: src/session/content/verification/identity_verification_widget.rs:524
+msgid ""
+"You scanned to qr code successfully. You may need to confirm the "
+"verification in the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:501
+msgid "Scan this QR code from the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:504
+#: src/session/content/verification/identity_verification_widget.rs:531
+msgid "Check if the same emoji appear in the same order on the other device."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:506
+#: src/session/content/verification/identity_verification_widget.rs:533
+msgid "Request Complete"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:508
+msgid "This session is ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:510
+msgid "Get Started"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:512
+#: src/session/content/verification/identity_verification_widget.rs:542
+msgid "Does the other session show a confirmation shield?"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:518
+msgid "Login Request From Another Session"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:523
+msgid ""
+"Scan the QR code from this session from another session logged into this "
+"account."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:527
+msgid "Scan this QR code from the newly logged in session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:535
+msgid "The new session is now ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:547
+#: src/session/content/verification/identity_verification_widget.rs:551
+#: src/session/content/verification/identity_verification_widget.rs:557
+#: src/session/content/verification/identity_verification_widget.rs:561
+#, fuzzy
+msgid "Verification Request"
+msgstr "Zvukovi obavijesti"
+
+#: src/session/content/verification/identity_verification_widget.rs:559
+msgid "Ask <b>{}</b> to scan this QR code from their session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:566
+msgid "Verification Complete"
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:237
+msgid ""
+"If you lost access to all other session you can create a new crypto "
+"identity. Be care full because this will reset all verified users and make "
+"previously encrypted conversations unreadable."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:320
+msgid "You cancelled the authentication needed to create the encryption keys."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:324
+msgid "An error occurred during the creation of the encryption keys."
+msgstr ""
+
+#: src/session/media_viewer.rs:251
+#, fuzzy
+msgid "Could not retrieve image"
+msgstr "Nemoguće primanje URI datoteke"
+
+#: src/session/media_viewer.rs:288
+#, fuzzy
+msgid "Could not retrieve video"
+msgstr "Nemoguće primanje URI datoteke"
+
+#: src/session/mod.rs:760
+msgid "Failed to logout the session."
+msgstr ""
+
+#: src/session/room/event_actions.rs:205
+#, fuzzy
+msgid "Save File"
+msgstr "Spremi"
+
+#: src/session/room/member_role.rs:48
+msgid "Admin"
+msgstr "Administrator"
+
+#: src/session/room/member_role.rs:49
+msgid "Moderator"
+msgstr "Voditelj"
+
+#: src/session/room/member_role.rs:50
+msgid "Normal user"
+msgstr ""
+
+#: src/session/room/mod.rs:399
+msgid "Failed to forget <widget>."
+msgstr ""
+
+#: src/session/room/mod.rs:637
+msgid "Unknown"
+msgstr "Nepoznato"
+
+#: src/session/room/mod.rs:1046
+msgid "Failed to accept invitation for <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1077
+msgid "Failed to reject invitation for <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1242
+msgid "Failed to invite <widget> to <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1244
+msgid ""
+"Failed to invite <widget> and some other user to <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1246
+msgid ""
+"Failed to invite <widget> and some other users to <widget>. Try again later."
+msgstr ""
+
+#: src/session/room_creation/mod.rs:278
+msgid "The address is already taken."
+msgstr ""
+
+#: src/session/room_creation/mod.rs:301
+msgid "Too long. Use a shorter name."
+msgstr ""
+
+#: src/session/room_creation/mod.rs:329
+msgid "Can't contain `:`"
+msgstr ""
+
+#: src/session/room_creation/mod.rs:334
+msgid "Can't contain `#`"
+msgstr ""
+
+#: src/session/room_creation/mod.rs:339
+msgid "Too long. Use a shorter address."
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:161
+#, fuzzy
+msgid "Join Room as Favorite"
+msgstr "Pristupi sobi"
+
+#: src/session/sidebar/category_row.rs:162
+msgid "Join Room"
+msgstr "Pristupi sobi"
+
+#: src/session/sidebar/category_row.rs:163
+msgid "Join Room as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:164
+#, fuzzy
+msgid "Reject Invite"
+msgstr "Odbij"
+
+#: src/session/sidebar/category_row.rs:168
+msgid "Unmark as Favorite"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:169
+#: src/session/sidebar/category_row.rs:175
+msgid "Mark as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:170
+#: src/session/sidebar/category_row.rs:176
+#: src/session/sidebar/category_row.rs:182
+msgid "Leave Room"
+msgstr "Napusti sobu"
+
+#: src/session/sidebar/category_row.rs:174
+#: src/session/sidebar/category_row.rs:180
+#, fuzzy
+msgid "Mark as Favorite"
+msgstr "Omiljeno"
+
+#: src/session/sidebar/category_row.rs:181
+msgid "Unmark as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:186
+msgid "Rejoin Room as Favorite"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:187
+#, fuzzy
+msgid "Rejoin Room"
+msgstr "Pristupi sobi"
+
+#: src/session/sidebar/category_row.rs:188
+msgid "Rejoin Room as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:31
+#, fuzzy
+msgid "Verifications"
+msgstr "Obavijesti"
+
+#: src/session/sidebar/category_type.rs:32
+#, fuzzy
+msgid "Invited"
+msgstr "Pozovi"
+
+#: src/session/sidebar/category_type.rs:33
+#, fuzzy
+msgid "Favorite"
+msgstr "Omiljeno"
+
+#: src/session/sidebar/category_type.rs:34
+msgid "Rooms"
+msgstr "Sobe"
+
+#: src/session/sidebar/category_type.rs:35
+msgid "Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:36
+msgid "Historical"
+msgstr ""
+
+#. Translators: This shouldn't ever be visible to the user,
+#: src/session/sidebar/category_type.rs:38
+msgid "Outdated"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:39
+msgid "Spaces"
+msgstr ""
+
+#: src/session/sidebar/entry_type.rs:21
+msgid "Explore"
+msgstr ""
+
+#: src/session/sidebar/entry_type.rs:22
+#, fuzzy
+msgid "Forget Room"
+msgstr "Nova soba"
+
+#: src/session/verification/identity_verification.rs:672
+msgid "You cancelled the verification process."
+msgstr ""
+
+#: src/session/verification/identity_verification.rs:674
+msgid "The verification process failed because it reached a timeout."
+msgstr ""
+
+#: src/session/verification/identity_verification.rs:677
+msgid "You accepted the request from an other session."
+msgstr ""
+
+#: src/session/verification/identity_verification.rs:680
+#, fuzzy
+msgid "The emoji did not match."
+msgstr "Lozinka se ne podudara."
+
+#: src/session/verification/identity_verification.rs:689
+msgid "An unknown error occurred during the verification process."
+msgstr ""
+
+#: src/user_facing_error.rs:21
+msgid "The connection timed out. Try again later."
+msgstr ""
+
+#: src/user_facing_error.rs:23
+msgid "Unable to connect to the homeserver."
+msgstr ""
+
+#: src/user_facing_error.rs:28
+#, fuzzy
+msgid "The provided username or password is invalid."
+msgstr "Poslužitelj identiteta je nevaljan."
+
+#: src/user_facing_error.rs:29
+msgid "The user is deactivated."
+msgstr ""
+
+#: src/user_facing_error.rs:37
+msgid "You exceeded the homeserver’s rate limit, try again later."
+msgstr ""
+
+#: src/user_facing_error.rs:47
+msgid "An unknown connection error occurred."
+msgstr ""
+
+#: src/user_facing_error.rs:55
+#, fuzzy
+msgid "Could not decrypt the event"
+msgstr "Nemoguće brisanje računa"
+
+#: src/user_facing_error.rs:57 src/user_facing_error.rs:77
+msgid "An unknown error occurred."
+msgstr ""
+
+#: src/user_facing_error.rs:64
+#, fuzzy
+msgid "Could not open the store."
+msgstr "Nemoguće preuzimanje datoteke"
+
+#: src/user_facing_error.rs:71
+msgid "This is not a valid URL"
+msgstr ""
+
+#: src/user_facing_error.rs:73
+msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
+msgstr ""
+
+#. Translators: Default name for image files.
+#: src/utils.rs:190
+msgid "image"
+msgstr "slika"
+
+#. Translators: Default name for video files.
+#: src/utils.rs:192
+#, fuzzy
+msgid "video"
+msgstr "video snimke"
+
+#. Translators: Default name for audio files.
+#: src/utils.rs:194
+msgid "audio"
+msgstr ""
+
+#. Translators: Default name for files.
+#: src/utils.rs:196
+msgid "file"
+msgstr ""
+
+#~ msgctxt "shortcut window"
+#~ msgid "Close the active room"
+#~ msgstr "Zatvori aktivnu sobu"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open main menu"
+#~ msgstr "Otvori glavni izbornik"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open / close the room sidebar search"
+#~ msgstr "Otvori / Zatvori bočnu traku pretrage sobe"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room in the list"
+#~ msgstr "Otvori prijašnju sobu u popisu"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room in the list"
+#~ msgstr "Otvori sljedeću sobu u popisu"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room with unread messages in the list"
+#~ msgstr "Otvori prijašnju sobu s nepročitanim porukama u popisu"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room with unread messages in the list"
+#~ msgstr "Otvori sljedeću sobu s nepročitanim porukama u popisu"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the first room of the list"
+#~ msgstr "Otvori prvu sobu u popisu"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the last room of the list"
+#~ msgstr "Otvori posljednju sobu u popisu"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View older messages"
+#~ msgstr "Pogledaj starije poruke"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View newer messages"
+#~ msgstr "Pogledaj novije poruke"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Composing a new message"
+#~ msgstr "Sastavljanje nove poruke"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Write on a new line"
+#~ msgstr "Piši u novom retku"
+
+#~ msgid "Type of password and token storage"
+#~ msgstr "Vrsta lozinke i spremište tokena"
+
+#~ msgid "Type of password and token storage, default value is: Secret Service"
+#~ msgstr ""
+#~ "Vrsta lozinke i spremište tokena, zadana vrijednost je: Secret Service"
+
+#~ msgid "If markdown sending is active"
+#~ msgstr "Je li slanje markdown označavanja aktivirano"
+
+#~ msgid "Whether support for sending markdown messages is on"
+#~ msgstr "Je li podrška za slanje markdown označavanja uključena"
+
+#~ msgid "X position of the main window on startup"
+#~ msgstr "X položaj glavnog prozora pri pokretanju"
+
+#~ msgid "Y position of the main window on startup"
+#~ msgstr "Y položaj glavnog prozora pri pokretanju"
+
+#~ msgid "Width of the main window on startup"
+#~ msgstr "Širina glavnog prozora pri pokretanju"
+
+#~ msgid "Height of the main window on startup"
+#~ msgstr "Visina glavnog prozora pri pokretanju"
+
+#~ msgid "Whether the main window is maximized on startup"
+#~ msgstr "Je li glavni prozor uvećan pri pokretanju"
+
+#~ msgid "Daniel García Moreno"
+#~ msgstr "Daniel García Moreno"
+
+#~ msgid "Back"
+#~ msgstr "Natrag"
+
+#~ msgid "Other people can find you by searching for any of these identifiers."
+#~ msgstr ""
+#~ "Drugi ljudi vas mogu pronaći pretraživanjem jednog od ovih identifikatora."
+
+#~ msgid "Type in your name"
+#~ msgstr "Upišite svoje ime"
+
+#~ msgid "Email"
+#~ msgstr "E-pošta"
+
+#~ msgid "Phone"
+#~ msgstr "Telefon"
+
+#~ msgid "Password"
+#~ msgstr "Lozinka"
+
+#~ msgid "Device ID"
+#~ msgstr "ID uređaja"
+
+#~ msgid ""
+#~ "Deactivating your account means that you will lose all your messages, "
+#~ "contacts, and files."
+#~ msgstr ""
+#~ "Deaktiviranjem vašeg računa izgubit ćete sve svoje poruke, kontakte i "
+#~ "datoteke."
+
+#~ msgid ""
+#~ "To confirm that you really want to deactivate this account type in your "
+#~ "password:"
+#~ msgstr "Za potvrđivanje deaktiviranja ovog računa, utipkajte lozinku:"
+
+#~ msgid "Also erase all messages"
+#~ msgstr "Isto obriši sve poruke"
+
+#~ msgid "Check your email"
+#~ msgstr "Provjeri svoju e-pošte"
+
+#~ msgid "Apply"
+#~ msgstr "Primjeni"
+
+#~ msgid "New Direct Chat"
+#~ msgstr "Novi izravan razgovor"
+
+#~ msgid "Play"
+#~ msgstr "Sviraj"
+
+#~ msgid "New direct chat"
+#~ msgstr "Novi izravan razgovor"
+
+#~ msgid "Start chat"
+#~ msgstr "Započni razgovor"
+
+#~ msgid "Invitation"
+#~ msgstr "Pozivnica"
+
+#~ msgid "ID or Alias"
+#~ msgstr "ID ili alias"
+
+#~ msgid "Join room"
+#~ msgstr "Pristupi sobi"
+
+#~ msgid "Close"
+#~ msgstr "Zatvori"
+
+#~ msgid "Leave?"
+#~ msgstr "Napusti?"
+
+#~ msgid ""
+#~ "Once you leave, you won’t be able to interact with people in the room "
+#~ "anymore."
+#~ msgstr ""
+#~ "Nakon napuštanja sobe, više nećeš moći razgovarati s ljudima u sobi."
+
+#~ msgid "_Log In"
+#~ msgstr "_Prijava"
+
+#~ msgid "_Create Account"
+#~ msgstr "_Stvori račun"
+
+#~ msgid "What is your Provider?"
+#~ msgstr "Tko je vaš pružatelj usluge?"
+
+#~ msgid "Matrix provider domain, e.g. myserver.co"
+#~ msgstr "Pružatelj Matrix domene, npr. myserver.co"
+
+#~ msgid "The domain may not be empty."
+#~ msgstr "Domena ne smije biti prazna."
+
+#~ msgid "Log In"
+#~ msgstr "Prijava"
+
+#~ msgid "_User ID"
+#~ msgstr "ID _korisnika"
+
+#~ msgid "_Password"
+#~ msgstr "_Lozinka"
+
+#~ msgid "User name, email, or phone number"
+#~ msgstr "Korisničko ime, e-pošta ili broj telefona"
+
+#~ msgid "Invalid username or password"
+#~ msgstr "Neispravno korisničko ime ili lozinka"
+
+#~ msgid "Keyboard _Shortcuts"
+#~ msgstr "Prečaci _tipkovnice"
+
+#~ msgid "User"
+#~ msgstr "Korisnik"
+
+#~ msgid "Add"
+#~ msgstr "Dodaj"
+
+#~ msgid "Room search"
+#~ msgstr "Pretraga sobe"
+
+#~ msgid "Room Menu"
+#~ msgstr "Izbornik sobe"
+
+#~ msgid "No room"
+#~ msgstr "Nema sobe"
+
+#~ msgid "Default Matrix Server"
+#~ msgstr "Zadani Matrix poslužitelj"
+
+#~ msgid "Toggle fullscreen"
+#~ msgstr "Uklj/Isklj cjelozaslonski prikaz"
+
+#~ msgid "Loading more media"
+#~ msgstr "Učitavanje više medija"
+
+#~ msgid "Open With…"
+#~ msgstr "Otvori s…"
+
+#~ msgid "Save Video As…"
+#~ msgstr "Spremi video snimku kao…"
+
+#~ msgid "Copy Selection"
+#~ msgstr "Kopiraj odabir"
+
+#~ msgid "Message Source"
+#~ msgstr "Izvor poruke"
+
+#~ msgid "Copy To Clipboard"
+#~ msgstr "Kopiraj u međuspremnik"
+
+#~ msgid "Ch_ange"
+#~ msgstr "Pr_omijeni"
+
+#~ msgid "Invite to This Room"
+#~ msgstr "Pozovi u ovu sobu"
+
+#~ msgid "Add name"
+#~ msgstr "Dodaj ime"
+
+#~ msgid "Add topic"
+#~ msgstr "Dodaj temu"
+
+#~ msgid "Type in your room topic"
+#~ msgstr "Upišite temu svoje sobe"
+
+#~ msgid "No room description"
+#~ msgstr "Nema opisa za sobu"
+
+#~ msgid "For all messages"
+#~ msgstr "Za sve poruke"
+
+#~ msgid "Only for mentions"
+#~ msgstr "Samo za spomenute"
+
+#~ msgid "Shared Media"
+#~ msgstr "Dijeljeni medij"
+
+#~ msgid "photos"
+#~ msgstr "fotografije"
+
+#~ msgid "documents"
+#~ msgstr "dokumenti"
+
+#~ msgid "New members can see"
+#~ msgstr "Novi članovi mogu vidjeti"
+
+#~ msgid "All room history"
+#~ msgstr "Svu povijest sobe"
+
+#~ msgid "History after they were invited"
+#~ msgstr "Povijest nakon što su pozvani"
+
+#~ msgid "Room Visibility"
+#~ msgstr "Vidljivost sobe"
+
+#~ msgid "Allow guests"
+#~ msgstr "Dopusti goste"
+
+#~ msgid "Allow joining without invite"
+#~ msgstr "Dopusti pristup bez pozivnice"
+
+#~ msgid "Publish in room directory"
+#~ msgstr "Objavi u imeniku sobe"
+
+#~ msgid "Show rooms from:"
+#~ msgstr "Pokaži sobe od:"
+
+#~ msgid "Your homeserver"
+#~ msgstr "Vaš kućni poslužitelj"
+
+#~ msgid "Other Protocol"
+#~ msgstr "Drugi protokol"
+
+#~ msgid "Other Homeserver"
+#~ msgstr "Drugi kućni poslužitelj"
+
+#~ msgid "Select a new avatar"
+#~ msgstr "Odaberi novi avatar"
+
+#~ msgid "Select a file"
+#~ msgstr "Odaberi datoteku"
+
+#~ msgid "Couldn’t save file"
+#~ msgstr "Nemoguće spremanje datoteke"
+
+#~ msgid "Couldn’t open file"
+#~ msgstr "Nemoguće otvaranje datoteke"
+
+#~ msgid "The validation code is not correct."
+#~ msgstr "Kôd potvrde nije ispravan."
+
+#~ msgid "Enter the code received via SMS"
+#~ msgstr "Upišite kôd iz primljene SMS poruke"
+
+#~ msgid ""
+#~ "In order to add this email address, go to your inbox and follow the link "
+#~ "you received. Once you’ve done that, click Continue."
+#~ msgstr ""
+#~ "Kako bi dodali ovu adresu e-pošte, idite u vašu pristiglu poštu i "
+#~ "slijedite navedenu poveznicu. Nakon što ste to učinili, kliknite "
+#~ "„Nastavi”."
+
+#~ msgid "Are you sure you want to delete your account?"
+#~ msgstr "Sigurno želite obrisati svoj račun?"
+
+#~ msgid "Fractal [{}]"
+#~ msgstr "Fractal [{}]"
+
+#~ msgid "An audio file has been added to the conversation."
+#~ msgstr "Zvučna datoteka je dodana u razgovor."
+
+#~ msgid "An image has been added to the conversation."
+#~ msgstr "Slika je dodana u razgovor."
+
+#~ msgid "A video has been added to the conversation."
+#~ msgstr "Video snimka je dodana u razgovor."
+
+#~ msgid "A file has been added to the conversation."
+#~ msgstr "Datoteka je dodana u razgovor."
+
+#~ msgid " (direct message)"
+#~ msgstr " (izravna poruka)"
+
+#~ msgid "Leave {room_name}?"
+#~ msgstr "Napusti {room_name}?"
+
+#~ msgid "The room ID is malformed"
+#~ msgstr "ID sobe je oštećen"
+
+#~ msgid "EMPTY ROOM"
+#~ msgstr "PRAZNA SOBA"
+
+#~ msgid "{m1} and {m2}"
+#~ msgstr "{m1} i {m2}"
+
+#~ msgid "{m1} and Others"
+#~ msgstr "{m1} i ostali"
+
+#~ msgid "Several users are typing…"
+#~ msgstr "Nekolicina korisnika tipka…"
+
+#~ msgid "<b>{}</b> is typing…"
+#~ msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+#~ msgstr[0] "<b>{}</b> tipka…"
+#~ msgstr[1] "<b>{}</b> i <b>{}</b> tipkaju…"
+#~ msgstr[2] "<b>{}</b> i <b>{}</b> tipkaju…"
+
+#~ msgid "Syncing, this could take a while"
+#~ msgstr "Usklađivanje, ovo može potrajati"
+
+#~ msgid "Can’t login, try again"
+#~ msgstr "Nemoguća prijava, pokušajte ponovno"
+
+#~ msgid "Error deleting message"
+#~ msgstr "Greška brisanja poruke"
+
+#~ msgid "Can’t join the room, try again."
+#~ msgstr "Nemoguć pristup sobi, pokušajte ponovno."
+
+#~ msgid "Can’t create the room, try again"
+#~ msgstr "Nemoguće stvaranje sobe, pokušajte ponovno"
+
+#~ msgid "Sorry, account settings can’t be loaded."
+#~ msgstr "Nažalost, postavke računa se ne mogu učitati."
+
+#~ msgid "Email is already in use"
+#~ msgstr "Adresa e-pošte se već koristi"
+
+#~ msgid "Please enter a valid email address."
+#~ msgstr "Upišite valjanu adresu e-pošte."
+
+#~ msgid "Couldn’t add the email address."
+#~ msgstr "Nemoguće dodavanje adrese e-pošte."
+
+#~ msgid "Phone number is already in use"
+#~ msgstr "Broj telefona se već koristi"
+
+#~ msgid ""
+#~ "Please enter your phone number in the format: \n"
+#~ " + your country code and your phone number."
+#~ msgstr ""
+#~ "Upišite svoj broj telefona u formatu: \n"
+#~ " + pozivni broj vaše zemlje i broj telefona."
+
+#~ msgid "Couldn’t add the phone number."
+#~ msgstr "Nemoguće dodavanje broja telefona."
+
+#~ msgid "© 2017–2020 Daniel García Moreno, et al."
+#~ msgstr "© 2017–2020 Daniel García Moreno, et al."
+
+#~ msgid "Image from Clipboard"
+#~ msgstr "Slika međuspremnika"
+
+#~ msgid "Invite to {name}"
+#~ msgstr "Pozovi u {name}"
+
+#~ msgid "Join {room_name}?"
+#~ msgstr "Pristupiti {room_name}?"
+
+#~ msgid ""
+#~ "You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</"
+#~ "b>"
+#~ msgstr "<b>{sender_name}</b> vas je pozvao u sobu <b>{room_name}</b>"
+
+#~ msgid "You’ve been invited to join <b>{room_name}</b>"
+#~ msgstr "Pozvani ste u sobu <b>{room_name}</b>"
+
+#~ msgid "You don’t have permission to post to this room"
+#~ msgstr "Nemate dozvolu objavljivanja poruka u ovoj sobi"
+
+#~ msgid "OK"
+#~ msgstr "U redu"
+
+#~ msgid "Room · {} member"
+#~ msgid_plural "Room · {} members"
+#~ msgstr[0] "Soba · {} član"
+#~ msgstr[1] "Soba · {} člana"
+#~ msgstr[2] "Soba · {} članova"
+
+#~ msgid "{} member"
+#~ msgid_plural "{} members"
+#~ msgstr[0] "{} član"
+#~ msgstr[1] "{} člana"
+#~ msgstr[2] "{} članova"
+
+#~ msgid "Save media as"
+#~ msgstr "Spremi medij kao"
+
+#~ msgid "_Save"
+#~ msgstr "_Spremi"
+
+#~ msgid "You have been kicked from {}"
+#~ msgstr "Izbačeni ste iz {}"
+
+#~ msgid ""
+#~ "Kicked by: {}\n"
+#~ " “{}”"
+#~ msgstr ""
+#~ "Izbacio vas je: {}\n"
+#~ " “{}”"
+
+#~ msgid "Malformed server URL"
+#~ msgstr "Oštećeni URL poslužitelja"
+
+#~ msgid "Error while loading previous media"
+#~ msgstr "Greška pri učitavanju prijašnjeg medija"
+
+#~ msgid "Privileged"
+#~ msgstr "Povlašten"
+
+#, c-format
+#~ msgid "Last edited %c"
+#~ msgstr "Posljednje uređivanje %c"
+
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l:%M %p"
+
+#~ msgid "%R"
+#~ msgstr "%R"
+
+#~ msgid "Invites"
+#~ msgstr "Pozivnice"
+
+#~ msgid "You don’t have any invitations"
+#~ msgstr "Nemate pozivnica"
+
+#~ msgid "Drag and drop rooms here to add them to your favorites"
+#~ msgstr "Povucite i ispustite sobe ovdje za dodavanje u omiljene"
+
+#~ msgid "You don’t have any rooms yet"
+#~ msgstr "Još nemate soba"
+
+#~ msgid "Select room image file"
+#~ msgstr "Odaberite datoteku slike sobe"
+
+#~ msgid "Chat"
+#~ msgstr "Razgovor"
+
+#~ msgid "Directory"
+#~ msgstr "Direktorij"
+
+#~ msgid "Loading"
+#~ msgstr "Učitavanje"
+
+#~ msgid "Private Chat"
+#~ msgstr "Privatni razgovor"
+
+#~ msgid "Uploading video."
+#~ msgstr "Prijenos video snimke."
+
+#~ msgid "Uploading image."
+#~ msgstr "Prijenos slike."
+
+#~ msgid "Uploading file."
+#~ msgstr "Prijenos datoteke."

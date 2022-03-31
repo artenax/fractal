@@ -1,0 +1,2314 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fractal\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:14+0200\n"
+"PO-Revision-Date: 2022-03-04 21:49+0330\n"
+"Last-Translator: eshagh <eshagh094@gmail.com>\n"
+"Language-Team: Persian\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Loco-Source-Locale: en_DE\n"
+"X-Generator: Poedit 3.0\n"
+"X-DL-Team: fa\n"
+"X-DL-Module: fractal\n"
+"X-DL-Branch: master\n"
+"X-DL-Domain: po\n"
+"X-DL-State: Translating\n"
+"X-Loco-Parser: loco_parse_po\n"
+
+#: data/org.gnome.Fractal.desktop.in.in:3
+#: data/org.gnome.Fractal.metainfo.xml.in.in:9
+msgid "Fractal"
+msgstr "فرکتال"
+
+#: data/org.gnome.Fractal.desktop.in.in:4
+msgid ""
+"Fractal is a decentralized, secure messaging client for collaborative group "
+"communication."
+msgstr ""
+"فرکتال یک کارخواه پیام رسانی غیرمتمرکز و ایمن برای ارتباطات گروهی مشترک است."
+
+#: data/org.gnome.Fractal.desktop.in.in:5
+msgid "Fractal group messaging"
+msgstr "پیام‌های گروهی فرکتال"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Fractal.desktop.in.in:14
+msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
+msgstr "ماتریکس;matrix.org;گفت‌وگو;کانال irc;ارتباطات;صحبت;شورش;عنصر;"
+
+#: data/org.gnome.Fractal.gschema.xml.in:6
+#: data/org.gnome.Fractal.gschema.xml.in:7
+msgid "Default window width"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:11
+#: data/org.gnome.Fractal.gschema.xml.in:12
+msgid "Default window height"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:16
+msgid "Default window maximized behaviour"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:21
+msgid "Enable markdown formatting"
+msgstr ""
+
+#: data/org.gnome.Fractal.gschema.xml.in:22
+msgid "Whether or not to do markdown formatting when sending messages"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:8
+msgid "Julian Sparber"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
+msgid "Matrix group messaging app"
+msgstr "برنامهٔ پیام‌رسانی برای ماتریکس"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:12
+msgid ""
+"Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
+"is optimized for collaboration in large groups, such as free software "
+"projects."
+msgstr ""
+"فرکتال یک برنامهٔ پیام‌رسانی ماتریکس برای گنوم است که به زبان راست نوشته شده "
+"است. رابط آن برای همکاری در گروه‌های بزرگ، مانند پروژه‌های نرم‌افزار آزاد، "
+"بهینه شده است."
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:24
+msgid "Nightly preview of Fractal."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:29
+msgid "This new major release is the result of 10 months of hard work."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:30
+#: data/org.gnome.Fractal.metainfo.xml.in.in:59
+#: data/org.gnome.Fractal.metainfo.xml.in.in:80
+#: data/org.gnome.Fractal.metainfo.xml.in.in:99
+#: data/org.gnome.Fractal.metainfo.xml.in.in:135
+#, fuzzy
+msgid "New features:"
+msgstr "پیام‌های جدید"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:32
+msgid "Videos now have a preview directly in history"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:33
+msgid "New videos player: click on a preview to open it"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:34
+msgid "Improved audio file support, with a nicer presentation and seeking"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:35
+msgid "Redacted messages are removed from history"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:36
+msgid ""
+"Edited messages are replaced with their new content and show a small icon"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:37
+msgid "Translations have been updated"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:38
+msgid "Spellcheck language is saved per room"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:39
+msgid "New swipe-back gesture to go back from room to room list in narrow view"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:40
+msgid ""
+"New swipe left and right gesture to navigate through media in media view"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:41
+msgid "SOCKS proxy are now also supported"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:43
+#: data/org.gnome.Fractal.metainfo.xml.in.in:63
+#: data/org.gnome.Fractal.metainfo.xml.in.in:86
+#: data/org.gnome.Fractal.metainfo.xml.in.in:117
+#: data/org.gnome.Fractal.metainfo.xml.in.in:143
+msgid "Bugfixes:"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:45
+msgid "Thumbnail for pasted images have been fixed"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:46
+msgid "File type detection for uploads is more reliable"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:47
+msgid ""
+"Typing notifications are now only sent when text is actually typed in the "
+"message input"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:49
+#: data/org.gnome.Fractal.metainfo.xml.in.in:71
+#: data/org.gnome.Fractal.metainfo.xml.in.in:90
+#: data/org.gnome.Fractal.metainfo.xml.in.in:124
+#: data/org.gnome.Fractal.metainfo.xml.in.in:148
+msgid "Under the hood:"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:51
+#: data/org.gnome.Fractal.metainfo.xml.in.in:73
+msgid "Code refactor is still going"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:52
+msgid ""
+"Some improvements to logging, including access token removal for privacy"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:58
+#: data/org.gnome.Fractal.metainfo.xml.in.in:79
+msgid "This new minor release is the result of 2 months of hard work."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:61
+#: data/org.gnome.Fractal.metainfo.xml.in.in:83
+msgid "Translation strings have been updated"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:65
+msgid "Newlines now work when markdown is enabled"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:66
+#, fuzzy
+msgid "Account settings can be accessed again"
+msgstr "متأسفیم، تنظیمات حساب نمی‌تواند بارگذاری شود."
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:67
+msgid "Redaction is working again"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:68
+msgid "Compatibility with HTTP-only (non HTTPS) servers has been restored"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:69
+#: data/org.gnome.Fractal.metainfo.xml.in.in:122
+msgid "Some crashes fixed"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:82
+msgid "Autocompletion popover position fix"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:84
+msgid "Disable the textbox when there are no write permissions"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:88
+msgid "Fix crash on logout and login with wrong credentials"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:92
+#: data/org.gnome.Fractal.metainfo.xml.in.in:126
+msgid "Code refactor continues"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:98
+msgid ""
+"This new major release is the result of 7 months of hard work by 37 "
+"contributors pushing over 200 commits."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:101
+msgid "Adaptive window, mobile friendly"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:102
+msgid "Window size and position are remembered"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:103
+msgid "Redesigned login"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:104
+msgid "Spellcheck"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:105
+msgid "Network proxy support"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:106
+#, fuzzy
+msgid "Typing notifications"
+msgstr "آگهی‌ها"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:107
+msgid "Badges are shown for operators and moderators"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:108
+msgid "Keyboard shortcuts for easier navigation across rooms"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:111
+msgid "Audio and video files are now tagged correctly"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:112
+msgid "Image files have a thumbnail"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:113
+msgid "Various tweaks to the file chooser"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:119
+msgid "Logs actually output something now"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:120
+msgid "A few issues with invites and direct chats have been resolved"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:121
+msgid "More reliable scrolling"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:127
+msgid "We’re now using Rust 2018"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:128
+msgid "Many improvements to the build system and CI"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:134
+msgid ""
+"This new major release is the result of 3 months of hard work by 25 "
+"contributors pushing over 340 commits."
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:137
+msgid "Enhanced history view with adaptive layout, day divider"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:138
+msgid "Reorganised headerbar, app menu merged with user menu"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:139
+msgid "Larger display of emoji-only messages"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:140
+msgid "Some performance improvements"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:141
+#, fuzzy
+msgid "Opening a room jumps to first unread message"
+msgstr "گشودن اتاق قبلی با پیام‌های خوانده نشده در فهرست"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:145
+#, fuzzy
+msgid "More reliable notifications"
+msgstr "آگهی‌ها"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:146
+msgid "Fixed display bug for avatars"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:150
+msgid "Large code refactor"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:151
+msgid "Logging infrastructure"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:152
+msgid "Continuous integration"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:153
+msgid "More informative build output"
+msgstr ""
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:54
+#, fuzzy
+msgid "Change Password"
+msgstr "گذرواژه _جدید"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:76
+#, fuzzy
+msgid "New Password"
+msgstr "گذرواژه _جدید"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:81
+#, fuzzy
+msgid "Confirm New Password"
+msgstr "گذرواژه _جدید"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:94
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
+#: src/session/content/room_history/verification_info_bar.rs:174
+msgid "Continue"
+msgstr "ادامه"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:115
+msgid "Deactivate Account"
+msgstr "غیرفعّال کردن حساب"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:79
+#: data/resources/ui/account-settings-user-page.ui:80
+#, fuzzy
+msgid "Matrix User ID"
+msgstr "شناسه ماتریکس"
+
+#: data/resources/ui/account-settings-device-row.ui:59
+#: src/session/content/verification/identity_verification_widget.rs:493
+#: src/session/content/verification/identity_verification_widget.rs:498
+#: src/session/content/verification/identity_verification_widget.rs:502
+#: src/session/content/verification/identity_verification_widget.rs:522
+#: src/session/content/verification/identity_verification_widget.rs:525
+#: src/session/content/verification/identity_verification_widget.rs:529
+#, fuzzy
+msgid "Verify Session"
+msgstr "_تأیید گذرواژه جدید"
+
+#: data/resources/ui/account-settings-devices-page.ui:5
+msgid "Sessions"
+msgstr ""
+
+#: data/resources/ui/account-settings-devices-page.ui:9
+#: data/resources/ui/account-settings-devices-page.ui:13
+#, fuzzy
+msgid "Current Session"
+msgstr "_گذرواژهٔ کنونی"
+
+#: data/resources/ui/account-settings-devices-page.ui:24
+#: data/resources/ui/account-settings-devices-page.ui:28
+msgid "Other Active Sessions"
+msgstr ""
+
+#: data/resources/ui/account-settings-user-page.ui:5
+#: data/resources/ui/content-room-details.ui:9
+#, fuzzy
+msgid "General"
+msgstr "عمومی"
+
+#: data/resources/ui/account-settings-user-page.ui:38
+msgid "Name"
+msgstr "نام"
+
+#: data/resources/ui/account-settings-user-page.ui:63
+msgid "Advanced Information"
+msgstr "اطّلاعات پیشرفته"
+
+#: data/resources/ui/account-settings-user-page.ui:66
+msgid "Homeserver"
+msgstr "کارساز خانگی"
+
+#: data/resources/ui/account-settings-user-page.ui:94
+msgid "Session ID"
+msgstr ""
+
+#: data/resources/ui/account-settings.ui:4
+msgid "Account Settings"
+msgstr "تنظیمات حساب"
+
+#: data/resources/ui/attachment-dialog.ui:14
+#: data/resources/ui/content-invite-subpage.ui:12
+#: data/resources/ui/room-creation.ui:16
+msgid "_Cancel"
+msgstr "_لغو"
+
+#: data/resources/ui/attachment-dialog.ui:21
+#, fuzzy
+msgid "_Send"
+msgstr "ارسال"
+
+#: data/resources/ui/attachment-dialog.ui:36
+msgid "No Preview Available"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:20
+msgid "Authentication"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:43
+msgid "Please authenticate the operation with your password"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:70
+msgid ""
+"Please authenticate the operation via the browser and once completed press "
+"confirm."
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:80
+msgid "Authenticate via Browser"
+msgstr ""
+
+#: data/resources/ui/components-auth-dialog.ui:113
+#: data/resources/ui/identity-verification-widget.ui:455
+#: src/components/editable_avatar.rs:344
+#: src/session/content/room_history/verification_info_bar.rs:175
+#: src/session/room/event_actions.rs:210
+msgid "Cancel"
+msgstr "لغو"
+
+#: data/resources/ui/components-auth-dialog.ui:118
+#: data/resources/ui/identity-verification-widget.ui:445
+msgid "Confirm"
+msgstr ""
+
+#: data/resources/ui/components-loading-listbox-row.ui:32
+msgid "Retry"
+msgstr ""
+
+#: data/resources/ui/content-explore.ui:64
+#, fuzzy
+msgid "No rooms matching the search where found"
+msgstr "هیچ عضو منطبقی یافت نشد"
+
+#: data/resources/ui/content-explore.ui:97
+#, fuzzy
+msgid "Room List"
+msgstr "اتاق‌ها"
+
+#: data/resources/ui/content-invite-subpage.ui:18
+#, fuzzy
+msgid "I_nvite"
+msgstr "دعوت"
+
+#: data/resources/ui/content-invite-subpage.ui:87
+msgid "Search for users to invite them to this room."
+msgstr ""
+
+#: data/resources/ui/content-invite-subpage.ui:123
+#, fuzzy
+msgid "No users matching the search where found."
+msgstr "هیچ عضو منطبقی یافت نشد"
+
+#: data/resources/ui/content-invite-subpage.ui:132
+#, fuzzy
+msgid "An error occurred while searching for matches"
+msgstr "خطا در جست‌وجو برای اتاق‌ها"
+
+#: data/resources/ui/content-invite.ui:26
+#: data/resources/ui/content-invite.ui:51
+msgid "Invite"
+msgstr "دعوت"
+
+#: data/resources/ui/content-invite.ui:90
+msgid "<widget> invited you"
+msgstr ""
+
+#: data/resources/ui/content-invite.ui:109
+#: data/resources/ui/sidebar-room-row.ui:11
+#, fuzzy
+msgid "_Reject"
+msgstr "رد کردن"
+
+#: data/resources/ui/content-invite.ui:119
+#: data/resources/ui/sidebar-room-row.ui:6
+#, fuzzy
+msgid "_Accept"
+msgstr "پذیرش"
+
+#: data/resources/ui/content-markdown-popover.ui:17
+#, fuzzy
+msgid "_Markdown"
+msgstr "مارک‌دون"
+
+#: data/resources/ui/content-markdown-popover.ui:37
+msgid "> quote"
+msgstr "> نقل قول"
+
+#: data/resources/ui/content-markdown-popover.ui:46
+msgid "**bold**"
+msgstr "**ضخیم**"
+
+#: data/resources/ui/content-markdown-popover.ui:59
+msgid "`code`"
+msgstr "`کد`"
+
+#: data/resources/ui/content-markdown-popover.ui:69
+msgid "*italic*"
+msgstr "*مورب*"
+
+#: data/resources/ui/content-member-page.ui:5
+#, fuzzy
+msgid "Members"
+msgstr "اعضا"
+
+#: data/resources/ui/content-member-page.ui:24
+#, fuzzy
+msgid "Invite new member"
+msgstr "دعوت عضو جدید"
+
+#: data/resources/ui/content-member-page.ui:33
+msgid "Search for room members"
+msgstr "جست‌وجو برای اعضای اتاق"
+
+#: data/resources/ui/content-message-file.ui:21
+msgid "Open"
+msgstr "گشودن"
+
+#: data/resources/ui/content-message-file.ui:28
+#: src/session/room/event_actions.rs:209
+msgid "Save"
+msgstr "ذخیره"
+
+#: data/resources/ui/content-room-details.ui:4
+#: src/session/content/room_details/mod.rs:250
+msgid "Room Details"
+msgstr "اطّلاعات اتاق"
+
+#: data/resources/ui/content-room-history.ui:6
+#, fuzzy
+msgid "Room _Details"
+msgstr "اطّلاعات اتاق"
+
+#: data/resources/ui/content-room-history.ui:11
+#, fuzzy
+msgid "_Invite New Member"
+msgstr "دعوت عضو جدید"
+
+#: data/resources/ui/content-room-history.ui:18
+#: data/resources/ui/sidebar-room-row.ui:40
+#, fuzzy
+msgid "_Leave Room"
+msgstr "خروج از اتاق"
+
+#: data/resources/ui/content-room-history.ui:116
+msgid "Unable to load room"
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:117
+msgid "Check your network connection."
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:120
+msgid "Try Again"
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:145
+msgid "Scroll to bottom"
+msgstr "پیمایش به پایین"
+
+#: data/resources/ui/content-room-history.ui:157
+msgid "Drop Here to Send"
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:181
+#, fuzzy
+msgid "Room History"
+msgstr "فهرست اتاق"
+
+#: data/resources/ui/content-state-creation.ui:19
+#, fuzzy
+msgid "Previous room"
+msgstr "خروج از اتاق"
+
+#: data/resources/ui/content-state-tombstone.ui:14
+msgid "This room was upgraded."
+msgstr ""
+
+#: data/resources/ui/content-state-tombstone.ui:19
+msgid "Switch to new Room"
+msgstr ""
+
+#: data/resources/ui/content.ui:35
+msgid "No Room Selected"
+msgstr "اتاقی انتخاب نشده است"
+
+#: data/resources/ui/content.ui:36
+msgid "Join a room to start chatting."
+msgstr "برای شروع یک گفت‌وگو به یک اتاق بپیوندید."
+
+#: data/resources/ui/error-page.ui:40
+msgid ""
+"It seems like one of the Fractal sessions stored in the Secret Service is "
+"corrupted. If you know how to fix it you should do so."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:51
+msgid ""
+"Alternatively, we could delete this session for you. This means you will "
+"have to login again and you will lose access to your encrypted messages, "
+"unless you have a session open in another client or you have already backed "
+"up your encryption keys."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:74
+msgid "Clicking this button might delete more than one session!"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:86
+msgid "Delete the corrupted session"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:109
+msgid ""
+"Fractal relies on a Secret Service Provider to manage your sensitive session "
+"information and an error occurred while we where trying to store or get your "
+"session."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:124
+msgid ""
+"Here are a few things that might help you fix issues with the Secret Service:"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:147
+msgid ""
+"Make sure you have a Secret Service Provider installed, like gnome-keyring."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:172
+msgid "Check that you have a default keyring and that is is unlocked."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:187
+msgid ""
+"Check the application logs and your distribution's documentation for more "
+"details."
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:11
+#, fuzzy
+msgid "_Reply"
+msgstr "پاسخ"
+
+#: data/resources/ui/event-menu.ui:16
+msgid "_Edit"
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:86
+msgid "_Forward"
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:93
+msgid "_Select"
+msgstr "_گزینش"
+
+#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
+#, fuzzy
+msgid "_Copy Text"
+msgstr "رونوشت از متن"
+
+#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
+#, fuzzy
+msgid "_Copy Image"
+msgstr "رونوشت از تصویر"
+
+#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
+#, fuzzy
+msgid "S_ave Image"
+msgstr "ذخیره تصویر به عنوان…"
+
+#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:106
+msgid "_Permalink"
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
+#, fuzzy
+msgid "_View Source"
+msgstr "مشاهده منبع"
+
+#: data/resources/ui/event-menu.ui:63 data/resources/ui/event-menu.ui:118
+msgid "Re_move"
+msgstr ""
+
+#: data/resources/ui/event-source-dialog.ui:5
+#, fuzzy
+msgid "Event Source"
+msgstr "مشاهده منبع"
+
+#: data/resources/ui/greeter.ui:43
+msgid ""
+"You are running an early stage development version. Be aware it is a work in "
+"progress and far from complete yet."
+msgstr ""
+
+#. Fractal is the application name and shouldn't be translated
+#: data/resources/ui/greeter.ui:83
+msgid "Welcome to Fractal"
+msgstr "به فرکتال خوش آمدید"
+
+#: data/resources/ui/identity-verification-widget.ui:50
+#: src/session/content/room_history/verification_info_bar.rs:170
+msgid "Decline"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:60
+#: src/session/content/room_history/verification_info_bar.rs:169
+msgid "Verify"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:115
+#: data/resources/ui/identity-verification-widget.ui:216
+msgid "Can't scan QR code?"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:123
+#: data/resources/ui/identity-verification-widget.ui:233
+msgid "Compare Emoji"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:150
+msgid "Scan Complete"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:225
+msgid "Scan QR code with this session"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:293
+msgid "Do Not Match"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:303
+msgid "Match"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:353
+msgid "Done"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:422
+msgid "Confirm Scan"
+msgstr ""
+
+#: data/resources/ui/login-advanced-dialog.ui:5
+#, fuzzy
+msgid "Homeserver Discovery"
+msgstr "کارساز خانگی"
+
+#: data/resources/ui/login-advanced-dialog.ui:14
+msgid ""
+"Auto-discovery, also known as \"well-known lookup\", allows to discover the "
+"URL of a Matrix homeserver from a domain name. This should only be disabled "
+"if your homeserver doesn’t support auto-discovery or if you want to provide "
+"the URL yourself."
+msgstr ""
+
+#: data/resources/ui/login-advanced-dialog.ui:17
+msgid "_Auto-discovery"
+msgstr ""
+
+#: data/resources/ui/login.ui:23
+msgid "_Next"
+msgstr "_بعدی"
+
+#: data/resources/ui/login.ui:130 src/login/mod.rs:341
+msgid "Homeserver URL"
+msgstr "نشانی کارساز خانگی"
+
+#: data/resources/ui/login.ui:171
+msgid "_Forgot Password?"
+msgstr "گذرواژه را _فراموش کرده‌اید؟"
+
+#: data/resources/ui/login.ui:216
+msgid "Please follow the steps in the browser."
+msgstr ""
+
+#: data/resources/ui/member-menu.ui:6
+msgid "_Verify"
+msgstr ""
+
+#: data/resources/ui/member-menu.ui:14
+msgid "Make _Mod"
+msgstr ""
+
+#: data/resources/ui/member-menu.ui:20
+#, fuzzy
+msgid "Make _Admin"
+msgstr "مدیر"
+
+#: data/resources/ui/member-menu.ui:26
+msgid "_Kick"
+msgstr ""
+
+#: data/resources/ui/room-creation.ui:4
+#, fuzzy
+msgid "Create new Room"
+msgstr "ایجاد اتاق جدید"
+
+#: data/resources/ui/room-creation.ui:22
+#, fuzzy
+msgid "C_reate"
+msgstr "ایجاد"
+
+#: data/resources/ui/room-creation.ui:58
+#, fuzzy
+msgid "Room Name"
+msgstr "نام اتاق"
+
+#: data/resources/ui/room-creation.ui:93
+msgid "Visibility"
+msgstr "دید"
+
+#: data/resources/ui/room-creation.ui:103
+#, fuzzy
+msgid "_Private"
+msgstr "خصوصی"
+
+#: data/resources/ui/room-creation.ui:110
+#, fuzzy
+msgid "P_ublic"
+msgstr "عمومی"
+
+#: data/resources/ui/room-creation.ui:122
+#, fuzzy
+msgid "Room Address"
+msgstr "عضویت به آدرس‌ها"
+
+#: data/resources/ui/session-verification.ui:49
+#: src/session/content/verification/identity_verification_widget.rs:537
+msgid "Get Another Device"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:60
+#: src/session/content/verification/identity_verification_widget.rs:539
+msgid "Accept the verification request from another session or device."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:73
+msgid "No other devices logged into this account?"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:81
+#: data/resources/ui/session-verification.ui:171
+msgid "Recovery"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:91
+#: src/session/content/verification/session_verification.rs:240
+msgid "Reset"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:123
+msgid "Setup Encryption Identity"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:134
+msgid ""
+"You need to setup an encryption identity, since this is the first time you "
+"logged into your account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:142
+msgid "Setup"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:182
+msgid ""
+"Without another device you need a recovery passphrase or key to access your "
+"messages"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:190
+#: data/resources/ui/session-verification.ui:245
+msgid "Recovery Passphrase"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:199
+#: data/resources/ui/session-verification.ui:306
+msgid "Recovery Key"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:208
+msgid ""
+"If you don't have any of these you can rest your identity, but be aware this "
+"makes your old messages inacessible forever."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:217
+msgid "Reset Identity"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:256
+msgid ""
+"Your Recovery Passphrase was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:264
+msgid "If you opted for a Recovery Key instead go back and choose that option."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:272
+msgid "Passphrase"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:278
+#: data/resources/ui/session-verification.ui:342
+#, fuzzy
+msgid "Next"
+msgstr "_بعدی"
+
+#: data/resources/ui/session-verification.ui:317
+msgid "Your Recovery Key was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:325
+msgid ""
+"If you opted for a Recovery Passphrase instead go back and choose that "
+"option."
+msgstr ""
+
+#: data/resources/ui/shortcuts.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "عمومی"
+
+#: data/resources/ui/shortcuts.ui:14
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "میان‌برهای صفحه‌کلید"
+
+#: data/resources/ui/shortcuts.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "خروج"
+
+#: data/resources/ui/shortcuts.ui:26
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Search Room List"
+msgstr "جست‌وجو برای اعضای اتاق"
+
+#: data/resources/ui/shortcuts.ui:32
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Close Room"
+msgstr "اتاق جدید"
+
+#: data/resources/ui/sidebar-room-row.ui:18
+#, fuzzy
+msgid "Mark as _Favorite"
+msgstr "موارد دلخواه"
+
+#: data/resources/ui/sidebar-room-row.ui:23
+msgid "Unmark as _Favorite"
+msgstr ""
+
+#: data/resources/ui/sidebar-room-row.ui:28
+msgid "Mark as Low _Priority"
+msgstr ""
+
+#: data/resources/ui/sidebar-room-row.ui:33
+msgid "Unmark as Low _Priority"
+msgstr ""
+
+#: data/resources/ui/sidebar-room-row.ui:45
+#, fuzzy
+msgid "Re_join Room"
+msgstr "عضویت به اتاق"
+
+#: data/resources/ui/sidebar-room-row.ui:50
+#, fuzzy
+msgid "_Forget Room"
+msgstr "اتاق جدید"
+
+#: data/resources/ui/sidebar.ui:6
+#, fuzzy
+msgid "_New Room"
+msgstr "اتاق جدید"
+
+#: data/resources/ui/sidebar.ui:12
+msgid "_Preferences"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:16
+#, fuzzy
+msgid "_Keyboard Shortcuts"
+msgstr "میان‌برهای صفحه‌کلید"
+
+#: data/resources/ui/sidebar.ui:20
+msgid "_About Fractal"
+msgstr "_درباره فرکتال"
+
+#: data/resources/ui/sidebar.ui:94
+msgid "Sidebar"
+msgstr ""
+
+#: data/resources/ui/qr-code-scanner.ui:21
+msgid "Unable to connect to Camera"
+msgstr ""
+
+#: src/application.rs:167
+msgid "Learn more about Fractal"
+msgstr "درباره فرکتال بیشتر بدانید"
+
+#: src/application.rs:171
+#, fuzzy
+msgid "A Matrix client for GNOME"
+msgstr "کارخواه ماتریکس برای گنوم"
+
+#: src/application.rs:172
+msgid "© 2017-2021 The Fractal Team"
+msgstr ""
+
+#: src/application.rs:186
+msgid "translator-credits"
+msgstr ""
+"بهزاد اصبحی <behzadasbahi@protonmail.com>\n"
+"سید اسحاق مقیم شهیدانی <eshagh094@gmail.com>"
+
+#. This can't be added via the builder
+#: src/application.rs:190
+msgid "Name by"
+msgstr "نام توسط"
+
+#: src/components/editable_avatar.rs:334
+#, fuzzy
+msgid "Choose Avatar"
+msgstr "کارساز(ارائه دهنده) را انتخاب کنید"
+
+#: src/components/editable_avatar.rs:343
+msgid "Choose"
+msgstr ""
+
+#: src/components/editable_avatar.rs:366
+msgid "The chosen file is not an image"
+msgstr ""
+
+#: src/components/editable_avatar.rs:374
+msgid "Could not determine the type of the chosen file"
+msgstr ""
+
+#: src/components/editable_avatar.rs:383
+msgid "No file was chosen"
+msgstr ""
+
+#: src/error_page.rs:108
+msgid "Session removed successfully."
+msgstr ""
+
+#: src/error_page.rs:120
+msgid "Could not remove session from secret storage"
+msgstr ""
+
+#: src/login/mod.rs:336
+msgid "Domain Name"
+msgstr ""
+
+#: src/login/mod.rs:338
+msgid "The domain of your Matrix homeserver, for example gnome.org"
+msgstr ""
+
+#: src/login/mod.rs:342
+msgid ""
+"The URL of your Matrix homeserver, for example <span segment=\"word"
+"\">https://gnome.modular.im</span>"
+msgstr ""
+
+#: src/secret.rs:52
+#, fuzzy
+msgid "Could not unlock the secret storage"
+msgstr "پرونده بارگیری نشد"
+
+#: src/secret.rs:55 src/secret.rs:59
+msgid "An unknown error occurred when interacting with the secret storage"
+msgstr ""
+
+#: src/secret.rs:88
+msgid "Malformed homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:95
+msgid "Could not find homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:109
+msgid "Malformed user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:116
+msgid "Could not find user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:125
+msgid "Could not find device ID in stored session"
+msgstr ""
+
+#: src/secret.rs:134
+msgid "Could not find database path in stored session"
+msgstr ""
+
+#: src/secret.rs:145
+msgid "Malformed secret in stored session"
+msgstr ""
+
+#: src/secret.rs:152
+msgid "No secret in stored session"
+msgstr ""
+
+#: src/secret.rs:159
+msgid "Could not get secret in stored session"
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:147
+msgid "Failed to load connected device."
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:192
+msgid "Failed to load connected devices."
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_row.rs:110
+#, fuzzy
+msgid "Delete Session"
+msgstr "حذف پیام"
+
+#: src/session/account_settings/devices_page/device_row.rs:112
+msgid "Log Out"
+msgstr "خروج"
+
+#: src/session/account_settings/devices_page/device_row.rs:229
+msgid ""
+"Fractal's support for encryption is unstable so you might lose access to "
+"your encrypted message history. It is recommended to backup your encryption "
+"keys from another Matrix client before proceeding."
+msgstr ""
+
+#. Translators: Time in 24h format
+#: src/session/account_settings/devices_page/device_row.rs:287
+msgid "Last seen at %H:%M"
+msgstr ""
+
+#. Translators: Time in 12h format
+#: src/session/account_settings/devices_page/device_row.rs:290
+msgid "Last seen at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:299
+#, no-c-format
+msgid "Last seen Yesterday at %H:%M"
+msgstr ""
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:304
+#, no-c-format
+msgid "Last seen Yesterday at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the name of the week day followed by
+#. a time in 24h format. i.e. "Last seen Monday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:313
+#, no-c-format
+msgid "Last seen %A at %H:%M"
+msgstr ""
+
+#. Translators: this is the week day name followed by
+#. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:318
+#, no-c-format
+msgid "Last seen %A at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 24h format i.e. "Last seen February 3 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:326
+#, no-c-format
+msgid "Last seen %B %-e at %H:%M"
+msgstr ""
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 12h format i.e. "Last seen February 3 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:332
+#, no-c-format
+msgid "Last seen %B %-e at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:339
+#, no-c-format
+msgid "Last seen %B %-e %Y at %H:%M"
+msgstr ""
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:345
+#, no-c-format
+msgid "Last seen %B %-e %Y at %l:%M %p"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:217
+msgid "Password must be at least 8 characters long"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:220
+msgid "Password must have at least one lower-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:224
+msgid "Password must have at least one upper-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:227
+msgid "Password must have at least one digit"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:229
+msgid "Password must have at least one symbol"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:255
+#, fuzzy
+msgid "Passwords do not match"
+msgstr "گذرواژه‌ها با هم تفاوت دارند."
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:313
+msgid "Password changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:329
+msgid "Password rejected for being too weak"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:336
+#, fuzzy
+msgid "Could not change password"
+msgstr "گذرواژه عوض نشد"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:200
+msgid "Account successfully deactivated"
+msgstr ""
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:210
+#, fuzzy
+msgid "Could not deactivate account"
+msgstr "حساب شما حذف نشد"
+
+#: src/session/account_settings/user_page/mod.rs:227
+msgid "Avatar removed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/mod.rs:245
+msgid "Avatar changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/mod.rs:291
+#, fuzzy
+msgid "Could not upload avatar"
+msgstr "پرونده بارگیری نشد"
+
+#: src/session/account_settings/user_page/mod.rs:316
+#, fuzzy
+msgid "Could not change avatar"
+msgstr "گذرواژه عوض نشد"
+
+#: src/session/account_settings/user_page/mod.rs:348
+#, fuzzy
+msgid "Could not remove avatar"
+msgstr "URI پرونده بازیابی نشد"
+
+#: src/session/account_settings/user_page/mod.rs:397
+msgid "Name changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/mod.rs:436
+msgid "Could not change display name"
+msgstr ""
+
+#: src/session/content/explore/public_room_row.rs:222
+msgid "View"
+msgstr ""
+
+#: src/session/content/explore/public_room_row.rs:224
+msgid "Join"
+msgstr "عضویت"
+
+#: src/session/content/room_details/mod.rs:169
+#, fuzzy
+msgid "Save Details"
+msgstr "جزئیات"
+
+#: src/session/content/room_details/mod.rs:170
+#, fuzzy
+msgid "Edit Details"
+msgstr "جزئیات"
+
+#: src/session/content/room_details/mod.rs:213
+#, fuzzy
+msgid "Choose avatar"
+msgstr "کارساز(ارائه دهنده) را انتخاب کنید"
+
+#: src/session/content/room_details/mod.rs:244
+#, fuzzy
+msgid "Invite new Members"
+msgstr "دعوت عضو جدید"
+
+#. Translators: This is a date format in the day divider without the year
+#: src/session/content/room_history/item_row.rs:169
+#, fuzzy
+msgid "%A, %B %e"
+msgstr "%Oe %B"
+
+#. Translators: This is a date format in the day divider with the year
+#: src/session/content/room_history/item_row.rs:172
+#, fuzzy
+msgid "%A, %B %e, %Y"
+msgstr "%Oe %B، %OY"
+
+#: src/session/content/room_history/item_row.rs:190
+msgid "New Messages"
+msgstr "پیام‌های جدید"
+
+#: src/session/content/room_history/message_row/audio.rs:245
+#: src/session/content/room_history/message_row/audio.rs:249
+#, fuzzy
+msgid "Could not retrieve audio file"
+msgstr "URI پرونده بازیابی نشد"
+
+#: src/session/content/room_history/message_row/audio.rs:262
+msgid "Error reading audio file"
+msgstr ""
+
+#: src/session/content/room_history/message_row/media.rs:445
+#: src/session/media_viewer.rs:244
+msgid "Image file not supported"
+msgstr ""
+
+#: src/session/content/room_history/message_row/media.rs:484
+#: src/session/content/room_history/message_row/media.rs:489
+#, fuzzy
+msgid "Could not retrieve media"
+msgstr "URI پرونده بازیابی نشد"
+
+#: src/session/content/room_history/message_row/mod.rs:368
+msgid "Identity verification was started"
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:381
+#: src/session/content/room_history/message_row/mod.rs:428
+msgid "Unsupported event"
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:406
+msgid "Fractal couldn't decrypt this message."
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:417
+#, fuzzy
+msgid "This message was removed."
+msgstr "این پیام منبع ندارد."
+
+#. TODO Get the actual name of the file by reading
+#. the text/plain mime type.
+#: src/session/content/room_history/mod.rs:363
+#: src/session/content/room_history/mod.rs:736
+#, fuzzy
+msgid "Image"
+msgstr "تصاویر"
+
+#: src/session/content/room_history/state_row/creation.rs:62
+msgid "This is the continuation of an upgraded room."
+msgstr ""
+
+#: src/session/content/room_history/state_row/creation.rs:68
+msgid "The beginning of this room."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:69
+msgid "This room is now encrypted."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:166
+msgid "An unsupported room member event was received."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:182
+msgid "An unsupported state event was received."
+msgstr ""
+
+#: src/session/content/room_history/verification_info_bar.rs:173
+msgid "Verification in progress"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:492
+#: src/session/content/verification/identity_verification_widget.rs:521
+msgid "Verify the new session from the current session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:495
+msgid "Scan the QR code from another session logged into this account."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:497
+#: src/session/content/verification/identity_verification_widget.rs:524
+msgid ""
+"You scanned to qr code successfully. You may need to confirm the "
+"verification in the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:501
+msgid "Scan this QR code from the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:504
+#: src/session/content/verification/identity_verification_widget.rs:531
+msgid "Check if the same emoji appear in the same order on the other device."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:506
+#: src/session/content/verification/identity_verification_widget.rs:533
+msgid "Request Complete"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:508
+msgid "This session is ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:510
+msgid "Get Started"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:512
+#: src/session/content/verification/identity_verification_widget.rs:542
+msgid "Does the other session show a confirmation shield?"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:518
+msgid "Login Request From Another Session"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:523
+msgid ""
+"Scan the QR code from this session from another session logged into this "
+"account."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:527
+msgid "Scan this QR code from the newly logged in session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:535
+msgid "The new session is now ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:547
+#: src/session/content/verification/identity_verification_widget.rs:551
+#: src/session/content/verification/identity_verification_widget.rs:557
+#: src/session/content/verification/identity_verification_widget.rs:561
+#, fuzzy
+msgid "Verification Request"
+msgstr "صدای آگهی‌ها"
+
+#: src/session/content/verification/identity_verification_widget.rs:559
+msgid "Ask <b>{}</b> to scan this QR code from their session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:566
+msgid "Verification Complete"
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:237
+msgid ""
+"If you lost access to all other session you can create a new crypto "
+"identity. Be care full because this will reset all verified users and make "
+"previously encrypted conversations unreadable."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:320
+msgid "You cancelled the authentication needed to create the encryption keys."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:324
+msgid "An error occurred during the creation of the encryption keys."
+msgstr ""
+
+#: src/session/media_viewer.rs:251
+#, fuzzy
+msgid "Could not retrieve image"
+msgstr "URI پرونده بازیابی نشد"
+
+#: src/session/media_viewer.rs:288
+#, fuzzy
+msgid "Could not retrieve video"
+msgstr "URI پرونده بازیابی نشد"
+
+#: src/session/mod.rs:760
+msgid "Failed to logout the session."
+msgstr ""
+
+#: src/session/room/event_actions.rs:205
+#, fuzzy
+msgid "Save File"
+msgstr "ذخیره"
+
+#: src/session/room/member_role.rs:48
+msgid "Admin"
+msgstr "مدیر"
+
+#: src/session/room/member_role.rs:49
+msgid "Moderator"
+msgstr "ناظر"
+
+#: src/session/room/member_role.rs:50
+msgid "Normal user"
+msgstr ""
+
+#: src/session/room/mod.rs:399
+msgid "Failed to forget <widget>."
+msgstr ""
+
+#: src/session/room/mod.rs:637
+msgid "Unknown"
+msgstr "ناشناخته"
+
+#: src/session/room/mod.rs:1046
+msgid "Failed to accept invitation for <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1077
+msgid "Failed to reject invitation for <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1242
+msgid "Failed to invite <widget> to <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1244
+msgid ""
+"Failed to invite <widget> and some other user to <widget>. Try again later."
+msgstr ""
+
+#: src/session/room/mod.rs:1246
+msgid ""
+"Failed to invite <widget> and some other users to <widget>. Try again later."
+msgstr ""
+
+#: src/session/room_creation/mod.rs:278
+msgid "The address is already taken."
+msgstr ""
+
+#: src/session/room_creation/mod.rs:301
+msgid "Too long. Use a shorter name."
+msgstr ""
+
+#: src/session/room_creation/mod.rs:329
+msgid "Can't contain `:`"
+msgstr ""
+
+#: src/session/room_creation/mod.rs:334
+msgid "Can't contain `#`"
+msgstr ""
+
+#: src/session/room_creation/mod.rs:339
+msgid "Too long. Use a shorter address."
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:161
+#, fuzzy
+msgid "Join Room as Favorite"
+msgstr "عضویت به اتاق"
+
+#: src/session/sidebar/category_row.rs:162
+msgid "Join Room"
+msgstr "عضویت به اتاق"
+
+#: src/session/sidebar/category_row.rs:163
+msgid "Join Room as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:164
+#, fuzzy
+msgid "Reject Invite"
+msgstr "رد کردن"
+
+#: src/session/sidebar/category_row.rs:168
+msgid "Unmark as Favorite"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:169
+#: src/session/sidebar/category_row.rs:175
+msgid "Mark as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:170
+#: src/session/sidebar/category_row.rs:176
+#: src/session/sidebar/category_row.rs:182
+msgid "Leave Room"
+msgstr "خروج از اتاق"
+
+#: src/session/sidebar/category_row.rs:174
+#: src/session/sidebar/category_row.rs:180
+#, fuzzy
+msgid "Mark as Favorite"
+msgstr "موارد دلخواه"
+
+#: src/session/sidebar/category_row.rs:181
+msgid "Unmark as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:186
+msgid "Rejoin Room as Favorite"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:187
+#, fuzzy
+msgid "Rejoin Room"
+msgstr "عضویت به اتاق"
+
+#: src/session/sidebar/category_row.rs:188
+msgid "Rejoin Room as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:31
+#, fuzzy
+msgid "Verifications"
+msgstr "آگهی‌ها"
+
+#: src/session/sidebar/category_type.rs:32
+#, fuzzy
+msgid "Invited"
+msgstr "دعوت"
+
+#: src/session/sidebar/category_type.rs:33
+#, fuzzy
+msgid "Favorite"
+msgstr "موارد دلخواه"
+
+#: src/session/sidebar/category_type.rs:34
+msgid "Rooms"
+msgstr "اتاق‌ها"
+
+#: src/session/sidebar/category_type.rs:35
+msgid "Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:36
+msgid "Historical"
+msgstr ""
+
+#. Translators: This shouldn't ever be visible to the user,
+#: src/session/sidebar/category_type.rs:38
+msgid "Outdated"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:39
+msgid "Spaces"
+msgstr ""
+
+#: src/session/sidebar/entry_type.rs:21
+msgid "Explore"
+msgstr ""
+
+#: src/session/sidebar/entry_type.rs:22
+#, fuzzy
+msgid "Forget Room"
+msgstr "اتاق جدید"
+
+#: src/session/verification/identity_verification.rs:672
+msgid "You cancelled the verification process."
+msgstr ""
+
+#: src/session/verification/identity_verification.rs:674
+msgid "The verification process failed because it reached a timeout."
+msgstr ""
+
+#: src/session/verification/identity_verification.rs:677
+msgid "You accepted the request from an other session."
+msgstr ""
+
+#: src/session/verification/identity_verification.rs:680
+#, fuzzy
+msgid "The emoji did not match."
+msgstr "گذرواژه‌ها با هم تفاوت دارند."
+
+#: src/session/verification/identity_verification.rs:689
+msgid "An unknown error occurred during the verification process."
+msgstr ""
+
+#: src/user_facing_error.rs:21
+msgid "The connection timed out. Try again later."
+msgstr ""
+
+#: src/user_facing_error.rs:23
+msgid "Unable to connect to the homeserver."
+msgstr ""
+
+#: src/user_facing_error.rs:28
+#, fuzzy
+msgid "The provided username or password is invalid."
+msgstr "نام کاربری یا گذرواژه اشتباه است"
+
+#: src/user_facing_error.rs:29
+msgid "The user is deactivated."
+msgstr ""
+
+#: src/user_facing_error.rs:37
+msgid "You exceeded the homeserver’s rate limit, try again later."
+msgstr ""
+
+#: src/user_facing_error.rs:47
+msgid "An unknown connection error occurred."
+msgstr ""
+
+#: src/user_facing_error.rs:55
+#, fuzzy
+msgid "Could not decrypt the event"
+msgstr "حساب شما حذف نشد"
+
+#: src/user_facing_error.rs:57 src/user_facing_error.rs:77
+msgid "An unknown error occurred."
+msgstr ""
+
+#: src/user_facing_error.rs:64
+#, fuzzy
+msgid "Could not open the store."
+msgstr "پرونده بارگیری نشد"
+
+#: src/user_facing_error.rs:71
+msgid "This is not a valid URL"
+msgstr ""
+
+#: src/user_facing_error.rs:73
+msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
+msgstr ""
+
+#. Translators: Default name for image files.
+#: src/utils.rs:190
+msgid "image"
+msgstr "تصویر"
+
+#. Translators: Default name for video files.
+#: src/utils.rs:192
+#, fuzzy
+msgid "video"
+msgstr "ویدیوها"
+
+#. Translators: Default name for audio files.
+#: src/utils.rs:194
+msgid "audio"
+msgstr ""
+
+#. Translators: Default name for files.
+#: src/utils.rs:196
+msgid "file"
+msgstr ""
+
+#~ msgctxt "shortcut window"
+#~ msgid "Close the active room"
+#~ msgstr "بستن اتاق فعّال"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open main menu"
+#~ msgstr "گشودن فهرست اصلی"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open / close the room sidebar search"
+#~ msgstr "گشودن / بستن نوار جست‌وجو"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room in the list"
+#~ msgstr "گشودن اتاق قبلی در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room in the list"
+#~ msgstr "گشودن اتاق بعدی در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room with unread messages in the list"
+#~ msgstr "گشودن اتاق قبلی با پیام‌های خوانده نشده در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room with unread messages in the list"
+#~ msgstr "گشودن اتاق بعدی با پیام‌های خوانده نشده در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the first room of the list"
+#~ msgstr "گشودن اولین اتاق در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the last room of the list"
+#~ msgstr "گشودن آخرین اتاق در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View older messages"
+#~ msgstr "مشاهده پیام‌های قدیمی‌تر"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View newer messages"
+#~ msgstr "مشاهده پیام‌های جدیدتر"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Composing a new message"
+#~ msgstr "نوشتن پیام جدید"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Write on a new line"
+#~ msgstr "نوشتن روی یک خط جدید"
+
+#~ msgid "Type of password and token storage"
+#~ msgstr "گذرواژه و توکن ذخیره شده را بنویسید"
+
+#~ msgid "Type of password and token storage, default value is: Secret Service"
+#~ msgstr ""
+#~ "گذرواژه و توکن ذخیره شده را بنویسید، به طور پیش‌گزیده این است: Secret "
+#~ "Service"
+
+#~ msgid "If markdown sending is active"
+#~ msgstr "اگر ارسال با مارک‌دون(زبان نشانه گذاری) فعّال است"
+
+#~ msgid "Whether support for sending markdown messages is on"
+#~ msgstr ""
+#~ "مشخص می‌کند که آیا پشتیبانی برای ارسال پیام‌های مارک‌دون روشن است یا خیر"
+
+#~ msgid "X position of the main window on startup"
+#~ msgstr "موقعیت X پنجرهٔ اصلی هنگام راه‌اندازی"
+
+#~ msgid "Y position of the main window on startup"
+#~ msgstr "موقعیت Y پنجرهٔ اصلی هنگام راه‌اندازی"
+
+#~ msgid "Width of the main window on startup"
+#~ msgstr "عرض پنجرهٔ اصلی هنگام راه‌اندازی"
+
+#~ msgid "Height of the main window on startup"
+#~ msgstr "ارتفاع پنجرهٔ اصلی هنگام راه‌اندازی"
+
+#~ msgid "Whether the main window is maximized on startup"
+#~ msgstr "مشخص می‌کند که آیا پنجرهٔ اصلی هنگام راه‌اندازی بیشینه باشد یا خیر"
+
+#~ msgid "Daniel García Moreno"
+#~ msgstr "دانیل گارسیا مورنو"
+
+#~ msgid "Back"
+#~ msgstr "بازگشت"
+
+#~ msgid "Other people can find you by searching for any of these identifiers."
+#~ msgstr "دیگران می‌توانند با جست‌وجوی هر یک از این شناسه ها شما را پیدا کنند."
+
+#~ msgid "Type in your name"
+#~ msgstr "نام خود را بنویسید"
+
+#~ msgid "Email"
+#~ msgstr "رایانامه"
+
+#~ msgid "Phone"
+#~ msgstr "تلفن"
+
+#~ msgid "Password"
+#~ msgstr "گذرواژه"
+
+#~ msgid "Device ID"
+#~ msgstr "شناسه دستگاه"
+
+#~ msgid ""
+#~ "Deactivating your account means that you will lose all your messages, "
+#~ "contacts, and files."
+#~ msgstr ""
+#~ "غیرفعّال کردن حساب به این معنی است که تمامی پیام‌ها، مخاطبین و پرونده‌های "
+#~ "خود را از دست خواهید داد."
+
+#~ msgid ""
+#~ "To confirm that you really want to deactivate this account type in your "
+#~ "password:"
+#~ msgstr ""
+#~ "برای تأیید اینکه واقعاً می‌خواهید این حساب را غیرفعّال کنید گذرواژه خود را "
+#~ "وارد کنید:"
+
+#~ msgid "Also erase all messages"
+#~ msgstr "همچنین تمام پیام‌ها را پاک می‌کند"
+
+#~ msgid "Check your email"
+#~ msgstr "رایانامهٔ خود را چک کنید"
+
+#~ msgid "Apply"
+#~ msgstr "اعمال"
+
+#~ msgid "New Direct Chat"
+#~ msgstr "گفت‌وگوی مستقیم جدید"
+
+#~ msgid "Play"
+#~ msgstr "پخش"
+
+#~ msgid "New direct chat"
+#~ msgstr "گفت‌وگوی مستقیم جدید"
+
+#~ msgid "Start chat"
+#~ msgstr "شروع گفت‌وگو"
+
+#~ msgid "Invitation"
+#~ msgstr "دعوت"
+
+#~ msgid "ID or Alias"
+#~ msgstr "شناسه یا نام مستعار"
+
+#~ msgid "Join room"
+#~ msgstr "عضویت به اتاق"
+
+#~ msgid "Close"
+#~ msgstr "بستن"
+
+#~ msgid "Leave?"
+#~ msgstr "خروج؟"
+
+#~ msgid ""
+#~ "Once you leave, you won’t be able to interact with people in the room "
+#~ "anymore."
+#~ msgstr "پس از خروج دیگر نمی‌توانید با افراد حاضر در اتاق تعامل داشته باشید."
+
+#~ msgid "_Log In"
+#~ msgstr "_ورود"
+
+#~ msgid "_Create Account"
+#~ msgstr "_ایجاد حساب"
+
+#~ msgid "What is your Provider?"
+#~ msgstr "کارساز(ارائه دهنده) شما چیست؟"
+
+#~ msgid "Matrix provider domain, e.g. myserver.co"
+#~ msgstr "نشانی کارساز ماتریکس، برای مثال myserver.co"
+
+#~ msgid "The domain may not be empty."
+#~ msgstr "دامنه ممکن است خالی نباشد."
+
+#~ msgid "Log In"
+#~ msgstr "ورود"
+
+#~ msgid "_User ID"
+#~ msgstr "_شناسهٔ کاربر"
+
+#~ msgid "_Password"
+#~ msgstr "_گذرواژه"
+
+#~ msgid "User name, email, or phone number"
+#~ msgstr "نام کاربری، رایانامه یا شماره تلفن"
+
+#~ msgid "Keyboard _Shortcuts"
+#~ msgstr "_میان‌برهای صفحه‌کلید"
+
+#~ msgid "User"
+#~ msgstr "کاربر"
+
+#~ msgid "Add"
+#~ msgstr "افزودن"
+
+#~ msgid "Room search"
+#~ msgstr "جست‌وجوی اتاق"
+
+#~ msgid "Room Menu"
+#~ msgstr "فهرست اتاق"
+
+#~ msgid "No room"
+#~ msgstr "اتاقی نیست"
+
+#~ msgid "Default Matrix Server"
+#~ msgstr "کارساز ماتریکس فعلی"
+
+#~ msgid "Toggle fullscreen"
+#~ msgstr "ورود به حالت تمام صفحه"
+
+#~ msgid "Loading more media"
+#~ msgstr "بارگذاری رسانه بیشتر"
+
+#~ msgid "Open With…"
+#~ msgstr "گشودن با…"
+
+#~ msgid "Save Video As…"
+#~ msgstr "ذخیره ویدیو به عنوان…"
+
+#~ msgid "Copy Selection"
+#~ msgstr "رونوشت قسمتی که انتخاب شده"
+
+#~ msgid "Message Source"
+#~ msgstr "منبع پیام"
+
+#~ msgid "Copy To Clipboard"
+#~ msgstr "رونوشت به تخته‌گیره"
+
+#~ msgid "Ch_ange"
+#~ msgstr "_تغییر"
+
+#~ msgid "Invite to This Room"
+#~ msgstr "دعوت به این اتاق"
+
+#~ msgid "Add name"
+#~ msgstr "افزودن نام"
+
+#~ msgid "Add topic"
+#~ msgstr "افزودن موضوع"
+
+#~ msgid "Type in your room topic"
+#~ msgstr "نام موضوع اتاق خود را بنویسید"
+
+#~ msgid "No room description"
+#~ msgstr "بدون توضیحات اتاق"
+
+#~ msgid "For all messages"
+#~ msgstr "برای همه پیام‌ها"
+
+#~ msgid "Only for mentions"
+#~ msgstr "فقط برای نام‌برده"
+
+#~ msgid "Shared Media"
+#~ msgstr "رسانهٔ هم‌رسانی شده"
+
+#~ msgid "photos"
+#~ msgstr "تصویر‌ها"
+
+#~ msgid "documents"
+#~ msgstr "اسناد"
+
+#~ msgid "New members can see"
+#~ msgstr "اعضای جدید می‌توانند ببینند"
+
+#~ msgid "All room history"
+#~ msgstr "تمام تاریخچهٔ اتاق"
+
+#~ msgid "History after they were invited"
+#~ msgstr "تاریخچه پس از دعوت آنها"
+
+#~ msgid "Room Visibility"
+#~ msgstr "دید اتاق"
+
+#~ msgid "Allow guests"
+#~ msgstr "اجازه به مهمان‌ها"
+
+#~ msgid "Allow joining without invite"
+#~ msgstr "اجازه به عضویت بدون دعوت"
+
+#~ msgid "Publish in room directory"
+#~ msgstr "انتشار در فهرست اتاق"
+
+#~ msgid "Show rooms from:"
+#~ msgstr "نمایش اتاق‌ها از:"
+
+#~ msgid "Your homeserver"
+#~ msgstr "کارساز خانگی شما"
+
+#~ msgid "Other Protocol"
+#~ msgstr "شیوه‌نامه‌ای دیگر"
+
+#~ msgid "Other Homeserver"
+#~ msgstr "کارسازهای خانگی دیگر"
+
+#~ msgid "Select a new avatar"
+#~ msgstr "انتخاب یک چهرک جدید"
+
+#~ msgid "Select a file"
+#~ msgstr "انتخاب یک پرونده"
+
+#~ msgid "Couldn’t save file"
+#~ msgstr "پرونده ذخیره نشد"
+
+#~ msgid "Couldn’t open file"
+#~ msgstr "پرونده باز نشد"
+
+#~ msgid "The validation code is not correct."
+#~ msgstr "کد اعتبارسنجی نادرست است."
+
+#~ msgid "Enter the code received via SMS"
+#~ msgstr "کدی که از طریق پیامک ارسال شده است را وارد کنید"
+
+#~ msgid ""
+#~ "In order to add this email address, go to your inbox and follow the link "
+#~ "you received. Once you’ve done that, click Continue."
+#~ msgstr ""
+#~ "برای افزودن این رایانامه، به صندوق پستی خود بروید و روی پیوندی که دریافت "
+#~ "کرده‌اید کلیک کنید. پس از انجام این کار، روی ادامه کلیک کنید."
+
+#~ msgid "Are you sure you want to delete your account?"
+#~ msgstr "آیا مطمئنید که می‌خواهید حساب خود را حذف کنید؟"
+
+#~ msgid "Fractal [{}]"
+#~ msgstr "فرکتال [{}]"
+
+#~ msgid "An audio file has been added to the conversation."
+#~ msgstr "یک پرونده صوتی به گفت‌وگو اضافه شد."
+
+#~ msgid "An image has been added to the conversation."
+#~ msgstr "یک تصویر به گفت‌وگو اضافه شد."
+
+#~ msgid "A video has been added to the conversation."
+#~ msgstr "یک ویدیو به گفت‌وگو اضافه شد."
+
+#~ msgid "A file has been added to the conversation."
+#~ msgstr "یک پرونده به گفت‌وگو اضافه شد."
+
+#~ msgid " (direct message)"
+#~ msgstr " (پیام مستقیم)"
+
+#~ msgid "Leave {room_name}?"
+#~ msgstr "خروج از {room_name}؟"
+
+#~ msgid "The room ID is malformed"
+#~ msgstr "شناسه اتاق بد شکل است"
+
+#~ msgid "EMPTY ROOM"
+#~ msgstr "اتاق خالی"
+
+#~ msgid "{m1} and {m2}"
+#~ msgstr "{m1} و {m2}"
+
+#~ msgid "{m1} and Others"
+#~ msgstr "{m1} و دیگران"
+
+#~ msgid "Several users are typing…"
+#~ msgstr "چند کاربر در حال نوشتن هستند…"
+
+#~ msgid "<b>{}</b> is typing…"
+#~ msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+#~ msgstr[0] "<b>{}</b> در حال نوشتن…"
+#~ msgstr[1] "<b>{}</b> و <b>{}</b> در حال نوشتن…"
+
+#~ msgid "Syncing, this could take a while"
+#~ msgstr "در حال همگام‌سازی، ممکن است کمی طول بکشد"
+
+#~ msgid "Can’t login, try again"
+#~ msgstr "نمی‌توان وارد شد، دوباره امتحان کنید"
+
+#~ msgid "Error deleting message"
+#~ msgstr "خطا در حذف پیام"
+
+#~ msgid "Can’t join the room, try again."
+#~ msgstr "نمی‌توان عضو اتاق شد، دوباره امتحان کنید."
+
+#~ msgid "Can’t create the room, try again"
+#~ msgstr "نمی‌توان اتاق ساخت، دوباره امتحان کنید"
+
+#~ msgid "Sorry, account settings can’t be loaded."
+#~ msgstr "متأسفیم، تنظیمات حساب نمی‌تواند بارگذاری شود."
+
+#~ msgid "Email is already in use"
+#~ msgstr "رایانامه هم‌اکنون استفاده شده است"
+
+#~ msgid "Please enter a valid email address."
+#~ msgstr "لطفاً یک رایانامه معتبر وارد کنید."
+
+#~ msgid "Couldn’t add the email address."
+#~ msgstr "آدرس رایانامه اضافه نشد."
+
+#~ msgid "Phone number is already in use"
+#~ msgstr "شماره تلفن هم‌اکنون استفاده شده است"
+
+#~ msgid ""
+#~ "Please enter your phone number in the format: \n"
+#~ " + your country code and your phone number."
+#~ msgstr ""
+#~ "لطفاً شماره تلفن خود را با این صورت وارد کنید: \n"
+#~ " + کد کشور و شماره تلفن."
+
+#~ msgid "Couldn’t add the phone number."
+#~ msgstr "شماره تلفن اضافه نشد."
+
+#~ msgid "© 2017–2020 Daniel García Moreno, et al."
+#~ msgstr "© ۲۰۱۷–۲۰۲۰ دانیل گارسیا مورنو، و همکاران."
+
+#~ msgid "Image from Clipboard"
+#~ msgstr "تصویر از تخته‌گیره"
+
+#~ msgid "Invite to {name}"
+#~ msgstr "دعوت به {name}"
+
+#~ msgid "Join {room_name}?"
+#~ msgstr "عضویت به {room_name}؟"
+
+#~ msgid ""
+#~ "You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</"
+#~ "b>"
+#~ msgstr ""
+#~ "شما برای پیوستن به اتاق <b>{room_name}</b> توسط <b>{sender_name}</b> دعوت "
+#~ "شده‌اید"
+
+#~ msgid "You’ve been invited to join <b>{room_name}</b>"
+#~ msgstr "شما برای عضویت به <b>{room_name}</b> دعوت شده‌اید"
+
+#~ msgid "You don’t have permission to post to this room"
+#~ msgstr "شما هنوز اجازه ارسال در این اتاق ندارید"
+
+#~ msgid "OK"
+#~ msgstr "باشه"
+
+#~ msgid "Room · {} member"
+#~ msgid_plural "Room · {} members"
+#~ msgstr[0] "اتاق · {} عضو"
+#~ msgstr[1] "اتاق · {} عضو"
+
+#~ msgid "{} member"
+#~ msgid_plural "{} members"
+#~ msgstr[0] "{} عضو"
+#~ msgstr[1] "{} عضو"
+
+#~ msgid "Save media as"
+#~ msgstr "ذخیرهٔ رسانه به عنوان"
+
+#~ msgid "_Save"
+#~ msgstr "_ذخیره"
+
+#~ msgid "You have been kicked from {}"
+#~ msgstr "شما از {} اخراج شدید"
+
+#~ msgid ""
+#~ "Kicked by: {}\n"
+#~ " “{}”"
+#~ msgstr ""
+#~ "حذف شده توسط: {}\n"
+#~ " «{}»"
+
+#~ msgid "Malformed server URL"
+#~ msgstr "نشانی کارساز نادرست است"
+
+#~ msgid "Error while loading previous media"
+#~ msgstr "خطا هنگام بارگیری رسانهٔ قبلی"
+
+#~ msgid "Privileged"
+#~ msgstr "ممتاز"
+
+#, c-format
+#~ msgid "Last edited %c"
+#~ msgstr "آخرین ویرایش %c"
+
+#~ msgid "%l∶%M %p"
+#~ msgstr "%Ol∶%OM %p"
+
+#~ msgid "%R"
+#~ msgstr "%OH∶%OM"
+
+#~ msgid "Invites"
+#~ msgstr "دعوت‌ها"
+
+#~ msgid "You don’t have any invitations"
+#~ msgstr "شما هیچ دعوتنامه‌ای ندارید"
+
+#~ msgid "Drag and drop rooms here to add them to your favorites"
+#~ msgstr ""
+#~ "اتاق‌ها را به اینجا بکشید و رها کنید تا به موارد دلخواه شما اضافه شوند"
+
+#~ msgid "You don’t have any rooms yet"
+#~ msgstr "شما هنوز اتاق ندارید"
