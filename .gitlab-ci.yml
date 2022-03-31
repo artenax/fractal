@@ -84,7 +84,7 @@ pages:
       - 'public'
   only:
     refs:
-      - fractal-next
+      - main
 
 
 
