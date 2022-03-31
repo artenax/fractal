@@ -357,13 +357,14 @@ login {
   margin-top: 6px;
 }
 
-.room-history .event-content {
-  margin-right: 46px;
+.room-history row:not(.has-header) .event-content:dir(ltr),
+.room-history row:not(.has-header) message-reactions:dir(ltr) {
+  margin-left: 46px;
 }
 
-.room-history row:not(.has-header) .event-content,
-.room-history row:not(.has-header) message-reactions {
-  margin-left: 46px;
+.room-history row:not(.has-header) .event-content:dir(rtl),
+.room-history row:not(.has-header) message-reactions:dir(rtl) {
+  margin-right: 46px;
 }
 
 .room-history .event-content .emoji {
