@@ -29,6 +29,8 @@ yet ready for a release and you can follow along our progress towards it by look
 
 ## Installation instructions
 
+### Stable version
+
 Flatpak is the recommended installation method. Until Fractal-next is ready, you can get the official
 Fractal Flatpak on Flathub.
 
@@ -41,6 +43,19 @@ Fractal can also be installed as a snap on any distro with snap support enabled
 <a href="https://snapcraft.io/fractal">
 <img src="https://github.com/snapcore/snap-store-badges/raw/master/EN/[EN]-snap-store-white.png" width="182px" />
 </a>
+
+### Development version
+
+If you want to try Fractal-next without building it yourself, it is available as a nightly Flatpak
+in the gnome-nightly repo.
+
+```sh
+# Add the gnome-nightly repo
+flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
+
+# Install the nightly build
+flatpak install --user gnome-nightly org.gnome.Fractal.Devel
+```
 
 ## Build Instructions
 
