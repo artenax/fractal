@@ -75,6 +75,8 @@
             <property name="child">
               <object class="AdwClamp">
                 <property name="hexpand">True</property>
+                <property name="maximum-size">750</property>
+                <property name="tightening-threshold">550</property>
                 <child>
                   <object class="GtkSearchEntry"/>
                 </child>
@@ -166,6 +168,8 @@
                           <object class="AdwClampScrollable">
                             <property name="vexpand">True</property>
                             <property name="hexpand">True</property>
+                            <property name="maximum-size">750</property>
+                            <property name="tightening-threshold">550</property>
                             <property name="child">
                               <object class="GtkListView" id="listview">
                                 <style>
@@ -198,6 +202,8 @@
         <child>
           <object class="AdwClamp">
             <property name="vexpand">False</property>
+            <property name="maximum-size">750</property>
+            <property name="tightening-threshold">550</property>
             <child>
               <object class="GtkBox">
                 <style>
