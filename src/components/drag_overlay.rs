@@ -97,6 +97,10 @@ mod imp {
 
             self.revealer.set_child(Some(&self.status));
         }
+
+        fn dispose(&self, _obj: &Self::Type) {
+            self.overlay.unparent();
+        }
     }
     impl WidgetImpl for DragOverlay {}
     impl BinImpl for DragOverlay {}
