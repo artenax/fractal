@@ -208,6 +208,7 @@ fn text(label: String) -> gtk::Label {
     child.set_css_classes(&["event-content", "dim-label"]);
     child.set_wrap(true);
     child.set_wrap_mode(gtk::pango::WrapMode::WordChar);
+    child.set_xalign(0.0);
     child
 }
 
