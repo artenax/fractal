@@ -14,25 +14,13 @@ mod imp {
 
     use super::*;
 
-    #[derive(Debug)]
+    #[derive(Debug, Default)]
     pub struct LabelWithWidgets {
         pub widgets: RefCell<Vec<gtk::Widget>>,
         pub widgets_sizes: RefCell<Vec<(i32, i32)>>,
         pub label: gtk::Label,
         pub placeholder: RefCell<Option<String>>,
         pub text: RefCell<Option<String>>,
-    }
-
-    impl Default for LabelWithWidgets {
-        fn default() -> Self {
-            Self {
-                label: gtk::Label::builder().wrap(true).build(),
-                widgets: Default::default(),
-                widgets_sizes: Default::default(),
-                placeholder: Default::default(),
-                text: Default::default(),
-            }
-        }
     }
 
     #[glib::object_subclass]
@@ -93,6 +81,7 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
             self.label.set_parent(obj);
+            self.label.set_wrap(true);
             self.label.connect_notify_local(
                 Some("label"),
                 clone!(@weak obj => move |_, _| {
