@@ -136,7 +136,9 @@ guidelines and paradigms. This will be revisited if or when GNOME gets a "Do Not
 Fractal-next is a complete rewrite of Fractal built on top of the
 [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk) using [GTK4](https://gtk.org/).
 
-The previous version of Fractal was using GTK3 and its own backend to talk to a matrix homeserver.
+The previous version of Fractal was using GTK3 and its own backend to talk to a matrix homeserver,
+the code can be found in the [legacy](https://gitlab.gnome.org/GNOME/fractal/-/tree/legacy) branch.
+
 Initial versions were based on Fest <https://github.com/fest-im/fest>, formerly called ruma-gtk.
 In the origins of the project it was called guillotine, based on French revolution, in relation with
 the Riot client name, but it's a negative name so we decide to change for a math one.
