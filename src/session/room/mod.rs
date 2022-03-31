@@ -24,6 +24,7 @@ use matrix_sdk::{
         api::client::sync::sync_events::v3::InvitedRoom,
         events::{
             reaction::{ReactionEventContent, Relation},
+            receipt::ReceiptEventContent,
             room::{
                 member::MembershipState,
                 name::RoomNameEventContent,
@@ -35,10 +36,12 @@ use matrix_sdk::{
             AnySyncStateEvent, EventContent, MessageLikeEventType, MessageLikeUnsigned,
             StateEventType, SyncMessageLikeEvent,
         },
+        receipt::ReceiptType,
         serde::Raw,
         EventId, MilliSecondsSinceUnixEpoch, RoomId, UserId,
     },
 };
+use ruma::events::SyncEphemeralRoomEvent;
 
 pub use self::{
     event::Event,
@@ -86,7 +89,14 @@ mod imp {
         pub inviter: RefCell<Option<Member>>,
         pub members_loaded: Cell<bool>,
         pub power_levels: RefCell<PowerLevels>,
+        /// The timestamp of the latest message in the room.
         pub latest_change: Cell<u64>,
+        /// The event of the user's read receipt for this room.
+        pub read_receipt: RefCell<Option<Event>>,
+        /// The latest read event in the room's timeline.
+        pub latest_read: RefCell<Option<Event>>,
+        /// The highlight state of the room,
+        pub highlight: Cell<HighlightFlags>,
         pub predecessor: OnceCell<Box<RoomId>>,
         pub successor: OnceCell<Box<RoomId>>,
     }
@@ -185,6 +195,13 @@ mod imp {
                         glib::ParamFlags::READABLE,
                     ),
                     glib::ParamSpecObject::new(
+                        "latest-read",
+                        "Latest Read",
+                        "The latest read event in the room's timeline",
+                        Event::static_type(),
+                        glib::ParamFlags::READABLE,
+                    ),
+                    glib::ParamSpecObject::new(
                         "members",
                         "Members",
                         "Model of the room’s members",
@@ -257,6 +274,7 @@ mod imp {
                 "members" => obj.members().to_value(),
                 "notification-count" => obj.notification_count().to_value(),
                 "latest-change" => obj.latest_change().to_value(),
+                "latest-read" => obj.latest_read().to_value(),
                 "predecessor" => obj.predecessor().map_or_else(
                     || {
                         let none: Option<&str> = None;
@@ -366,6 +384,7 @@ impl Room {
         self.load_predecessor();
         self.load_successor();
         self.load_category();
+        self.setup_receipts();
     }
 
     /// Forget a room that is left.
@@ -601,6 +620,165 @@ impl Room {
         };
     }
 
+    fn setup_receipts(&self) {
+        spawn!(
+            glib::PRIORITY_DEFAULT_IDLE,
+            clone!(@weak self as obj => async move {
+                let user_id = obj.session().user().unwrap().user_id();
+                let matrix_room = obj.matrix_room();
+
+                let handle = spawn_tokio!(async move { matrix_room.user_read_receipt(&user_id).await });
+
+                match handle.await.unwrap() {
+                    Ok(Some((event_id, _))) => {
+                        obj.update_read_receipt(&event_id).await;
+                    },
+                    Err(error) => {
+                        error!(
+                            "Couldn’t get the user's read receipt for room {}: {}",
+                            obj.room_id(),
+                            error
+                        );
+                    }
+                    _ => {}
+                }
+
+                // Listen to changes in the read receipts.
+                let room_weak = glib::SendWeakRef::from(obj.downgrade());
+                obj.session().client().register_event_handler(
+                    move |event: SyncEphemeralRoomEvent<ReceiptEventContent>, matrix_room: MatrixRoom| {
+                        let room_weak = room_weak.clone();
+                        async move {
+                            let ctx = glib::MainContext::default();
+                            ctx.spawn(async move {
+                                spawn!(async move {
+                                    if let Some(obj) = room_weak.upgrade() {
+                                        if matrix_room.room_id() == obj.room_id() {
+                                            obj.handle_receipt_event(event.content).await
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    },
+                )
+                .await;
+            })
+        );
+    }
+
+    async fn handle_receipt_event(&self, content: ReceiptEventContent) {
+        let user_id = self.session().user().unwrap().user_id();
+
+        for (event_id, receipts) in content.iter() {
+            if let Some(users) = receipts.get(&ReceiptType::Read) {
+                for user in users.keys() {
+                    if user == user_id.as_ref() {
+                        self.update_read_receipt(event_id.as_ref()).await;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    /// Update the user's read receipt event for this room with the given event
+    /// ID.
+    async fn update_read_receipt(&self, event_id: &EventId) {
+        if Some(event_id)
+            == self
+                .read_receipt()
+                .map(|event| event.matrix_event_id())
+                .as_deref()
+        {
+            return;
+        }
+
+        match self.timeline().fetch_event_by_id(event_id).await {
+            Ok(read_receipt) => {
+                self.set_read_receipt(Some(read_receipt));
+            }
+            Err(error) => {
+                error!(
+                    "Couldn’t get the event of the user's read receipt for room {}: {}",
+                    self.room_id(),
+                    error
+                );
+            }
+        }
+    }
+
+    /// The user's read receipt event for this room.
+    pub fn read_receipt(&self) -> Option<Event> {
+        self.imp().read_receipt.borrow().clone()
+    }
+
+    /// Set the user's read receipt event for this room.
+    fn set_read_receipt(&self, read_receipt: Option<Event>) {
+        if read_receipt == self.read_receipt() {
+            return;
+        }
+
+        self.imp().read_receipt.replace(read_receipt);
+        self.update_latest_read()
+    }
+
+    fn update_latest_read(&self) {
+        let read_receipt = self.read_receipt();
+        let user_id = self.session().user().unwrap().user_id();
+        let timeline = self.timeline();
+
+        let latest_read = read_receipt.and_then(|read_receipt| {
+            (0..timeline.n_items()).rev().find_map(|i| {
+                timeline
+                    .item(i)
+                    .as_ref()
+                    .and_then(|obj| obj.downcast_ref::<Item>())
+                    .and_then(|item| item.event())
+                    .and_then(|event| {
+                        // The user sent the event so it's the latest read event.
+                        // Necessary because we don't get read receipts for the user's own events.
+                        if event.sender().user_id() == user_id {
+                            return Some(event.to_owned());
+                        }
+
+                        // This is the event corresponding to the read receipt.
+                        if event == &read_receipt {
+                            return Some(event.to_owned());
+                        }
+
+                        // The event is older than the read receipt so it has been read.
+                        if event.can_be_latest_change()
+                            && event.matrix_origin_server_ts()
+                                <= read_receipt.matrix_origin_server_ts()
+                        {
+                            return Some(event.to_owned());
+                        }
+
+                        None
+                    })
+            })
+        });
+
+        self.set_latest_read(latest_read);
+    }
+
+    /// The latest read event in the room's timeline.
+    pub fn latest_read(&self) -> Option<Event> {
+        self.imp().latest_read.borrow().clone()
+    }
+
+    /// Set the latest read event.
+    fn set_latest_read(&self, latest_read: Option<Event>) {
+        if latest_read == self.latest_read() {
+            return;
+        }
+
+        self.imp().latest_read.replace(latest_read);
+        self.notify("latest-read");
+        self.update_highlight();
+    }
+
     pub fn timeline(&self) -> &Timeline {
         self.imp().timeline.get().unwrap()
     }
@@ -610,26 +788,73 @@ impl Room {
     }
 
     fn notify_notification_count(&self) {
-        self.notify("highlight");
         self.notify("notification-count");
     }
 
-    pub fn highlight(&self) -> HighlightFlags {
-        let count = self
+    fn update_highlight(&self) {
+        let mut highlight = HighlightFlags::empty();
+
+        let counts = self
             .imp()
             .matrix_room
             .borrow()
             .as_ref()
             .unwrap()
-            .unread_notification_counts()
-            .highlight_count;
+            .unread_notification_counts();
 
-        // TODO: how do we know when to set the row to be bold
-        if count > 0 {
-            HighlightFlags::HIGHLIGHT
-        } else {
-            HighlightFlags::empty()
+        if counts.highlight_count > 0 {
+            highlight = HighlightFlags::all();
         }
+
+        if counts.notification_count > 0 || self.has_unread_messages() {
+            highlight = HighlightFlags::BOLD;
+        }
+
+        self.set_highlight(highlight);
+    }
+
+    pub fn highlight(&self) -> HighlightFlags {
+        self.imp().highlight.get()
+    }
+
+    fn set_highlight(&self, highlight: HighlightFlags) {
+        if self.highlight() == highlight {
+            return;
+        }
+
+        self.imp().highlight.set(highlight);
+        self.notify("highlight");
+    }
+
+    /// Whether this room has unread messages.
+    fn has_unread_messages(&self) -> bool {
+        self.latest_read()
+            .filter(|latest_read| {
+                let timeline = self.timeline();
+
+                for i in (0..timeline.n_items()).rev() {
+                    if let Some(event) = timeline
+                        .item(i)
+                        .as_ref()
+                        .and_then(|obj| obj.downcast_ref::<Item>())
+                        .and_then(|item| item.event())
+                    {
+                        // This is the event corresponding to the read receipt so there's no unread
+                        // messages.
+                        if event == latest_read {
+                            return true;
+                        }
+
+                        // The user hasn't read the latest message.
+                        if event.can_be_latest_change() {
+                            return false;
+                        }
+                    }
+                }
+
+                false
+            })
+            .is_none()
     }
 
     pub fn display_name(&self) -> String {
@@ -824,7 +1049,6 @@ impl Room {
             }
         }
 
-        self.notify("latest-change");
         self.emit_by_name::<()>("order-changed", &[]);
     }
 
@@ -843,6 +1067,9 @@ impl Room {
 
         self.imp().latest_change.set(latest_change);
         self.notify("latest-change");
+        self.update_highlight();
+        // Necessary because we don't get read receipts for the user's own events.
+        self.update_latest_read();
     }
 
     pub fn load_members(&self) {
