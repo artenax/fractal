@@ -20,7 +20,6 @@ mod imp {
     impl ObjectSubclass for Category {
         const NAME: &'static str = "Category";
         type Type = super::Category;
-        type ParentType = glib::Object;
         type Interfaces = (gio::ListModel,);
     }
 

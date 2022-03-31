@@ -61,7 +61,6 @@ mod imp {
     impl ObjectSubclass for VerificationList {
         const NAME: &'static str = "VerificationList";
         type Type = super::VerificationList;
-        type ParentType = glib::Object;
         type Interfaces = (gio::ListModel,);
     }
 

@@ -29,7 +29,6 @@ mod imp {
     impl ObjectSubclass for Device {
         const NAME: &'static str = "Device";
         type Type = super::Device;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for Device {

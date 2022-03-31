@@ -188,7 +188,6 @@ mod imp {
     impl ObjectSubclass for IdentityVerification {
         const NAME: &'static str = "IdentityVerification";
         type Type = super::IdentityVerification;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for IdentityVerification {

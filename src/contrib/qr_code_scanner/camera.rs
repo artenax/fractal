@@ -25,7 +25,6 @@ mod imp {
     impl ObjectSubclass for Camera {
         const NAME: &'static str = "Camera";
         type Type = super::Camera;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for Camera {}

@@ -62,7 +62,6 @@ mod imp {
     impl ObjectSubclass for Event {
         const NAME: &'static str = "RoomEvent";
         type Type = super::Event;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for Event {

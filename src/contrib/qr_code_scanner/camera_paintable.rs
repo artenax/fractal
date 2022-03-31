@@ -49,7 +49,6 @@ mod imp {
     impl ObjectSubclass for CameraPaintable {
         const NAME: &'static str = "CameraPaintable";
         type Type = super::CameraPaintable;
-        type ParentType = glib::Object;
         type Interfaces = (gdk::Paintable,);
     }
 

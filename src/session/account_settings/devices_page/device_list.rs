@@ -29,7 +29,6 @@ mod imp {
     impl ObjectSubclass for DeviceList {
         const NAME: &'static str = "DeviceList";
         type Type = super::DeviceList;
-        type ParentType = glib::Object;
         type Interfaces = (gio::ListModel,);
     }
 

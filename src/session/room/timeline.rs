@@ -80,7 +80,6 @@ mod imp {
     impl ObjectSubclass for Timeline {
         const NAME: &'static str = "Timeline";
         type Type = super::Timeline;
-        type ParentType = glib::Object;
         type Interfaces = (gio::ListModel,);
     }
 

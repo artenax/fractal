@@ -23,7 +23,6 @@ mod imp {
     impl ObjectSubclass for ReactionGroup {
         const NAME: &'static str = "ReactionGroup";
         type Type = super::ReactionGroup;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for ReactionGroup {

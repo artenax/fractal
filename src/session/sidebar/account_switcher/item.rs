@@ -19,7 +19,6 @@ mod imp {
     impl ObjectSubclass for ExtraItemObj {
         const NAME: &'static str = "ExtraItemObj";
         type Type = super::ExtraItemObj;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for ExtraItemObj {

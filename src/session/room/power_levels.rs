@@ -33,7 +33,6 @@ mod imp {
     impl ObjectSubclass for PowerLevels {
         const NAME: &'static str = "PowerLevels";
         type Type = super::PowerLevels;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for PowerLevels {

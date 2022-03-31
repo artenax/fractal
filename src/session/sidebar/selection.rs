@@ -19,7 +19,6 @@ mod imp {
     impl ObjectSubclass for Selection {
         const NAME: &'static str = "SidebarSelection";
         type Type = super::Selection;
-        type ParentType = glib::Object;
         type Interfaces = (gio::ListModel, gtk::SelectionModel);
 
         fn new() -> Self {

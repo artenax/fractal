@@ -22,7 +22,6 @@ mod imp {
     impl ObjectSubclass for ReactionList {
         const NAME: &'static str = "ReactionList";
         type Type = super::ReactionList;
-        type ParentType = glib::Object;
         type Interfaces = (gio::ListModel,);
     }
 

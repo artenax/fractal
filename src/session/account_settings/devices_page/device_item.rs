@@ -34,7 +34,6 @@ mod imp {
     impl ObjectSubclass for Item {
         const NAME: &'static str = "DeviceItem";
         type Type = super::Item;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for Item {

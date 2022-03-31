@@ -21,7 +21,6 @@ mod imp {
     impl ObjectSubclass for MemberMenu {
         const NAME: &'static str = "ContentMemberMenu";
         type Type = super::MemberMenu;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for MemberMenu {

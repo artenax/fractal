@@ -95,7 +95,6 @@ mod imp {
     impl ObjectSubclass for Room {
         const NAME: &'static str = "Room";
         type Type = super::Room;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for Room {

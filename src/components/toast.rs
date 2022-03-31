@@ -19,7 +19,6 @@ mod imp {
     impl ObjectSubclass for Toast {
         const NAME: &'static str = "ComponentsToast";
         type Type = super::Toast;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for Toast {

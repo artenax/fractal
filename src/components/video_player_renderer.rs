@@ -18,7 +18,6 @@ mod imp {
     impl ObjectSubclass for VideoPlayerRenderer {
         const NAME: &'static str = "ComponentsVideoPlayerRenderer";
         type Type = super::VideoPlayerRenderer;
-        type ParentType = glib::Object;
         type Interfaces = (PlayerVideoRenderer,);
     }
 

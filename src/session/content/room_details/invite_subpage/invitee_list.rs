@@ -56,7 +56,6 @@ mod imp {
     impl ObjectSubclass for InviteeList {
         const NAME: &'static str = "InviteeList";
         type Type = super::InviteeList;
-        type ParentType = glib::Object;
         type Interfaces = (gio::ListModel,);
     }
 

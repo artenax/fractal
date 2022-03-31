@@ -34,7 +34,6 @@ mod imp {
     impl ObjectSubclass for RoomList {
         const NAME: &'static str = "RoomList";
         type Type = super::RoomList;
-        type ParentType = glib::Object;
         type Interfaces = (gio::ListModel,);
     }
 

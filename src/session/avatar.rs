@@ -39,7 +39,6 @@ mod imp {
     impl ObjectSubclass for Avatar {
         const NAME: &'static str = "Avatar";
         type Type = super::Avatar;
-        type ParentType = glib::Object;
     }
 
     impl ObjectImpl for Avatar {
