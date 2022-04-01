@@ -77,27 +77,23 @@
                     <property name="hexpand">True</property>
                     <property name="maximum-size">800</property>
                     <property name="child">
-                      <object class="AdwClampScrollable">
-                        <property name="child">
-                          <object class="GtkListView" id="listview">
-                            <property name="show-separators">True</property>
-                            <property name="margin-top">24</property>
-                            <property name="margin-bottom">24</property>
-                            <property name="margin-start">24</property>
-                            <property name="margin-end">24</property>
-                            <style>
-                              <class name="card"/>
-                            </style>
-                            <property name="factory">
-                              <object class="GtkBuilderListItemFactory">
-                                <property name="resource">/org/gnome/Fractal/content-explore-item.ui</property>
-                              </object>
-                            </property>
-                            <accessibility>
-                              <property name="label" translatable="yes">Room List</property>
-                            </accessibility>
+                      <object class="GtkListView" id="listview">
+                        <property name="show-separators">True</property>
+                        <property name="margin-top">24</property>
+                        <property name="margin-bottom">24</property>
+                        <property name="margin-start">24</property>
+                        <property name="margin-end">24</property>
+                        <style>
+                          <class name="card"/>
+                        </style>
+                        <property name="factory">
+                          <object class="GtkBuilderListItemFactory">
+                            <property name="resource">/org/gnome/Fractal/content-explore-item.ui</property>
                           </object>
                         </property>
+                        <accessibility>
+                          <property name="label" translatable="yes">Room List</property>
+                        </accessibility>
                       </object>
                     </property>
                   </object>
