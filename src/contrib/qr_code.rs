@@ -174,7 +174,7 @@ pub trait QRCodeExt {
     /// Sets the displayed code of `self` to a QR code generated from `bytes`.
     fn set_bytes(&self, bytes: &[u8]);
 
-    /// Gets the block size `self`. This determines the size of the the widget.
+    /// Gets the block size `self`. This determines the size of the widget.
     fn block_size(&self) -> u32;
 
     /// Sets the block size `self`.
