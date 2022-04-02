@@ -169,7 +169,7 @@ impl Application {
             .transient_for(&self.get_main_window())
             .modal(true)
             .comments(gettext("A Matrix client for GNOME").as_str())
-            .copyright(gettext("© 2017-2021 The Fractal Team").as_str())
+            .copyright(gettext("© 2017-2022 The Fractal Team").as_str())
             .authors(vec![
                 "Alejandro Domínguez".to_string(),
                 "Alexandre Franke".to_string(),

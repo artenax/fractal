@@ -3,23 +3,20 @@
   <schema path="/org/gnome/Fractal/" id="@app-id@" gettext-domain="@gettext-package@">
     <key name="window-width" type="i">
       <default>-1</default>
-      <summary>Default window width</summary>
-      <description>Default window width</description>
+      <summary>Window width</summary>
     </key>
     <key name="window-height" type="i">
       <default>-1</default>
-      <summary>Default window height</summary>
-      <description>Default window height</description>
+      <summary>Window height</summary>
     </key>
     <key name="is-maximized" type="b">
       <default>false</default>
-      <summary>Default window maximized behaviour</summary>
-      <description></description>
+      <summary>Window maximized state</summary>
     </key>
     <key name="markdown-enabled" type="b">
       <default>true</default>
       <summary>Enable markdown formatting</summary>
-      <description>Whether or not to do markdown formatting when sending messages</description>
+      <description>Whether messages should be processed as markdown when sending them</description>
     </key>
   </schema>
 </schemalist>

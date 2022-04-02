@@ -494,7 +494,7 @@ impl IdentityVerificationWidget {
                 priv_.label4.set_label(&gettext(
                     "Scan the QR code from another session logged into this account.",
                 ));
-                priv_.label5.set_label(&gettext("You scanned to qr code successfully. You may need to confirm the verification in the other session."));
+                priv_.label5.set_label(&gettext("You scanned the QR code successfully. You may need to confirm the verification from the other session."));
                 priv_.label8.set_label(&gettext("Verify Session"));
                 priv_
                     .label9
@@ -521,7 +521,7 @@ impl IdentityVerificationWidget {
                     .set_label(&gettext("Verify the new session from the current session."));
                 priv_.label3.set_label(&gettext("Verify Session"));
                 priv_.label4.set_label(&gettext("Scan the QR code from this session from another session logged into this account."));
-                priv_.label5.set_label(&gettext("You scanned to qr code successfully. You may need to confirm the verification in the other session."));
+                priv_.label5.set_label(&gettext("You scanned the QR code successfully. You may need to confirm the verification from the other session."));
                 priv_.label8.set_label(&gettext("Verify Session"));
                 priv_.label9.set_label(&gettext(
                     "Scan this QR code from the newly logged in session.",
