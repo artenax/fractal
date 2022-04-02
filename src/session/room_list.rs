@@ -256,9 +256,9 @@ impl RoomList {
                 .list
                 .borrow_mut()
                 .entry(room_id.clone())
-                .or_insert_with(|| {
+                .or_insert_with_key(|room_id| {
                     added += 1;
-                    Room::new(&session, &room_id)
+                    Room::new(&session, room_id)
                 })
                 .clone();
 
@@ -271,9 +271,9 @@ impl RoomList {
                 .list
                 .borrow_mut()
                 .entry(room_id.clone())
-                .or_insert_with(|| {
+                .or_insert_with_key(|room_id| {
                     added += 1;
-                    Room::new(&session, &room_id)
+                    Room::new(&session, room_id)
                 })
                 .clone();
 
@@ -286,9 +286,9 @@ impl RoomList {
                 .list
                 .borrow_mut()
                 .entry(room_id.clone())
-                .or_insert_with(|| {
+                .or_insert_with_key(|room_id| {
                     added += 1;
-                    Room::new(&session, &room_id)
+                    Room::new(&session, room_id)
                 })
                 .clone();
 
