@@ -226,7 +226,7 @@ login {
   border-radius: 0;
 }
 
-.sidebar-list row:focus-visible:focus-within {
+.sidebar-list row:focus-within {
   outline: 0;
 }
 
@@ -245,7 +245,7 @@ login {
   outline-offset: 2px;
 }
 
-.sidebar-list row:focus-visible:focus-within > * {
+.sidebar-list row:focus-within > * {
   outline-color: alpha(@accent_color, 0.5);
   outline-width: 2px;
   outline-offset: -2px;
