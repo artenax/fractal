@@ -515,6 +515,8 @@ impl Login {
         priv_.username_entry.set_text("");
         priv_.password_entry.set_text("");
         priv_.autodiscovery.set(true);
+        priv_.homeserver.take();
+        priv_.main_stack.set_visible_child_name("homeserver");
         self.unfreeze();
         self.drop_session_reference();
     }
