@@ -120,7 +120,7 @@
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="icon-name">system-search-symbolic</property>
-                <property name="description" translatable="yes">No users matching the search where found.</property>
+                <property name="description" translatable="yes">No users matching the search were found.</property>
               </object>
             </child>
             <child>

@@ -106,7 +106,7 @@
                                 <property name="wrap">true</property>
                                 <property name="wrap-mode">word-char</property>
                                 <property name="xalign">0.0</property>   
-                                <property name="label" translatable="yes">Fractal relies on a Secret Service Provider to manage your sensitive session information and an error occurred while we where trying to store or get your session.</property>
+                                <property name="label" translatable="yes">Fractal relies on a Secret Service Provider to manage your sensitive session information and an error occurred while we were trying to store or get your session.</property>
                               </object>
                             </child>
                             <child>

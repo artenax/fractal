@@ -61,7 +61,7 @@
                 <property name="valign">center</property>
                 <property name="halign">center</property>
                 <property name="vexpand">True</property>
-                <property name="label" translatable="yes">No rooms matching the search where found</property>
+                <property name="label" translatable="yes">No rooms matching the search were found</property>
                 <style>
                   <class name="bold"/>
                 </style>

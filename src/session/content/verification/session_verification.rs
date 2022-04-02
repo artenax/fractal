@@ -234,7 +234,7 @@ impl SessionVerification {
         let priv_ = self.imp();
 
         self.set_request(None);
-        priv_.bootstrap_label.set_label(&gettext("If you lost access to all other session you can create a new crypto identity. Be care full because this will reset all verified users and make previously encrypted conversations unreadable."));
+        priv_.bootstrap_label.set_label(&gettext("If you lost access to all other sessions you can create a new crypto identity. Be careful because this will reset all verified users and make previously encrypted conversations unreadable."));
         priv_.bootstrap_button.remove_css_class("suggested-action");
         priv_.bootstrap_button.add_css_class("destructive-action");
         priv_.bootstrap_button.set_label(&gettext("Reset"));
