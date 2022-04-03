@@ -16,7 +16,7 @@
         </child>
         <child>
           <object class="GtkButton" id="new_room_btn">
-            <property name="label" translatable="yes">Switch to new Room</property>
+            <property name="label" translatable="yes">Go to the Upgraded Room</property>
           </object>
         </child>
       </object>
