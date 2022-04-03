@@ -205,7 +205,7 @@
                         </child>
                         <child>
                           <object class="GtkLabel">
-                            <property name="label" translatable="yes">If you don't have any of these you can reset your identity, but be aware this makes your old messages inaccessible forever.</property>
+                            <property name="label" translatable="yes">If you don’t have any of these you can reset your identity, but be aware this makes your old messages inaccessible forever.</property>
                             <property name="wrap">True</property>
                             <property name="wrap-mode">word-char</property>
                             <property name="justify">center</property>

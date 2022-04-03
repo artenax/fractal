@@ -94,7 +94,7 @@ mod imp {
                     glib::ParamSpecEnum::new(
                         "membership",
                         "Membership",
-                        "This member's membership state.",
+                        "This member’s membership state.",
                         Membership::static_type(),
                         Membership::default() as i32,
                         glib::ParamFlags::READABLE | glib::ParamFlags::EXPLICIT_NOTIFY,

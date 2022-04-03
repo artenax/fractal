@@ -187,7 +187,7 @@ impl DeviceList {
                 }));
             }
             Err(error) => {
-                error!("Couldn't load device list: {}", error);
+                error!("Couldn’t load device list: {}", error);
                 self.update_list(vec![DeviceItem::for_error(gettext(
                     "Failed to load connected devices.",
                 ))]);

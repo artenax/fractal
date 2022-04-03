@@ -92,7 +92,7 @@ mod imp {
                     glib::ParamSpecBoolean::new(
                         "can-hide-header",
                         "Can hide header",
-                        "Whether this event is allowed to hide it's header or not.",
+                        "Whether this event is allowed to hide its header or not.",
                         false,
                         glib::ParamFlags::READABLE,
                     ),

@@ -184,7 +184,7 @@
                                 <property name="wrap">true</property>
                                 <property name="wrap-mode">word-char</property>
                                 <property name="xalign">0.0</property>   
-                                <property name="label" translatable="yes">Check the application logs and your distribution's documentation for more details.</property>
+                                <property name="label" translatable="yes">Check the application logs and your distribution’s documentation for more details.</property>
                               </object>
                             </child>
                           </object>

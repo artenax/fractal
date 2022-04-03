@@ -197,7 +197,7 @@ mod imp {
                     glib::ParamSpecObject::new(
                         "latest-read",
                         "Latest Read",
-                        "The latest read event in the room's timeline",
+                        "The latest read event in the room’s timeline",
                         Event::static_type(),
                         glib::ParamFlags::READABLE,
                     ),
@@ -635,7 +635,7 @@ impl Room {
                     },
                     Err(error) => {
                         error!(
-                            "Couldn’t get the user's read receipt for room {}: {}",
+                            "Couldn’t get the user’s read receipt for room {}: {}",
                             obj.room_id(),
                             error
                         );
@@ -700,7 +700,7 @@ impl Room {
             }
             Err(error) => {
                 error!(
-                    "Couldn’t get the event of the user's read receipt for room {}: {}",
+                    "Couldn’t get the event of the user’s read receipt for room {}: {}",
                     self.room_id(),
                     error
                 );

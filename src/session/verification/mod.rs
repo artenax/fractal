@@ -10,7 +10,7 @@ pub use self::{
     },
     verification_list::VerificationList,
 };
-/// The time a verification is valid after it's creation.
+/// The time a verification is valid after its creation.
 #[allow(dead_code)]
 pub const VERIFICATION_CREATION_TIMEOUT: Duration = Duration::from_secs(60 * 10);
 /// The time a verification is valid after it was received by the client.

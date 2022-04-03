@@ -394,7 +394,7 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
             child.sticker(content, &event.room().session(), compact);
         }
         Some(AnyMessageLikeEventContent::RoomEncrypted(content)) => {
-            warn!("Couldn't decrypt event {:?}", content);
+            warn!("Couldn’t decrypt event {:?}", content);
             let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
             {
                 child
@@ -403,7 +403,7 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
                 parent.set_child(Some(&child));
                 child
             };
-            child.text(gettext("Fractal couldn't decrypt this message."));
+            child.text(gettext("Fractal couldn’t decrypt this message."));
         }
         Some(AnyMessageLikeEventContent::RoomRedaction(_)) => {
             let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())

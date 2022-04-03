@@ -282,7 +282,7 @@ impl InviteeList {
                 self.set_state(InviteeListState::Matching);
             }
             Err(error) => {
-                error!("Couldn't load matching users: {}", error);
+                error!("Couldn’t load matching users: {}", error);
                 self.set_state(InviteeListState::Error);
                 self.clear_list();
             }
