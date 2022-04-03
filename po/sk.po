@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-31 13:14+0200\n"
+"POT-Creation-Date: 2018-05-22 11:49+0200\n"
 "PO-Revision-Date: 2018-05-22 11:49+0200\n"
 "Last-Translator: Peter Vágner <pvagner@pvagner.tk>\n"
 "Language-Team: none\n"
@@ -17,2096 +17,511 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
 
-#: data/org.gnome.Fractal.desktop.in.in:3
-#: data/org.gnome.Fractal.metainfo.xml.in.in:9
-msgid "Fractal"
-msgstr ""
-
-#: data/org.gnome.Fractal.desktop.in.in:4
-msgid ""
-"Fractal is a decentralized, secure messaging client for collaborative group "
-"communication."
-msgstr ""
-"Fractal je decentralizovaný bezpečný klient určený na  okamžité konverzácie "
-"a vzájomnú komunikáciu v skupinách."
-
-#: data/org.gnome.Fractal.desktop.in.in:5
-msgid "Fractal group messaging"
-msgstr "Skupinové konverzácie Fractal"
-
-#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/org.gnome.Fractal.desktop.in.in:14
-msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
-msgstr ""
-
-#: data/org.gnome.Fractal.gschema.xml.in:6
-#: data/org.gnome.Fractal.gschema.xml.in:7
-msgid "Default window width"
-msgstr ""
-
-#: data/org.gnome.Fractal.gschema.xml.in:11
-#: data/org.gnome.Fractal.gschema.xml.in:12
-msgid "Default window height"
-msgstr ""
-
-#: data/org.gnome.Fractal.gschema.xml.in:16
-msgid "Default window maximized behaviour"
-msgstr ""
-
-#: data/org.gnome.Fractal.gschema.xml.in:21
-msgid "Enable markdown formatting"
-msgstr ""
-
-#: data/org.gnome.Fractal.gschema.xml.in:22
-msgid "Whether or not to do markdown formatting when sending messages"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:8
-msgid "Julian Sparber"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:10
-msgid "Matrix group messaging app"
-msgstr "Matrix aplikácia určená na skupinové konverzácie"
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:12
-msgid ""
-"Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
-"is optimized for collaboration in large groups, such as free software "
-"projects."
-msgstr ""
-"Fractal je matrix aplikácia určená na skupinové konverzácie pre pracovné "
-"prostredie GNOME napísaná v programovacom jazyku Rust. Používateľské "
-"rozhranie je optimalizované na vzájomnú spoluprácu vo väčších skupinách ako "
-"sú napríklad projekty zastrešujúce vývoj open-source."
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:24
-msgid "Nightly preview of Fractal."
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:29
-msgid "This new major release is the result of 10 months of hard work."
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:30
-#: data/org.gnome.Fractal.metainfo.xml.in.in:59
-#: data/org.gnome.Fractal.metainfo.xml.in.in:80
-#: data/org.gnome.Fractal.metainfo.xml.in.in:99
-#: data/org.gnome.Fractal.metainfo.xml.in.in:135
-#, fuzzy
-msgid "New features:"
-msgstr "Nové správy"
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:32
-msgid "Videos now have a preview directly in history"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:33
-msgid "New videos player: click on a preview to open it"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:34
-msgid "Improved audio file support, with a nicer presentation and seeking"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:35
-msgid "Redacted messages are removed from history"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:36
-msgid ""
-"Edited messages are replaced with their new content and show a small icon"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:37
-msgid "Translations have been updated"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:38
-msgid "Spellcheck language is saved per room"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:39
-msgid "New swipe-back gesture to go back from room to room list in narrow view"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:40
-msgid ""
-"New swipe left and right gesture to navigate through media in media view"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:41
-msgid "SOCKS proxy are now also supported"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:43
-#: data/org.gnome.Fractal.metainfo.xml.in.in:63
-#: data/org.gnome.Fractal.metainfo.xml.in.in:86
-#: data/org.gnome.Fractal.metainfo.xml.in.in:117
-#: data/org.gnome.Fractal.metainfo.xml.in.in:143
-msgid "Bugfixes:"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:45
-msgid "Thumbnail for pasted images have been fixed"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:46
-msgid "File type detection for uploads is more reliable"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:47
-msgid ""
-"Typing notifications are now only sent when text is actually typed in the "
-"message input"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:49
-#: data/org.gnome.Fractal.metainfo.xml.in.in:71
-#: data/org.gnome.Fractal.metainfo.xml.in.in:90
-#: data/org.gnome.Fractal.metainfo.xml.in.in:124
-#: data/org.gnome.Fractal.metainfo.xml.in.in:148
-msgid "Under the hood:"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:51
-#: data/org.gnome.Fractal.metainfo.xml.in.in:73
-msgid "Code refactor is still going"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:52
-msgid ""
-"Some improvements to logging, including access token removal for privacy"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:58
-#: data/org.gnome.Fractal.metainfo.xml.in.in:79
-msgid "This new minor release is the result of 2 months of hard work."
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:61
-#: data/org.gnome.Fractal.metainfo.xml.in.in:83
-msgid "Translation strings have been updated"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:65
-msgid "Newlines now work when markdown is enabled"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:66
-msgid "Account settings can be accessed again"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:67
-msgid "Redaction is working again"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:68
-msgid "Compatibility with HTTP-only (non HTTPS) servers has been restored"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:69
-#: data/org.gnome.Fractal.metainfo.xml.in.in:122
-msgid "Some crashes fixed"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:82
-msgid "Autocompletion popover position fix"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:84
-msgid "Disable the textbox when there are no write permissions"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:88
-msgid "Fix crash on logout and login with wrong credentials"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:92
-#: data/org.gnome.Fractal.metainfo.xml.in.in:126
-msgid "Code refactor continues"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:98
-msgid ""
-"This new major release is the result of 7 months of hard work by 37 "
-"contributors pushing over 200 commits."
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:101
-msgid "Adaptive window, mobile friendly"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:102
-msgid "Window size and position are remembered"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:103
-msgid "Redesigned login"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:104
-msgid "Spellcheck"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:105
-msgid "Network proxy support"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:106
-msgid "Typing notifications"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:107
-msgid "Badges are shown for operators and moderators"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:108
-msgid "Keyboard shortcuts for easier navigation across rooms"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:111
-msgid "Audio and video files are now tagged correctly"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:112
-msgid "Image files have a thumbnail"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:113
-msgid "Various tweaks to the file chooser"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:119
-msgid "Logs actually output something now"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:120
-msgid "A few issues with invites and direct chats have been resolved"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:121
-msgid "More reliable scrolling"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:127
-msgid "We’re now using Rust 2018"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:128
-msgid "Many improvements to the build system and CI"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:134
-msgid ""
-"This new major release is the result of 3 months of hard work by 25 "
-"contributors pushing over 340 commits."
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:137
-msgid "Enhanced history view with adaptive layout, day divider"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:138
-msgid "Reorganised headerbar, app menu merged with user menu"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:139
-msgid "Larger display of emoji-only messages"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:140
-msgid "Some performance improvements"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:141
-msgid "Opening a room jumps to first unread message"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:145
-msgid "More reliable notifications"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:146
-msgid "Fixed display bug for avatars"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:150
-msgid "Large code refactor"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:151
-msgid "Logging infrastructure"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:152
-msgid "Continuous integration"
-msgstr ""
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:153
-msgid "More informative build output"
-msgstr ""
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:9
-#: data/resources/ui/account-settings-user-page.ui:54
-#, fuzzy
-msgid "Change Password"
-msgstr "Heslo"
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:76
-#, fuzzy
-msgid "New Password"
-msgstr "Heslo"
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:81
-#, fuzzy
-msgid "Confirm New Password"
-msgstr "Heslo"
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:94
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
-#: src/session/content/room_history/verification_info_bar.rs:174
-msgid "Continue"
-msgstr ""
-
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:9
-#: data/resources/ui/account-settings-user-page.ui:115
-#, fuzzy
-msgid "Deactivate Account"
-msgstr "Vytvoriť účet"
-
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:79
-#: data/resources/ui/account-settings-user-page.ui:80
-#, fuzzy
-msgid "Matrix User ID"
-msgstr "Matrix server"
-
-#: data/resources/ui/account-settings-device-row.ui:59
-#: src/session/content/verification/identity_verification_widget.rs:493
-#: src/session/content/verification/identity_verification_widget.rs:498
-#: src/session/content/verification/identity_verification_widget.rs:502
-#: src/session/content/verification/identity_verification_widget.rs:522
-#: src/session/content/verification/identity_verification_widget.rs:525
-#: src/session/content/verification/identity_verification_widget.rs:529
-#, fuzzy
-msgid "Verify Session"
-msgstr "Obnoviť heslo"
-
-#: data/resources/ui/account-settings-devices-page.ui:5
-msgid "Sessions"
-msgstr ""
-
-#: data/resources/ui/account-settings-devices-page.ui:9
-#: data/resources/ui/account-settings-devices-page.ui:13
-#, fuzzy
-msgid "Current Session"
-msgstr "Obnoviť heslo"
-
-#: data/resources/ui/account-settings-devices-page.ui:24
-#: data/resources/ui/account-settings-devices-page.ui:28
-msgid "Other Active Sessions"
-msgstr ""
-
-#: data/resources/ui/account-settings-user-page.ui:5
-#: data/resources/ui/content-room-details.ui:9
-#, fuzzy
+#: fractal-gtk/res/gtk/help-overlay.ui:13
 msgid "General"
 msgstr "Všeobecné"
 
-#: data/resources/ui/account-settings-user-page.ui:38
-msgid "Name"
-msgstr "Názov"
-
-#: data/resources/ui/account-settings-user-page.ui:63
-msgid "Advanced Information"
-msgstr ""
-
-#: data/resources/ui/account-settings-user-page.ui:66
-#, fuzzy
-msgid "Homeserver"
-msgstr "URL adresa domovského servera"
-
-#: data/resources/ui/account-settings-user-page.ui:94
-msgid "Session ID"
-msgstr ""
-
-#: data/resources/ui/account-settings.ui:4
-msgid "Account Settings"
-msgstr "Nastavenia účtu"
-
-#: data/resources/ui/attachment-dialog.ui:14
-#: data/resources/ui/content-invite-subpage.ui:12
-#: data/resources/ui/room-creation.ui:16
-#, fuzzy
-msgid "_Cancel"
-msgstr "Zrušiť"
-
-#: data/resources/ui/attachment-dialog.ui:21
-#, fuzzy
-msgid "_Send"
-msgstr "Odoslať"
-
-#: data/resources/ui/attachment-dialog.ui:36
-msgid "No Preview Available"
-msgstr ""
-
-#: data/resources/ui/components-auth-dialog.ui:20
-msgid "Authentication"
-msgstr ""
-
-#: data/resources/ui/components-auth-dialog.ui:43
-msgid "Please authenticate the operation with your password"
-msgstr ""
-
-#: data/resources/ui/components-auth-dialog.ui:70
-msgid ""
-"Please authenticate the operation via the browser and once completed press "
-"confirm."
-msgstr ""
-
-#: data/resources/ui/components-auth-dialog.ui:80
-msgid "Authenticate via Browser"
-msgstr ""
-
-#: data/resources/ui/components-auth-dialog.ui:113
-#: data/resources/ui/identity-verification-widget.ui:455
-#: src/components/editable_avatar.rs:344
-#: src/session/content/room_history/verification_info_bar.rs:175
-#: src/session/room/event_actions.rs:210
-msgid "Cancel"
-msgstr "Zrušiť"
-
-#: data/resources/ui/components-auth-dialog.ui:118
-#: data/resources/ui/identity-verification-widget.ui:445
-msgid "Confirm"
-msgstr ""
-
-#: data/resources/ui/components-loading-listbox-row.ui:32
-msgid "Retry"
-msgstr ""
-
-#: data/resources/ui/content-explore.ui:64
-msgid "No rooms matching the search where found"
-msgstr ""
-
-#: data/resources/ui/content-explore.ui:97
-#, fuzzy
-msgid "Room List"
-msgstr "Miestnosti"
-
-#: data/resources/ui/content-invite-subpage.ui:18
-#, fuzzy
-msgid "I_nvite"
-msgstr "Pozvať"
-
-#: data/resources/ui/content-invite-subpage.ui:87
-msgid "Search for users to invite them to this room."
-msgstr ""
-
-#: data/resources/ui/content-invite-subpage.ui:123
-msgid "No users matching the search where found."
-msgstr ""
-
-#: data/resources/ui/content-invite-subpage.ui:132
-#, fuzzy
-msgid "An error occurred while searching for matches"
-msgstr "Chyba pri hľadaní miestností"
-
-#: data/resources/ui/content-invite.ui:26
-#: data/resources/ui/content-invite.ui:51
-msgid "Invite"
-msgstr "Pozvať"
-
-#: data/resources/ui/content-invite.ui:90
-msgid "<widget> invited you"
-msgstr ""
-
-#: data/resources/ui/content-invite.ui:109
-#: data/resources/ui/sidebar-room-row.ui:11
-#, fuzzy
-msgid "_Reject"
-msgstr "Odmietnuť"
-
-#: data/resources/ui/content-invite.ui:119
-#: data/resources/ui/sidebar-room-row.ui:6
-#, fuzzy
-msgid "_Accept"
-msgstr "Prijať"
-
-#: data/resources/ui/content-markdown-popover.ui:17
-msgid "_Markdown"
-msgstr ""
-
-#: data/resources/ui/content-markdown-popover.ui:37
-msgid "> quote"
-msgstr "> citát"
-
-#: data/resources/ui/content-markdown-popover.ui:46
-msgid "**bold**"
-msgstr "**tučné**"
-
-#: data/resources/ui/content-markdown-popover.ui:59
-msgid "`code`"
-msgstr "`kód`"
-
-#: data/resources/ui/content-markdown-popover.ui:69
-msgid "*italic*"
-msgstr "*kurzíva*"
-
-#: data/resources/ui/content-member-page.ui:5
-#, fuzzy
-msgid "Members"
-msgstr "Členovia"
-
-#: data/resources/ui/content-member-page.ui:24
-#, fuzzy
-msgid "Invite new member"
-msgstr "Pozvať do {name}"
-
-#: data/resources/ui/content-member-page.ui:33
-msgid "Search for room members"
-msgstr "Hľadať členov v miestnosti"
-
-#: data/resources/ui/content-message-file.ui:21
-msgid "Open"
-msgstr ""
-
-#: data/resources/ui/content-message-file.ui:28
-#: src/session/room/event_actions.rs:209
-msgid "Save"
-msgstr ""
-
-#: data/resources/ui/content-room-details.ui:4
-#: src/session/content/room_details/mod.rs:250
-#, fuzzy
-msgid "Room Details"
-msgstr "Podrobnosti miestnosti"
-
-#: data/resources/ui/content-room-history.ui:6
-#, fuzzy
-msgid "Room _Details"
-msgstr "Podrobnosti miestnosti"
-
-#: data/resources/ui/content-room-history.ui:11
-#, fuzzy
-msgid "_Invite New Member"
-msgstr "Pozvať do {name}"
-
-#: data/resources/ui/content-room-history.ui:18
-#: data/resources/ui/sidebar-room-row.ui:40
-#, fuzzy
-msgid "_Leave Room"
-msgstr "Opustiť miestnosť"
-
-#: data/resources/ui/content-room-history.ui:116
-msgid "Unable to load room"
-msgstr ""
-
-#: data/resources/ui/content-room-history.ui:117
-msgid "Check your network connection."
-msgstr ""
-
-#: data/resources/ui/content-room-history.ui:120
-msgid "Try Again"
-msgstr ""
-
-#: data/resources/ui/content-room-history.ui:145
-msgid "Scroll to bottom"
-msgstr "Posunúť na spodok"
-
-#: data/resources/ui/content-room-history.ui:157
-msgid "Drop Here to Send"
-msgstr ""
-
-#: data/resources/ui/content-room-history.ui:181
-#, fuzzy
-msgid "Room History"
-msgstr "Adresár miestností"
-
-#: data/resources/ui/content-state-creation.ui:19
-#, fuzzy
-msgid "Previous room"
-msgstr "Opustiť miestnosť"
-
-#: data/resources/ui/content-state-tombstone.ui:14
-msgid "This room was upgraded."
-msgstr ""
-
-#: data/resources/ui/content-state-tombstone.ui:19
-msgid "Switch to new Room"
-msgstr ""
-
-#: data/resources/ui/content.ui:35
-#, fuzzy
-msgid "No Room Selected"
-msgstr "Nie je vybratá žiadna miestnosť"
-
-#: data/resources/ui/content.ui:36
-#, fuzzy
-msgid "Join a room to start chatting."
-msgstr "Konverzáciu začnete vstupom do miestnosti"
-
-#: data/resources/ui/error-page.ui:40
-msgid ""
-"It seems like one of the Fractal sessions stored in the Secret Service is "
-"corrupted. If you know how to fix it you should do so."
-msgstr ""
-
-#: data/resources/ui/error-page.ui:51
-msgid ""
-"Alternatively, we could delete this session for you. This means you will "
-"have to login again and you will lose access to your encrypted messages, "
-"unless you have a session open in another client or you have already backed "
-"up your encryption keys."
-msgstr ""
-
-#: data/resources/ui/error-page.ui:74
-msgid "Clicking this button might delete more than one session!"
-msgstr ""
-
-#: data/resources/ui/error-page.ui:86
-msgid "Delete the corrupted session"
-msgstr ""
-
-#: data/resources/ui/error-page.ui:109
-msgid ""
-"Fractal relies on a Secret Service Provider to manage your sensitive session "
-"information and an error occurred while we where trying to store or get your "
-"session."
-msgstr ""
-
-#: data/resources/ui/error-page.ui:124
-msgid ""
-"Here are a few things that might help you fix issues with the Secret Service:"
-msgstr ""
-
-#: data/resources/ui/error-page.ui:147
-msgid ""
-"Make sure you have a Secret Service Provider installed, like gnome-keyring."
-msgstr ""
-
-#: data/resources/ui/error-page.ui:172
-msgid "Check that you have a default keyring and that is is unlocked."
-msgstr ""
-
-#: data/resources/ui/error-page.ui:187
-msgid ""
-"Check the application logs and your distribution's documentation for more "
-"details."
-msgstr ""
-
-#: data/resources/ui/event-menu.ui:11
-msgid "_Reply"
-msgstr ""
-
-#: data/resources/ui/event-menu.ui:16
-msgid "_Edit"
-msgstr ""
-
-#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:86
-msgid "_Forward"
-msgstr ""
-
-#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:93
-#, fuzzy
-msgid "_Select"
-msgstr "Vybrať"
-
-#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
-msgid "_Copy Text"
-msgstr ""
-
-#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
-msgid "_Copy Image"
-msgstr ""
-
-#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
-msgid "S_ave Image"
-msgstr ""
-
-#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:106
-msgid "_Permalink"
-msgstr ""
-
-#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
-msgid "_View Source"
-msgstr ""
-
-#: data/resources/ui/event-menu.ui:63 data/resources/ui/event-menu.ui:118
-msgid "Re_move"
-msgstr ""
-
-#: data/resources/ui/event-source-dialog.ui:5
-msgid "Event Source"
-msgstr ""
-
-#: data/resources/ui/greeter.ui:43
-msgid ""
-"You are running an early stage development version. Be aware it is a work in "
-"progress and far from complete yet."
-msgstr ""
-
-#. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:83
-#, fuzzy
-msgid "Welcome to Fractal"
-msgstr "Dozvedieť sa viac o Fractal"
-
-#: data/resources/ui/identity-verification-widget.ui:50
-#: src/session/content/room_history/verification_info_bar.rs:170
-msgid "Decline"
-msgstr ""
-
-#: data/resources/ui/identity-verification-widget.ui:60
-#: src/session/content/room_history/verification_info_bar.rs:169
-msgid "Verify"
-msgstr ""
-
-#: data/resources/ui/identity-verification-widget.ui:115
-#: data/resources/ui/identity-verification-widget.ui:216
-msgid "Can't scan QR code?"
-msgstr ""
-
-#: data/resources/ui/identity-verification-widget.ui:123
-#: data/resources/ui/identity-verification-widget.ui:233
-msgid "Compare Emoji"
-msgstr ""
-
-#: data/resources/ui/identity-verification-widget.ui:150
-msgid "Scan Complete"
-msgstr ""
-
-#: data/resources/ui/identity-verification-widget.ui:225
-msgid "Scan QR code with this session"
-msgstr ""
-
-#: data/resources/ui/identity-verification-widget.ui:293
-msgid "Do Not Match"
-msgstr ""
-
-#: data/resources/ui/identity-verification-widget.ui:303
-msgid "Match"
-msgstr ""
-
-#: data/resources/ui/identity-verification-widget.ui:353
-msgid "Done"
-msgstr ""
-
-#: data/resources/ui/identity-verification-widget.ui:422
-msgid "Confirm Scan"
-msgstr ""
-
-#: data/resources/ui/login-advanced-dialog.ui:5
-#, fuzzy
-msgid "Homeserver Discovery"
-msgstr "URL adresa domovského servera"
-
-#: data/resources/ui/login-advanced-dialog.ui:14
-msgid ""
-"Auto-discovery, also known as \"well-known lookup\", allows to discover the "
-"URL of a Matrix homeserver from a domain name. This should only be disabled "
-"if your homeserver doesn’t support auto-discovery or if you want to provide "
-"the URL yourself."
-msgstr ""
-
-#: data/resources/ui/login-advanced-dialog.ui:17
-msgid "_Auto-discovery"
-msgstr ""
-
-#: data/resources/ui/login.ui:23
-msgid "_Next"
-msgstr ""
-
-#: data/resources/ui/login.ui:130 src/login/mod.rs:341
-#, fuzzy
-msgid "Homeserver URL"
-msgstr "URL adresa domovského servera"
-
-#: data/resources/ui/login.ui:171
-#, fuzzy
-msgid "_Forgot Password?"
-msgstr "Obnoviť heslo"
-
-#: data/resources/ui/login.ui:216
-msgid "Please follow the steps in the browser."
-msgstr ""
-
-#: data/resources/ui/member-menu.ui:6
-msgid "_Verify"
-msgstr ""
-
-#: data/resources/ui/member-menu.ui:14
-msgid "Make _Mod"
-msgstr ""
-
-#: data/resources/ui/member-menu.ui:20
-msgid "Make _Admin"
-msgstr ""
-
-#: data/resources/ui/member-menu.ui:26
-msgid "_Kick"
-msgstr ""
-
-#: data/resources/ui/room-creation.ui:4
-#, fuzzy
-msgid "Create new Room"
-msgstr "Vytvoriť miestnosť"
-
-#: data/resources/ui/room-creation.ui:22
-#, fuzzy
-msgid "C_reate"
-msgstr "Vytvoriť"
-
-#: data/resources/ui/room-creation.ui:58
-#, fuzzy
-msgid "Room Name"
-msgstr "Názov miestnosti"
-
-#: data/resources/ui/room-creation.ui:93
-msgid "Visibility"
-msgstr "Viditeľnosť"
-
-#: data/resources/ui/room-creation.ui:103
-#, fuzzy
-msgid "_Private"
-msgstr "Súkromná"
-
-#: data/resources/ui/room-creation.ui:110
-#, fuzzy
-msgid "P_ublic"
-msgstr "Verejná"
-
-#: data/resources/ui/room-creation.ui:122
-msgid "Room Address"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:49
-#: src/session/content/verification/identity_verification_widget.rs:537
-msgid "Get Another Device"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:60
-#: src/session/content/verification/identity_verification_widget.rs:539
-msgid "Accept the verification request from another session or device."
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:73
-msgid "No other devices logged into this account?"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:81
-#: data/resources/ui/session-verification.ui:171
-msgid "Recovery"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:91
-#: src/session/content/verification/session_verification.rs:240
-msgid "Reset"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:123
-msgid "Setup Encryption Identity"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:134
-msgid ""
-"You need to setup an encryption identity, since this is the first time you "
-"logged into your account."
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:142
-msgid "Setup"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:182
-msgid ""
-"Without another device you need a recovery passphrase or key to access your "
-"messages"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:190
-#: data/resources/ui/session-verification.ui:245
-msgid "Recovery Passphrase"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:199
-#: data/resources/ui/session-verification.ui:306
-msgid "Recovery Key"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:208
-msgid ""
-"If you don't have any of these you can rest your identity, but be aware this "
-"makes your old messages inacessible forever."
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:217
-msgid "Reset Identity"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:256
-msgid ""
-"Your Recovery Passphrase was set up when you first created this account."
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:264
-msgid "If you opted for a Recovery Key instead go back and choose that option."
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:272
-msgid "Passphrase"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:278
-#: data/resources/ui/session-verification.ui:342
-msgid "Next"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:317
-msgid "Your Recovery Key was set up when you first created this account."
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:325
-msgid ""
-"If you opted for a Recovery Passphrase instead go back and choose that "
-"option."
-msgstr ""
-
-#: data/resources/ui/shortcuts.ui:11
-#, fuzzy
+#: fractal-gtk/res/gtk/help-overlay.ui:18
+msgid "Close the active room"
+msgstr "Zatvorenie aktívnej miestnosti"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:25
+msgid "Open / close the room sidebar search"
+msgstr "Otvorenie / zatvorenie postraného panelu hľadať miestnosti"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:31
 msgctxt "shortcut window"
-msgid "General"
-msgstr "Všeobecné"
-
-#: data/resources/ui/shortcuts.ui:14
-#, fuzzy
-msgctxt "shortcut window"
-msgid "Show Shortcuts"
+msgid "Keyboard Shortcuts"
 msgstr "Klávesové skratky"
 
-#: data/resources/ui/shortcuts.ui:20
+#: fractal-gtk/res/gtk/help-overlay.ui:38
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Ukončiť"
 
-#: data/resources/ui/shortcuts.ui:26
-#, fuzzy
-msgctxt "shortcut window"
-msgid "Search Room List"
-msgstr "Hľadať členov v miestnosti"
+#: fractal-gtk/res/gtk/menus.ui:6
+msgid "Keyboard _Shortcuts"
+msgstr "Klávesové _skratky"
 
-#: data/resources/ui/shortcuts.ui:32
-#, fuzzy
-msgctxt "shortcut window"
-msgid "Close Room"
-msgstr "Nová miestnosť"
+#: fractal-gtk/res/gtk/menus.ui:10
+msgid "_About"
+msgstr "_O programe"
 
-#: data/resources/ui/sidebar-room-row.ui:18
-#, fuzzy
-msgid "Mark as _Favorite"
-msgstr "Obľúbené"
+#: fractal-gtk/res/gtk/menus.ui:14
+msgid "_Quit"
+msgstr "U_končiť"
 
-#: data/resources/ui/sidebar-room-row.ui:23
-msgid "Unmark as _Favorite"
+#: fractal-gtk/res/org.gnome.Fractal.appdata.xml:4
+#: fractal-gtk/res/org.gnome.Fractal.desktop:3
+msgid "Fractal"
 msgstr ""
 
-#: data/resources/ui/sidebar-room-row.ui:28
-msgid "Mark as Low _Priority"
+#: fractal-gtk/res/org.gnome.Fractal.appdata.xml:7
+msgid "Daniel García Moreno"
 msgstr ""
 
-#: data/resources/ui/sidebar-room-row.ui:33
-msgid "Unmark as Low _Priority"
+#: fractal-gtk/res/org.gnome.Fractal.appdata.xml:8
+msgid "Matrix group messaging app"
+msgstr "Matrix aplikácia určená na skupinové konverzácie"
+
+#: fractal-gtk/res/org.gnome.Fractal.appdata.xml:11
+msgid ""
+"Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
+"is optimized for collaboration in large groups, such as free software "
+"projects."
+msgstr "Fractal je matrix aplikácia určená na skupinové konverzácie pre pracovné prostredie GNOME napísaná v programovacom jazyku Rust. Používateľské rozhranie je optimalizované na vzájomnú spoluprácu vo väčších skupinách ako sú napríklad projekty zastrešujúce vývoj open-source."
+
+#: fractal-gtk/res/org.gnome.Fractal.desktop:4
+msgid ""
+"Fractal is a decentralized, secure messaging client for collaborative group "
+"communication."
+msgstr "Fractal je decentralizovaný bezpečný klient určený na  okamžité konverzácie a vzájomnú komunikáciu v skupinách."
+
+#: fractal-gtk/res/org.gnome.Fractal.desktop:5
+msgid "Fractal group messaging"
+msgstr "Skupinové konverzácie Fractal"
+
+#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+#: fractal-gtk/res/org.gnome.Fractal.desktop:8
+msgid "org.gnome.Fractal"
 msgstr ""
 
-#: data/resources/ui/sidebar-room-row.ui:45
-#, fuzzy
-msgid "Re_join Room"
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: fractal-gtk/res/org.gnome.Fractal.desktop:14
+msgid "Matrix;matrix.org;"
+msgstr ""
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:13
+msgid "Type of password and token storage"
+msgstr "Typ úložiska hesla a tokenu"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:14
+msgid "Type of password and token storage, default value is: Secret Service"
+msgstr "Typ úložiska hesla a tokenu, predvolená hodnota je Secret Service"
+
+#: fractal-gtk/res/ui/add_room_menu.ui:23
+msgid "Room directory"
+msgstr "Adresár miestností"
+
+#: fractal-gtk/res/ui/add_room_menu.ui:37 fractal-gtk/res/ui/join_room.ui:90
+msgid "Join room"
 msgstr "Vstúpiť do miestnosti"
 
-#: data/resources/ui/sidebar-room-row.ui:50
-#, fuzzy
-msgid "_Forget Room"
+#: fractal-gtk/res/ui/add_room_menu.ui:64
+msgid "New room"
 msgstr "Nová miestnosť"
 
-#: data/resources/ui/sidebar.ui:6
-#, fuzzy
-msgid "_New Room"
-msgstr "Nová miestnosť"
-
-#: data/resources/ui/sidebar.ui:12
-msgid "_Preferences"
-msgstr ""
-
-#: data/resources/ui/sidebar.ui:16
-#, fuzzy
-msgid "_Keyboard Shortcuts"
-msgstr "Klávesové skratky"
-
-#: data/resources/ui/sidebar.ui:20
-#, fuzzy
-msgid "_About Fractal"
-msgstr "Dozvedieť sa viac o Fractal"
-
-#: data/resources/ui/sidebar.ui:94
-msgid "Sidebar"
-msgstr ""
-
-#: data/resources/ui/qr-code-scanner.ui:21
-msgid "Unable to connect to Camera"
-msgstr ""
-
-#: src/application.rs:167
-msgid "Learn more about Fractal"
-msgstr "Dozvedieť sa viac o Fractal"
-
-#: src/application.rs:171
-#, fuzzy
-msgid "A Matrix client for GNOME"
-msgstr "Klient matrix.org pre pracovné prostredie GNOME"
-
-#: src/application.rs:172
-msgid "© 2017-2021 The Fractal Team"
-msgstr ""
-
-#: src/application.rs:186
-msgid "translator-credits"
-msgstr ""
-
-#. This can't be added via the builder
-#: src/application.rs:190
-msgid "Name by"
-msgstr "Názov"
-
-#: src/components/editable_avatar.rs:334
-#, fuzzy
-msgid "Choose Avatar"
-msgstr "Obrázok miestnosti"
-
-#: src/components/editable_avatar.rs:343
-msgid "Choose"
-msgstr ""
-
-#: src/components/editable_avatar.rs:366
-msgid "The chosen file is not an image"
-msgstr ""
-
-#: src/components/editable_avatar.rs:374
-msgid "Could not determine the type of the chosen file"
-msgstr ""
-
-#: src/components/editable_avatar.rs:383
-msgid "No file was chosen"
-msgstr ""
-
-#: src/error_page.rs:108
-msgid "Session removed successfully."
-msgstr ""
-
-#: src/error_page.rs:120
-msgid "Could not remove session from secret storage"
-msgstr ""
-
-#: src/login/mod.rs:336
-msgid "Domain Name"
-msgstr ""
-
-#: src/login/mod.rs:338
-msgid "The domain of your Matrix homeserver, for example gnome.org"
-msgstr ""
-
-#: src/login/mod.rs:342
-msgid ""
-"The URL of your Matrix homeserver, for example <span segment=\"word"
-"\">https://gnome.modular.im</span>"
-msgstr ""
-
-#: src/secret.rs:52
-msgid "Could not unlock the secret storage"
-msgstr ""
-
-#: src/secret.rs:55 src/secret.rs:59
-msgid "An unknown error occurred when interacting with the secret storage"
-msgstr ""
-
-#: src/secret.rs:88
-msgid "Malformed homeserver in stored session"
-msgstr ""
-
-#: src/secret.rs:95
-msgid "Could not find homeserver in stored session"
-msgstr ""
-
-#: src/secret.rs:109
-msgid "Malformed user ID in stored session"
-msgstr ""
-
-#: src/secret.rs:116
-msgid "Could not find user ID in stored session"
-msgstr ""
-
-#: src/secret.rs:125
-msgid "Could not find device ID in stored session"
-msgstr ""
-
-#: src/secret.rs:134
-msgid "Could not find database path in stored session"
-msgstr ""
-
-#: src/secret.rs:145
-msgid "Malformed secret in stored session"
-msgstr ""
-
-#: src/secret.rs:152
-msgid "No secret in stored session"
-msgstr ""
-
-#: src/secret.rs:159
-msgid "Could not get secret in stored session"
-msgstr ""
-
-#: src/session/account_settings/devices_page/device_list.rs:147
-msgid "Failed to load connected device."
-msgstr ""
-
-#: src/session/account_settings/devices_page/device_list.rs:192
-msgid "Failed to load connected devices."
-msgstr ""
-
-#: src/session/account_settings/devices_page/device_row.rs:110
-#, fuzzy
-msgid "Delete Session"
-msgstr "Nové správy"
-
-#: src/session/account_settings/devices_page/device_row.rs:112
-msgid "Log Out"
-msgstr "Odhlásiť sa"
-
-#: src/session/account_settings/devices_page/device_row.rs:229
-msgid ""
-"Fractal's support for encryption is unstable so you might lose access to "
-"your encrypted message history. It is recommended to backup your encryption "
-"keys from another Matrix client before proceeding."
-msgstr ""
-
-#. Translators: Time in 24h format
-#: src/session/account_settings/devices_page/device_row.rs:287
-msgid "Last seen at %H:%M"
-msgstr ""
-
-#. Translators: Time in 12h format
-#: src/session/account_settings/devices_page/device_row.rs:290
-msgid "Last seen at %l:%M %p"
-msgstr ""
-
-#. Translators: this is the word Yesterday followed by
-#. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:299
-#, no-c-format
-msgid "Last seen Yesterday at %H:%M"
-msgstr ""
-
-#. Translators: this is the word Yesterday followed by
-#. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:304
-#, no-c-format
-msgid "Last seen Yesterday at %l:%M %p"
-msgstr ""
-
-#. Translators: this is the name of the week day followed by
-#. a time in 24h format. i.e. "Last seen Monday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:313
-#, no-c-format
-msgid "Last seen %A at %H:%M"
-msgstr ""
-
-#. Translators: this is the week day name followed by
-#. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:318
-#, no-c-format
-msgid "Last seen %A at %l:%M %p"
-msgstr ""
-
-#. Translators: this is the day of the month followed
-#. by the abbreviated month name followed by a time in
-#. 24h format i.e. "Last seen February 3 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:326
-#, no-c-format
-msgid "Last seen %B %-e at %H:%M"
-msgstr ""
-
-#. Translators: this is the day of the month followed
-#. by the abbreviated month name followed by a time in
-#. 12h format i.e. "Last seen February 3 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:332
-#, no-c-format
-msgid "Last seen %B %-e at %l:%M %p"
-msgstr ""
-
-#. Translators: this is the day number followed
-#. by the abbreviated month name followed by the year followed
-#. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:339
-#, no-c-format
-msgid "Last seen %B %-e %Y at %H:%M"
-msgstr ""
-
-#. Translators: this is the day number followed
-#. by the abbreviated month name followed by the year followed
-#. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:345
-#, no-c-format
-msgid "Last seen %B %-e %Y at %l:%M %p"
-msgstr ""
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:217
-msgid "Password must be at least 8 characters long"
-msgstr ""
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:220
-msgid "Password must have at least one lower-case letter"
-msgstr ""
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:224
-msgid "Password must have at least one upper-case letter"
-msgstr ""
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:227
-msgid "Password must have at least one digit"
-msgstr ""
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:229
-msgid "Password must have at least one symbol"
-msgstr ""
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:255
-#, fuzzy
-msgid "Passwords do not match"
-msgstr "Heslá sa nezhodujú, skúste znovu"
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:313
-msgid "Password changed successfully"
-msgstr ""
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:329
-msgid "Password rejected for being too weak"
-msgstr ""
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:336
-msgid "Could not change password"
-msgstr ""
-
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:200
-msgid "Account successfully deactivated"
-msgstr ""
-
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:210
-#, fuzzy
-msgid "Could not deactivate account"
-msgstr "Vytvoriť účet"
-
-#: src/session/account_settings/user_page/mod.rs:227
-msgid "Avatar removed successfully"
-msgstr ""
-
-#: src/session/account_settings/user_page/mod.rs:245
-msgid "Avatar changed successfully"
-msgstr ""
-
-#: src/session/account_settings/user_page/mod.rs:291
-msgid "Could not upload avatar"
-msgstr ""
-
-#: src/session/account_settings/user_page/mod.rs:316
-msgid "Could not change avatar"
-msgstr ""
-
-#: src/session/account_settings/user_page/mod.rs:348
-msgid "Could not remove avatar"
-msgstr ""
-
-#: src/session/account_settings/user_page/mod.rs:397
-msgid "Name changed successfully"
-msgstr ""
-
-#: src/session/account_settings/user_page/mod.rs:436
-msgid "Could not change display name"
-msgstr ""
-
-#: src/session/content/explore/public_room_row.rs:222
-msgid "View"
-msgstr ""
-
-#: src/session/content/explore/public_room_row.rs:224
+#: fractal-gtk/res/ui/add_room_menu.ui:78 fractal-gtk/res/ui/direct_chat.ui:115
+msgid "New direct chat"
+msgstr "Nová priama konverzácia"
+
+#: fractal-gtk/res/ui/direct_chat.ui:64 fractal-gtk/res/ui/invite_user.ui:64
+#: fractal-gtk/res/ui/main_window.ui:695
+msgid "Matrix username, email or phone number"
+msgstr "Používateľské meno matrix, email alebo telefónne číslo"
+
+#: fractal-gtk/res/ui/direct_chat.ui:118 fractal-gtk/res/ui/invite_user.ui:121
+#: fractal-gtk/res/ui/join_room.ui:93 fractal-gtk/res/ui/leave_room.ui:33
+#: fractal-gtk/res/ui/new_room.ui:42 fractal-gtk/src/appop/attach.rs:66
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#: fractal-gtk/res/ui/direct_chat.ui:126
+msgid "Start chat"
+msgstr "Začať konverzáciu"
+
+#: fractal-gtk/res/ui/filechooser.ui:62
+msgid "Select room image file"
+msgstr "Vyberte obrázok miestnosti"
+
+#: fractal-gtk/res/ui/invite_user.ui:137 fractal-gtk/res/ui/invite_user.ui:150
+#: fractal-gtk/src/appop/invite.rs:140
+msgid "Invite"
+msgstr "Pozvať"
+
+#: fractal-gtk/res/ui/invite.ui:19
+msgid "Invitation"
+msgstr "Pozvanie"
+
+#: fractal-gtk/res/ui/invite.ui:20
+msgid "You’ve been invited to join \"\", you can accept or reject"
+msgstr "Boli ste pozvaní vstúpiť do miestnosti \"\", prijmite alebo odmietnite pozvanie"
+
+#: fractal-gtk/res/ui/invite.ui:33
+msgid "Reject"
+msgstr "Odmietnuť"
+
+#: fractal-gtk/res/ui/invite.ui:46
+msgid "Accept"
+msgstr "Prijať"
+
+#: fractal-gtk/res/ui/join_room.ui:53
+msgid "ID or Alias"
+msgstr "ID alebo alias"
+
+#: fractal-gtk/res/ui/join_room.ui:101 fractal-gtk/src/appop/invite.rs:209
+#: fractal-gtk/src/widgets/room.rs:94
 msgid "Join"
 msgstr "Vstúpiť"
 
-#: src/session/content/room_details/mod.rs:169
-#, fuzzy
-msgid "Save Details"
-msgstr "Podrobnosti miestnosti"
+#: fractal-gtk/res/ui/leave_room.ui:19
+msgid "Leave?"
+msgstr "Opustiť?"
 
-#: src/session/content/room_details/mod.rs:170
-#, fuzzy
-msgid "Edit Details"
-msgstr "Podrobnosti miestnosti"
+#: fractal-gtk/res/ui/leave_room.ui:20
+msgid ""
+"Once you leave, you won't be able to interact with people in the room "
+"anymore."
+msgstr "Ak miestnosť opustíte, nebudete viac môcť komunikovať s jej členmi kým opätovne nevstúpite"
 
-#: src/session/content/room_details/mod.rs:213
-#, fuzzy
-msgid "Choose avatar"
+#: fractal-gtk/res/ui/leave_room.ui:46 fractal-gtk/res/ui/room_menu.ui:64
+msgid "Leave room"
+msgstr "Opustiť miestnosť"
+
+#: fractal-gtk/res/ui/main_window.ui:179
+msgid "Searching"
+msgstr "Vyhľadávanie"
+
+#: fractal-gtk/res/ui/main_window.ui:258
+msgid "Scroll to bottom"
+msgstr "Posunúť na spodok"
+
+#: fractal-gtk/res/ui/main_window.ui:301
+msgid "Attach files"
+msgstr "Pripojiť súbory"
+
+#: fractal-gtk/res/ui/main_window.ui:328
+msgid "Text formatting"
+msgstr "Formátovanie textu"
+
+#: fractal-gtk/res/ui/main_window.ui:401
+msgid "No room selected"
+msgstr "Nie je vybratá žiadna miestnosť"
+
+#: fractal-gtk/res/ui/main_window.ui:416
+msgid "Join a room to start chatting"
+msgstr "Konverzáciu začnete vstupom do miestnosti"
+
+#: fractal-gtk/res/ui/main_window.ui:426
+msgid "No room"
+msgstr "Žiadna miestnosť"
+
+#: fractal-gtk/res/ui/main_window.ui:473
+msgid "This is an app-notification"
+msgstr ""
+
+#: fractal-gtk/res/ui/main_window.ui:511
+msgid "Chat"
+msgstr ""
+
+#: fractal-gtk/res/ui/main_window.ui:563 fractal-gtk/src/appop/directory.rs:97
+msgid "Search"
+msgstr "Hľadať"
+
+#: fractal-gtk/res/ui/main_window.ui:609
+msgid "Directory"
+msgstr "Adresár"
+
+#: fractal-gtk/res/ui/main_window.ui:633
+msgid "Loading"
+msgstr "Načítavanie"
+
+#: fractal-gtk/res/ui/main_window.ui:659 fractal-gtk/res/ui/main_window.ui:708
+msgid "Log In"
+msgstr "Prihlásiť sa"
+
+#: fractal-gtk/res/ui/main_window.ui:678
+msgid "Username"
+msgstr "Meno používateľa"
+
+#: fractal-gtk/res/ui/main_window.ui:728
+msgid "Password"
+msgstr "Heslo"
+
+#: fractal-gtk/res/ui/main_window.ui:773
+msgid "Home server URL"
+msgstr "URL adresa domovského servera"
+
+#: fractal-gtk/res/ui/main_window.ui:791
+msgid "Identity server URL"
+msgstr "URL adresa servera totožností"
+
+#: fractal-gtk/res/ui/main_window.ui:808
+msgid "Matrix Server"
+msgstr "Matrix server"
+
+#: fractal-gtk/res/ui/main_window.ui:827
+msgid "Identity server"
+msgstr "Server totožností"
+
+#: fractal-gtk/res/ui/main_window.ui:864
+msgid "Advanced"
+msgstr "Pokročilé"
+
+#: fractal-gtk/res/ui/main_window.ui:879 fractal-gtk/src/appop/login.rs:107
+msgid "Invalid username or password"
+msgstr "Meno používateľaalebo heslo nie je správne"
+
+#: fractal-gtk/res/ui/main_window.ui:933
+msgid "Reset Password"
+msgstr "Obnoviť heslo"
+
+#: fractal-gtk/res/ui/main_window.ui:947
+msgid "Create Account"
+msgstr "Vytvoriť účet"
+
+#: fractal-gtk/res/ui/main_window.ui:961
+msgid "Log In as Guest"
+msgstr "Prihlásiť sa ako hosť"
+
+#: fractal-gtk/res/ui/main_window.ui:983
+msgid "Login"
+msgstr "Prihlásiť"
+
+#: fractal-gtk/res/ui/main_window.ui:1020
+msgid "User"
+msgstr "Používateľ"
+
+#: fractal-gtk/res/ui/main_window.ui:1043
+msgid "Add"
+msgstr "Pridať"
+
+#: fractal-gtk/res/ui/main_window.ui:1074
+msgid "Room search"
+msgstr "Hľadať miestnosť"
+
+#: fractal-gtk/res/ui/main_window.ui:1143 fractal-gtk/res/ui/new_room.ui:108
+msgid "Room name"
+msgstr "Názov miestnosti"
+
+#: fractal-gtk/res/ui/main_window.ui:1172
+msgid "Room topic"
+msgstr "Téma miestnosti"
+
+#: fractal-gtk/res/ui/main_window.ui:1245
+msgid "Members"
+msgstr "Členovia"
+
+#: fractal-gtk/res/ui/main_window.ui:1317
+#: fractal-gtk/res/ui/main_window.ui:1337
+msgid "Back"
+msgstr "Naspäť"
+
+#: fractal-gtk/res/ui/markdown_popover.ui:28
+msgid "Markdown"
+msgstr ""
+
+#: fractal-gtk/res/ui/markdown_popover.ui:76
+msgid "> quote"
+msgstr "> citát"
+
+#: fractal-gtk/res/ui/markdown_popover.ui:88
+msgid "**bold**"
+msgstr "**tučné**"
+
+#: fractal-gtk/res/ui/markdown_popover.ui:104
+msgid "`code`"
+msgstr "`kód`"
+
+#: fractal-gtk/res/ui/markdown_popover.ui:116
+msgid "*italic*"
+msgstr "*kurzíva*"
+
+#: fractal-gtk/res/ui/members.ui:25
+msgid "Search for room members"
+msgstr "Hľadať členov v miestnosti"
+
+#: fractal-gtk/res/ui/new_room.ui:14
+msgid "Private Chat"
+msgstr "Súkromná konverzácia"
+
+#: fractal-gtk/res/ui/new_room.ui:18 fractal-gtk/res/ui/new_room.ui:187
+msgid "Public"
+msgstr "Verejná"
+
+#: fractal-gtk/res/ui/new_room.ui:39
+msgid "Create new room"
+msgstr "Vytvoriť miestnosť"
+
+#: fractal-gtk/res/ui/new_room.ui:50
+msgid "Create"
+msgstr "Vytvoriť"
+
+#: fractal-gtk/res/ui/new_room.ui:152
+msgid "Visibility"
+msgstr "Viditeľnosť"
+
+#: fractal-gtk/res/ui/new_room.ui:171
+msgid "Private"
+msgstr "Súkromná"
+
+#: fractal-gtk/res/ui/room_config.ui:54
+msgid "Room avatar"
 msgstr "Obrázok miestnosti"
 
-#: src/session/content/room_details/mod.rs:244
-#, fuzzy
-msgid "Invite new Members"
+#: fractal-gtk/res/ui/room_config.ui:80
+msgid "ID"
+msgstr "ID"
+
+#: fractal-gtk/res/ui/room_config.ui:98
+msgid "Name"
+msgstr "Názov"
+
+#: fractal-gtk/res/ui/room_config.ui:116
+msgid "Topic"
+msgstr "Téma"
+
+#: fractal-gtk/res/ui/room_config.ui:186 fractal-gtk/res/ui/room_menu.ui:37
+msgid "Room details"
+msgstr "Podrobnosti miestnosti"
+
+#: fractal-gtk/res/ui/room_menu.ui:23
+msgid "Invite to this room"
+msgstr "Pozvať do tejto miestnosti"
+
+#: fractal-gtk/res/ui/user_menu.ui:109
+msgid "Account Settings"
+msgstr "Nastavenia účtu"
+
+#: fractal-gtk/res/ui/user_menu.ui:136
+msgid "Log Out"
+msgstr "Odhlásiť sa"
+
+#: fractal-gtk/src/app/backend_loop.rs:97
+msgid "No rooms found"
+msgstr "Neboli nájdené žiadne miestnosti"
+
+#: fractal-gtk/src/app/backend_loop.rs:161
+msgid "Can’t create the room, try again"
+msgstr "Nie je možné vytvoriť miestnosť, prosím skúste to zopakovať neskôr"
+
+#: fractal-gtk/src/app/backend_loop.rs:169
+msgid "Can’t join the room, try again."
+msgstr "Nie je možné vstúpiť do miestnosti, prosím skúste to zopakovať neskôr."
+
+#: fractal-gtk/src/app/backend_loop.rs:175
+msgid "Can’t login, try again"
+msgstr "Nie je možné sa prihlásiť, skúste to zopakovať neskôr"
+
+#: fractal-gtk/src/app/backend_loop.rs:181
+msgid "Error sending message"
+msgstr "Chyba pri posielaní správy"
+
+#: fractal-gtk/src/app/backend_loop.rs:185
+msgid "Error searching for rooms"
+msgstr "Chyba pri hľadaní miestností"
+
+#: fractal-gtk/src/appop/about.rs:19
+msgid "A Matrix.org client for GNOME"
+msgstr "Klient matrix.org pre pracovné prostredie GNOME"
+
+#: fractal-gtk/src/appop/about.rs:20
+msgid "© 2017–2018 Daniel García Moreno, et al."
+msgstr "© 2017–2018 Daniel García Moreno, a ostatní."
+
+#: fractal-gtk/src/appop/about.rs:26
+msgid "Learn more about Fractal"
+msgstr "Dozvedieť sa viac o Fractal"
+
+#: fractal-gtk/src/appop/about.rs:41
+msgid "Name by"
+msgstr "Názov"
+
+#: fractal-gtk/src/appop/attach.rs:52
+msgid "Image from Clipboard"
+msgstr "Obrázok zo schránky"
+
+#: fractal-gtk/src/appop/attach.rs:67
+msgid "Send"
+msgstr "Odoslať"
+
+#: fractal-gtk/src/appop/directory.rs:60
+msgid "Searching…"
+msgstr "Vyhľadávanie"
+
+#: fractal-gtk/src/appop/invite.rs:137
+msgid "Invite to {name}"
 msgstr "Pozvať do {name}"
 
-#. Translators: This is a date format in the day divider without the year
-#: src/session/content/room_history/item_row.rs:169
-msgid "%A, %B %e"
-msgstr ""
+#: fractal-gtk/src/appop/invite.rs:213
+msgid ""
+"You’ve been invited to join to <b>{room_name}</b> room by <b>{sender_name}</"
+"b>"
+msgstr "Používateľ <b>{sender_name}</b> vás pozval vstúpiť do miestnosti <b>{room_name}</b>"
 
-#. Translators: This is a date format in the day divider with the year
-#: src/session/content/room_history/item_row.rs:172
-msgid "%A, %B %e, %Y"
-msgstr ""
+#: fractal-gtk/src/appop/invite.rs:217
+msgid "You’ve been invited to join to <b>{room_name}</b>"
+msgstr "Boli ste pozvaní vstúpiť do miestnosti <b>{room_name}</b>"
 
-#: src/session/content/room_history/item_row.rs:190
+#: fractal-gtk/src/appop/login.rs:111
+msgid "Unknown Error"
+msgstr "Neznáma chyba"
+
+#: fractal-gtk/src/appop/login.rs:165
+msgid "Passwords didn’t match, try again"
+msgstr "Heslá sa nezhodujú, skúste znovu"
+
+#: fractal-gtk/src/appop/member.rs:87
+msgid "and one more"
+msgid_plural "and {member_count} more"
+msgstr[0] "a {member_count} ďalších"
+msgstr[1] "a jeden ďalší"
+msgstr[2] "a {member_count} ďalší"
+
+#: fractal-gtk/src/appop/message.rs:169
 msgid "New Messages"
 msgstr "Nové správy"
 
-#: src/session/content/room_history/message_row/audio.rs:245
-#: src/session/content/room_history/message_row/audio.rs:249
-msgid "Could not retrieve audio file"
-msgstr ""
+#: fractal-gtk/src/appop/message.rs:314
+msgid "Select"
+msgstr "Vybrať"
 
-#: src/session/content/room_history/message_row/audio.rs:262
-msgid "Error reading audio file"
-msgstr ""
+#: fractal-gtk/src/appop/mod.rs:104
+msgid "Load more members"
+msgstr "Načítať viac členov"
 
-#: src/session/content/room_history/message_row/media.rs:445
-#: src/session/media_viewer.rs:244
-msgid "Image file not supported"
-msgstr ""
+#: fractal-gtk/src/appop/room.rs:253
+msgid "Leave"
+msgstr "Opustiť"
 
-#: src/session/content/room_history/message_row/media.rs:484
-#: src/session/content/room_history/message_row/media.rs:489
-msgid "Could not retrieve media"
-msgstr ""
+#: fractal-gtk/src/appop/room.rs:592
+msgid "EMPTY ROOM"
+msgstr "Prázdna miestnosť"
 
-#: src/session/content/room_history/message_row/mod.rs:368
-msgid "Identity verification was started"
-msgstr ""
+#: fractal-gtk/src/appop/room.rs:594
+msgid "and"
+msgstr "a"
 
-#: src/session/content/room_history/message_row/mod.rs:381
-#: src/session/content/room_history/message_row/mod.rs:428
-msgid "Unsupported event"
-msgstr ""
+#: fractal-gtk/src/appop/room.rs:595
+msgid "and Others"
+msgstr "a ostatní"
 
-#: src/session/content/room_history/message_row/mod.rs:406
-msgid "Fractal couldn't decrypt this message."
-msgstr ""
+#: fractal-gtk/src/appop/sync.rs:12
+msgid "Syncing, this could take a while"
+msgstr "Synchronizácia, môže to chvíľu trvať"
 
-#: src/session/content/room_history/message_row/mod.rs:417
-msgid "This message was removed."
-msgstr ""
+#: fractal-gtk/src/widgets/roomlist.rs:433
+msgid "Invites"
+msgstr "Pozvania"
 
-#. TODO Get the actual name of the file by reading
-#. the text/plain mime type.
-#: src/session/content/room_history/mod.rs:363
-#: src/session/content/room_history/mod.rs:736
-msgid "Image"
-msgstr ""
+#: fractal-gtk/src/widgets/roomlist.rs:434
+msgid "You don't have any invitations"
+msgstr "Nemáte žiadne pozvánky"
 
-#: src/session/content/room_history/state_row/creation.rs:62
-msgid "This is the continuation of an upgraded room."
-msgstr ""
-
-#: src/session/content/room_history/state_row/creation.rs:68
-msgid "The beginning of this room."
-msgstr ""
-
-#: src/session/content/room_history/state_row/mod.rs:69
-msgid "This room is now encrypted."
-msgstr ""
-
-#: src/session/content/room_history/state_row/mod.rs:166
-msgid "An unsupported room member event was received."
-msgstr ""
-
-#: src/session/content/room_history/state_row/mod.rs:182
-msgid "An unsupported state event was received."
-msgstr ""
-
-#: src/session/content/room_history/verification_info_bar.rs:173
-msgid "Verification in progress"
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:492
-#: src/session/content/verification/identity_verification_widget.rs:521
-msgid "Verify the new session from the current session."
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:495
-msgid "Scan the QR code from another session logged into this account."
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:497
-#: src/session/content/verification/identity_verification_widget.rs:524
-msgid ""
-"You scanned to qr code successfully. You may need to confirm the "
-"verification in the other session."
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:501
-msgid "Scan this QR code from the other session."
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:504
-#: src/session/content/verification/identity_verification_widget.rs:531
-msgid "Check if the same emoji appear in the same order on the other device."
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:506
-#: src/session/content/verification/identity_verification_widget.rs:533
-msgid "Request Complete"
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:508
-msgid "This session is ready to send and receive secure messages."
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:510
-msgid "Get Started"
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:512
-#: src/session/content/verification/identity_verification_widget.rs:542
-msgid "Does the other session show a confirmation shield?"
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:518
-msgid "Login Request From Another Session"
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:523
-msgid ""
-"Scan the QR code from this session from another session logged into this "
-"account."
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:527
-msgid "Scan this QR code from the newly logged in session."
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:535
-msgid "The new session is now ready to send and receive secure messages."
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:547
-#: src/session/content/verification/identity_verification_widget.rs:551
-#: src/session/content/verification/identity_verification_widget.rs:557
-#: src/session/content/verification/identity_verification_widget.rs:561
-msgid "Verification Request"
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:559
-msgid "Ask <b>{}</b> to scan this QR code from their session."
-msgstr ""
-
-#: src/session/content/verification/identity_verification_widget.rs:566
-msgid "Verification Complete"
-msgstr ""
-
-#: src/session/content/verification/session_verification.rs:237
-msgid ""
-"If you lost access to all other session you can create a new crypto "
-"identity. Be care full because this will reset all verified users and make "
-"previously encrypted conversations unreadable."
-msgstr ""
-
-#: src/session/content/verification/session_verification.rs:320
-msgid "You cancelled the authentication needed to create the encryption keys."
-msgstr ""
-
-#: src/session/content/verification/session_verification.rs:324
-msgid "An error occurred during the creation of the encryption keys."
-msgstr ""
-
-#: src/session/media_viewer.rs:251
-msgid "Could not retrieve image"
-msgstr ""
-
-#: src/session/media_viewer.rs:288
-msgid "Could not retrieve video"
-msgstr ""
-
-#: src/session/mod.rs:760
-msgid "Failed to logout the session."
-msgstr ""
-
-#: src/session/room/event_actions.rs:205
-msgid "Save File"
-msgstr ""
-
-#: src/session/room/member_role.rs:48
-msgid "Admin"
-msgstr ""
-
-#: src/session/room/member_role.rs:49
-msgid "Moderator"
-msgstr ""
-
-#: src/session/room/member_role.rs:50
-msgid "Normal user"
-msgstr ""
-
-#: src/session/room/mod.rs:399
-msgid "Failed to forget <widget>."
-msgstr ""
-
-#: src/session/room/mod.rs:637
-#, fuzzy
-msgid "Unknown"
-msgstr "Neznáma chyba"
-
-#: src/session/room/mod.rs:1046
-msgid "Failed to accept invitation for <widget>. Try again later."
-msgstr ""
-
-#: src/session/room/mod.rs:1077
-msgid "Failed to reject invitation for <widget>. Try again later."
-msgstr ""
-
-#: src/session/room/mod.rs:1242
-msgid "Failed to invite <widget> to <widget>. Try again later."
-msgstr ""
-
-#: src/session/room/mod.rs:1244
-msgid ""
-"Failed to invite <widget> and some other user to <widget>. Try again later."
-msgstr ""
-
-#: src/session/room/mod.rs:1246
-msgid ""
-"Failed to invite <widget> and some other users to <widget>. Try again later."
-msgstr ""
-
-#: src/session/room_creation/mod.rs:278
-msgid "The address is already taken."
-msgstr ""
-
-#: src/session/room_creation/mod.rs:301
-msgid "Too long. Use a shorter name."
-msgstr ""
-
-#: src/session/room_creation/mod.rs:329
-msgid "Can't contain `:`"
-msgstr ""
-
-#: src/session/room_creation/mod.rs:334
-msgid "Can't contain `#`"
-msgstr ""
-
-#: src/session/room_creation/mod.rs:339
-msgid "Too long. Use a shorter address."
-msgstr ""
-
-#: src/session/sidebar/category_row.rs:161
-#, fuzzy
-msgid "Join Room as Favorite"
-msgstr "Vstúpiť do miestnosti"
-
-#: src/session/sidebar/category_row.rs:162
-#, fuzzy
-msgid "Join Room"
-msgstr "Vstúpiť do miestnosti"
-
-#: src/session/sidebar/category_row.rs:163
-msgid "Join Room as Low Priority"
-msgstr ""
-
-#: src/session/sidebar/category_row.rs:164
-#, fuzzy
-msgid "Reject Invite"
-msgstr "Odmietnuť"
-
-#: src/session/sidebar/category_row.rs:168
-msgid "Unmark as Favorite"
-msgstr ""
-
-#: src/session/sidebar/category_row.rs:169
-#: src/session/sidebar/category_row.rs:175
-msgid "Mark as Low Priority"
-msgstr ""
-
-#: src/session/sidebar/category_row.rs:170
-#: src/session/sidebar/category_row.rs:176
-#: src/session/sidebar/category_row.rs:182
-#, fuzzy
-msgid "Leave Room"
-msgstr "Opustiť miestnosť"
-
-#: src/session/sidebar/category_row.rs:174
-#: src/session/sidebar/category_row.rs:180
-#, fuzzy
-msgid "Mark as Favorite"
+#: fractal-gtk/src/widgets/roomlist.rs:435
+msgid "Favorites"
 msgstr "Obľúbené"
 
-#: src/session/sidebar/category_row.rs:181
-msgid "Unmark as Low Priority"
-msgstr ""
+#: fractal-gtk/src/widgets/roomlist.rs:436
+msgid ""
+"Drag and drop rooms here to                                        add them "
+"to your favorites"
+msgstr "Pretiahnite a pustite miestnosti sem, ak si ich želáte pridať do obľúbených"
 
-#: src/session/sidebar/category_row.rs:186
-msgid "Rejoin Room as Favorite"
-msgstr ""
-
-#: src/session/sidebar/category_row.rs:187
-#, fuzzy
-msgid "Rejoin Room"
-msgstr "Vstúpiť do miestnosti"
-
-#: src/session/sidebar/category_row.rs:188
-msgid "Rejoin Room as Low Priority"
-msgstr ""
-
-#: src/session/sidebar/category_type.rs:31
-msgid "Verifications"
-msgstr ""
-
-#: src/session/sidebar/category_type.rs:32
-#, fuzzy
-msgid "Invited"
-msgstr "Pozvať"
-
-#: src/session/sidebar/category_type.rs:33
-#, fuzzy
-msgid "Favorite"
-msgstr "Obľúbené"
-
-#: src/session/sidebar/category_type.rs:34
+#: fractal-gtk/src/widgets/roomlist.rs:438
 msgid "Rooms"
 msgstr "Miestnosti"
 
-#: src/session/sidebar/category_type.rs:35
-msgid "Low Priority"
-msgstr ""
-
-#: src/session/sidebar/category_type.rs:36
-msgid "Historical"
-msgstr ""
-
-#. Translators: This shouldn't ever be visible to the user,
-#: src/session/sidebar/category_type.rs:38
-msgid "Outdated"
-msgstr ""
-
-#: src/session/sidebar/category_type.rs:39
-msgid "Spaces"
-msgstr ""
-
-#: src/session/sidebar/entry_type.rs:21
-msgid "Explore"
-msgstr ""
-
-#: src/session/sidebar/entry_type.rs:22
-#, fuzzy
-msgid "Forget Room"
-msgstr "Nová miestnosť"
-
-#: src/session/verification/identity_verification.rs:672
-msgid "You cancelled the verification process."
-msgstr ""
-
-#: src/session/verification/identity_verification.rs:674
-msgid "The verification process failed because it reached a timeout."
-msgstr ""
-
-#: src/session/verification/identity_verification.rs:677
-msgid "You accepted the request from an other session."
-msgstr ""
-
-#: src/session/verification/identity_verification.rs:680
-msgid "The emoji did not match."
-msgstr ""
-
-#: src/session/verification/identity_verification.rs:689
-msgid "An unknown error occurred during the verification process."
-msgstr ""
-
-#: src/user_facing_error.rs:21
-msgid "The connection timed out. Try again later."
-msgstr ""
-
-#: src/user_facing_error.rs:23
-msgid "Unable to connect to the homeserver."
-msgstr ""
-
-#: src/user_facing_error.rs:28
-#, fuzzy
-msgid "The provided username or password is invalid."
-msgstr "Meno používateľaalebo heslo nie je správne"
-
-#: src/user_facing_error.rs:29
-msgid "The user is deactivated."
-msgstr ""
-
-#: src/user_facing_error.rs:37
-msgid "You exceeded the homeserver’s rate limit, try again later."
-msgstr ""
-
-#: src/user_facing_error.rs:47
-msgid "An unknown connection error occurred."
-msgstr ""
-
-#: src/user_facing_error.rs:55
-msgid "Could not decrypt the event"
-msgstr ""
-
-#: src/user_facing_error.rs:57 src/user_facing_error.rs:77
-msgid "An unknown error occurred."
-msgstr ""
-
-#: src/user_facing_error.rs:64
-msgid "Could not open the store."
-msgstr ""
-
-#: src/user_facing_error.rs:71
-msgid "This is not a valid URL"
-msgstr ""
-
-#: src/user_facing_error.rs:73
-msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
-msgstr ""
-
-#. Translators: Default name for image files.
-#: src/utils.rs:190
-msgid "image"
-msgstr ""
-
-#. Translators: Default name for video files.
-#: src/utils.rs:192
-msgid "video"
-msgstr ""
-
-#. Translators: Default name for audio files.
-#: src/utils.rs:194
-msgid "audio"
-msgstr ""
-
-#. Translators: Default name for files.
-#: src/utils.rs:196
-msgid "file"
-msgstr ""
-
-#, fuzzy
-#~ msgctxt "shortcut window"
-#~ msgid "Close the active room"
-#~ msgstr "Zatvorenie aktívnej miestnosti"
-
-#, fuzzy
-#~ msgctxt "shortcut window"
-#~ msgid "Open / close the room sidebar search"
-#~ msgstr "Otvorenie / zatvorenie postraného panelu hľadať miestnosti"
-
-#, fuzzy
-#~ msgctxt "shortcut window"
-#~ msgid "View older messages"
-#~ msgstr "Nové správy"
-
-#, fuzzy
-#~ msgctxt "shortcut window"
-#~ msgid "View newer messages"
-#~ msgstr "Nové správy"
-
-#~ msgid "Type of password and token storage"
-#~ msgstr "Typ úložiska hesla a tokenu"
-
-#~ msgid "Type of password and token storage, default value is: Secret Service"
-#~ msgstr "Typ úložiska hesla a tokenu, predvolená hodnota je Secret Service"
-
-#~ msgid "Back"
-#~ msgstr "Naspäť"
-
-#~ msgid "Password"
-#~ msgstr "Heslo"
-
-#, fuzzy
-#~ msgid "New Direct Chat"
-#~ msgstr "Nová priama konverzácia"
-
-#~ msgid "New direct chat"
-#~ msgstr "Nová priama konverzácia"
-
-#~ msgid "Start chat"
-#~ msgstr "Začať konverzáciu"
-
-#~ msgid "Invitation"
-#~ msgstr "Pozvanie"
-
-#~ msgid "ID or Alias"
-#~ msgstr "ID alebo alias"
-
-#~ msgid "Join room"
-#~ msgstr "Vstúpiť do miestnosti"
-
-#~ msgid "Leave?"
-#~ msgstr "Opustiť?"
-
-#, fuzzy
-#~ msgid ""
-#~ "Once you leave, you won’t be able to interact with people in the room "
-#~ "anymore."
-#~ msgstr ""
-#~ "Ak miestnosť opustíte, nebudete viac môcť komunikovať s jej členmi kým "
-#~ "opätovne nevstúpite"
-
-#, fuzzy
-#~ msgid "_Log In"
-#~ msgstr "Prihlásiť sa"
-
-#, fuzzy
-#~ msgid "_Create Account"
-#~ msgstr "Vytvoriť účet"
-
-#~ msgid "Log In"
-#~ msgstr "Prihlásiť sa"
-
-#, fuzzy
-#~ msgid "_User ID"
-#~ msgstr "Používateľ"
-
-#, fuzzy
-#~ msgid "_Password"
-#~ msgstr "Heslo"
-
-#, fuzzy
-#~ msgid "User name, email, or phone number"
-#~ msgstr "Používateľské meno matrix, email alebo telefónne číslo"
-
-#~ msgid "Keyboard _Shortcuts"
-#~ msgstr "Klávesové _skratky"
-
-#~ msgid "User"
-#~ msgstr "Používateľ"
-
-#~ msgid "Add"
-#~ msgstr "Pridať"
-
-#~ msgid "Room search"
-#~ msgstr "Hľadať miestnosť"
-
-#, fuzzy
-#~ msgid "Room Menu"
-#~ msgstr "Názov miestnosti"
-
-#~ msgid "No room"
-#~ msgstr "Žiadna miestnosť"
-
-#, fuzzy
-#~ msgid "Default Matrix Server"
-#~ msgstr "Matrix server"
-
-#, fuzzy
-#~ msgid "Loading more media"
-#~ msgstr "Načítať viac členov"
-
-#, fuzzy
-#~ msgid "Copy Selection"
-#~ msgstr "Vybrať"
-
-#, fuzzy
-#~ msgid "Copy To Clipboard"
-#~ msgstr "Obrázok zo schránky"
-
-#, fuzzy
-#~ msgid "Invite to This Room"
-#~ msgstr "Pozvať do tejto miestnosti"
-
-#, fuzzy
-#~ msgid "Add topic"
-#~ msgstr "Téma miestnosti"
-
-#, fuzzy
-#~ msgid "No room description"
-#~ msgstr "Nie je vybratá žiadna miestnosť"
-
-#, fuzzy
-#~ msgid "All room history"
-#~ msgstr "Adresár miestností"
-
-#, fuzzy
-#~ msgid "Room Visibility"
-#~ msgstr "Viditeľnosť"
-
-#, fuzzy
-#~ msgid "Publish in room directory"
-#~ msgstr "Adresár miestností"
-
-#, fuzzy
-#~ msgid "Show rooms from:"
-#~ msgstr "Neboli nájdené žiadne miestnosti"
-
-#, fuzzy
-#~ msgid "Your homeserver"
-#~ msgstr "URL adresa domovského servera"
-
-#, fuzzy
-#~ msgid "Other Homeserver"
-#~ msgstr "URL adresa domovského servera"
-
-#, fuzzy
-#~ msgid "Select a file"
-#~ msgstr "Vyberte obrázok miestnosti"
-
-#, fuzzy
-#~ msgid "Leave {room_name}?"
-#~ msgstr "Opustiť miestnosť"
-
-#~ msgid "EMPTY ROOM"
-#~ msgstr "Prázdna miestnosť"
-
-#, fuzzy
-#~ msgid "{m1} and Others"
-#~ msgstr "a ostatní"
-
-#~ msgid "Syncing, this could take a while"
-#~ msgstr "Synchronizácia, môže to chvíľu trvať"
-
-#~ msgid "Can’t login, try again"
-#~ msgstr "Nie je možné sa prihlásiť, skúste to zopakovať neskôr"
-
-#, fuzzy
-#~ msgid "Error deleting message"
-#~ msgstr "Chyba pri posielaní správy"
-
-#~ msgid "Can’t join the room, try again."
-#~ msgstr ""
-#~ "Nie je možné vstúpiť do miestnosti, prosím skúste to zopakovať neskôr."
-
-#~ msgid "Can’t create the room, try again"
-#~ msgstr "Nie je možné vytvoriť miestnosť, prosím skúste to zopakovať neskôr"
-
-#, fuzzy
-#~ msgid "© 2017–2020 Daniel García Moreno, et al."
-#~ msgstr "© 2017–2018 Daniel García Moreno, a ostatní."
-
-#~ msgid "Image from Clipboard"
-#~ msgstr "Obrázok zo schránky"
-
-#~ msgid "Invite to {name}"
-#~ msgstr "Pozvať do {name}"
-
-#, fuzzy
-#~ msgid "Join {room_name}?"
-#~ msgstr "Vstúpiť do miestnosti"
-
-#, fuzzy
-#~ msgid ""
-#~ "You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</"
-#~ "b>"
-#~ msgstr ""
-#~ "Používateľ <b>{sender_name}</b> vás pozval vstúpiť do miestnosti "
-#~ "<b>{room_name}</b>"
-
-#, fuzzy
-#~ msgid "You’ve been invited to join <b>{room_name}</b>"
-#~ msgstr "Boli ste pozvaní vstúpiť do miestnosti <b>{room_name}</b>"
-
-#, fuzzy
-#~ msgid "{} member"
-#~ msgid_plural "{} members"
-#~ msgstr[0] "Členovia"
-#~ msgstr[1] "Členovia"
-#~ msgstr[2] "Členovia"
-
-#, fuzzy
-#~ msgid "Malformed server URL"
-#~ msgstr "URL adresa domovského servera"
-
-#~ msgid "Invites"
-#~ msgstr "Pozvania"
-
-#, fuzzy
-#~ msgid "You don’t have any invitations"
-#~ msgstr "Nemáte žiadne pozvánky"
-
-#, fuzzy
-#~ msgid "Drag and drop rooms here to add them to your favorites"
-#~ msgstr ""
-#~ "Pretiahnite a pustite miestnosti sem, ak si ich želáte pridať do "
-#~ "obľúbených"
-
-#, fuzzy
-#~ msgid "You don’t have any rooms yet"
-#~ msgstr "Zatiaľ ste nevstúpili do žiadnych miestností"
-
-#~ msgid "_About"
-#~ msgstr "_O programe"
-
-#~ msgid "_Quit"
-#~ msgstr "U_končiť"
-
-#~ msgid "You’ve been invited to join \"\", you can accept or reject"
-#~ msgstr ""
-#~ "Boli ste pozvaní vstúpiť do miestnosti \"\", prijmite alebo odmietnite "
-#~ "pozvanie"
-
-#~ msgid "Searching"
-#~ msgstr "Vyhľadávanie"
-
-#~ msgid "Attach files"
-#~ msgstr "Pripojiť súbory"
-
-#~ msgid "Text formatting"
-#~ msgstr "Formátovanie textu"
-
-#~ msgid "Search"
-#~ msgstr "Hľadať"
-
-#~ msgid "Directory"
-#~ msgstr "Adresár"
-
-#~ msgid "Loading"
-#~ msgstr "Načítavanie"
-
-#~ msgid "Username"
-#~ msgstr "Meno používateľa"
-
-#~ msgid "Identity server URL"
-#~ msgstr "URL adresa servera totožností"
-
-#~ msgid "Identity server"
-#~ msgstr "Server totožností"
-
-#~ msgid "Advanced"
-#~ msgstr "Pokročilé"
-
-#~ msgid "Log In as Guest"
-#~ msgstr "Prihlásiť sa ako hosť"
-
-#~ msgid "Login"
-#~ msgstr "Prihlásiť"
-
-#~ msgid "Private Chat"
-#~ msgstr "Súkromná konverzácia"
-
-#~ msgid "ID"
-#~ msgstr "ID"
-
-#~ msgid "Topic"
-#~ msgstr "Téma"
-
-#~ msgid "Searching…"
-#~ msgstr "Vyhľadávanie"
-
-#~ msgid "and one more"
-#~ msgid_plural "and {member_count} more"
-#~ msgstr[0] "a {member_count} ďalších"
-#~ msgstr[1] "a jeden ďalší"
-#~ msgstr[2] "a {member_count} ďalší"
-
-#~ msgid "Leave"
-#~ msgstr "Opustiť"
-
-#~ msgid "and"
-#~ msgstr "a"
+#: fractal-gtk/src/widgets/roomlist.rs:439
+msgid "You don't have any rooms yet"
+msgstr "Zatiaľ ste nevstúpili do žiadnych miestností"

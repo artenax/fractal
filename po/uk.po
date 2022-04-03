@@ -3,29 +3,109 @@
 # This file is distributed under the same license as the fractal package.
 #
 # Artem Polishchuk <ego.cordatus@gmail.com>, 2019.
-# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-04-02 19:31+0000\n"
-"PO-Revision-Date: 2022-04-03 12:19+0300\n"
+"POT-Creation-Date: 2021-02-05 12:39+0000\n"
+"PO-Revision-Date: 2021-02-05 22:17+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 20.12.0\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Lokalize 20.11.70\n"
 
-#: data/org.gnome.Fractal.desktop.in.in:3
-#: data/org.gnome.Fractal.metainfo.xml.in.in:9
+#: fractal-gtk/res/gtk/help-overlay.ui:13
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Загальні"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:18
+msgctxt "shortcut window"
+msgid "Close the active room"
+msgstr "Закрити активну кімнату"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:25
+msgctxt "shortcut window"
+msgid "Open main menu"
+msgstr "Відкрити головне меню"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:32
+msgctxt "shortcut window"
+msgid "Open / close the room sidebar search"
+msgstr "Відкрити / закрити пошук кімнат в бічній панелі"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:39
+msgctxt "shortcut window"
+msgid "Open the previous room in the list"
+msgstr "Відкрити попередню кімнату у списку"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:46
+msgctxt "shortcut window"
+msgid "Open the next room in the list"
+msgstr "Відкрити наступну кімнату у списку"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:53
+msgctxt "shortcut window"
+msgid "Open the previous room with unread messages in the list"
+msgstr "Відкрити попередню кімнату із непрочитаними повідомленнями у списку"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:60
+msgctxt "shortcut window"
+msgid "Open the next room with unread messages in the list"
+msgstr "Відкрити наступну кімнату із непрочитаними повідомленнями у списку"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:67
+msgctxt "shortcut window"
+msgid "Open the first room of the list"
+msgstr "Відкрити першу кімнату у списку"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:74
+msgctxt "shortcut window"
+msgid "Open the last room of the list"
+msgstr "Відкрити останню кімнату у списку"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:81
+msgctxt "shortcut window"
+msgid "View older messages"
+msgstr "Переглянути старіші повідомлення"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:88
+msgctxt "shortcut window"
+msgid "View newer messages"
+msgstr "Переглянути новіші повідомлення"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:94
+msgctxt "shortcut window"
+msgid "Keyboard Shortcuts"
+msgstr "Комбінації клавіш"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:101
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Завершити"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:110
+msgctxt "shortcut message"
+msgid "Composing a new message"
+msgstr "Створення нового повідомлення"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:115
+msgctxt "shortcut message"
+msgid "Write on a new line"
+msgstr "Написати на новому рядку"
+
+#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:3
+#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:5
+#: fractal-gtk/res/ui/login_flow.ui:19 fractal-gtk/src/appop/mod.rs:170
 msgid "Fractal"
 msgstr "Фрактал"
 
-#: data/org.gnome.Fractal.desktop.in.in:4
+#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:4
 msgid ""
 "Fractal is a decentralized, secure messaging client for collaborative group "
 "communication."
@@ -33,51 +113,63 @@ msgstr ""
 "«Фрактал» — децентралізований, безпечний клієнт обміну повідомленнями для "
 "спільного групового спілкування."
 
-#: data/org.gnome.Fractal.desktop.in.in:5
+#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:5
 msgid "Fractal group messaging"
 msgstr "Груповий обмін повідомленнями у «Фракталі»"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/org.gnome.Fractal.desktop.in.in:14
+#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:14
 msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
 msgstr ""
 "Matrix;matrix.org;chat;irc;communications;talk;riot;element;матрікс;метрікс;"
 "матриця;чат;балачка;спілкування;ірк;ріот;райот;елемент;"
 
-#: data/org.gnome.Fractal.gschema.xml.in:6
-#| msgid "Default window width"
-msgid "Window width"
-msgstr "Ширина вікна"
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:13
+msgid "Type of password and token storage"
+msgstr "Тип сховища паролів і ключів"
 
-#: data/org.gnome.Fractal.gschema.xml.in:10
-#| msgid "Default window height"
-msgid "Window height"
-msgstr "Висота вікна"
-
-#: data/org.gnome.Fractal.gschema.xml.in:14
-#| msgid "Whether the main window is maximized on startup"
-msgid "Window maximized state"
-msgstr "Стан розгорнутого вікна"
-
-#: data/org.gnome.Fractal.gschema.xml.in:18
-msgid "Enable markdown formatting"
-msgstr "Увімкнути форматування markdown"
-
-#: data/org.gnome.Fractal.gschema.xml.in:19
-msgid "Whether messages should be processed as markdown when sending them"
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:14
+msgid "Type of password and token storage, default value is: Secret Service"
 msgstr ""
-"Визначає, чи слід обробляти повідомлення як код Markdown при їхньому"
-" надсиланні"
+"Тип сховища паролів і ключів. Типове значення: служба зберігання паролів"
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:8
-msgid "Julian Sparber"
-msgstr "Julian Sparber"
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:21
+msgid "If markdown sending is active"
+msgstr "Чи увімкнено розмітку при надсиланні"
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:10
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:22
+msgid "Whether support for sending markdown messages is on"
+msgstr "Чи увімкнено підтримку розмітки у надісланих повідомленнях"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:29
+msgid "X position of the main window on startup"
+msgstr "Розташування головного вікна за віссю X після запуску"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:34
+msgid "Y position of the main window on startup"
+msgstr "Розташування головного вікна за віссю Y після запуску"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:39
+msgid "Width of the main window on startup"
+msgstr "Ширина головного вікна після запуску"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:44
+msgid "Height of the main window on startup"
+msgstr "Висота головного вікна після запуску"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:49
+msgid "Whether the main window is maximized on startup"
+msgstr "Чи має бути розгорнуто головне вікно після запуску"
+
+#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:8
+msgid "Daniel García Moreno"
+msgstr "Daniel García Moreno"
+
+#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:9
 msgid "Matrix group messaging app"
 msgstr "Програма для обміну груповими повідомленнями Matrix"
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:12
+#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:11
 msgid ""
 "Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
 "is optimized for collaboration in large groups, such as free software "
@@ -87,2001 +179,900 @@ msgstr ""
 "написана на Rust. Інтерфейс оптимізований для спільної роботи у великих "
 "групах, таких як проекти вільного програмного забезпечення."
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:9
-#: data/resources/ui/account-settings-user-page.ui:54
-msgid "Change Password"
-msgstr "Зміна пароля"
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:76
-msgid "New Password"
-msgstr "Новий пароль"
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:81
-msgid "Confirm New Password"
-msgstr "Підтвердження нового пароля"
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:94
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
-#: src/session/content/room_history/verification_info_bar.rs:174
-msgid "Continue"
-msgstr "Продовжити"
-
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:9
-#: data/resources/ui/account-settings-user-page.ui:115
-msgid "Deactivate Account"
-msgstr "Деактивувати обліковий запис"
-
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:79
-#: data/resources/ui/account-settings-user-page.ui:80
-msgid "Matrix User ID"
-msgstr "Ідентифікатор користувача Matrix"
-
-#: data/resources/ui/account-settings-device-row.ui:59
-#: src/session/content/verification/identity_verification_widget.rs:493
-#: src/session/content/verification/identity_verification_widget.rs:498
-#: src/session/content/verification/identity_verification_widget.rs:502
-#: src/session/content/verification/identity_verification_widget.rs:522
-#: src/session/content/verification/identity_verification_widget.rs:525
-#: src/session/content/verification/identity_verification_widget.rs:529
-msgid "Verify Session"
-msgstr "Перевірити сеанс"
-
-#: data/resources/ui/account-settings-devices-page.ui:5
-msgid "Sessions"
-msgstr "Сеанси"
-
-#: data/resources/ui/account-settings-devices-page.ui:9
-#: data/resources/ui/account-settings-devices-page.ui:13
-msgid "Current Session"
-msgstr "Поточний сеанс"
-
-#: data/resources/ui/account-settings-devices-page.ui:24
-#: data/resources/ui/account-settings-devices-page.ui:28
-msgid "Other Active Sessions"
-msgstr "Інші активні сеанси"
-
-#: data/resources/ui/account-settings-user-page.ui:5
-#: data/resources/ui/content-room-details.ui:9
-msgid "General"
-msgstr "Загальні"
-
-#: data/resources/ui/account-settings-user-page.ui:38
-msgid "Name"
-msgstr "Ім'я"
-
-#: data/resources/ui/account-settings-user-page.ui:63
-msgid "Advanced Information"
-msgstr "Додаткова інформація"
-
-#: data/resources/ui/account-settings-user-page.ui:66
-msgid "Homeserver"
-msgstr "Домашній сервер"
-
-#: data/resources/ui/account-settings-user-page.ui:94
-msgid "Session ID"
-msgstr "Ідентифікатор сеансу"
-
-#: data/resources/ui/account-settings.ui:4
+#: fractal-gtk/res/ui/account_settings.ui:14 fractal-gtk/res/ui/main_menu.ui:94
 msgid "Account Settings"
 msgstr "Налаштування облікового запису"
 
-#: data/resources/ui/attachment-dialog.ui:14
-#: data/resources/ui/content-invite-subpage.ui:12
-#: data/resources/ui/room-creation.ui:16
-msgid "_Cancel"
-msgstr "_Скасувати"
-
-#: data/resources/ui/attachment-dialog.ui:21
-msgid "_Send"
-msgstr "_Надіслати"
-
-#: data/resources/ui/attachment-dialog.ui:36
-msgid "No Preview Available"
-msgstr "Перегляд недоступний"
-
-#: data/resources/ui/components-auth-dialog.ui:20
-msgid "Authentication"
-msgstr "Розпізнавання"
-
-#: data/resources/ui/components-auth-dialog.ui:43
-msgid "Please authenticate the operation with your password"
-msgstr "Будь ласка, пройдіть розпізнавання, ввівши пароль"
-
-#: data/resources/ui/components-auth-dialog.ui:70
-msgid ""
-"Please authenticate the operation via the browser and once completed press "
-"confirm."
-msgstr ""
-"Будь ласка, пройдіть розпізнавання за допомогою браузера, а потім "
-"поверніться сюди і натисніть кнопку «Підтвердити»."
-
-#: data/resources/ui/components-auth-dialog.ui:80
-msgid "Authenticate via Browser"
-msgstr "Розпізнавання за допомогою браузера"
-
-#: data/resources/ui/components-auth-dialog.ui:113
-#: data/resources/ui/identity-verification-widget.ui:455
-#: src/components/editable_avatar.rs:344
-#: src/session/content/room_history/verification_info_bar.rs:175
-#: src/session/room/event_actions.rs:210
-msgid "Cancel"
-msgstr "Скасувати"
-
-#: data/resources/ui/components-auth-dialog.ui:118
-#: data/resources/ui/identity-verification-widget.ui:445
-msgid "Confirm"
-msgstr "Підтвердити"
-
-#: data/resources/ui/components-loading-listbox-row.ui:32
-msgid "Retry"
-msgstr "Повторити"
-
-#: data/resources/ui/content-explore.ui:64
-#| msgid "No rooms matching the search where found"
-msgid "No rooms matching the search were found"
-msgstr "Не знайдено жодної кімнати, яка відповідає критерію пошуку"
-
-#: data/resources/ui/content-explore.ui:96
-msgid "Room List"
-msgstr "Список кімнат"
-
-#: data/resources/ui/content-invite-subpage.ui:18
-msgid "I_nvite"
-msgstr "Запр_осити"
-
-#: data/resources/ui/content-invite-subpage.ui:87
-msgid "Search for users to invite them to this room."
-msgstr "Шукати користувачів для запрошення їх до цієї кімнати."
-
-#: data/resources/ui/content-invite-subpage.ui:123
-#| msgid "No users matching the search where found."
-msgid "No users matching the search were found."
-msgstr "Не знайдено жодного користувача, який відповідає критерію пошуку."
-
-#: data/resources/ui/content-invite-subpage.ui:132
-msgid "An error occurred while searching for matches"
-msgstr "Під час пошуку відповідників сталася помилка"
-
-#: data/resources/ui/content-invite.ui:26
-#: data/resources/ui/content-invite.ui:51
-msgid "Invite"
-msgstr "Запросити"
-
-#: data/resources/ui/content-invite.ui:90
-msgid "<widget> invited you"
-msgstr "<widget> запросив/запросила вас"
-
-#: data/resources/ui/content-invite.ui:109
-#: data/resources/ui/sidebar-room-row.ui:11
-msgid "_Reject"
-msgstr "Від_хилити"
-
-#: data/resources/ui/content-invite.ui:119
-#: data/resources/ui/sidebar-room-row.ui:6
-msgid "_Accept"
-msgstr "При_йняти"
-
-#: data/resources/ui/content-markdown-popover.ui:17
-msgid "_Markdown"
-msgstr "_Markdown"
-
-#: data/resources/ui/content-markdown-popover.ui:37
-msgid "> quote"
-msgstr "> цитата"
-
-#: data/resources/ui/content-markdown-popover.ui:46
-msgid "**bold**"
-msgstr "**жирний**"
-
-#: data/resources/ui/content-markdown-popover.ui:59
-msgid "`code`"
-msgstr "`моноширинний`"
-
-#: data/resources/ui/content-markdown-popover.ui:69
-msgid "*italic*"
-msgstr "*курсив*"
-
-#: data/resources/ui/content-member-page.ui:5
-msgid "Members"
-msgstr "Учасники"
-
-#: data/resources/ui/content-member-page.ui:24
-msgid "Invite new member"
-msgstr "Запросити нового учасника"
-
-#: data/resources/ui/content-member-page.ui:33
-msgid "Search for room members"
-msgstr "Пошук учасників в кімнаті"
-
-#: data/resources/ui/content-message-file.ui:21
-msgid "Open"
-msgstr "Відкрити"
-
-#: data/resources/ui/content-message-file.ui:28
-#: src/session/room/event_actions.rs:209
-msgid "Save"
-msgstr "Зберегти"
-
-#: data/resources/ui/content-room-details.ui:4
-#: src/session/content/room_details/mod.rs:250
-msgid "Room Details"
-msgstr "Інформація про кімнату"
-
-#: data/resources/ui/content-room-history.ui:6
-msgid "Room _Details"
-msgstr "Інформація про _кімнату"
-
-#: data/resources/ui/content-room-history.ui:11
-msgid "_Invite New Member"
-msgstr "З_апросити нового учасника"
-
-#: data/resources/ui/content-room-history.ui:18
-#: data/resources/ui/sidebar-room-row.ui:40
-msgid "_Leave Room"
-msgstr "По_лишити кімнату"
-
-#: data/resources/ui/content-room-history.ui:118
-msgid "Unable to load room"
-msgstr "Не вдалося завантажити кімнату"
-
-#: data/resources/ui/content-room-history.ui:119
-msgid "Check your network connection."
-msgstr "Перевірте ваше з'єднання з мережею."
-
-#: data/resources/ui/content-room-history.ui:122
-msgid "Try Again"
-msgstr "Повторити спробу"
-
-#: data/resources/ui/content-room-history.ui:147
-msgid "Scroll to bottom"
-msgstr "Прокрутіть донизу"
-
-#: data/resources/ui/content-room-history.ui:159
-msgid "Drop Here to Send"
-msgstr "Скиньте сюди, щоб надіслати"
-
-#: data/resources/ui/content-room-history.ui:185
-msgid "Room History"
-msgstr "Журнал кімнати"
-
-#: data/resources/ui/content-state-creation.ui:19
-msgid "Previous room"
-msgstr "Попередня кімната"
-
-#: data/resources/ui/content-state-tombstone.ui:14
-msgid "This room was upgraded."
-msgstr "Цю кімнату було оновлено."
-
-#: data/resources/ui/content-state-tombstone.ui:19
-msgid "Switch to new Room"
-msgstr "Перемкнутися на нову кімнату"
-
-#: data/resources/ui/content.ui:35
-msgid "No Room Selected"
-msgstr "Не вибрано жодної кімнати"
-
-#: data/resources/ui/content.ui:36
-msgid "Join a room to start chatting."
-msgstr "Увійдіть до кімнати, щоб почати спілкування."
-
-#: data/resources/ui/error-page.ui:40
-msgid ""
-"It seems like one of the Fractal sessions stored in the Secret Service is "
-"corrupted. If you know how to fix it you should do so."
-msgstr ""
-"Здається один із сеансів «Фрактала», який було збережено у «Секретній "
-"службі», пошкоджено. Якщо вам відомо, як виправити цю помилку, можете "
-"зробити це."
-
-#: data/resources/ui/error-page.ui:51
-msgid ""
-"Alternatively, we could delete this session for you. This means you will "
-"have to login again and you will lose access to your encrypted messages, "
-"unless you have a session open in another client or you have already backed "
-"up your encryption keys."
-msgstr ""
-"Крім того, ви можете вилучити цей сеанс. Це означає, що вам доведеться знову "
-"увійти до системи, і ви втратите доступ до ваших шифрованих повідомлень, "
-"якщо сеанс не було відкрито у іншому клієнті або вами не було створено "
-"резервної копії ваших ключів шифрування."
-
-#: data/resources/ui/error-page.ui:74
-msgid "Clicking this button might delete more than one session!"
-msgstr "Натискання цієї кнопки може призвести до вилучення декількох сеансів!"
-
-#: data/resources/ui/error-page.ui:86
-msgid "Delete the corrupted session"
-msgstr "Вилучити пошкоджений сеанс"
-
-#: data/resources/ui/error-page.ui:109
-#| msgid ""
-#| "Fractal relies on a Secret Service Provider to manage your sensitive "
-#| "session information and an error occurred while we where trying to store "
-#| "or get your session."
-msgid ""
-"Fractal relies on a Secret Service Provider to manage your sensitive session "
-"information and an error occurred while we were trying to store or get your "
-"session."
-msgstr ""
-"«Фрактал» у керуванні конфіденційними даними ваших сеансів покладається на "
-"«Секретну службу». Під час спроби зберегти або отримати дані вашого сеансу "
-"сталася помилка."
-
-#: data/resources/ui/error-page.ui:124
-msgid ""
-"Here are a few things that might help you fix issues with the Secret Service:"
-msgstr ""
-"Ось декілька порад, які можуть допомогти вам виправити проблеми із "
-"«Секретною службою»:"
-
-#: data/resources/ui/error-page.ui:147
-msgid ""
-"Make sure you have a Secret Service Provider installed, like gnome-keyring."
-msgstr ""
-"Переконайтеся, що встановлено обгортку «Секретної служби», наприклад gnome-"
-"keyring."
-
-#: data/resources/ui/error-page.ui:172
-msgid "Check that you have a default keyring and that it is unlocked."
-msgstr "Перевірте, чи є у вас типова в'язка ключів і чи її розблоковано."
-
-#: data/resources/ui/error-page.ui:187
-msgid ""
-"Check the application logs and your distribution's documentation for more "
-"details."
-msgstr ""
-"Ознайомтеся із журналом програми та документацією до вашого дистрибутива, "
-"щоб дізнатися більше."
-
-#: data/resources/ui/event-menu.ui:11
-msgid "_Reply"
-msgstr "_Відповісти"
-
-#: data/resources/ui/event-menu.ui:16
-msgid "_Edit"
-msgstr "З_мінити"
-
-#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:86
-msgid "_Forward"
-msgstr "П_ереспрямувати"
-
-#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:93
-msgid "_Select"
-msgstr "_Вибрати"
-
-#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
-msgid "_Copy Text"
-msgstr "_Копіювати текст"
-
-#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
-msgid "_Copy Image"
-msgstr "_Копіювати зображення"
-
-#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
-msgid "S_ave Image"
-msgstr "З_берегти зображення"
-
-#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:106
-msgid "_Permalink"
-msgstr "С_тале посилання"
-
-#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
-msgid "_View Source"
-msgstr "П_ереглянути код"
-
-#: data/resources/ui/event-menu.ui:63 data/resources/ui/event-menu.ui:118
-msgid "Re_move"
-msgstr "В_илучити"
-
-#: data/resources/ui/event-source-dialog.ui:5
-msgid "Event Source"
-msgstr "Джерело подій"
-
-#: data/resources/ui/greeter.ui:43
-msgid ""
-"You are running an early stage development version. Be aware it is a work in "
-"progress and far from complete yet."
-msgstr ""
-"Ви працюєте із версією, яка перебуває на ранній стадії розробки. Слід "
-"врахувати, що цю роботу ще не завершено, і її результати далекі від повноти."
-
-#. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:83
-msgid "Welcome to Fractal"
-msgstr "Вітаємо у «Фракталі»"
-
-#: data/resources/ui/greeter.ui:108
-msgid "_Log in"
-msgstr "_Увійти"
-
-#: data/resources/ui/greeter.ui:118
-msgid "_Create Account"
-msgstr "С_творити обліковий запис"
-
-#: data/resources/ui/identity-verification-widget.ui:50
-#: src/session/content/room_history/verification_info_bar.rs:170
-msgid "Decline"
-msgstr "Відхилити"
-
-#: data/resources/ui/identity-verification-widget.ui:60
-#: src/session/content/room_history/verification_info_bar.rs:169
-msgid "Verify"
-msgstr "Перевірити"
-
-#: data/resources/ui/identity-verification-widget.ui:115
-#: data/resources/ui/identity-verification-widget.ui:216
-msgid "Can't scan QR code?"
-msgstr "Не вдалося сканувати QR-код?"
-
-#: data/resources/ui/identity-verification-widget.ui:123
-#: data/resources/ui/identity-verification-widget.ui:233
-msgid "Compare Emoji"
-msgstr "Порівняти емодзі"
-
-#: data/resources/ui/identity-verification-widget.ui:150
-msgid "Scan Complete"
-msgstr "Сканування завершено"
-
-#: data/resources/ui/identity-verification-widget.ui:225
-msgid "Scan QR code with this session"
-msgstr "Сканувати QR-код з цим сеансом"
-
-#: data/resources/ui/identity-verification-widget.ui:293
-msgid "Do Not Match"
-msgstr "Не збігається"
-
-#: data/resources/ui/identity-verification-widget.ui:303
-msgid "Match"
-msgstr "Збігається"
-
-#: data/resources/ui/identity-verification-widget.ui:353
-msgid "Done"
-msgstr "Виконано"
-
-#: data/resources/ui/identity-verification-widget.ui:422
-msgid "Confirm Scan"
-msgstr "Підтвердити сканування"
-
-#: data/resources/ui/login-advanced-dialog.ui:5
-msgid "Homeserver Discovery"
-msgstr "Виявлення домашнього сервера"
-
-#: data/resources/ui/login-advanced-dialog.ui:14
-msgid ""
-"Auto-discovery, also known as \"well-known lookup\", allows to discover the "
-"URL of a Matrix homeserver from a domain name. This should only be disabled "
-"if your homeserver doesn’t support auto-discovery or if you want to provide "
-"the URL yourself."
-msgstr ""
-"Автовиявлення, також відоме, як «пошук добре відомого», уможливлює виявлення "
-"адреси домашнього сервера Matrix за назвою домену. Вимикати його слід лише "
-"тоді, коли на вашому домашньому сервері не передбачено автовиявлення, або "
-"якщо ви хочете вказати адресу самостійно."
-
-#: data/resources/ui/login-advanced-dialog.ui:17
-msgid "_Auto-discovery"
-msgstr "_Автовизначення"
-
-#: data/resources/ui/login.ui:23
-msgid "_Next"
-msgstr "_Далі"
-
-#: data/resources/ui/login.ui:130 src/login/mod.rs:341
-msgid "Homeserver URL"
-msgstr "Адреса домашнього сервера"
-
-#: data/resources/ui/login.ui:153
-msgid "Matrix Username"
-msgstr "Ім'я користувача Matrix"
-
-#: data/resources/ui/login.ui:165
+#: fractal-gtk/res/ui/account_settings.ui:30
+#: fractal-gtk/res/ui/main_window.ui:217 fractal-gtk/res/ui/main_window.ui:454
+#: fractal-gtk/res/ui/media_viewer.ui:36 fractal-gtk/res/ui/room_settings.ui:30
+msgid "Back"
+msgstr "Назад"
+
+#: fractal-gtk/res/ui/account_settings.ui:92
+msgid "Other people can find you by searching for any of these identifiers."
+msgstr "Інші люди зможуть знайти вас по одному з цих ідентифікаторів."
+
+#: fractal-gtk/res/ui/account_settings.ui:115
+msgid "Name"
+msgstr "Ім'я"
+
+#: fractal-gtk/res/ui/account_settings.ui:138
+msgid "Type in your name"
+msgstr "Введіть своє ім'я"
+
+#: fractal-gtk/res/ui/account_settings.ui:167
+msgid "Email"
+msgstr "Електронна пошта"
+
+#: fractal-gtk/res/ui/account_settings.ui:196
+msgid "Phone"
+msgstr "Телефон"
+
+#: fractal-gtk/res/ui/account_settings.ui:225
 msgid "Password"
 msgstr "Пароль"
 
-#: data/resources/ui/login.ui:171
-msgid "_Forgot Password?"
-msgstr "За_були пароль?"
+#: fractal-gtk/res/ui/account_settings.ui:287
+msgid "Advanced Information"
+msgstr "Додаткова інформація"
 
-#: data/resources/ui/login.ui:216
-msgid "Please follow the steps in the browser."
-msgstr "Будь ласка, виконайте настанови з браузера."
+#: fractal-gtk/res/ui/account_settings.ui:312
+msgid "Homeserver"
+msgstr "Домашній сервер"
 
-#: data/resources/ui/member-menu.ui:6
-msgid "_Verify"
-msgstr "Пере_вірити"
+#: fractal-gtk/res/ui/account_settings.ui:341
+msgid "Matrix ID"
+msgstr "Matrix ID"
 
-#: data/resources/ui/member-menu.ui:14
-msgid "Make _Mod"
-msgstr "Зробити _модератором"
+#: fractal-gtk/res/ui/account_settings.ui:370
+msgid "Device ID"
+msgstr "ID пристрою"
 
-#: data/resources/ui/member-menu.ui:20
-msgid "Make _Admin"
-msgstr "Зробити _адміністратором"
+#: fractal-gtk/res/ui/account_settings.ui:410
+#: fractal-gtk/res/ui/account_settings.ui:466
+msgid "Deactivate Account"
+msgstr "Деактивувати обліковий запис"
 
-#: data/resources/ui/member-menu.ui:26
-msgid "_Kick"
-msgstr "Ви_кинути"
-
-#: data/resources/ui/room-creation.ui:4
-msgid "Create new Room"
-msgstr "Створити нову кімнату"
-
-#: data/resources/ui/room-creation.ui:22
-msgid "C_reate"
-msgstr "С_творити"
-
-#: data/resources/ui/room-creation.ui:58
-msgid "Room Name"
-msgstr "Назва кімнати"
-
-#: data/resources/ui/room-creation.ui:93
-msgid "Visibility"
-msgstr "Видимість"
-
-#: data/resources/ui/room-creation.ui:103
-msgid "_Private"
-msgstr "_Приватна"
-
-#: data/resources/ui/room-creation.ui:110
-msgid "P_ublic"
-msgstr "_Публічна"
-
-#: data/resources/ui/room-creation.ui:122
-msgid "Room Address"
-msgstr "Адреса кімнати"
-
-#: data/resources/ui/session-verification.ui:49
-#: src/session/content/verification/identity_verification_widget.rs:537
-msgid "Get Another Device"
-msgstr "Отримати з іншого пристрою"
-
-#: data/resources/ui/session-verification.ui:60
-#: src/session/content/verification/identity_verification_widget.rs:539
-msgid "Accept the verification request from another session or device."
-msgstr "Прийняти запит щодо перевірки з іншого сеансу або пристрою."
-
-#: data/resources/ui/session-verification.ui:73
-msgid "No other devices logged into this account?"
-msgstr "З цим обліковим записом не пов'язано інших пристроїв?"
-
-#: data/resources/ui/session-verification.ui:81
-#: data/resources/ui/session-verification.ui:171
-msgid "Recovery"
-msgstr "Відновлення"
-
-#: data/resources/ui/session-verification.ui:91
-#: src/session/content/verification/session_verification.rs:240
-msgid "Reset"
-msgstr "Скинути"
-
-#: data/resources/ui/session-verification.ui:123
-msgid "Setup Encryption Identity"
-msgstr "Налаштовування профілю шифрування"
-
-#: data/resources/ui/session-verification.ui:134
+#: fractal-gtk/res/ui/account_settings.ui:431
 msgid ""
-"You need to setup an encryption identity, since this is the first time you "
-"logged into your account."
+"Deactivating your account means that you will lose all your messages, "
+"contacts, and files."
 msgstr ""
-"Вам слід налаштувати ваш профіль шифрування, оскільки ви вперше увійшли до "
-"вашого облікового запису."
+"Деактивация вашого облікового запису означає, що ви втратите всі свої "
+"повідомлення, контакти і файли."
 
-#: data/resources/ui/session-verification.ui:142
-msgid "Setup"
-msgstr "Налаштувати"
-
-#: data/resources/ui/session-verification.ui:182
+#: fractal-gtk/res/ui/account_settings.ui:441
 msgid ""
-"Without another device you need a recovery passphrase or key to access your "
-"messages"
+"To confirm that you really want to deactivate this account type in your "
+"password:"
 msgstr ""
-"Без іншого пристрою вам знадобиться пароль чи ключ для відновлення для "
-"доступу до ваших повідомлень"
-
-#: data/resources/ui/session-verification.ui:190
-#: data/resources/ui/session-verification.ui:245
-msgid "Recovery Passphrase"
-msgstr "Пароль для відновлення"
-
-#: data/resources/ui/session-verification.ui:199
-#: data/resources/ui/session-verification.ui:306
-msgid "Recovery Key"
-msgstr "Ключ відновлення"
-
-#: data/resources/ui/session-verification.ui:208
-msgid ""
-"If you don't have any of these you can reset your identity, but be aware "
-"this makes your old messages inaccessible forever."
-msgstr ""
-"Якщо у вас немає цих даних, ви можете скинути ваш профіль, але, варто "
-"зауважити, це призведе до втрати доступу до ваших старих повідомлень."
-
-#: data/resources/ui/session-verification.ui:217
-msgid "Reset Identity"
-msgstr "Скинути профіль"
-
-#: data/resources/ui/session-verification.ui:256
-msgid ""
-"Your Recovery Passphrase was set up when you first created this account."
-msgstr ""
-"Ваш пароль для відновлення було налаштовано під час створення цього "
-"облікового запису."
-
-#: data/resources/ui/session-verification.ui:264
-msgid "If you opted for a Recovery Key instead go back and choose that option."
-msgstr ""
-"Якщо ви хочете вибрати ключ відновлення, поверніться і виберіть відповідний "
-"пункт."
-
-#: data/resources/ui/session-verification.ui:272
-msgid "Passphrase"
-msgstr "Пароль"
-
-#: data/resources/ui/session-verification.ui:278
-#: data/resources/ui/session-verification.ui:342
-msgid "Next"
-msgstr "Далі"
-
-#: data/resources/ui/session-verification.ui:317
-msgid "Your Recovery Key was set up when you first created this account."
-msgstr ""
-"Ваш ключ для відновлення було налаштовано під час створення цього облікового "
-"запису."
-
-#: data/resources/ui/session-verification.ui:325
-msgid ""
-"If you opted for a Recovery Passphrase instead go back and choose that "
-"option."
-msgstr ""
-"Якщо ви хочете вибрати пароль для відновлення, поверніться і виберіть "
-"відповідний пункт."
-
-#: data/resources/ui/shortcuts.ui:11
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Загальні"
-
-#: data/resources/ui/shortcuts.ui:14
-msgctxt "shortcut window"
-msgid "Show Shortcuts"
-msgstr "Показати клавіатурні скорочення"
-
-#: data/resources/ui/shortcuts.ui:20
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "Завершити"
-
-#: data/resources/ui/shortcuts.ui:26
-msgctxt "shortcut window"
-msgid "Search Room List"
-msgstr "Шукати у списку кімнат"
-
-#: data/resources/ui/shortcuts.ui:32
-msgctxt "shortcut window"
-msgid "Close Room"
-msgstr "Закрити кімнату"
-
-#: data/resources/ui/sidebar-room-row.ui:18
-msgid "Mark as _Favorite"
-msgstr "Позначити як _улюблену"
-
-#: data/resources/ui/sidebar-room-row.ui:23
-msgid "Unmark as _Favorite"
-msgstr "Скасувати позначення як _улюбленої"
-
-#: data/resources/ui/sidebar-room-row.ui:28
-msgid "Mark as Low _Priority"
-msgstr "Позначити як _низькопріоритетну"
-
-#: data/resources/ui/sidebar-room-row.ui:33
-msgid "Unmark as Low _Priority"
-msgstr "Скасувати позначення як _низькопріоритетної"
-
-#: data/resources/ui/sidebar-room-row.ui:45
-msgid "Re_join Room"
-msgstr "Увійти до кімнати"
-
-#: data/resources/ui/sidebar-room-row.ui:50
-msgid "_Forget Room"
-msgstr "За_бути про кімнату"
-
-#: data/resources/ui/sidebar.ui:6
-msgid "_New Room"
-msgstr "_Нова кімната"
-
-#: data/resources/ui/sidebar.ui:12
-msgid "_Preferences"
-msgstr "Н_алаштування"
-
-#: data/resources/ui/sidebar.ui:16
-msgid "_Keyboard Shortcuts"
-msgstr "_Клавіатурні скорочення"
-
-#: data/resources/ui/sidebar.ui:20
-msgid "_About Fractal"
-msgstr "_Про «Фрактал»"
-
-#: data/resources/ui/sidebar.ui:94
-msgid "Sidebar"
-msgstr "Бічна панель"
-
-#: data/resources/ui/qr-code-scanner.ui:21
-msgid "Unable to connect to Camera"
-msgstr "Не вдалося встановити з'єднання з «Камерою»"
-
-#: src/application.rs:167
-msgid "Learn more about Fractal"
-msgstr "Дізнайтеся більше про «Фрактал»"
-
-#: src/application.rs:171
-msgid "A Matrix client for GNOME"
-msgstr "Клієнт Matrix для GNOME"
-
-#: src/application.rs:172
-#| msgid "© 2017-2021 The Fractal Team"
-msgid "© 2017-2022 The Fractal Team"
-msgstr "© Команда «Фрактал», 2017-2022"
-
-#: src/application.rs:186
-msgid "translator-credits"
-msgstr "Artem Polishchuk <ego.cordatus@gmail.com>, 2019."
-
-#. This can't be added via the builder
-#: src/application.rs:190
-msgid "Name by"
-msgstr "Авторка назви"
-
-#: src/components/editable_avatar.rs:334
-msgid "Choose Avatar"
-msgstr "Виберіть аватар"
-
-#: src/components/editable_avatar.rs:343
-msgid "Choose"
-msgstr "Вибрати"
-
-#: src/components/editable_avatar.rs:366
-msgid "The chosen file is not an image"
-msgstr "Вибраний файл не є файлом зображення"
-
-#: src/components/editable_avatar.rs:374
-msgid "Could not determine the type of the chosen file"
-msgstr "Не вдалося визначити тип вибраного файла"
-
-#: src/components/editable_avatar.rs:383
-msgid "No file was chosen"
-msgstr "Не вибрано жодного файла"
-
-#: src/error_page.rs:108
-msgid "Session removed successfully."
-msgstr "Сеанс успішно вилучено."
-
-#: src/error_page.rs:120
-msgid "Could not remove session from secret storage"
-msgstr "Не вдалося вилучити сеанс із зашифрованого сховища"
-
-#: src/login/mod.rs:336
-msgid "Domain Name"
-msgstr "Назва домену"
-
-#: src/login/mod.rs:338
-msgid "The domain of your Matrix homeserver, for example gnome.org"
-msgstr "Домен вашого домашнього сервера Matrix, наприклад gnome.org"
-
-#: src/login/mod.rs:342
-msgid ""
-"The URL of your Matrix homeserver, for example <span segment=\"word"
-"\">https://gnome.modular.im</span>"
-msgstr ""
-"Адреса вашого домашнього сервера Matrix. Приклад: <span segment=\"word"
-"\">https://gnome.modular.im</span>"
-
-#: src/secret.rs:52
-msgid "Could not unlock the secret storage"
-msgstr "Не вдалося розблокувати зашифроване сховище"
-
-#: src/secret.rs:55 src/secret.rs:59
-msgid "An unknown error occurred when interacting with the secret storage"
-msgstr "Під час роботи із сховищем зашифрованих даних сталася невідома помилка"
-
-#: src/secret.rs:88
-msgid "Malformed homeserver in stored session"
-msgstr "Помилкове форматування запису домашнього сервера у збереженому сеансі"
-
-#: src/secret.rs:95
-msgid "Could not find homeserver in stored session"
-msgstr "Не вдалося знайти дані домашнього сервера у збереженому сеансі"
-
-#: src/secret.rs:109
-msgid "Malformed user ID in stored session"
-msgstr "Помилкове форматування ідентифікатора користувача у збереженому сеансі"
-
-#: src/secret.rs:116
-msgid "Could not find user ID in stored session"
-msgstr "Не вдалося знайти ідентифікатор користувача у збереженому сеансі"
-
-#: src/secret.rs:125
-msgid "Could not find device ID in stored session"
-msgstr "Не вдалося знайти ідентифікатор пристрою у збереженому сеансі"
-
-#: src/secret.rs:134
-msgid "Could not find database path in stored session"
-msgstr "Не вдалося знайти шлях до бази даних у збереженому сеансі"
-
-#: src/secret.rs:145
-msgid "Malformed secret in stored session"
-msgstr "Помилкове форматування реєстраційних даних у збереженому сеансі"
-
-#: src/secret.rs:152
-msgid "No secret in stored session"
-msgstr "Немає реєстраційних даних у збереженому сеансі"
-
-#: src/secret.rs:159
-msgid "Could not get secret in stored session"
-msgstr "Не вдалося отримати зашифровані дані у збереженому сеансі"
-
-#: src/session/account_settings/devices_page/device_list.rs:147
-msgid "Failed to load connected device."
-msgstr "Не вдалося завантажити дані з'єднаного пристрою."
-
-#: src/session/account_settings/devices_page/device_list.rs:192
-msgid "Failed to load connected devices."
-msgstr "Не вдалося завантажити список з'єднаних пристроїв."
-
-#: src/session/account_settings/devices_page/device_row.rs:110
-msgid "Delete Session"
-msgstr "Вилучити сеанс"
-
-#: src/session/account_settings/devices_page/device_row.rs:112
-msgid "Log Out"
-msgstr "Вийти"
-
-#: src/session/account_settings/devices_page/device_row.rs:229
-msgid ""
-"Fractal's support for encryption is unstable so you might lose access to "
-"your encrypted message history. It is recommended to backup your encryption "
-"keys from another Matrix client before proceeding."
-msgstr ""
-"Підтримка шифрування у «Фракталі» не є стабільною, тому ви можете втратити "
-"доступ до вашого зашифрованого журналу повідомлень. Перш ніж продовжувати, "
-"рекомендуємо створити резервну копію ваших ключів шифрування з іншого "
-"клієнта Matrix."
-
-#. Translators: Time in 24h format
-#: src/session/account_settings/devices_page/device_row.rs:287
-msgid "Last seen at %H:%M"
-msgstr "Востаннє бачили %H:%M"
-
-#. Translators: Time in 12h format
-#: src/session/account_settings/devices_page/device_row.rs:290
-msgid "Last seen at %l:%M %p"
-msgstr "Востаннє бачили %l:%M %p"
-
-#. Translators: this is the word Yesterday followed by
-#. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:299
-#, no-c-format
-msgid "Last seen Yesterday at %H:%M"
-msgstr "Востаннє бачили вчора о %H:%M"
-
-#. Translators: this is the word Yesterday followed by
-#. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:304
-#, no-c-format
-msgid "Last seen Yesterday at %l:%M %p"
-msgstr "Востаннє бачили вчора о %l:%M %p"
-
-#. Translators: this is the name of the week day followed by
-#. a time in 24h format. i.e. "Last seen Monday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:313
-#, no-c-format
-msgid "Last seen %A at %H:%M"
-msgstr "Востаннє бачили %A о %H:%M"
-
-#. Translators: this is the week day name followed by
-#. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:318
-#, no-c-format
-msgid "Last seen %A at %l:%M %p"
-msgstr "Востаннє бачили %A о %l:%M %p"
-
-#. Translators: this is the day of the month followed
-#. by the abbreviated month name followed by a time in
-#. 24h format i.e. "Last seen February 3 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:326
-#, no-c-format
-msgid "Last seen %B %-e at %H:%M"
-msgstr "Востаннє бачили %-e %B о %H:%M"
-
-#. Translators: this is the day of the month followed
-#. by the abbreviated month name followed by a time in
-#. 12h format i.e. "Last seen February 3 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:332
-#, no-c-format
-msgid "Last seen %B %-e at %l:%M %p"
-msgstr "Востаннє бачили %-e %B о %l:%M %p"
-
-#. Translators: this is the day number followed
-#. by the abbreviated month name followed by the year followed
-#. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:339
-#, no-c-format
-msgid "Last seen %B %-e %Y at %H:%M"
-msgstr "Востаннє бачили %-e %B %Y о %H:%M"
-
-#. Translators: this is the day number followed
-#. by the abbreviated month name followed by the year followed
-#. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:345
-#, no-c-format
-msgid "Last seen %B %-e %Y at %l:%M %p"
-msgstr "Востаннє бачили %-e %B %Y о %l:%M %p"
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:217
-msgid "Password must be at least 8 characters long"
-msgstr "Пароль має складатися із принаймні 8 символів"
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:220
-msgid "Password must have at least one lower-case letter"
-msgstr "Пароль має містити принаймні одну літеру нижнього регістру"
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:224
-msgid "Password must have at least one upper-case letter"
-msgstr "Пароль має містити принаймні одну літеру верхнього регістру"
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:227
-msgid "Password must have at least one digit"
-msgstr "У паролі має містити принаймні одна цифра"
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:229
-msgid "Password must have at least one symbol"
-msgstr "У паролі має містити принаймні один символ пунктуації"
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:255
-msgid "Passwords do not match"
-msgstr "Паролі не збігаються"
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:313
-msgid "Password changed successfully"
-msgstr "Пароль успішно змінено"
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:329
-msgid "Password rejected for being too weak"
-msgstr "Пароль є надто простим"
-
-#: src/session/account_settings/user_page/change_password_subpage.rs:336
-msgid "Could not change password"
-msgstr "Не вдалося змінити пароль"
-
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:200
-msgid "Account successfully deactivated"
-msgstr "Обліковий запис успішно вимкнено"
-
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:210
-msgid "Could not deactivate account"
-msgstr "Не вдалося вимкнути обліковий запис"
-
-#: src/session/account_settings/user_page/mod.rs:227
-msgid "Avatar removed successfully"
-msgstr "Аватар успішно вилучено"
-
-#: src/session/account_settings/user_page/mod.rs:245
-msgid "Avatar changed successfully"
-msgstr "Аватар успішно змінено"
-
-#: src/session/account_settings/user_page/mod.rs:291
-msgid "Could not upload avatar"
-msgstr "Не вдалося вивантажити аватар"
-
-#: src/session/account_settings/user_page/mod.rs:316
-msgid "Could not change avatar"
-msgstr "Не вдалося змінити аватар"
-
-#: src/session/account_settings/user_page/mod.rs:348
-msgid "Could not remove avatar"
-msgstr "Не вдалося вилучити аватар"
-
-#: src/session/account_settings/user_page/mod.rs:397
-msgid "Name changed successfully"
-msgstr "Ім'я успішно змінено"
-
-#: src/session/account_settings/user_page/mod.rs:436
-msgid "Could not change display name"
-msgstr "Не вдалося змінити показане ім'я"
-
-#: src/session/content/explore/public_room_row.rs:222
-msgid "View"
-msgstr "Перегляд"
-
-#: src/session/content/explore/public_room_row.rs:224
+"Щоб підтвердити, що ви дійсно хочете деактивувати цей обліковий запис "
+"введіть свій пароль:"
+
+#: fractal-gtk/res/ui/account_settings.ui:456
+msgid "Also erase all messages"
+msgstr "Також видалити всі повідомлення"
+
+#: fractal-gtk/res/ui/account_settings.ui:523
+msgid "Check your email"
+msgstr "Перевірте свою електронну пошту"
+
+#: fractal-gtk/res/ui/account_settings.ui:526
+#: fractal-gtk/res/ui/direct_chat.ui:83 fractal-gtk/res/ui/invite_user.ui:84
+#: fractal-gtk/res/ui/join_room.ui:71 fractal-gtk/res/ui/leave_room.ui:31
+#: fractal-gtk/res/ui/new_room.ui:24 fractal-gtk/src/appop/account.rs:87
+#: fractal-gtk/src/appop/account.rs:143 fractal-gtk/src/ui/attach.rs:41
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: fractal-gtk/res/ui/account_settings.ui:534
+msgid "Apply"
+msgstr "_Застосувати"
+
+#: fractal-gtk/res/ui/add_room_menu.ui:8
+msgid "Room Directory"
+msgstr "Список кімнат"
+
+#: fractal-gtk/res/ui/add_room_menu.ui:12
+msgid "Join Room"
+msgstr "Увійти в кімнату"
+
+#: fractal-gtk/res/ui/add_room_menu.ui:18
+msgid "New Room"
+msgstr "Нова кімната"
+
+#: fractal-gtk/res/ui/add_room_menu.ui:22
+msgid "New Direct Chat"
+msgstr "Новий чат"
+
+#: fractal-gtk/res/ui/audio_player.ui:34 fractal-gtk/res/ui/audio_player.ui:45
+msgid "Play"
+msgstr "Відтворити"
+
+#: fractal-gtk/res/ui/direct_chat.ui:80
+msgid "New direct chat"
+msgstr "Новий чат"
+
+#: fractal-gtk/res/ui/direct_chat.ui:91
+msgid "Start chat"
+msgstr "Почати чат"
+
+#: fractal-gtk/res/ui/invite.ui:18
+msgid "Invitation"
+msgstr "Запрошення"
+
+#: fractal-gtk/res/ui/invite.ui:32
+msgid "Reject"
+msgstr "Відхилити"
+
+#: fractal-gtk/res/ui/invite.ui:40
+msgid "Accept"
+msgstr "Прийняти"
+
+#: fractal-gtk/res/ui/invite_user.ui:81 fractal-gtk/res/ui/invite_user.ui:92
+#: fractal-gtk/src/ui/invite.rs:133
+msgid "Invite"
+msgstr "Запросити"
+
+#: fractal-gtk/res/ui/join_room.ui:34
+msgid "ID or Alias"
+msgstr "Ідентифікатор або псевдонім"
+
+#: fractal-gtk/res/ui/join_room.ui:68
+msgid "Join room"
+msgstr "Увійти в кімнату"
+
+#: fractal-gtk/res/ui/join_room.ui:79 fractal-gtk/src/ui/directory.rs:245
 msgid "Join"
 msgstr "Увійти"
 
-#: src/session/content/room_details/mod.rs:169
-msgid "Save Details"
-msgstr "Зберегти параметри"
+#: fractal-gtk/res/ui/kicked_room.ui:29 fractal-gtk/res/ui/msg_src_window.ui:32
+msgid "Close"
+msgstr "Закрити"
 
-#: src/session/content/room_details/mod.rs:170
-msgid "Edit Details"
-msgstr "Редагувати параметри"
+#: fractal-gtk/res/ui/leave_room.ui:18
+msgid "Leave?"
+msgstr "Покинути?"
 
-#: src/session/content/room_details/mod.rs:213
-msgid "Choose avatar"
-msgstr "Виберіть аватар"
-
-#: src/session/content/room_details/mod.rs:244
-msgid "Invite new Members"
-msgstr "Запросити нових учасників"
-
-#. Translators: This is a date format in the day divider without the year
-#: src/session/content/room_history/item_row.rs:169
-msgid "%A, %B %e"
-msgstr "%A, %e %b"
-
-#. Translators: This is a date format in the day divider with the year
-#: src/session/content/room_history/item_row.rs:172
-msgid "%A, %B %e, %Y"
-msgstr "%A, %e %b %Y"
-
-#: src/session/content/room_history/item_row.rs:190
-msgid "New Messages"
-msgstr "Нові повідомлення"
-
-#: src/session/content/room_history/message_row/audio.rs:245
-#: src/session/content/room_history/message_row/audio.rs:249
-msgid "Could not retrieve audio file"
-msgstr "Не вдалося отримати звуковий файл"
-
-#: src/session/content/room_history/message_row/audio.rs:262
-msgid "Error reading audio file"
-msgstr "Помилка під час читання звукового файла"
-
-#: src/session/content/room_history/message_row/media.rs:445
-#: src/session/media_viewer.rs:244
-msgid "Image file not supported"
-msgstr "Підтримки файла зображення не передбачено"
-
-#: src/session/content/room_history/message_row/media.rs:484
-#: src/session/content/room_history/message_row/media.rs:489
-msgid "Could not retrieve media"
-msgstr "Не вдалося отримати мультимедійні дані"
-
-#: src/session/content/room_history/message_row/mod.rs:368
-msgid "Identity verification was started"
-msgstr "Розпочато перевірку профілю"
-
-#: src/session/content/room_history/message_row/mod.rs:381
-#: src/session/content/room_history/message_row/mod.rs:428
-msgid "Unsupported event"
-msgstr "Непідтримувана подія"
-
-#: src/session/content/room_history/message_row/mod.rs:406
-msgid "Fractal couldn't decrypt this message."
-msgstr "«Фрактал» не вдалося розшифрувати це повідомлення."
-
-#: src/session/content/room_history/message_row/mod.rs:417
-msgid "This message was removed."
-msgstr "Це повідомлення було вилучено."
-
-#. TODO Get the actual name of the file by reading
-#. the text/plain mime type.
-#: src/session/content/room_history/mod.rs:363
-#: src/session/content/room_history/mod.rs:736
-msgid "Image"
-msgstr "Зображення"
-
-#: src/session/content/room_history/state_row/creation.rs:62
-msgid "This is the continuation of an upgraded room."
-msgstr "Це продовження оновленої кімнати."
-
-#: src/session/content/room_history/state_row/creation.rs:68
-msgid "The beginning of this room."
-msgstr "Це початок цієї кімнати."
-
-#: src/session/content/room_history/state_row/mod.rs:69
-msgid "This room is now encrypted."
-msgstr "Тепер кімнату зашифровано."
-
-#: src/session/content/room_history/state_row/mod.rs:166
-msgid "An unsupported room member event was received."
-msgstr "Було отримано непідтримуваний запис події від учасника кімнати."
-
-#: src/session/content/room_history/state_row/mod.rs:182
-msgid "An unsupported state event was received."
-msgstr "Отримано повідомлення про непідтримуваний стан."
-
-#: src/session/content/room_history/verification_info_bar.rs:173
-msgid "Verification in progress"
-msgstr "Виконуємо перевірку"
-
-#: src/session/content/verification/identity_verification_widget.rs:492
-#: src/session/content/verification/identity_verification_widget.rs:521
-msgid "Verify the new session from the current session."
-msgstr "Перевірити новий сеанс з поточного сеансу."
-
-#: src/session/content/verification/identity_verification_widget.rs:495
-msgid "Scan the QR code from another session logged into this account."
-msgstr ""
-"Скануйте QR-код з іншого сеансу, де здійснено вхід до цього облікового "
-"запису."
-
-#: src/session/content/verification/identity_verification_widget.rs:497
-#: src/session/content/verification/identity_verification_widget.rs:524
-#| msgid ""
-#| "You scanned to qr code successfully. You may need to confirm the "
-#| "verification in the other session."
+#: fractal-gtk/res/ui/leave_room.ui:19
 msgid ""
-"You scanned the QR code successfully. You may need to confirm the "
-"verification from the other session."
+"Once you leave, you won’t be able to interact with people in the room "
+"anymore."
 msgstr ""
-"Вами успішно скановано QR-код. Можливо, вам доведеться підтвердити перевірку "
-"в іншому сеансі."
+"Після того, як ви покинете, ви більше не зможете спілкуватися з людьми в "
+"кімнаті."
 
-#: src/session/content/verification/identity_verification_widget.rs:501
-msgid "Scan this QR code from the other session."
-msgstr "Скануйте цей QR-код з іншого сеансу."
+#: fractal-gtk/res/ui/leave_room.ui:39
+msgid "Leave room"
+msgstr "Покинути кімнату"
 
-#: src/session/content/verification/identity_verification_widget.rs:504
-#: src/session/content/verification/identity_verification_widget.rs:531
-msgid "Check if the same emoji appear in the same order on the other device."
-msgstr ""
-"Перевірте, чи ті самі емодзі було показано у тому самому порядку на іншому "
-"пристрої."
+#: fractal-gtk/res/ui/login_flow.ui:29
+msgid "Welcome to Fractal"
+msgstr "Вітаємо у «Фракталі»"
 
-#: src/session/content/verification/identity_verification_widget.rs:506
-#: src/session/content/verification/identity_verification_widget.rs:533
-msgid "Request Complete"
-msgstr "Запит завершено"
+#: fractal-gtk/res/ui/login_flow.ui:42 fractal-gtk/res/ui/login_flow.ui:211
+msgid "_Log In"
+msgstr "_Увійти"
 
-#: src/session/content/verification/identity_verification_widget.rs:508
-msgid "This session is ready to send and receive secure messages."
-msgstr "Цей сеанс готовий до надсилання і отримання захищених повідомлень."
+#: fractal-gtk/res/ui/login_flow.ui:55
+msgid "_Create Account"
+msgstr "С_творити обліковий запис"
 
-#: src/session/content/verification/identity_verification_widget.rs:510
-msgid "Get Started"
-msgstr "Початок"
+#: fractal-gtk/res/ui/login_flow.ui:84
+msgid "Choose Provider"
+msgstr "Виберіть надавача послуг"
 
-#: src/session/content/verification/identity_verification_widget.rs:512
-#: src/session/content/verification/identity_verification_widget.rs:542
-msgid "Does the other session show a confirmation shield?"
-msgstr "Чи показано в іншому сеансі панель підтвердження?"
+#: fractal-gtk/res/ui/login_flow.ui:107
+msgid "_Next"
+msgstr "_Далі"
 
-#: src/session/content/verification/identity_verification_widget.rs:518
-msgid "Login Request From Another Session"
-msgstr "Запит щодо входу з іншого сеансу"
+#: fractal-gtk/res/ui/login_flow.ui:125
+msgid "What is your Provider?"
+msgstr "Який у вас надавач послуг?"
 
-#: src/session/content/verification/identity_verification_widget.rs:523
-msgid ""
-"Scan the QR code from this session from another session logged into this "
-"account."
-msgstr ""
-"Скануйте QR-код цього сеансу з іншого сеансу, де здійснено вхід до цього "
-"облікового запису."
+#: fractal-gtk/res/ui/login_flow.ui:146
+msgid "Matrix provider domain, e.g. myserver.co"
+msgstr "Домен надавача послуг Matrix, наприклад myserver.co"
 
-#: src/session/content/verification/identity_verification_widget.rs:527
-msgid "Scan this QR code from the newly logged in session."
-msgstr "Скануйте цей QR-код з сеансу, до якого ви щойно увійшли."
+#: fractal-gtk/res/ui/login_flow.ui:161
+msgid "The domain may not be empty."
+msgstr "Запис домену не може бути порожнім."
 
-#: src/session/content/verification/identity_verification_widget.rs:535
-msgid "The new session is now ready to send and receive secure messages."
-msgstr ""
-"Тепер новий сеанс готовий до надсилання і отримання захищених повідомлень."
+#: fractal-gtk/res/ui/login_flow.ui:188
+msgid "Log In"
+msgstr "Увійти"
 
-#: src/session/content/verification/identity_verification_widget.rs:547
-#: src/session/content/verification/identity_verification_widget.rs:551
-#: src/session/content/verification/identity_verification_widget.rs:557
-#: src/session/content/verification/identity_verification_widget.rs:561
-msgid "Verification Request"
-msgstr "Запит щодо перевірки"
+#: fractal-gtk/res/ui/login_flow.ui:236
+msgid "_User ID"
+msgstr "Ід. _користувача"
 
-#: src/session/content/verification/identity_verification_widget.rs:559
-msgid "Ask <b>{}</b> to scan this QR code from their session."
-msgstr "Попросіть <b>{}</b> сканувати цей QR-код з його/її сеансу."
+#: fractal-gtk/res/ui/login_flow.ui:252
+msgid "_Password"
+msgstr "_Пароль"
 
-#: src/session/content/verification/identity_verification_widget.rs:566
-msgid "Verification Complete"
-msgstr "Перевірку завершено"
+#: fractal-gtk/res/ui/login_flow.ui:284
+msgid "User name, email, or phone number"
+msgstr "Ім'я користувача, адреса електронної пошти або номер телефону"
 
-#: src/session/content/verification/session_verification.rs:237
-#| msgid ""
-#| "If you lost access to all other session you can create a new crypto "
-#| "identity. Be care full because this will reset all verified users and "
-#| "make previously encrypted conversations unreadable."
-msgid ""
-"If you lost access to all other sessions you can create a new crypto "
-"identity. Be careful because this will reset all verified users and make "
-"previously encrypted conversations unreadable."
-msgstr ""
-"Якщо ви втратили доступ до усіх інших сеансів, ви можете створити новий "
-"криптопрофіль. Будьте дуже обережні, оскільки це призведе до скидання усіх "
-"перевірених записів користувачів та зробить раніше зашифровані спілкування "
-"непридатними для читання."
+#: fractal-gtk/res/ui/login_flow.ui:317
+msgid "_Forgot Password?"
+msgstr "За_були пароль?"
 
-#: src/session/content/verification/session_verification.rs:320
-msgid "You cancelled the authentication needed to create the encryption keys."
-msgstr ""
-"Вами скасовано розпізнавання, яке потрібне для створення ключів шифрування."
+#: fractal-gtk/res/ui/login_flow.ui:335
+msgid "Invalid username or password"
+msgstr "Неправильне ім'я користувача або пароль"
 
-#: src/session/content/verification/session_verification.rs:324
-msgid "An error occurred during the creation of the encryption keys."
-msgstr "Під час створення ключів шифрування сталася помилка."
+#: fractal-gtk/res/ui/main_menu.ui:103
+msgid "Log Out"
+msgstr "Вийти"
 
-#: src/session/media_viewer.rs:251
-msgid "Could not retrieve image"
-msgstr "Не вдалося отримати зображення"
+#: fractal-gtk/res/ui/main_menu.ui:120
+msgid "Keyboard _Shortcuts"
+msgstr "Комбінації _клавіш"
 
-#: src/session/media_viewer.rs:288
-msgid "Could not retrieve video"
-msgstr "Не вдалося отримати відео"
+#: fractal-gtk/res/ui/main_menu.ui:129
+msgid "_About Fractal"
+msgstr "_Про «Фрактал»"
 
-#: src/session/mod.rs:760
-msgid "Failed to logout the session."
-msgstr "Не вдалося вийти з сеансу."
+#: fractal-gtk/res/ui/main_window.ui:56
+msgid "User"
+msgstr "Користувач"
 
-#: src/session/room/event_actions.rs:205
-msgid "Save File"
-msgstr "Зберегти файл"
+#: fractal-gtk/res/ui/main_window.ui:82
+msgid "Add"
+msgstr "Додати"
 
-#: src/session/room/member_role.rs:48
-msgid "Admin"
-msgstr "Адміністратор"
+#: fractal-gtk/res/ui/main_window.ui:111
+msgid "Room search"
+msgstr "Пошук кімнати"
 
-#: src/session/room/member_role.rs:49
-msgid "Moderator"
-msgstr "Модератор"
+#: fractal-gtk/res/ui/main_window.ui:282
+msgid "Room Menu"
+msgstr "Меню кімнати"
 
-#: src/session/room/member_role.rs:50
-msgid "Normal user"
-msgstr "Звичайний користувач"
+#: fractal-gtk/res/ui/main_window.ui:349
+#| msgid "No room selected"
+msgid "No Room Selected"
+msgstr "Не вибрано жодної кімнати"
 
-#: src/session/room/mod.rs:418
-msgid "Failed to forget <widget>."
-msgstr "Не вдалося забути про <widget>."
+#: fractal-gtk/res/ui/main_window.ui:350
+#| msgid "Join a room to start chatting"
+msgid "Join a room to start chatting."
+msgstr "Увійдіть до кімнати, щоб почати спілкування."
 
-#: src/session/room/mod.rs:862
-msgid "Unknown"
-msgstr "Невідомий"
+#: fractal-gtk/res/ui/main_window.ui:354
+msgid "No room"
+msgstr "Немає кімнати"
 
-#: src/session/room/mod.rs:1273
-msgid "Failed to accept invitation for <widget>. Try again later."
-msgstr "Не вдалося прийняти запрошення <widget>. Повторіть спробу пізніше."
+#: fractal-gtk/res/ui/main_window.ui:494
+#: fractal-gtk/res/ui/server_chooser_menu.ui:51
+#: fractal-gtk/src/ui/connect/directory.rs:117
+msgid "Default Matrix Server"
+msgstr "Типовий Matrix-сервер"
 
-#: src/session/room/mod.rs:1304
-msgid "Failed to reject invitation for <widget>. Try again later."
-msgstr "Не вдалося відмовити у запрошенні <widget>. Повторіть спробу пізніше."
+#: fractal-gtk/res/ui/markdown_popover.ui:23
+msgid "Markdown"
+msgstr "Markdown"
 
-#: src/session/room/mod.rs:1469
-msgid "Failed to invite <widget> to <widget>. Try again later."
-msgstr "Не вдалося запросити <widget> до <widget>. Повторіть спробу пізніше."
+#: fractal-gtk/res/ui/markdown_popover.ui:52
+msgid "> quote"
+msgstr "> цитата"
 
-#: src/session/room/mod.rs:1471
-msgid ""
-"Failed to invite <widget> and some other user to <widget>. Try again later."
-msgstr ""
-"Не вдалося запросити <widget> та іншого користувача до <widget>. Повторіть "
-"спробу пізніше."
+#: fractal-gtk/res/ui/markdown_popover.ui:63
+msgid "**bold**"
+msgstr "**жирний**"
 
-#: src/session/room/mod.rs:1473
-msgid ""
-"Failed to invite <widget> and some other users to <widget>. Try again later."
-msgstr ""
-"Не вдалося запросити <widget> та деяких інших користувачів до <widget>. "
-"Повторіть спробу пізніше."
+#: fractal-gtk/res/ui/markdown_popover.ui:78
+msgid "`code`"
+msgstr "`моноширинний`"
 
-#: src/session/room_creation/mod.rs:278
-msgid "The address is already taken."
-msgstr "Адресу вже використано."
+#: fractal-gtk/res/ui/markdown_popover.ui:90
+msgid "*italic*"
+msgstr "*курсив*"
 
-#: src/session/room_creation/mod.rs:301
-msgid "Too long. Use a shorter name."
-msgstr "Надто довга. Скористайтеся коротшою назвою."
+#: fractal-gtk/res/ui/media_viewer.ui:63
+msgid "Toggle fullscreen"
+msgstr "Увімкнути/вимкнути повноекранний режим"
 
-#: src/session/room_creation/mod.rs:329
-msgid "Can't contain `:`"
-msgstr "Не може містити «:»"
+#: fractal-gtk/res/ui/media_viewer.ui:226
+msgid "Loading more media"
+msgstr "Завантажити ще медіа"
 
-#: src/session/room_creation/mod.rs:334
-msgid "Can't contain `#`"
-msgstr "Не може містити «#»"
+#: fractal-gtk/res/ui/message_menu.ui:22
+msgid "Reply"
+msgstr "Відповісти"
 
-#: src/session/room_creation/mod.rs:339
-msgid "Too long. Use a shorter address."
-msgstr "Задовга. Скористайтеся коротшою адресою."
+#: fractal-gtk/res/ui/message_menu.ui:29
+msgid "Open With…"
+msgstr "Відкрити з допомогою…"
 
-#: src/session/sidebar/category_row.rs:161
-msgid "Join Room as Favorite"
-msgstr "Увійти як до улюбленої кімнати"
+#: fractal-gtk/res/ui/message_menu.ui:37
+msgid "Save Image As…"
+msgstr "Зберегти зображення як…"
 
-#: src/session/sidebar/category_row.rs:162
-msgid "Join Room"
-msgstr "Увійти до кімнати"
+#: fractal-gtk/res/ui/message_menu.ui:45
+msgid "Save Video As…"
+msgstr "Зберегти відео як…"
 
-#: src/session/sidebar/category_row.rs:163
-msgid "Join Room as Low Priority"
-msgstr "Увійти як до низькопріоритетної кімнати"
+#: fractal-gtk/res/ui/message_menu.ui:53
+msgid "Copy Image"
+msgstr "Копіювати зображення"
 
-#: src/session/sidebar/category_row.rs:164
-msgid "Reject Invite"
-msgstr "Відкинути запрошення"
+#: fractal-gtk/res/ui/message_menu.ui:61
+msgid "Copy Selection"
+msgstr "Копіювати виділене"
 
-#: src/session/sidebar/category_row.rs:168
-msgid "Unmark as Favorite"
-msgstr "Вилучити з улюблених"
+#: fractal-gtk/res/ui/message_menu.ui:69
+msgid "Copy Text"
+msgstr "Копіювати текст"
 
-#: src/session/sidebar/category_row.rs:169
-#: src/session/sidebar/category_row.rs:175
-msgid "Mark as Low Priority"
-msgstr "Позначити як низькопріоритетну"
+#: fractal-gtk/res/ui/message_menu.ui:79
+msgid "View Source"
+msgstr "Переглянути вихідний код"
 
-#: src/session/sidebar/category_row.rs:170
-#: src/session/sidebar/category_row.rs:176
-#: src/session/sidebar/category_row.rs:182
+#: fractal-gtk/res/ui/message_menu.ui:94
+msgid "Delete Message"
+msgstr "Видалити повідомлення"
+
+#: fractal-gtk/res/ui/msg_src_window.ui:21
+msgid "Message Source"
+msgstr "Джерело повідомлення"
+
+#: fractal-gtk/res/ui/msg_src_window.ui:24
+msgid "Copy To Clipboard"
+msgstr "Скопіювати в буфер обміну"
+
+#: fractal-gtk/res/ui/new_room.ui:21
+msgid "Create new room"
+msgstr "Створити нову кімнату"
+
+#: fractal-gtk/res/ui/new_room.ui:32
+msgid "Create"
+msgstr "Створити"
+
+#: fractal-gtk/res/ui/new_room.ui:71
+msgid "Room name"
+msgstr "Назва кімнати"
+
+#: fractal-gtk/res/ui/new_room.ui:100
+msgid "Visibility"
+msgstr "Видимість"
+
+#: fractal-gtk/res/ui/new_room.ui:114
+msgid "Private"
+msgstr "Приватна"
+
+#: fractal-gtk/res/ui/new_room.ui:125
+msgid "Public"
+msgstr "Загальнодоступна"
+
+#: fractal-gtk/res/ui/password_dialog.ui:22
+#: fractal-gtk/src/widgets/file_dialog.rs:12
+#: fractal-gtk/src/widgets/file_dialog.rs:33
+msgid "_Cancel"
+msgstr "_Скасувати"
+
+#: fractal-gtk/res/ui/password_dialog.ui:35
+msgid "Ch_ange"
+msgstr "_Змінити"
+
+#: fractal-gtk/res/ui/password_dialog.ui:125
+msgid "The passwords do not match."
+msgstr "Паролі не збігаються."
+
+#: fractal-gtk/res/ui/password_dialog.ui:143
+msgid "_Verify New Password"
+msgstr "_Перевірити новий пароль"
+
+#: fractal-gtk/res/ui/password_dialog.ui:160
+msgid "_New Password"
+msgstr "_Новий пароль"
+
+#: fractal-gtk/res/ui/password_dialog.ui:204
+msgid "Current _Password"
+msgstr "По_точний пароль"
+
+#: fractal-gtk/res/ui/room_menu.ui:8
+msgid "Room Details"
+msgstr "Інформація про кімнату"
+
+#: fractal-gtk/res/ui/room_menu.ui:12
+msgid "Invite to This Room"
+msgstr "Запросити в цю кімнату"
+
+#: fractal-gtk/res/ui/room_menu.ui:18
 msgid "Leave Room"
 msgstr "Покинути кімнату"
 
-#: src/session/sidebar/category_row.rs:174
-#: src/session/sidebar/category_row.rs:180
-msgid "Mark as Favorite"
-msgstr "Додати до улюблених"
+#: fractal-gtk/res/ui/room_settings.ui:14
+msgid "Details"
+msgstr "Подробиці"
 
-#: src/session/sidebar/category_row.rs:181
-msgid "Unmark as Low Priority"
-msgstr "Скасувати позначення як низькопріоритетної"
+#: fractal-gtk/res/ui/room_settings.ui:112
+msgid "Unknown"
+msgstr "Невідомий"
 
-#: src/session/sidebar/category_row.rs:186
-msgid "Rejoin Room as Favorite"
-msgstr "Повторно увійти як до улюбленої кімнати"
+#: fractal-gtk/res/ui/room_settings.ui:133
+msgid "Add name"
+msgstr "Додати ім'я"
 
-#: src/session/sidebar/category_row.rs:187
-msgid "Rejoin Room"
-msgstr "Повторно увійти до кімнати"
+#: fractal-gtk/res/ui/room_settings.ui:160
+msgid "Add topic"
+msgstr "Додати тему"
 
-#: src/session/sidebar/category_row.rs:188
-msgid "Rejoin Room as Low Priority"
-msgstr "Повторно увійти як до низькопріоритетної кімнати"
+#: fractal-gtk/res/ui/room_settings.ui:179
+msgid "Type in your room topic"
+msgstr "Введіть тему вашої кімнати"
 
-#: src/session/sidebar/category_type.rs:31
-msgid "Verifications"
-msgstr "Перевірки"
+#: fractal-gtk/res/ui/room_settings.ui:202
+msgid "No room description"
+msgstr "Опис кімнати відсутній"
 
-#: src/session/sidebar/category_type.rs:32
-msgid "Invited"
-msgstr "Запрошено"
+#: fractal-gtk/res/ui/room_settings.ui:230
+msgid "Notifications"
+msgstr "Повідомлення"
 
-#: src/session/sidebar/category_type.rs:33
-msgid "Favorite"
-msgstr "Улюблені"
+#: fractal-gtk/res/ui/room_settings.ui:258
+msgid "Notification sounds"
+msgstr "Звуки повідомлень"
 
-#: src/session/sidebar/category_type.rs:34
-msgid "Rooms"
-msgstr "Кімнати"
+#: fractal-gtk/res/ui/room_settings.ui:290
+msgid "For all messages"
+msgstr "Для всіх повідомлень"
 
-#: src/session/sidebar/category_type.rs:35
-msgid "Low Priority"
-msgstr "Низький пріоритет"
+#: fractal-gtk/res/ui/room_settings.ui:322
+msgid "Only for mentions"
+msgstr "Тільки для згадок"
 
-#: src/session/sidebar/category_type.rs:36
-msgid "Historical"
-msgstr "Історичні"
+#: fractal-gtk/res/ui/room_settings.ui:352
+msgid "Shared Media"
+msgstr "Загальні медіа"
 
-#. Translators: This shouldn't ever be visible to the user,
-#: src/session/sidebar/category_type.rs:38
-msgid "Outdated"
-msgstr "Застарілі"
+#: fractal-gtk/res/ui/room_settings.ui:394
+msgid "photos"
+msgstr "фотографії"
 
-#: src/session/sidebar/category_type.rs:39
-msgid "Spaces"
-msgstr "Простори"
+#: fractal-gtk/res/ui/room_settings.ui:424
+msgid "videos"
+msgstr "відео"
 
-#: src/session/sidebar/entry_type.rs:21
-msgid "Explore"
-msgstr "Ознайомлення"
+#: fractal-gtk/res/ui/room_settings.ui:454
+msgid "documents"
+msgstr "документи"
 
-#: src/session/sidebar/entry_type.rs:22
-msgid "Forget Room"
-msgstr "Забути про кімнату"
+#: fractal-gtk/res/ui/room_settings.ui:475
+msgid "New members can see"
+msgstr "Нові учасники можуть бачити"
 
-#: src/session/verification/identity_verification.rs:672
-msgid "You cancelled the verification process."
-msgstr "Вами скасовано процедуру перевірки."
+#: fractal-gtk/res/ui/room_settings.ui:507
+msgid "All room history"
+msgstr "Вся історія кімнати"
 
-#: src/session/verification/identity_verification.rs:674
-msgid "The verification process failed because it reached a timeout."
+#: fractal-gtk/res/ui/room_settings.ui:539
+msgid "History after they were invited"
+msgstr "Історія після їх запрошення"
+
+#: fractal-gtk/res/ui/room_settings.ui:569
+msgid "Room Visibility"
+msgstr "Видимість кімнати"
+
+#: fractal-gtk/res/ui/room_settings.ui:604
+msgid "Allow guests"
+msgstr "Дозволяти гостей"
+
+#: fractal-gtk/res/ui/room_settings.ui:635
+msgid "Allow joining without invite"
+msgstr "Дозволити вхід без запрошення"
+
+#: fractal-gtk/res/ui/room_settings.ui:666
+msgid "Publish in room directory"
+msgstr "Опублікувати в каталозі кімнат"
+
+#: fractal-gtk/res/ui/room_settings.ui:695
+msgid "Join addresses"
+msgstr "Адреси долучення"
+
+#: fractal-gtk/res/ui/room_settings.ui:749
+msgid "members"
+msgstr "учасники"
+
+#: fractal-gtk/res/ui/room_settings.ui:761
+msgid "Invite New Member"
+msgstr "Запросити нового користувача"
+
+#: fractal-gtk/res/ui/room_settings.ui:786
+msgid "Search for room members"
+msgstr "Пошук учасників в кімнаті"
+
+#: fractal-gtk/res/ui/scroll_widget.ui:63
+msgid "Scroll to bottom"
+msgstr "Прокрутіть донизу"
+
+#: fractal-gtk/res/ui/server_chooser_menu.ui:30
+msgid "Show rooms from:"
+msgstr "Показати кімнати з:"
+
+#: fractal-gtk/res/ui/server_chooser_menu.ui:65
+msgid "Your homeserver"
+msgstr "Ваш homeserver"
+
+#: fractal-gtk/res/ui/server_chooser_menu.ui:93
+msgid "Other Protocol"
+msgstr "Інший протокол"
+
+#: fractal-gtk/res/ui/server_chooser_menu.ui:139
+msgid "Other Homeserver"
+msgstr "Інший Homeserver"
+
+#: fractal-gtk/res/ui/server_chooser_menu.ui:156
+msgid "Homeserver URL"
+msgstr "Адреса домашнього сервера"
+
+#: fractal-gtk/src/actions/account_settings.rs:31
+#: fractal-gtk/src/actions/room_settings.rs:37
+msgid "Images"
+msgstr "Зображення"
+
+#: fractal-gtk/src/actions/account_settings.rs:32
+#: fractal-gtk/src/actions/room_settings.rs:39
+msgid "Select a new avatar"
+msgstr "Виберіть новий аватар"
+
+#: fractal-gtk/src/actions/global.rs:320
+msgid "Select a file"
+msgstr "Виберіть файл"
+
+#: fractal-gtk/src/actions/message.rs:57
+msgid "This message has no source."
+msgstr "У цьому повідомленні немає джерела."
+
+#: fractal-gtk/src/actions/message.rs:131
+#: fractal-gtk/src/actions/message.rs:162
+msgid "Could not download the file"
+msgstr "Не вдалося завантажити файл"
+
+#: fractal-gtk/src/actions/message.rs:138
+msgid "Couldn’t save file"
+msgstr "Не вдалося зберегти файл"
+
+#: fractal-gtk/src/actions/room_settings.rs:53
+msgid "Couldn’t open file"
+msgstr "Не вдалося відкрити файл"
+
+#: fractal-gtk/src/appop/account.rs:65
+msgid "The validation code is not correct."
+msgstr "Код перевірки невірний."
+
+#: fractal-gtk/src/appop/account.rs:73
+msgid "Enter the code received via SMS"
+msgstr "Введіть код отриманий в SMS"
+
+#: fractal-gtk/src/appop/account.rs:88 fractal-gtk/src/appop/account.rs:144
+msgid "Continue"
+msgstr "Продовжити"
+
+#: fractal-gtk/src/appop/account.rs:134
+msgid ""
+"In order to add this email address, go to your inbox and follow the link you "
+"received. Once you’ve done that, click Continue."
 msgstr ""
-"Перевірку не пройдено, оскільки перевищено час очікування на відповідь."
+"Щоб додати цю адресу електронної пошти, перейдіть до своєї поштової скриньки "
+"та перейдіть за отриманим вами посиланням. Після цього, натисніть "
+"«Продовжити»."
 
-#: src/session/verification/identity_verification.rs:677
-msgid "You accepted the request from an other session."
-msgstr "Ви прийняли цей запит з іншого сеансу."
+#: fractal-gtk/src/appop/account.rs:348
+msgid "Are you sure you want to delete your account?"
+msgstr "Ви дійсно хочете видалити свій обліковий запис?"
 
-#: src/session/verification/identity_verification.rs:680
-msgid "The emoji did not match."
-msgstr "Емодзі не збігаються."
+#: fractal-gtk/src/appop/mod.rs:176
+msgid "Fractal [{}]"
+msgstr "Фрактал [{}]"
 
-#: src/session/verification/identity_verification.rs:689
-msgid "An unknown error occurred during the verification process."
-msgstr "Під час процедури перевірки сталася невідома помилка."
+#: fractal-gtk/src/appop/notify.rs:18
+msgid "An audio file has been added to the conversation."
+msgstr "До спілкування було додано файл звукових даних."
 
-#: src/user_facing_error.rs:21
-msgid "The connection timed out. Try again later."
+#: fractal-gtk/src/appop/notify.rs:19
+msgid "An image has been added to the conversation."
+msgstr "До спілкування було додано файл зображення."
+
+#: fractal-gtk/src/appop/notify.rs:20
+msgid "A video has been added to the conversation."
+msgstr "До спілкування було додано файл відео."
+
+#: fractal-gtk/src/appop/notify.rs:21
+msgid "A file has been added to the conversation."
+msgstr "До спілкування було додано файл даних."
+
+#: fractal-gtk/src/appop/notify.rs:26
+msgid " (direct message)"
+msgstr " (приватне повідомлення)"
+
+#: fractal-gtk/src/appop/room.rs:352
+msgid "Leave {room_name}?"
+msgstr "Покинути {room_name}?"
+
+#: fractal-gtk/src/appop/room.rs:539
+msgid "The room ID is malformed"
+msgstr "Форматування запису ідентифікатора кімнати є помилковим"
+
+#: fractal-gtk/src/appop/room.rs:607
+msgid "EMPTY ROOM"
+msgstr "ПОРОЖНЯ КІМНАТА"
+
+#: fractal-gtk/src/appop/room.rs:609
+msgid "{m1} and {m2}"
+msgstr "{m1} та {m2}"
+
+#: fractal-gtk/src/appop/room.rs:610
+msgid "{m1} and Others"
+msgstr "{m1} і інші"
+
+#: fractal-gtk/src/appop/room.rs:710
+msgid "Several users are typing…"
+msgstr "Декілька користувачів набирають повідомлення…"
+
+#: fractal-gtk/src/appop/room.rs:713
+msgid "<b>{}</b> is typing…"
+msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+msgstr[0] "<b>{}</b> і <b>{}</b> вводять повідомлення…"
+msgstr[1] "<b>{}</b> і <b>{}</b> вводять повідомлення…"
+msgstr[2] "<b>{}</b> і <b>{}</b> вводять повідомлення…"
+msgstr[3] "<b>{}</b> вводить повідомлення…"
+
+#: fractal-gtk/src/appop/sync.rs:24
+msgid "Syncing, this could take a while"
+msgstr "Синхронізація, це може зайняти деякий час"
+
+#: fractal-gtk/src/backend/directory.rs:35
+#: fractal-gtk/src/backend/directory.rs:81
+msgid "Error searching for rooms"
+msgstr "Помилка при пошуку кімнат"
+
+#: fractal-gtk/src/backend/register.rs:42
+msgid "Can’t login, try again"
+msgstr "Не можна увійти, спробуйте ще раз"
+
+#: fractal-gtk/src/backend/room.rs:403
+msgid "Error deleting message"
+msgstr "Помилка при видаленні повідомлення"
+
+#: fractal-gtk/src/backend/room.rs:443
+msgid "Can’t join the room, try again."
+msgstr "Неможливо увійти в кімнату, спробуйте ще раз."
+
+#: fractal-gtk/src/backend/room.rs:675 fractal-gtk/src/backend/room.rs:727
+msgid "Can’t create the room, try again"
+msgstr "Неможливо створити кімнату, спробуйте ще раз"
+
+#: fractal-gtk/src/backend/user.rs:113
+msgid "Sorry, account settings can’t be loaded."
+msgstr "Вибачте, не вдалося завантажити параметри облікового запису."
+
+#: fractal-gtk/src/backend/user.rs:141
+msgid "Email is already in use"
+msgstr "Ця електронна адреса вже використовується"
+
+#: fractal-gtk/src/backend/user.rs:144
+msgid "Please enter a valid email address."
+msgstr "Будь ласка, введіть коректну адресу електронної пошти."
+
+#: fractal-gtk/src/backend/user.rs:147
+msgid "Couldn’t add the email address."
+msgstr "Не вдалося додати адресу електронної пошти."
+
+#: fractal-gtk/src/backend/user.rs:184
+msgid "Phone number is already in use"
+msgstr "Цей номер телефону вже використовується"
+
+#: fractal-gtk/src/backend/user.rs:188
+msgid ""
+"Please enter your phone number in the format: \n"
+" + your country code and your phone number."
 msgstr ""
-"Перевищено час очікування на встановлення з'єднання. Спробуйте повторити "
-"спробу пізніше."
+"Будь ласка, введіть ваш номер телефону у такому форматі: \n"
+" + код вашої країни і ваш номер телефону."
 
-#: src/user_facing_error.rs:23
-msgid "Unable to connect to the homeserver."
-msgstr "Не вдалося встановити з'єднання із домашнім сервером."
+#: fractal-gtk/src/backend/user.rs:192
+msgid "Couldn’t add the phone number."
+msgstr "Не вдалося додати номер телефону."
 
-#: src/user_facing_error.rs:28
-msgid "The provided username or password is invalid."
-msgstr "Надана пара користувач-пароль є некоректною."
+#: fractal-gtk/src/backend/user.rs:330
+msgid "Couldn’t change the password"
+msgstr "Не вдалося змінити пароль"
 
-#: src/user_facing_error.rs:29
-msgid "The user is deactivated."
-msgstr "Користувача вимкнено."
+#: fractal-gtk/src/backend/user.rs:383
+msgid "Couldn’t delete the account"
+msgstr "Не вдалося видалити обліковий запис"
 
-#: src/user_facing_error.rs:37
-msgid "You exceeded the homeserver’s rate limit, try again later."
-msgstr ""
-"Вами перевищено обмеження на частоту повідомлень на домашньому сервері. "
-"Повторіть спробу пізніше."
+#: fractal-gtk/src/ui/about.rs:12
+msgid "A Matrix.org client for GNOME"
+msgstr "Matrix.org клієнт для GNOME"
 
-#: src/user_facing_error.rs:47
-msgid "An unknown connection error occurred."
-msgstr "Сталася невідома помилка з'єднання."
+#: fractal-gtk/src/ui/about.rs:14
+msgid "© 2017–2020 Daniel García Moreno, et al."
+msgstr "© 2017–2020 Daniel García Moreno, та ін."
 
-#: src/user_facing_error.rs:55
-msgid "Could not decrypt the event"
-msgstr "Не вдалося розшифрувати подію"
+#: fractal-gtk/src/ui/about.rs:21
+msgid "Learn more about Fractal"
+msgstr "Дізнайтеся більше про «Фрактал»"
 
-#: src/user_facing_error.rs:57 src/user_facing_error.rs:77
-msgid "An unknown error occurred."
-msgstr "Сталася невідома помилка."
+#: fractal-gtk/src/ui/about.rs:22
+msgid "translator-credits"
+msgstr "Artem Polishchuk <ego.cordatus@gmail.com>, 2019."
 
-#: src/user_facing_error.rs:64
-msgid "Could not open the store."
-msgstr "Не вдалося відкрити сховище."
+#: fractal-gtk/src/ui/about.rs:37
+msgid "Name by"
+msgstr "Авторка назви"
 
-#: src/user_facing_error.rs:71
-msgid "This is not a valid URL"
-msgstr "Ця адреса є некоректною"
+#: fractal-gtk/src/ui/attach.rs:26
+msgid "Image from Clipboard"
+msgstr "Зображення з буфера обміну"
 
-#: src/user_facing_error.rs:73
-msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
-msgstr ""
-"Не вдалося автоматично виявити домашній сервер. Спробуйте ввести повну "
-"адресу вручну."
+#: fractal-gtk/src/ui/attach.rs:42
+msgid "Send"
+msgstr "Надіслати"
 
-#. Translators: Default name for image files.
-#: src/utils.rs:190
+#. Filename for the attached image
+#: fractal-gtk/src/ui/attach.rs:90
 msgid "image"
 msgstr "зображення"
 
-#. Translators: Default name for video files.
-#: src/utils.rs:192
-msgid "video"
-msgstr "відео"
-
-#. Translators: Default name for audio files.
-#: src/utils.rs:194
-msgid "audio"
-msgstr "звук"
-
-#. Translators: Default name for files.
-#: src/utils.rs:196
-msgid "file"
-msgstr "файл"
-
-#~ msgid "Default window maximized behaviour"
-#~ msgstr "Типова поведінка щодо максимізації вікна"
-
-#~ msgid "Whether or not to do markdown formatting when sending messages"
-#~ msgstr ""
-#~ "Чи слід використовувати форматування Markdown при надсиланні повідомлень"
-
-#, fuzzy
-#~ msgid "New features:"
-#~ msgstr "Нові повідомлення"
-
-#, fuzzy
-#~ msgid "Account settings can be accessed again"
-#~ msgstr "Вибачте, не вдалося завантажити параметри облікового запису."
-
-#, fuzzy
-#~ msgid "Typing notifications"
-#~ msgstr "Повідомлення"
-
-#, fuzzy
-#~ msgid "Opening a room jumps to first unread message"
-#~ msgstr "Відкрити попередню кімнату із непрочитаними повідомленнями у списку"
-
-#, fuzzy
-#~ msgid "More reliable notifications"
-#~ msgstr "Повідомлення"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Close the active room"
-#~ msgstr "Закрити активну кімнату"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open main menu"
-#~ msgstr "Відкрити головне меню"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open / close the room sidebar search"
-#~ msgstr "Відкрити / закрити пошук кімнат в бічній панелі"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open the previous room in the list"
-#~ msgstr "Відкрити попередню кімнату у списку"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open the next room in the list"
-#~ msgstr "Відкрити наступну кімнату у списку"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open the previous room with unread messages in the list"
-#~ msgstr "Відкрити попередню кімнату із непрочитаними повідомленнями у списку"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open the next room with unread messages in the list"
-#~ msgstr "Відкрити наступну кімнату із непрочитаними повідомленнями у списку"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open the first room of the list"
-#~ msgstr "Відкрити першу кімнату у списку"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open the last room of the list"
-#~ msgstr "Відкрити останню кімнату у списку"
-
-#~ msgctxt "shortcut window"
-#~ msgid "View older messages"
-#~ msgstr "Переглянути старіші повідомлення"
-
-#~ msgctxt "shortcut window"
-#~ msgid "View newer messages"
-#~ msgstr "Переглянути новіші повідомлення"
-
-#~ msgctxt "shortcut message"
-#~ msgid "Composing a new message"
-#~ msgstr "Створення нового повідомлення"
-
-#~ msgctxt "shortcut message"
-#~ msgid "Write on a new line"
-#~ msgstr "Написати на новому рядку"
-
-#~ msgid "Type of password and token storage"
-#~ msgstr "Тип сховища паролів і ключів"
-
-#~ msgid "Type of password and token storage, default value is: Secret Service"
-#~ msgstr ""
-#~ "Тип сховища паролів і ключів. Типове значення: служба зберігання паролів"
-
-#~ msgid "If markdown sending is active"
-#~ msgstr "Чи увімкнено розмітку при надсиланні"
-
-#~ msgid "Whether support for sending markdown messages is on"
-#~ msgstr "Чи увімкнено підтримку розмітки у надісланих повідомленнях"
-
-#~ msgid "X position of the main window on startup"
-#~ msgstr "Розташування головного вікна за віссю X після запуску"
-
-#~ msgid "Y position of the main window on startup"
-#~ msgstr "Розташування головного вікна за віссю Y після запуску"
-
-#~ msgid "Width of the main window on startup"
-#~ msgstr "Ширина головного вікна після запуску"
-
-#~ msgid "Height of the main window on startup"
-#~ msgstr "Висота головного вікна після запуску"
-
-#~ msgid "Daniel García Moreno"
-#~ msgstr "Daniel García Moreno"
-
-#~ msgid "Back"
-#~ msgstr "Назад"
-
-#~ msgid "Other people can find you by searching for any of these identifiers."
-#~ msgstr "Інші люди зможуть знайти вас по одному з цих ідентифікаторів."
-
-#~ msgid "Type in your name"
-#~ msgstr "Введіть своє ім'я"
-
-#~ msgid "Email"
-#~ msgstr "Електронна пошта"
-
-#~ msgid "Phone"
-#~ msgstr "Телефон"
-
-#~ msgid "Device ID"
-#~ msgstr "ID пристрою"
-
-#~ msgid ""
-#~ "Deactivating your account means that you will lose all your messages, "
-#~ "contacts, and files."
-#~ msgstr ""
-#~ "Деактивация вашого облікового запису означає, що ви втратите всі свої "
-#~ "повідомлення, контакти і файли."
-
-#~ msgid ""
-#~ "To confirm that you really want to deactivate this account type in your "
-#~ "password:"
-#~ msgstr ""
-#~ "Щоб підтвердити, що ви дійсно хочете деактивувати цей обліковий запис "
-#~ "введіть свій пароль:"
-
-#~ msgid "Also erase all messages"
-#~ msgstr "Також видалити всі повідомлення"
-
-#~ msgid "Check your email"
-#~ msgstr "Перевірте свою електронну пошту"
-
-#~ msgid "Apply"
-#~ msgstr "_Застосувати"
-
-#~ msgid "New Direct Chat"
-#~ msgstr "Новий чат"
-
-#~ msgid "Play"
-#~ msgstr "Відтворити"
-
-#~ msgid "New direct chat"
-#~ msgstr "Новий чат"
-
-#~ msgid "Start chat"
-#~ msgstr "Почати чат"
-
-#~ msgid "Invitation"
-#~ msgstr "Запрошення"
-
-#~ msgid "ID or Alias"
-#~ msgstr "Ідентифікатор або псевдонім"
-
-#~ msgid "Join room"
-#~ msgstr "Увійти в кімнату"
-
-#~ msgid "Close"
-#~ msgstr "Закрити"
-
-#~ msgid "Leave?"
-#~ msgstr "Покинути?"
-
-#~ msgid ""
-#~ "Once you leave, you won’t be able to interact with people in the room "
-#~ "anymore."
-#~ msgstr ""
-#~ "Після того, як ви покинете, ви більше не зможете спілкуватися з людьми в "
-#~ "кімнаті."
-
-#~ msgid "What is your Provider?"
-#~ msgstr "Який у вас надавач послуг?"
-
-#~ msgid "Matrix provider domain, e.g. myserver.co"
-#~ msgstr "Домен надавача послуг Matrix, наприклад myserver.co"
-
-#~ msgid "The domain may not be empty."
-#~ msgstr "Запис домену не може бути порожнім."
-
-#~ msgid "Log In"
-#~ msgstr "Увійти"
-
-#~ msgid "_User ID"
-#~ msgstr "Ід. _користувача"
-
-#~ msgid "_Password"
-#~ msgstr "_Пароль"
-
-#~ msgid "User name, email, or phone number"
-#~ msgstr "Ім'я користувача, адреса електронної пошти або номер телефону"
-
-#~ msgid "Invalid username or password"
-#~ msgstr "Неправильне ім'я користувача або пароль"
-
-#~ msgid "Keyboard _Shortcuts"
-#~ msgstr "Комбінації _клавіш"
-
-#~ msgid "User"
-#~ msgstr "Користувач"
-
-#~ msgid "Add"
-#~ msgstr "Додати"
-
-#~ msgid "Room search"
-#~ msgstr "Пошук кімнати"
-
-#~ msgid "Room Menu"
-#~ msgstr "Меню кімнати"
-
-#~ msgid "No room"
-#~ msgstr "Немає кімнати"
-
-#~ msgid "Default Matrix Server"
-#~ msgstr "Типовий Matrix-сервер"
-
-#~ msgid "Toggle fullscreen"
-#~ msgstr "Увімкнути/вимкнути повноекранний режим"
-
-#~ msgid "Loading more media"
-#~ msgstr "Завантажити ще медіа"
-
-#~ msgid "Open With…"
-#~ msgstr "Відкрити з допомогою…"
-
-#~ msgid "Save Video As…"
-#~ msgstr "Зберегти відео як…"
-
-#~ msgid "Copy Selection"
-#~ msgstr "Копіювати виділене"
-
-#~ msgid "Message Source"
-#~ msgstr "Джерело повідомлення"
-
-#~ msgid "Copy To Clipboard"
-#~ msgstr "Скопіювати в буфер обміну"
-
-#~ msgid "Ch_ange"
-#~ msgstr "_Змінити"
-
-#~ msgid "Invite to This Room"
-#~ msgstr "Запросити в цю кімнату"
-
-#~ msgid "Add name"
-#~ msgstr "Додати ім'я"
-
-#~ msgid "Add topic"
-#~ msgstr "Додати тему"
-
-#~ msgid "Type in your room topic"
-#~ msgstr "Введіть тему вашої кімнати"
-
-#~ msgid "No room description"
-#~ msgstr "Опис кімнати відсутній"
-
-#~ msgid "For all messages"
-#~ msgstr "Для всіх повідомлень"
-
-#~ msgid "Only for mentions"
-#~ msgstr "Тільки для згадок"
-
-#~ msgid "Shared Media"
-#~ msgstr "Загальні медіа"
-
-#~ msgid "photos"
-#~ msgstr "фотографії"
-
-#~ msgid "documents"
-#~ msgstr "документи"
-
-#~ msgid "New members can see"
-#~ msgstr "Нові учасники можуть бачити"
-
-#~ msgid "All room history"
-#~ msgstr "Вся історія кімнати"
-
-#~ msgid "History after they were invited"
-#~ msgstr "Історія після їх запрошення"
-
-#~ msgid "Room Visibility"
-#~ msgstr "Видимість кімнати"
-
-#~ msgid "Allow guests"
-#~ msgstr "Дозволяти гостей"
-
-#~ msgid "Allow joining without invite"
-#~ msgstr "Дозволити вхід без запрошення"
-
-#~ msgid "Publish in room directory"
-#~ msgstr "Опублікувати в каталозі кімнат"
-
-#~ msgid "Show rooms from:"
-#~ msgstr "Показати кімнати з:"
-
-#~ msgid "Your homeserver"
-#~ msgstr "Ваш homeserver"
-
-#~ msgid "Other Protocol"
-#~ msgstr "Інший протокол"
-
-#~ msgid "Other Homeserver"
-#~ msgstr "Інший Homeserver"
-
-#~ msgid "Select a new avatar"
-#~ msgstr "Виберіть новий аватар"
-
-#~ msgid "Select a file"
-#~ msgstr "Виберіть файл"
-
-#~ msgid "Couldn’t save file"
-#~ msgstr "Не вдалося зберегти файл"
-
-#~ msgid "Couldn’t open file"
-#~ msgstr "Не вдалося відкрити файл"
-
-#~ msgid "The validation code is not correct."
-#~ msgstr "Код перевірки невірний."
-
-#~ msgid "Enter the code received via SMS"
-#~ msgstr "Введіть код отриманий в SMS"
-
-#~ msgid ""
-#~ "In order to add this email address, go to your inbox and follow the link "
-#~ "you received. Once you’ve done that, click Continue."
-#~ msgstr ""
-#~ "Щоб додати цю адресу електронної пошти, перейдіть до своєї поштової "
-#~ "скриньки та перейдіть за отриманим вами посиланням. Після цього, "
-#~ "натисніть «Продовжити»."
-
-#~ msgid "Are you sure you want to delete your account?"
-#~ msgstr "Ви дійсно хочете видалити свій обліковий запис?"
-
-#~ msgid "Fractal [{}]"
-#~ msgstr "Фрактал [{}]"
-
-#~ msgid "An audio file has been added to the conversation."
-#~ msgstr "До спілкування було додано файл звукових даних."
-
-#~ msgid "An image has been added to the conversation."
-#~ msgstr "До спілкування було додано файл зображення."
-
-#~ msgid "A video has been added to the conversation."
-#~ msgstr "До спілкування було додано файл відео."
-
-#~ msgid "A file has been added to the conversation."
-#~ msgstr "До спілкування було додано файл даних."
-
-#~ msgid " (direct message)"
-#~ msgstr " (приватне повідомлення)"
-
-#~ msgid "Leave {room_name}?"
-#~ msgstr "Покинути {room_name}?"
-
-#~ msgid "The room ID is malformed"
-#~ msgstr "Форматування запису ідентифікатора кімнати є помилковим"
-
-#~ msgid "EMPTY ROOM"
-#~ msgstr "ПОРОЖНЯ КІМНАТА"
-
-#~ msgid "{m1} and {m2}"
-#~ msgstr "{m1} та {m2}"
-
-#~ msgid "{m1} and Others"
-#~ msgstr "{m1} і інші"
-
-#~ msgid "Several users are typing…"
-#~ msgstr "Декілька користувачів набирають повідомлення…"
-
-#~ msgid "<b>{}</b> is typing…"
-#~ msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
-#~ msgstr[0] "<b>{}</b> і <b>{}</b> вводять повідомлення…"
-#~ msgstr[1] "<b>{}</b> і <b>{}</b> вводять повідомлення…"
-#~ msgstr[2] "<b>{}</b> і <b>{}</b> вводять повідомлення…"
-#~ msgstr[3] "<b>{}</b> вводить повідомлення…"
-
-#~ msgid "Syncing, this could take a while"
-#~ msgstr "Синхронізація, це може зайняти деякий час"
-
-#~ msgid "Can’t login, try again"
-#~ msgstr "Не можна увійти, спробуйте ще раз"
-
-#~ msgid "Error deleting message"
-#~ msgstr "Помилка при видаленні повідомлення"
-
-#~ msgid "Can’t join the room, try again."
-#~ msgstr "Неможливо увійти в кімнату, спробуйте ще раз."
-
-#~ msgid "Can’t create the room, try again"
-#~ msgstr "Неможливо створити кімнату, спробуйте ще раз"
-
-#~ msgid "Sorry, account settings can’t be loaded."
-#~ msgstr "Вибачте, не вдалося завантажити параметри облікового запису."
-
-#~ msgid "Email is already in use"
-#~ msgstr "Ця електронна адреса вже використовується"
-
-#~ msgid "Please enter a valid email address."
-#~ msgstr "Будь ласка, введіть коректну адресу електронної пошти."
-
-#~ msgid "Couldn’t add the email address."
-#~ msgstr "Не вдалося додати адресу електронної пошти."
-
-#~ msgid "Phone number is already in use"
-#~ msgstr "Цей номер телефону вже використовується"
-
-#~ msgid ""
-#~ "Please enter your phone number in the format: \n"
-#~ " + your country code and your phone number."
-#~ msgstr ""
-#~ "Будь ласка, введіть ваш номер телефону у такому форматі: \n"
-#~ " + код вашої країни і ваш номер телефону."
-
-#~ msgid "Couldn’t add the phone number."
-#~ msgstr "Не вдалося додати номер телефону."
-
-#~ msgid "© 2017–2020 Daniel García Moreno, et al."
-#~ msgstr "© 2017–2020 Daniel García Moreno, та ін."
-
-#~ msgid "Image from Clipboard"
-#~ msgstr "Зображення з буфера обміну"
-
-#~ msgid "Invite to {name}"
-#~ msgstr "Запросити в {name}"
-
-#~ msgid "Join {room_name}?"
-#~ msgstr "Увійти в {room_name}?"
-
-#~ msgid ""
-#~ "You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</"
-#~ "b>"
-#~ msgstr "<b>{sender_name}</b> запросив вас увійти в <b>{room_name}</b>"
-
-#~ msgid "You’ve been invited to join <b>{room_name}</b>"
-#~ msgstr "Вас запросили увійти в <b>{room_name}</b>"
-
-#~ msgid "You don’t have permission to post to this room"
-#~ msgstr "У вас немає права дописувати у цій кімнаті"
-
-#~ msgid "OK"
-#~ msgstr "Гаразд"
-
-#~ msgid "Room · {} member"
-#~ msgid_plural "Room · {} members"
-#~ msgstr[0] "Кімната · {} учасник"
-#~ msgstr[1] "Кімната · {} учасника"
-#~ msgstr[2] "Кімната · {} учасників"
-#~ msgstr[3] "Кімната · {} учасник"
-
-#~ msgid "{} member"
-#~ msgid_plural "{} members"
-#~ msgstr[0] "{} учасник"
-#~ msgstr[1] "{} учасника"
-#~ msgstr[2] "{} учасників"
-#~ msgstr[3] "{} учасник"
-
-#~ msgid "Save media as"
-#~ msgstr "Збережіть медіа як"
-
-#~ msgid "_Save"
-#~ msgstr "_Зберегти"
-
-#~ msgid "You have been kicked from {}"
-#~ msgstr "Вас викинуто з {}"
-
-#~ msgid ""
-#~ "Kicked by: {}\n"
-#~ " “{}”"
-#~ msgstr ""
-#~ "Викинуто: {}\n"
-#~ " «{}»"
-
-#~ msgid "Malformed server URL"
-#~ msgstr "Помилкове форматування адреси сервера"
-
-#~ msgid "Error while loading previous media"
-#~ msgstr "Помилка при завантаженні попереднього медіа"
-
-#~ msgid "Privileged"
-#~ msgstr "Привілейований"
-
-#~ msgid "Last edited %c"
-#~ msgstr "Востаннє редаговано %c"
-
-#~ msgid "%l∶%M %p"
-#~ msgstr "%l∶%M %p"
-
-#~ msgid "%R"
-#~ msgstr "%R"
-
-#~ msgid "Invites"
-#~ msgstr "Запрошення"
-
-#~ msgid "You don’t have any invitations"
-#~ msgstr "У вас немає запрошень"
-
-#~ msgid "Drag and drop rooms here to add them to your favorites"
-#~ msgstr "Перетягніть сюди кімнати, щоб додати їх в обране"
-
-#~ msgid "You don’t have any rooms yet"
-#~ msgstr "У вас поки немає кімнат"
+#: fractal-gtk/src/ui/invite.rs:131
+msgid "Invite to {name}"
+msgstr "Запросити в {name}"
+
+#: fractal-gtk/src/ui/invite.rs:183
+msgid "Join {room_name}?"
+msgstr "Увійти в {room_name}?"
+
+#: fractal-gtk/src/ui/invite.rs:187
+msgid ""
+"You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</b>"
+msgstr "<b>{sender_name}</b> запросив вас увійти в <b>{room_name}</b>"
+
+#: fractal-gtk/src/ui/invite.rs:192
+msgid "You’ve been invited to join <b>{room_name}</b>"
+msgstr "Вас запросили увійти в <b>{room_name}</b>"
+
+#: fractal-gtk/src/ui/mod.rs:77
+msgid "You don’t have permission to post to this room"
+msgstr "У вас немає права дописувати у цій кімнаті"
+
+#: fractal-gtk/src/ui/mod.rs:159
+msgid "OK"
+msgstr "Гаразд"
+
+#: fractal-gtk/src/ui/room_settings.rs:264
+msgid "Room · {} member"
+msgid_plural "Room · {} members"
+msgstr[0] "Кімната · {} учасник"
+msgstr[1] "Кімната · {} учасника"
+msgstr[2] "Кімната · {} учасників"
+msgstr[3] "Кімната · {} учасник"
+
+#: fractal-gtk/src/ui/room_settings.rs:699
+msgid "{} member"
+msgid_plural "{} members"
+msgstr[0] "{} учасник"
+msgstr[1] "{} учасника"
+msgstr[2] "{} учасників"
+msgstr[3] "{} учасник"
+
+#: fractal-gtk/src/widgets/file_dialog.rs:8
+msgid "Save media as"
+msgstr "Збережіть медіа як"
+
+#: fractal-gtk/src/widgets/file_dialog.rs:11
+msgid "_Save"
+msgstr "_Зберегти"
+
+#: fractal-gtk/src/widgets/file_dialog.rs:32
+msgid "_Select"
+msgstr "_Виберіть"
+
+#: fractal-gtk/src/widgets/inline_player.rs:513
+msgid "Could not retrieve file URI"
+msgstr "Не вдалося отримати URI файлу"
+
+#: fractal-gtk/src/widgets/kicked_dialog.rs:46
+msgid "You have been kicked from {}"
+msgstr "Вас викинуто з {}"
+
+#: fractal-gtk/src/widgets/kicked_dialog.rs:50
+msgid ""
+"Kicked by: {}\n"
+" “{}”"
+msgstr ""
+"Викинуто: {}\n"
+" «{}»"
+
+#: fractal-gtk/src/widgets/login.rs:95
+msgid "Malformed server URL"
+msgstr "Помилкове форматування адреси сервера"
+
+#: fractal-gtk/src/widgets/media_viewer.rs:1026
+msgid "Error while loading previous media"
+msgstr "Помилка при завантаженні попереднього медіа"
+
+#: fractal-gtk/src/widgets/members_list.rs:50
+msgid "No matching members found"
+msgstr "Не знайдено жодного відповідного учасника"
+
+#: fractal-gtk/src/widgets/members_list.rs:146
+msgid "Admin"
+msgstr "Адміністратор"
+
+#: fractal-gtk/src/widgets/members_list.rs:147
+msgid "Moderator"
+msgstr "Модератор"
+
+#: fractal-gtk/src/widgets/members_list.rs:148
+msgid "Privileged"
+msgstr "Привілейований"
+
+#: fractal-gtk/src/widgets/message.rs:471
+#, c-format
+msgid "Last edited %c"
+msgstr "Востаннє редаговано %c"
+
+#: fractal-gtk/src/widgets/message.rs:665
+#: fractal-gtk/src/widgets/message.rs:832
+msgid "Save"
+msgstr "Зберегти"
+
+#: fractal-gtk/src/widgets/message.rs:847
+msgid "Open"
+msgstr "Відкрити"
+
+#. Use 12h time format (AM/PM)
+#: fractal-gtk/src/widgets/message.rs:990
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Use 24 time format
+#: fractal-gtk/src/widgets/message.rs:993
+msgid "%R"
+msgstr "%R"
+
+#: fractal-gtk/src/widgets/room_history.rs:108
+msgid "New Messages"
+msgstr "Нові повідомлення"
+
+#. Translators: This is a date format in the day divider without the year
+#: fractal-gtk/src/widgets/room_history.rs:798
+msgid "%B %e"
+msgstr "%B %e"
+
+#. Translators: This is a date format in the day divider with the year
+#: fractal-gtk/src/widgets/room_history.rs:801
+msgid "%B %e, %Y"
+msgstr "%B %e, %Y"
+
+#: fractal-gtk/src/widgets/roomlist.rs:480
+msgid "Invites"
+msgstr "Запрошення"
+
+#: fractal-gtk/src/widgets/roomlist.rs:481
+msgid "You don’t have any invitations"
+msgstr "У вас немає запрошень"
+
+#: fractal-gtk/src/widgets/roomlist.rs:485
+msgid "Favorites"
+msgstr "Обране"
+
+#: fractal-gtk/src/widgets/roomlist.rs:486
+msgid "Drag and drop rooms here to add them to your favorites"
+msgstr "Перетягніть сюди кімнати, щоб додати їх в обране"
+
+#: fractal-gtk/src/widgets/roomlist.rs:490
+msgid "Rooms"
+msgstr "кімнати"
+
+#: fractal-gtk/src/widgets/roomlist.rs:491
+msgid "You don’t have any rooms yet"
+msgstr "У вас поки немає кімнат"
 
 #~| msgid "translator-credits"
 #~ msgid "translate1"
@@ -2192,3 +1183,9 @@ msgstr "файл"
 
 #~ msgid "Private Chat"
 #~ msgstr "Приватний чат"
+
+#~ msgid "The identity server is invalid."
+#~ msgstr "Сервер профілів є некоректним."
+
+#~ msgid "Error sending message"
+#~ msgstr "Помилка при надсиланні повідомлення"
