@@ -460,7 +460,7 @@ impl Session {
                         warn!("Couldn't store session: {:?}", error);
                         if let Some(window) = self.parent_window() {
                             window.switch_to_error_page(
-                                &gettext!("Unable to store session: {}", error),
+                                &format!("{}\n\n{}", gettext("Unable to store session"), error),
                                 error,
                             );
                         }

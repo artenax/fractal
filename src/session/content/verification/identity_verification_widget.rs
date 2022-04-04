@@ -8,6 +8,7 @@ use super::Emoji;
 use crate::{
     components::SpinnerButton,
     contrib::{QRCode, QRCodeExt, QrCodeScanner},
+    gettext_f,
     session::{
         user::UserExt,
         verification::{
@@ -547,32 +548,54 @@ impl IdentityVerificationWidget {
                 priv_.label1.set_markup(&gettext("Verification Request"));
                 priv_
                     .label2
-                    .set_markup(&gettext!("<b>{}</b> asked do be verified. Verifying an user increases the security of the conversation.", name));
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    .set_markup(&gettext_f("{user} asked to be verified. Verifying a user increases the security of the conversation.", &[("user", &format!("<b>{}</b>", name))]));
                 priv_.label3.set_markup(&gettext("Verification Request"));
-                priv_.label4.set_markup(&gettext!(
-                    "Scan the QR code shown on the device of <b>{}</b>.",
-                    name
+                priv_.label4.set_markup(&gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    "Scan the QR code shown on the device of {user}.",
+                    &[("user", &format!("<b>{}</b>", name))],
                 ));
-                priv_.label5.set_markup(&gettext!("You scanned the QR code successfully. <b>{}</b> may need to confirm the verification.", name));
+                // Translators: Do NOT translate the content between '{' and '}', this is a
+                // variable name.
+                priv_.label5.set_markup(&gettext_f("You scanned the QR code successfully. {user} may need to confirm the verification.", &[("user", &format!("<b>{}</b>", name))]));
                 priv_.label8.set_markup(&gettext("Verification Request"));
-                priv_.label9.set_markup(&gettext(
-                    "Ask <b>{}</b> to scan this QR code from their session.",
+                priv_.label9.set_markup(&gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    "Ask {user} to scan this QR code from their session.",
+                    &[("user", &format!("<b>{}</b>", name))],
                 ));
                 priv_.label10.set_markup(&gettext("Verification Request"));
-                priv_.label11.set_markup(&gettext!(
-                    "Ask <b>{}</b> if they see the following emoji appear in the same order on their screen.",
-                    name
+                priv_.label11.set_markup(&gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    "Ask {user} if they see the following emoji appear in the same order on their screen.",
+                    &[("user", &format!("<b>{}</b>", name))]
                 ));
                 priv_.label12.set_markup(&gettext("Verification Complete"));
-                priv_.label13.set_markup(&gettext!("<b>{}</b> is verified and you can now be sure that your communication will be private.", name));
-                priv_.label14.set_markup(&gettext!("Waiting for {}", name));
-                priv_.label15.set_markup(&gettext!(
-                    "Ask <b>{}</b> to accept the verification request.",
-                    name
+                // Translators: Do NOT translate the content between '{' and '}', this is a
+                // variable name.
+                priv_.label13.set_markup(&gettext_f("{user} is verified and you can now be sure that your communication will be private.", &[("user", &format!("<b>{}</b>", name))]));
+                priv_.label14.set_markup(&gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    "Waiting for {user}",
+                    &[("user", &format!("<b>{}</b>", name))],
                 ));
-                priv_.label16.set_markup(&gettext!(
-                    "Does <b>{}</b> see a confirmation shield on their session?",
-                    name
+                priv_.label15.set_markup(&gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    "Ask {user} to accept the verification request.",
+                    &[("user", &format!("<b>{}</b>", name))],
+                ));
+                priv_.label16.set_markup(&gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    "Does {user} see a confirmation shield on their session?",
+                    &[("user", &format!("<b>{}</b>", name))],
                 ));
             }
         }

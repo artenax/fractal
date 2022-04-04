@@ -86,8 +86,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="LabelWithWidgets">
-                        <property name="label" translatable="yes">&lt;widget&gt; invited you</property>
+                      <object class="LabelWithWidgets" id="inviter">
                         <child>
                           <object class="Pill">
                             <binding name="user">

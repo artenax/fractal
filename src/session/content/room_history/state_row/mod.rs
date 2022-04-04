@@ -10,6 +10,7 @@ use matrix_sdk::ruma::events::{
 };
 
 use self::{creation::StateCreation, tombstone::StateTombstone};
+use crate::gettext_f;
 
 mod imp {
     use glib::subclass::InitializingObject;
@@ -87,19 +88,30 @@ impl StateRow {
                             {
                                 if let Some(prev_name) = prev.displayname {
                                     if event.displayname == None {
-                                        Some(gettext!("{} removed their display name.", prev_name))
+                                        Some(gettext_f(
+                                            // Translators: Do NOT translate the content between
+                                            // '{' and '}', this is a variable name.
+                                            "{previous_user_name} removed their display name.",
+                                            &[("previous_user_name", &prev_name)],
+                                        ))
                                     } else {
-                                        Some(gettext!(
-                                            "{} changed their display name to {}.",
-                                            prev_name,
-                                            display_name
+                                        Some(gettext_f(
+                                            // Translators: Do NOT translate the content between
+                                            // '{' and '}', this is a variable name.
+                                            "{previous_user_name} changed their display name to {new_user_name}.",
+                                            &[("previous_user_name", &prev_name),
+                                            ("new_user_name", &display_name)]
                                         ))
                                     }
                                 } else {
-                                    Some(gettext!(
-                                        "{} set their display name to {}.",
-                                        state.state_key(),
-                                        display_name
+                                    Some(gettext_f(
+                                        // Translators: Do NOT translate the content between
+                                        // '{' and '}', this is a variable name.
+                                        "{user_id} set their display name to {new_user_name}.",
+                                        &[
+                                            ("user_id", state.state_key()),
+                                            ("new_user_name", &display_name),
+                                        ],
                                     ))
                                 }
                             }
@@ -107,28 +119,50 @@ impl StateRow {
                                 if event.avatar_url != prev.avatar_url =>
                             {
                                 if prev.avatar_url == None {
-                                    Some(gettext!("{} set their avatar.", display_name))
+                                    Some(gettext_f(
+                                        // Translators: Do NOT translate the content between
+                                        // '{' and '}', this is a variable name.
+                                        "{user} set their avatar.",
+                                        &[("user", &display_name)],
+                                    ))
                                 } else if event.avatar_url == None {
-                                    Some(gettext!("{} removed their avatar.", display_name))
+                                    Some(gettext_f(
+                                        // Translators: Do NOT translate the content between
+                                        // '{' and '}', this is a variable name.
+                                        "{user} removed their avatar.",
+                                        &[("user", &display_name)],
+                                    ))
                                 } else {
-                                    Some(gettext!("{} changed their avatar.", display_name))
+                                    Some(gettext_f(
+                                        // Translators: Do NOT translate the content between
+                                        // '{' and '}', this is a variable name.
+                                        "{user} changed their avatar.",
+                                        &[("user", &display_name)],
+                                    ))
                                 }
                             }
                             _ => None,
                         };
 
-                        WidgetType::Text(
-                            message.unwrap_or(gettext!("{} joined this room.", display_name)),
-                        )
+                        WidgetType::Text(message.unwrap_or_else(|| {
+                            // Translators: Do NOT translate the content between '{' and '}', this
+                            // is a variable name.
+                            gettext_f("{user} joined this room.", &[("user", &display_name)])
+                        }))
                     }
-                    MembershipState::Invite => {
-                        WidgetType::Text(gettext!("{} was invited to this room.", display_name))
-                    }
+                    MembershipState::Invite => WidgetType::Text(gettext_f(
+                        // Translators: Do NOT translate the content between '{' and '}', this is
+                        // a variable name.
+                        "{user} was invited to this room.",
+                        &[("user", &display_name)],
+                    )),
                     MembershipState::Knock => {
                         // TODO: Add button to invite the user.
-                        WidgetType::Text(gettext!(
-                            "{} requested to be invited to this room.",
-                            display_name
+                        WidgetType::Text(gettext_f(
+                            // Translators: Do NOT translate the content between '{' and '}', this
+                            // is a variable name.
+                            "{user} requested to be invited to this room.",
+                            &[("user", &display_name)],
                         ))
                     }
                     MembershipState::Leave => {
@@ -137,30 +171,55 @@ impl StateRow {
                                 if prev.membership == MembershipState::Invite =>
                             {
                                 if state.state_key() == state.sender() {
-                                    Some(gettext!("{} rejected the invite.", display_name))
+                                    Some(gettext_f(
+                                        // Translators: Do NOT translate the content between
+                                        // '{' and '}', this is a variable name.
+                                        "{user} rejected the invite.",
+                                        &[("user", &display_name)],
+                                    ))
                                 } else {
-                                    Some(gettext!("{}’s invite was revoked'.", display_name))
+                                    Some(gettext_f(
+                                        // Translators: Do NOT translate the content between
+                                        // '{' and '}', this is a variable name.
+                                        "{user}’s invite was revoked'.",
+                                        &[("user", &display_name)],
+                                    ))
                                 }
                             }
                             Some(AnyStateEventContent::RoomMember(prev))
                                 if prev.membership == MembershipState::Ban =>
                             {
-                                Some(gettext!("{} was unbanned.", display_name))
+                                Some(gettext_f(
+                                    // Translators: Do NOT translate the content between
+                                    // '{' and '}', this is a variable name.
+                                    "{user} was unbanned.",
+                                    &[("user", &display_name)],
+                                ))
                             }
                             _ => None,
                         };
 
                         WidgetType::Text(message.unwrap_or_else(|| {
                             if state.state_key() == state.sender() {
-                                gettext!("{} left the room.", display_name)
+                                // Translators: Do NOT translate the content between '{' and '}',
+                                // this is a variable name.
+                                gettext_f("{user} left the room.", &[("user", &display_name)])
                             } else {
-                                gettext!("{} was kicked out of the room.", display_name)
+                                gettext_f(
+                                    // Translators: Do NOT translate the content between '{' and
+                                    // '}', this is a variable name.
+                                    "{user} was kicked out of the room.",
+                                    &[("user", &display_name)],
+                                )
                             }
                         }))
                     }
-                    MembershipState::Ban => {
-                        WidgetType::Text(gettext!("{} was banned.", display_name))
-                    }
+                    MembershipState::Ban => WidgetType::Text(gettext_f(
+                        // Translators: Do NOT translate the content between '{' and '}', this is
+                        // a variable name.
+                        "{user} was banned.",
+                        &[("user", &display_name)],
+                    )),
                     _ => {
                         warn!("Unsupported room member event: {:?}", state);
                         WidgetType::Text(gettext("An unsupported room member event was received."))
@@ -172,7 +231,12 @@ impl StateRow {
                     s if s.is_empty() => state.state_key().into(),
                     s => s,
                 };
-                WidgetType::Text(gettext!("{} was invited to this room.", display_name))
+                WidgetType::Text(gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    "{user} was invited to this room.",
+                    &[("user", &display_name)],
+                ))
             }
             AnyStateEventContent::RoomTombstone(event) => {
                 WidgetType::Tombstone(StateTombstone::new(&event))

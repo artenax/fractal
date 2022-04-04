@@ -3,6 +3,7 @@ use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate
 
 use crate::{
     components::{Avatar, LabelWithWidgets, Pill, SpinnerButton},
+    gettext_f,
     session::room::{Room, RoomType},
     spawn,
 };
@@ -29,6 +30,8 @@ mod imp {
         pub headerbar: TemplateChild<adw::HeaderBar>,
         #[template_child]
         pub room_topic: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub inviter: TemplateChild<LabelWithWidgets>,
         #[template_child]
         pub accept_button: TemplateChild<SpinnerButton>,
         #[template_child]
@@ -126,6 +129,11 @@ mod imp {
 
             self.room_topic
                 .set_visible(!self.room_topic.label().is_empty());
+
+            // Translators: Do NOT translate the content between '{' and '}', this is a
+            // variable name.
+            self.inviter
+                .set_label(Some(gettext_f("{user} invited you", &[("user", "widget")])));
         }
     }
 

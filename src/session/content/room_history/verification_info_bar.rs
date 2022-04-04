@@ -2,10 +2,14 @@ use adw::subclass::prelude::*;
 use gettextrs::gettext;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 
-use crate::session::{
-    user::UserExt,
-    verification::{IdentityVerification, VerificationState},
+use crate::{
+    gettext_f,
+    session::{
+        user::UserExt,
+        verification::{IdentityVerification, VerificationState},
+    },
 };
+
 mod imp {
     use std::cell::RefCell;
 
@@ -160,11 +164,14 @@ impl VerificationInfoBar {
             if request.is_finished() {
                 false
             } else if matches!(request.state(), VerificationState::Requested) {
-                // Translators: The value is the display name of the user who wants to be
-                // verified
-                priv_.label.set_markup(&gettext!(
-                    "<b>{}</b> wants to be verified",
-                    request.user().display_name()
+                priv_.label.set_markup(&gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    "{user_name} wants to be verified",
+                    &[(
+                        "user_name",
+                        &format!("<b>{}</b>", request.user().display_name()),
+                    )],
                 ));
                 priv_.accept_btn.set_label(&gettext("Verify"));
                 priv_.cancel_btn.set_label(&gettext("Decline"));

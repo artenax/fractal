@@ -312,8 +312,11 @@ check_potfiles() {
     # Get UI files with 'translatable="yes"'.
     ui_files=(`grep -lIr 'translatable="yes"' data/resources/ui/*`)
 
-    # Get Rust files with regex 'gettext[!]?\('.
-    rs_files=(`grep -lIrE 'gettext[!]?\(' src/*`)
+    # Get Rust files with regex 'gettext(_f)?\(', except `src/i18n.rs`.
+    rs_files=(`grep -lIrE 'gettext(_f)?\(' --exclude=i18n.rs src/*`)
+    
+    # Get Rust files with macros, regex 'gettext!\('.
+    rs_macro_files=(`grep -lIrE 'gettext!\(' src/*`)
 
     # Remove common files
     to_diff1=("${ui_potfiles[@]}")
@@ -352,13 +355,27 @@ check_potfiles() {
         ret=1
     elif [[ $files_count -ne 0 ]]; then
         echo ""
-        echo -e "$error Found $files_count with translatable strings not present in POTFILES.in:"
+        echo -e "$error Found $files_count files with translatable strings not present in POTFILES.in:"
         ret=1
     fi
     for file in ${ui_files[@]}; do
         echo $file
     done
     for file in ${rs_files[@]}; do
+        echo $file
+    done
+
+    let rs_macro_count=$((${#rs_macro_files[@]}))
+    if [[ $rs_macro_count -eq 1 ]]; then
+        echo ""
+        echo -e "$error Found 1 Rust file that uses a gettext-rs macro, use the corresponding i18n method instead:"
+        ret=1
+    elif [[ $rs_macro_count -ne 0 ]]; then
+        echo ""
+        echo -e "$error Found $rs_macro_count Rust files that use a gettext-rs macro, use the corresponding i18n method instead:"
+        ret=1
+    fi
+    for file in ${rs_macro_files[@]}; do
         echo $file
     done
 

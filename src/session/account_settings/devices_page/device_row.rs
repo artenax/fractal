@@ -6,7 +6,7 @@ use log::error;
 use super::Device;
 use crate::{
     components::{AuthError, SpinnerButton, Toast},
-    spawn,
+    gettext_f, spawn,
 };
 
 mod imp {
@@ -212,7 +212,8 @@ impl DeviceRow {
                         error!("Failed to disconnect device {}: {err:?}", device.device_id());
                         if let Some(adw_window) = window.and_then(|w| w.downcast::<adw::PreferencesWindow>().ok()) {
                             let device_name = device.display_name();
-                            let error_message = gettext!("Failed to disconnect device “{}”", device_name);
+                            // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                            let error_message = gettext_f("Failed to disconnect device “{device_name}”", &[("device_name", device_name)]);
                             adw_window.add_toast(&Toast::new(&error_message).into());
                         }
                     },

@@ -58,6 +58,7 @@ pub use self::{
 };
 use crate::{
     components::{Pill, Toast},
+    gettext_f, ngettext_f,
     prelude::*,
     session::{
         avatar::update_room_avatar_from_file, room::member_list::MemberList, Avatar, Session, User,
@@ -415,7 +416,8 @@ impl Room {
 
                             let room_pill = Pill::for_room(&obj);
                             let error = Toast::builder()
-                                .title(&gettext("Failed to forget <widget>."))
+                                // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                                .title(&gettext_f("Failed to forget {room}.", &[("room", "<widget>")]))
                                 .widgets(&[&room_pill])
                                 .build();
 
@@ -560,10 +562,10 @@ impl Room {
 
                                 let room_pill = Pill::for_room(&obj);
                                 let error = Toast::builder()
-                                    .title(&gettext!(
-                                        "Failed to move <widget> from {} to {}.",
-                                        previous_category.to_string(),
-                                        category.to_string()
+                                    .title(&gettext_f(
+                                        // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                                        "Failed to move {room} from {previous_category} to {new_category}.",
+                                        &[("room", "<widget>"),("previous_category", &previous_category.to_string()), ("new_category", &category.to_string())],
                                     ))
                                     .widgets(&[&room_pill])
                                     .build();
@@ -1269,8 +1271,11 @@ impl Room {
 
                     let room_pill = Pill::for_room(self);
                     let error = Toast::builder()
-                        .title(&gettext(
-                            "Failed to accept invitation for <widget>. Try again later.",
+                        .title(&gettext_f(
+                            // Translators: Do NOT translate the content between '{' and '}', this
+                            // is a variable name.
+                            "Failed to accept invitation for {room}. Try again later.",
+                            &[("room", "<widget>")],
                         ))
                         .widgets(&[&room_pill])
                         .build();
@@ -1300,8 +1305,11 @@ impl Room {
 
                     let room_pill = Pill::for_room(self);
                     let error = Toast::builder()
-                        .title(&gettext(
-                            "Failed to reject invitation for <widget>. Try again later.",
+                        .title(&gettext_f(
+                            // Translators: Do NOT translate the content between '{' and '}', this
+                            // is a variable name.
+                            "Failed to reject invitation for {room}. Try again later.",
+                            &[("room", "<widget>")],
                         ))
                         .widgets(&[&room_pill])
                         .build();
@@ -1465,13 +1473,25 @@ impl Room {
                 let first_failed = failed_invites.first().unwrap();
 
                 // TODO: should we show all the failed users?
-                let error_message = if no_failed == 1 {
-                    gettext("Failed to invite <widget> to <widget>. Try again later.")
-                } else if no_failed == 2 {
-                    gettext("Failed to invite <widget> and some other user to <widget>. Try again later.")
-                } else {
-                    gettext("Failed to invite <widget> and some other users to <widget>. Try again later.")
-                };
+                let error_message =
+                    if no_failed == 1 {
+                        gettext_f(
+                            // Translators: Do NOT translate the content between '{' and '}', this
+                            // is a variable name.
+                            "Failed to invite {user} to {room}. Try again later.",
+                            &[("user", "<widget>"), ("room", "<widget>")],
+                        )
+                    } else {
+                        let n = (no_failed - 1) as u32;
+                        ngettext_f(
+                        // Translators: Do NOT translate the content between '{' and '}', this
+                        // is a variable name.
+                        "Failed to invite {user} and 1 other user to {room}. Try again later.",
+                        "Failed to invite {user} and {n} other users to {room}. Try again later.",
+                        n,
+                        &[("user", "<widget>"), ("room", "<widget>"), ("n", &n.to_string())],
+                    )
+                    };
                 let user_pill = Pill::for_user(first_failed);
                 let room_pill = Pill::for_room(self);
                 let error = Toast::builder()

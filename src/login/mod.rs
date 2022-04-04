@@ -23,7 +23,7 @@ use login_advanced_dialog::LoginAdvancedDialog;
 
 use crate::{
     components::{EntryRow, PasswordEntryRow, SpinnerButton, Toast},
-    spawn, spawn_tokio,
+    gettext_f, spawn, spawn_tokio,
     user_facing_error::UserFacingError,
     Session,
 };
@@ -339,7 +339,15 @@ impl Login {
             ));
         } else {
             priv_.homeserver_entry.set_title(&gettext("Homeserver URL"));
-            priv_.homeserver_help.set_markup(&gettext("The URL of your Matrix homeserver, for example <span segment=\"word\">https://gnome.modular.im</span>"));
+            priv_.homeserver_help.set_markup(&gettext_f(
+                // Translators: Do NOT translate the content between '{' and '}', this is a
+                // variable name.
+                "The URL of your Matrix homeserver, for example {address}",
+                &[(
+                    "address",
+                    "<span segment=\"word\">https://gnome.modular.im</span>",
+                )],
+            ));
         }
         self.update_next_action();
     }
@@ -450,24 +458,23 @@ impl Login {
 
     fn show_password_page(&self) {
         let priv_ = self.imp();
-        if self.autodiscovery() {
-            // Translators: the variable is a domain name, eg. gnome.org.
-            priv_.password_title.set_markup(&gettext!(
-                "Connecting to {}",
-                format!(
-                    "<span segment=\"word\">{}</span>",
-                    priv_.homeserver_entry.text()
-                )
-            ));
+
+        let domain_name = if self.autodiscovery() {
+            priv_.homeserver_entry.text().to_string()
         } else {
-            priv_.password_title.set_markup(&gettext!(
-                "Connecting to {}",
-                format!(
-                    "<span segment=\"word\">{}</span>",
-                    self.homeserver_pretty().unwrap()
-                )
-            ));
-        }
+            self.homeserver_pretty().unwrap()
+        };
+
+        priv_.password_title.set_markup(&gettext_f(
+            // Translators: Do NOT translate the content between '{' and '}', this is a variable
+            // name.
+            "Connecting to {domain_name}",
+            &[(
+                "domain_name",
+                &format!("<span segment=\"word\">{}</span>", domain_name),
+            )],
+        ));
+
         self.set_visible_child("password");
     }
 

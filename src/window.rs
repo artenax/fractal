@@ -199,7 +199,11 @@ impl Window {
             Err(error) => {
                 warn!("Failed to restore previous sessions: {:?}", error);
                 self.switch_to_error_page(
-                    &gettext!("Failed to restore previous sessions: {}", error),
+                    &format!(
+                        "{}\n\n{}",
+                        gettext("Failed to restore previous sessions"),
+                        error,
+                    ),
                     error,
                 );
             }

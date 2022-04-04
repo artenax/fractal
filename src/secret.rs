@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::error::Error as JsonError;
 use url::Url;
 
-use crate::{config::APP_ID, ErrorSubpage};
+use crate::{config::APP_ID, gettext_f, ErrorSubpage};
 
 /// Any error that can happen when interacting with the secret service.
 #[derive(Debug, Clone)]
@@ -266,8 +266,12 @@ pub async fn store_session(session: &StoredSession) -> Result<(), SecretError> {
         Some(&schema()),
         attributes,
         Some(&COLLECTION_DEFAULT),
-        // Translators: The parameter is a Matrix User ID
-        &gettext!("Fractal: Matrix credentials for {}", session.user_id),
+        &gettext_f(
+            // Translators: Do NOT translate the content between '{' and '}', this is a variable
+            // name.
+            "Fractal: Matrix credentials for {user_id}",
+            &[("user_id", session.user_id.as_str())],
+        ),
         &secret,
     )
     .await?;

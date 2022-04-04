@@ -8,6 +8,8 @@ use matrix_sdk::{
     ClientBuildError, Error, HttpError,
 };
 
+use crate::ngettext_f;
+
 pub trait UserFacingError {
     fn to_user_facing(self) -> String;
 }
@@ -29,9 +31,14 @@ impl UserFacingError for HttpError {
                     UserDeactivated => gettext("The account is deactivated."),
                     LimitExceeded { retry_after_ms } => {
                         if let Some(ms) = retry_after_ms {
-                            gettext!(
-                                "You exceeded the homeserver’s rate limit, retry in {} seconds.",
-                                ms.as_secs()
+                            let secs = ms.as_secs() as u32;
+                            ngettext_f(
+                                // Translators: Do NOT translate the content between '{' and '}',
+                                // this is a variable name.
+                                "You exceeded the homeserver’s rate limit, retry in 1 second.",
+                                "You exceeded the homeserver’s rate limit, retry in {n} seconds.",
+                                secs,
+                                &[("n", &secs.to_string())],
                             )
                         } else {
                             gettext("You exceeded the homeserver’s rate limit, try again later.")

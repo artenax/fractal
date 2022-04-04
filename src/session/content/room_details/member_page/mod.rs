@@ -1,5 +1,4 @@
 use adw::{prelude::*, subclass::prelude::*};
-use gettextrs::ngettext;
 use gtk::{
     glib::{self, clone, closure},
     subclass::prelude::*,
@@ -13,6 +12,7 @@ mod member_row;
 use self::{member_menu::MemberMenu, member_row::MemberRow};
 use crate::{
     components::{Avatar, Badge},
+    ngettext_f,
     prelude::*,
     session::{
         content::RoomDetails,
@@ -231,7 +231,14 @@ impl MemberPage {
         let priv_ = self.imp();
         priv_
             .member_count
-            .set_text(&ngettext!("{} Member", "{} Members", n, n));
+            // Translators: Do NOT translate the content between '{' and '}', this is a variable
+            // name.
+            .set_text(&ngettext_f(
+                "1 Member",
+                "{n} Members",
+                n,
+                &[("n", &n.to_string())],
+            ));
         // FIXME: This won't be needed when we can request the natural height
         // on AdwPreferencesPage
         // See: https://gitlab.gnome.org/GNOME/libadwaita/-/issues/77
@@ -283,7 +290,14 @@ impl MemberPage {
         priv_.invited_section.set_visible(n > 0);
         priv_
             .invited_section
-            .set_title(&ngettext!("{} Invited", "{} Invited", n, n));
+            // Translators: Do NOT translate the content between '{' and '}', this is a variable
+            // name.
+            .set_title(&ngettext_f(
+                "1 Invited",
+                "{} Invited",
+                n,
+                &[("n", &n.to_string())],
+            ));
         // FIXME: This won't be needed when we can request the natural height
         // on AdwPreferencesPage
         // See: https://gitlab.gnome.org/GNOME/libadwaita/-/issues/77

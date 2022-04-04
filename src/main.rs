@@ -12,6 +12,7 @@ mod components;
 mod contrib;
 mod error_page;
 mod greeter;
+mod i18n;
 mod login;
 mod secret;
 mod session;
@@ -28,6 +29,7 @@ use self::{
     application::Application,
     error_page::{ErrorPage, ErrorSubpage},
     greeter::Greeter,
+    i18n::*,
     login::Login,
     session::Session,
     user_facing_error::UserFacingError,
