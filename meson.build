@@ -47,7 +47,7 @@ iconsdir = datadir / 'icons'
 podir = meson.project_source_root() / 'po'
 gettext_package = meson.project_name()
 
-if get_option('profile') == 'development'
+if get_option('profile') == 'development' or get_option('profile') == 'nightly'
   profile = 'Devel'
   vcs_tag = run_command('git', 'rev-parse', '--short', 'HEAD').stdout().strip()
   if vcs_tag == ''

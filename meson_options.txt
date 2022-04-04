@@ -3,7 +3,8 @@ option(
   type: 'combo',
   choices: [
     'default',
-    'development'
+    'development',
+    'nightly',
   ],
   value: 'default',
   description: 'The build profile for Fractal. One of "default" or "development".'

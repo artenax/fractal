@@ -15,7 +15,7 @@ flatpak:
     FLATPAK_MODULE: "fractal"
     APP_ID: "org.gnome.Fractal.Devel"
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-    CONFIG_OPTS: "-Dprofile=default"
+    CONFIG_OPTS: "-Dprofile=nightly"
   script:
     - rewrite-flatpak-manifest ${MANIFEST_PATH} ${FLATPAK_MODULE} ${CONFIG_OPTS}
     - >
