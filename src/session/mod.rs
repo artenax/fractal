@@ -838,9 +838,7 @@ impl Session {
         spawn_tokio!(async move {
             if let Some(cross_signing_status) = encryption.cross_signing_status().await {
                 debug!("Cross signing keys status: {:?}", cross_signing_status);
-                cross_signing_status.has_master
-                    && cross_signing_status.has_self_signing
-                    && cross_signing_status.has_user_signing
+                cross_signing_status.has_self_signing && cross_signing_status.has_user_signing
             } else {
                 debug!("Session doesn't have needed cross signing keys");
                 false
