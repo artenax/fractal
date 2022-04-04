@@ -5,6 +5,9 @@ authors = ["Julian Sparber <julian@sparber.net>"]
 edition = "2018"
 rust-version = "1.58"
 
+[profile.release]
+debug = true
+
 [profile.dev.package."*"]
 opt-level = 3
 debug = false
