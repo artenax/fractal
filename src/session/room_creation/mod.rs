@@ -326,12 +326,12 @@ impl RoomCreation {
         let (is_address_valid, has_error) = if room_address.find(':').is_some() {
             priv_
                 .room_address_error
-                .set_text(&gettext("Can’t contain `:`"));
+                .set_text(&gettext("Can’t contain “:”"));
             (false, true)
         } else if room_address.find('#').is_some() {
             priv_
                 .room_address_error
-                .set_text(&gettext("Can’t contain `#`"));
+                .set_text(&gettext("Can’t contain “#”"));
             (false, true)
         } else if room_address.len() > MAX_BYTES {
             priv_

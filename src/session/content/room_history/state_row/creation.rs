@@ -65,7 +65,7 @@ impl StateCreation {
             priv_.previous_room_btn.set_action_name(None);
             priv_
                 .description
-                .set_label(&gettext("The beginning of this room."));
+                .set_label(&gettext("This is the beginning of this room."));
         }
     }
 }

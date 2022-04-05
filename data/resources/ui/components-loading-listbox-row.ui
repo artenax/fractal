@@ -29,7 +29,7 @@
             </child>
             <child>
               <object class="GtkButton" id="retry_button">
-                <property name="label" translatable="yes">Retry</property>
+                <property name="label" translatable="yes">Try again</property>
                 <property name="halign">center</property>
               </object>
             </child>

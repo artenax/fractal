@@ -48,7 +48,7 @@
                                 <property name="wrap">true</property>
                                 <property name="wrap-mode">word-char</property>
                                 <property name="xalign">0.0</property>
-                                <property name="label" translatable="yes">Alternatively, we could delete this session for you. This means you will have to login again and you will lose access to your encrypted messages, unless you have a session open in another client or you have already backed up your encryption keys.</property>
+                                <property name="label" translatable="yes">Alternatively, we could disconnect this session for you. This means you will have to login again and you will lose access to your encrypted messages, unless you have a session open in another client or you have already backed up your encryption keys.</property>
                               </object>
                             </child>
                             <child>
@@ -71,7 +71,7 @@
                                     <property name="wrap">true</property>
                                     <property name="wrap-mode">word-char</property>
                                     <property name="xalign">0.0</property>
-                                    <property name="label" translatable="yes">Clicking this button might delete more than one session!</property>
+                                    <property name="label" translatable="yes">Clicking this button might disconnect more than one session!</property>
                                   </object>
                                 </child>
                               </object>
@@ -83,7 +83,7 @@
                                   <class name="pill"/>
                                 </style>
                                 <property name="halign">center</property>
-                                <property name="label" translatable="yes">Delete the corrupted session</property>
+                                <property name="label" translatable="yes">Disconnect the corrupted session</property>
                                 <property name="action-name">error-page.remove-secret-error-session</property>
                               </object>
                             </child>

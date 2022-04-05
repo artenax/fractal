@@ -11,12 +11,12 @@
           <object class="GtkLabel">
             <property name="wrap">True</property>
             <property name="wrap-mode">word-char</property>
-            <property name="label" translatable="yes">This room was upgraded.</property>
+            <property name="label" translatable="yes">There is a newer version of this room.</property>
           </object>
         </child>
         <child>
           <object class="GtkButton" id="new_room_btn">
-            <property name="label" translatable="yes">Go to the Upgraded Room</property>
+            <property name="label" translatable="yes">Go there</property>
           </object>
         </child>
       </object>

@@ -107,7 +107,7 @@ mod imp {
             match &obj.is_current_device() {
                 false => self
                     .delete_logout_button
-                    .set_label(&gettext("Delete Session")),
+                    .set_label(&gettext("Disconnect Session")),
                 true => {
                     self.delete_logout_button.set_label(&gettext("Log Out"));
                     self.delete_logout_button
@@ -209,10 +209,10 @@ impl DeviceRow {
                     Ok(_) => obj.hide(),
                     Err(AuthError::UserCancelled) => {},
                     Err(err) => {
-                        error!("Failed to delete device {}: {err:?}", device.device_id());
+                        error!("Failed to disconnect device {}: {err:?}", device.device_id());
                         if let Some(adw_window) = window.and_then(|w| w.downcast::<adw::PreferencesWindow>().ok()) {
                             let device_name = device.display_name();
-                            let error_message = gettext!("Failed to delete device “{}”", device_name);
+                            let error_message = gettext!("Failed to disconnect device “{}”", device_name);
                             adw_window.add_toast(&Toast::new(&error_message).into());
                         }
                     },

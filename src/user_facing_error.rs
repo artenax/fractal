@@ -26,7 +26,7 @@ impl UserFacingError for HttpError {
             HttpError::ClientApi(FromHttpResponseError::Server(ServerError::Known(error))) => {
                 match error.kind {
                     Forbidden => gettext("The provided username or password is invalid."),
-                    UserDeactivated => gettext("The user is deactivated."),
+                    UserDeactivated => gettext("The account is deactivated."),
                     LimitExceeded { retry_after_ms } => {
                         if let Some(ms) = retry_after_ms {
                             gettext!(

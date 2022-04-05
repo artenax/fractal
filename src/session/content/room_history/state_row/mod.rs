@@ -66,7 +66,7 @@ impl StateRow {
                 WidgetType::Creation(StateCreation::new(&event))
             }
             AnyStateEventContent::RoomEncryption(_event) => {
-                WidgetType::Text(gettext("This room is now encrypted."))
+                WidgetType::Text(gettext("This room is encrypted from this point on."))
             }
             AnyStateEventContent::RoomMember(event) => {
                 let display_name = event
