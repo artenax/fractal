@@ -1,21 +1,20 @@
 stages:
   - check
   - test
+  - build
   - doc
   - deploy
 
-flatpak:
+variables:
+  MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
+  FLATPAK_MODULE: "fractal"
+  APP_ID: "org.gnome.Fractal.Devel"
+  RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+
+.build_template: &build_template
   image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master'
-  stage: test
   tags:
     - flatpak
-  variables:
-    BUNDLE: "fractal-nightly.flatpak"
-    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
-    FLATPAK_MODULE: "fractal"
-    APP_ID: "org.gnome.Fractal.Devel"
-    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-    CONFIG_OPTS: "-Dprofile=nightly"
   script:
     - rewrite-flatpak-manifest ${MANIFEST_PATH} ${FLATPAK_MODULE} ${CONFIG_OPTS}
     - >
@@ -45,20 +44,45 @@ checks:
   script:
     - scripts/checks.sh --verbose --force-install
 
+# Lint the code
 cargo-clippy:
   image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master'
   stage: check
   tags:
     - flatpak
-  variables:
-    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
-    FLATPAK_MODULE: "fractal"
   script:
     - flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
     - echo "cargo clippy -- -D warnings" | flatpak-builder --disable-rofiles-fuse --build-shell=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}
 
+# Build a debug version of the flatpak
+# Except on main
+flatpak:
+  <<: *build_template  
+  stage: test
+  variables:
+    BUNDLE: "fractal-devel.flatpak"
+    CONFIG_OPTS: "-Dprofile=development"
+  except:
+    - main
+
+# Build the nightly version of the flatpak
+# Only on main
+build:
+  <<: *build_template  
+  stage: build
+  variables:
+    BUNDLE: "fractal-nightly.flatpak"
+    CONFIG_OPTS: "-Dprofile=nightly"
+  only:
+    - main
+
+# Build the docs
+# Only on main
 pages:
   image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master'
+  stage: doc
+  tags:
+    - flatpak
   variables:
     RUSTDOCFLAGS: >
       -Z unstable-options
@@ -70,12 +94,6 @@ pages:
       --extern-html-root-url=glib=https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/
       --extern-html-root-url=libadwaita=https://world.pages.gitlab.gnome.org/Rust/libadwaita-rs/stable/latest/docs/libadwaita/
       --extern-html-root-url=matrix-sdk=https://matrix-org.github.io/matrix-rust-sdk/matrix_sdk
-  stage: doc
-  tags:
-    - flatpak
-  variables:
-    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
-    FLATPAK_MODULE: "fractal"
   script:
     - flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
     - echo "ninja src/doc" | flatpak-builder --disable-rofiles-fuse --build-shell=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}
@@ -88,8 +106,8 @@ pages:
     refs:
       - main
 
-
-
+# Publish the nightly version
+# Only on main
 publish_nightly:
   image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/flat-manager-client'
   stage: 'deploy'
@@ -108,6 +126,6 @@ publish_nightly:
     FLATPAK_REPO: nightly
   only:
     refs:
-      - 'main'
+      - main
     variables:
       - $REPO_TOKEN
