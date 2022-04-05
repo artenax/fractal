@@ -112,8 +112,8 @@ publish_nightly:
   image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/flat-manager-client'
   stage: 'deploy'
   timeout: '100m'
-  dependencies: ['flatpak']
-  needs: ['flatpak']
+  dependencies: ['build']
+  needs: ['build']
   script:
     - tar xf repo.tar
     - flatpak build-update-repo --generate-static-deltas repo/
