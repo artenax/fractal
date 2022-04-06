@@ -2,7 +2,7 @@ use adw::subclass::prelude::BinImpl;
 use gtk::{gdk, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 
 use crate::{
-    components::{ContextMenuBin, ContextMenuBinImpl},
+    components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl},
     session::room::{HighlightFlags, Room, RoomType},
 };
 
@@ -24,6 +24,8 @@ mod imp {
         pub display_name: TemplateChild<gtk::Label>,
         #[template_child]
         pub notification_count: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub room_row_menu: TemplateChild<gtk::gio::MenuModel>,
     }
 
     #[glib::object_subclass]
@@ -108,6 +110,10 @@ mod imp {
 
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
+
+            obj.set_factory(|obj, popover| {
+                popover.set_menu_model(Some(&obj.imp().room_row_menu.get()));
+            });
 
             // Allow to drag rooms
             let drag = gtk::DragSource::builder()

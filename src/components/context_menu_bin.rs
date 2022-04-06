@@ -1,35 +1,23 @@
 use adw::subclass::prelude::*;
-use gtk::{gdk, gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{gdk, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 use log::debug;
 
 mod imp {
+    use std::cell::RefCell;
+
     use glib::subclass::InitializingObject;
 
     use super::*;
+    type FactoryFn = RefCell<Option<Box<dyn Fn(&super::ContextMenuBin, &gtk::PopoverMenu)>>>;
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/context-menu-bin.ui")]
     pub struct ContextMenuBin {
         #[template_child]
         pub click_gesture: TemplateChild<gtk::GestureClick>,
         #[template_child]
         pub long_press_gesture: TemplateChild<gtk::GestureLongPress>,
-        pub popover: gtk::PopoverMenu,
-    }
-
-    impl Default for ContextMenuBin {
-        fn default() -> Self {
-            Self {
-                click_gesture: Default::default(),
-                long_press_gesture: Default::default(),
-                // WORKAROUND: there is some issue with creating the popover from the template
-                popover: gtk::PopoverMenu::builder()
-                    .position(gtk::PositionType::Bottom)
-                    .has_arrow(false)
-                    .halign(gtk::Align::Start)
-                    .build(),
-            }
-        }
+        pub factory: FactoryFn,
     }
 
     #[glib::object_subclass]
@@ -56,10 +44,6 @@ mod imp {
                 "context-menu.activate",
                 None,
             );
-
-            klass.install_action("context-menu.close", None, move |widget, _, _| {
-                widget.imp().popover.popdown();
-            });
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -68,45 +52,7 @@ mod imp {
     }
 
     impl ObjectImpl for ContextMenuBin {
-        fn properties() -> &'static [glib::ParamSpec] {
-            use once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "context-menu",
-                    "Context Menu",
-                    "The context menu",
-                    gio::MenuModel::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
-            });
-
-            PROPERTIES.as_ref()
-        }
-
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
-            match pspec.name() {
-                "context-menu" => {
-                    obj.set_context_menu(value.get::<Option<gio::MenuModel>>().unwrap().as_ref())
-                }
-                _ => unimplemented!(),
-            }
-        }
-
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "context-menu" => obj.context_menu().to_value(),
-                _ => unimplemented!(),
-            }
-        }
-
         fn constructed(&self, obj: &Self::Type) {
-            self.popover.set_parent(obj);
             self.long_press_gesture
                 .connect_pressed(clone!(@weak obj => move |gesture, x, y| {
                     gesture.set_state(gtk::EventSequenceState::Claimed);
@@ -125,10 +71,6 @@ mod imp {
                 }),
             );
             self.parent_constructed(obj);
-        }
-
-        fn dispose(&self, _obj: &Self::Type) {
-            self.popover.unparent();
         }
     }
 
@@ -149,46 +91,50 @@ impl ContextMenuBin {
     }
 
     fn open_menu_at(&self, x: i32, y: i32) {
-        let popover = &self.imp().popover;
-
         debug!("Context menu was activated");
+        if let Some(factory) = &*self.imp().factory.borrow() {
+            let popover = gtk::PopoverMenu::builder()
+                .position(gtk::PositionType::Bottom)
+                .has_arrow(false)
+                .halign(gtk::Align::Start)
+                .build();
 
-        if popover.menu_model().is_none() {
-            return;
+            popover.set_parent(self);
+
+            popover.connect_closed(|popover| {
+                popover.unparent();
+            });
+
+            (factory)(self, &popover);
+
+            popover.set_pointing_to(Some(&gdk::Rectangle::new(x, y, 0, 0)));
+            popover.popup();
         }
-
-        popover.set_pointing_to(Some(&gdk::Rectangle::new(x, y, 0, 0)));
-        popover.popup();
     }
 }
 
 pub trait ContextMenuBinExt: 'static {
-    /// Set the `MenuModel` used in the context menu.
-    fn set_context_menu(&self, menu: Option<&gio::MenuModel>);
+    /// Set the closure used to create the content of the `gtk::PopoverMenu`
+    fn set_factory<F>(&self, factory: F)
+    where
+        F: Fn(&Self, &gtk::PopoverMenu) + 'static;
 
-    /// Get the `MenuModel` used in the context menu.
-    fn context_menu(&self) -> Option<gio::MenuModel>;
-
-    /// Get the `PopoverMenu` used in the context menu.
-    fn popover(&self) -> &gtk::PopoverMenu;
+    fn remove_factory(&self);
 }
 
 impl<O: IsA<ContextMenuBin>> ContextMenuBinExt for O {
-    fn set_context_menu(&self, menu: Option<&gio::MenuModel>) {
-        if self.context_menu().as_ref() == menu {
-            return;
-        }
-
-        self.upcast_ref().imp().popover.set_menu_model(menu);
-        self.notify("context-menu");
+    fn set_factory<F>(&self, factory: F)
+    where
+        F: Fn(&O, &gtk::PopoverMenu) + 'static,
+    {
+        let f = move |obj: &ContextMenuBin, popover: &gtk::PopoverMenu| {
+            factory(obj.downcast_ref::<O>().unwrap(), popover);
+        };
+        self.upcast_ref().imp().factory.replace(Some(Box::new(f)));
     }
 
-    fn context_menu(&self) -> Option<gio::MenuModel> {
-        self.upcast_ref().imp().popover.menu_model()
-    }
-
-    fn popover(&self) -> &gtk::PopoverMenu {
-        &self.upcast_ref().imp().popover
+    fn remove_factory(&self) {
+        self.upcast_ref().imp().factory.take();
     }
 }
 

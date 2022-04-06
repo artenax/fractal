@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <menu id="room-row-menu">
+  <menu id="room_row_menu">
     <section>
       <item>
         <attribute name="label" translatable="yes">_Accept</attribute>
@@ -54,7 +54,6 @@
     </section>
   </menu>
   <template class="SidebarRoomRow" parent="ContextMenuBin">
-    <property name="context-menu">room-row-menu</property>
     <child>
       <object class="GtkBox">
         <property name="spacing">12</property>

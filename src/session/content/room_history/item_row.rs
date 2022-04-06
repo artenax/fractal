@@ -7,7 +7,7 @@ use crate::{
     components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl, ReactionChooser},
     session::{
         content::room_history::{message_row::MessageRow, DividerRow, StateRow},
-        room::{Event, EventActions, Item, ItemType, ReactionList},
+        room::{Event, EventActions, Item, ItemType},
     },
 };
 
@@ -73,7 +73,7 @@ mod imp {
             }
         }
 
-        fn dispose(&self, obj: &Self::Type) {
+        fn dispose(&self, _obj: &Self::Type) {
             if let Some(ItemType::Event(event)) =
                 self.item.borrow().as_ref().map(|item| item.type_())
             {
@@ -81,8 +81,6 @@ mod imp {
                     event.disconnect(handler);
                 }
             }
-
-            obj.remove_reaction_chooser();
         }
     }
 
@@ -126,21 +124,25 @@ impl ItemRow {
         if let Some(ref item) = item {
             match item.type_() {
                 ItemType::Event(event) => {
-                    let action_group = self.set_event_actions(Some(event));
-
                     if event.message_content().is_some() {
-                        self.set_context_menu(Some(Self::event_message_menu_model()));
-                        self.set_reaction_chooser(event.reactions());
+                        let action_group = self.set_event_actions(Some(event)).unwrap();
+                        self.set_factory(clone!(@weak event => move |obj, popover| {
+                            popover.set_menu_model(Some(Self::event_message_menu_model()));
+                            let reaction_chooser = ReactionChooser::new();
+                            reaction_chooser.set_reactions(Some(event.reactions().to_owned()));
+                            popover.add_child(&reaction_chooser, "reaction-chooser");
 
-                        // Open emoji chooser
-                        let more_reactions = gio::SimpleAction::new("more-reactions", None);
-                        more_reactions.connect_activate(clone!(@weak self as obj => move |_, _| {
-                            obj.show_emoji_chooser();
+                            // Open emoji chooser
+                            let more_reactions = gio::SimpleAction::new("more-reactions", None);
+                            more_reactions.connect_activate(clone!(@weak obj, @weak popover => move |_, _| {
+                                obj.show_emoji_chooser(&popover);
+                            }));
+                            action_group.add_action(&more_reactions);
                         }));
-                        action_group.unwrap().add_action(&more_reactions);
                     } else {
-                        self.set_context_menu(Some(Self::event_state_menu_model()));
-                        self.remove_reaction_chooser();
+                        self.set_factory(|_, popover| {
+                            popover.set_menu_model(Some(Self::event_state_menu_model()));
+                        });
                     }
 
                     let event_notify_handler = event.connect_notify_local(
@@ -158,11 +160,8 @@ impl ItemRow {
                     self.set_event_widget(event);
                 }
                 ItemType::DayDivider(date) => {
-                    if self.context_menu().is_some() {
-                        self.set_context_menu(None);
-                        self.set_event_actions(None);
-                        self.remove_reaction_chooser();
-                    }
+                    self.remove_factory();
+                    self.set_event_actions(None);
 
                     let fmt = if date.year() == glib::DateTime::now_local().unwrap().year() {
                         // Translators: This is a date format in the day divider without the year
@@ -181,11 +180,8 @@ impl ItemRow {
                     };
                 }
                 ItemType::NewMessageDivider => {
-                    if self.context_menu().is_some() {
-                        self.set_context_menu(None);
-                        self.set_event_actions(None);
-                        self.remove_reaction_chooser();
-                    }
+                    self.remove_factory();
+                    self.set_event_actions(None);
 
                     let label = gettext("New Messages");
 
@@ -241,59 +237,22 @@ impl ItemRow {
         }
     }
 
-    /// Set the reaction chooser for the given `reactions`.
-    ///
-    /// If it doesn't exist, it is created
-    fn set_reaction_chooser(&self, reactions: &ReactionList) {
-        let priv_ = self.imp();
-
-        if priv_.reaction_chooser.borrow().is_none() {
-            let reaction_chooser = ReactionChooser::new();
-            self.popover()
-                .add_child(&reaction_chooser, "reaction-chooser");
-            priv_.reaction_chooser.replace(Some(reaction_chooser));
-        }
-
-        priv_
-            .reaction_chooser
-            .borrow()
-            .as_ref()
-            .unwrap()
-            .set_reactions(Some(reactions.to_owned()));
-    }
-
-    /// Remove the reaction chooser and the emoji chooser, if they exist.
-    fn remove_reaction_chooser(&self) {
-        let priv_ = self.imp();
-
-        if let Some(reaction_chooser) = priv_.reaction_chooser.take() {
-            reaction_chooser.unparent();
-        }
-
-        if let Some(emoji_chooser) = priv_.emoji_chooser.take() {
+    fn show_emoji_chooser(&self, popover: &gtk::PopoverMenu) {
+        let emoji_chooser = gtk::EmojiChooser::builder().has_arrow(false).build();
+        emoji_chooser.connect_emoji_picked(|emoji_chooser, emoji| {
+            emoji_chooser
+                .activate_action("event.toggle-reaction", Some(&emoji.to_variant()))
+                .unwrap();
+        });
+        emoji_chooser.set_parent(self);
+        emoji_chooser.connect_closed(|emoji_chooser| {
             emoji_chooser.unparent();
-        }
-    }
+        });
 
-    fn show_emoji_chooser(&self) {
-        let priv_ = self.imp();
-
-        if priv_.emoji_chooser.borrow().is_none() {
-            let emoji_chooser = gtk::EmojiChooser::builder().has_arrow(false).build();
-            emoji_chooser.connect_emoji_picked(|emoji_chooser, emoji| {
-                emoji_chooser
-                    .activate_action("event.toggle-reaction", Some(&emoji.to_variant()))
-                    .unwrap();
-            });
-            emoji_chooser.set_parent(self);
-            priv_.emoji_chooser.replace(Some(emoji_chooser));
-        }
-
-        let emoji_chooser = priv_.emoji_chooser.borrow().clone().unwrap();
-        let (_, rectangle) = self.popover().pointing_to();
+        let (_, rectangle) = popover.pointing_to();
         emoji_chooser.set_pointing_to(Some(&rectangle));
 
-        self.popover().popdown();
+        popover.popdown();
         emoji_chooser.popup();
     }
 }
