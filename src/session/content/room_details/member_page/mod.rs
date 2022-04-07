@@ -294,7 +294,7 @@ impl MemberPage {
             // name.
             .set_title(&ngettext_f(
                 "1 Invited",
-                "{} Invited",
+                "{n} Invited",
                 n,
                 &[("n", &n.to_string())],
             ));

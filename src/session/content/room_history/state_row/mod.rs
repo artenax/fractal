@@ -181,7 +181,7 @@ impl StateRow {
                                     Some(gettext_f(
                                         // Translators: Do NOT translate the content between
                                         // '{' and '}', this is a variable name.
-                                        "{user}’s invite was revoked'.",
+                                        "The invitation for {user} has been revoked.",
                                         &[("user", &display_name)],
                                     ))
                                 }
