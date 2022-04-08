@@ -10,11 +10,10 @@ variables:
   FLATPAK_MODULE: "fractal"
   APP_ID: "org.gnome.Fractal.Devel"
   RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+  CI_IMAGE_X86_64: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master"
+  CI_IMAGE_AARCH64: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/aarch64:gnome-nightly"
 
-.build_template: &build_template
-  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master'
-  tags:
-    - flatpak
+.build_template:
   script:
     - rewrite-flatpak-manifest ${MANIFEST_PATH} ${FLATPAK_MODULE} ${CONFIG_OPTS}
     - >
@@ -25,7 +24,6 @@ variables:
     - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-logs/meson-log.txt logs/
     - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-logs/testlog.txt logs/
     - tar cf repo.tar repo/
-
   artifacts:
     name: 'Flatpak artifacts'
     expose_as: 'Get Flatpak bundle here'
@@ -35,6 +33,38 @@ variables:
       - 'repo.tar'
       - 'logs'
     expire_in: 14 days
+
+.build_x86_64:
+  extends: .build_template
+  image: '${CI_IMAGE_X86_64}'
+  tags:
+    - flatpak
+
+.build_aarch64:
+  extends: .build_template
+  image: '${CI_IMAGE_AARCH64}'
+  tags:
+    - flatpak-aarch64
+
+.publish_nightly_template:
+  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/flat-manager-client'
+  stage: 'deploy'
+  timeout: '100m'
+  script:
+    - tar xf repo.tar
+    - flatpak build-update-repo --generate-static-deltas repo/
+    - BUILD_ID=$(flat-manager-client create ${FLAT_MANAGER_URL} ${FLATPAK_REPO})
+    - flat-manager-client push --commit --publish --wait ${BUILD_ID} repo/ || result=$?
+    - flat-manager-client purge ${BUILD_ID}
+    - exit $result
+  variables:
+    FLAT_MANAGER_URL: https://flat-manager.gnome.org/
+    FLATPAK_REPO: nightly
+  only:
+    refs:
+      - main
+    variables:
+      - $REPO_TOKEN
 
 # Configure and run code checks
 # Exits and fails if an error is encountered
@@ -46,7 +76,7 @@ checks:
 
 # Lint the code
 cargo-clippy:
-  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master'
+  image: '${CI_IMAGE_X86_64}'
   stage: check
   tags:
     - flatpak
@@ -57,7 +87,7 @@ cargo-clippy:
 # Build a debug version of the flatpak
 # Except on main
 flatpak:
-  <<: *build_template  
+  extends: .build_x86_64  
   stage: test
   variables:
     BUNDLE: "fractal-devel.flatpak"
@@ -67,11 +97,19 @@ flatpak:
 
 # Build the nightly version of the flatpak
 # Only on main
-build:
-  <<: *build_template  
+build-x86_64:
+  extends: .build_x86_64
   stage: build
   variables:
-    BUNDLE: "fractal-nightly.flatpak"
+    BUNDLE: "fractal-nightly-x86_64.flatpak"
+    CONFIG_OPTS: "-Dprofile=nightly"
+  only:
+    - main
+build-aarch64:
+  extends: .build_aarch64
+  stage: build
+  variables:
+    BUNDLE: "fractal-nightly-aarch64.flatpak"
     CONFIG_OPTS: "-Dprofile=nightly"
   only:
     - main
@@ -79,7 +117,7 @@ build:
 # Build the docs
 # Only on main
 pages:
-  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master'
+  image: '${CI_IMAGE_X86_64}'
   stage: doc
   tags:
     - flatpak
@@ -108,24 +146,11 @@ pages:
 
 # Publish the nightly version
 # Only on main
-publish_nightly:
-  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/flat-manager-client'
-  stage: 'deploy'
-  timeout: '100m'
-  dependencies: ['build']
-  needs: ['build']
-  script:
-    - tar xf repo.tar
-    - flatpak build-update-repo --generate-static-deltas repo/
-    - BUILD_ID=$(flat-manager-client create ${FLAT_MANAGER_URL} ${FLATPAK_REPO})
-    - flat-manager-client push --commit --publish --wait ${BUILD_ID} repo/ || result=$?
-    - flat-manager-client purge ${BUILD_ID}
-    - exit $result
-  variables:
-    FLAT_MANAGER_URL: https://flat-manager.gnome.org/
-    FLATPAK_REPO: nightly
-  only:
-    refs:
-      - main
-    variables:
-      - $REPO_TOKEN
+publish_nightly-x86_64:
+  extends: .publish_nightly_template
+  dependencies: ['build-x86_64']
+  needs: ['build-x86_64']
+publish_nightly-aarch64:
+  extends: .publish_nightly_template
+  dependencies: ['build-aarch64']
+  needs: ['build-aarch64']
