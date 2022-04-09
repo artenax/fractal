@@ -42,29 +42,23 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkBox">
+                      <object class="GtkButton" id="decline_btn">
+                        <property name="label" translatable="yes">Decline</property>
                         <property name="halign">center</property>
-                        <property name="spacing">24</property>
-                        <child>
-                          <object class="GtkButton" id="decline_btn">
-                            <property name="label" translatable="yes">Decline</property>
-                            <property name="halign">center</property>
-                            <property name="action-name">verification.decline</property>
-                            <style>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="SpinnerButton" id="accept_btn">
-                            <property name="label" translatable="yes">Verify</property>
-                            <property name="halign">center</property>
-                            <style>
-                              <class name="suggested-action"/>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
+                        <property name="action-name">verification.decline</property>
+                        <style>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="SpinnerButton" id="accept_btn">
+                        <property name="label" translatable="yes">Verify</property>
+                        <property name="halign">center</property>
+                        <style>
+                          <class name="suggested-action"/>
+                          <class name="pill"/>
+                        </style>
                       </object>
                     </child>
                   </object>
@@ -469,4 +463,3 @@
     </child>
   </template>
 </interface>
-

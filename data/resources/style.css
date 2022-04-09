@@ -196,9 +196,13 @@ login {
 
 /* Verification */
 
+.session-verification clamp {
+  margin: 12px;
+}
+
 .session-verification .text-button {
   min-width: 200px;
- }
+}
 
 
 /* Account switcher */

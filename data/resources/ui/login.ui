@@ -215,7 +215,7 @@
                         <property name="justify">center</property>
                         <property name="label" translatable="yes">Please follow the steps in the browser.</property>
                         <style>
-                          <class name="title-1"/>
+                          <class name="title-2"/>
                         </style>
                       </object>
                     </child>
