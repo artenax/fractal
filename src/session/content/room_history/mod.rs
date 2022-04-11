@@ -137,6 +137,10 @@ mod imp {
             klass.install_action("room-history.select-file", None, move |widget, _, _| {
                 widget.select_file();
             });
+
+            klass.install_action("room-history.open-emoji", None, move |widget, _, _| {
+                widget.open_emoji();
+            });
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -761,6 +765,10 @@ impl RoomHistory {
         );
 
         priv_.drag_overlay.set_drop_target(&target);
+    }
+
+    fn open_emoji(&self) {
+        self.imp().message_entry.emit_insert_emoji();
     }
 
     fn open_attach_dialog(&self, bytes: Vec<u8>, mime: mime::Mime, title: &str) {

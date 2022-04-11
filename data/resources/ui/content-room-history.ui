@@ -253,6 +253,13 @@
                 <child>
                   <object class="GtkButton">
                     <property name="valign">end</property>
+                    <property name="icon-name">emoji-people-symbolic</property>
+                    <property name="action-name">room-history.open-emoji</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="valign">end</property>
                     <property name="icon-name">send-symbolic</property>
                     <property name="focus-on-click">False</property>
                     <property name="action-name">room-history.send-text-message</property>
@@ -270,4 +277,3 @@
     </child>
   </template>
 </interface>
-
