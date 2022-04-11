@@ -63,16 +63,18 @@ mod imp {
                         None,
                         glib::ParamFlags::READABLE,
                     ),
-                    glib::ParamSpecPointer::new(
+                    glib::ParamSpecBoxed::new(
                         "last-seen-ts",
                         "Last Seen Ts",
                         "The last time the device was used",
+                        glib::DateTime::static_type(),
                         glib::ParamFlags::READABLE,
                     ),
-                    glib::ParamSpecPointer::new(
+                    glib::ParamSpecBoolean::new(
                         "verified",
                         "Verified",
                         "Whether this devices is verified",
+                        false,
                         glib::ParamFlags::READABLE,
                     ),
                 ]
