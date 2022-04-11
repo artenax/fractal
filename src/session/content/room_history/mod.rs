@@ -30,7 +30,7 @@ use crate::{
     components::{CustomEntry, DragOverlay, Pill, RoomTitle},
     session::{
         content::{MarkdownPopover, RoomDetails},
-        room::{Item, Room, RoomType, Timeline, TimelineState},
+        room::{Event, Room, RoomType, Timeline, TimelineState},
         user::UserExt,
     },
     spawn,
@@ -238,15 +238,14 @@ mod imp {
 
             self.listview
                 .connect_activate(clone!(@weak obj => move |listview, pos| {
-                    if let Some(item) = listview
+                    if let Some(event) = listview
                         .model()
                         .and_then(|model| model.item(pos))
-                        .and_then(|o| o.downcast::<Item>().ok())
+                        .as_ref()
+                        .and_then(|o| o.downcast_ref::<Event>())
                     {
-                        if let Some(event) = item.event() {
-                            if let Some(room) = obj.room() {
-                                room.session().show_media(event);
-                            }
+                        if let Some(room) = obj.room() {
+                            room.session().show_media(event);
                         }
                     }
                 }));

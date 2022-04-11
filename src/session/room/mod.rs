@@ -1,7 +1,6 @@
 mod event;
 mod event_actions;
 mod highlight_flags;
-mod item;
 mod member;
 mod member_list;
 mod member_role;
@@ -47,14 +46,16 @@ pub use self::{
     event::Event,
     event_actions::EventActions,
     highlight_flags::HighlightFlags,
-    item::{Item, ItemType},
     member::{Member, Membership},
     member_role::MemberRole,
     power_levels::{PowerLevel, PowerLevels, RoomAction, POWER_LEVEL_MAX, POWER_LEVEL_MIN},
     reaction_group::ReactionGroup,
     reaction_list::ReactionList,
     room_type::RoomType,
-    timeline::{Timeline, TimelineState},
+    timeline::{
+        Timeline, TimelineDayDivider, TimelineItem, TimelineItemExt, TimelineNewMessagesDivider,
+        TimelineSpinner, TimelineState,
+    },
 };
 use crate::{
     components::{Pill, Toast},
@@ -735,8 +736,7 @@ impl Room {
                 timeline
                     .item(i)
                     .as_ref()
-                    .and_then(|obj| obj.downcast_ref::<Item>())
-                    .and_then(|item| item.event())
+                    .and_then(|obj| obj.downcast_ref::<Event>())
                     .and_then(|event| {
                         // The user sent the event so it's the latest read event.
                         // Necessary because we don't get read receipts for the user's own events.
@@ -838,8 +838,7 @@ impl Room {
                     if let Some(event) = timeline
                         .item(i)
                         .as_ref()
-                        .and_then(|obj| obj.downcast_ref::<Item>())
-                        .and_then(|item| item.event())
+                        .and_then(|obj| obj.downcast_ref::<Event>())
                     {
                         // This is the event corresponding to the read receipt so there's no unread
                         // messages.

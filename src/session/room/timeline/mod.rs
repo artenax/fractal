@@ -1,3 +1,8 @@
+mod timeline_day_divider;
+mod timeline_item;
+mod timeline_new_messages_divider;
+mod timeline_spinner;
+
 use std::{
     collections::{HashMap, HashSet, VecDeque},
     pin::Pin,
@@ -15,11 +20,15 @@ use matrix_sdk::{
     },
     Error as MatrixError,
 };
+pub use timeline_day_divider::TimelineDayDivider;
+pub use timeline_item::{TimelineItem, TimelineItemExt, TimelineItemImpl};
+pub use timeline_new_messages_divider::TimelineNewMessagesDivider;
+pub use timeline_spinner::TimelineSpinner;
 use tokio::task::JoinHandle;
 
 use crate::{
     session::{
-        room::{Event, Item, ItemType, Room},
+        room::{Event, Room},
         user::UserExt,
         verification::{IdentityVerification, VERIFICATION_CREATION_TIMEOUT},
     },
@@ -61,7 +70,7 @@ mod imp {
         /// A store to keep track of related events that aren't known
         pub relates_to_events: RefCell<HashMap<Box<EventId>, Vec<Box<EventId>>>>,
         /// All events shown in the room history
-        pub list: RefCell<VecDeque<Item>>,
+        pub list: RefCell<VecDeque<TimelineItem>>,
         /// A Hashmap linking `EventId` to corresponding `Event`
         pub event_map: RefCell<HashMap<Box<EventId>, Event>>,
         /// Maps the temporary `EventId` of the pending Event to the real
@@ -151,11 +160,13 @@ mod imp {
 
     impl ListModelImpl for Timeline {
         fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
-            Item::static_type()
+            TimelineItem::static_type()
         }
+
         fn n_items(&self, _list_model: &Self::Type) -> u32 {
             self.list.borrow().len() as u32
         }
+
         fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
             let list = self.list.borrow();
 
@@ -166,10 +177,10 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// List of all loaded Events in a room. Implements ListModel.
+    /// List of all loaded items in a room. Implements ListModel.
     ///
-    /// There is no strict message ordering enforced by the Timeline; events
-    /// will be appended/prepended to existing events in the order they are
+    /// There is no strict message ordering enforced by the Timeline; items
+    /// will be appended/prepended to existing items in the order they are
     /// received by the server.
     ///
     /// This struct additionally keeps track of pending events that have yet to
@@ -200,41 +211,43 @@ impl Timeline {
 
             let mut previous_timestamp = if position > 0 {
                 list.get(position - 1)
-                    .and_then(|item| item.event_timestamp())
+                    .and_then(|item| item.downcast_ref::<Event>())
+                    .map(|event| event.timestamp())
             } else {
                 None
             };
-            let mut divider: Vec<(usize, Item)> = vec![];
+            let mut dividers: Vec<(usize, TimelineDayDivider)> = vec![];
             let mut index = position;
             for current in list.range(position..position + added) {
-                if let Some(current_timestamp) = current.event_timestamp() {
+                if let Some(current_timestamp) = current
+                    .downcast_ref::<Event>()
+                    .map(|event| event.timestamp())
+                {
                     if Some(current_timestamp.ymd()) != previous_timestamp.as_ref().map(|t| t.ymd())
                     {
-                        divider.push((index, Item::for_day_divider(current_timestamp.clone())));
+                        dividers.push((index, TimelineDayDivider::new(current_timestamp.clone())));
                         previous_timestamp = Some(current_timestamp);
                     }
                 }
                 index += 1;
             }
 
-            let divider_len = divider.len();
-            last_new_message_date = divider.last().and_then(|item| match item.1.type_() {
-                ItemType::DayDivider(date) => Some(date.clone()),
-                _ => None,
-            });
-            for (added, (position, date)) in divider.into_iter().enumerate() {
-                list.insert(position + added, date);
+            let dividers_len = dividers.len();
+            last_new_message_date = dividers.last().and_then(|(_, divider)| divider.date());
+            for (added, (position, date)) in dividers.into_iter().enumerate() {
+                list.insert(position + added, date.upcast());
             }
 
-            (added + divider_len) as u32
+            (added + dividers_len) as u32
         };
 
         // Remove first day divider if a new one is added earlier with the same day
         let removed = {
             let mut list = priv_.list.borrow_mut();
-            if let Some(ItemType::DayDivider(date)) = list
+            if let Some(date) = list
                 .get(position as usize + added as usize)
-                .map(|item| item.type_())
+                .and_then(|item| item.downcast_ref::<TimelineDayDivider>())
+                .and_then(|divider| divider.date())
             {
                 if Some(date.ymd()) == last_new_message_date.as_ref().map(|date| date.ymd()) {
                     list.remove(position as usize + added as usize);
@@ -255,14 +268,14 @@ impl Timeline {
 
             let mut previous_sender = if position > 0 {
                 list.get(position - 1)
-                    .filter(|event| event.can_hide_header())
-                    .and_then(|event| event.matrix_sender())
+                    .filter(|item| item.can_hide_header())
+                    .and_then(|item| item.sender())
             } else {
                 None
             };
 
             for current in list.range(position..position + added) {
-                let current_sender = current.matrix_sender();
+                let current_sender = current.sender();
 
                 if !current.can_hide_header() {
                     current.set_show_header(false);
@@ -277,7 +290,7 @@ impl Timeline {
 
             // Update the events after the new events
             for next in list.range((position + added)..) {
-                // After an event with non hiddable header the visibility for headers will be
+                // After an event with non hideable header the visibility for headers will be
                 // correct
                 if !next.can_hide_header() {
                     break;
@@ -285,7 +298,7 @@ impl Timeline {
 
                 // Once the sender changes we can be sure that the visibility for headers will
                 // be correct
-                if next.matrix_sender() != previous_sender {
+                if next.sender() != previous_sender {
                     next.set_show_header(true);
                     break;
                 }
@@ -304,7 +317,7 @@ impl Timeline {
 
             for event in list
                 .range(position as usize..(position + added) as usize)
-                .filter_map(|item| item.event())
+                .filter_map(|item| item.downcast_ref::<Event>())
             {
                 if let Some(relates_to) = relates_to_events.remove(&event.matrix_event_id()) {
                     let mut replacing_events: Vec<Event> = vec![];
@@ -356,7 +369,7 @@ impl Timeline {
             let mut list = list.iter();
 
             while let Some(item) = list.next_back() {
-                if let ItemType::Event(event) = item.type_() {
+                if let Some(event) = item.downcast_ref::<Event>() {
                     if redacted_events.remove(&event.matrix_event_id()) {
                         redacted_events_pos.push(i - 1);
                     }
@@ -394,15 +407,15 @@ impl Timeline {
 
                 // Remove the day divider before this event if it's not useful anymore.
                 let day_divider_before = pos >= 1
-                    && matches!(
-                        list.get(pos - 1).map(|item| item.type_()),
-                        Some(ItemType::DayDivider(_))
-                    );
+                    && list
+                        .get(pos - 1)
+                        .filter(|item| item.is::<TimelineDayDivider>())
+                        .is_some();
                 let after = pos == list.len()
-                    || matches!(
-                        list.get(pos).map(|item| item.type_()),
-                        Some(ItemType::DayDivider(_))
-                    );
+                    || list
+                        .get(pos)
+                        .filter(|item| item.is::<TimelineDayDivider>())
+                        .is_some();
 
                 if day_divider_before && after {
                     pos -= 1;
@@ -679,7 +692,7 @@ impl Timeline {
                         hidden_events.push(event);
                         added -= 1;
                     } else {
-                        priv_.list.borrow_mut().push_back(Item::for_event(event));
+                        priv_.list.borrow_mut().push_back(event.upcast());
                     }
                 }
             }
@@ -714,7 +727,7 @@ impl Timeline {
                 self.add_hidden_events(vec![event], false);
                 None
             } else {
-                list.push_back(Item::for_event(event));
+                list.push_back(event.upcast());
                 Some(index)
             }
         };
@@ -782,7 +795,7 @@ impl Timeline {
                     hidden_events.push(event);
                     added -= 1;
                 } else {
-                    priv_.list.borrow_mut().push_front(Item::for_event(event));
+                    priv_.list.borrow_mut().push_front(event.upcast());
                 }
             }
             self.add_hidden_events(hidden_events, true);
@@ -826,7 +839,7 @@ impl Timeline {
         self.imp()
             .list
             .borrow_mut()
-            .push_front(Item::for_loading_spinner());
+            .push_front(TimelineSpinner::new().upcast());
         self.upcast_ref::<gio::ListModel>().items_changed(0, 0, 1);
     }
 

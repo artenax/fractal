@@ -55,7 +55,7 @@ use self::{
 };
 pub use self::{
     avatar::Avatar,
-    room::{Event, Item, Room},
+    room::{Event, Room},
     room_creation::RoomCreation,
     user::{User, UserActions, UserExt},
 };

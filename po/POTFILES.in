@@ -70,6 +70,7 @@ src/session/mod.rs
 src/session/room/event_actions.rs
 src/session/room/member_role.rs
 src/session/room/mod.rs
+src/session/room/timeline/timeline_day_divider.rs
 src/session/room_creation/mod.rs
 src/session/room_list.rs
 src/session/sidebar/category_row.rs

@@ -22,11 +22,12 @@ use matrix_sdk::{
 };
 use ruma::events::room::member::MembershipState;
 
+use super::{
+    timeline::{TimelineItem, TimelineItemImpl},
+    Member, ReactionList, Room,
+};
 use crate::{
-    session::{
-        room::{Member, ReactionList},
-        Room, UserExt,
-    },
+    session::UserExt,
     spawn_tokio,
     utils::{filename_for_mime, media_type_uid},
 };
@@ -36,7 +37,7 @@ use crate::{
 pub struct BoxedSyncRoomEvent(SyncRoomEvent);
 
 mod imp {
-    use std::cell::{Cell, RefCell};
+    use std::cell::RefCell;
 
     use glib::{object::WeakRef, SignalHandlerId};
     use once_cell::{sync::Lazy, unsync::OnceCell};
@@ -54,7 +55,6 @@ mod imp {
         pub replacing_events: RefCell<Vec<super::Event>>,
         pub reactions: ReactionList,
         pub source_changed_handler: RefCell<Option<SignalHandlerId>>,
-        pub show_header: Cell<bool>,
         pub room: OnceCell<WeakRef<Room>>,
     }
 
@@ -62,6 +62,7 @@ mod imp {
     impl ObjectSubclass for Event {
         const NAME: &'static str = "RoomEvent";
         type Type = super::Event;
+        type ParentType = TimelineItem;
     }
 
     impl ObjectImpl for Event {
@@ -82,27 +83,6 @@ mod imp {
                         None,
                         glib::ParamFlags::READABLE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
-                    glib::ParamSpecBoolean::new(
-                        "show-header",
-                        "Show Header",
-                        "Whether this event should show a header. This does nothing if this event doesn’t have a header. ",
-                        false,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "can-hide-header",
-                        "Can hide header",
-                        "Whether this event is allowed to hide its header or not.",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "sender",
-                        "Sender",
-                        "The sender of this matrix event",
-                        Member::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
                     glib::ParamSpecObject::new(
                         "room",
                         "Room",
@@ -115,13 +95,6 @@ mod imp {
                         "Time",
                         "The locally formatted time of this matrix event",
                         None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "can-view-media",
-                        "Can View Media",
-                        "Whether this is a media event that can be viewed",
-                        false,
                         glib::ParamFlags::READABLE,
                     ),
                 ]
@@ -142,10 +115,6 @@ mod imp {
                     let event = value.get::<BoxedSyncRoomEvent>().unwrap();
                     obj.set_matrix_pure_event(event.0);
                 }
-                "show-header" => {
-                    let show_header = value.get().unwrap();
-                    let _ = obj.set_show_header(show_header);
-                }
                 "room" => {
                     self.room
                         .set(value.get::<Room>().unwrap().downgrade())
@@ -158,21 +127,66 @@ mod imp {
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "source" => obj.source().to_value(),
-                "sender" => obj.sender().to_value(),
                 "room" => obj.room().to_value(),
-                "show-header" => obj.show_header().to_value(),
-                "can-hide-header" => obj.can_hide_header().to_value(),
                 "time" => obj.time().to_value(),
-                "can-view-media" => obj.can_view_media().to_value(),
                 _ => unimplemented!(),
             }
+        }
+    }
+
+    impl TimelineItemImpl for Event {
+        fn selectable(&self, _obj: &TimelineItem) -> bool {
+            true
+        }
+
+        fn activatable(&self, obj: &TimelineItem) -> bool {
+            match obj
+                .downcast_ref::<super::Event>()
+                .and_then(|event| event.message_content())
+            {
+                // The event can be activated to open the media viewer if it's an image or a video.
+                Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
+                    matches!(
+                        message.msgtype,
+                        MessageType::Image(_) | MessageType::Video(_)
+                    )
+                }
+                _ => false,
+            }
+        }
+
+        fn can_hide_header(&self, obj: &TimelineItem) -> bool {
+            match obj
+                .downcast_ref::<super::Event>()
+                .and_then(|event| event.message_content())
+            {
+                Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
+                    matches!(
+                        message.msgtype,
+                        MessageType::Audio(_)
+                            | MessageType::File(_)
+                            | MessageType::Image(_)
+                            | MessageType::Location(_)
+                            | MessageType::Notice(_)
+                            | MessageType::Text(_)
+                            | MessageType::Video(_)
+                    )
+                }
+                Some(AnyMessageLikeEventContent::Sticker(_)) => true,
+                _ => false,
+            }
+        }
+
+        fn sender(&self, obj: &TimelineItem) -> Option<Member> {
+            obj.downcast_ref::<super::Event>()
+                .map(|event| event.room().members().member_by_id(event.matrix_sender()))
         }
     }
 }
 
 glib::wrapper! {
     /// GObject representation of a Matrix room event.
-    pub struct Event(ObjectSubclass<imp::Event>);
+    pub struct Event(ObjectSubclass<imp::Event>) @extends TimelineItem;
 }
 
 // TODO:
@@ -215,7 +229,7 @@ impl Event {
         priv_.pure_event.replace(Some(event));
 
         self.notify("event");
-        self.notify("can-view-media");
+        self.notify("activatable");
     }
 
     pub fn matrix_sender(&self) -> Arc<UserId> {
@@ -436,19 +450,6 @@ impl Event {
         }
     }
 
-    pub fn set_show_header(&self, visible: bool) {
-        let priv_ = self.imp();
-        if priv_.show_header.get() == visible {
-            return;
-        }
-        priv_.show_header.set(visible);
-        self.notify("show-header");
-    }
-
-    pub fn show_header(&self) -> bool {
-        self.imp().show_header.get()
-    }
-
     /// The content of this message.
     ///
     /// Returns `None` if this is not a message.
@@ -456,25 +457,6 @@ impl Event {
         match self.matrix_event() {
             Some(AnySyncRoomEvent::MessageLike(message)) => Some(message.content()),
             _ => None,
-        }
-    }
-
-    pub fn can_hide_header(&self) -> bool {
-        match self.message_content() {
-            Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
-                matches!(
-                    message.msgtype,
-                    MessageType::Audio(_)
-                        | MessageType::File(_)
-                        | MessageType::Image(_)
-                        | MessageType::Location(_)
-                        | MessageType::Notice(_)
-                        | MessageType::Text(_)
-                        | MessageType::Video(_)
-                )
-            }
-            Some(AnyMessageLikeEventContent::Sticker(_)) => true,
-            _ => false,
         }
     }
 
@@ -604,13 +586,6 @@ impl Event {
             .or_else(|| self.original_content())
     }
 
-    pub fn connect_show_header_notify<F: Fn(&Self, &glib::ParamSpec) + 'static>(
-        &self,
-        f: F,
-    ) -> glib::SignalHandlerId {
-        self.connect_notify_local(Some("show-header"), f)
-    }
-
     /// The content of a media message.
     ///
     /// Compatible events:
@@ -687,19 +662,6 @@ impl Event {
         };
 
         panic!("Trying to get the media content of an event of incompatible type");
-    }
-
-    /// Whether this is a media event that can be viewed.
-    pub fn can_view_media(&self) -> bool {
-        match self.message_content() {
-            Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
-                matches!(
-                    message.msgtype,
-                    MessageType::Image(_) | MessageType::Video(_)
-                )
-            }
-            _ => false,
-        }
     }
 
     /// Get the id of the event this `Event` replies to, if any.

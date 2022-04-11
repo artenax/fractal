@@ -77,7 +77,11 @@ glib::wrapper! {
 }
 
 impl DividerRow {
-    pub fn new(label: String) -> Self {
+    pub fn new() -> Self {
+        glib::Object::new(&[]).expect("Failed to create DividerRow")
+    }
+
+    pub fn with_label(label: String) -> Self {
         glib::Object::new(&[("label", &label)]).expect("Failed to create DividerRow")
     }
 
@@ -87,5 +91,11 @@ impl DividerRow {
 
     pub fn label(&self) -> String {
         self.imp().label.text().as_str().to_owned()
+    }
+}
+
+impl Default for DividerRow {
+    fn default() -> Self {
+        Self::new()
     }
 }
