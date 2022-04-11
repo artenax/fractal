@@ -1,9 +1,13 @@
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 
-use crate::session::{room::Room, room_list::RoomList, sidebar::CategoryType};
+use super::{CategoryType, SidebarItem, SidebarItemExt, SidebarItemImpl};
+use crate::session::{
+    room::{Room, RoomType},
+    room_list::RoomList,
+};
 
 mod imp {
-    use std::cell::Cell;
+    use std::{cell::Cell, convert::TryFrom};
 
     use once_cell::unsync::OnceCell;
 
@@ -20,6 +24,7 @@ mod imp {
     impl ObjectSubclass for Category {
         const NAME: &'static str = "Category";
         type Type = super::Category;
+        type ParentType = SidebarItem;
         type Interfaces = (gio::ListModel,);
     }
 
@@ -96,13 +101,31 @@ mod imp {
 
     impl ListModelImpl for Category {
         fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
-            glib::Object::static_type()
+            SidebarItem::static_type()
         }
+
         fn n_items(&self, _list_model: &Self::Type) -> u32 {
             self.model.get().unwrap().n_items()
         }
+
         fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
             self.model.get().unwrap().item(position)
+        }
+    }
+
+    impl SidebarItemImpl for Category {
+        fn update_visibility(&self, obj: &Self::Type, for_category: CategoryType) {
+            obj.set_visible(
+                !obj.is_empty()
+                    || RoomType::try_from(for_category)
+                        .ok()
+                        .and_then(|room_type| {
+                            RoomType::try_from(obj.type_())
+                                .ok()
+                                .filter(|category| room_type.can_change_to(category))
+                        })
+                        .is_some(),
+            )
         }
     }
 }
@@ -112,6 +135,7 @@ glib::wrapper! {
     ///
     /// This struct is used in ItemList for the sidebar.
     pub struct Category(ObjectSubclass<imp::Category>)
+        @extends SidebarItem,
         @implements gio::ListModel;
 }
 

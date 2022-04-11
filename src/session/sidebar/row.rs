@@ -6,7 +6,7 @@ use gtk::{gdk, glib, glib::clone, subclass::prelude::*};
 use super::EntryType;
 use crate::session::{
     room::{Room, RoomType},
-    sidebar::{Category, CategoryRow, Entry, EntryRow, RoomRow, VerificationRow},
+    sidebar::{Category, CategoryRow, Entry, EntryRow, RoomRow, SidebarItem, VerificationRow},
     verification::IdentityVerification,
 };
 
@@ -20,7 +20,7 @@ mod imp {
     #[derive(Debug, Default)]
     pub struct Row {
         pub list_row: RefCell<Option<gtk::TreeListRow>>,
-        pub binding: RefCell<Option<glib::Binding>>,
+        pub bindings: RefCell<Vec<glib::Binding>>,
     }
 
     #[glib::object_subclass]
@@ -119,8 +119,10 @@ impl Row {
         glib::Object::new(&[]).expect("Failed to create Row")
     }
 
-    pub fn item(&self) -> Option<glib::Object> {
-        self.list_row().and_then(|r| r.item())
+    pub fn item(&self) -> Option<SidebarItem> {
+        self.list_row()
+            .and_then(|r| r.item())
+            .and_then(|obj| obj.downcast().ok())
     }
 
     pub fn list_row(&self) -> Option<gtk::TreeListRow> {
@@ -134,7 +136,7 @@ impl Row {
             return;
         }
 
-        if let Some(binding) = priv_.binding.take() {
+        for binding in priv_.bindings.take() {
             binding.unbind();
         }
 
@@ -145,7 +147,16 @@ impl Row {
             return;
         };
 
+        let mut bindings = vec![];
         if let Some(item) = self.item() {
+            if let Some(list_item) = self.parent() {
+                bindings.push(
+                    item.bind_property("visible", &list_item, "visible")
+                        .flags(glib::BindingFlags::SYNC_CREATE)
+                        .build(),
+                );
+            }
+
             if let Some(category) = item.downcast_ref::<Category>() {
                 let child =
                     if let Some(Ok(child)) = self.child().map(|w| w.downcast::<CategoryRow>()) {
@@ -157,12 +168,11 @@ impl Row {
                     };
                 child.set_category(Some(category.clone()));
 
-                let binding = row
-                    .bind_property("expanded", &child, "expanded")
-                    .flags(glib::BindingFlags::SYNC_CREATE)
-                    .build();
-
-                priv_.binding.replace(Some(binding));
+                bindings.push(
+                    row.bind_property("expanded", &child, "expanded")
+                        .flags(glib::BindingFlags::SYNC_CREATE)
+                        .build(),
+                );
 
                 if let Some(list_item) = self.parent() {
                     list_item.set_css_classes(&["category"]);
@@ -222,6 +232,8 @@ impl Row {
             self.activate_action("sidebar.update-drop-targets", None)
                 .unwrap();
         }
+
+        priv_.bindings.replace(bindings);
 
         self.notify("item");
         self.notify("list-row");

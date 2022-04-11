@@ -1,13 +1,7 @@
-use std::convert::TryFrom;
-
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 
-use crate::session::{
-    room::RoomType,
-    room_list::RoomList,
-    sidebar::{Category, CategoryType, Entry, EntryType},
-    verification::VerificationList,
-};
+use super::{Category, CategoryType, Entry, EntryType, SidebarItem, SidebarItemExt};
+use crate::session::{room_list::RoomList, verification::VerificationList};
 
 mod imp {
     use std::cell::Cell;
@@ -18,7 +12,7 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct ItemList {
-        pub list: OnceCell<[(glib::Object, Cell<bool>); 8]>,
+        pub list: OnceCell<[SidebarItem; 8]>,
         pub room_list: OnceCell<RoomList>,
         pub verification_list: OnceCell<VerificationList>,
         /// The `CategoryType` to show all compatible categories for.
@@ -96,39 +90,28 @@ mod imp {
             let room_list = obj.room_list();
             let verification_list = obj.verification_list();
 
-            let list = [
-                Entry::new(EntryType::Explore).upcast::<glib::Object>(),
-                Category::new(CategoryType::VerificationRequest, verification_list)
-                    .upcast::<glib::Object>(),
-                Category::new(CategoryType::Invited, room_list).upcast::<glib::Object>(),
-                Category::new(CategoryType::Favorite, room_list).upcast::<glib::Object>(),
-                Category::new(CategoryType::Normal, room_list).upcast::<glib::Object>(),
-                Category::new(CategoryType::LowPriority, room_list).upcast::<glib::Object>(),
-                Category::new(CategoryType::Left, room_list).upcast::<glib::Object>(),
-                Entry::new(EntryType::Forget).upcast::<glib::Object>(),
+            let list: [SidebarItem; 8] = [
+                Entry::new(EntryType::Explore).upcast(),
+                Category::new(CategoryType::VerificationRequest, verification_list).upcast(),
+                Category::new(CategoryType::Invited, room_list).upcast(),
+                Category::new(CategoryType::Favorite, room_list).upcast(),
+                Category::new(CategoryType::Normal, room_list).upcast(),
+                Category::new(CategoryType::LowPriority, room_list).upcast(),
+                Category::new(CategoryType::Left, room_list).upcast(),
+                Entry::new(EntryType::Forget).upcast(),
             ];
 
-            for (index, item) in list.iter().enumerate() {
+            for item in list.iter() {
                 if let Some(category) = item.downcast_ref::<Category>() {
                     category.connect_notify_local(
                         Some("empty"),
-                        clone!(@weak obj => move |_, _| {
-                            obj.update_item(index);
+                        clone!(@weak obj => move |category, _| {
+                            category.update_visibility(obj.show_all_for_category());
                         }),
                     );
                 }
+                item.update_visibility(obj.show_all_for_category());
             }
-
-            let list = list.map(|item| {
-                let visible = if let Some(category) = item.downcast_ref::<Category>() {
-                    !category.is_empty()
-                } else {
-                    item.downcast_ref::<Entry>()
-                        .filter(|entry| entry.type_() == EntryType::Forget)
-                        .is_none()
-                };
-                (item, Cell::new(visible))
-            });
 
             self.list.set(list).unwrap();
         }
@@ -136,32 +119,19 @@ mod imp {
 
     impl ListModelImpl for ItemList {
         fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
-            glib::Object::static_type()
+            SidebarItem::static_type()
         }
+
         fn n_items(&self, _list_model: &Self::Type) -> u32 {
-            self.list
-                .get()
-                .unwrap()
-                .iter()
-                .filter(|(_, visible)| visible.get())
-                .count() as u32
+            self.list.get().unwrap().len() as u32
         }
+
         fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
             self.list
                 .get()
                 .unwrap()
-                .iter()
-                .filter_map(
-                    |(item, visible)| {
-                        if visible.get() {
-                            Some(item)
-                        } else {
-                            None
-                        }
-                    },
-                )
-                .nth(position as usize)
-                .cloned()
+                .get(position as usize)
+                .map(|item| item.to_owned().upcast())
         }
     }
 }
@@ -184,48 +154,6 @@ impl ItemList {
         .expect("Failed to create ItemList")
     }
 
-    fn update_item(&self, position: usize) {
-        let priv_ = self.imp();
-        let (item, old_visible) = priv_.list.get().unwrap().get(position).unwrap();
-
-        let visible = if let Some(category) = item.downcast_ref::<Category>() {
-            !category.is_empty()
-                || RoomType::try_from(self.show_all_for_category())
-                    .ok()
-                    .and_then(|room_type| {
-                        RoomType::try_from(category.type_())
-                            .ok()
-                            .filter(|category| room_type.can_change_to(category))
-                    })
-                    .is_some()
-        } else if item
-            .downcast_ref::<Entry>()
-            .filter(|entry| entry.type_() == EntryType::Forget)
-            .is_some()
-        {
-            self.show_all_for_category() == CategoryType::Left
-        } else {
-            return;
-        };
-
-        if visible != old_visible.get() {
-            old_visible.set(visible);
-            let hidden_before_position = priv_
-                .list
-                .get()
-                .unwrap()
-                .iter()
-                .take(position)
-                .filter(|(_, visible)| !visible.get())
-                .count();
-            let real_position = position - hidden_before_position;
-
-            let (removed, added) = if visible { (0, 1) } else { (1, 0) };
-
-            self.items_changed(real_position as u32, removed, added);
-        }
-    }
-
     pub fn show_all_for_category(&self) -> CategoryType {
         self.imp().show_all_for_category.get()
     }
@@ -238,8 +166,8 @@ impl ItemList {
         }
 
         priv_.show_all_for_category.set(category);
-        for i in 0..priv_.list.get().unwrap().len() {
-            self.update_item(i);
+        for item in priv_.list.get().unwrap().iter() {
+            item.update_visibility(category);
         }
 
         self.notify("show-all-for-category");

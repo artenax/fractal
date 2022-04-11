@@ -24,7 +24,11 @@ use super::{VERIFICATION_CREATION_TIMEOUT, VERIFICATION_RECEIVE_TIMEOUT};
 use crate::{
     components::Toast,
     contrib::Camera,
-    session::{user::UserExt, Session, User},
+    session::{
+        sidebar::{SidebarItem, SidebarItemImpl},
+        user::UserExt,
+        Session, User,
+    },
     spawn, spawn_tokio,
 };
 
@@ -188,6 +192,7 @@ mod imp {
     impl ObjectSubclass for IdentityVerification {
         const NAME: &'static str = "IdentityVerification";
         type Type = super::IdentityVerification;
+        type ParentType = SidebarItem;
     }
 
     impl ObjectImpl for IdentityVerification {
@@ -354,10 +359,13 @@ mod imp {
             obj.cancel(true);
         }
     }
+
+    impl SidebarItemImpl for IdentityVerification {}
 }
 
 glib::wrapper! {
-    pub struct IdentityVerification(ObjectSubclass<imp::IdentityVerification>);
+    pub struct IdentityVerification(ObjectSubclass<imp::IdentityVerification>)
+        @extends SidebarItem;
 }
 
 impl IdentityVerification {

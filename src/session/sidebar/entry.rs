@@ -1,6 +1,6 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
 
-use crate::session::sidebar::EntryType;
+use super::{CategoryType, EntryType, SidebarItem, SidebarItemExt, SidebarItemImpl};
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -17,6 +17,7 @@ mod imp {
     impl ObjectSubclass for Entry {
         const NAME: &'static str = "Entry";
         type Type = super::Entry;
+        type ParentType = SidebarItem;
     }
 
     impl ObjectImpl for Entry {
@@ -79,6 +80,15 @@ mod imp {
             }
         }
     }
+
+    impl SidebarItemImpl for Entry {
+        fn update_visibility(&self, obj: &Self::Type, for_category: CategoryType) {
+            match obj.type_() {
+                EntryType::Explore => obj.set_visible(true),
+                EntryType::Forget => obj.set_visible(for_category == CategoryType::Left),
+            }
+        }
+    }
 }
 
 glib::wrapper! {
@@ -86,7 +96,7 @@ glib::wrapper! {
     ///
     /// Entry is supposed to be used in a TreeListModel, but as it does not have
     /// any children, implementing the ListModel interface is not required.
-    pub struct Entry(ObjectSubclass<imp::Entry>);
+    pub struct Entry(ObjectSubclass<imp::Entry>) @extends SidebarItem;
 }
 
 impl Entry {

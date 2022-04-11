@@ -62,7 +62,10 @@ use crate::{
     gettext_f, ngettext_f,
     prelude::*,
     session::{
-        avatar::update_room_avatar_from_file, room::member_list::MemberList, Avatar, Session, User,
+        avatar::update_room_avatar_from_file,
+        room::member_list::MemberList,
+        sidebar::{SidebarItem, SidebarItemImpl},
+        Avatar, Session, User,
     },
     spawn, spawn_tokio,
     utils::pending_event_ids,
@@ -107,6 +110,7 @@ mod imp {
     impl ObjectSubclass for Room {
         const NAME: &'static str = "Room";
         type Type = super::Room;
+        type ParentType = SidebarItem;
     }
 
     impl ObjectImpl for Room {
@@ -335,13 +339,15 @@ mod imp {
             }
         }
     }
+
+    impl SidebarItemImpl for Room {}
 }
 
 glib::wrapper! {
     /// GObject representation of a Matrix room.
     ///
     /// Handles populating the Timeline.
-    pub struct Room(ObjectSubclass<imp::Room>);
+    pub struct Room(ObjectSubclass<imp::Room>) @extends SidebarItem;
 }
 
 impl Room {

@@ -9,6 +9,7 @@ mod item_list;
 mod room_row;
 mod row;
 mod selection;
+mod sidebar_item;
 mod verification_row;
 
 use account_switcher::AccountSwitcher;
@@ -16,8 +17,12 @@ use adw::{prelude::*, subclass::prelude::*};
 use gtk::{gio, glib, glib::closure, subclass::prelude::*, CompositeTemplate, SelectionModel};
 
 pub use self::{
-    category::Category, category_type::CategoryType, entry::Entry, entry_type::EntryType,
+    category::Category,
+    category_type::CategoryType,
+    entry::Entry,
+    entry_type::EntryType,
     item_list::ItemList,
+    sidebar_item::{SidebarItem, SidebarItemExt, SidebarItemImpl},
 };
 use self::{
     category_row::CategoryRow, entry_row::EntryRow, room_row::RoomRow, row::Row,
