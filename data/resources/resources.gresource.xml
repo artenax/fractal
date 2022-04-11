@@ -14,6 +14,7 @@
     <file preprocess="xml-stripblanks">icons/scalable/actions/idp-google-dark.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/idp-google.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/idp-twitter.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/map-marker-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/send-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/status/devices-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/status/empty-page.svg</file>
@@ -54,6 +55,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="content-member-row.ui">ui/content-member-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-message-audio.ui">ui/content-message-audio.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-message-file.ui">ui/content-message-file.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="content-message-location.ui">ui/content-message-location.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-message-media.ui">ui/content-message-media.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-message-reaction-list.ui">ui/content-message-reaction-list.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-message-reaction.ui">ui/content-message-reaction.ui</file>

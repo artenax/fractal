@@ -21,6 +21,20 @@
       </item>
     </section>
   </menu>
+  <menu id="message-menu-model">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Location</attribute>
+        <attribute name="action">room-history.send-location</attribute>
+        <attribute name="icon">map-marker-symbolic</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Attachment</attribute>
+        <attribute name="action">room-history.select-file</attribute>
+        <attribute name="icon">mail-attachment-symbolic</attribute>
+      </item>
+    </section>
+  </menu>
   <template class="ContentRoomHistory" parent="AdwBin">
     <property name="vexpand">True</property>
     <property name="hexpand">True</property>
@@ -210,13 +224,6 @@
                   <class name="toolbar"/>
                 </style>
                 <child>
-                  <object class="GtkButton">
-                    <property name="valign">end</property>
-                    <property name="icon-name">mail-attachment-symbolic</property>
-                    <property name="action-name">room-history.select-file</property>
-                  </object>
-                </child>
-                <child>
                   <object class="GtkMenuButton" id="markdown_button">
                     <property name="valign">end</property>
                     <property name="direction">up</property>
@@ -248,6 +255,14 @@
                         </property>
                       </object>
                     </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuButton">
+                    <property name="valign">end</property>
+                    <property name="direction">up</property>
+                    <property name="icon-name">view-more-horizontal-symbolic</property>
+                    <property name="menu-model">message-menu-model</property>
                   </object>
                 </child>
                 <child>

@@ -375,6 +375,15 @@ login {
   font-size: 3em;
 }
 
+.room-history .event-content .location .map {
+  border-radius: 6px;
+  background-color: @borders;
+}
+
+.room-history .event-content .location .map-marker {
+  color: @accent_color;
+}
+
 .room-history .event-content .thumbnail {
   border-radius: 6px;
   background-color: @borders;

@@ -8,6 +8,11 @@ mod verification_info_bar;
 use std::str::FromStr;
 
 use adw::subclass::prelude::*;
+use ashpd::{
+    desktop::location::{Accuracy, LocationProxy},
+    WindowIdentifier,
+};
+use futures::TryFutureExt;
 use gettextrs::gettext;
 use gtk::{
     gdk, gio, glib,
@@ -20,6 +25,7 @@ use matrix_sdk::ruma::events::room::message::{
     EmoteMessageEventContent, FormattedBody, MessageType, RoomMessageEventContent,
     TextMessageEventContent,
 };
+use ruma::events::{room::message::LocationMessageEventContent, AnyMessageLikeEventContent};
 use sourceview::prelude::*;
 
 use self::{
@@ -28,6 +34,7 @@ use self::{
 };
 use crate::{
     components::{CustomEntry, DragOverlay, Pill, RoomTitle},
+    i18n::gettext_f,
     session::{
         content::{MarkdownPopover, RoomDetails},
         room::{Event, Room, RoomType, Timeline, TimelineState},
@@ -50,7 +57,7 @@ mod imp {
     use glib::{signal::SignalHandlerId, subclass::InitializingObject};
 
     use super::*;
-    use crate::Application;
+    use crate::{components::Toast, window::Window, Application};
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/content-room-history.ui")]
@@ -140,6 +147,33 @@ mod imp {
 
             klass.install_action("room-history.open-emoji", None, move |widget, _, _| {
                 widget.open_emoji();
+            });
+
+            klass.install_action("room-history.send-location", None, move |widget, _, _| {
+                spawn!(clone!(@weak widget => async move {
+                    let toast_error = match widget.send_location().await {
+                        // Do nothing if the request was canceled by the user
+                        Err(ashpd::Error::Response(ashpd::desktop::ResponseError::Cancelled)) => {
+                            log::error!("Location request was cancelled by the user");
+                            Some(gettext("The location request has been cancelled."))
+                        },
+                        Err(err) => {
+                            log::error!("Failed to send location {}", err);
+                            Some(gettext("Failed to retrieve current location."))
+                        }
+                        _ => None,
+                    };
+
+                    if let Some(window) = widget
+                        .root()
+                        .as_ref()
+                        .and_then(|root| root.downcast_ref::<Window>())
+                    {
+                        if let Some(message) = toast_error {
+                            window.add_toast(&Toast::new(&message));
+                        }
+                    }
+                }));
             });
         }
 
@@ -769,6 +803,47 @@ impl RoomHistory {
 
     fn open_emoji(&self) {
         self.imp().message_entry.emit_insert_emoji();
+    }
+
+    async fn send_location(&self) -> ashpd::Result<()> {
+        if let Some(room) = self.room() {
+            let connection = ashpd::zbus::Connection::session().await?;
+            let proxy = LocationProxy::new(&connection).await?;
+            let identifier = WindowIdentifier::default();
+
+            let session = proxy
+                .create_session(Some(0), Some(0), Some(Accuracy::Exact))
+                .await?;
+
+            // We want to be listening for new locations whenever the session is up
+            // otherwise we might lose the first response and will have to wait for a future
+            // update by geoclue
+            let (_, location) = futures::try_join!(
+                proxy.start(&session, &identifier).into_future(),
+                proxy.receive_location_updated().into_future()
+            )?;
+
+            let iso8601_datetime =
+                glib::DateTime::from_unix_local(location.timestamp().as_secs() as i64)
+                    .expect("Valid location timestamp");
+            let geo_uri = format!("geo:{},{}", location.latitude(), location.longitude());
+            let location_body = gettext_f(
+                "User Location {geo_uri} at {iso8601_datetime}",
+                &[
+                    ("geo_uri", &geo_uri),
+                    (
+                        "iso8601_datetime",
+                        iso8601_datetime.format_iso8601().unwrap().as_str(),
+                    ),
+                ],
+            );
+            room.send_room_message_event(AnyMessageLikeEventContent::RoomMessage(
+                RoomMessageEventContent::new(MessageType::Location(
+                    LocationMessageEventContent::new(location_body, geo_uri),
+                )),
+            ));
+        }
+        Ok(())
     }
 
     fn open_attach_dialog(&self, bytes: Vec<u8>, mime: mime::Mime, title: &str) {

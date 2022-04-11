@@ -1,5 +1,6 @@
 mod audio;
 mod file;
+mod location;
 mod media;
 mod reaction;
 mod reaction_list;
@@ -21,7 +22,7 @@ use matrix_sdk::ruma::events::{
 };
 
 use self::{
-    audio::MessageAudio, file::MessageFile, media::MessageMedia,
+    audio::MessageAudio, file::MessageFile, location::MessageLocation, media::MessageMedia,
     reaction_list::MessageReactionList, reply::MessageReply, text::MessageText,
 };
 use crate::{
@@ -305,7 +306,18 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
                     };
                     child.image(message, &event.room().session(), compact);
                 }
-                MessageType::Location(_message) => {}
+                MessageType::Location(message) => {
+                    let child = if let Some(Ok(child)) =
+                        parent.child().map(|w| w.downcast::<MessageLocation>())
+                    {
+                        child
+                    } else {
+                        let child = MessageLocation::new();
+                        parent.set_child(Some(&child));
+                        child
+                    };
+                    child.set_geo_uri(&message.geo_uri);
+                }
                 MessageType::Notice(message) => {
                     let child = if let Some(Ok(child)) =
                         parent.child().map(|w| w.downcast::<MessageText>())

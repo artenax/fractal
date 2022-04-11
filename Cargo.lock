@@ -140,9 +140,9 @@ dependencies = [
 
 [[package]]
 name = "ashpd"
-version = "0.2.4"
+version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "098dee97729c0164b39a8a7de9c20e4b0eb9cd57f87c8bb465224587b44b1683"
+checksum = "5eea0a7a98b3bd2832eb087e1078f6f58db5a54447574d3007cdac6309c1e9f1"
 dependencies = [
  "enumflags2",
  "futures",
@@ -1021,6 +1021,7 @@ dependencies = [
  "indexmap",
  "libadwaita",
  "libsecret",
+ "libshumate",
  "log",
  "matrix-sdk",
  "mime",
@@ -2201,6 +2202,36 @@ dependencies = [
  "gobject-sys",
  "libc",
  "pkg-config",
+ "system-deps 6.0.2",
+]
+
+[[package]]
+name = "libshumate"
+version = "0.1.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d5c0b7cb25a837204c7eda0879877e0716924c2f970c08e60228bd8410ddc372"
+dependencies = [
+ "gdk4",
+ "gio",
+ "glib",
+ "gtk4",
+ "libc",
+ "libshumate-sys",
+ "once_cell",
+]
+
+[[package]]
+name = "libshumate-sys"
+version = "0.1.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9380bffe8a69af1cd5c6ae0b6dfd2942017d89d9565f64d0e3579629e3921f07"
+dependencies = [
+ "gdk4-sys",
+ "gio-sys",
+ "glib-sys",
+ "gobject-sys",
+ "gtk4-sys",
+ "libc",
  "system-deps 6.0.2",
 ]
 
