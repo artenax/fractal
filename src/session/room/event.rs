@@ -135,15 +135,12 @@ mod imp {
     }
 
     impl TimelineItemImpl for Event {
-        fn selectable(&self, _obj: &TimelineItem) -> bool {
+        fn selectable(&self, _obj: &Self::Type) -> bool {
             true
         }
 
-        fn activatable(&self, obj: &TimelineItem) -> bool {
-            match obj
-                .downcast_ref::<super::Event>()
-                .and_then(|event| event.message_content())
-            {
+        fn activatable(&self, obj: &Self::Type) -> bool {
+            match obj.message_content() {
                 // The event can be activated to open the media viewer if it's an image or a video.
                 Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
                     matches!(
@@ -155,11 +152,8 @@ mod imp {
             }
         }
 
-        fn can_hide_header(&self, obj: &TimelineItem) -> bool {
-            match obj
-                .downcast_ref::<super::Event>()
-                .and_then(|event| event.message_content())
-            {
+        fn can_hide_header(&self, obj: &Self::Type) -> bool {
+            match obj.message_content() {
                 Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
                     matches!(
                         message.msgtype,
@@ -177,9 +171,8 @@ mod imp {
             }
         }
 
-        fn sender(&self, obj: &TimelineItem) -> Option<Member> {
-            obj.downcast_ref::<super::Event>()
-                .map(|event| event.room().members().member_by_id(event.matrix_sender()))
+        fn sender(&self, obj: &Self::Type) -> Option<Member> {
+            Some(obj.room().members().member_by_id(obj.matrix_sender()))
         }
     }
 }

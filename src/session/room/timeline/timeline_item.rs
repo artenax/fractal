@@ -205,19 +205,19 @@ impl<O: IsA<TimelineItem>> TimelineItemExt for O {
 /// Overriding a method from this Trait overrides also its behavior in
 /// `TimelineItemExt`.
 pub trait TimelineItemImpl: ObjectImpl {
-    fn selectable(&self, _obj: &TimelineItem) -> bool {
+    fn selectable(&self, _obj: &Self::Type) -> bool {
         false
     }
 
-    fn activatable(&self, _obj: &TimelineItem) -> bool {
+    fn activatable(&self, _obj: &Self::Type) -> bool {
         false
     }
 
-    fn can_hide_header(&self, _obj: &TimelineItem) -> bool {
+    fn can_hide_header(&self, _obj: &Self::Type) -> bool {
         false
     }
 
-    fn sender(&self, _obj: &TimelineItem) -> Option<Member> {
+    fn sender(&self, _obj: &Self::Type) -> Option<Member> {
         None
     }
 }
@@ -246,8 +246,8 @@ where
     T: ObjectSubclass + TimelineItemImpl,
     T::Type: IsA<TimelineItem>,
 {
-    let imp = this.downcast_ref::<T::Type>().unwrap().imp();
-    imp.selectable(this)
+    let this = this.downcast_ref::<T::Type>().unwrap();
+    this.imp().selectable(this)
 }
 
 fn activatable_trampoline<T>(this: &TimelineItem) -> bool
@@ -255,8 +255,8 @@ where
     T: ObjectSubclass + TimelineItemImpl,
     T::Type: IsA<TimelineItem>,
 {
-    let imp = this.downcast_ref::<T::Type>().unwrap().imp();
-    imp.activatable(this)
+    let this = this.downcast_ref::<T::Type>().unwrap();
+    this.imp().activatable(this)
 }
 
 fn can_hide_header_trampoline<T>(this: &TimelineItem) -> bool
@@ -264,8 +264,8 @@ where
     T: ObjectSubclass + TimelineItemImpl,
     T::Type: IsA<TimelineItem>,
 {
-    let imp = this.downcast_ref::<T::Type>().unwrap().imp();
-    imp.can_hide_header(this)
+    let this = this.downcast_ref::<T::Type>().unwrap();
+    this.imp().can_hide_header(this)
 }
 
 fn sender_trampoline<T>(this: &TimelineItem) -> Option<Member>
@@ -273,6 +273,6 @@ where
     T: ObjectSubclass + TimelineItemImpl,
     T::Type: IsA<TimelineItem>,
 {
-    let imp = this.downcast_ref::<T::Type>().unwrap().imp();
-    imp.sender(this)
+    let this = this.downcast_ref::<T::Type>().unwrap();
+    this.imp().sender(this)
 }
