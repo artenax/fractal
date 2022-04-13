@@ -6,16 +6,23 @@ stages:
   - deploy
 
 variables:
-  MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
   FLATPAK_MODULE: "fractal"
-  APP_ID: "org.gnome.Fractal.Devel"
   RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
   CI_IMAGE_X86_64: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master"
   CI_IMAGE_AARCH64: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/aarch64:gnome-nightly"
 
+.hack:
+  variables:
+    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Hack.json"
+    APP_ID: "org.gnome.Fractal.Hack"
+
+.devel:
+  variables:
+    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
+    APP_ID: "org.gnome.Fractal.Devel"  
+
 .build_template:
   script:
-    - rewrite-flatpak-manifest ${MANIFEST_PATH} ${FLATPAK_MODULE} ${CONFIG_OPTS}
     - >
       xvfb-run -a -s "-screen 0 1024x768x24"
       flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
@@ -76,6 +83,7 @@ checks:
 
 # Lint the code
 cargo-clippy:
+  extends: .hack
   image: '${CI_IMAGE_X86_64}'
   stage: check
   tags:
@@ -87,36 +95,44 @@ cargo-clippy:
 # Build a debug version of the flatpak
 # Except on main
 flatpak:
-  extends: .build_x86_64  
+  extends:
+    - .hack
+    - .build_x86_64
   stage: test
   variables:
-    BUNDLE: "fractal-devel.flatpak"
-    CONFIG_OPTS: "-Dprofile=development"
+    BUNDLE: "fractal-hack.flatpak"
   except:
     - main
 
 # Build the nightly version of the flatpak
 # Only on main
 build-x86_64:
-  extends: .build_x86_64
+  extends:
+    - .devel
+    - .build_x86_64
   stage: build
   variables:
-    BUNDLE: "fractal-nightly-x86_64.flatpak"
-    CONFIG_OPTS: "-Dprofile=nightly"
+    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
+    APP_ID: "org.gnome.Fractal.Devel"
+    BUNDLE: "fractal-devel-x86_64.flatpak"
   only:
     - main
 build-aarch64:
-  extends: .build_aarch64
+  extends:
+    - .devel
+    - .build_aarch64
   stage: build
   variables:
-    BUNDLE: "fractal-nightly-aarch64.flatpak"
-    CONFIG_OPTS: "-Dprofile=nightly"
+    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
+    APP_ID: "org.gnome.Fractal.Devel"
+    BUNDLE: "fractal-devel-aarch64.flatpak"
   only:
     - main
 
 # Build the docs
 # Only on main
 pages:
+  extends: .devel
   image: '${CI_IMAGE_X86_64}'
   stage: doc
   tags:

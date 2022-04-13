@@ -4,8 +4,8 @@ option(
   choices: [
     'default',
     'development',
-    'nightly',
+    'hack',
   ],
   value: 'default',
-  description: 'The build profile for Fractal. One of "default" or "development".'
+  description: 'The build profile for Fractal. One of "default", "development" or "hack".'
 )
