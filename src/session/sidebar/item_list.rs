@@ -101,19 +101,19 @@ mod imp {
                 Entry::new(EntryType::Forget).upcast(),
             ];
 
+            self.list.set(list.clone()).unwrap();
+
             for item in list.iter() {
                 if let Some(category) = item.downcast_ref::<Category>() {
                     category.connect_notify_local(
                         Some("empty"),
                         clone!(@weak obj => move |category, _| {
-                            category.update_visibility(obj.show_all_for_category());
+                            obj.update_item(category);
                         }),
                     );
                 }
-                item.update_visibility(obj.show_all_for_category());
+                obj.update_item(item);
             }
-
-            self.list.set(list).unwrap();
         }
     }
 
@@ -123,15 +123,23 @@ mod imp {
         }
 
         fn n_items(&self, _list_model: &Self::Type) -> u32 {
-            self.list.get().unwrap().len() as u32
+            self.list
+                .get()
+                .unwrap()
+                .iter()
+                .filter(|item| item.visible())
+                .count() as u32
         }
 
         fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
             self.list
                 .get()
                 .unwrap()
-                .get(position as usize)
-                .map(|item| item.to_owned().upcast())
+                .iter()
+                .filter(|item| item.visible())
+                .nth(position as usize)
+                .cloned()
+                .map(|item| item.upcast())
         }
     }
 }
@@ -167,7 +175,7 @@ impl ItemList {
 
         priv_.show_all_for_category.set(category);
         for item in priv_.list.get().unwrap().iter() {
-            item.update_visibility(category);
+            self.update_item(item)
         }
 
         self.notify("show-all-for-category");
@@ -187,5 +195,38 @@ impl ItemList {
 
     pub fn verification_list(&self) -> &VerificationList {
         self.imp().verification_list.get().unwrap()
+    }
+
+    fn update_item(&self, item: &impl IsA<SidebarItem>) {
+        let priv_ = self.imp();
+        let item = item.upcast_ref::<SidebarItem>();
+
+        let old_visible = item.visible();
+        let old_pos = priv_
+            .list
+            .get()
+            .unwrap()
+            .iter()
+            .position(|obj| item == obj)
+            .unwrap();
+
+        item.update_visibility(self.show_all_for_category());
+
+        let visible = item.visible();
+
+        if visible != old_visible {
+            let hidden_before_position = priv_
+                .list
+                .get()
+                .unwrap()
+                .iter()
+                .take(old_pos)
+                .filter(|item| !item.visible())
+                .count();
+            let real_position = old_pos - hidden_before_position;
+
+            let (removed, added) = if visible { (0, 1) } else { (1, 0) };
+            self.items_changed(real_position as u32, removed, added);
+        }
     }
 }
