@@ -37,6 +37,9 @@
                 <property name="popover">
                   <object class="AccountSwitcher" id="account_switcher"/>
                 </property>
+                <accessibility>
+                  <property name="label" translatable="yes">Switch Accounts</property>
+                </accessibility>
                 <style>
                   <class name="image-button"/>
                 </style>
@@ -56,6 +59,9 @@
               <object class="GtkMenuButton" id="appmenu_button">
                 <property name="icon-name">open-menu-symbolic</property>
                 <property name="menu-model">primary_menu</property>
+                <accessibility>
+                  <property name="label" translatable="yes">App Settings Menu</property>
+                </accessibility>
               </object>
             </child>
             <child type="end">
@@ -63,6 +69,9 @@
                 <property name="icon-name">system-search-symbolic</property>
                 <property name="active" bind-source="room_search" bind-property="search-mode-enabled" bind-flags="sync-create"/>
                 <property name="action-name">session.toggle-room-search</property>
+                <accessibility>
+                  <property name="label" translatable="yes">Toggle Room Search</property>
+                </accessibility>
               </object>
             </child>
           </object>
@@ -72,6 +81,10 @@
             <property name="child">
               <object class="GtkSearchEntry" id="room_search_entry"/>
             </property>
+            <accessibility>
+              <property name="label" translatable="yes">Room Search</property>
+              <property name="description" translatable="yes">Search for a room</property>
+            </accessibility>
           </object>
         </child>
         <child>
@@ -92,6 +105,7 @@
                 </property>
                 <accessibility>
                   <property name="label" translatable="yes">Sidebar</property>
+                  <property name="description" translatable="yes">Allows to navigate between rooms</property>
                 </accessibility>
               </object>
             </property>

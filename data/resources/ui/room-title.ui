@@ -8,6 +8,7 @@
         <property name="valign">center</property>
         <child>
           <object class="GtkLabel" id="title_label">
+            <property name="focusable">True</property>
             <property name="ellipsize">end</property>
             <property name="halign">center</property>
             <property name="wrap">False</property>
@@ -23,6 +24,7 @@
         </child>
         <child>
           <object class="GtkLabel" id="subtitle_label">
+            <property name="focusable">True</property>
             <property name="ellipsize">end</property>
             <property name="halign">center</property>
             <property name="wrap">False</property>

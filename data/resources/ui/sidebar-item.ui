@@ -3,6 +3,7 @@
   <template class="GtkListItem">
     <property name="child">
       <object class="SidebarRow">
+        <property name="can-focus">False</property>
         <binding name="list-row">
           <lookup name="item">GtkListItem</lookup>
         </binding>

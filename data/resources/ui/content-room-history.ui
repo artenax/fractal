@@ -52,6 +52,9 @@
                   <object class="GtkButton" id="back">
                     <property name="icon-name">go-previous-symbolic</property>
                     <property name="action-name">content.go-back</property>
+                    <accessibility>
+                      <property name="label" translatable="yes">Back</property>
+                    </accessibility>
                   </object>
                 </property>
               </object>
@@ -74,11 +77,17 @@
               <object class="GtkMenuButton" id="room_menu">
                 <property name="icon-name">view-more-symbolic</property>
                 <property name="menu-model">room-menu-model</property>
+                <accessibility>
+                  <property name="label" translatable="yes">Room Settings</property>
+                </accessibility>
               </object>
             </child>
             <child type="end">
               <object class="GtkToggleButton" id="search_content_button">
                 <property name="icon-name">system-search-symbolic</property>
+                <accessibility>
+                  <property name="label" translatable="yes">Toggle Room History Search</property>
+                </accessibility>
               </object>
             </child>
           </object>
@@ -94,6 +103,9 @@
                 <child>
                   <object class="GtkSearchEntry"/>
                 </child>
+                <accessibility>
+                  <property name="label" translatable="yes">Room History Search</property>
+                </accessibility>
               </object>
             </property>
           </object>
@@ -233,6 +245,9 @@
                         <property name="markdown-enabled" bind-source="ContentRoomHistory" bind-property="markdown-enabled" bind-flags="sync-create | bidirectional"/>
                       </object>
                     </property>
+                    <accessibility>
+                      <property name="label" translatable="yes">Enable Markdown Formatting</property>
+                    </accessibility>
                   </object>
                 </child>
                 <child>
@@ -251,6 +266,9 @@
                             <property name="top-margin">7</property>
                             <property name="bottom-margin">7</property>
                             <property name="wrap-mode">word</property>
+                            <accessibility>
+                              <property name="label" translatable="yes">Message Entry</property>
+                            </accessibility>
                           </object>
                         </property>
                       </object>
@@ -263,6 +281,9 @@
                     <property name="direction">up</property>
                     <property name="icon-name">view-more-horizontal-symbolic</property>
                     <property name="menu-model">message-menu-model</property>
+                    <accessibility>
+                      <property name="label" translatable="yes">Open Message Menu</property>
+                    </accessibility>
                   </object>
                 </child>
                 <child>
@@ -270,6 +291,9 @@
                     <property name="valign">end</property>
                     <property name="icon-name">emoji-people-symbolic</property>
                     <property name="action-name">room-history.open-emoji</property>
+                    <accessibility>
+                      <property name="label" translatable="yes">Open Emoji Picker</property>
+                    </accessibility>
                   </object>
                 </child>
                 <child>
@@ -282,6 +306,9 @@
                       <class name="suggested-action"/>
                       <class name="circular"/>
                     </style>
+                    <accessibility>
+                      <property name="label" translatable="yes">Send Message</property>
+                    </accessibility>
                   </object>
                 </child>
               </object>
@@ -292,3 +319,4 @@
     </child>
   </template>
 </interface>
+

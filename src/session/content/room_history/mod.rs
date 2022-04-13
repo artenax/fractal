@@ -491,6 +491,7 @@ impl RoomHistory {
 
         priv_.listview.set_model(model.as_ref());
         priv_.is_loading.set(false);
+        priv_.message_entry.grab_focus();
         priv_.room.replace(room);
         self.update_view();
         self.start_loading();

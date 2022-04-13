@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="Session" parent="AdwBin">
-    <property name="focusable">true</property>
     <property name="child">
       <object class="GtkStack" id="stack">
         <property name="visible-child">content</property>
@@ -34,9 +33,10 @@
           </object>
         </child>
         <child>
-          <object class="MediaViewer" id="media_viewer" />
+          <object class="MediaViewer" id="media_viewer"/>
         </child>
       </object>
     </property>
   </template>
 </interface>
+

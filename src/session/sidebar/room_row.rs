@@ -37,6 +37,8 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
 
+            klass.set_accessible_role(gtk::AccessibleRole::Group);
+
             klass.install_action("room-row.accept-invite", None, move |widget, _, _| {
                 widget.room().unwrap().set_category(RoomType::Normal)
             });
