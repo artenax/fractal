@@ -34,7 +34,7 @@ futures = "0.3"
 rand = "0.8"
 indexmap = "1.6.2"
 qrcode = "0.12.0"
-ashpd = { version = "0.2.0-beta-1", features = [
+ashpd = { version = "0.3", features = [
     "feature_gtk4",
     "feature_pipewire",
     "log",
