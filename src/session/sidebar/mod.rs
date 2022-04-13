@@ -14,7 +14,12 @@ mod verification_row;
 
 use account_switcher::AccountSwitcher;
 use adw::{prelude::*, subclass::prelude::*};
-use gtk::{gio, glib, glib::closure, subclass::prelude::*, CompositeTemplate, SelectionModel};
+use gtk::{
+    gio, glib,
+    glib::{clone, closure},
+    subclass::prelude::*,
+    CompositeTemplate, SelectionModel,
+};
 
 pub use self::{
     category::Category,
@@ -44,7 +49,7 @@ mod imp {
     };
 
     use glib::subclass::InitializingObject;
-    use once_cell::sync::Lazy;
+    use once_cell::{sync::Lazy, unsync::OnceCell};
 
     use super::*;
 
@@ -63,6 +68,9 @@ mod imp {
         pub room_search_entry: TemplateChild<gtk::SearchEntry>,
         #[template_child]
         pub room_search: TemplateChild<gtk::SearchBar>,
+        #[template_child]
+        pub room_row_menu: TemplateChild<gio::MenuModel>,
+        pub room_row_popover: OnceCell<gtk::PopoverMenu>,
         pub user: RefCell<Option<User>>,
         /// The type of the source that activated drop mode.
         pub drop_source_type: Cell<Option<RoomType>>,
@@ -204,6 +212,15 @@ mod imp {
 
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
+
+            let factory = gtk::SignalListItemFactory::new();
+            factory.connect_setup(clone!(@weak obj => move |_, item| {
+                let row = Row::new(&obj);
+                item.set_child(Some(&row));
+                item.bind_property("item", &row, "list-row").build();
+                row.set_can_focus(false);
+            }));
+            self.listview.set_factory(Some(&factory));
 
             self.listview.connect_activate(move |listview, pos| {
                 let model: Option<Selection> = listview.model().and_then(|o| o.downcast().ok());
@@ -463,6 +480,13 @@ impl Sidebar {
             }
             child = widget.next_sibling();
         }
+    }
+
+    pub fn room_row_popover(&self) -> &gtk::PopoverMenu {
+        let priv_ = self.imp();
+        priv_
+            .room_row_popover
+            .get_or_init(|| gtk::PopoverMenu::from_model(Some(&*priv_.room_row_menu)))
     }
 }
 

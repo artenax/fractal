@@ -48,7 +48,6 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="content-invite.ui">ui/content-invite.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-invitee-item.ui">ui/content-invitee-item.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-invitee-row.ui">ui/content-invitee-row.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks" alias="content-item.ui">ui/content-item.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-markdown-popover.ui">ui/content-markdown-popover.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-member-item.ui">ui/content-member-item.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-member-page.ui">ui/content-member-page.ui</file>
@@ -91,7 +90,6 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="sidebar-account-switcher.ui">ui/sidebar-account-switcher.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="sidebar-category-row.ui">ui/sidebar-category-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="sidebar-entry-row.ui">ui/sidebar-entry-row.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks" alias="sidebar-item.ui">ui/sidebar-item.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="sidebar-room-row.ui">ui/sidebar-room-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="sidebar-verification-row.ui">ui/sidebar-verification-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="sidebar.ui">ui/sidebar.ui</file>

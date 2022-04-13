@@ -6,19 +6,23 @@ use gtk::{gdk, glib, glib::clone, subclass::prelude::*};
 use super::EntryType;
 use crate::session::{
     room::{Room, RoomType},
-    sidebar::{Category, CategoryRow, Entry, EntryRow, RoomRow, SidebarItem, VerificationRow},
+    sidebar::{
+        Category, CategoryRow, Entry, EntryRow, RoomRow, Sidebar, SidebarItem, VerificationRow,
+    },
     verification::IdentityVerification,
 };
 
 mod imp {
     use std::cell::RefCell;
 
-    use once_cell::sync::Lazy;
+    use glib::WeakRef;
+    use once_cell::{sync::Lazy, unsync::OnceCell};
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct Row {
+        pub sidebar: OnceCell<WeakRef<Sidebar>>,
         pub list_row: RefCell<Option<gtk::TreeListRow>>,
         pub bindings: RefCell<Vec<glib::Binding>>,
     }
@@ -52,6 +56,13 @@ mod imp {
                         gtk::TreeListRow::static_type(),
                         glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
+                    glib::ParamSpecObject::new(
+                        "sidebar",
+                        "sidebar",
+                        "The ancestor sidebar of this row",
+                        Sidebar::static_type(),
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                    ),
                 ]
             });
 
@@ -66,10 +77,11 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "list-row" => {
-                    let list_row = value.get().unwrap();
-                    obj.set_list_row(list_row);
-                }
+                "list-row" => obj.set_list_row(value.get().unwrap()),
+                "sidebar" => self
+                    .sidebar
+                    .set(value.get::<Sidebar>().unwrap().downgrade())
+                    .unwrap(),
                 _ => unimplemented!(),
             }
         }
@@ -78,6 +90,7 @@ mod imp {
             match pspec.name() {
                 "item" => obj.item().to_value(),
                 "list-row" => obj.list_row().to_value(),
+                "sidebar" => obj.sidebar().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -115,8 +128,12 @@ glib::wrapper! {
 }
 
 impl Row {
-    pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create Row")
+    pub fn new(sidebar: &Sidebar) -> Self {
+        glib::Object::new(&[("sidebar", sidebar)]).expect("Failed to create Row")
+    }
+
+    pub fn sidebar(&self) -> Sidebar {
+        self.imp().sidebar.get().unwrap().upgrade().unwrap()
     }
 
     pub fn item(&self) -> Option<SidebarItem> {
@@ -313,11 +330,5 @@ impl Row {
         self.activate_action("sidebar.set-drop-source-type", None)
             .unwrap();
         ret
-    }
-}
-
-impl Default for Row {
-    fn default() -> Self {
-        Self::new()
     }
 }

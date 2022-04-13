@@ -6,7 +6,7 @@ use matrix_sdk::ruma::events::AnySyncRoomEvent;
 use crate::{
     components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl, ReactionChooser},
     session::{
-        content::room_history::{message_row::MessageRow, DividerRow, StateRow},
+        content::room_history::{message_row::MessageRow, DividerRow, RoomHistory, StateRow},
         room::{
             Event, EventActions, TimelineDayDivider, TimelineItem, TimelineNewMessagesDivider,
             TimelineSpinner,
@@ -17,14 +17,16 @@ use crate::{
 mod imp {
     use std::cell::RefCell;
 
-    use glib::signal::SignalHandlerId;
+    use glib::{signal::SignalHandlerId, WeakRef};
+    use once_cell::unsync::OnceCell;
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct ItemRow {
+        pub room_history: OnceCell<WeakRef<RoomHistory>>,
         pub item: RefCell<Option<TimelineItem>>,
-        pub menu_model: RefCell<Option<gio::MenuModel>>,
+        pub action_group: RefCell<Option<gio::SimpleActionGroup>>,
         pub notify_handler: RefCell<Option<SignalHandlerId>>,
         pub binding: RefCell<Option<glib::Binding>>,
         pub reaction_chooser: RefCell<Option<ReactionChooser>>,
@@ -42,13 +44,22 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "item",
-                    "Item",
-                    "The timeline item represented by this row",
-                    TimelineItem::static_type(),
-                    glib::ParamFlags::READWRITE,
-                )]
+                vec![
+                    glib::ParamSpecObject::new(
+                        "item",
+                        "Item",
+                        "The timeline item represented by this row",
+                        TimelineItem::static_type(),
+                        glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecObject::new(
+                        "room-history",
+                        "room-history",
+                        "The ancestor room history of this row",
+                        RoomHistory::static_type(),
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                    ),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -63,6 +74,10 @@ mod imp {
         ) {
             match pspec.name() {
                 "item" => obj.set_item(value.get().unwrap()),
+                "room-history" => self
+                    .room_history
+                    .set(value.get::<RoomHistory>().unwrap().downgrade())
+                    .unwrap(),
                 _ => unimplemented!(),
             }
         }
@@ -70,6 +85,7 @@ mod imp {
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "item" => obj.item().to_value(),
+                "room-history" => obj.room_history().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -90,7 +106,40 @@ mod imp {
 
     impl WidgetImpl for ItemRow {}
     impl BinImpl for ItemRow {}
-    impl ContextMenuBinImpl for ItemRow {}
+
+    impl ContextMenuBinImpl for ItemRow {
+        fn menu_opened(&self, obj: &Self::Type) {
+            if let Some(event) = obj.item().and_then(|item| item.downcast::<Event>().ok()) {
+                let popover = obj.room_history().item_context_menu().clone();
+
+                if event.message_content().is_some() {
+                    let menu_model = Self::Type::event_message_menu_model();
+
+                    if popover.menu_model().as_ref() != Some(menu_model) {
+                        let action_group = obj.action_group().unwrap();
+                        popover.set_menu_model(Some(menu_model));
+
+                        let reaction_chooser = ReactionChooser::new();
+                        reaction_chooser.set_reactions(Some(event.reactions().to_owned()));
+                        popover.add_child(&reaction_chooser, "reaction-chooser");
+
+                        // Open emoji chooser
+                        let more_reactions = gio::SimpleAction::new("more-reactions", None);
+                        more_reactions.connect_activate(
+                            clone!(@weak obj, @weak popover => move |_, _| {
+                                obj.show_emoji_chooser(&popover);
+                            }),
+                        );
+                        action_group.add_action(&more_reactions);
+                    }
+                } else {
+                    popover.set_menu_model(Some(Self::Type::event_state_menu_model()));
+                }
+
+                obj.set_popover(Some(popover));
+            }
+        }
+    }
 }
 
 glib::wrapper! {
@@ -101,8 +150,24 @@ glib::wrapper! {
 // TODO:
 // - [ ] Don't show rows for items that don't have a visible UI
 impl ItemRow {
-    pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ItemRow")
+    pub fn new(room_history: &RoomHistory) -> Self {
+        glib::Object::new(&[("room-history", room_history)]).expect("Failed to create ItemRow")
+    }
+
+    pub fn room_history(&self) -> RoomHistory {
+        self.imp().room_history.get().unwrap().upgrade().unwrap()
+    }
+
+    pub fn action_group(&self) -> Option<gio::SimpleActionGroup> {
+        self.imp().action_group.borrow().clone()
+    }
+
+    fn set_action_group(&self, action_group: Option<gio::SimpleActionGroup>) {
+        if self.action_group() == action_group {
+            return;
+        }
+
+        self.imp().action_group.replace(action_group);
     }
 
     /// Get the row's [`TimelineItem`].
@@ -133,26 +198,7 @@ impl ItemRow {
 
         if let Some(ref item) = item {
             if let Some(event) = item.downcast_ref::<Event>() {
-                if event.message_content().is_some() {
-                    let action_group = self.set_event_actions(Some(event)).unwrap();
-                    self.set_factory(clone!(@weak event => move |obj, popover| {
-                            popover.set_menu_model(Some(Self::event_message_menu_model()));
-                            let reaction_chooser = ReactionChooser::new();
-                            reaction_chooser.set_reactions(Some(event.reactions().to_owned()));
-                            popover.add_child(&reaction_chooser, "reaction-chooser");
-
-                            // Open emoji chooser
-                            let more_reactions = gio::SimpleAction::new("more-reactions", None);
-                            more_reactions.connect_activate(clone!(@weak obj, @weak popover => move |_, _| {
-                                obj.show_emoji_chooser(&popover);
-                            }));
-                            action_group.add_action(&more_reactions);
-                        }));
-                } else {
-                    self.set_factory(|_, popover| {
-                        popover.set_menu_model(Some(Self::event_state_menu_model()));
-                    });
-                }
+                self.set_action_group(self.set_event_actions(Some(event)));
 
                 let notify_handler = event.connect_notify_local(
                     Some("event"),
@@ -164,7 +210,8 @@ impl ItemRow {
 
                 self.set_event_widget(event);
             } else if let Some(divider) = item.downcast_ref::<TimelineDayDivider>() {
-                self.remove_factory();
+                self.set_popover(None);
+                self.set_action_group(None);
                 self.set_event_actions(None);
 
                 let child = if let Some(child) =
@@ -188,6 +235,10 @@ impl ItemRow {
                     .filter(|widget| widget.is::<gtk::Spinner>())
                     .is_none()
             {
+                self.set_popover(None);
+                self.set_action_group(None);
+                self.set_event_actions(None);
+
                 let spinner = gtk::Spinner::builder()
                     .spinning(true)
                     .margin_top(12)
@@ -195,7 +246,8 @@ impl ItemRow {
                     .build();
                 self.set_child(Some(&spinner));
             } else if item.downcast_ref::<TimelineNewMessagesDivider>().is_some() {
-                self.remove_factory();
+                self.set_popover(None);
+                self.set_action_group(None);
                 self.set_event_actions(None);
 
                 let label = gettext("New Messages");
@@ -255,12 +307,6 @@ impl ItemRow {
 
         popover.popdown();
         emoji_chooser.popup();
-    }
-}
-
-impl Default for ItemRow {
-    fn default() -> Self {
-        Self::new()
     }
 }
 

@@ -1,6 +1,7 @@
 use adw::subclass::prelude::BinImpl;
 use gtk::{gdk, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 
+use super::Row;
 use crate::{
     components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl},
     session::room::{HighlightFlags, Room, RoomType},
@@ -24,8 +25,6 @@ mod imp {
         pub display_name: TemplateChild<gtk::Label>,
         #[template_child]
         pub notification_count: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub room_row_menu: TemplateChild<gtk::gio::MenuModel>,
     }
 
     #[glib::object_subclass]
@@ -113,10 +112,6 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            obj.set_factory(|obj, popover| {
-                popover.set_menu_model(Some(&obj.imp().room_row_menu.get()));
-            });
-
             // Allow to drag rooms
             let drag = gtk::DragSource::builder()
                 .actions(gdk::DragAction::MOVE)
@@ -146,7 +141,20 @@ mod imp {
 
     impl WidgetImpl for RoomRow {}
     impl BinImpl for RoomRow {}
-    impl ContextMenuBinImpl for RoomRow {}
+
+    impl ContextMenuBinImpl for RoomRow {
+        fn menu_opened(&self, obj: &Self::Type) {
+            if let Some(sidebar) = obj
+                .parent()
+                .as_ref()
+                .and_then(|obj| obj.downcast_ref::<Row>())
+                .map(|row| row.sidebar())
+            {
+                let popover = sidebar.room_row_popover();
+                obj.set_popover(Some(popover.to_owned()));
+            }
+        }
+    }
 }
 
 glib::wrapper! {

@@ -240,13 +240,16 @@ login {
 
 .sidebar-list row > * {
   margin: 0 12px;
-  padding: 12px 6px;
   border-radius: 6px;
   transition-property: outline, outline-width, outline-offset, outline-color;
   transition-duration: 300ms;
   animation-timing-function: ease-in-out;
   outline: 0 solid transparent;
   outline-offset: 2px;
+}
+
+.sidebar-list sidebar-row > * > box {
+  padding: 12px 6px;
 }
 
 .sidebar-list row:focus-within > * {

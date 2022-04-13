@@ -22,6 +22,59 @@
       </item>
     </section>
   </menu>
+  <menu id="room_row_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Accept</attribute>
+        <attribute name="action">room-row.accept-invite</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Reject</attribute>
+        <attribute name="action">room-row.reject-invite</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Mark as _Favorite</attribute>
+        <attribute name="action">room-row.set-favorite</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Unmark as _Favorite</attribute>
+        <attribute name="action">room-row.unset-favorite</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Mark as Low _Priority</attribute>
+        <attribute name="action">room-row.set-lowpriority</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Unmark as Low _Priority</attribute>
+        <attribute name="action">room-row.unset-lowpriority</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Leave Room</attribute>
+        <attribute name="action">room-row.leave</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Re_join Room</attribute>
+        <attribute name="action">room-row.join</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Forget Room</attribute>
+        <attribute name="action">room-row.forget</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+    </section>
+  </menu>
   <template class="Sidebar" parent="AdwBin">
     <child>
       <object class="GtkBox">
@@ -98,11 +151,6 @@
                   <class name="sidebar-list"/>
                 </style>
                 <property name="single-click-activate">true</property>
-                <property name="factory">
-                  <object class="GtkBuilderListItemFactory">
-                    <property name="resource">/org/gnome/Fractal/sidebar-item.ui</property>
-                  </object>
-                </property>
                 <accessibility>
                   <property name="label" translatable="yes">Sidebar</property>
                   <property name="description" translatable="yes">Allows to navigate between rooms</property>
@@ -115,4 +163,3 @@
     </child>
   </template>
 </interface>
-

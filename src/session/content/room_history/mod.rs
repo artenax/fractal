@@ -37,7 +37,7 @@ use crate::{
     i18n::gettext_f,
     session::{
         content::{MarkdownPopover, RoomDetails},
-        room::{Event, Room, RoomType, Timeline, TimelineState},
+        room::{Event, Room, RoomType, Timeline, TimelineItem, TimelineState},
         user::UserExt,
     },
     spawn,
@@ -55,6 +55,7 @@ mod imp {
     use std::cell::{Cell, RefCell};
 
     use glib::{signal::SignalHandlerId, subclass::InitializingObject};
+    use once_cell::unsync::OnceCell;
 
     use super::*;
     use crate::{components::Toast, window::Window, Application};
@@ -70,6 +71,7 @@ mod imp {
         pub md_enabled: Cell<bool>,
         pub is_auto_scrolling: Cell<bool>,
         pub sticky: Cell<bool>,
+        pub item_context_menu: OnceCell<gtk::PopoverMenu>,
         #[template_child]
         pub headerbar: TemplateChild<adw::HeaderBar>,
         #[template_child]
@@ -270,6 +272,16 @@ mod imp {
         }
 
         fn constructed(&self, obj: &Self::Type) {
+            let factory = gtk::SignalListItemFactory::new();
+            factory.connect_setup(clone!(@weak obj => move |_, item| {
+                let row = ItemRow::new(&obj);
+                item.set_child(Some(&row));
+                ItemRow::this_expression("item").chain_property::<TimelineItem>("activatable").bind(item, "activatable", Some(&row));
+                item.bind_property("item", &row, "item").build();
+                item.set_selectable(false);
+            }));
+            self.listview.set_factory(Some(&factory));
+
             // Needed to use the natural height of GtkPictures
             self.listview
                 .set_vscroll_policy(gtk::ScrollablePolicy::Natural);
@@ -925,6 +937,12 @@ impl RoomHistory {
             Ok((bytes, _tag)) => self.open_attach_dialog(bytes, mime, &filename),
             Err(err) => log::debug!("Could not read file: {}", err),
         }
+    }
+
+    pub fn item_context_menu(&self) -> &gtk::PopoverMenu {
+        self.imp()
+            .item_context_menu
+            .get_or_init(|| gtk::PopoverMenu::from_model(gio::MenuModel::NONE))
     }
 }
 
