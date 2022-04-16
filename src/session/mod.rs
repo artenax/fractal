@@ -101,9 +101,11 @@ mod imp {
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
-        pub content: TemplateChild<adw::Leaflet>,
+        pub leaflet: TemplateChild<adw::Leaflet>,
         #[template_child]
         pub sidebar: TemplateChild<Sidebar>,
+        #[template_child]
+        pub content: TemplateChild<Content>,
         #[template_child]
         pub media_viewer: TemplateChild<MediaViewer>,
         pub client: RefCell<Option<Client>>,
@@ -186,8 +188,6 @@ mod imp {
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
-            Sidebar::static_type();
-            Content::static_type();
             obj.init_template();
         }
     }
@@ -249,9 +249,9 @@ mod imp {
                     let priv_ = obj.imp();
 
                     if priv_.sidebar.selected_item().is_none() {
-                        priv_.content.navigate(adw::NavigationDirection::Back);
+                        priv_.leaflet.navigate(adw::NavigationDirection::Back);
                     } else {
-                        priv_.content.navigate(adw::NavigationDirection::Forward);
+                        priv_.leaflet.navigate(adw::NavigationDirection::Forward);
                     }
                 }),
             );
@@ -559,7 +559,7 @@ impl Session {
 
                     let handle = spawn_tokio!(async move { encryption.bootstrap_cross_signing(None).await });
                     if handle.await.is_ok() {
-                        priv_.stack.set_visible_child(&*priv_.content);
+                        priv_.stack.set_visible_child(&*priv_.leaflet);
                         if let Some(window) = obj.parent_window() {
                             window.switch_to_sessions_page();
                         }
@@ -771,6 +771,10 @@ impl Session {
         );
     }
 
+    pub fn handle_paste_action(&self) {
+        self.imp().content.handle_paste_action();
+    }
+
     async fn cleanup_session(&self) {
         let priv_ = self.imp();
         let info = priv_.info.get().unwrap();
@@ -806,7 +810,7 @@ impl Session {
         spawn!(clone!(@weak self as obj => async move {
             obj.has_cross_signing_keys().await;
         }));
-        priv_.stack.set_visible_child(&*priv_.content);
+        priv_.stack.set_visible_child(&*priv_.leaflet);
         priv_.logout_on_dispose.set(false);
         if let Some(window) = self.parent_window() {
             window.switch_to_sessions_page();

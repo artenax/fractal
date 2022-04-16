@@ -169,6 +169,19 @@ impl Content {
         glib::Object::new(&[("session", session)]).expect("Failed to create Content")
     }
 
+    pub fn handle_paste_action(&self) {
+        let priv_ = self.imp();
+        if priv_
+            .stack
+            .visible_child()
+            .as_ref()
+            .map(|c| c == priv_.room_history.upcast_ref::<gtk::Widget>())
+            .unwrap_or_default()
+        {
+            priv_.room_history.handle_paste_action();
+        }
+    }
+
     pub fn session(&self) -> Option<Session> {
         self.imp()
             .session

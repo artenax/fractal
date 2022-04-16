@@ -440,6 +440,12 @@ impl RoomHistory {
         }
     }
 
+    pub fn handle_paste_action(&self) {
+        spawn!(glib::clone!(@weak self as obj => async move {
+            obj.read_clipboard().await;
+        }));
+    }
+
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create RoomHistory")
     }

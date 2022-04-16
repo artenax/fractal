@@ -1,7 +1,7 @@
 use adw::subclass::prelude::AdwApplicationWindowImpl;
 use gettextrs::gettext;
 use glib::signal::Inhibit;
-use gtk::{self, gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{self, gdk, gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 use log::warn;
 
 use crate::{
@@ -48,6 +48,29 @@ mod imp {
             Toast::static_type();
             InAppNotification::static_type();
             Self::bind_template(klass);
+
+            klass.add_binding_action(
+                gdk::Key::v,
+                gdk::ModifierType::CONTROL_MASK,
+                "win.paste",
+                None,
+            );
+            klass.add_binding_action(
+                gdk::Key::Insert,
+                gdk::ModifierType::SHIFT_MASK,
+                "win.paste",
+                None,
+            );
+            klass.install_action("win.paste", None, move |widget, _, _| {
+                if let Some(session) = widget
+                    .imp()
+                    .sessions
+                    .visible_child()
+                    .and_then(|c| c.downcast::<Session>().ok())
+                {
+                    session.handle_paste_action();
+                }
+            });
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {

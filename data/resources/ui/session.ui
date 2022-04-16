@@ -3,14 +3,14 @@
   <template class="Session" parent="AdwBin">
     <property name="child">
       <object class="GtkStack" id="stack">
-        <property name="visible-child">content</property>
+        <property name="visible-child">leaflet</property>
         <property name="transition-type">crossfade</property>
         <child>
-          <object class="AdwLeaflet" id="content">
+          <object class="AdwLeaflet" id="leaflet">
             <property name="fold-threshold-policy">minimum</property>
             <child>
               <object class="Sidebar" id="sidebar">
-                <property name="compact" bind-source="content" bind-property="folded" bind-flags="sync-create"/>
+                <property name="compact" bind-source="leaflet" bind-property="folded" bind-flags="sync-create"/>
                 <property name="user" bind-source="Session" bind-property="user" bind-flags="sync-create"/>
                 <property name="item-list" bind-source="Session" bind-property="item-list" bind-flags="sync-create"/>
               </object>
@@ -24,8 +24,8 @@
               </object>
             </child>
             <child>
-              <object class="Content">
-                <property name="compact" bind-source="content" bind-property="folded" bind-flags="sync-create"/>
+              <object class="Content" id="content">
+                <property name="compact" bind-source="leaflet" bind-property="folded" bind-flags="sync-create"/>
                 <property name="item" bind-source="sidebar" bind-property="selected-item" bind-flags="sync-create | bidirectional"/>
                 <property name="session">Session</property>
               </object>
