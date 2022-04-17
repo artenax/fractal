@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-04-07 13:04+0000\n"
-"PO-Revision-Date: 2022-04-10 16:48+0200\n"
+"POT-Creation-Date: 2022-04-13 15:22+0000\n"
+"PO-Revision-Date: 2022-04-17 16:28+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -195,7 +195,7 @@ msgid "Authenticate via Browser"
 msgstr "Uwierzytelnij przez przeglądarkę"
 
 #: data/resources/ui/components-auth-dialog.ui:113
-#: data/resources/ui/identity-verification-widget.ui:455
+#: data/resources/ui/identity-verification-widget.ui:449
 #: src/components/editable_avatar.rs:344
 #: src/session/content/room_history/verification_info_bar.rs:182
 #: src/session/room/event_actions.rs:210
@@ -203,7 +203,7 @@ msgid "Cancel"
 msgstr "Anuluj"
 
 #: data/resources/ui/components-auth-dialog.ui:118
-#: data/resources/ui/identity-verification-widget.ui:445
+#: data/resources/ui/identity-verification-widget.ui:439
 msgid "Confirm"
 msgstr "Potwierdź"
 
@@ -309,29 +309,73 @@ msgstr "_Zaproś nowego członka"
 msgid "_Leave Room"
 msgstr "_Opuść pokój"
 
-#: data/resources/ui/content-room-history.ui:118
+#: data/resources/ui/content-room-history.ui:27
+msgid "_Location"
+msgstr "_Położenie"
+
+#: data/resources/ui/content-room-history.ui:32
+msgid "_Attachment"
+msgstr "_Załącznik"
+
+#: data/resources/ui/content-room-history.ui:56
+msgid "Back"
+msgstr "Wstecz"
+
+#: data/resources/ui/content-room-history.ui:81
+msgid "Room Settings"
+msgstr "Ustawienia pokoju"
+
+#: data/resources/ui/content-room-history.ui:89
+msgid "Toggle Room History Search"
+msgstr "Przełącz przeszukiwanie historii pokoju"
+
+#: data/resources/ui/content-room-history.ui:107
+msgid "Room History Search"
+msgstr "Przeszukiwanie historii pokoju"
+
+#: data/resources/ui/content-room-history.ui:144
 msgid "Unable to load room"
 msgstr "Nie można wczytać pokoju"
 
-#: data/resources/ui/content-room-history.ui:119
+#: data/resources/ui/content-room-history.ui:145
 msgid "Check your network connection."
 msgstr "Proszę sprawdzić połączenie z siecią."
 
-#: data/resources/ui/content-room-history.ui:122
+#: data/resources/ui/content-room-history.ui:148
 msgid "Try Again"
 msgstr "Spróbuj ponownie"
 
-#: data/resources/ui/content-room-history.ui:147
+#: data/resources/ui/content-room-history.ui:173
 msgid "Scroll to bottom"
 msgstr "Przewiń na dół"
 
-#: data/resources/ui/content-room-history.ui:159
+#: data/resources/ui/content-room-history.ui:185
 msgid "Drop Here to Send"
 msgstr "Upuszczenie tutaj wyśle"
 
-#: data/resources/ui/content-room-history.ui:185
+#: data/resources/ui/content-room-history.ui:211
 msgid "Room History"
 msgstr "Historia pokoju"
+
+#: data/resources/ui/content-room-history.ui:249
+msgid "Enable Markdown Formatting"
+msgstr "Formatowanie Markdown"
+
+#: data/resources/ui/content-room-history.ui:270
+msgid "Message Entry"
+msgstr "Pole wpisywania wiadomości"
+
+#: data/resources/ui/content-room-history.ui:285
+msgid "Open Message Menu"
+msgstr "Otwórz menu wiadomości"
+
+#: data/resources/ui/content-room-history.ui:295
+msgid "Open Emoji Picker"
+msgstr "Otwórz wybór emoji"
+
+#: data/resources/ui/content-room-history.ui:310
+msgid "Send Message"
+msgstr "Wyślij wiadomość"
 
 #: data/resources/ui/content-state-creation.ui:19
 msgid "Previous room"
@@ -345,11 +389,11 @@ msgstr "Dostępna jest nowsza wersja tego pokoju."
 msgid "Go there"
 msgstr "Przejdź do niej"
 
-#: data/resources/ui/content.ui:35
+#: data/resources/ui/content.ui:36
 msgid "No Room Selected"
 msgstr "Nie wybrano pokoju"
 
-#: data/resources/ui/content.ui:36
+#: data/resources/ui/content.ui:37
 msgid "Join a room to start chatting."
 msgstr "Dołączenie do pokoju umożliwi rozpoczęcie rozmowy."
 
@@ -481,47 +525,47 @@ msgstr "_Zaloguj się"
 msgid "_Create Account"
 msgstr "_Utwórz konto"
 
-#: data/resources/ui/identity-verification-widget.ui:50
+#: data/resources/ui/identity-verification-widget.ui:46
 #: src/session/content/room_history/verification_info_bar.rs:177
 msgid "Decline"
 msgstr "Odmów"
 
-#: data/resources/ui/identity-verification-widget.ui:60
+#: data/resources/ui/identity-verification-widget.ui:56
 #: src/session/content/room_history/verification_info_bar.rs:176
 msgid "Verify"
 msgstr "Zweryfikuj"
 
-#: data/resources/ui/identity-verification-widget.ui:115
-#: data/resources/ui/identity-verification-widget.ui:216
+#: data/resources/ui/identity-verification-widget.ui:109
+#: data/resources/ui/identity-verification-widget.ui:210
 msgid "Can’t scan QR code?"
 msgstr "Nie można zeskanować kodu QR?"
 
-#: data/resources/ui/identity-verification-widget.ui:123
-#: data/resources/ui/identity-verification-widget.ui:233
+#: data/resources/ui/identity-verification-widget.ui:117
+#: data/resources/ui/identity-verification-widget.ui:227
 msgid "Compare Emoji"
 msgstr "Porównaj emoji"
 
-#: data/resources/ui/identity-verification-widget.ui:150
+#: data/resources/ui/identity-verification-widget.ui:144
 msgid "Scan Complete"
 msgstr "Ukończono skanowanie"
 
-#: data/resources/ui/identity-verification-widget.ui:225
+#: data/resources/ui/identity-verification-widget.ui:219
 msgid "Scan QR code with this session"
 msgstr "Zeskanuj kod QR za pomocą tej sesji"
 
-#: data/resources/ui/identity-verification-widget.ui:293
+#: data/resources/ui/identity-verification-widget.ui:287
 msgid "Do Not Match"
 msgstr "Są inne"
 
-#: data/resources/ui/identity-verification-widget.ui:303
+#: data/resources/ui/identity-verification-widget.ui:297
 msgid "Match"
 msgstr "Są takie same"
 
-#: data/resources/ui/identity-verification-widget.ui:353
+#: data/resources/ui/identity-verification-widget.ui:347
 msgid "Done"
 msgstr "Gotowe"
 
-#: data/resources/ui/identity-verification-widget.ui:422
+#: data/resources/ui/identity-verification-widget.ui:416
 msgid "Confirm Scan"
 msgstr "Potwierdzenie zeskanowania"
 
@@ -628,7 +672,7 @@ msgid "No other devices logged into this account?"
 msgstr "Żadne inne urządzenia nie są zalogowane na tym koncie?"
 
 #: data/resources/ui/session-verification.ui:81
-#: data/resources/ui/session-verification.ui:171
+#: data/resources/ui/session-verification.ui:176
 msgid "Recovery"
 msgstr "Odzyskiwanie"
 
@@ -637,11 +681,11 @@ msgstr "Odzyskiwanie"
 msgid "Reset"
 msgstr "Przywróć"
 
-#: data/resources/ui/session-verification.ui:123
+#: data/resources/ui/session-verification.ui:128
 msgid "Setup Encryption Identity"
 msgstr "Konfiguracja tożsamości szyfrowania"
 
-#: data/resources/ui/session-verification.ui:134
+#: data/resources/ui/session-verification.ui:139
 msgid ""
 "You need to setup an encryption identity, since this is the first time you "
 "logged into your account."
@@ -649,11 +693,11 @@ msgstr ""
 "Należy skonfigurować tożsamość szyfrowania, jako że to pierwsze logowanie na "
 "tym koncie."
 
-#: data/resources/ui/session-verification.ui:142
+#: data/resources/ui/session-verification.ui:147
 msgid "Setup"
 msgstr "Konfiguracja"
 
-#: data/resources/ui/session-verification.ui:182
+#: data/resources/ui/session-verification.ui:187
 msgid ""
 "Without another device you need a recovery passphrase or key to access your "
 "messages"
@@ -661,17 +705,17 @@ msgstr ""
 "Bez innego urządzenia potrzebne jest hasło lub klucz odzyskiwania, aby "
 "uzyskać dostęp do wiadomości"
 
-#: data/resources/ui/session-verification.ui:190
-#: data/resources/ui/session-verification.ui:245
+#: data/resources/ui/session-verification.ui:195
+#: data/resources/ui/session-verification.ui:250
 msgid "Recovery Passphrase"
 msgstr "Hasło odzyskiwania"
 
-#: data/resources/ui/session-verification.ui:199
-#: data/resources/ui/session-verification.ui:306
+#: data/resources/ui/session-verification.ui:204
+#: data/resources/ui/session-verification.ui:314
 msgid "Recovery Key"
 msgstr "Klucz odzyskiwania"
 
-#: data/resources/ui/session-verification.ui:208
+#: data/resources/ui/session-verification.ui:213
 msgid ""
 "If you don’t have any of these you can reset your identity, but be aware "
 "this makes your old messages inaccessible forever."
@@ -679,36 +723,36 @@ msgstr ""
 "Jeśli nie ma żadnego z nich, można przywrócić swoją tożsamość, ale należy "
 "pamiętać, że spowoduje to utratę dostępu do starych wiadomości na zawsze."
 
-#: data/resources/ui/session-verification.ui:217
+#: data/resources/ui/session-verification.ui:222
 msgid "Reset Identity"
 msgstr "Przywróć tożsamość"
 
-#: data/resources/ui/session-verification.ui:256
+#: data/resources/ui/session-verification.ui:261
 msgid ""
 "Your Recovery Passphrase was set up when you first created this account."
 msgstr ""
 "Hasło odzyskiwania zostało skonfigurowane podczas tworzenia tego konta."
 
-#: data/resources/ui/session-verification.ui:264
+#: data/resources/ui/session-verification.ui:269
 msgid "If you opted for a Recovery Key instead go back and choose that option."
 msgstr ""
 "Jeśli zdecydowano się na klucz odzyskiwania zamiast hasła, należy wrócić "
 "i wybrać tę opcję."
 
-#: data/resources/ui/session-verification.ui:272
+#: data/resources/ui/session-verification.ui:280
 msgid "Passphrase"
 msgstr "Hasło"
 
-#: data/resources/ui/session-verification.ui:278
-#: data/resources/ui/session-verification.ui:342
+#: data/resources/ui/session-verification.ui:285
+#: data/resources/ui/session-verification.ui:350
 msgid "Next"
 msgstr "Dalej"
 
-#: data/resources/ui/session-verification.ui:317
+#: data/resources/ui/session-verification.ui:325
 msgid "Your Recovery Key was set up when you first created this account."
 msgstr "Klucz odzyskiwania został skonfigurowany podczas tworzenia tego konta."
 
-#: data/resources/ui/session-verification.ui:325
+#: data/resources/ui/session-verification.ui:333
 msgid ""
 "If you opted for a Recovery Passphrase instead go back and choose that "
 "option."
@@ -781,9 +825,33 @@ msgstr "_Skróty klawiszowe"
 msgid "_About Fractal"
 msgstr "_O programie"
 
-#: data/resources/ui/sidebar.ui:94
+#: data/resources/ui/sidebar.ui:41
+msgid "Switch Accounts"
+msgstr "Przełącz konta"
+
+#: data/resources/ui/sidebar.ui:63
+msgid "App Settings Menu"
+msgstr "Menu ustawień programu"
+
+#: data/resources/ui/sidebar.ui:73
+msgid "Toggle Room Search"
+msgstr "Przełącz wyszukiwanie pokojów"
+
+#: data/resources/ui/sidebar.ui:85
+msgid "Room Search"
+msgstr "Wyszukiwanie pokojów"
+
+#: data/resources/ui/sidebar.ui:86
+msgid "Search for a room"
+msgstr "Wyszukiwanie pokoju"
+
+#: data/resources/ui/sidebar.ui:107
 msgid "Sidebar"
 msgstr "Panel boczny"
+
+#: data/resources/ui/sidebar.ui:108
+msgid "Allows to navigate between rooms"
+msgstr "Umożliwia przechodzenie między pokojami"
 
 #: data/resources/ui/qr-code-scanner.ui:21
 msgid "Unable to connect to Camera"
@@ -1127,17 +1195,7 @@ msgstr "Wybór awatara"
 msgid "Invite new Members"
 msgstr "Zaproś nowych członków"
 
-#. Translators: This is a date format in the day divider without the year
-#: src/session/content/room_history/item_row.rs:168
-msgid "%A, %B %e"
-msgstr "%A, %-d %B"
-
-#. Translators: This is a date format in the day divider with the year
-#: src/session/content/room_history/item_row.rs:171
-msgid "%A, %B %e, %Y"
-msgstr "%A, %-d %B %Y"
-
-#: src/session/content/room_history/item_row.rs:186
+#: src/session/content/room_history/item_row.rs:201
 msgid "New Messages"
 msgstr "Nowe wiadomości"
 
@@ -1150,6 +1208,10 @@ msgstr "Nie można odebrać pliku dźwiękowego"
 msgid "Error reading audio file"
 msgstr "Błąd podczas odczytywania pliku dźwiękowego"
 
+#: src/session/content/room_history/message_row/location.rs:111
+msgid "Location at latitude {latitude} and longitude {longitude}"
+msgstr "Położenie na szerokości {latitude} i wysokości {longitude}"
+
 #: src/session/content/room_history/message_row/media.rs:445
 #: src/session/media_viewer.rs:244
 msgid "Image file not supported"
@@ -1160,29 +1222,41 @@ msgstr "Plik obrazu jest nieobsługiwany"
 msgid "Could not retrieve media"
 msgstr "Nie można odebrać multimediów"
 
-#: src/session/content/room_history/message_row/mod.rs:368
+#: src/session/content/room_history/message_row/mod.rs:380
 msgid "Identity verification was started"
 msgstr "Rozpoczęto weryfikację tożsamości"
 
-#: src/session/content/room_history/message_row/mod.rs:381
-#: src/session/content/room_history/message_row/mod.rs:428
+#: src/session/content/room_history/message_row/mod.rs:393
+#: src/session/content/room_history/message_row/mod.rs:440
 msgid "Unsupported event"
 msgstr "Nieobsługiwane wydarzenie"
 
-#: src/session/content/room_history/message_row/mod.rs:406
+#: src/session/content/room_history/message_row/mod.rs:418
 msgid "Fractal couldn’t decrypt this message."
 msgstr "Fractal nie może odszyfrować tej wiadomości."
 
-#: src/session/content/room_history/message_row/mod.rs:417
+#: src/session/content/room_history/message_row/mod.rs:429
 msgid "This message was removed."
 msgstr "Ta wiadomość została usunięta."
 
+#: src/session/content/room_history/mod.rs:158
+msgid "The location request has been cancelled."
+msgstr "Prośba o udostępnienie położenia została anulowana."
+
+#: src/session/content/room_history/mod.rs:162
+msgid "Failed to retrieve current location."
+msgstr "Ustalenie obecnego położenia się nie powiodło."
+
 #. TODO Get the actual name of the file by reading
 #. the text/plain mime type.
-#: src/session/content/room_history/mod.rs:363
-#: src/session/content/room_history/mod.rs:736
+#: src/session/content/room_history/mod.rs:400
+#: src/session/content/room_history/mod.rs:774
 msgid "Image"
 msgstr "Obraz"
+
+#: src/session/content/room_history/mod.rs:832
+msgid "User Location {geo_uri} at {iso8601_datetime}"
+msgstr "Położenie użytkownika {geo_uri} w dniu {iso8601_datetime}"
 
 #: src/session/content/room_history/state_row/creation.rs:62
 msgid "This is the continuation of an upgraded room."
@@ -1513,24 +1587,24 @@ msgid "Normal user"
 msgstr "Zwykły użytkownik"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:420
+#: src/session/room/mod.rs:427
 msgid "Failed to forget {room}."
 msgstr "Zapomnienie pokoju {room} się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:567
+#: src/session/room/mod.rs:574
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr ""
 "Przeniesienie pokoju {room} z kategorii {previous_category} do "
 "{new_category} się nie powiodło."
 
-#: src/session/room/mod.rs:864
+#: src/session/room/mod.rs:869
 msgid "Unknown"
 msgstr "Nieznane"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1277
+#: src/session/room/mod.rs:1282
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 "Przyjęcie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -1538,7 +1612,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1311
+#: src/session/room/mod.rs:1316
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 "Odrzucenie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -1546,7 +1620,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1481
+#: src/session/room/mod.rs:1486
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr ""
 "Zaproszenie użytkownika {user} do pokoju {room} się nie powiodło. Proszę "
@@ -1554,7 +1628,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1489
+#: src/session/room/mod.rs:1494
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1567,6 +1641,16 @@ msgstr[1] ""
 msgstr[2] ""
 "Zaproszenie użytkownika {user} i {n} innych do pokoju {room} się nie "
 "powiodło. Proszę spróbować ponownie później."
+
+#. Translators: This is a date format in the day divider without the year
+#: src/session/room/timeline/timeline_day_divider.rs:106
+msgid "%A, %B %e"
+msgstr "%A, %-d %B"
+
+#. Translators: This is a date format in the day divider with the year
+#: src/session/room/timeline/timeline_day_divider.rs:109
+msgid "%A, %B %e, %Y"
+msgstr "%A, %-d %B %Y"
 
 #: src/session/room_creation/mod.rs:278
 msgid "The address is already taken."
@@ -1688,25 +1772,25 @@ msgstr "Odkrywaj"
 msgid "Forget Room"
 msgstr "Zapomnij pokój"
 
-#: src/session/verification/identity_verification.rs:672
+#: src/session/verification/identity_verification.rs:680
 msgid "You cancelled the verification process."
 msgstr "Anulowano proces weryfikacji."
 
-#: src/session/verification/identity_verification.rs:674
+#: src/session/verification/identity_verification.rs:682
 msgid "The verification process failed because it reached a timeout."
 msgstr ""
 "Proces weryfikacji się nie powiódł, ponieważ osiągnął ograniczenie czasu "
 "oczekiwania."
 
-#: src/session/verification/identity_verification.rs:677
+#: src/session/verification/identity_verification.rs:685
 msgid "You accepted the request from an other session."
 msgstr "Przyjęto prośbę z innej sesji."
 
-#: src/session/verification/identity_verification.rs:680
+#: src/session/verification/identity_verification.rs:688
 msgid "The emoji did not match."
 msgstr "Emoji się różnią."
 
-#: src/session/verification/identity_verification.rs:689
+#: src/session/verification/identity_verification.rs:697
 msgid "An unknown error occurred during the verification process."
 msgstr "Wystąpił nieznany błąd podczas procesu weryfikacji."
 
