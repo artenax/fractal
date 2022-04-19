@@ -59,7 +59,7 @@ mod imp {
                         "Selected",
                         "Style helper for the inner Avatar",
                         false,
-                        glib::ParamFlags::WRITABLE,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
                 ]
             });
@@ -82,10 +82,11 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "item" => self.child_avatar.item().to_value(),
                 "size" => self.child_avatar.size().to_value(),
+                "selected" => obj.is_selected().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -109,6 +110,10 @@ impl AvatarWithSelection {
     pub fn set_selected(&self, selected: bool) {
         let priv_ = self.imp();
 
+        if self.is_selected() == selected {
+            return;
+        }
+
         priv_.checkmark.set_visible(selected);
 
         if selected {
@@ -116,6 +121,12 @@ impl AvatarWithSelection {
         } else {
             priv_.child_avatar.remove_css_class("selected-avatar");
         }
+
+        self.notify("selected");
+    }
+
+    pub fn is_selected(&self) -> bool {
+        self.imp().checkmark.get_visible()
     }
 
     pub fn avatar(&self) -> &Avatar {

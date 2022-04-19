@@ -1,4 +1,3 @@
-mod account_switcher;
 mod category;
 mod category_row;
 mod category_type;
@@ -12,13 +11,12 @@ mod selection;
 mod sidebar_item;
 mod verification_row;
 
-use account_switcher::AccountSwitcher;
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{
     gio, glib,
     glib::{clone, closure},
     subclass::prelude::*,
-    CompositeTemplate, SelectionModel,
+    CompositeTemplate,
 };
 
 pub use self::{
@@ -38,8 +36,9 @@ use crate::{
     session::{
         room::{Room, RoomType},
         verification::IdentityVerification,
-        Session, User,
+        User,
     },
+    Window,
 };
 
 mod imp {
@@ -61,13 +60,13 @@ mod imp {
         #[template_child]
         pub headerbar: TemplateChild<adw::HeaderBar>,
         #[template_child]
-        pub account_switcher: TemplateChild<AccountSwitcher>,
-        #[template_child]
         pub listview: TemplateChild<gtk::ListView>,
         #[template_child]
         pub room_search_entry: TemplateChild<gtk::SearchEntry>,
         #[template_child]
         pub room_search: TemplateChild<gtk::SearchBar>,
+        #[template_child]
+        pub account_switcher_button: TemplateChild<gtk::MenuButton>,
         #[template_child]
         pub room_row_menu: TemplateChild<gio::MenuModel>,
         pub room_row_popover: OnceCell<gtk::PopoverMenu>,
@@ -242,6 +241,21 @@ mod imp {
                     _ => {}
                 }
             });
+
+            self.account_switcher_button.set_create_popup_func(clone!(@weak obj => move |btn| {
+                if let Some(window) = obj.parent_window() {
+                    let account_switcher = window.account_switcher();
+                    // We need to remove the popover from the previous MenuButton, if any
+                    if let Some(prev_parent) = account_switcher.parent().and_then(|btn| btn.downcast::<gtk::MenuButton>().ok()) {
+                        if &prev_parent == btn {
+                            return;
+                        } else {
+                            prev_parent.set_popover(gtk::Widget::NONE);
+                        }
+                    }
+                    btn.set_popover(Some(account_switcher));
+                }
+            }));
         }
     }
 
@@ -362,16 +376,6 @@ impl Sidebar {
         self.notify("user");
     }
 
-    pub fn set_logged_in_users(
-        &self,
-        sessions_stack_pages: &SelectionModel,
-        session_root: &Session,
-    ) {
-        self.imp()
-            .account_switcher
-            .set_logged_in_users(sessions_stack_pages, session_root);
-    }
-
     pub fn drop_source_type(&self) -> Option<RoomType> {
         self.imp().drop_source_type.get()
     }
@@ -487,6 +491,11 @@ impl Sidebar {
         priv_
             .room_row_popover
             .get_or_init(|| gtk::PopoverMenu::from_model(Some(&*priv_.room_row_menu)))
+    }
+
+    /// Returns the parent `Window` containing the `Sidebar`
+    fn parent_window(&self) -> Option<Window> {
+        self.root()?.downcast().ok()
     }
 }
 

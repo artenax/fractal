@@ -5,6 +5,7 @@ use gtk::{self, gio, glib, glib::clone, prelude::*, subclass::prelude::*, Compos
 use log::warn;
 
 use crate::{
+    account_switcher::AccountSwitcher,
     components::{InAppNotification, Toast},
     config::{APP_ID, PROFILE},
     secret::{self, SecretError},
@@ -34,6 +35,7 @@ mod imp {
         pub sessions: TemplateChild<gtk::Stack>,
         #[template_child]
         pub error_list: TemplateChild<gio::ListStore>,
+        pub account_switcher: AccountSwitcher,
     }
 
     #[glib::object_subclass]
@@ -103,6 +105,8 @@ mod imp {
             spawn!(clone!(@weak obj => async move {
                 obj.restore_sessions().await;
             }));
+
+            self.account_switcher.set_pages(Some(self.sessions.pages()));
         }
     }
 
@@ -136,7 +140,6 @@ impl Window {
         let priv_ = &self.imp();
         let prev_has_sessions = self.has_sessions();
 
-        session.set_logged_in_users(&priv_.sessions.pages());
         priv_.sessions.add_child(session);
         priv_.sessions.set_visible_child(session);
         // We need to grab the focus so that keyboard shortcuts work
@@ -289,5 +292,9 @@ impl Window {
     /// This appends a new toast to the list
     pub fn add_toast(&self, toast: &Toast) {
         self.imp().error_list.append(toast);
+    }
+
+    pub fn account_switcher(&self) -> &AccountSwitcher {
+        &self.imp().account_switcher
     }
 }

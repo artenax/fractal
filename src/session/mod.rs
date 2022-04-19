@@ -20,7 +20,7 @@ use gtk::{
     glib::{clone, source::SourceId, SyncSender},
     prelude::*,
     subclass::prelude::*,
-    CompositeTemplate, SelectionModel,
+    CompositeTemplate,
 };
 use log::{debug, error, warn};
 use matrix_sdk::{
@@ -708,12 +708,6 @@ impl Session {
                 error!("Failed to perform sync: {:?}", error);
             }
         }
-    }
-
-    pub fn set_logged_in_users(&self, sessions_stack_pages: &SelectionModel) {
-        self.imp()
-            .sidebar
-            .set_logged_in_users(sessions_stack_pages, self);
     }
 
     /// Returns the parent GtkWindow containing this widget.

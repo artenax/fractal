@@ -86,10 +86,7 @@
             </property>
             <property name="show-end-title-buttons" bind-source="Sidebar" bind-property="compact" bind-flags="sync-create"/>
             <child type="start">
-              <object class="GtkMenuButton" id="accounts_button">
-                <property name="popover">
-                  <object class="AccountSwitcher" id="account_switcher"/>
-                </property>
+              <object class="GtkMenuButton" id="account_switcher_button">
                 <accessibility>
                   <property name="label" translatable="yes">Switch Accounts</property>
                 </accessibility>

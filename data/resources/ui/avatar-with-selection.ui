@@ -8,13 +8,13 @@
         </child>
         <child type="overlay">
           <object class="GtkImage" id="checkmark">
-            <style>
-              <class name="blue-checkmark" />
-            </style>
             <property name="visible">false</property>
             <property name="halign">end</property>
             <property name="valign">end</property>
             <property name="icon-name">emblem-ok-symbolic</property>
+            <style>
+              <class name="blue-checkmark" />
+            </style>
           </object>
         </child>
       </object>

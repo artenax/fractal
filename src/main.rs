@@ -8,6 +8,7 @@ mod application;
 mod config;
 mod prelude;
 
+mod account_switcher;
 mod components;
 mod contrib;
 mod error_page;

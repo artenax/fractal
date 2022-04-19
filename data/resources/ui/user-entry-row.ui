@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="UserEntryRow" parent="AdwBin">
+  <template class="UserEntryRow" parent="GtkListBoxRow">
+    <property name="selectable">false</property>
+    <style>
+      <class name="account-switcher-row"/>
+    </style>
     <child>
       <object class="GtkBox">
         <property name="spacing">10</property>
@@ -10,9 +14,7 @@
             <binding name="item">
               <lookup name="avatar" type="User">
                 <lookup name="user" type="Session">
-                  <lookup name="child" type="GtkStackPage">
-                    <lookup name="session-page">UserEntryRow</lookup>
-                  </lookup>
+                  <lookup name="session">UserEntryRow</lookup>
                 </lookup>
               </lookup>
             </binding>
@@ -25,12 +27,11 @@
             <child>
               <object class="GtkLabel" id="display_name">
                 <property name="xalign">0.0</property>
+                <property name="hexpand">True</property>
                 <binding name="label">
                   <lookup name="display-name" type="User">
                     <lookup name="user" type="Session">
-                      <lookup name="child" type="GtkStackPage">
-                        <lookup name="session-page">UserEntryRow</lookup>
-                      </lookup>
+                      <lookup name="session">UserEntryRow</lookup>
                     </lookup>
                   </lookup>
                 </binding>
@@ -39,12 +40,11 @@
             <child>
               <object class="GtkLabel" id="user_id">
                 <property name="xalign">0.0</property>
+                <property name="hexpand">True</property>
                 <binding name="label">
                   <lookup name="user-id" type="User">
                     <lookup name="user" type="Session">
-                      <lookup name="child" type="GtkStackPage">
-                        <lookup name="session-page">UserEntryRow</lookup>
-                      </lookup>
+                      <lookup name="session">UserEntryRow</lookup>
                     </lookup>
                   </lookup>
                 </binding>
@@ -59,9 +59,9 @@
         <child>
           <object class="GtkButton">
             <property name="icon-name">applications-system-symbolic</property>
-            <property name="action-name">user-entry-row.open-account-settings</property>
             <property name="valign">center</property>
             <property name="halign">center</property>
+            <signal name="clicked" handler="show_account_settings" swapped="true"/>
             <style>
               <class name="circular"/>
             </style>
@@ -71,3 +71,4 @@
     </child>
   </template>
 </interface>
+

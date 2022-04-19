@@ -1,11 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="AccountSwitcher" parent="GtkPopover">
-    <property name="name">account-switcher</property>
     <child>
-      <object class="GtkListView" id="entries">
-        <property name="single-click-activate">true</property>
+      <object class="GtkListBox" id="entries">
+        <property name="activate_on_single_click">true</property>
+        <child>
+          <object class="GtkListBoxRow">
+            <property name="selectable">false</property>
+            <property name="activatable">false</property>
+            <property name="child">
+              <object class="GtkSeparator"/>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkListBoxRow">
+            <property name="selectable">false</property>
+            <property name="action-name">app.new-session</property>
+            <property name="child">
+              <object class="GtkBox">
+                <property name="spacing">10</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="name">new-login-icon</property>
+                    <property name="icon-name">list-add-symbolic</property>
+                    <property name="pixel-size">16</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="use-underline">true</property>
+                    <property name="label">_Add Account</property>
+                  </object>
+                </child>
+              </object>
+            </property>
+            <style>
+              <class name="account-switcher-row"/>
+            </style>
+          </object>
+        </child>
       </object>
     </child>
+    <style>
+      <class name="account-switcher"/>
+    </style>
   </template>
 </interface>
+
