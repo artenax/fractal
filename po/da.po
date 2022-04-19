@@ -2,111 +2,74 @@
 # Copyright (C) 2020 fractal's COPYRIGHT HOLDER
 # This file is distributed under the same license as the fractal package.
 # scootergrisen, 2020.
+# Alan Mortensen <alanmortensen.am@gmail.com>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2020-01-06 09:01+0000\n"
-"PO-Revision-Date: 2020-02-02 10:25+0200\n"
-"Last-Translator: scootergrisen\n"
+"POT-Creation-Date: 2022-04-13 15:22+0000\n"
+"PO-Revision-Date: 2022-04-18 10:23+0200\n"
+"Last-Translator: Alan Mortensen <alanmortensen.am@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.3\n"
 
-#: fractal-gtk/res/gtk/help-overlay.ui:13
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Generelt"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:18
-msgctxt "shortcut window"
-msgid "Close the active room"
-msgstr "Luk det aktive rum"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:25
-msgctxt "shortcut window"
-msgid "Open / close the room sidebar search"
-msgstr "Åbn/luk søgningen i rummets sidebjælke"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:32
-msgctxt "shortcut window"
-msgid "Open the previous room in the list"
-msgstr "Åbn det forrige rum i listen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:39
-msgctxt "shortcut window"
-msgid "Open the next room in the list"
-msgstr "Åbn det næste rum i listen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:46
-msgctxt "shortcut window"
-msgid "Open the previous room with unread messages in the list"
-msgstr "Åbn det forrige rum med ulæste meddelelser i listen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:53
-msgctxt "shortcut window"
-msgid "Open the next room with unread messages in the list"
-msgstr "Åbn det næste rum med ulæste meddelelser i listen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:60
-msgctxt "shortcut window"
-msgid "Open the first room of the list"
-msgstr "Åbn det første rum i listen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:67
-msgctxt "shortcut window"
-msgid "Open the last room of the list"
-msgstr "Åbn det sidste rum i listen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:74
-msgctxt "shortcut window"
-msgid "View older messages"
-msgstr "Vis ældre meddelelser"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:81
-msgctxt "shortcut window"
-msgid "View newer messages"
-msgstr "Vis nyere meddelelser"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:87
-msgctxt "shortcut window"
-msgid "Keyboard Shortcuts"
-msgstr "Tastaturgenveje"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:94
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "Afslut"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:103
-msgctxt "shortcut message"
-msgid "Composing a new message"
-msgstr "Skrive en ny meddelelse"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:108
-msgctxt "shortcut message"
-msgid "Write on a new line"
-msgstr "Skriv på en ny linje"
-
-#: fractal-gtk/res/org.gnome.Fractal.appdata.xml.in.in:5
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:3
-#: fractal-gtk/res/ui/login_flow.ui:294
+#: data/org.gnome.Fractal.desktop.in.in:3
+#: data/org.gnome.Fractal.metainfo.xml.in.in:9
 msgid "Fractal"
 msgstr "Fractal"
 
-#: fractal-gtk/res/org.gnome.Fractal.appdata.xml.in.in:8
-msgid "Daniel García Moreno"
-msgstr "Daniel García Moreno"
+#: data/org.gnome.Fractal.desktop.in.in:4
+msgid ""
+"Fractal is a decentralized, secure messaging client for collaborative group "
+"communication."
+msgstr ""
+"Fractal er en decentraliseret, sikker sametaleklient til kommunikation i "
+"grupper som arbejder sammen."
 
-#: fractal-gtk/res/org.gnome.Fractal.appdata.xml.in.in:9
+#: data/org.gnome.Fractal.desktop.in.in:5
+msgid "Fractal group messaging"
+msgstr "Fractal-gruppesamtale"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Fractal.desktop.in.in:14
+msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
+msgstr "Matrix;matrix.org;chat;irc;kommunikationer;snak;riot;element;"
+
+#: data/org.gnome.Fractal.gschema.xml.in:6
+msgid "Window width"
+msgstr "Vinduesbredde"
+
+#: data/org.gnome.Fractal.gschema.xml.in:10
+msgid "Window height"
+msgstr "Vindueshøjde"
+
+#: data/org.gnome.Fractal.gschema.xml.in:14
+msgid "Window maximized state"
+msgstr "Tilstand for maksimeret vindue"
+
+#: data/org.gnome.Fractal.gschema.xml.in:18
+msgid "Enable markdown formatting"
+msgstr "Aktivér markdownformatering"
+
+#: data/org.gnome.Fractal.gschema.xml.in:19
+msgid "Whether messages should be processed as markdown when sending them"
+msgstr "Om meddelelser skal behandles som markdown, når de sendes"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:8
+msgid "Julian Sparber"
+msgstr "Julian Sparber"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
 msgid "Matrix group messaging app"
 msgstr "Matrix-gruppesamtaleprogram"
 
-#: fractal-gtk/res/org.gnome.Fractal.appdata.xml.in.in:11
+#: data/org.gnome.Fractal.metainfo.xml.in.in:12
 msgid ""
 "Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
 "is optimized for collaboration in large groups, such as free software "
@@ -116,934 +79,2211 @@ msgstr ""
 "Brugerfladen er optimeret til at samarbejde i store grupper såsom projekter "
 "med fri software."
 
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:4
-msgid ""
-"Fractal is a decentralized, secure messaging client for collaborative group "
-"communication."
-msgstr ""
-"Fractal er en decentraliseret, sikker sametaleklient til kommunikation i "
-"grupper som arbejder sammen."
-
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:5
-msgid "Fractal group messaging"
-msgstr "Fractal-gruppesamtale"
-
-#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:14
-msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;"
-msgstr "Matrix;matrix.org;chat;irc;kommunikationer;snak;riot;"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:13
-msgid "Type of password and token storage"
-msgstr "Lagringstypen til adgangskode og token"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:14
-msgid "Type of password and token storage, default value is: Secret Service"
-msgstr ""
-"Lagringstypen til adgangskode og token — standardværdien er: Secret Service"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:21
-msgid "If markdown sending is active"
-msgstr "Om markdown-afsendelse er aktiv"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:22
-msgid "Whether support for sending markdown messages is on"
-msgstr "Om understøttelse af afsendelse af markdown-meddelelser er slået til"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:29
-msgid "X position of the main window on startup"
-msgstr "X-placering af hovedvinduet ved opstart"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:34
-msgid "Y position of the main window on startup"
-msgstr "Y-placering af hovedvinduet ved opstart"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:39
-msgid "Width of the main window on startup"
-msgstr "Bredden på hovedvinduet ved opstart"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:44
-msgid "Height of the main window on startup"
-msgstr "Højden på hovedvinduet ved opstart"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:49
-msgid "Whether the main window is maximized on startup"
-msgstr "Om hovedvinduet er maksimeret ved opstart"
-
-#: fractal-gtk/res/ui/account_settings.ui:73
-msgid "Other people can find you by searching for any of these identifiers."
-msgstr "Andre personer kan finde dig ved at søge efter disse identifikatorer."
-
-#: fractal-gtk/res/ui/account_settings.ui:101
-msgid "Name"
-msgstr "Navn"
-
-#: fractal-gtk/res/ui/account_settings.ui:124
-msgid "Type in your name"
-msgstr "Skriv dit navn"
-
-#: fractal-gtk/res/ui/account_settings.ui:153
-msgid "Email"
-msgstr "E-mail"
-
-#: fractal-gtk/res/ui/account_settings.ui:182
-msgid "Phone"
-msgstr "Telefon"
-
-#: fractal-gtk/res/ui/account_settings.ui:211
-msgid "Password"
-msgstr "Adgangskode"
-
-#: fractal-gtk/res/ui/account_settings.ui:278
-msgid "Advanced Information"
-msgstr "Avanceret information"
-
-#: fractal-gtk/res/ui/account_settings.ui:308
-msgid "Homeserver"
-msgstr "Hjemmeserver"
-
-#: fractal-gtk/res/ui/account_settings.ui:337
-msgid "Matrix ID"
-msgstr "Matrix-id"
-
-#: fractal-gtk/res/ui/account_settings.ui:366
-msgid "Device ID"
-msgstr "Enheds-id"
-
-#: fractal-gtk/res/ui/account_settings.ui:421
-#: fractal-gtk/res/ui/account_settings.ui:502
-msgid "Deactivate Account"
-msgstr "Deaktivér konto"
-
-#: fractal-gtk/res/ui/account_settings.ui:447
-msgid ""
-"Deactivating your account means that you will lose all your messages, "
-"contacts, and files."
-msgstr ""
-"Deaktivering af din konto betyder, at du mister alle dine meddelelser, "
-"kontakter og filer."
-
-#: fractal-gtk/res/ui/account_settings.ui:462
-msgid ""
-"To confirm that you really want to deactivate this account type in your "
-"password:"
-msgstr ""
-"Bekræft at du virkelig vil deaktivere kontoen ved, at skrive din adgangskode:"
-
-#: fractal-gtk/res/ui/account_settings.ui:487
-msgid "Also erase all messages"
-msgstr "Slet også alle meddelelser"
-
-#: fractal-gtk/res/ui/account_settings.ui:586
-#: fractal-gtk/res/ui/main_menu.ui:109
-msgid "Account Settings"
-msgstr "Kontoindstillinger"
-
-#: fractal-gtk/res/ui/account_settings.ui:602
-#: fractal-gtk/res/ui/main_window.ui:517 fractal-gtk/res/ui/main_window.ui:657
-#: fractal-gtk/res/ui/main_window.ui:767 fractal-gtk/res/ui/media_viewer.ui:248
-#: fractal-gtk/res/ui/room_settings.ui:1034
-msgid "Back"
-msgstr "Tilbage"
-
-#: fractal-gtk/res/ui/account_settings.ui:623
-msgid "Check your email"
-msgstr "Tjek din e-mail"
-
-#: fractal-gtk/res/ui/account_settings.ui:626
-#: fractal-gtk/res/ui/direct_chat.ui:129 fractal-gtk/res/ui/invite_user.ui:129
-#: fractal-gtk/res/ui/join_room.ui:93 fractal-gtk/res/ui/leave_room.ui:32
-#: fractal-gtk/res/ui/new_room.ui:42 fractal-gtk/src/appop/account.rs:79
-#: fractal-gtk/src/appop/account.rs:138 fractal-gtk/src/appop/attach.rs:57
-msgid "Cancel"
-msgstr "Annuller"
-
-#: fractal-gtk/res/ui/account_settings.ui:634
-msgid "Apply"
-msgstr "Anvend"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:22
-msgid "Room Directory"
-msgstr "Rumregister"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:36
-msgid "Join Room"
-msgstr "Deltag i rum"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:63
-msgid "New Room"
-msgstr "Nyt rum"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:77
-msgid "New Direct Chat"
-msgstr "Ny direkte chat"
-
-#: fractal-gtk/res/ui/audio_player.ui:34 fractal-gtk/res/ui/audio_player.ui:50
-msgid "Play"
-msgstr "Afspil"
-
-#: fractal-gtk/res/ui/direct_chat.ui:126
-msgid "New direct chat"
-msgstr "Ny direkte chat"
-
-#: fractal-gtk/res/ui/direct_chat.ui:137
-msgid "Start chat"
-msgstr "Start chat"
-
-#: fractal-gtk/res/ui/filechooser.ui:61
-msgid "Select room image file"
-msgstr "Vælg billedfil til rummet"
-
-#: fractal-gtk/res/ui/invite.ui:18
-msgid "Invitation"
-msgstr "Invitation"
-
-#: fractal-gtk/res/ui/invite.ui:33
-msgid "Reject"
-msgstr "Afvis"
-
-#: fractal-gtk/res/ui/invite.ui:46
-msgid "Accept"
-msgstr "Accepter"
-
-#: fractal-gtk/res/ui/invite_user.ui:126 fractal-gtk/res/ui/invite_user.ui:137
-#: fractal-gtk/src/appop/invite.rs:147
-msgid "Invite"
-msgstr "Inviter"
-
-#: fractal-gtk/res/ui/join_room.ui:52
-msgid "ID or Alias"
-msgstr "Id eller alias"
-
-#: fractal-gtk/res/ui/join_room.ui:90
-msgid "Join room"
-msgstr "Deltag i rum"
-
-#: fractal-gtk/res/ui/join_room.ui:101 fractal-gtk/src/widgets/room.rs:120
-msgid "Join"
-msgstr "Deltag"
-
-#: fractal-gtk/res/ui/kicked_room.ui:30 fractal-gtk/res/ui/msg_src_window.ui:32
-msgid "Close"
-msgstr "Luk"
-
-#: fractal-gtk/res/ui/leave_room.ui:18
-msgid "Leave?"
-msgstr "Forlad?"
-
-#: fractal-gtk/res/ui/leave_room.ui:19
-msgid ""
-"Once you leave, you won’t be able to interact with people in the room "
-"anymore."
-msgstr ""
-"Hvis du forlader rummet vil du ikke længere være i stand til at kommunikere "
-"med personer i rummet."
-
-#: fractal-gtk/res/ui/leave_room.ui:45
-msgid "Leave room"
-msgstr "Forlad rum"
-
-#: fractal-gtk/res/ui/login_flow.ui:33
-msgid "Welcome to Fractal"
-msgstr "Velkommen til Fractal"
-
-#: fractal-gtk/res/ui/login_flow.ui:47 fractal-gtk/res/ui/login_flow.ui:371
-msgid "_Log In"
-msgstr "_Log ind"
-
-#: fractal-gtk/res/ui/login_flow.ui:59
-msgid "_Create Account"
-msgstr "_Opret konto"
-
-#: fractal-gtk/res/ui/login_flow.ui:95
-msgid "What is your Provider?"
-msgstr "Hvad er din udbyder?"
-
-#: fractal-gtk/res/ui/login_flow.ui:124
-msgid "Matrix provider domain, e.g. myserver.co"
-msgstr "Domæne for Matrix-udbyder — f.eks. minserver.co"
-
-#: fractal-gtk/res/ui/login_flow.ui:140
-msgid "The domain may not be empty."
-msgstr "Domænet må ikke være tomt."
-
-#: fractal-gtk/res/ui/login_flow.ui:166
-msgid "_User ID"
-msgstr "_Bruger-id"
-
-#: fractal-gtk/res/ui/login_flow.ui:182
-msgid "_Password"
-msgstr "_Adgangskode"
-
-#: fractal-gtk/res/ui/login_flow.ui:214
-msgid "User name, email, or phone number"
-msgstr "Brugernavn, e-mail eller telefonnummer"
-
-#: fractal-gtk/res/ui/login_flow.ui:247
-msgid "_Forgot Password?"
-msgstr "Har du _glemt adgangskoden?"
-
-#: fractal-gtk/res/ui/login_flow.ui:265
-msgid "Invalid username or password"
-msgstr "Ugyldigt brugernavn eller adgangskode"
-
-#: fractal-gtk/res/ui/login_flow.ui:306
-msgid "Choose Provider"
-msgstr "Vælg udbyder"
-
-#: fractal-gtk/res/ui/login_flow.ui:329
-msgid "_Next"
-msgstr "_Næste"
-
-#: fractal-gtk/res/ui/login_flow.ui:348
-msgid "Log In"
-msgstr "Log ind"
-
-#: fractal-gtk/res/ui/main_menu.ui:123
-msgid "Log Out"
-msgstr "Log ud"
-
-#: fractal-gtk/res/ui/main_menu.ui:150
-msgid "Keyboard _Shortcuts"
-msgstr "_Tastaturgenveje"
-
-#: fractal-gtk/res/ui/main_menu.ui:164
-msgid "_About Fractal"
-msgstr "_Om Fractal"
-
-#: fractal-gtk/res/ui/main_window.ui:183
-msgid "No room selected"
-msgstr "Der er ikke valgt noget rum"
-
-#: fractal-gtk/res/ui/main_window.ui:198
-msgid "Join a room to start chatting"
-msgstr "Deltag i et rum for at chatte"
-
-#: fractal-gtk/res/ui/main_window.ui:208
-msgid "No room"
-msgstr ""
-
-#: fractal-gtk/res/ui/main_window.ui:289
-msgid "Chat"
-msgstr "Chat"
-
-#: fractal-gtk/res/ui/main_window.ui:341
-msgid "Directory"
-msgstr "Register"
-
-#: fractal-gtk/res/ui/main_window.ui:365
-msgid "Loading"
-msgstr "Indlæser"
-
-#: fractal-gtk/res/ui/main_window.ui:410
-msgid "User"
-msgstr "Bruger"
-
-#: fractal-gtk/res/ui/main_window.ui:437
-msgid "Add"
-msgstr "Tilføj"
-
-#: fractal-gtk/res/ui/main_window.ui:467
-msgid "Room search"
-msgstr "Rumsøgning"
-
-#: fractal-gtk/res/ui/main_window.ui:591
-msgid "Room Menu"
-msgstr "Rummenu"
-
-#: fractal-gtk/res/ui/main_window.ui:697
-#: fractal-gtk/res/ui/server_chooser_menu.ui:65
-#: fractal-gtk/src/app/connect/directory.rs:130
-msgid "Default Matrix Server"
-msgstr "Standard Matrix-server"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:23
-msgid "Markdown"
-msgstr "Markdown"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:67
-msgid "> quote"
-msgstr "> citat"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:78
-msgid "**bold**"
-msgstr "**fed**"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:93
-msgid "`code`"
-msgstr "`kode`"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:105
-msgid "*italic*"
-msgstr "*kursiv*"
-
-#: fractal-gtk/res/ui/media_viewer.ui:185
-msgid "Loading more media"
-msgstr "Indlæser flere medier"
-
-#: fractal-gtk/res/ui/media_viewer_menu.ui:26
-msgid "Save as…"
-msgstr "Gem som …"
-
-#: fractal-gtk/res/ui/members.ui:25 fractal-gtk/res/ui/room_settings.ui:940
-msgid "Search for room members"
-msgstr "Søg efter rummedlemmer"
-
-#: fractal-gtk/res/ui/message_menu.ui:22
-msgid "Reply"
-msgstr "Svar"
-
-#: fractal-gtk/res/ui/message_menu.ui:34
-msgid "Open With…"
-msgstr "Åbn med …"
-
-#: fractal-gtk/res/ui/message_menu.ui:47
-msgid "Save Image As…"
-msgstr "Gem billede som …"
-
-#: fractal-gtk/res/ui/message_menu.ui:60
-msgid "Copy Image"
-msgstr "Kopiér billede"
-
-#: fractal-gtk/res/ui/message_menu.ui:73
-msgid "Copy Selection"
-msgstr "Kopiér markering"
-
-#: fractal-gtk/res/ui/message_menu.ui:86
-msgid "Copy Text"
-msgstr "Kopiér tekst"
-
-#: fractal-gtk/res/ui/message_menu.ui:101
-msgid "View Source"
-msgstr "Vis kilde"
-
-#: fractal-gtk/res/ui/message_menu.ui:126
-msgid "Delete Message"
-msgstr "Slet meddelelse"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:21
-msgid "Message Source"
-msgstr "Meddelelseskilde"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:24
-msgid "Copy To Clipboard"
-msgstr "Kopiér til udklipsholder"
-
-#: fractal-gtk/res/ui/new_room.ui:14
-msgid "Private Chat"
-msgstr "Privat chat"
-
-#: fractal-gtk/res/ui/new_room.ui:18 fractal-gtk/res/ui/new_room.ui:187
-msgid "Public"
-msgstr "Offentlig"
-
-#: fractal-gtk/res/ui/new_room.ui:39
-msgid "Create new room"
-msgstr "Opret nyt rum"
-
-#: fractal-gtk/res/ui/new_room.ui:50
-msgid "Create"
-msgstr "Opret"
-
-#: fractal-gtk/res/ui/new_room.ui:108
-msgid "Room name"
-msgstr "Rumnavn"
-
-#: fractal-gtk/res/ui/new_room.ui:152
-msgid "Visibility"
-msgstr "Synlighed"
-
-#: fractal-gtk/res/ui/new_room.ui:171
-msgid "Private"
-msgstr "Privat"
-
-#: fractal-gtk/res/ui/password_dialog.ui:22
-#: fractal-gtk/src/widgets/file_dialog.rs:13
-#: fractal-gtk/src/widgets/file_dialog.rs:34
-#: fractal-gtk/src/widgets/media_viewer.rs:670
-msgid "_Cancel"
-msgstr "_Annuller"
-
-#: fractal-gtk/res/ui/password_dialog.ui:35
-msgid "Ch_ange"
-msgstr "_Skift"
-
-#: fractal-gtk/res/ui/password_dialog.ui:133
-msgid "The passwords do not match."
-msgstr "Adgangskoderne er ikke ens."
-
-#: fractal-gtk/res/ui/password_dialog.ui:151
-msgid "_Verify New Password"
-msgstr "_Bekræft ny adgangskode"
-
-#: fractal-gtk/res/ui/password_dialog.ui:168
-msgid "_New Password"
-msgstr "_Ny adgangskode"
-
-#: fractal-gtk/res/ui/password_dialog.ui:212
-msgid "Current _Password"
-msgstr "Nuværende _adgangskode"
-
-#: fractal-gtk/res/ui/room_menu.ui:22
-msgid "Room Details"
-msgstr "Rumdetaljer"
-
-#: fractal-gtk/res/ui/room_menu.ui:36
-msgid "Invite to This Room"
-msgstr "Inviter til rummet"
-
-#: fractal-gtk/res/ui/room_menu.ui:63
-msgid "Leave Room"
-msgstr "Forlad rum"
-
-#: fractal-gtk/res/ui/room_settings.ui:92
-msgid "Unknown"
-msgstr "Ukendt"
-
-#: fractal-gtk/res/ui/room_settings.ui:118
-msgid "Add name"
-msgstr "Tilføj navn"
-
-#: fractal-gtk/res/ui/room_settings.ui:150
-msgid "Add topic"
-msgstr "Tilføj emne"
-
-#: fractal-gtk/res/ui/room_settings.ui:174
-msgid "Type in your room topic"
-msgstr "Skriv emnet til dit rum"
-
-#: fractal-gtk/res/ui/room_settings.ui:202
-msgid "No room description"
-msgstr "Ingen rumbeskrivelse"
-
-#: fractal-gtk/res/ui/room_settings.ui:239
-msgid "Notifications"
-msgstr "Underretninger"
-
-#: fractal-gtk/res/ui/room_settings.ui:280
-msgid "Notification sounds"
-msgstr "Underretningslyde"
-
-#: fractal-gtk/res/ui/room_settings.ui:325
-msgid "For all messages"
-msgstr "For alle meddelelser"
-
-#: fractal-gtk/res/ui/room_settings.ui:366
-msgid "Only for mentions"
-msgstr ""
-
-#: fractal-gtk/res/ui/room_settings.ui:397
-msgid "Shared Media"
-msgstr "Delte medier"
-
-#: fractal-gtk/res/ui/room_settings.ui:444
-msgid "photos"
-msgstr "billeder"
-
-#: fractal-gtk/res/ui/room_settings.ui:484
-msgid "videos"
-msgstr "videoer"
-
-#: fractal-gtk/res/ui/room_settings.ui:524
-msgid "documents"
-msgstr "dokumenter"
-
-#: fractal-gtk/res/ui/room_settings.ui:555
-msgid "New members can see"
-msgstr "Nye medlemmer kan se"
-
-#: fractal-gtk/res/ui/room_settings.ui:600
-msgid "All room history"
-msgstr "Historik for alle rum"
-
-#: fractal-gtk/res/ui/room_settings.ui:641
-msgid "History after they were invited"
-msgstr "Historik efter de blev inviteret"
-
-#: fractal-gtk/res/ui/room_settings.ui:672
-msgid "Room Visibility"
-msgstr "Synlighed i rum"
-
-#: fractal-gtk/res/ui/room_settings.ui:719
-msgid "Allow guests"
-msgstr "Tillad gæster"
-
-#: fractal-gtk/res/ui/room_settings.ui:759
-msgid "Allow joining without invite"
-msgstr "Tillad deltagelse uden invitation"
-
-#: fractal-gtk/res/ui/room_settings.ui:799
-msgid "Publish in room directory"
-msgstr "Udgiv i rumregister"
-
-#: fractal-gtk/res/ui/room_settings.ui:830
-msgid "Join addresses"
-msgstr ""
-
-#: fractal-gtk/res/ui/room_settings.ui:889
-msgid "members"
-msgstr "medlemmer"
-
-#: fractal-gtk/res/ui/room_settings.ui:905
-msgid "Invite New Member"
-msgstr "Inviter nyt medlem"
-
-#: fractal-gtk/res/ui/room_settings.ui:1018
-msgid "Details"
-msgstr "Detaljer"
-
-#: fractal-gtk/res/ui/scroll_widget.ui:63
-msgid "Scroll to bottom"
-msgstr "Rul til bunden"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:34
-msgid "Show rooms from:"
-msgstr "Vis rum fra:"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:90
-msgid "Your homeserver"
-msgstr "Din hjemmeserver"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:134
-msgid "Other Protocol"
-msgstr "Anden protokol"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:207
-msgid "Other Homeserver"
-msgstr "Anden hjemmeserver"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:235
-msgid "Homeserver URL"
-msgstr "Hjemmeserver-URL"
-
-#: fractal-gtk/src/actions/account_settings.rs:39
-#: fractal-gtk/src/actions/room_settings.rs:42
-msgid "Images"
-msgstr "Billeder"
-
-#: fractal-gtk/src/actions/account_settings.rs:40
-#: fractal-gtk/src/actions/room_settings.rs:44
-msgid "Select a new avatar"
-msgstr "Vælg en ny avatar"
-
-#: fractal-gtk/src/actions/account_settings.rs:50
-#: fractal-gtk/src/actions/room_settings.rs:54
-msgid "Couldn’t open file"
-msgstr "Kunne ikke åbne filen"
-
-#: fractal-gtk/src/actions/global.rs:285
-msgid "Select a file"
-msgstr "Vælg en fil"
-
-#: fractal-gtk/src/actions/room_history.rs:64
-msgid "This message has no source."
-msgstr "Meddelelsen har ingen kilde."
-
-#: fractal-gtk/src/actions/room_history.rs:116
-#: fractal-gtk/src/actions/room_history.rs:148
-msgid "Could not download the file"
-msgstr "Kunne ikke downloade filen"
-
-#: fractal-gtk/src/actions/room_history.rs:126
-msgid "Couldn’t save file"
-msgstr "Kunne ikke gemme filen"
-
-#: fractal-gtk/src/app/backend_loop.rs:48
-msgid "Email is already in use"
-msgstr "E-mailen er allerede i brug"
-
-#: fractal-gtk/src/app/backend_loop.rs:52
-msgid "Please enter a valid email adress."
-msgstr "Indtast venligst en gyldig e-mailadresse."
-
-#: fractal-gtk/src/app/backend_loop.rs:56
-msgid "Phone number is already in use"
-msgstr "Telefonnummeret er allerede i brug"
-
-#: fractal-gtk/src/app/backend_loop.rs:61
-msgid ""
-"Please enter your phone number in the format: \n"
-" + your country code and your phone number."
-msgstr ""
-"Indtast venligst dit telefonnummer i formatet: \n"
-" + din landekode, og dit telefonnummer."
-
-#: fractal-gtk/src/app/backend_loop.rs:198
-msgid "Couldn’t delete the account"
-msgstr "Kunne ikke slette kontoen"
-
-#: fractal-gtk/src/app/backend_loop.rs:203
-msgid "Couldn’t change the password"
-msgstr "Kunne ikke ændre adgangskoden"
-
-#: fractal-gtk/src/app/backend_loop.rs:208
-msgid "Sorry, account settings can’t be loaded."
-msgstr "Beklager, kontoindstillingerne kan ikke indlæses."
-
-#: fractal-gtk/src/app/backend_loop.rs:216
-msgid "Couldn’t add the email address."
-msgstr "Kunne ikke tilføje e-mailadressen."
-
-#: fractal-gtk/src/app/backend_loop.rs:221
-msgid "Couldn’t add the phone number."
-msgstr "Kunne ikke tilføje telefonnummeret."
-
-#: fractal-gtk/src/app/backend_loop.rs:228
-msgid "Can’t create the room, try again"
-msgstr "Kan ikke oprette rummet — prøv igen"
-
-#: fractal-gtk/src/app/backend_loop.rs:236
-msgid "Can’t join the room, try again."
-msgstr "Kan ikke deltage i rummet — prøv igen."
-
-#: fractal-gtk/src/app/backend_loop.rs:245
-msgid "Can’t login, try again"
-msgstr "Kan ikke logge ind — prøv igen"
-
-#: fractal-gtk/src/app/backend_loop.rs:261
-msgid "Error sending message"
-msgstr "Fejl ved afsendelse af meddelelse"
-
-#: fractal-gtk/src/app/backend_loop.rs:266
-msgid "Error deleting message"
-msgstr "Fejl ved sletning af meddelelse"
-
-#: fractal-gtk/src/app/backend_loop.rs:270
-msgid "Error searching for rooms"
-msgstr "Fejl ved søgning efter rum"
-
-#: fractal-gtk/src/appop/about.rs:21
-msgid "A Matrix.org client for GNOME"
-msgstr "En Matrix.org-klient til GNOME"
-
-#: fractal-gtk/src/appop/about.rs:23
-msgid "© 2017–2018 Daniel García Moreno, et al."
-msgstr "© 2017–2018 Daniel García Moreno og andre"
-
-#: fractal-gtk/src/appop/about.rs:30
-msgid "Learn more about Fractal"
-msgstr "Lær mere om Fractal"
-
-#: fractal-gtk/src/appop/about.rs:31
-msgid "translator-credits"
-msgstr "scootergrisen"
-
-#: fractal-gtk/src/appop/about.rs:46
-msgid "Name by"
-msgstr "Navn af"
-
-#: fractal-gtk/src/appop/account.rs:51
-msgid "The validation code is not correct."
-msgstr "Valideringskoden er ikke korrekt."
-
-#: fractal-gtk/src/appop/account.rs:64
-msgid "Enter the code received via SMS"
-msgstr "Indtast koden fra SMS"
-
-#: fractal-gtk/src/appop/account.rs:80 fractal-gtk/src/appop/account.rs:139
+#: data/resources/ui/account-settings-change-password-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:54
+msgid "Change Password"
+msgstr "Skift adgangskode"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:76
+msgid "New Password"
+msgstr "Ny adgangskode"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:81
+msgid "Confirm New Password"
+msgstr "Bekræft ny adgangskode"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:94
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
+#: src/session/content/room_history/verification_info_bar.rs:181
 msgid "Continue"
 msgstr "Fortsæt"
 
-#: fractal-gtk/src/appop/account.rs:128
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:115
+msgid "Deactivate Account"
+msgstr "Deaktivér konto"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:79
+#: data/resources/ui/account-settings-user-page.ui:80
+msgid "Matrix User ID"
+msgstr "Matrix-bruger-id"
+
+#: data/resources/ui/account-settings-device-row.ui:59
+#: src/session/content/verification/identity_verification_widget.rs:494
+#: src/session/content/verification/identity_verification_widget.rs:499
+#: src/session/content/verification/identity_verification_widget.rs:503
+#: src/session/content/verification/identity_verification_widget.rs:523
+#: src/session/content/verification/identity_verification_widget.rs:526
+#: src/session/content/verification/identity_verification_widget.rs:530
+msgid "Verify Session"
+msgstr "Bekræft session"
+
+#: data/resources/ui/account-settings-devices-page.ui:5
+msgid "Sessions"
+msgstr "Sessioner"
+
+#: data/resources/ui/account-settings-devices-page.ui:9
+#: data/resources/ui/account-settings-devices-page.ui:13
+msgid "Current Session"
+msgstr "Nuværende session"
+
+#: data/resources/ui/account-settings-devices-page.ui:24
+#: data/resources/ui/account-settings-devices-page.ui:28
+msgid "Other Active Sessions"
+msgstr "Andre aktive sessioner"
+
+#: data/resources/ui/account-settings-user-page.ui:5
+#: data/resources/ui/content-room-details.ui:9
+msgid "General"
+msgstr "Generelt"
+
+#: data/resources/ui/account-settings-user-page.ui:38
+msgid "Name"
+msgstr "Navn"
+
+#: data/resources/ui/account-settings-user-page.ui:63
+msgid "Advanced Information"
+msgstr "Avanceret information"
+
+#: data/resources/ui/account-settings-user-page.ui:66
+msgid "Homeserver"
+msgstr "Hjemmeserver"
+
+#: data/resources/ui/account-settings-user-page.ui:94
+msgid "Session ID"
+msgstr "Sessions-id"
+
+#: data/resources/ui/account-settings.ui:4
+msgid "Account Settings"
+msgstr "Kontoindstillinger"
+
+#: data/resources/ui/attachment-dialog.ui:14
+#: data/resources/ui/content-invite-subpage.ui:12
+#: data/resources/ui/room-creation.ui:16
+msgid "_Cancel"
+msgstr "_Annuller"
+
+#: data/resources/ui/attachment-dialog.ui:21
+msgid "_Send"
+msgstr "_Send"
+
+#: data/resources/ui/attachment-dialog.ui:36
+msgid "No Preview Available"
+msgstr "Ingen forhåndsvisning tilgængelig"
+
+#: data/resources/ui/components-auth-dialog.ui:20
+msgid "Authentication"
+msgstr "Godkendelse"
+
+#: data/resources/ui/components-auth-dialog.ui:43
+msgid "Please authenticate the operation with your password"
+msgstr "Godkend handlingen med din adgangskode"
+
+#: data/resources/ui/components-auth-dialog.ui:70
 msgid ""
-"In order to add this email address, go to your inbox and follow the link you "
-"received. Once you’ve done that, click Continue."
-msgstr ""
-"For at tilføje e-mailadressen, gå til din indbakke og følg linket du modtog. "
-"Når du har gjort det, så klik på Fortsæt."
+"Please authenticate the operation via the browser and once completed press "
+"confirm."
+msgstr "Godkend handlingen via browseren og tryk bekræft, når du er klar."
 
-#: fractal-gtk/src/appop/account.rs:189
-msgid "OK"
-msgstr "OK"
+#: data/resources/ui/components-auth-dialog.ui:80
+msgid "Authenticate via Browser"
+msgstr "Godkend via browser"
 
-#: fractal-gtk/src/appop/account.rs:724
-msgid "Are you sure you want to delete your account?"
-msgstr "Er du sikker på, at du vil slette din konto?"
+#: data/resources/ui/components-auth-dialog.ui:113
+#: data/resources/ui/identity-verification-widget.ui:449
+#: src/components/editable_avatar.rs:344
+#: src/session/content/room_history/verification_info_bar.rs:182
+#: src/session/room/event_actions.rs:210
+msgid "Cancel"
+msgstr "Annullér"
 
-#: fractal-gtk/src/appop/attach.rs:42
-msgid "Image from Clipboard"
-msgstr "Billede fra udklipsholder"
+#: data/resources/ui/components-auth-dialog.ui:118
+#: data/resources/ui/identity-verification-widget.ui:439
+msgid "Confirm"
+msgstr "Bekræft"
 
-#: fractal-gtk/src/appop/attach.rs:58
-msgid "Send"
-msgstr "Send"
+#: data/resources/ui/components-loading-listbox-row.ui:32
+msgid "Try again"
+msgstr "Prøv igen"
 
-#: fractal-gtk/src/appop/invite.rs:145
-msgid "Invite to {name}"
-msgstr "Inviter til {name}"
+#: data/resources/ui/content-explore.ui:64
+msgid "No rooms matching the search were found"
+msgstr "Ingen rum, der matcher søgningen, blev fundet"
 
-#: fractal-gtk/src/appop/invite.rs:253
-msgid "Join {room_name}?"
-msgstr "Deltag i {room_name}?"
+#: data/resources/ui/content-explore.ui:96
+msgid "Room List"
+msgstr "Oversigt over rum"
 
-#: fractal-gtk/src/appop/invite.rs:258
-msgid ""
-"You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</b>"
-msgstr ""
-"Du er blevet inviteret til at deltage i <b>{room_name}</b>-rummet af "
-"<b>{sender_name}</b>"
+#: data/resources/ui/content-invite-subpage.ui:18
+msgid "I_nvite"
+msgstr "I_nvitér"
 
-#: fractal-gtk/src/appop/invite.rs:263
-msgid "You’ve been invited to join <b>{room_name}</b>"
-msgstr "Du er blevet inviteret til at deltage i <b>{room_name}</b>"
+#: data/resources/ui/content-invite-subpage.ui:87
+msgid "Search for users to invite them to this room."
+msgstr "Søg efter brugere for at invitere dem til dette rum."
 
-#: fractal-gtk/src/appop/notify.rs:50
-msgid " (direct message)"
-msgstr " (direkte meddelelse)"
+#: data/resources/ui/content-invite-subpage.ui:123
+msgid "No users matching the search were found."
+msgstr "Ingen brugere, der matcher søgningen, blev fundet"
 
-#: fractal-gtk/src/appop/room.rs:313
-msgid "Leave {room_name}?"
-msgstr "Forlad {room_name}?"
+#: data/resources/ui/content-invite-subpage.ui:132
+msgid "An error occurred while searching for matches"
+msgstr "Der opstod en fejl under søgningen"
 
-#: fractal-gtk/src/appop/room.rs:569
-msgid "EMPTY ROOM"
-msgstr "TOMT RUM"
+#: data/resources/ui/content-invite.ui:26
+#: data/resources/ui/content-invite.ui:51
+msgid "Invite"
+msgstr "Invitér"
 
-#: fractal-gtk/src/appop/room.rs:571
-msgid "{m1} and {m2}"
-msgstr "{m1} og {m2}"
+#: data/resources/ui/content-invite.ui:108
+#: data/resources/ui/sidebar-room-row.ui:11
+msgid "_Reject"
+msgstr "A_fvis"
 
-#: fractal-gtk/src/appop/room.rs:572
-msgid "{m1} and Others"
-msgstr "{m1} og andre"
+#: data/resources/ui/content-invite.ui:118
+#: data/resources/ui/sidebar-room-row.ui:6
+msgid "_Accept"
+msgstr "_Acceptér"
 
-#: fractal-gtk/src/appop/room.rs:675
-msgid "Several users are typing…"
-msgstr "Flere brugere skriver …"
+#: data/resources/ui/content-markdown-popover.ui:17
+msgid "_Markdown"
+msgstr "_Markdown"
 
-#: fractal-gtk/src/appop/room.rs:678
-msgid "<b>{}</b> is typing…"
-msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
-msgstr[0] "<b>{}</b> skriver …"
-msgstr[1] "<b>{}</b> og <b>{}</b> skriver …"
+#: data/resources/ui/content-markdown-popover.ui:37
+msgid "> quote"
+msgstr "> citat"
 
-#: fractal-gtk/src/appop/sync.rs:10
-msgid "Syncing, this could take a while"
-msgstr "Synkroniserer — det kan tage noget tid"
+#: data/resources/ui/content-markdown-popover.ui:46
+msgid "**bold**"
+msgstr "**fed**"
 
-#: fractal-gtk/src/uibuilder.rs:52
-msgid "You don’t have permission to post to this room"
-msgstr "Du har ikke tilladelse til at skrive i rummet"
+#: data/resources/ui/content-markdown-popover.ui:59
+msgid "`code`"
+msgstr "`kode`"
 
-#: fractal-gtk/src/widgets/file_dialog.rs:9
-#: fractal-gtk/src/widgets/media_viewer.rs:666
-msgid "Save media as"
-msgstr "Gem medie som"
+#: data/resources/ui/content-markdown-popover.ui:69
+msgid "*italic*"
+msgstr "*kursiv*"
 
-#: fractal-gtk/src/widgets/file_dialog.rs:12
-#: fractal-gtk/src/widgets/media_viewer.rs:669
-msgid "_Save"
-msgstr "_Gem"
+#: data/resources/ui/content-member-page.ui:5
+msgid "Members"
+msgstr "Medlemmer"
 
-#: fractal-gtk/src/widgets/file_dialog.rs:33
-msgid "_Select"
-msgstr "_Vælg"
+#: data/resources/ui/content-member-page.ui:24
+msgid "Invite new member"
+msgstr "Invitér nyt medlem"
 
-#: fractal-gtk/src/widgets/kicked_dialog.rs:46
-msgid "You have been kicked from {}"
-msgstr "Du blev sparket ud af {}"
+#: data/resources/ui/content-member-page.ui:33
+msgid "Search for room members"
+msgstr "Søg efter rummedlemmer"
 
-#: fractal-gtk/src/widgets/kicked_dialog.rs:50
-msgid ""
-"Kicked by: {}\n"
-" “{}”"
-msgstr ""
-"Sparket af: {}\n"
-" “{}”"
-
-#: fractal-gtk/src/widgets/media_viewer.rs:626
-msgid "Error while loading previous media"
-msgstr "Fejl ved indlæsning af forrige medie"
-
-#: fractal-gtk/src/widgets/media_viewer.rs:679
-msgid "Could not save the file"
-msgstr "Kunne ikke gemme filen"
-
-#: fractal-gtk/src/widgets/members_list.rs:54
-msgid "No matching members found"
-msgstr "Ingen matchende medlemmer fundet"
-
-#: fractal-gtk/src/widgets/members_list.rs:170
-msgid "Admin"
-msgstr "Administrator"
-
-#: fractal-gtk/src/widgets/members_list.rs:171
-msgid "Moderator"
-msgstr "Moderator"
-
-#: fractal-gtk/src/widgets/members_list.rs:172
-msgid "Privileged"
-msgstr "Privilegeret"
-
-#: fractal-gtk/src/widgets/message.rs:396
-msgid "Could not retrieve file URI"
-msgstr "Kunne ikke modtage fil-URI"
-
-#: fractal-gtk/src/widgets/message.rs:414
-#: fractal-gtk/src/widgets/message.rs:440
-msgid "Save"
-msgstr "Gem"
-
-#: fractal-gtk/src/widgets/message.rs:450
+#: data/resources/ui/content-message-file.ui:21
 msgid "Open"
 msgstr "Åbn"
 
-#. Use 12h time format (AM/PM)
-#: fractal-gtk/src/widgets/message.rs:470
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+#: data/resources/ui/content-message-file.ui:28
+#: src/session/room/event_actions.rs:209
+msgid "Save"
+msgstr "Gem"
 
-#. Use 24 time format
-#: fractal-gtk/src/widgets/message.rs:473
-msgid "%R"
-msgstr "%R"
+#: data/resources/ui/content-room-details.ui:4
+#: src/session/content/room_details/mod.rs:250
+msgid "Room Details"
+msgstr "Rumdetaljer"
 
-#. Translators: This is a date format in the day divider without the year
-#: fractal-gtk/src/widgets/room_history.rs:391
-msgid "%B %e"
-msgstr "%e. %B"
+#: data/resources/ui/content-room-history.ui:6
+msgid "Room _Details"
+msgstr "Rum_detaljer"
 
-#. Translators: This is a date format in the day divider with the year
-#: fractal-gtk/src/widgets/room_history.rs:394
-msgid "%B %e, %Y"
-msgstr "%e. %B, %Y"
+#: data/resources/ui/content-room-history.ui:11
+msgid "_Invite New Member"
+msgstr "_Invitér nyt medlem"
 
-#: fractal-gtk/src/widgets/room_history.rs:416
+#: data/resources/ui/content-room-history.ui:18
+#: data/resources/ui/sidebar-room-row.ui:40
+msgid "_Leave Room"
+msgstr "_Forlad rum"
+
+#: data/resources/ui/content-room-history.ui:27
+msgid "_Location"
+msgstr "_Placering"
+
+#: data/resources/ui/content-room-history.ui:32
+msgid "_Attachment"
+msgstr "_Vedhæftning"
+
+#: data/resources/ui/content-room-history.ui:56
+msgid "Back"
+msgstr "Tilbage"
+
+#: data/resources/ui/content-room-history.ui:81
+msgid "Room Settings"
+msgstr "Indstillinger for rum"
+
+#: data/resources/ui/content-room-history.ui:89
+msgid "Toggle Room History Search"
+msgstr "Slå rums søgehistorik til/fra"
+
+#: data/resources/ui/content-room-history.ui:107
+msgid "Room History Search"
+msgstr "Rums søgeshistorik"
+
+#: data/resources/ui/content-room-history.ui:144
+msgid "Unable to load room"
+msgstr "Kunne ikke indlæse rum"
+
+#: data/resources/ui/content-room-history.ui:145
+msgid "Check your network connection."
+msgstr "Tjek din netværksforbindelse."
+
+#: data/resources/ui/content-room-history.ui:148
+msgid "Try Again"
+msgstr "Prøv igen"
+
+#: data/resources/ui/content-room-history.ui:173
+msgid "Scroll to bottom"
+msgstr "Rul til bunden"
+
+#: data/resources/ui/content-room-history.ui:185
+msgid "Drop Here to Send"
+msgstr "Slip her for at sende"
+
+#: data/resources/ui/content-room-history.ui:211
+msgid "Room History"
+msgstr "Rumhistorik"
+
+#: data/resources/ui/content-room-history.ui:249
+msgid "Enable Markdown Formatting"
+msgstr "Aktivér markdownformatering"
+
+#: data/resources/ui/content-room-history.ui:270
+msgid "Message Entry"
+msgstr "Meddelelsestekstfelt"
+
+#: data/resources/ui/content-room-history.ui:285
+msgid "Open Message Menu"
+msgstr "Åbn meddelelsesmenu"
+
+#: data/resources/ui/content-room-history.ui:295
+msgid "Open Emoji Picker"
+msgstr "Åbn Emoji-vælger"
+
+#: data/resources/ui/content-room-history.ui:310
+msgid "Send Message"
+msgstr "Send meddelelse"
+
+#: data/resources/ui/content-state-creation.ui:19
+msgid "Previous room"
+msgstr "Forrige rum"
+
+#: data/resources/ui/content-state-tombstone.ui:14
+msgid "There is a newer version of this room."
+msgstr "Der er en nyere version af dette rum."
+
+#: data/resources/ui/content-state-tombstone.ui:19
+msgid "Go there"
+msgstr "Gå derhen"
+
+#: data/resources/ui/content.ui:36
+msgid "No Room Selected"
+msgstr "Der er ikke valgt noget rum"
+
+#: data/resources/ui/content.ui:37
+msgid "Join a room to start chatting."
+msgstr "Deltag i et rum for at chatte."
+
+#: data/resources/ui/error-page.ui:40
+msgid ""
+"It seems like one of the Fractal sessions stored in the Secret Service is "
+"corrupted. If you know how to fix it you should do so."
+msgstr ""
+"Det ser ud til, at en af de fraktalsessioner, der er gemt i den hemmelige "
+"tjeneste, er beskadiget. Hvis du ved, hvordan du kan rette det, bør du gøre "
+"det."
+
+#: data/resources/ui/error-page.ui:51
+msgid ""
+"Alternatively, we could disconnect this session for you. This means you will "
+"have to login again and you will lose access to your encrypted messages, "
+"unless you have a session open in another client or you have already backed "
+"up your encryption keys."
+msgstr ""
+"Alternativt kan vi afbryde denne session for dig. Det betyder, at du skal "
+"logge ind igen, og at du mister adgangen til dine krypterede meddelelser, "
+"medmindre du har en session åben i en anden klient, eller du allerede har "
+"taget backup af dine krypteringsnøgler."
+
+#: data/resources/ui/error-page.ui:74
+msgid "Clicking this button might disconnect more than one session!"
+msgstr "Trykker du på denne knap, kan det afbryde mere end en session!"
+
+#: data/resources/ui/error-page.ui:86
+msgid "Disconnect the corrupted session"
+msgstr "Afbryd den beskadigede session"
+
+#: data/resources/ui/error-page.ui:109
+msgid ""
+"Fractal relies on a Secret Service Provider to manage your sensitive session "
+"information and an error occurred while we were trying to store or get your "
+"session."
+msgstr ""
+"Fractal er afhængig af en udbyder af hemmelige tjenester til at håndtere "
+"dine følsomme sessionsoplysninger, og der opstod en fejl, mens vi forsøgte "
+"at gemme eller hente din session."
+
+#: data/resources/ui/error-page.ui:124
+msgid ""
+"Here are a few things that might help you fix issues with the Secret Service:"
+msgstr ""
+"Her er nogle ting, der kan hjælpe med at løse problemer med den hemmelige "
+"tjeneste:"
+
+#: data/resources/ui/error-page.ui:147
+msgid ""
+"Make sure you have a Secret Service Provider installed, like gnome-keyring."
+msgstr ""
+"Sikr dig, at du har en udbyder af hemmelige tjenester som f.eks. gnome-"
+"keyring."
+
+#: data/resources/ui/error-page.ui:172
+msgid "Check that you have a default keyring and that it is unlocked."
+msgstr "Tjek, om du har en standardnøglering, og at den er låst op."
+
+#: data/resources/ui/error-page.ui:187
+msgid ""
+"Check the application logs and your distribution’s documentation for more "
+"details."
+msgstr ""
+"Tjek programmets log og din distributions dokumentation for yderligere "
+"oplysninger."
+
+#: data/resources/ui/event-menu.ui:11
+msgid "_Reply"
+msgstr "_Svar"
+
+#: data/resources/ui/event-menu.ui:16
+msgid "_Edit"
+msgstr "_Redigér"
+
+#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:86
+msgid "_Forward"
+msgstr "Vi_deresend"
+
+#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:93
+msgid "_Select"
+msgstr "_Vælg"
+
+#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
+msgid "_Copy Text"
+msgstr "_Kopiér tekst"
+
+#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
+msgid "_Copy Image"
+msgstr "_Kopiér billede"
+
+#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
+msgid "S_ave Image"
+msgstr "_Gem billede"
+
+#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:106
+msgid "_Permalink"
+msgstr "_Permalink"
+
+#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
+msgid "_View Source"
+msgstr "Vis _kilde"
+
+#: data/resources/ui/event-menu.ui:63 data/resources/ui/event-menu.ui:118
+msgid "Re_move"
+msgstr "_Fjern"
+
+#: data/resources/ui/event-source-dialog.ui:5
+msgid "Event Source"
+msgstr "Begivenhedskilde"
+
+#: data/resources/ui/greeter.ui:43
+msgid ""
+"You are running an early stage development version. Be aware it is a work in "
+"progress and far from complete yet."
+msgstr ""
+"Du kører en version på et tidligt udviklingsstadie. Du skal være opmærksom "
+"på, at den er under udvikling og langt fra færdig endnu."
+
+#. Fractal is the application name and shouldn't be translated
+#: data/resources/ui/greeter.ui:83
+msgid "Welcome to Fractal"
+msgstr "Velkommen til Fractal"
+
+#: data/resources/ui/greeter.ui:108
+msgid "_Log in"
+msgstr "_Log ind"
+
+#: data/resources/ui/greeter.ui:118
+msgid "_Create Account"
+msgstr "_Opret konto"
+
+#: data/resources/ui/identity-verification-widget.ui:46
+#: src/session/content/room_history/verification_info_bar.rs:177
+msgid "Decline"
+msgstr "Afvis"
+
+#: data/resources/ui/identity-verification-widget.ui:56
+#: src/session/content/room_history/verification_info_bar.rs:176
+msgid "Verify"
+msgstr "Bekræft"
+
+#: data/resources/ui/identity-verification-widget.ui:109
+#: data/resources/ui/identity-verification-widget.ui:210
+msgid "Can’t scan QR code?"
+msgstr "Kan du ikke skanne QR-koden?"
+
+#: data/resources/ui/identity-verification-widget.ui:117
+#: data/resources/ui/identity-verification-widget.ui:227
+msgid "Compare Emoji"
+msgstr "Sammenlign emojis"
+
+#: data/resources/ui/identity-verification-widget.ui:144
+msgid "Scan Complete"
+msgstr "Skanning fuldført"
+
+#: data/resources/ui/identity-verification-widget.ui:219
+msgid "Scan QR code with this session"
+msgstr "Skan QR-kode med denne session"
+
+#: data/resources/ui/identity-verification-widget.ui:287
+msgid "Do Not Match"
+msgstr "Matcher ikke"
+
+#: data/resources/ui/identity-verification-widget.ui:297
+msgid "Match"
+msgstr "Matcher"
+
+#: data/resources/ui/identity-verification-widget.ui:347
+msgid "Done"
+msgstr "Færdig"
+
+#: data/resources/ui/identity-verification-widget.ui:416
+msgid "Confirm Scan"
+msgstr "Bekræft skanning"
+
+#: data/resources/ui/login-advanced-dialog.ui:5
+msgid "Homeserver Discovery"
+msgstr "Registrering af hjemmeserver"
+
+#: data/resources/ui/login-advanced-dialog.ui:14
+msgid ""
+"Auto-discovery, also known as “well-known lookup”, allows to discover the "
+"URL of a Matrix homeserver from a domain name. This should only be disabled "
+"if your homeserver doesn’t support auto-discovery or if you want to provide "
+"the URL yourself."
+msgstr ""
+"Automatisk registrering, også kendt som “velkendt opslag”, gør det muligt at "
+"finde URL'en for en Matrix-hjemmeserver ud fra et domænenavn. Dette bør kun "
+"deaktiveres, hvis din hjemmeserver ikke understøtter automatisk "
+"registrering, eller hvis du selv ønsker at angive URL'en."
+
+#: data/resources/ui/login-advanced-dialog.ui:17
+msgid "_Auto-discovery"
+msgstr "_Automatisk registrering"
+
+#: data/resources/ui/login.ui:23
+msgid "_Next"
+msgstr "_Næste"
+
+#: data/resources/ui/login.ui:130 src/login/mod.rs:341
+msgid "Homeserver URL"
+msgstr "Hjemmeserver-URL"
+
+#: data/resources/ui/login.ui:153
+msgid "Matrix Username"
+msgstr "Matrix-brugernavn"
+
+#: data/resources/ui/login.ui:165
+msgid "Password"
+msgstr "Adgangskode"
+
+#: data/resources/ui/login.ui:171
+msgid "_Forgot Password?"
+msgstr "Har du _glemt adgangskoden?"
+
+#: data/resources/ui/login.ui:216
+msgid "Please follow the steps in the browser."
+msgstr "Følg trinnene i browseren."
+
+#: data/resources/ui/member-menu.ui:6
+msgid "_Verify"
+msgstr "_Bekræft"
+
+#: data/resources/ui/member-menu.ui:14
+msgid "Make _Mod"
+msgstr "Gør til _moderator"
+
+#: data/resources/ui/member-menu.ui:20
+msgid "Make _Admin"
+msgstr "Gør til _administrator"
+
+#: data/resources/ui/member-menu.ui:26
+msgid "_Kick"
+msgstr "_Spark ud"
+
+#: data/resources/ui/room-creation.ui:4
+msgid "Create new Room"
+msgstr "Opret nyt rum"
+
+#: data/resources/ui/room-creation.ui:22
+msgid "C_reate"
+msgstr "O_pret"
+
+#: data/resources/ui/room-creation.ui:58
+msgid "Room Name"
+msgstr "Rumnavn"
+
+#: data/resources/ui/room-creation.ui:93
+msgid "Visibility"
+msgstr "Synlighed"
+
+#: data/resources/ui/room-creation.ui:103
+msgid "_Private"
+msgstr "_Privat"
+
+#: data/resources/ui/room-creation.ui:110
+msgid "P_ublic"
+msgstr "O_ffentlig"
+
+#: data/resources/ui/room-creation.ui:122
+msgid "Room Address"
+msgstr "Rumadresse"
+
+#: data/resources/ui/session-verification.ui:49
+#: src/session/content/verification/identity_verification_widget.rs:538
+msgid "Get Another Device"
+msgstr "Hent en anden enhed"
+
+#: data/resources/ui/session-verification.ui:60
+#: src/session/content/verification/identity_verification_widget.rs:540
+msgid "Accept the verification request from another session or device."
+msgstr "Acceptér bekræftelsesanmodningen fra en anden session eller enhed."
+
+#: data/resources/ui/session-verification.ui:73
+msgid "No other devices logged into this account?"
+msgstr "Ingen andre enheder logget ind på denne konto?"
+
+#: data/resources/ui/session-verification.ui:81
+#: data/resources/ui/session-verification.ui:176
+msgid "Recovery"
+msgstr "Gendannelse"
+
+#: data/resources/ui/session-verification.ui:91
+#: src/session/content/verification/session_verification.rs:240
+msgid "Reset"
+msgstr "Nulstil"
+
+#: data/resources/ui/session-verification.ui:128
+msgid "Setup Encryption Identity"
+msgstr "Indstil krypteringsidentitet"
+
+#: data/resources/ui/session-verification.ui:139
+msgid ""
+"You need to setup an encryption identity, since this is the first time you "
+"logged into your account."
+msgstr ""
+"Du skal indstille en krypteringsidentitet, da det er første gang, du er "
+"logget på din konto."
+
+#: data/resources/ui/session-verification.ui:147
+msgid "Setup"
+msgstr "Opsætning"
+
+#: data/resources/ui/session-verification.ui:187
+msgid ""
+"Without another device you need a recovery passphrase or key to access your "
+"messages"
+msgstr ""
+"Uden en anden enhed har du brug for en gendannelsesadgangskode eller -nøgle "
+"for at tilgå dine meddelelser"
+
+#: data/resources/ui/session-verification.ui:195
+#: data/resources/ui/session-verification.ui:250
+msgid "Recovery Passphrase"
+msgstr "Gendannelsesadgangskode"
+
+#: data/resources/ui/session-verification.ui:204
+#: data/resources/ui/session-verification.ui:314
+msgid "Recovery Key"
+msgstr "Gendannelsesnøgle"
+
+#: data/resources/ui/session-verification.ui:213
+msgid ""
+"If you don’t have any of these you can reset your identity, but be aware "
+"this makes your old messages inaccessible forever."
+msgstr ""
+"Har du ingen af dem, kan du nulstille din identitet, men vær opmærksom på, "
+"at det gør dine gamle beskeder utilgængelige for altid."
+
+#: data/resources/ui/session-verification.ui:222
+msgid "Reset Identity"
+msgstr "Nulstil identitet"
+
+#: data/resources/ui/session-verification.ui:261
+msgid ""
+"Your Recovery Passphrase was set up when you first created this account."
+msgstr "Din gendannelsesadgangskode blev indstillet, da du oprettede kontoen."
+
+#: data/resources/ui/session-verification.ui:269
+msgid "If you opted for a Recovery Key instead go back and choose that option."
+msgstr ""
+"Hvis du i stedet valgte en gendannelsesnøgle, så gå tilbage og vælg det."
+
+#: data/resources/ui/session-verification.ui:280
+msgid "Passphrase"
+msgstr "Adgangskode"
+
+#: data/resources/ui/session-verification.ui:285
+#: data/resources/ui/session-verification.ui:350
+msgid "Next"
+msgstr "Næste"
+
+#: data/resources/ui/session-verification.ui:325
+msgid "Your Recovery Key was set up when you first created this account."
+msgstr "Din gendannelsesnøgle blev indstillet, da du oprettede kontoen."
+
+#: data/resources/ui/session-verification.ui:333
+msgid ""
+"If you opted for a Recovery Passphrase instead go back and choose that "
+"option."
+msgstr ""
+"Hvis du i stedet valgte en gendannelsesadgangskode, så gå tilbage og vælg "
+"det."
+
+#: data/resources/ui/shortcuts.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Generelt"
+
+#: data/resources/ui/shortcuts.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Vis genveje"
+
+#: data/resources/ui/shortcuts.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Afslut"
+
+#: data/resources/ui/shortcuts.ui:26
+msgctxt "shortcut window"
+msgid "Search Room List"
+msgstr "Søg efter oversigt over rum"
+
+#: data/resources/ui/shortcuts.ui:32
+msgctxt "shortcut window"
+msgid "Close Room"
+msgstr "Luk rum"
+
+#: data/resources/ui/sidebar-room-row.ui:18
+msgid "Mark as _Favorite"
+msgstr "Markér som _favorit"
+
+#: data/resources/ui/sidebar-room-row.ui:23
+msgid "Unmark as _Favorite"
+msgstr "Fjern markering som _favorit"
+
+#: data/resources/ui/sidebar-room-row.ui:28
+msgid "Mark as Low _Priority"
+msgstr "Markér som lav _prioritet"
+
+#: data/resources/ui/sidebar-room-row.ui:33
+msgid "Unmark as Low _Priority"
+msgstr "Fjern markering som lav _prioritet"
+
+#: data/resources/ui/sidebar-room-row.ui:45
+msgid "Re_join Room"
+msgstr "_Deltag i rum igen"
+
+#: data/resources/ui/sidebar-room-row.ui:50
+msgid "_Forget Room"
+msgstr "_Glem rum"
+
+#: data/resources/ui/sidebar.ui:6
+msgid "_New Room"
+msgstr "_Nyt rum"
+
+#: data/resources/ui/sidebar.ui:12
+msgid "_Preferences"
+msgstr "_Indstillinger"
+
+#: data/resources/ui/sidebar.ui:16
+msgid "_Keyboard Shortcuts"
+msgstr "_Tastaturgenveje"
+
+#: data/resources/ui/sidebar.ui:20
+msgid "_About Fractal"
+msgstr "_Om Fractal"
+
+#: data/resources/ui/sidebar.ui:41
+msgid "Switch Accounts"
+msgstr "Skift konto"
+
+#: data/resources/ui/sidebar.ui:63
+msgid "App Settings Menu"
+msgstr "Programindstillingsmenu"
+
+#: data/resources/ui/sidebar.ui:73
+msgid "Toggle Room Search"
+msgstr "Slå rumsøgning til/fra"
+
+#: data/resources/ui/sidebar.ui:85
+msgid "Room Search"
+msgstr "Rumsøgning"
+
+#: data/resources/ui/sidebar.ui:86
+msgid "Search for a room"
+msgstr "Søg efter et rum"
+
+#: data/resources/ui/sidebar.ui:107
+msgid "Sidebar"
+msgstr "Sidebjælke"
+
+#: data/resources/ui/sidebar.ui:108
+msgid "Allows to navigate between rooms"
+msgstr "Tillader navigering mellem rum"
+
+#: data/resources/ui/qr-code-scanner.ui:21
+msgid "Unable to connect to Camera"
+msgstr "Kan ikke forbinde til kamera"
+
+#: src/application.rs:167
+msgid "Learn more about Fractal"
+msgstr "Lær mere om Fractal"
+
+#: src/application.rs:171
+msgid "A Matrix client for GNOME"
+msgstr "En Matrix-klient til GNOME"
+
+#: src/application.rs:172
+msgid "© 2017-2022 The Fractal Team"
+msgstr "© 2017-2022 Fractal-holdet"
+
+#: src/application.rs:186
+msgid "translator-credits"
+msgstr ""
+"scootergrisen\n"
+"Alan Mortensen <alanmortensen.am@gmail.com>\n"
+"\n"
+"Dansk-gruppen\n"
+"Websted http://dansk-gruppen.dk\n"
+"E-mail <dansk@dansk-gruppen.dk>"
+
+#. This can't be added via the builder
+#: src/application.rs:190
+msgid "Name by"
+msgstr "Navn af"
+
+#: src/components/editable_avatar.rs:334
+msgid "Choose Avatar"
+msgstr "Vælg profilbillede"
+
+#: src/components/editable_avatar.rs:343
+msgid "Choose"
+msgstr "Vælg"
+
+#: src/components/editable_avatar.rs:366
+msgid "The chosen file is not an image"
+msgstr "Den valgte fil er ikke et billede"
+
+#: src/components/editable_avatar.rs:374
+msgid "Could not determine the type of the chosen file"
+msgstr "Kunne ikke bestemme den valgte fils type"
+
+#: src/components/editable_avatar.rs:383
+msgid "No file was chosen"
+msgstr "Ingen fil valgt"
+
+#: src/error_page.rs:108
+msgid "Session removed successfully."
+msgstr "Sessionen blev fjernet."
+
+#: src/error_page.rs:120
+msgid "Could not remove session from secret storage"
+msgstr "Kunne ikke fjerne session fra hemmeligt lager"
+
+#: src/login/mod.rs:336
+msgid "Domain Name"
+msgstr "Domænenavn"
+
+#: src/login/mod.rs:338
+msgid "The domain of your Matrix homeserver, for example gnome.org"
+msgstr "Din Matrix-hjemmeservers domæne, f.eks. gnome.org"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/login/mod.rs:345
+msgid "The URL of your Matrix homeserver, for example {address}"
+msgstr "Din Matrix-hjemmeservers URL, f.eks. {address}"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable
+#. name.
+#: src/login/mod.rs:471
+msgid "Connecting to {domain_name}"
+msgstr "Forbinder til {domain_name}"
+
+#: src/secret.rs:52
+msgid "Could not unlock the secret storage"
+msgstr "Kunne ikke låse det hemmelige lager op"
+
+#: src/secret.rs:55 src/secret.rs:59
+msgid "An unknown error occurred when interacting with the secret storage"
+msgstr ""
+"Der opstod en ukendt fejl, da der blev interageret med det hemmelige lager"
+
+#: src/secret.rs:88
+msgid "Malformed homeserver in stored session"
+msgstr "Fejlformateret hjemmeserver i gemt session"
+
+#: src/secret.rs:95
+msgid "Could not find homeserver in stored session"
+msgstr "Kunne ikke finde hjemmeserver i gemt session"
+
+#: src/secret.rs:109
+msgid "Malformed user ID in stored session"
+msgstr "Fejlformateret bruger-id i gemt session"
+
+#: src/secret.rs:116
+msgid "Could not find user ID in stored session"
+msgstr "Kunne ikke finde bruger-id i gemt session"
+
+#: src/secret.rs:125
+msgid "Could not find device ID in stored session"
+msgstr "Kunne ikke finde enheds-id i gemt session"
+
+#: src/secret.rs:134
+msgid "Could not find database path in stored session"
+msgstr "Kunne ikke finde databasesti i gemt session"
+
+#: src/secret.rs:145
+msgid "Malformed secret in stored session"
+msgstr "Fejlformateret hemmelighed i gemt session"
+
+#: src/secret.rs:152
+msgid "No secret in stored session"
+msgstr "Ingen hemmelighed i gemt session"
+
+#: src/secret.rs:159
+msgid "Could not get secret in stored session"
+msgstr "Kunne ikke hente hemmelighed i gemt session"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable
+#. name.
+#: src/secret.rs:272
+msgid "Fractal: Matrix credentials for {user_id}"
+msgstr "Fractal: Matrix-legitimationsoplysninger for {user_id}"
+
+#: src/session/account_settings/devices_page/device_list.rs:147
+msgid "Failed to load connected device."
+msgstr "Kunne ikke indlæse forbundet enhed."
+
+#: src/session/account_settings/devices_page/device_list.rs:192
+msgid "Failed to load the list of connected devices."
+msgstr "Kunne ikke indlæse listen over forbundne enheder."
+
+#: src/session/account_settings/devices_page/device_row.rs:110
+msgid "Disconnect Session"
+msgstr "Afbryd session"
+
+#: src/session/account_settings/devices_page/device_row.rs:112
+msgid "Log Out"
+msgstr "Log ud"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/account_settings/devices_page/device_row.rs:216
+msgid "Failed to disconnect device “{device_name}”"
+msgstr "Kunne ikke frakoble enheden “{device_name}”"
+
+#: src/session/account_settings/devices_page/device_row.rs:230
+msgid ""
+"Fractal’s support for encryption is unstable so you might lose access to "
+"your encrypted message history. It is recommended to backup your encryption "
+"keys from another Matrix client before proceeding."
+msgstr ""
+"Fractals understøttelse af kryptering er ustabil, så du kan miste adgangen "
+"til din krypterede beskedhistorik. Det anbefales at tage en sikkerhedskopi "
+"af dine krypteringsnøgler fra en anden Matrix-klient, før du fortsætter."
+
+#. Translators: Time in 24h format
+#: src/session/account_settings/devices_page/device_row.rs:288
+msgid "Last seen at %H:%M"
+msgstr "Sidst set kl. %H:%M"
+
+#. Translators: Time in 12h format
+#: src/session/account_settings/devices_page/device_row.rs:291
+msgid "Last seen at %l:%M %p"
+msgstr "Sidst set kl. %l:%M %p"
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:300
+#, no-c-format
+msgid "Last seen Yesterday at %H:%M"
+msgstr "Sidst set i går kl. %H:%M"
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:305
+#, no-c-format
+msgid "Last seen Yesterday at %l:%M %p"
+msgstr "Sidst set i går kl. %l:%M %p"
+
+#. Translators: this is the name of the week day followed by
+#. a time in 24h format. i.e. "Last seen Monday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:314
+#, no-c-format
+msgid "Last seen %A at %H:%M"
+msgstr "Sidst set %A kl. %H:%M"
+
+#. Translators: this is the week day name followed by
+#. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:319
+#, no-c-format
+msgid "Last seen %A at %l:%M %p"
+msgstr "Sidst set %A kl. %l:%M %p"
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 24h format i.e. "Last seen February 3 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:327
+#, no-c-format
+msgid "Last seen %B %-e at %H:%M"
+msgstr "Sidst set %-e. %B kl. %H:%M"
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 12h format i.e. "Last seen February 3 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:333
+#, no-c-format
+msgid "Last seen %B %-e at %l:%M %p"
+msgstr "Sidst set %-e. %B kl. %l:%M %p"
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:340
+#, no-c-format
+msgid "Last seen %B %-e %Y at %H:%M"
+msgstr "Sidst set %-e. %B %Y kl. %H:%M"
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:346
+#, no-c-format
+msgid "Last seen %B %-e %Y at %l:%M %p"
+msgstr "Sidst set %-e. %B %Y kl. %l:%M %p"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:217
+msgid "Password must be at least 8 characters long"
+msgstr "Adgangskoden skal mindst være på 8 tegn"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:220
+msgid "Password must have at least one lower-case letter"
+msgstr "Adgangskoden skal have mindst et lille bogstav"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:224
+msgid "Password must have at least one upper-case letter"
+msgstr "Adgangskoden skal have mindst et stort bogstav"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:227
+msgid "Password must have at least one digit"
+msgstr "Adgangskoden skal have mindst et tal"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:229
+msgid "Password must have at least one symbol"
+msgstr "Adgangskoden skal have mindst et specialtegn"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:255
+msgid "Passwords do not match"
+msgstr "Adgangskoderne er ikke ens"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:313
+msgid "Password changed successfully"
+msgstr "Adgangskoden ændret"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:329
+msgid "Password rejected for being too weak"
+msgstr "Adgangskoden afvist, da den er for svag"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:336
+msgid "Could not change password"
+msgstr "Kunne ikke ændre adgangskoden"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:200
+msgid "Account successfully deactivated"
+msgstr "Kontoen blev deaktiveret"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:210
+msgid "Could not deactivate account"
+msgstr "Kontoen kunne ikke deaktiveres"
+
+#: src/session/account_settings/user_page/mod.rs:227
+msgid "Avatar removed successfully"
+msgstr "Profilbilledet blev fjernet"
+
+#: src/session/account_settings/user_page/mod.rs:245
+msgid "Avatar changed successfully"
+msgstr "Profilbilledet blev ændret"
+
+#: src/session/account_settings/user_page/mod.rs:291
+msgid "Could not upload avatar"
+msgstr "Kunne ikke overføre profilbilledet"
+
+#: src/session/account_settings/user_page/mod.rs:316
+msgid "Could not change avatar"
+msgstr "Kunne ikke ændre profilbilledet"
+
+#: src/session/account_settings/user_page/mod.rs:348
+msgid "Could not remove avatar"
+msgstr "Kunne ikke fjerne profilbilledet"
+
+#: src/session/account_settings/user_page/mod.rs:397
+msgid "Name changed successfully"
+msgstr "Navnet blev ændret"
+
+#: src/session/account_settings/user_page/mod.rs:436
+msgid "Could not change display name"
+msgstr "Kunne ikke ændre det viste navn"
+
+#: src/session/content/explore/public_room_row.rs:222
+msgid "View"
+msgstr "Vis"
+
+#: src/session/content/explore/public_room_row.rs:224
+msgid "Join"
+msgstr "Deltag"
+
+#: src/session/content/invite.rs:136
+msgid "{user} invited you"
+msgstr "{user} inviterede dig"
+
+#: src/session/content/room_details/member_page/mod.rs:237
+msgid "1 Member"
+msgid_plural "{n} Members"
+msgstr[0] "1 medlem"
+msgstr[1] "{n} medlemmer"
+
+#: src/session/content/room_details/member_page/mod.rs:296
+msgid "1 Invited"
+msgid_plural "{n} Invited"
+msgstr[0] "1 inviteret"
+msgstr[1] "{n} inviteret"
+
+#: src/session/content/room_details/mod.rs:169
+msgid "Save Details"
+msgstr "Gem detaljer"
+
+#: src/session/content/room_details/mod.rs:170
+msgid "Edit Details"
+msgstr "Redigér detaljer"
+
+#: src/session/content/room_details/mod.rs:213
+msgid "Choose avatar"
+msgstr "Vælg profilbillede"
+
+#: src/session/content/room_details/mod.rs:244
+msgid "Invite new Members"
+msgstr "Invitér nye medlemmer"
+
+#: src/session/content/room_history/item_row.rs:201
 msgid "New Messages"
 msgstr "Nye meddelelser"
 
-#: fractal-gtk/src/widgets/room_settings.rs:213
-msgid "Room · {} member"
-msgid_plural "Room · {} members"
-msgstr[0] "Rum · {} medlem"
-msgstr[1] "Rum · {} medlemer"
+#: src/session/content/room_history/message_row/audio.rs:245
+#: src/session/content/room_history/message_row/audio.rs:249
+msgid "Could not retrieve audio file"
+msgstr "Kunne ikke modtage lydfil"
 
-#: fractal-gtk/src/widgets/room_settings.rs:645
-msgid "{} member"
-msgid_plural "{} members"
-msgstr[0] "{} medlem"
-msgstr[1] "{} medlemmer"
+#: src/session/content/room_history/message_row/audio.rs:262
+msgid "Error reading audio file"
+msgstr "Der opstod en fejl under læsning af lydfil"
 
-#: fractal-gtk/src/widgets/roomlist.rs:475
-msgid "Invites"
-msgstr "Invitationer"
+#: src/session/content/room_history/message_row/location.rs:111
+msgid "Location at latitude {latitude} and longitude {longitude}"
+msgstr "Placering ved breddegrad {latitude} og længdegrad {longitude}"
 
-#: fractal-gtk/src/widgets/roomlist.rs:476
-msgid "You don’t have any invitations"
-msgstr "Du kan ikke nogen invitationer"
+#: src/session/content/room_history/message_row/media.rs:445
+#: src/session/media_viewer.rs:244
+msgid "Image file not supported"
+msgstr "Billedfil understøttes ikke"
 
-#: fractal-gtk/src/widgets/roomlist.rs:480
-msgid "Favorites"
-msgstr "Favoritter"
+#: src/session/content/room_history/message_row/media.rs:484
+#: src/session/content/room_history/message_row/media.rs:489
+msgid "Could not retrieve media"
+msgstr "Kunne ikke modtage medie"
 
-#: fractal-gtk/src/widgets/roomlist.rs:481
-msgid "Drag and drop rooms here to add them to your favorites"
-msgstr "Træk og slip rum her for at tilføje dem til dine favoritter"
+#: src/session/content/room_history/message_row/mod.rs:380
+msgid "Identity verification was started"
+msgstr "Bekræftelse af identitet påbegyndt"
 
-#: fractal-gtk/src/widgets/roomlist.rs:485
+#: src/session/content/room_history/message_row/mod.rs:393
+#: src/session/content/room_history/message_row/mod.rs:440
+msgid "Unsupported event"
+msgstr "Begivenhed ikke understøttet"
+
+#: src/session/content/room_history/message_row/mod.rs:418
+msgid "Fractal couldn’t decrypt this message."
+msgstr "Fractal kunne ikke afkode meddelelsen."
+
+#: src/session/content/room_history/message_row/mod.rs:429
+msgid "This message was removed."
+msgstr "Meddelelsen blev fjernet."
+
+#: src/session/content/room_history/mod.rs:158
+msgid "The location request has been cancelled."
+msgstr "Placeringsanmodningen blev annulleret."
+
+#: src/session/content/room_history/mod.rs:162
+msgid "Failed to retrieve current location."
+msgstr "Kunne ikke hente nuværende placering."
+
+#. TODO Get the actual name of the file by reading
+#. the text/plain mime type.
+#: src/session/content/room_history/mod.rs:400
+#: src/session/content/room_history/mod.rs:774
+msgid "Image"
+msgstr "Billede"
+
+#: src/session/content/room_history/mod.rs:832
+msgid "User Location {geo_uri} at {iso8601_datetime}"
+msgstr "Brugerplacering {geo_uri} {iso8601_datetime}"
+
+#: src/session/content/room_history/state_row/creation.rs:62
+msgid "This is the continuation of an upgraded room."
+msgstr "Dette er fortsættelsen af et opgraderet rum."
+
+#: src/session/content/room_history/state_row/creation.rs:68
+msgid "This is the beginning of this room."
+msgstr "Dette er begyndelsen på dette rum."
+
+#: src/session/content/room_history/state_row/mod.rs:70
+msgid "This room is encrypted from this point on."
+msgstr "Dette rum er krypteret her fra og fremefter."
+
+# på engelsk er det flere personer, men der er tilsyneladende kun en varabel, så mon ikke det kun er en person? Og at their bruges for ikke at skulle tage stilling til his/hers?
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:94
+msgid "{previous_user_name} removed their display name."
+msgstr "{previous_user_name} fjernede sit viste navn."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:101
+msgid "{previous_user_name} changed their display name to {new_user_name}."
+msgstr "{previous_user_name} ændrede sit viste navn til {new_user_name}."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:110
+msgid "{user_id} set their display name to {new_user_name}."
+msgstr "{user_id} angav sit viste navn til {new_user_name}."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:125
+msgid "{user} set their avatar."
+msgstr "{user} angav sit profilbillede."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:132
+msgid "{user} removed their avatar."
+msgstr "{user} fjernede sit profilbillede."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:139
+msgid "{user} changed their avatar."
+msgstr "{user} ændrede sit profilbillede."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:150
+msgid "{user} joined this room."
+msgstr "{user} deltager i dette rum."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/state_row/mod.rs:156
+#: src/session/content/room_history/state_row/mod.rs:237
+msgid "{user} was invited to this room."
+msgstr "{user} blev inviteret til dette rum."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:164
+msgid "{user} requested to be invited to this room."
+msgstr "{user} anmodede om at blive inviteret til dette rum."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:177
+msgid "{user} rejected the invite."
+msgstr "{user} afviste invitationen."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:184
+msgid "The invitation for {user} has been revoked."
+msgstr "Invitationen til {user} blev tilbagekaldt."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:195
+msgid "{user} was unbanned."
+msgstr "Forvisningen af {user} blev ophævet."
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:206
+msgid "{user} left the room."
+msgstr "{user} forlod rummet."
+
+#. Translators: Do NOT translate the content between '{' and
+#. '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:211
+msgid "{user} was kicked out of the room."
+msgstr "{user} blev sparket ud af rummet."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#: src/session/content/room_history/state_row/mod.rs:220
+msgid "{user} was banned."
+msgstr "{user} blev forvist."
+
+#: src/session/content/room_history/state_row/mod.rs:225
+msgid "An unsupported room member event was received."
+msgstr "En rummedlemsbegivenhed, der ikke understøttes, blev modtaget."
+
+#: src/session/content/room_history/state_row/mod.rs:246
+msgid "An unsupported state event was received."
+msgstr "En tilstandsbegivenhed, der ikke understøttes, blev modtaget."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/verification_info_bar.rs:170
+msgid "{user_name} wants to be verified"
+msgstr "{user_name} vil gerne bekræftes"
+
+#: src/session/content/room_history/verification_info_bar.rs:180
+msgid "Verification in progress"
+msgstr "Bekræftelse i gang"
+
+#: src/session/content/verification/identity_verification_widget.rs:493
+#: src/session/content/verification/identity_verification_widget.rs:522
+msgid "Verify the new session from the current session."
+msgstr "Bekræft den nye session fra den nuværende session."
+
+#: src/session/content/verification/identity_verification_widget.rs:496
+msgid "Scan the QR code from another session logged into this account."
+msgstr "Skan QR-koden fra en anden session, som er logget på denne konto."
+
+#: src/session/content/verification/identity_verification_widget.rs:498
+#: src/session/content/verification/identity_verification_widget.rs:525
+msgid ""
+"You scanned the QR code successfully. You may need to confirm the "
+"verification from the other session."
+msgstr "QR-koden blev skannet. De skal måske bekræfte fra den anden session."
+
+#: src/session/content/verification/identity_verification_widget.rs:502
+msgid "Scan this QR code from the other session."
+msgstr "Skan QR-koden fra den anden session."
+
+#: src/session/content/verification/identity_verification_widget.rs:505
+#: src/session/content/verification/identity_verification_widget.rs:532
+msgid "Check if the same emoji appear in the same order on the other device."
+msgstr ""
+"Tjek om de samme emojis optræder i den samme rækkefølge på den anden enhed."
+
+#: src/session/content/verification/identity_verification_widget.rs:507
+#: src/session/content/verification/identity_verification_widget.rs:534
+msgid "Request Complete"
+msgstr "Anmodning fuldført"
+
+#: src/session/content/verification/identity_verification_widget.rs:509
+msgid "This session is ready to send and receive secure messages."
+msgstr "Denne session er klar til at sende og modtage sikre meddelelser."
+
+#: src/session/content/verification/identity_verification_widget.rs:511
+msgid "Get Started"
+msgstr "Kom i gang"
+
+#: src/session/content/verification/identity_verification_widget.rs:513
+#: src/session/content/verification/identity_verification_widget.rs:543
+msgid "Does the other session show a confirmation shield?"
+msgstr "Viser den anden session et bekræftelsesskjold?"
+
+#: src/session/content/verification/identity_verification_widget.rs:519
+msgid "Login Request From Another Session"
+msgstr "Anmodning om login fra en anden session"
+
+#: src/session/content/verification/identity_verification_widget.rs:524
+msgid ""
+"Scan the QR code from this session from another session logged into this "
+"account."
+msgstr ""
+"Skan QR-koden fra denne session i en anden session, som er logget på denne "
+"konto."
+
+#: src/session/content/verification/identity_verification_widget.rs:528
+msgid "Scan this QR code from the newly logged in session."
+msgstr "Skan QR-koden fra sessionen, der lige er logget på."
+
+#: src/session/content/verification/identity_verification_widget.rs:536
+msgid "The new session is now ready to send and receive secure messages."
+msgstr "Den nye session er klar til at sende og modtage sikre meddelelser."
+
+#: src/session/content/verification/identity_verification_widget.rs:548
+#: src/session/content/verification/identity_verification_widget.rs:554
+#: src/session/content/verification/identity_verification_widget.rs:564
+#: src/session/content/verification/identity_verification_widget.rs:571
+msgid "Verification Request"
+msgstr "Bekræftelsesanmodning"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:553
+msgid ""
+"{user} asked to be verified. Verifying a user increases the security of the "
+"conversation."
+msgstr ""
+"{user} bad om bekræftelse. Bekræftelse af en bruger forøger sikkerheden i "
+"samtalen."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:558
+msgid "Scan the QR code shown on the device of {user}."
+msgstr "Skan QR-koden vist på {user}s enhed."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:563
+msgid ""
+"You scanned the QR code successfully. {user} may need to confirm the "
+"verification."
+msgstr "QR-koden blev skannet. {user} skal måske bekræfte."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:568
+msgid "Ask {user} to scan this QR code from their session."
+msgstr "Bed {user} om at skanne denne QR-kode fra deres session."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:575
+msgid ""
+"Ask {user} if they see the following emoji appear in the same order on their "
+"screen."
+msgstr ""
+"Spørg {user}, om han/hun ser følgende emojis i den samme rækkefølge på sin "
+"skærm."
+
+#: src/session/content/verification/identity_verification_widget.rs:578
+msgid "Verification Complete"
+msgstr "Bekræftelse fuldført"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:581
+msgid ""
+"{user} is verified and you can now be sure that your communication will be "
+"private."
+msgstr ""
+"{user} er nu bekræftet, og du kan være sikker på, at kommunikationen vil "
+"være fortrolig."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:585
+msgid "Waiting for {user}"
+msgstr "Venter på {user}"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:591
+msgid "Ask {user} to accept the verification request."
+msgstr "Bed {user} om at acceptere bekræftelsesanmodningen."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:597
+msgid "Does {user} see a confirmation shield on their session?"
+msgstr "Ser {user} et bekræftelsesskjold i deres session?"
+
+#: src/session/content/verification/session_verification.rs:237
+msgid ""
+"If you lost access to all other sessions you can create a new crypto "
+"identity. Be careful because this will reset all verified users and make "
+"previously encrypted conversations unreadable."
+msgstr ""
+"Har du mistet adgangen til alle andre sessioner, kan du oprette en ny "
+"kryptoidentitet. Vær forsigtig, for dette vil nulstille alle bekræftede "
+"brugere og gøre tidligere krypterede samtaler ulæselige."
+
+#: src/session/content/verification/session_verification.rs:320
+msgid "You cancelled the authentication needed to create the encryption keys."
+msgstr ""
+"Du annullerede godkendelsen, som er nødvendig for at oprette "
+"krypteringsnøglerne."
+
+#: src/session/content/verification/session_verification.rs:324
+msgid "An error occurred during the creation of the encryption keys."
+msgstr "Der opstod en fejl under oprettelsen af krypteringsnøglerne."
+
+#: src/session/media_viewer.rs:251
+msgid "Could not retrieve image"
+msgstr "Kunne ikke modtage billede"
+
+#: src/session/media_viewer.rs:288
+msgid "Could not retrieve video"
+msgstr "Kunne ikke modtage video"
+
+#: src/session/mod.rs:463
+msgid "Unable to store session"
+msgstr "Kunne ikke gemme session"
+
+#: src/session/mod.rs:760
+msgid "Failed to logout the session."
+msgstr "Kunne ikke logge ud af sessionen."
+
+#: src/session/room/event_actions.rs:205
+msgid "Save File"
+msgstr "Gem fil"
+
+#: src/session/room/member_role.rs:48
+msgid "Admin"
+msgstr "Administrator"
+
+#: src/session/room/member_role.rs:49
+msgid "Moderator"
+msgstr "Moderator"
+
+#: src/session/room/member_role.rs:50
+msgid "Normal user"
+msgstr "Almindelig bruger"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:427
+msgid "Failed to forget {room}."
+msgstr "Kunne ikke glemme {rum}."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:574
+msgid "Failed to move {room} from {previous_category} to {new_category}."
+msgstr "Kunne ikke flytte {room} fra {previous_category} til {new_category}."
+
+#: src/session/room/mod.rs:869
+msgid "Unknown"
+msgstr "Ukendt"
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1282
+msgid "Failed to accept invitation for {room}. Try again later."
+msgstr "Kunne ikke acceptere invitation til {room}. Prøv igen senere."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1316
+msgid "Failed to reject invitation for {room}. Try again later."
+msgstr "Kunne ikke afvise invitation til {room}. Prøv igen senere."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1486
+msgid "Failed to invite {user} to {room}. Try again later."
+msgstr "Kunne ikke invitere {user} til {room}. Prøv igen senere."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1494
+msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
+msgid_plural ""
+"Failed to invite {user} and {n} other users to {room}. Try again later."
+msgstr[0] ""
+"Kunne ikke invitere {user} og en anden bruger til {room}. Prøv igen senere."
+msgstr[1] ""
+"Kunne ikke invitere {user} og {n} andre brugere til {room}. Prøv igen senere."
+
+#. Translators: This is a date format in the day divider without the year
+#: src/session/room/timeline/timeline_day_divider.rs:106
+msgid "%A, %B %e"
+msgstr "%A d. %e. %B"
+
+#. Translators: This is a date format in the day divider with the year
+#: src/session/room/timeline/timeline_day_divider.rs:109
+msgid "%A, %B %e, %Y"
+msgstr "%A d. %e. %B %Y"
+
+#: src/session/room_creation/mod.rs:278
+msgid "The address is already taken."
+msgstr "Adressen er allerede i brug."
+
+#: src/session/room_creation/mod.rs:301
+msgid "Too long. Use a shorter name."
+msgstr "For langt. Brug et kortere navn."
+
+#: src/session/room_creation/mod.rs:329
+msgid "Can’t contain “:”"
+msgstr "Må ikke indeholde “:”"
+
+#: src/session/room_creation/mod.rs:334
+msgid "Can’t contain “#”"
+msgstr "Må ikke indeholde “#”"
+
+#: src/session/room_creation/mod.rs:339
+msgid "Too long. Use a shorter address."
+msgstr "For langt. Brug en kortere adresse."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room_list.rs:326
+msgid "Failed to join room {room_name}. Try again later."
+msgstr "Kunne ikke deltage i rummet {room_name}. Prøv igen senere."
+
+#: src/session/sidebar/category_row.rs:161
+msgid "Join Room as Favorite"
+msgstr "Deltag i rum som favorit"
+
+#: src/session/sidebar/category_row.rs:162
+msgid "Join Room"
+msgstr "Deltag i rum"
+
+#: src/session/sidebar/category_row.rs:163
+msgid "Join Room as Low Priority"
+msgstr "Deltag i rum som lav prioritet"
+
+#: src/session/sidebar/category_row.rs:164
+msgid "Reject Invite"
+msgstr "Afvis invitation"
+
+#: src/session/sidebar/category_row.rs:168
+msgid "Unmark as Favorite"
+msgstr "Fjern markering som favorit"
+
+#: src/session/sidebar/category_row.rs:169
+#: src/session/sidebar/category_row.rs:175
+msgid "Mark as Low Priority"
+msgstr "Markér som lav prioritet"
+
+#: src/session/sidebar/category_row.rs:170
+#: src/session/sidebar/category_row.rs:176
+#: src/session/sidebar/category_row.rs:182
+msgid "Leave Room"
+msgstr "Forlad rum"
+
+#: src/session/sidebar/category_row.rs:174
+#: src/session/sidebar/category_row.rs:180
+msgid "Mark as Favorite"
+msgstr "Markér som favorit"
+
+#: src/session/sidebar/category_row.rs:181
+msgid "Unmark as Low Priority"
+msgstr "Fjern markering som lav prioritet"
+
+#: src/session/sidebar/category_row.rs:186
+msgid "Rejoin Room as Favorite"
+msgstr "Deltag igen i rum som favorit"
+
+#: src/session/sidebar/category_row.rs:187
+msgid "Rejoin Room"
+msgstr "Deltag i rum igen"
+
+#: src/session/sidebar/category_row.rs:188
+msgid "Rejoin Room as Low Priority"
+msgstr "Deltag i rum igen som lav prioritet"
+
+#: src/session/sidebar/category_type.rs:31
+msgid "Verifications"
+msgstr "Bekræftelser"
+
+#: src/session/sidebar/category_type.rs:32
+msgid "Invited"
+msgstr "Inviteret"
+
+#: src/session/sidebar/category_type.rs:33
+msgid "Favorite"
+msgstr "Favorit"
+
+#: src/session/sidebar/category_type.rs:34
 msgid "Rooms"
 msgstr "Rum"
 
-#: fractal-gtk/src/widgets/roomlist.rs:486
-msgid "You don’t have any rooms yet"
-msgstr "Du har ikke nogen rum endnu"
+#: src/session/sidebar/category_type.rs:35
+msgid "Low Priority"
+msgstr "Lav prioritet"
+
+#: src/session/sidebar/category_type.rs:36
+msgid "Historical"
+msgstr "Historisk"
+
+#. Translators: This shouldn't ever be visible to the user,
+#: src/session/sidebar/category_type.rs:38
+msgid "Outdated"
+msgstr "Forældet"
+
+#: src/session/sidebar/category_type.rs:39
+msgid "Spaces"
+msgstr "Rum"
+
+#: src/session/sidebar/entry_type.rs:21
+msgid "Explore"
+msgstr "Udforsk"
+
+#: src/session/sidebar/entry_type.rs:22
+msgid "Forget Room"
+msgstr "Glem rum"
+
+#: src/session/verification/identity_verification.rs:680
+msgid "You cancelled the verification process."
+msgstr "Du annullerede bekræftelsesprocessen."
+
+#: src/session/verification/identity_verification.rs:682
+msgid "The verification process failed because it reached a timeout."
+msgstr "Bekræftelsesprocessen mislykkedes, fordi tiden løb ud."
+
+#: src/session/verification/identity_verification.rs:685
+msgid "You accepted the request from an other session."
+msgstr "Du accepterede anmodningen fra en anden session."
+
+#: src/session/verification/identity_verification.rs:688
+msgid "The emoji did not match."
+msgstr "Emojien stemmer ikke overens."
+
+#: src/session/verification/identity_verification.rs:697
+msgid "An unknown error occurred during the verification process."
+msgstr "Der opstod en ukendt fejl under bekræftelsesprocessen."
+
+#: src/user_facing_error.rs:23
+msgid "The connection timed out. Try again later."
+msgstr "Tidsfristen for forbindelsen udløb. Prøv igen senere."
+
+#: src/user_facing_error.rs:25
+msgid "Unable to connect to the homeserver."
+msgstr "Kunne ikke forbinde til hjemmeserveren."
+
+#: src/user_facing_error.rs:30
+msgid "The provided username or password is invalid."
+msgstr "Det angivne brugernavn eller adgangskode er ugyldigt."
+
+#: src/user_facing_error.rs:31
+msgid "The account is deactivated."
+msgstr "Kontoen er deaktiveret."
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/user_facing_error.rs:38
+msgid "You exceeded the homeserver’s rate limit, retry in 1 second."
+msgid_plural "You exceeded the homeserver’s rate limit, retry in {n} seconds."
+msgstr[0] ""
+"Du overskred hjemmeserverens hastighedsgrænse. Prøv igen om et sekund."
+msgstr[1] ""
+"Du overskred hjemmeserverens hastighedsgrænse. Prøv igen om {n} sekunder."
+
+#: src/user_facing_error.rs:44
+msgid "You exceeded the homeserver’s rate limit, try again later."
+msgstr "Du overskred hjemmeserverens hastighedsgrænse. Prøv igen senere."
+
+#: src/user_facing_error.rs:54
+msgid "An unknown connection error occurred."
+msgstr "Der opstod en ukendt forbindelsesfejl."
+
+#: src/user_facing_error.rs:62
+msgid "Could not decrypt the event"
+msgstr "Kunne ikke dekryptere begivenheden"
+
+#: src/user_facing_error.rs:64 src/user_facing_error.rs:84
+msgid "An unknown error occurred."
+msgstr "Der opstod en ukendt fejl."
+
+#: src/user_facing_error.rs:71
+msgid "Could not open the store."
+msgstr "Kunne ikke åbne lageret."
+
+#: src/user_facing_error.rs:78
+msgid "This is not a valid URL"
+msgstr "Dette er ikke en gyldig URL"
+
+#: src/user_facing_error.rs:80
+msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
+msgstr ""
+"Hjemmeservers automatiske registrering mislykkedes. Prøv at indtaste hele "
+"URL'en manuelt."
+
+#. Translators: Default name for image files.
+#: src/utils.rs:190
+msgid "image"
+msgstr "billede"
+
+#. Translators: Default name for video files.
+#: src/utils.rs:192
+msgid "video"
+msgstr "video"
+
+#. Translators: Default name for audio files.
+#: src/utils.rs:194
+msgid "audio"
+msgstr "lyd"
+
+#. Translators: Default name for files.
+#: src/utils.rs:196
+msgid "file"
+msgstr "fil"
+
+#: src/window.rs:204
+msgid "Failed to restore previous sessions"
+msgstr "Kunne ikke gendanne tidligere sessioner"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Close the active room"
+#~ msgstr "Luk det aktive rum"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open / close the room sidebar search"
+#~ msgstr "Åbn/luk søgningen i rummets sidebjælke"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room in the list"
+#~ msgstr "Åbn det forrige rum i listen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room in the list"
+#~ msgstr "Åbn det næste rum i listen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room with unread messages in the list"
+#~ msgstr "Åbn det forrige rum med ulæste meddelelser i listen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room with unread messages in the list"
+#~ msgstr "Åbn det næste rum med ulæste meddelelser i listen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the first room of the list"
+#~ msgstr "Åbn det første rum i listen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the last room of the list"
+#~ msgstr "Åbn det sidste rum i listen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View older messages"
+#~ msgstr "Vis ældre meddelelser"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View newer messages"
+#~ msgstr "Vis nyere meddelelser"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Composing a new message"
+#~ msgstr "Skrive en ny meddelelse"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Write on a new line"
+#~ msgstr "Skriv på en ny linje"
+
+#~ msgid "Daniel García Moreno"
+#~ msgstr "Daniel García Moreno"
+
+#~ msgid "Type of password and token storage"
+#~ msgstr "Lagringstypen til adgangskode og token"
+
+#~ msgid "Type of password and token storage, default value is: Secret Service"
+#~ msgstr ""
+#~ "Lagringstypen til adgangskode og token — standardværdien er: Secret "
+#~ "Service"
+
+#~ msgid "If markdown sending is active"
+#~ msgstr "Om markdown-afsendelse er aktiv"
+
+#~ msgid "Whether support for sending markdown messages is on"
+#~ msgstr ""
+#~ "Om understøttelse af afsendelse af markdown-meddelelser er slået til"
+
+#~ msgid "X position of the main window on startup"
+#~ msgstr "X-placering af hovedvinduet ved opstart"
+
+#~ msgid "Y position of the main window on startup"
+#~ msgstr "Y-placering af hovedvinduet ved opstart"
+
+#~ msgid "Width of the main window on startup"
+#~ msgstr "Bredden på hovedvinduet ved opstart"
+
+#~ msgid "Height of the main window on startup"
+#~ msgstr "Højden på hovedvinduet ved opstart"
+
+#~ msgid "Other people can find you by searching for any of these identifiers."
+#~ msgstr ""
+#~ "Andre personer kan finde dig ved at søge efter disse identifikatorer."
+
+#~ msgid "Type in your name"
+#~ msgstr "Skriv dit navn"
+
+#~ msgid "Email"
+#~ msgstr "E-mail"
+
+#~ msgid "Phone"
+#~ msgstr "Telefon"
+
+#~ msgid "Device ID"
+#~ msgstr "Enheds-id"
+
+#~ msgid ""
+#~ "Deactivating your account means that you will lose all your messages, "
+#~ "contacts, and files."
+#~ msgstr ""
+#~ "Deaktivering af din konto betyder, at du mister alle dine meddelelser, "
+#~ "kontakter og filer."
+
+#~ msgid ""
+#~ "To confirm that you really want to deactivate this account type in your "
+#~ "password:"
+#~ msgstr ""
+#~ "Bekræft at du virkelig vil deaktivere kontoen ved, at skrive din "
+#~ "adgangskode:"
+
+#~ msgid "Also erase all messages"
+#~ msgstr "Slet også alle meddelelser"
+
+#~ msgid "Check your email"
+#~ msgstr "Tjek din e-mail"
+
+#~ msgid "Apply"
+#~ msgstr "Anvend"
+
+#~ msgid "New Direct Chat"
+#~ msgstr "Ny direkte chat"
+
+#~ msgid "Play"
+#~ msgstr "Afspil"
+
+#~ msgid "New direct chat"
+#~ msgstr "Ny direkte chat"
+
+#~ msgid "Start chat"
+#~ msgstr "Start chat"
+
+#~ msgid "Select room image file"
+#~ msgstr "Vælg billedfil til rummet"
+
+#~ msgid "Invitation"
+#~ msgstr "Invitation"
+
+#~ msgid "ID or Alias"
+#~ msgstr "Id eller alias"
+
+#~ msgid "Join room"
+#~ msgstr "Deltag i rum"
+
+#~ msgid "Close"
+#~ msgstr "Luk"
+
+#~ msgid "Leave?"
+#~ msgstr "Forlad?"
+
+#~ msgid ""
+#~ "Once you leave, you won’t be able to interact with people in the room "
+#~ "anymore."
+#~ msgstr ""
+#~ "Hvis du forlader rummet vil du ikke længere være i stand til at "
+#~ "kommunikere med personer i rummet."
+
+#~ msgid "What is your Provider?"
+#~ msgstr "Hvad er din udbyder?"
+
+#~ msgid "Matrix provider domain, e.g. myserver.co"
+#~ msgstr "Domæne for Matrix-udbyder — f.eks. minserver.co"
+
+#~ msgid "The domain may not be empty."
+#~ msgstr "Domænet må ikke være tomt."
+
+#~ msgid "_User ID"
+#~ msgstr "_Bruger-id"
+
+#~ msgid "_Password"
+#~ msgstr "_Adgangskode"
+
+#~ msgid "User name, email, or phone number"
+#~ msgstr "Brugernavn, e-mail eller telefonnummer"
+
+#~ msgid "Log In"
+#~ msgstr "Log ind"
+
+#~ msgid "Keyboard _Shortcuts"
+#~ msgstr "_Tastaturgenveje"
+
+#~ msgid "Chat"
+#~ msgstr "Chat"
+
+#~ msgid "Directory"
+#~ msgstr "Register"
+
+#~ msgid "Loading"
+#~ msgstr "Indlæser"
+
+#~ msgid "User"
+#~ msgstr "Bruger"
+
+#~ msgid "Add"
+#~ msgstr "Tilføj"
+
+#~ msgid "Room Menu"
+#~ msgstr "Rummenu"
+
+#~ msgid "Default Matrix Server"
+#~ msgstr "Standard Matrix-server"
+
+#~ msgid "Loading more media"
+#~ msgstr "Indlæser flere medier"
+
+#~ msgid "Save as…"
+#~ msgstr "Gem som …"
+
+#~ msgid "Open With…"
+#~ msgstr "Åbn med …"
+
+#~ msgid "Copy Selection"
+#~ msgstr "Kopiér markering"
+
+#~ msgid "Delete Message"
+#~ msgstr "Slet meddelelse"
+
+#~ msgid "Copy To Clipboard"
+#~ msgstr "Kopiér til udklipsholder"
+
+#~ msgid "Private Chat"
+#~ msgstr "Privat chat"
+
+#~ msgid "Ch_ange"
+#~ msgstr "_Skift"
+
+#~ msgid "Add name"
+#~ msgstr "Tilføj navn"
+
+#~ msgid "Add topic"
+#~ msgstr "Tilføj emne"
+
+#~ msgid "Type in your room topic"
+#~ msgstr "Skriv emnet til dit rum"
+
+#~ msgid "No room description"
+#~ msgstr "Ingen rumbeskrivelse"
+
+#~ msgid "For all messages"
+#~ msgstr "For alle meddelelser"
+
+#~ msgid "Shared Media"
+#~ msgstr "Delte medier"
+
+#~ msgid "photos"
+#~ msgstr "billeder"
+
+#~ msgid "documents"
+#~ msgstr "dokumenter"
+
+#~ msgid "New members can see"
+#~ msgstr "Nye medlemmer kan se"
+
+#~ msgid "All room history"
+#~ msgstr "Historik for alle rum"
+
+#~ msgid "History after they were invited"
+#~ msgstr "Historik efter de blev inviteret"
+
+#~ msgid "Room Visibility"
+#~ msgstr "Synlighed i rum"
+
+#~ msgid "Allow guests"
+#~ msgstr "Tillad gæster"
+
+#~ msgid "Allow joining without invite"
+#~ msgstr "Tillad deltagelse uden invitation"
+
+#~ msgid "Publish in room directory"
+#~ msgstr "Udgiv i rumregister"
+
+#~ msgid "Show rooms from:"
+#~ msgstr "Vis rum fra:"
+
+#~ msgid "Your homeserver"
+#~ msgstr "Din hjemmeserver"
+
+#~ msgid "Other Protocol"
+#~ msgstr "Anden protokol"
+
+#~ msgid "Other Homeserver"
+#~ msgstr "Anden hjemmeserver"
+
+#~ msgid "Select a new avatar"
+#~ msgstr "Vælg en ny avatar"
+
+#~ msgid "Couldn’t open file"
+#~ msgstr "Kunne ikke åbne filen"
+
+#~ msgid "Select a file"
+#~ msgstr "Vælg en fil"
+
+#~ msgid "Couldn’t save file"
+#~ msgstr "Kunne ikke gemme filen"
+
+#~ msgid "Email is already in use"
+#~ msgstr "E-mailen er allerede i brug"
+
+#~ msgid "Please enter a valid email adress."
+#~ msgstr "Indtast venligst en gyldig e-mailadresse."
+
+#~ msgid "Phone number is already in use"
+#~ msgstr "Telefonnummeret er allerede i brug"
+
+#~ msgid ""
+#~ "Please enter your phone number in the format: \n"
+#~ " + your country code and your phone number."
+#~ msgstr ""
+#~ "Indtast venligst dit telefonnummer i formatet: \n"
+#~ " + din landekode, og dit telefonnummer."
+
+#~ msgid "Sorry, account settings can’t be loaded."
+#~ msgstr "Beklager, kontoindstillingerne kan ikke indlæses."
+
+#~ msgid "Couldn’t add the email address."
+#~ msgstr "Kunne ikke tilføje e-mailadressen."
+
+#~ msgid "Couldn’t add the phone number."
+#~ msgstr "Kunne ikke tilføje telefonnummeret."
+
+#~ msgid "Can’t create the room, try again"
+#~ msgstr "Kan ikke oprette rummet — prøv igen"
+
+#~ msgid "Can’t join the room, try again."
+#~ msgstr "Kan ikke deltage i rummet — prøv igen."
+
+#~ msgid "Can’t login, try again"
+#~ msgstr "Kan ikke logge ind — prøv igen"
+
+#~ msgid "Error deleting message"
+#~ msgstr "Fejl ved sletning af meddelelse"
+
+#~ msgid "© 2017–2018 Daniel García Moreno, et al."
+#~ msgstr "© 2017–2018 Daniel García Moreno og andre"
+
+#~ msgid "The validation code is not correct."
+#~ msgstr "Valideringskoden er ikke korrekt."
+
+#~ msgid "Enter the code received via SMS"
+#~ msgstr "Indtast koden fra SMS"
+
+#~ msgid ""
+#~ "In order to add this email address, go to your inbox and follow the link "
+#~ "you received. Once you’ve done that, click Continue."
+#~ msgstr ""
+#~ "For at tilføje e-mailadressen, gå til din indbakke og følg linket du "
+#~ "modtog. Når du har gjort det, så klik på Fortsæt."
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Are you sure you want to delete your account?"
+#~ msgstr "Er du sikker på, at du vil slette din konto?"
+
+#~ msgid "Image from Clipboard"
+#~ msgstr "Billede fra udklipsholder"
+
+#~ msgid "Invite to {name}"
+#~ msgstr "Inviter til {name}"
+
+#~ msgid "Join {room_name}?"
+#~ msgstr "Deltag i {room_name}?"
+
+#~ msgid ""
+#~ "You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</"
+#~ "b>"
+#~ msgstr ""
+#~ "Du er blevet inviteret til at deltage i <b>{room_name}</b>-rummet af "
+#~ "<b>{sender_name}</b>"
+
+#~ msgid "You’ve been invited to join <b>{room_name}</b>"
+#~ msgstr "Du er blevet inviteret til at deltage i <b>{room_name}</b>"
+
+#~ msgid " (direct message)"
+#~ msgstr " (direkte meddelelse)"
+
+#~ msgid "Leave {room_name}?"
+#~ msgstr "Forlad {room_name}?"
+
+#~ msgid "EMPTY ROOM"
+#~ msgstr "TOMT RUM"
+
+#~ msgid "{m1} and {m2}"
+#~ msgstr "{m1} og {m2}"
+
+#~ msgid "{m1} and Others"
+#~ msgstr "{m1} og andre"
+
+#~ msgid "Several users are typing…"
+#~ msgstr "Flere brugere skriver …"
+
+#~ msgid "<b>{}</b> is typing…"
+#~ msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+#~ msgstr[0] "<b>{}</b> skriver …"
+#~ msgstr[1] "<b>{}</b> og <b>{}</b> skriver …"
+
+#~ msgid "Syncing, this could take a while"
+#~ msgstr "Synkroniserer — det kan tage noget tid"
+
+#~ msgid "You don’t have permission to post to this room"
+#~ msgstr "Du har ikke tilladelse til at skrive i rummet"
+
+#~ msgid "Save media as"
+#~ msgstr "Gem medie som"
+
+#~ msgid "_Save"
+#~ msgstr "_Gem"
+
+#~ msgid "You have been kicked from {}"
+#~ msgstr "Du blev sparket ud af {}"
+
+#~ msgid ""
+#~ "Kicked by: {}\n"
+#~ " “{}”"
+#~ msgstr ""
+#~ "Sparket af: {}\n"
+#~ " “{}”"
+
+#~ msgid "Error while loading previous media"
+#~ msgstr "Fejl ved indlæsning af forrige medie"
+
+#~ msgid "Privileged"
+#~ msgstr "Privilegeret"
+
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgid "%R"
+#~ msgstr "%R"
+
+#~ msgid "Room · {} member"
+#~ msgid_plural "Room · {} members"
+#~ msgstr[0] "Rum · {} medlem"
+#~ msgstr[1] "Rum · {} medlemer"
+
+#~ msgid "Invites"
+#~ msgstr "Invitationer"
+
+#~ msgid "You don’t have any invitations"
+#~ msgstr "Du kan ikke nogen invitationer"
+
+#~ msgid "Drag and drop rooms here to add them to your favorites"
+#~ msgstr "Træk og slip rum her for at tilføje dem til dine favoritter"
+
+#~ msgid "You don’t have any rooms yet"
+#~ msgstr "Du har ikke nogen rum endnu"
