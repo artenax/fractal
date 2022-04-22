@@ -1568,18 +1568,6 @@ impl Room {
     }
 }
 
-trait GlibDateTime {
-    /// Creates a glib::DateTime from the given unix time.
-    fn from_unix_millis_utc(
-        unix_time: &MilliSecondsSinceUnixEpoch,
-    ) -> Result<glib::DateTime, glib::BoolError> {
-        let millis: f64 = unix_time.get().into();
-        let unix_epoch = glib::DateTime::from_unix_utc(0)?;
-        unix_epoch.add_seconds(millis / 1000.0)
-    }
-}
-impl GlibDateTime for glib::DateTime {}
-
 /// Whether the given event can be used as the `latest_change` of a room.
 ///
 /// `user_id` must be the `UserId` of the current account's user.
