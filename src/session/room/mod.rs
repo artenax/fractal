@@ -22,18 +22,19 @@ use matrix_sdk::{
     ruma::{
         api::client::sync::sync_events::v3::InvitedRoom,
         events::{
-            reaction::{ReactionEventContent, Relation},
+            reaction::{ReactionEventContent, Relation as ReactionRelation},
             receipt::ReceiptEventContent,
             room::{
                 member::MembershipState,
+                message::{MessageType, Relation},
                 name::RoomNameEventContent,
                 redaction::{RoomRedactionEventContent, SyncRoomRedactionEvent},
                 topic::RoomTopicEventContent,
             },
             tag::{TagInfo, TagName},
-            AnyRoomAccountDataEvent, AnyStateEventContent, AnyStrippedStateEvent, AnySyncRoomEvent,
-            AnySyncStateEvent, EventContent, MessageLikeEventType, MessageLikeUnsigned,
-            StateEventType, SyncMessageLikeEvent,
+            AnyRoomAccountDataEvent, AnyStateEventContent, AnyStrippedStateEvent,
+            AnySyncMessageLikeEvent, AnySyncRoomEvent, AnySyncStateEvent, EventContent,
+            MessageLikeEventType, MessageLikeUnsigned, StateEventType, SyncMessageLikeEvent,
         },
         receipt::ReceiptType,
         serde::Raw,
@@ -95,8 +96,8 @@ mod imp {
         pub inviter: RefCell<Option<Member>>,
         pub members_loaded: Cell<bool>,
         pub power_levels: RefCell<PowerLevels>,
-        /// The timestamp of the latest message in the room.
-        pub latest_change: Cell<u64>,
+        /// The timestamp of the latest possibly unread event in this room.
+        pub latest_unread: Cell<u64>,
         /// The event of the user's read receipt for this room.
         pub read_receipt: RefCell<Option<Event>>,
         /// The latest read event in the room's timeline.
@@ -195,9 +196,9 @@ mod imp {
                         glib::ParamFlags::READWRITE,
                     ),
                     glib::ParamSpecUInt64::new(
-                        "latest-change",
-                        "Latest Change",
-                        "Timestamp of the latest message",
+                        "latest-unread",
+                        "Latest Unread",
+                        "Timestamp of the latest possibly unread event",
                         u64::MIN,
                         u64::MAX,
                         u64::default(),
@@ -290,7 +291,7 @@ mod imp {
                 "topic" => obj.topic().to_value(),
                 "members" => obj.members().to_value(),
                 "notification-count" => obj.notification_count().to_value(),
-                "latest-change" => obj.latest_change().to_value(),
+                "latest-unread" => obj.latest_unread().to_value(),
                 "latest-read" => obj.latest_read().to_value(),
                 "predecessor" => obj.predecessor().map_or_else(
                     || {
@@ -768,10 +769,7 @@ impl Room {
                         }
 
                         // The event is older than the read receipt so it has been read.
-                        if event
-                            .matrix_event()
-                            .filter(|event| can_be_latest_change(event, &user_id))
-                            .is_some()
+                        if event.matrix_event().filter(count_as_unread).is_some()
                             && event.matrix_origin_server_ts()
                                 <= read_receipt.matrix_origin_server_ts()
                         {
@@ -867,13 +865,8 @@ impl Room {
                             return true;
                         }
 
-                        let user_id = self.session().user().unwrap().user_id();
                         // The user hasn't read the latest message.
-                        if event
-                            .matrix_event()
-                            .filter(|event| can_be_latest_change(event, &user_id))
-                            .is_some()
-                        {
+                        if event.matrix_event().filter(count_as_unread).is_some() {
                             return false;
                         }
                     }
@@ -1083,25 +1076,26 @@ impl Room {
         self.session()
             .verification_list()
             .handle_response_room(self, events.iter());
+        self.update_latest_unread(events.iter());
 
         self.emit_by_name::<()>("order-changed", &[]);
     }
 
-    /// The timestamp of the room's latest message.
+    /// The timestamp of the room's latest possibly unread event.
     ///
     /// If it is not known, it will return 0.
-    pub fn latest_change(&self) -> u64 {
-        self.imp().latest_change.get()
+    pub fn latest_unread(&self) -> u64 {
+        self.imp().latest_unread.get()
     }
 
-    /// Set the timestamp of the room's latest message.
-    pub fn set_latest_change(&self, latest_change: u64) {
-        if latest_change == self.latest_change() {
+    /// Set the timestamp of the room's latest possibly unread event.
+    pub fn set_latest_unread(&self, latest_unread: u64) {
+        if latest_unread == self.latest_unread() {
             return;
         }
 
-        self.imp().latest_change.set(latest_change);
-        self.notify("latest-change");
+        self.imp().latest_unread.set(latest_unread);
+        self.notify("latest-unread");
         self.update_highlight();
         // Necessary because we don't get read receipts for the user's own events.
         self.update_latest_read();
@@ -1213,7 +1207,9 @@ impl Room {
 
     /// Send a `key` reaction for the `relates_to` event ID in this room.
     pub fn send_reaction(&self, key: String, relates_to: Box<EventId>) {
-        self.send_room_message_event(ReactionEventContent::new(Relation::new(relates_to, key)));
+        self.send_room_message_event(ReactionEventContent::new(ReactionRelation::new(
+            relates_to, key,
+        )));
     }
 
     /// Redact `redacted_event_id` in this room because of `reason`.
@@ -1550,36 +1546,50 @@ impl Room {
         self.imp().verification.borrow().clone()
     }
 
-    /// Update the latest change of the room with the given events.
+    /// Update the latest possibly unread event of the room with the given
+    /// events.
     ///
     /// The events must be in reverse chronological order.
-    pub fn update_latest_change<'a>(&self, events: impl Iterator<Item = &'a AnySyncRoomEvent>) {
-        let user_id = self.session().user().unwrap().user_id();
-        let mut latest_change = self.latest_change();
+    pub fn update_latest_unread<'a>(&self, events: impl Iterator<Item = &'a AnySyncRoomEvent>) {
+        let mut latest_unread = self.latest_unread();
 
         for event in events {
-            if can_be_latest_change(event, &user_id) {
-                latest_change = latest_change.max(event.origin_server_ts().get().into());
+            if count_as_unread(event) {
+                latest_unread = latest_unread.max(event.origin_server_ts().get().into());
                 break;
             }
         }
 
-        self.set_latest_change(latest_change);
+        self.set_latest_unread(latest_unread);
     }
 }
 
-/// Whether the given event can be used as the `latest_change` of a room.
+/// Whether the given event can count as an unread message.
 ///
-/// `user_id` must be the `UserId` of the current account's user.
+/// This follows the algorithm in [MSC2654], excluding events that we don't
+/// show in the timeline.
 ///
-/// This means that the event is a message, or it is the state event of the
-/// user joining the room, which should be the oldest possible change.
-fn can_be_latest_change(event: &AnySyncRoomEvent, user_id: &UserId) -> bool {
-    matches!(event, AnySyncRoomEvent::MessageLike(_))
-        || matches!(event, AnySyncRoomEvent::State(AnySyncStateEvent::RoomMember(event))
-            if event.state_key == user_id.as_str()
-            && event.content.membership == MembershipState::Join
-            && event.unsigned.prev_content.as_ref()
-                    .filter(|content| content.membership == MembershipState::Join).is_none()
-        )
+/// [MSC2654]: https://github.com/matrix-org/matrix-spec-proposals/pull/2654
+fn count_as_unread(event: &AnySyncRoomEvent) -> bool {
+    match event {
+        AnySyncRoomEvent::MessageLike(message_event) => match message_event {
+            AnySyncMessageLikeEvent::RoomMessage(message) => {
+                if matches!(message.content.msgtype, MessageType::Notice(_)) {
+                    return false;
+                }
+
+                if matches!(message.content.relates_to, Some(Relation::Replacement(_))) {
+                    return false;
+                }
+
+                true
+            }
+            AnySyncMessageLikeEvent::Sticker(_) => true,
+            _ => false,
+        },
+        AnySyncRoomEvent::State(state_event) => {
+            matches!(state_event.event_type(), StateEventType::RoomTombstone)
+        }
+        _ => false,
+    }
 }

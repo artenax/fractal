@@ -161,7 +161,7 @@ impl Category {
             let filter_model = gtk::FilterListModel::new(Some(&model), Some(&filter));
 
             let sorter = gtk::NumericSorter::builder()
-                .expression(Room::this_expression("latest-change"))
+                .expression(Room::this_expression("latest-unread"))
                 .sort_order(gtk::SortType::Descending)
                 .build();
             let sort_model = gtk::SortListModel::new(Some(&filter_model), Some(&sorter));

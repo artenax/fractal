@@ -573,7 +573,7 @@ impl Timeline {
                 room.session()
                     .verification_list()
                     .handle_response_room(&room, deser_events.iter());
-                room.update_latest_change(deser_events.iter());
+                room.update_latest_unread(deser_events.iter());
 
                 let events: Vec<Event> = events
                     .into_iter()
