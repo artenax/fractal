@@ -573,6 +573,7 @@ impl Timeline {
                 room.session()
                     .verification_list()
                     .handle_response_room(&room, deser_events.iter());
+                room.update_latest_change(deser_events.iter());
 
                 let events: Vec<Event> = events
                     .into_iter()
@@ -584,20 +585,6 @@ impl Timeline {
                     self.set_state(TimelineState::Error);
                     return false;
                 }
-
-                // Update the latest change of the room.
-                let room = self.room();
-                let mut latest_change = room.latest_change();
-                // We receive the events in reverse chronological order so start from the
-                // beginning.
-                for event in events.iter() {
-                    if event.can_be_latest_change() {
-                        latest_change =
-                            latest_change.max(event.matrix_origin_server_ts().get().into());
-                        break;
-                    }
-                }
-                room.set_latest_change(latest_change);
 
                 self.set_state(TimelineState::Ready);
                 self.prepend(events);
@@ -858,20 +845,6 @@ async fn handle_forward_stream(
                     .into_iter()
                     .map(|event| Event::new(event, &timeline.room()))
                     .collect();
-
-                // Update the latest change of the room.
-                let room = timeline.room();
-                let mut latest_change = room.latest_change();
-                // We receive the events in chronological order so start from the end.
-                let mut iter = events.iter();
-                while let Some(event) = iter.next_back() {
-                    if event.can_be_latest_change() {
-                        latest_change =
-                            latest_change.max(event.matrix_origin_server_ts().get().into());
-                        break;
-                    }
-                }
-                room.set_latest_change(latest_change);
 
                 timeline.append(events);
 

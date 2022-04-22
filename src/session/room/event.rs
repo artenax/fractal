@@ -20,14 +20,12 @@ use matrix_sdk::{
     },
     Error as MatrixError,
 };
-use ruma::events::room::member::MembershipState;
 
 use super::{
     timeline::{TimelineItem, TimelineItemImpl},
     Member, ReactionList, Room,
 };
 use crate::{
-    session::UserExt,
     spawn_tokio,
     utils::{filename_for_mime, media_type_uid},
 };
@@ -692,23 +690,5 @@ impl Event {
             .fetch_event_by_id(&related_event_id)
             .await?;
         Ok(Some(event))
-    }
-
-    /// Whether this `Event` can be used as the `latest_change` of a room.
-    ///
-    /// This means that the event is a message, or it is the state event of the
-    /// user joining the room, which should be the oldest possible change.
-    pub fn can_be_latest_change(&self) -> bool {
-        if let Some(event) = self.matrix_event() {
-            matches!(event, AnySyncRoomEvent::MessageLike(_))
-                || matches!(event, AnySyncRoomEvent::State(AnySyncStateEvent::RoomMember(event))
-                    if event.state_key == self.room().session().user().unwrap().user_id().to_string()
-                    && event.content.membership == MembershipState::Join
-                    && event.unsigned.prev_content.as_ref()
-                            .filter(|content| content.membership == MembershipState::Join).is_none()
-                )
-        } else {
-            false
-        }
     }
 }

@@ -768,7 +768,10 @@ impl Room {
                         }
 
                         // The event is older than the read receipt so it has been read.
-                        if event.can_be_latest_change()
+                        if event
+                            .matrix_event()
+                            .filter(|event| can_be_latest_change(event, &user_id))
+                            .is_some()
                             && event.matrix_origin_server_ts()
                                 <= read_receipt.matrix_origin_server_ts()
                         {
@@ -864,8 +867,13 @@ impl Room {
                             return true;
                         }
 
+                        let user_id = self.session().user().unwrap().user_id();
                         // The user hasn't read the latest message.
-                        if event.can_be_latest_change() {
+                        if event
+                            .matrix_event()
+                            .filter(|event| can_be_latest_change(event, &user_id))
+                            .is_some()
+                        {
                             return false;
                         }
                     }
@@ -1541,6 +1549,23 @@ impl Room {
     pub fn verification(&self) -> Option<IdentityVerification> {
         self.imp().verification.borrow().clone()
     }
+
+    /// Update the latest change of the room with the given events.
+    ///
+    /// The events must be in reverse chronological order.
+    pub fn update_latest_change<'a>(&self, events: impl Iterator<Item = &'a AnySyncRoomEvent>) {
+        let user_id = self.session().user().unwrap().user_id();
+        let mut latest_change = self.latest_change();
+
+        for event in events {
+            if can_be_latest_change(event, &user_id) {
+                latest_change = latest_change.max(event.origin_server_ts().get().into());
+                break;
+            }
+        }
+
+        self.set_latest_change(latest_change);
+    }
 }
 
 trait GlibDateTime {
@@ -1554,3 +1579,19 @@ trait GlibDateTime {
     }
 }
 impl GlibDateTime for glib::DateTime {}
+
+/// Whether the given event can be used as the `latest_change` of a room.
+///
+/// `user_id` must be the `UserId` of the current account's user.
+///
+/// This means that the event is a message, or it is the state event of the
+/// user joining the room, which should be the oldest possible change.
+fn can_be_latest_change(event: &AnySyncRoomEvent, user_id: &UserId) -> bool {
+    matches!(event, AnySyncRoomEvent::MessageLike(_))
+        || matches!(event, AnySyncRoomEvent::State(AnySyncStateEvent::RoomMember(event))
+            if event.state_key == user_id.as_str()
+            && event.content.membership == MembershipState::Join
+            && event.unsigned.prev_content.as_ref()
+                    .filter(|content| content.membership == MembershipState::Join).is_none()
+        )
+}
