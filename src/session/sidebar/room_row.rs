@@ -48,14 +48,11 @@ mod imp {
             klass.install_action("room-row.set-favorite", None, move |widget, _, _| {
                 widget.room().unwrap().set_category(RoomType::Favorite);
             });
-            klass.install_action("room-row.unset-favorite", None, move |widget, _, _| {
+            klass.install_action("room-row.set-normal", None, move |widget, _, _| {
                 widget.room().unwrap().set_category(RoomType::Normal);
             });
             klass.install_action("room-row.set-lowpriority", None, move |widget, _, _| {
                 widget.room().unwrap().set_category(RoomType::LowPriority);
-            });
-            klass.install_action("room-row.unset-lowpriority", None, move |widget, _, _| {
-                widget.room().unwrap().set_category(RoomType::Normal);
             });
 
             klass.install_action("room-row.leave", None, move |widget, _, _| {
@@ -248,9 +245,8 @@ impl RoomRow {
                     self.action_set_enabled("room-row.accept-invite", true);
                     self.action_set_enabled("room-row.reject-invite", true);
                     self.action_set_enabled("room-row.set-favorite", false);
-                    self.action_set_enabled("room-row.unset-favorite", false);
+                    self.action_set_enabled("room-row.set-normal", false);
                     self.action_set_enabled("room-row.set-lowpriority", false);
-                    self.action_set_enabled("room-row.unset-lowpriority", false);
                     self.action_set_enabled("room-row.leave", false);
                     self.action_set_enabled("room-row.join", false);
                     self.action_set_enabled("room-row.forget", false);
@@ -260,9 +256,8 @@ impl RoomRow {
                     self.action_set_enabled("room-row.accept-invite", false);
                     self.action_set_enabled("room-row.reject-invite", false);
                     self.action_set_enabled("room-row.set-favorite", false);
-                    self.action_set_enabled("room-row.unset-favorite", true);
+                    self.action_set_enabled("room-row.set-normal", true);
                     self.action_set_enabled("room-row.set-lowpriority", true);
-                    self.action_set_enabled("room-row.unset-lowpriority", false);
                     self.action_set_enabled("room-row.leave", true);
                     self.action_set_enabled("room-row.join", false);
                     self.action_set_enabled("room-row.forget", false);
@@ -272,9 +267,8 @@ impl RoomRow {
                     self.action_set_enabled("room-row.accept-invite", false);
                     self.action_set_enabled("room-row.reject-invite", false);
                     self.action_set_enabled("room-row.set-favorite", true);
-                    self.action_set_enabled("room-row.unset-favorite", false);
+                    self.action_set_enabled("room-row.set-normal", false);
                     self.action_set_enabled("room-row.set-lowpriority", true);
-                    self.action_set_enabled("room-row.unset-lowpriority", false);
                     self.action_set_enabled("room-row.leave", true);
                     self.action_set_enabled("room-row.join", false);
                     self.action_set_enabled("room-row.forget", false);
@@ -284,9 +278,8 @@ impl RoomRow {
                     self.action_set_enabled("room-row.accept-invite", false);
                     self.action_set_enabled("room-row.reject-invite", false);
                     self.action_set_enabled("room-row.set-favorite", true);
-                    self.action_set_enabled("room-row.unset-favorite", false);
+                    self.action_set_enabled("room-row.set-normal", true);
                     self.action_set_enabled("room-row.set-lowpriority", false);
-                    self.action_set_enabled("room-row.unset-lowpriority", true);
                     self.action_set_enabled("room-row.leave", true);
                     self.action_set_enabled("room-row.join", false);
                     self.action_set_enabled("room-row.forget", false);
@@ -296,9 +289,8 @@ impl RoomRow {
                     self.action_set_enabled("room-row.accept-invite", false);
                     self.action_set_enabled("room-row.reject-invite", false);
                     self.action_set_enabled("room-row.set-favorite", false);
-                    self.action_set_enabled("room-row.unset-favorite", false);
+                    self.action_set_enabled("room-row.set-normal", false);
                     self.action_set_enabled("room-row.set-lowpriority", false);
-                    self.action_set_enabled("room-row.unset-lowpriority", false);
                     self.action_set_enabled("room-row.leave", false);
                     self.action_set_enabled("room-row.join", true);
                     self.action_set_enabled("room-row.forget", true);
@@ -312,9 +304,8 @@ impl RoomRow {
         self.action_set_enabled("room-row.accept-invite", false);
         self.action_set_enabled("room-row.reject-invite", false);
         self.action_set_enabled("room-row.set-favorite", false);
-        self.action_set_enabled("room-row.unset-favorite", false);
+        self.action_set_enabled("room-row.set-normal", false);
         self.action_set_enabled("room-row.set-lowpriority", false);
-        self.action_set_enabled("room-row.unset-lowpriority", false);
         self.action_set_enabled("room-row.leave", false);
         self.action_set_enabled("room-row.join", false);
         self.action_set_enabled("room-row.forget", false);

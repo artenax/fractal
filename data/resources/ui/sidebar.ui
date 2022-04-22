@@ -37,23 +37,18 @@
     </section>
     <section>
       <item>
-        <attribute name="label" translatable="yes">Mark as _Favorite</attribute>
+        <attribute name="label" translatable="yes">Move to _Favorites</attribute>
         <attribute name="action">room-row.set-favorite</attribute>
         <attribute name="hidden-when">action-disabled</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Unmark as _Favorite</attribute>
-        <attribute name="action">room-row.unset-favorite</attribute>
+        <attribute name="label" translatable="yes">Move to _Rooms</attribute>
+        <attribute name="action">room-row.set-normal</attribute>
         <attribute name="hidden-when">action-disabled</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Mark as Low _Priority</attribute>
+        <attribute name="label" translatable="yes">Move to Low _Priority</attribute>
         <attribute name="action">room-row.set-lowpriority</attribute>
-        <attribute name="hidden-when">action-disabled</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">Unmark as Low _Priority</attribute>
-        <attribute name="action">room-row.unset-lowpriority</attribute>
         <attribute name="hidden-when">action-disabled</attribute>
       </item>
     </section>
