@@ -3,13 +3,17 @@ use std::sync::Arc;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, warn};
 use matrix_sdk::ruma::{
-    api::client::sync::sync_events::v3::ToDevice, events::AnyToDeviceEvent, UserId,
+    api::client::sync::sync_events::v3::ToDevice,
+    events::{
+        room::message::MessageType, AnySyncMessageLikeEvent, AnySyncRoomEvent, AnyToDeviceEvent,
+    },
+    MilliSecondsSinceUnixEpoch, UserId,
 };
 
 use crate::session::{
     user::UserExt,
     verification::{IdentityVerification, VERIFICATION_CREATION_TIMEOUT},
-    Session,
+    Room, Session,
 };
 
 #[derive(Hash, PartialEq, Eq, Debug)]
@@ -135,7 +139,7 @@ impl VerificationList {
 
     pub fn handle_response_to_device(&self, to_device: ToDevice) {
         for event in to_device.events.iter().filter_map(|e| e.deserialize().ok()) {
-            debug!("Received verification event: {:?}", event);
+            debug!("Received to-device verification event: {:?}", event);
             let request = match event {
                 AnyToDeviceEvent::KeyVerificationRequest(e) => {
                     if let Some(request) = self.get_by_id(&e.sender, &e.content.transaction_id) {
@@ -149,32 +153,13 @@ impl VerificationList {
                             continue;
                         }
 
-                        // Ignore request that are too old
-                        let start_time = if let Some(time) = e.content.timestamp.to_system_time() {
-                            if let Ok(duration) = time.elapsed() {
-                                if duration > VERIFICATION_CREATION_TIMEOUT {
-                                    debug!("Received verification event that already timedout");
-                                    continue;
-                                }
-
-                                if let Ok(time) = glib::DateTime::from_unix_utc(
-                                    e.content.timestamp.as_secs().into(),
-                                )
-                                .and_then(|t| t.to_local())
-                                {
-                                    time
-                                } else {
-                                    warn!("Ignore verification request because getting a correct timestamp failed");
-                                    continue;
-                                }
+                        // Ignore requests that are too old
+                        let start_time =
+                            if let Some(time) = start_time_from_timestamp(&e.content.timestamp) {
+                                time
                             } else {
-                                warn!("Ignore verification request because it was sent in the future. The system time of the server or the local machine is probably wrong.");
                                 continue;
-                            }
-                        } else {
-                            warn!("Ignore verification request because getting a correct timestamp failed");
-                            continue;
-                        };
+                            };
 
                         let request = IdentityVerification::for_flow_id(
                             e.content.transaction_id.as_str(),
@@ -213,6 +198,113 @@ impl VerificationList {
                 request.notify_state();
             } else {
                 warn!("Received verification event, but we don't have the initial event.");
+            }
+        }
+    }
+
+    pub fn handle_response_room<'a>(
+        &self,
+        room: &Room,
+        events: impl Iterator<Item = &'a AnySyncRoomEvent>,
+    ) {
+        for message_event in events.filter_map(|event| {
+            if let AnySyncRoomEvent::MessageLike(message_event) = event {
+                Some(message_event)
+            } else {
+                None
+            }
+        }) {
+            let request = match message_event {
+                AnySyncMessageLikeEvent::RoomMessage(message) => {
+                    if let MessageType::VerificationRequest(request) = &message.content.msgtype {
+                        debug!("Received in-room verification event: {:?}", message);
+                        // Ignore request that are too old
+                        let start_time = if let Some(time) =
+                            start_time_from_timestamp(&message.origin_server_ts)
+                        {
+                            time
+                        } else {
+                            continue;
+                        };
+
+                        let session = self.session();
+                        let user = session.user().unwrap();
+
+                        let user_to_verify = if *request.to == *user.user_id() {
+                            // The request was sent by another user to verify us
+                            room.members().member_by_id(message.sender.clone().into())
+                        } else if *message.sender == *user.user_id() {
+                            // The request was sent by us to verify another user
+                            room.members().member_by_id(request.to.clone().into())
+                        } else {
+                            // Ignore the request when it doesn't verify us or wasn't set by us
+                            continue;
+                        };
+
+                        // Ignore the request when we have a newer one
+                        let previous_verification = room.verification();
+                        if !(previous_verification.is_none()
+                            || &start_time > previous_verification.unwrap().start_time())
+                        {
+                            continue;
+                        }
+
+                        let request = if let Some(request) =
+                            self.get_by_id(&user_to_verify.user_id(), &message.event_id)
+                        {
+                            request
+                        } else {
+                            let request = IdentityVerification::for_flow_id(
+                                message.event_id.as_str(),
+                                &session,
+                                &user_to_verify.upcast(),
+                                &start_time,
+                            );
+
+                            self.add(request.clone());
+                            request
+                        };
+
+                        room.set_verification(request);
+                    }
+
+                    continue;
+                }
+                AnySyncMessageLikeEvent::KeyVerificationReady(e) => {
+                    debug!("Received in-room verification event: {:?}", e);
+                    self.get_by_id(&e.sender, &e.content.relates_to.event_id)
+                }
+                AnySyncMessageLikeEvent::KeyVerificationStart(e) => {
+                    debug!("Received in-room verification event: {:?}", e);
+                    self.get_by_id(&e.sender, &e.content.relates_to.event_id)
+                }
+                AnySyncMessageLikeEvent::KeyVerificationCancel(e) => {
+                    debug!("Received in-room verification event: {:?}", e);
+                    self.get_by_id(&e.sender, &e.content.relates_to.event_id)
+                }
+                AnySyncMessageLikeEvent::KeyVerificationAccept(e) => {
+                    debug!("Received in-room verification event: {:?}", e);
+                    self.get_by_id(&e.sender, &e.content.relates_to.event_id)
+                }
+                AnySyncMessageLikeEvent::KeyVerificationKey(e) => {
+                    debug!("Received in-room verification event: {:?}", e);
+                    self.get_by_id(&e.sender, &e.content.relates_to.event_id)
+                }
+                AnySyncMessageLikeEvent::KeyVerificationMac(e) => {
+                    debug!("Received in-room verification event: {:?}", e);
+                    self.get_by_id(&e.sender, &e.content.relates_to.event_id)
+                }
+                AnySyncMessageLikeEvent::KeyVerificationDone(e) => {
+                    debug!("Received in-room verification event: {:?}", e);
+                    self.get_by_id(&e.sender, &e.content.relates_to.event_id)
+                }
+                _ => {
+                    continue;
+                }
+            };
+
+            if let Some(request) = request {
+                request.notify_state();
             }
         }
     }
@@ -286,4 +378,29 @@ impl VerificationList {
 
         None
     }
+}
+
+fn start_time_from_timestamp(timestamp: &MilliSecondsSinceUnixEpoch) -> Option<glib::DateTime> {
+    if let Some(time) = timestamp.to_system_time() {
+        if let Ok(duration) = time.elapsed() {
+            if duration > VERIFICATION_CREATION_TIMEOUT {
+                debug!("Received verification event that already timedout");
+                return None;
+            }
+
+            if let Ok(time) =
+                glib::DateTime::from_unix_utc(timestamp.as_secs().into()).and_then(|t| t.to_local())
+            {
+                return Some(time);
+            } else {
+                warn!("Ignore verification request because getting a correct timestamp failed");
+            }
+        } else {
+            warn!("Ignore verification request because it was sent in the future. The system time of the server or the local machine is probably wrong.");
+        }
+    } else {
+        warn!("Ignore verification request because getting a correct timestamp failed");
+    }
+
+    None
 }

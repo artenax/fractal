@@ -57,6 +57,7 @@ pub use self::{
         TimelineSpinner, TimelineState,
     },
 };
+use super::verification::IdentityVerification;
 use crate::{
     components::{Pill, Toast},
     gettext_f, ngettext_f,
@@ -104,6 +105,8 @@ mod imp {
         pub highlight: Cell<HighlightFlags>,
         pub predecessor: OnceCell<Box<RoomId>>,
         pub successor: OnceCell<Box<RoomId>>,
+        /// The most recent verification request event.
+        pub verification: RefCell<Option<IdentityVerification>>,
     }
 
     #[glib::object_subclass]
@@ -228,6 +231,13 @@ mod imp {
                         None,
                         glib::ParamFlags::READABLE,
                     ),
+                    glib::ParamSpecObject::new(
+                        "verification",
+                        "Verification",
+                        "The most recent active verification for a user in this room",
+                        IdentityVerification::static_type(),
+                        glib::ParamFlags::READWRITE,
+                    ),
                 ]
             });
 
@@ -262,6 +272,7 @@ mod imp {
                     let topic = value.get().unwrap();
                     obj.store_topic(topic);
                 }
+                "verification" => obj.set_verification(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -295,6 +306,7 @@ mod imp {
                     },
                     |id| id.as_ref().to_value(),
                 ),
+                "verification" => obj.verification().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -1031,8 +1043,13 @@ impl Room {
         // FIXME: notify only when the count has changed
         self.notify_notification_count();
 
-        for event in batch.iter().flat_map(|e| e.event.deserialize().ok()) {
-            match &event {
+        let events: Vec<_> = batch
+            .iter()
+            .flat_map(|e| e.event.deserialize().ok())
+            .collect();
+
+        for event in events.iter() {
+            match event {
                 AnySyncRoomEvent::State(AnySyncStateEvent::RoomMember(event)) => {
                     self.members().update_member_for_member_event(event)
                 }
@@ -1055,6 +1072,9 @@ impl Room {
                 _ => {}
             }
         }
+        self.session()
+            .verification_list()
+            .handle_response_room(self, events.iter());
 
         self.emit_by_name::<()>("order-changed", &[]);
     }
@@ -1511,6 +1531,15 @@ impl Room {
         } else {
             error!("Can’t invite users, because this room isn’t a joined room");
         }
+    }
+
+    pub fn set_verification(&self, verification: IdentityVerification) {
+        self.imp().verification.replace(Some(verification));
+        self.notify("verification");
+    }
+
+    pub fn verification(&self) -> Option<IdentityVerification> {
+        self.imp().verification.borrow().clone()
     }
 }
 

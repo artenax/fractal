@@ -113,10 +113,8 @@
         <child>
           <object class="ContentVerificationInfoBar" id="verification_info_bar">
             <binding name="request">
-              <lookup name="verification" type="Timeline">
-                <lookup name="timeline" type="Room">
-                  <lookup name="room">ContentRoomHistory</lookup>
-                </lookup>
+              <lookup name="verification">
+                <lookup name="room">ContentRoomHistory</lookup>
               </lookup>
             </binding>
           </object>

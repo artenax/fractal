@@ -14,10 +14,7 @@ use gtk::{gio, glib, prelude::*, subclass::prelude::*};
 use log::{error, warn};
 use matrix_sdk::{
     deserialized_responses::SyncRoomEvent,
-    ruma::{
-        events::{room::message::MessageType, AnySyncMessageLikeEvent, AnySyncRoomEvent},
-        EventId, TransactionId,
-    },
+    ruma::{EventId, TransactionId},
     Error as MatrixError,
 };
 pub use timeline_day_divider::TimelineDayDivider;
@@ -27,11 +24,7 @@ pub use timeline_spinner::TimelineSpinner;
 use tokio::task::JoinHandle;
 
 use crate::{
-    session::{
-        room::{Event, Room},
-        user::UserExt,
-        verification::{IdentityVerification, VERIFICATION_CREATION_TIMEOUT},
-    },
+    session::room::{Event, Room},
     spawn_tokio,
 };
 
@@ -79,8 +72,6 @@ mod imp {
         /// A Hashset of `EventId`s that where just redacted.
         pub redacted_events: RefCell<HashSet<Box<EventId>>>,
         pub state: Cell<TimelineState>,
-        /// The most recent verification request event
-        pub verification: RefCell<Option<IdentityVerification>>,
         pub backward_stream: Arc<Mutex<Option<BackwardStream>>>,
         pub forward_handle: Arc<Mutex<Option<JoinHandle<()>>>>,
     }
@@ -118,13 +109,6 @@ mod imp {
                         TimelineState::default() as i32,
                         glib::ParamFlags::READABLE,
                     ),
-                    glib::ParamSpecObject::new(
-                        "verification",
-                        "Verification",
-                        "The most recent active verification for a user in this timeline",
-                        IdentityVerification::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
                 ]
             });
 
@@ -152,7 +136,6 @@ mod imp {
                 "room" => obj.room().to_value(),
                 "empty" => obj.is_empty().to_value(),
                 "state" => obj.state().to_value(),
-                "verification" => obj.verification().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -571,7 +554,7 @@ impl Timeline {
 
         match handle.await.unwrap() {
             Ok(Some(events)) => {
-                let events: Vec<Event> = events
+                let events: Vec<_> = events
                     .into_iter()
                     .filter_map(|event| match event {
                         Ok(event) => Some(event),
@@ -580,7 +563,20 @@ impl Timeline {
                             None
                         }
                     })
-                    .map(|event| Event::new(event, &self.room()))
+                    .collect();
+
+                let deser_events: Vec<_> = events
+                    .iter()
+                    .filter_map(|event| event.event.deserialize().ok())
+                    .collect();
+                let room = self.room();
+                room.session()
+                    .verification_list()
+                    .handle_response_room(&room, deser_events.iter());
+
+                let events: Vec<Event> = events
+                    .into_iter()
+                    .map(|event| Event::new(event, &room))
                     .collect();
 
                 self.remove_loading_spinner();
@@ -669,8 +665,6 @@ impl Timeline {
 
             for event in batch.into_iter() {
                 let event_id = event.matrix_event_id();
-
-                self.handle_verification(&event);
 
                 if let Some(pending_id) = event
                     .matrix_transaction_id()
@@ -784,8 +778,6 @@ impl Timeline {
             priv_.list.borrow_mut().reserve(added);
 
             for event in batch {
-                self.handle_verification(&event);
-
                 priv_
                     .event_map
                     .borrow_mut()
@@ -846,115 +838,6 @@ impl Timeline {
     fn remove_loading_spinner(&self) {
         self.imp().list.borrow_mut().pop_front();
         self.upcast_ref::<gio::ListModel>().items_changed(0, 1, 0);
-    }
-
-    fn set_verification(&self, verification: IdentityVerification) {
-        self.imp().verification.replace(Some(verification));
-        self.notify("verification");
-    }
-
-    pub fn verification(&self) -> Option<IdentityVerification> {
-        self.imp().verification.borrow().clone()
-    }
-
-    fn handle_verification(&self, event: &Event) {
-        let message = if let Some(AnySyncRoomEvent::MessageLike(message)) = event.matrix_event() {
-            message
-        } else {
-            return;
-        };
-
-        let session = self.room().session();
-        let verification_list = session.verification_list();
-
-        let request = match message {
-            AnySyncMessageLikeEvent::RoomMessage(message) => {
-                if let MessageType::VerificationRequest(request) = message.content.msgtype {
-                    // Ignore request that are too old
-                    if let Some(time) = message.origin_server_ts.to_system_time() {
-                        if let Ok(duration) = time.elapsed() {
-                            if duration > VERIFICATION_CREATION_TIMEOUT {
-                                return;
-                            }
-                        } else {
-                            warn!("Ignoring verification request because it was sent in the future. The system time of the server or the local machine is probably wrong.");
-                            return;
-                        }
-                    } else {
-                        return;
-                    }
-
-                    let user = session.user().unwrap();
-
-                    let user_to_verify = if *request.to == *user.user_id() {
-                        // The request was sent by another user to verify us
-                        event.sender()
-                    } else if *message.sender == *user.user_id() {
-                        // The request was sent by us to verify another user
-                        self.room().members().member_by_id(request.to.into())
-                    } else {
-                        // Ignore the request when it doesn't verify us or wasn't set by us
-                        return;
-                    };
-
-                    // Ignore the request when we have a newer one
-                    let previous_verification = self.verification();
-                    if !(previous_verification.is_none()
-                        || &event.timestamp() > previous_verification.unwrap().start_time())
-                    {
-                        return;
-                    }
-
-                    let request = if let Some(request) = verification_list
-                        .get_by_id(&user_to_verify.user_id(), &event.matrix_event_id())
-                    {
-                        request
-                    } else {
-                        let request = IdentityVerification::for_flow_id(
-                            event.matrix_event_id().as_str(),
-                            &session,
-                            &user_to_verify.upcast(),
-                            &event.timestamp(),
-                        );
-
-                        verification_list.add(request.clone());
-                        request
-                    };
-
-                    self.set_verification(request);
-                }
-
-                return;
-            }
-            AnySyncMessageLikeEvent::KeyVerificationReady(e) => {
-                verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
-            }
-            AnySyncMessageLikeEvent::KeyVerificationStart(e) => {
-                verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
-            }
-            AnySyncMessageLikeEvent::KeyVerificationCancel(e) => {
-                verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
-            }
-            AnySyncMessageLikeEvent::KeyVerificationAccept(e) => {
-                verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
-            }
-            AnySyncMessageLikeEvent::KeyVerificationKey(e) => {
-                verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
-            }
-            AnySyncMessageLikeEvent::KeyVerificationMac(e) => {
-                verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
-            }
-            AnySyncMessageLikeEvent::KeyVerificationDone(e) => {
-                verification_list.get_by_id(&e.sender, &e.content.relates_to.event_id)
-            }
-            _ => {
-                return;
-            }
-        };
-
-        if let Some(request) = request {
-            request.notify_state();
-        }
     }
 }
 
