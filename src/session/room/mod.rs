@@ -1023,7 +1023,7 @@ impl Room {
 
         let inviter_event = events.iter().find(|event| {
             if let AnyStrippedStateEvent::RoomMember(event) = event {
-                event.sender == inviter_id
+                event.state_key == inviter_id.as_str()
             } else {
                 false
             }

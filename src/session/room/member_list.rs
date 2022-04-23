@@ -155,8 +155,9 @@ impl MemberList {
     /// Creates a new member first if there is no member matching the given
     /// event.
     pub fn update_member_for_member_event(&self, event: &SyncStateEvent<RoomMemberEventContent>) {
-        self.member_by_id(event.sender.clone().into())
-            .update_from_member_event(event);
+        if let Ok(user_id) = UserId::parse_arc(event.state_key.as_str()) {
+            self.member_by_id(user_id).update_from_member_event(event);
+        }
     }
 
     /// Returns whether the given user id is present in `MemberList`
