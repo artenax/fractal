@@ -5,6 +5,7 @@
     <file preprocess="xml-stripblanks">assets/other-device.svg</file>
     <file preprocess="xml-stripblanks">assets/setup-complete.svg</file>
     <file preprocess="xml-stripblanks">assets/welcome.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/expander-arrow-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/idp-apple-dark.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/idp-apple.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/idp-facebook.svg</file>

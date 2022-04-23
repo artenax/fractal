@@ -300,11 +300,11 @@ login {
 }
 
 .sidebar-list row.category .category-row:not(:checked) image.arrow:dir(ltr) {
-  transform: rotate(-0.25turn);
+  transform: rotate(-0.5turn);
 }
 
 .sidebar-list row.category .category-row:not(:checked) image.arrow:dir(rtl) {
-  transform: rotate(0.25turn);
+  transform: rotate(0.5turn);
 }
 
 .sidebar-list row.room .notification_count {

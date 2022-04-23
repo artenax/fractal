@@ -20,7 +20,7 @@
         </child>
         <child type="end">
           <object class="GtkImage" id="arrow">
-            <property name="icon-name">adw-expander-arrow-symbolic</property>
+            <property name="icon-name">expander-arrow-symbolic</property>
             <style>
               <class name="arrow"/>
               <class name="dim-label"/>
