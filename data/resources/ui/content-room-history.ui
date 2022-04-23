@@ -271,6 +271,16 @@
                   </object>
                 </child>
                 <child>
+                  <object class="GtkButton">
+                    <property name="valign">end</property>
+                    <property name="icon-name">emoji-people-symbolic</property>
+                    <property name="action-name">room-history.open-emoji</property>
+                    <accessibility>
+                      <property name="label" translatable="yes">Open Emoji Picker</property>
+                    </accessibility>
+                  </object>
+                </child>
+                <child>
                   <object class="GtkMenuButton">
                     <property name="valign">end</property>
                     <property name="direction">up</property>
@@ -278,16 +288,6 @@
                     <property name="menu-model">message-menu-model</property>
                     <accessibility>
                       <property name="label" translatable="yes">Open Message Menu</property>
-                    </accessibility>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton">
-                    <property name="valign">end</property>
-                    <property name="icon-name">emoji-people-symbolic</property>
-                    <property name="action-name">room-history.open-emoji</property>
-                    <accessibility>
-                      <property name="label" translatable="yes">Open Emoji Picker</property>
                     </accessibility>
                   </object>
                 </child>
@@ -314,4 +314,3 @@
     </child>
   </template>
 </interface>
-
