@@ -133,8 +133,20 @@ impl ReactionChooser {
             if let Some(signal_handler) = priv_.reactions_handler.take() {
                 reactions.disconnect(signal_handler);
             }
-            for (_, binding) in priv_.reaction_bindings.borrow_mut().drain() {
-                binding.unbind();
+
+            let mut reaction_bindings = priv_.reaction_bindings.borrow_mut();
+            for reaction_item in QUICK_REACTIONS {
+                if let Some(binding) = reaction_bindings.remove(reaction_item.key) {
+                    if let Some(button) = priv_
+                        .reaction_grid
+                        .child_at(reaction_item.column, reaction_item.row)
+                        .and_then(|widget| widget.downcast::<gtk::ToggleButton>().ok())
+                    {
+                        button.set_active(false);
+                    }
+
+                    binding.unbind();
+                }
             }
         }
 
@@ -171,6 +183,14 @@ impl ReactionChooser {
                     reaction_bindings.insert(reaction_item.key.to_string(), binding);
                 }
             } else if let Some(binding) = reaction_bindings.remove(reaction_item.key) {
+                if let Some(button) = priv_
+                    .reaction_grid
+                    .child_at(reaction_item.column, reaction_item.row)
+                    .and_then(|widget| widget.downcast::<gtk::ToggleButton>().ok())
+                {
+                    button.set_active(false);
+                }
+
                 binding.unbind();
             }
         }

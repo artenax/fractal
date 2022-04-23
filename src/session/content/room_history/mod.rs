@@ -33,7 +33,7 @@ use self::{
     state_row::StateRow, verification_info_bar::VerificationInfoBar,
 };
 use crate::{
-    components::{CustomEntry, DragOverlay, Pill, RoomTitle},
+    components::{CustomEntry, DragOverlay, Pill, ReactionChooser, RoomTitle},
     i18n::gettext_f,
     session::{
         content::{MarkdownPopover, RoomDetails},
@@ -72,6 +72,7 @@ mod imp {
         pub is_auto_scrolling: Cell<bool>,
         pub sticky: Cell<bool>,
         pub item_context_menu: OnceCell<gtk::PopoverMenu>,
+        pub item_reaction_chooser: ReactionChooser,
         #[template_child]
         pub headerbar: TemplateChild<adw::HeaderBar>,
         #[template_child]
@@ -949,6 +950,10 @@ impl RoomHistory {
         self.imp()
             .item_context_menu
             .get_or_init(|| gtk::PopoverMenu::from_model(gio::MenuModel::NONE))
+    }
+
+    pub fn item_reaction_chooser(&self) -> &ReactionChooser {
+        &self.imp().item_reaction_chooser
     }
 }
 

@@ -110,33 +110,37 @@ mod imp {
     impl ContextMenuBinImpl for ItemRow {
         fn menu_opened(&self, obj: &Self::Type) {
             if let Some(event) = obj.item().and_then(|item| item.downcast::<Event>().ok()) {
-                let popover = obj.room_history().item_context_menu().clone();
+                let room_history = obj.room_history();
+                let popover = room_history.item_context_menu().to_owned();
 
                 if event.message_content().is_some() {
                     let menu_model = Self::Type::event_message_menu_model();
-
+                    let reaction_chooser = room_history.item_reaction_chooser();
                     if popover.menu_model().as_ref() != Some(menu_model) {
-                        let action_group = obj.action_group().unwrap();
                         popover.set_menu_model(Some(menu_model));
-
-                        let reaction_chooser = ReactionChooser::new();
-                        reaction_chooser.set_reactions(Some(event.reactions().to_owned()));
-                        popover.add_child(&reaction_chooser, "reaction-chooser");
-
-                        // Open emoji chooser
-                        let more_reactions = gio::SimpleAction::new("more-reactions", None);
-                        more_reactions.connect_activate(
-                            clone!(@weak obj, @weak popover => move |_, _| {
-                                obj.show_emoji_chooser(&popover);
-                            }),
-                        );
-                        action_group.add_action(&more_reactions);
+                        popover.add_child(reaction_chooser, "reaction-chooser");
                     }
+
+                    reaction_chooser.set_reactions(Some(event.reactions().to_owned()));
+
+                    // Open emoji chooser
+                    let more_reactions = gio::SimpleAction::new("more-reactions", None);
+                    more_reactions.connect_activate(
+                        clone!(@weak obj, @weak popover => move |_, _| {
+                            obj.show_emoji_chooser(&popover);
+                        }),
+                    );
+                    obj.action_group().unwrap().add_action(&more_reactions);
                 } else {
-                    popover.set_menu_model(Some(Self::Type::event_state_menu_model()));
+                    let menu_model = Self::Type::event_state_menu_model();
+                    if popover.menu_model().as_ref() != Some(menu_model) {
+                        popover.set_menu_model(Some(menu_model));
+                    }
                 }
 
                 obj.set_popover(Some(popover));
+            } else {
+                obj.set_popover(None);
             }
         }
     }
@@ -292,11 +296,11 @@ impl ItemRow {
 
     fn show_emoji_chooser(&self, popover: &gtk::PopoverMenu) {
         let emoji_chooser = gtk::EmojiChooser::builder().has_arrow(false).build();
-        emoji_chooser.connect_emoji_picked(|emoji_chooser, emoji| {
-            emoji_chooser
+        emoji_chooser.connect_emoji_picked(clone!(@weak self as obj => move |_, emoji| {
+            obj
                 .activate_action("event.toggle-reaction", Some(&emoji.to_variant()))
                 .unwrap();
-        });
+        }));
         emoji_chooser.set_parent(self);
         emoji_chooser.connect_closed(|emoji_chooser| {
             emoji_chooser.unparent();
