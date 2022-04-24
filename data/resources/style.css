@@ -173,6 +173,10 @@ row .heading {
   font-weight: 600;
 }
 
+media-content-viewer controls {
+  min-width: 300px;
+}
+
 
 /* Login */
 

@@ -1,11 +1,16 @@
 use adw::{prelude::*, subclass::prelude::*};
-use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::warn;
 use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventContent};
 
 use super::room::EventActions;
-use crate::{session::room::Event, spawn, utils::cache_dir, Window};
+use crate::{
+    components::{ContentType, MediaContentViewer},
+    session::room::Event,
+    spawn,
+    utils::cache_dir,
+    Window,
+};
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -26,7 +31,7 @@ mod imp {
         #[template_child]
         pub menu: TemplateChild<gtk::MenuButton>,
         #[template_child]
-        pub media: TemplateChild<adw::Bin>,
+        pub media: TemplateChild<MediaContentViewer>,
     }
 
     #[glib::object_subclass]
@@ -218,6 +223,8 @@ impl MediaViewer {
     }
 
     fn build(&self) {
+        self.imp().media.show_loading();
+
         if let Some(event) = self.event() {
             self.set_event_actions(Some(&event));
             if let Some(AnyMessageLikeEventContent::RoomMessage(content)) = event.message_content()
@@ -233,25 +240,18 @@ impl MediaViewer {
 
                                 match event.get_media_content().await {
                                     Ok((_, _, data)) => {
-                                        match gdk::Texture::from_bytes(&glib::Bytes::from(&data))
-                                            {
-                                                Ok(texture) => {
-                                                    let child = gtk::Picture::for_paintable(&texture);
-                                                    priv_.media.set_child(Some(&child));
-                                                }
-                                                Err(error) => {
-                                                    warn!("Image file not supported: {}", error);
-                                                    let child = gtk::Label::new(Some(&gettext("Image file not supported")));
-                                                    priv_.media.set_child(Some(&child));
-                                                }
+                                        match gdk::Texture::from_bytes(&glib::Bytes::from(&data)) {
+                                            Ok(texture) => {
+                                                priv_.media.view_image(&texture);
+                                                return;
                                             }
+                                            Err(error) => warn!("Could not load GdkTexture from file: {}", error),
+                                        }
                                     }
-                                    Err(error) => {
-                                        warn!("Could not retrieve image file: {}", error);
-                                        let child = gtk::Label::new(Some(&gettext("Could not retrieve image")));
-                                        priv_.media.set_child(Some(&child));
-                                    }
+                                    Err(error) => warn!("Could not retrieve image file: {}", error),
                                 }
+
+                                priv_.media.show_fallback(ContentType::Image);
                             })
                         );
                     }
@@ -279,14 +279,12 @@ impl MediaViewer {
                                             gio::Cancellable::NONE,
                                         )
                                         .unwrap();
-                                        let child = gtk::Video::builder().file(&file).autoplay(true).build();
 
-                                        priv_.media.set_child(Some(&child));
+                                        priv_.media.view_file(file);
                                     }
                                     Err(error) => {
                                         warn!("Could not retrieve video file: {}", error);
-                                        let child = gtk::Label::new(Some(&gettext("Could not retrieve video")));
-                                        priv_.media.set_child(Some(&child));
+                                        priv_.media.show_fallback(ContentType::Video);
                                     }
                                 }
                             })

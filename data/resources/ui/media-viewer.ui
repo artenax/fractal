@@ -48,7 +48,8 @@
           </object>
         </child>
         <child>
-          <object class="AdwBin" id="media">
+          <object class="ComponentsMediaContentViewer" id="media">
+            <property name="autoplay">true</property>
             <property name="halign">center</property>
             <property name="valign">center</property>
             <property name="vexpand">true</property>
