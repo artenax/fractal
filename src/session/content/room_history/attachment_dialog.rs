@@ -73,6 +73,13 @@ impl AttachmentDialog {
         obj
     }
 
+    pub fn for_location(transient_for: &gtk::Window, title: &str, geo_uri: &str) -> Self {
+        let obj: Self = glib::Object::new(&[("transient-for", transient_for), ("title", &title)])
+            .expect("Failed to create AttachmentDialog");
+        obj.imp().media.view_location(geo_uri);
+        obj
+    }
+
     /// Show the dialog asynchronously.
     ///
     /// Returns `gtk::ResponseType::Ok` if the user clicked on send, otherwise

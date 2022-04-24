@@ -727,10 +727,17 @@ impl RoomHistory {
                 proxy.receive_location_updated().into_future()
             )?;
 
+            let geo_uri = format!("geo:{},{}", location.latitude(), location.longitude());
+
+            let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
+            let dialog = AttachmentDialog::for_location(&window, "Your Location", &geo_uri);
+            if dialog.run_future().await != gtk::ResponseType::Ok {
+                return Ok(());
+            }
+
             let iso8601_datetime =
                 glib::DateTime::from_unix_local(location.timestamp().as_secs() as i64)
                     .expect("Valid location timestamp");
-            let geo_uri = format!("geo:{},{}", location.latitude(), location.longitude());
             let location_body = gettext_f(
                 "User Location {geo_uri} at {iso8601_datetime}",
                 &[

@@ -3,7 +3,7 @@ use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::warn;
 
-use super::AudioPlayer;
+use super::{AudioPlayer, LocationViewer};
 use crate::spawn;
 
 pub enum ContentType {
@@ -274,5 +274,27 @@ impl MediaContentViewer {
         }
 
         self.show_fallback(content_type);
+    }
+
+    /// View the given location as a geo URI.
+    pub fn view_location(&self, geo_uri: &str) {
+        self.show_loading();
+
+        let priv_ = self.imp();
+
+        let location = if let Some(location) = priv_
+            .viewer
+            .child()
+            .and_then(|widget| widget.downcast::<LocationViewer>().ok())
+        {
+            location
+        } else {
+            let location = LocationViewer::new();
+            priv_.viewer.set_child(Some(&location));
+            location
+        };
+
+        location.set_geo_uri(geo_uri);
+        self.show_viewer();
     }
 }
