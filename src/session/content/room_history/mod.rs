@@ -387,65 +387,6 @@ glib::wrapper! {
 }
 
 impl RoomHistory {
-    async fn read_clipboard(&self) {
-        let clipboard = self.clipboard();
-        let formats = clipboard.formats();
-
-        if formats.contains_type(gdk::Texture::static_type()) {
-            // There is an image in the clipboard.
-            match clipboard
-                .read_value_future(gdk::Texture::static_type(), glib::PRIORITY_DEFAULT)
-                .await
-            {
-                Ok(value) => match value.get::<gdk::Texture>() {
-                    Ok(texture) => {
-                        self.send_image(texture).await;
-                        return;
-                    }
-                    Err(error) => warn!("Could not get GdkTexture from value: {error:?}"),
-                },
-                Err(error) => warn!("Could not get GdkTexture from the clipboard: {error:?}"),
-            }
-
-            if let Some(window) = self
-                .root()
-                .as_ref()
-                .and_then(|root| root.downcast_ref::<Window>())
-            {
-                window.add_toast(&Toast::new(&gettext("Error getting image from clipboard")));
-            }
-        } else if formats.contains_type(gio::File::static_type()) {
-            // There is a file in the clipboard.
-            match clipboard
-                .read_value_future(gio::File::static_type(), glib::PRIORITY_DEFAULT)
-                .await
-            {
-                Ok(value) => match value.get::<gio::File>() {
-                    Ok(file) => {
-                        self.send_file(file).await;
-                        return;
-                    }
-                    Err(error) => warn!("Could not get file from value: {error:?}"),
-                },
-                Err(error) => warn!("Could not get file from the clipboard: {error:?}"),
-            }
-
-            if let Some(window) = self
-                .root()
-                .as_ref()
-                .and_then(|root| root.downcast_ref::<Window>())
-            {
-                window.add_toast(&Toast::new(&gettext("Error getting file from clipboard")));
-            }
-        }
-    }
-
-    pub fn handle_paste_action(&self) {
-        spawn!(glib::clone!(@weak self as obj => async move {
-            obj.read_clipboard().await;
-        }));
-    }
-
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create RoomHistory")
     }
@@ -764,45 +705,6 @@ impl RoomHistory {
         self.start_loading();
     }
 
-    fn setup_drop_target(&self) {
-        let priv_ = imp::RoomHistory::from_instance(self);
-
-        let target = gtk::DropTarget::new(
-            gio::File::static_type(),
-            gdk::DragAction::COPY | gdk::DragAction::MOVE,
-        );
-
-        target.connect_drop(
-            clone!(@weak self as obj => @default-return false, move |_, value, _, _| {
-                match value.get::<gio::File>() {
-                    Ok(file) => {
-                        spawn!(clone!(@weak obj => async move {
-                            obj.send_file(file).await;
-                        }));
-                        true
-                    }
-                    Err(error) => {
-                        warn!("Could not get file from drop: {error:?}");
-
-                        if let Some(window) = obj
-                            .root()
-                            .as_ref()
-                            .and_then(|root| root.downcast_ref::<Window>())
-                        {
-                            window.add_toast(
-                                &Toast::new(&gettext("Error getting file from drop"))
-                            );
-                        }
-
-                        false
-                    }
-                }
-            }),
-        );
-
-        priv_.drag_overlay.set_drop_target(&target);
-    }
-
     fn open_emoji(&self) {
         self.imp().message_entry.emit_insert_emoji();
     }
@@ -958,6 +860,104 @@ impl RoomHistory {
                 }
             }
         }
+    }
+
+    fn setup_drop_target(&self) {
+        let priv_ = imp::RoomHistory::from_instance(self);
+
+        let target = gtk::DropTarget::new(
+            gio::File::static_type(),
+            gdk::DragAction::COPY | gdk::DragAction::MOVE,
+        );
+
+        target.connect_drop(
+            clone!(@weak self as obj => @default-return false, move |_, value, _, _| {
+                match value.get::<gio::File>() {
+                    Ok(file) => {
+                        spawn!(clone!(@weak obj => async move {
+                            obj.send_file(file).await;
+                        }));
+                        true
+                    }
+                    Err(error) => {
+                        warn!("Could not get file from drop: {error:?}");
+
+                        if let Some(window) = obj
+                            .root()
+                            .as_ref()
+                            .and_then(|root| root.downcast_ref::<Window>())
+                        {
+                            window.add_toast(
+                                &Toast::new(&gettext("Error getting file from drop"))
+                            );
+                        }
+
+                        false
+                    }
+                }
+            }),
+        );
+
+        priv_.drag_overlay.set_drop_target(&target);
+    }
+
+    async fn read_clipboard(&self) {
+        let clipboard = self.clipboard();
+        let formats = clipboard.formats();
+
+        if formats.contains_type(gdk::Texture::static_type()) {
+            // There is an image in the clipboard.
+            match clipboard
+                .read_value_future(gdk::Texture::static_type(), glib::PRIORITY_DEFAULT)
+                .await
+            {
+                Ok(value) => match value.get::<gdk::Texture>() {
+                    Ok(texture) => {
+                        self.send_image(texture).await;
+                        return;
+                    }
+                    Err(error) => warn!("Could not get GdkTexture from value: {error:?}"),
+                },
+                Err(error) => warn!("Could not get GdkTexture from the clipboard: {error:?}"),
+            }
+
+            if let Some(window) = self
+                .root()
+                .as_ref()
+                .and_then(|root| root.downcast_ref::<Window>())
+            {
+                window.add_toast(&Toast::new(&gettext("Error getting image from clipboard")));
+            }
+        } else if formats.contains_type(gio::File::static_type()) {
+            // There is a file in the clipboard.
+            match clipboard
+                .read_value_future(gio::File::static_type(), glib::PRIORITY_DEFAULT)
+                .await
+            {
+                Ok(value) => match value.get::<gio::File>() {
+                    Ok(file) => {
+                        self.send_file(file).await;
+                        return;
+                    }
+                    Err(error) => warn!("Could not get file from value: {error:?}"),
+                },
+                Err(error) => warn!("Could not get file from the clipboard: {error:?}"),
+            }
+
+            if let Some(window) = self
+                .root()
+                .as_ref()
+                .and_then(|root| root.downcast_ref::<Window>())
+            {
+                window.add_toast(&Toast::new(&gettext("Error getting file from clipboard")));
+            }
+        }
+    }
+
+    pub fn handle_paste_action(&self) {
+        spawn!(glib::clone!(@weak self as obj => async move {
+            obj.read_clipboard().await;
+        }));
     }
 
     pub fn item_context_menu(&self) -> &gtk::PopoverMenu {
