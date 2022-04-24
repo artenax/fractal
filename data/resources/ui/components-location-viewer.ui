@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkImage" id="marker_img">
+    <property name="icon-name">map-marker-symbolic</property>
+    <property name="pixel-size">32</property>
+    <style>
+      <class name="map-marker" />
+    </style>
+  </object>
+  <template class="ComponentsLocationViewer" parent="AdwBin">
+    <property name="child">
+      <object class="ShumateSimpleMap" id="map">
+        <property name="overflow">GTK_OVERFLOW_HIDDEN</property>
+        <style>
+          <class name="map"/>
+        </style>
+      </object>
+    </property>
+  </template>
+</interface>

@@ -1,8 +1,7 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{glib, subclass::prelude::*, CompositeTemplate};
-use shumate::prelude::*;
 
-use crate::i18n::gettext_f;
+use crate::components::LocationViewer;
 
 mod imp {
     use glib::subclass::InitializingObject;
@@ -13,10 +12,7 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/content-message-location.ui")]
     pub struct MessageLocation {
         #[template_child]
-        pub map: TemplateChild<shumate::SimpleMap>,
-        #[template_child]
-        pub marker_img: TemplateChild<gtk::Image>,
-        pub marker: shumate::Marker,
+        pub location: TemplateChild<LocationViewer>,
     }
 
     #[glib::object_subclass]
@@ -35,26 +31,8 @@ mod imp {
     }
 
     impl ObjectImpl for MessageLocation {
-        fn constructed(&self, obj: &Self::Type) {
-            self.marker.set_child(Some(&*self.marker_img));
-
-            let registry = shumate::MapSourceRegistry::with_defaults();
-            let source = registry.by_id(&shumate::MAP_SOURCE_OSM_MAPNIK).unwrap();
-            self.map.set_map_source(Some(&source));
-
-            let viewport = self.map.viewport().unwrap();
-            viewport.set_zoom_level(12.0);
-            let marker_layer = shumate::MarkerLayer::new(&viewport);
-            marker_layer.add_marker(&self.marker);
-            self.map.add_overlay_layer(&marker_layer);
-
-            // Hide the scale
-            self.map.scale().unwrap().hide();
-            self.parent_constructed(obj);
-        }
-
         fn dispose(&self, _obj: &Self::Type) {
-            self.map.unparent();
+            self.location.unparent();
         }
     }
 
@@ -69,7 +47,7 @@ mod imp {
         }
 
         fn size_allocate(&self, _widget: &Self::Type, width: i32, height: i32, baseline: i32) {
-            self.map
+            self.location
                 .size_allocate(&gtk::Allocation::new(0, 0, width, height), baseline)
         }
     }
@@ -89,30 +67,6 @@ impl MessageLocation {
     }
 
     pub fn set_geo_uri(&self, uri: &str) {
-        let imp = self.imp();
-
-        let mut uri = uri.trim_start_matches("geo:").split(',');
-        let latitude = uri
-            .next()
-            .and_then(|lat_s| lat_s.parse::<f64>().ok())
-            .unwrap_or_default();
-        let longitude = uri
-            .next()
-            .and_then(|lon_s| lon_s.parse::<f64>().ok())
-            .unwrap_or_default();
-
-        imp.map
-            .viewport()
-            .unwrap()
-            .set_location(latitude, longitude);
-        imp.marker.set_location(latitude, longitude);
-
-        self.update_property(&[gtk::accessible::Property::Description(&gettext_f(
-            "Location at latitude {latitude} and longitude {longitude}",
-            &[
-                ("latitude", &latitude.to_string()),
-                ("longitude", &longitude.to_string()),
-            ],
-        ))]);
+        self.imp().location.set_geo_uri(uri);
     }
 }

@@ -12,6 +12,7 @@ mod entry_row;
 mod in_app_notification;
 mod label_with_widgets;
 mod loading_listbox_row;
+mod location_viewer;
 mod media_content_viewer;
 mod password_entry_row;
 mod pill;
@@ -37,6 +38,7 @@ pub use self::{
     in_app_notification::InAppNotification,
     label_with_widgets::LabelWithWidgets,
     loading_listbox_row::LoadingListBoxRow,
+    location_viewer::LocationViewer,
     media_content_viewer::{ContentType, MediaContentViewer},
     password_entry_row::PasswordEntryRow,
     pill::Pill,

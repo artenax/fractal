@@ -177,6 +177,15 @@ media-content-viewer controls {
   min-width: 300px;
 }
 
+location-viewer .map {
+  border-radius: 6px;
+  background-color: @borders;
+}
+
+location-viewer .map-marker {
+  color: @accent_color;
+}
+
 
 /* Login */
 
@@ -386,15 +395,6 @@ login {
 
 .room-history .event-content .emoji {
   font-size: 3em;
-}
-
-.room-history .event-content .location .map {
-  border-radius: 6px;
-  background-color: @borders;
-}
-
-.room-history .event-content .location .map-marker {
-  color: @accent_color;
 }
 
 .room-history .event-content .thumbnail {
