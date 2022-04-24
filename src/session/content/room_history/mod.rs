@@ -21,6 +21,7 @@ use gtk::{
     subclass::prelude::*,
     CompositeTemplate,
 };
+use log::warn;
 use matrix_sdk::ruma::events::room::message::{
     EmoteMessageEventContent, FormattedBody, MessageType, RoomMessageEventContent,
     TextMessageEventContent,
@@ -33,7 +34,7 @@ use self::{
     state_row::StateRow, verification_info_bar::VerificationInfoBar,
 };
 use crate::{
-    components::{CustomEntry, DragOverlay, Pill, ReactionChooser, RoomTitle},
+    components::{CustomEntry, DragOverlay, Pill, ReactionChooser, RoomTitle, Toast},
     i18n::gettext_f,
     session::{
         content::{MarkdownPopover, RoomDetails},
@@ -41,15 +42,9 @@ use crate::{
         user::UserExt,
     },
     spawn,
+    utils::filename_for_mime,
+    window::Window,
 };
-
-const MIME_TYPES: &[&str] = &[
-    "image/png",
-    "image/jpeg",
-    "image/tiff",
-    "image/svg+xml",
-    "image/bmp",
-];
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -328,19 +323,15 @@ mod imp {
             self.message_entry.add_controller(&key_events);
             self.message_entry
                 .connect_paste_clipboard(clone!(@weak obj => move |entry| {
-                    spawn!(
-                        glib::PRIORITY_DEFAULT_IDLE,
-                        clone!(@weak obj => async move {
-                            obj.read_clipboard().await;
-                    }));
-                    let clip = obj.clipboard();
+                    let formats = obj.clipboard().formats();
 
-                    // TODO Check if this is the most general condition on which
-                    // the clipboard contains more than text.
-                    let formats = clip.formats();
-                    let contains_mime = MIME_TYPES.iter().any(|mime| formats.contain_mime_type(mime));
-                    if formats.contains_type(gio::File::static_type()) || contains_mime {
+                    // We only handle files and supported images.
+                    if formats.contains_type(gio::File::static_type()) || formats.contains_type(gdk::Texture::static_type()) {
                         entry.stop_signal_emission_by_name("paste-clipboard");
+                        spawn!(
+                            clone!(@weak obj => async move {
+                                obj.read_clipboard().await;
+                        }));
                     }
                 }));
 
@@ -398,45 +389,53 @@ glib::wrapper! {
 impl RoomHistory {
     async fn read_clipboard(&self) {
         let clipboard = self.clipboard();
+        let formats = clipboard.formats();
 
-        // Check if there is a png/jpg in the clipboard.
-        let res = clipboard
-            .read_future(MIME_TYPES, glib::PRIORITY_DEFAULT)
-            .await;
-        let body = match clipboard.read_text_future().await {
-            Ok(Some(body)) => std::path::Path::new(&body)
-                .file_name()
-                .unwrap()
-                .to_str()
-                .unwrap()
-                .to_string(),
-            _ => gettext("Image"),
-        };
-        if let Ok((stream, mime)) = res {
-            log::debug!("Found a {} in the clipboard", &mime);
-            if let Ok(bytes) = read_stream(&stream).await {
-                let mime = mime::Mime::from_str(&mime).unwrap();
-                self.open_attach_dialog(bytes, mime, &body);
-
-                return;
+        if formats.contains_type(gdk::Texture::static_type()) {
+            // There is an image in the clipboard.
+            match clipboard
+                .read_value_future(gdk::Texture::static_type(), glib::PRIORITY_DEFAULT)
+                .await
+            {
+                Ok(value) => match value.get::<gdk::Texture>() {
+                    Ok(texture) => {
+                        self.send_image(texture).await;
+                        return;
+                    }
+                    Err(error) => warn!("Could not get GdkTexture from value: {error:?}"),
+                },
+                Err(error) => warn!("Could not get GdkTexture from the clipboard: {error:?}"),
             }
-        }
 
-        // Check if there is a file in the clipboard.
-        let res = clipboard
-            .read_value_future(gio::File::static_type(), glib::PRIORITY_DEFAULT)
-            .await;
-        if let Ok(value) = res {
-            if let Ok(file) = value.get::<gio::File>() {
-                log::debug!("Found a file in the clipboard");
+            if let Some(window) = self
+                .root()
+                .as_ref()
+                .and_then(|root| root.downcast_ref::<Window>())
+            {
+                window.add_toast(&Toast::new(&gettext("Error getting image from clipboard")));
+            }
+        } else if formats.contains_type(gio::File::static_type()) {
+            // There is a file in the clipboard.
+            match clipboard
+                .read_value_future(gio::File::static_type(), glib::PRIORITY_DEFAULT)
+                .await
+            {
+                Ok(value) => match value.get::<gio::File>() {
+                    Ok(file) => {
+                        self.send_file(file).await;
+                        return;
+                    }
+                    Err(error) => warn!("Could not get file from value: {error:?}"),
+                },
+                Err(error) => warn!("Could not get file from the clipboard: {error:?}"),
+            }
 
-                // Under some circumstances, the file will be
-                // under a path we don't have access to.
-                if !file.query_exists(gio::Cancellable::NONE) {
-                    return;
-                }
-
-                self.read_file(&file).await;
+            if let Some(window) = self
+                .root()
+                .as_ref()
+                .and_then(|root| root.downcast_ref::<Window>())
+            {
+                window.add_toast(&Toast::new(&gettext("Error getting file from clipboard")));
             }
         }
     }
@@ -774,47 +773,30 @@ impl RoomHistory {
         );
 
         target.connect_drop(
-            glib::clone!(@weak self as obj => @default-return false, move |target, value, _, _| {
-                let drop = target.current_drop().unwrap();
-
-                // We first try to read if we get a serialized image. In general
-                // we get files, but this is useful when reading a drag-n-drop
-                // from another sandboxed app.
-                let formats = drop.formats();
-                for mime in MIME_TYPES {
-                    if formats.contain_mime_type(mime) {
-                        log::debug!("Received drag & drop with mime type: {}", mime);
-                        drop.read_async(&[mime], glib::PRIORITY_DEFAULT, gio::Cancellable::NONE, glib::clone!(@weak obj => move |res| {
-                            if let Ok((stream, mime)) = res {
-                                crate::spawn!(glib::clone!(@weak obj => async move {
-                                    if let Ok(bytes) = read_stream(&stream).await {
-                                        // TODO Get the actual name of the file by reading
-                                        // the text/plain mime type.
-                                        let body = gettext("Image");
-                                        let mime = mime::Mime::from_str(&mime).unwrap();
-                                        obj.open_attach_dialog(bytes, mime, &body);
-                                    }
-                                }));
-                            }
+            clone!(@weak self as obj => @default-return false, move |_, value, _, _| {
+                match value.get::<gio::File>() {
+                    Ok(file) => {
+                        spawn!(clone!(@weak obj => async move {
+                            obj.send_file(file).await;
                         }));
+                        true
+                    }
+                    Err(error) => {
+                        warn!("Could not get file from drop: {error:?}");
 
-                        return true;
+                        if let Some(window) = obj
+                            .root()
+                            .as_ref()
+                            .and_then(|root| root.downcast_ref::<Window>())
+                        {
+                            window.add_toast(
+                                &Toast::new(&gettext("Error getting file from drop"))
+                            );
+                        }
+
+                        false
                     }
                 }
-
-                if let Ok(file) = value.get::<gio::File>() {
-                    if !file.query_exists(gio::Cancellable::NONE) {
-                        log::debug!("Received drag & drop file, but don't have permissions: {:?}", file.path());
-                        return false;
-                    }
-                    log::debug!("Received drag & drop file: {:?}", file.path());
-                    crate::spawn!(glib::clone!(@weak obj, @strong file => async move {
-                        obj.read_file(&file).await;
-                    }));
-
-                    return true;
-                }
-                false
             }),
         );
 
@@ -866,22 +848,21 @@ impl RoomHistory {
         Ok(())
     }
 
-    fn open_attach_dialog(&self, bytes: Vec<u8>, mime: mime::Mime, title: &str) {
+    async fn send_image(&self, image: gdk::Texture) {
         let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
-        let dialog = AttachmentDialog::new(&window);
-        let gbytes = glib::Bytes::from_owned(bytes);
-        if let Ok(texture) = gdk::Texture::from_bytes(&gbytes) {
-            dialog.set_texture(&texture);
-        }
+        let filename = filename_for_mime(Some(mime::IMAGE_PNG.as_ref()), None);
+        let dialog = AttachmentDialog::for_image(&window, &filename, &image);
 
-        dialog.set_title(Some(title));
-        let title = title.to_string();
         dialog.connect_local(
             "send",
             false,
-            glib::clone!(@weak self as obj => @default-return None, move |_| {
+            clone!(@weak self as obj, @strong image => @default-return None, move |_| {
                 if let Some(room) = obj.room() {
-                    room.send_attachment(&gbytes, mime.clone(), &title);
+                    room.send_attachment(
+                        image.save_to_png_bytes().to_vec(),
+                        mime::IMAGE_PNG,
+                        &filename,
+                    );
                 }
 
                 None
@@ -908,7 +889,7 @@ impl RoomHistory {
                     let file = dialog.file().unwrap();
 
                     crate::spawn!(glib::clone!(@weak obj, @strong file => async move {
-                        obj.read_file(&file).await;
+                        obj.send_file(file).await;
                     }));
                 }
             }),
@@ -917,32 +898,65 @@ impl RoomHistory {
         dialog.show();
     }
 
-    async fn read_file(&self, file: &gio::File) {
-        let filename = file
-            .basename()
-            .unwrap()
-            .into_os_string()
-            .to_str()
-            .unwrap()
-            .to_string();
+    async fn send_file(&self, file: gio::File) {
+        let attributes: &[&str] = &[
+            *gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+            *gio::FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
+        ];
 
         // Read mime type.
-        let mime = if let Ok(file_info) = file.query_info(
-            "standard::content-type",
-            gio::FileQueryInfoFlags::NONE,
-            gio::Cancellable::NONE,
-        ) {
-            file_info
-                .content_type()
-                .map_or("text/plain".to_string(), |x| x.to_string())
-        } else {
-            "text/plain".to_string()
-        };
-        let mime = mime::Mime::from_str(&mime).unwrap();
+        let info = file
+            .query_info_future(
+                &attributes.join(","),
+                gio::FileQueryInfoFlags::NONE,
+                glib::PRIORITY_DEFAULT,
+            )
+            .await
+            .ok();
+
+        let mime = info
+            .as_ref()
+            .and_then(|info| info.content_type())
+            .and_then(|content_type| mime::Mime::from_str(&content_type).ok())
+            .unwrap_or(mime::APPLICATION_OCTET_STREAM);
+        let filename = info.map(|info| info.display_name()).map_or_else(
+            || filename_for_mime(Some(mime.as_ref()), None),
+            |name| name.to_string(),
+        );
 
         match file.load_contents_future().await {
-            Ok((bytes, _tag)) => self.open_attach_dialog(bytes, mime, &filename),
-            Err(err) => log::debug!("Could not read file: {}", err),
+            Ok((bytes, _tag)) => {
+                let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
+                let dialog = AttachmentDialog::for_file(&window, &filename, &file);
+
+                dialog.connect_local(
+                    "send",
+                    false,
+                    clone!(@weak self as obj => @default-return None, move |_| {
+                        if let Some(room) = obj.room() {
+                            room.send_attachment(
+                                bytes.clone(),
+                                mime.clone(),
+                                &filename,
+                            );
+                        }
+
+                        None
+                    }),
+                );
+                dialog.present();
+            }
+            Err(err) => {
+                warn!("Could not read file: {}", err);
+
+                if let Some(window) = self
+                    .root()
+                    .as_ref()
+                    .and_then(|root| root.downcast_ref::<Window>())
+                {
+                    window.add_toast(&Toast::new(&gettext("Error reading file")));
+                }
+            }
         }
     }
 
@@ -961,20 +975,4 @@ impl Default for RoomHistory {
     fn default() -> Self {
         Self::new()
     }
-}
-
-async fn read_stream(stream: &gio::InputStream) -> Result<Vec<u8>, glib::Error> {
-    let mut buffer = Vec::<u8>::with_capacity(4096);
-
-    loop {
-        let bytes = stream
-            .read_bytes_future(4096, glib::PRIORITY_DEFAULT)
-            .await?;
-        if bytes.is_empty() {
-            break;
-        }
-        buffer.extend_from_slice(&bytes);
-    }
-
-    Ok(buffer)
 }

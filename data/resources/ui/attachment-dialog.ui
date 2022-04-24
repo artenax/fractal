@@ -29,24 +29,7 @@
       </object>
     </property>
     <property name="child">
-      <object class="GtkStack" id="stack">
-        <child>
-          <object class="AdwStatusPage">
-            <property name="icon-name">face-sick-symbolic</property>
-            <property name="title" translatable="yes">No Preview Available</property>
-            <style>
-              <class name="compact"/>
-            </style>
-          </object>
-        </child>
-        <child>
-          <object class="GtkStackPage">
-            <property name="name">preview</property>
-            <property name="child">
-              <object class="GtkImage" id="preview"/>
-            </property>
-          </object>
-        </child>
+      <object class="ComponentsMediaContentViewer" id="media">
       </object>
     </property>
     <child>

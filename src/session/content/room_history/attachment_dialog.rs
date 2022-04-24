@@ -1,20 +1,16 @@
 use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 use once_cell::sync::Lazy;
 
-mod imp {
-    use std::cell::RefCell;
+use crate::components::MediaContentViewer;
 
+mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/attachment-dialog.ui")]
     pub struct AttachmentDialog {
-        pub file: RefCell<Option<gio::File>>,
-        pub texture: RefCell<Option<gdk::Texture>>,
         #[template_child]
-        pub preview: TemplateChild<gtk::Image>,
-        #[template_child]
-        pub stack: TemplateChild<gtk::Stack>,
+        pub media: TemplateChild<MediaContentViewer>,
     }
 
     #[glib::object_subclass]
@@ -59,16 +55,17 @@ glib::wrapper! {
 }
 
 impl AttachmentDialog {
-    pub fn new(window: &gtk::Window) -> Self {
-        glib::Object::new(&[("transient-for", window)]).unwrap()
+    pub fn for_image(transient_for: &gtk::Window, title: &str, image: &gdk::Texture) -> Self {
+        let obj: Self = glib::Object::new(&[("transient-for", transient_for), ("title", &title)])
+            .expect("Failed to create AttachmentDialog");
+        obj.imp().media.view_image(image);
+        obj
     }
 
-    pub fn set_texture(&self, texture: &gdk::Texture) {
-        let priv_ = self.imp();
-        priv_.stack.set_visible_child_name("preview");
-
-        priv_
-            .preview
-            .set_paintable(Some(texture.upcast_ref::<gdk::Paintable>()));
+    pub fn for_file(transient_for: &gtk::Window, title: &str, file: &gio::File) -> Self {
+        let obj: Self = glib::Object::new(&[("transient-for", transient_for), ("title", &title)])
+            .expect("Failed to create AttachmentDialog");
+        obj.imp().media.view_file(file.to_owned());
+        obj
     }
 }

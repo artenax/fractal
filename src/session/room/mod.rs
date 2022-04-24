@@ -10,7 +10,7 @@ mod reaction_list;
 mod room_type;
 mod timeline;
 
-use std::{cell::RefCell, convert::TryInto, ops::Deref, path::PathBuf, sync::Arc};
+use std::{cell::RefCell, convert::TryInto, path::PathBuf, sync::Arc};
 
 use gettextrs::gettext;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
@@ -1513,21 +1513,21 @@ impl Room {
         Some(())
     }
 
-    pub fn send_attachment(&self, bytes: &glib::Bytes, mime: mime::Mime, body: &str) {
+    pub fn send_attachment(&self, bytes: Vec<u8>, mime: mime::Mime, body: &str) {
         let matrix_room = self.matrix_room();
 
         if let MatrixRoom::Joined(matrix_room) = matrix_room {
             let body = body.to_string();
-            spawn_tokio!(glib::clone!(@strong bytes => async move {
+            spawn_tokio!(async move {
                 let config = AttachmentConfig::default();
-                let mut cursor = std::io::Cursor::new(bytes.deref());
+                let mut cursor = std::io::Cursor::new(&bytes);
                 matrix_room
                     // TODO This should be added to pending messages instead of
                     // sending it directly.
                     .send_attachment(&body, &mime, &mut cursor, config)
                     .await
                     .unwrap();
-            }));
+            });
         }
     }
 
