@@ -31,7 +31,7 @@ impl ToString for CategoryType {
             CategoryType::None => unimplemented!(),
             CategoryType::VerificationRequest => gettext("Verifications"),
             CategoryType::Invited => gettext("Invited"),
-            CategoryType::Favorite => gettext("Favorite"),
+            CategoryType::Favorite => gettext("Favorites"),
             CategoryType::Normal => gettext("Rooms"),
             CategoryType::LowPriority => gettext("Low Priority"),
             CategoryType::Left => gettext("Historical"),
