@@ -1,4 +1,4 @@
-use std::convert::TryFrom;
+use std::{convert::TryFrom, fmt};
 
 use gtk::glib;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
@@ -73,9 +73,9 @@ impl Default for RoomType {
     }
 }
 
-impl ToString for RoomType {
-    fn to_string(&self) -> String {
-        CategoryType::from(self).to_string()
+impl fmt::Display for RoomType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        CategoryType::from(self).fmt(f)
     }
 }
 

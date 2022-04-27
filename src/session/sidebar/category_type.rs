@@ -1,3 +1,5 @@
+use std::fmt;
+
 use gettextrs::gettext;
 use gtk::glib;
 
@@ -25,9 +27,9 @@ impl Default for CategoryType {
     }
 }
 
-impl ToString for CategoryType {
-    fn to_string(&self) -> String {
-        match self {
+impl fmt::Display for CategoryType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let label = match self {
             CategoryType::None => unimplemented!(),
             CategoryType::VerificationRequest => gettext("Verifications"),
             CategoryType::Invited => gettext("Invited"),
@@ -39,7 +41,8 @@ impl ToString for CategoryType {
             CategoryType::Outdated => gettext("Outdated"),
             CategoryType::Space => gettext("Spaces"),
             CategoryType::Direct => gettext("People"),
-        }
+        };
+        f.write_str(&label)
     }
 }
 

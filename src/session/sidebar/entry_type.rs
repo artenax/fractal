@@ -1,3 +1,5 @@
+use std::fmt;
+
 use gettextrs::gettext;
 use gtk::glib;
 
@@ -15,11 +17,13 @@ impl Default for EntryType {
     }
 }
 
-impl ToString for EntryType {
-    fn to_string(&self) -> String {
-        match self {
+impl fmt::Display for EntryType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let label = match self {
             EntryType::Explore => gettext("Explore"),
             EntryType::Forget => gettext("Forget Room"),
-        }
+        };
+
+        f.write_str(&label)
     }
 }
