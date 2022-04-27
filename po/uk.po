@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-04-13 15:22+0000\n"
-"PO-Revision-Date: 2022-04-13 20:33+0300\n"
+"POT-Creation-Date: 2022-04-27 13:17+0000\n"
+"PO-Revision-Date: 2022-04-27 18:36+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -172,10 +172,6 @@ msgstr "_Скасувати"
 msgid "_Send"
 msgstr "_Надіслати"
 
-#: data/resources/ui/attachment-dialog.ui:36
-msgid "No Preview Available"
-msgstr "Перегляд недоступний"
-
 #: data/resources/ui/components-auth-dialog.ui:20
 msgid "Authentication"
 msgstr "Розпізнавання"
@@ -242,13 +238,11 @@ msgstr "Під час пошуку відповідників сталася п�
 msgid "Invite"
 msgstr "Запросити"
 
-#: data/resources/ui/content-invite.ui:108
-#: data/resources/ui/sidebar-room-row.ui:11
+#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:33
 msgid "_Reject"
 msgstr "Від_хилити"
 
-#: data/resources/ui/content-invite.ui:118
-#: data/resources/ui/sidebar-room-row.ui:6
+#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:28
 msgid "_Accept"
 msgstr "При_йняти"
 
@@ -306,8 +300,7 @@ msgstr "Інформація про _кімнату"
 msgid "_Invite New Member"
 msgstr "З_апросити нового учасника"
 
-#: data/resources/ui/content-room-history.ui:18
-#: data/resources/ui/sidebar-room-row.ui:40
+#: data/resources/ui/content-room-history.ui:18 data/resources/ui/sidebar.ui:62
 msgid "_Leave Room"
 msgstr "По_лишити кімнату"
 
@@ -324,66 +317,58 @@ msgid "Back"
 msgstr "Назад"
 
 #: data/resources/ui/content-room-history.ui:81
-#| msgid "Room Details"
 msgid "Room Settings"
 msgstr "Параметри кімнати"
 
 #: data/resources/ui/content-room-history.ui:89
-#| msgid "Room History"
 msgid "Toggle Room History Search"
 msgstr "Увімкнути або вимкнути пошук у журналі кімнати"
 
 #: data/resources/ui/content-room-history.ui:107
-#| msgid "Room History"
 msgid "Room History Search"
 msgstr "Пошук у журналі кімнати"
 
-#: data/resources/ui/content-room-history.ui:144
+#: data/resources/ui/content-room-history.ui:142
 msgid "Unable to load room"
 msgstr "Не вдалося завантажити кімнату"
 
-#: data/resources/ui/content-room-history.ui:145
+#: data/resources/ui/content-room-history.ui:143
 msgid "Check your network connection."
 msgstr "Перевірте ваше з'єднання з мережею."
 
-#: data/resources/ui/content-room-history.ui:148
+#: data/resources/ui/content-room-history.ui:146
 msgid "Try Again"
 msgstr "Повторити спробу"
 
-#: data/resources/ui/content-room-history.ui:173
+#: data/resources/ui/content-room-history.ui:171
 msgid "Scroll to bottom"
 msgstr "Прокрутіть донизу"
 
-#: data/resources/ui/content-room-history.ui:185
+#: data/resources/ui/content-room-history.ui:183
 msgid "Drop Here to Send"
 msgstr "Скиньте сюди, щоб надіслати"
 
-#: data/resources/ui/content-room-history.ui:211
+#: data/resources/ui/content-room-history.ui:204
 msgid "Room History"
 msgstr "Журнал кімнати"
 
-#: data/resources/ui/content-room-history.ui:249
-#| msgid "Enable markdown formatting"
+#: data/resources/ui/content-room-history.ui:242
 msgid "Enable Markdown Formatting"
 msgstr "Увімкнути форматування Markdown"
 
-#: data/resources/ui/content-room-history.ui:270
-#| msgid "Message Source"
+#: data/resources/ui/content-room-history.ui:263
 msgid "Message Entry"
 msgstr "Введення повідомлення"
 
-#: data/resources/ui/content-room-history.ui:285
-#| msgctxt "shortcut window"
-#| msgid "Open main menu"
-msgid "Open Message Menu"
-msgstr "Відкрити меню повідомлення"
-
-#: data/resources/ui/content-room-history.ui:295
+#: data/resources/ui/content-room-history.ui:277
 msgid "Open Emoji Picker"
 msgstr "Відкрити вибір емодзі"
 
-#: data/resources/ui/content-room-history.ui:310
-#| msgid "New Messages"
+#: data/resources/ui/content-room-history.ui:288
+msgid "Open Message Menu"
+msgstr "Відкрити меню повідомлення"
+
+#: data/resources/ui/content-room-history.ui:303
 msgid "Send Message"
 msgstr "Надіслати повідомлення"
 
@@ -801,30 +786,6 @@ msgctxt "shortcut window"
 msgid "Close Room"
 msgstr "Закрити кімнату"
 
-#: data/resources/ui/sidebar-room-row.ui:18
-msgid "Mark as _Favorite"
-msgstr "Позначити як _улюблену"
-
-#: data/resources/ui/sidebar-room-row.ui:23
-msgid "Unmark as _Favorite"
-msgstr "Скасувати позначення як _улюбленої"
-
-#: data/resources/ui/sidebar-room-row.ui:28
-msgid "Mark as Low _Priority"
-msgstr "Позначити як _низькопріоритетну"
-
-#: data/resources/ui/sidebar-room-row.ui:33
-msgid "Unmark as Low _Priority"
-msgstr "Скасувати позначення як _низькопріоритетної"
-
-#: data/resources/ui/sidebar-room-row.ui:45
-msgid "Re_join Room"
-msgstr "Увійти до кімнати"
-
-#: data/resources/ui/sidebar-room-row.ui:50
-msgid "_Forget Room"
-msgstr "За_бути про кімнату"
-
 #: data/resources/ui/sidebar.ui:6
 msgid "_New Room"
 msgstr "_Нова кімната"
@@ -841,36 +802,58 @@ msgstr "_Клавіатурні скорочення"
 msgid "_About Fractal"
 msgstr "_Про «Фрактал»"
 
-#: data/resources/ui/sidebar.ui:41
-#| msgid "Deactivate Account"
+#: data/resources/ui/sidebar.ui:40
+#| msgid "Mark as _Favorite"
+msgid "Move to _Favorites"
+msgstr "Пересунути до «_Улюблених»"
+
+#: data/resources/ui/sidebar.ui:45
+#| msgid "Forget Room"
+msgid "Move to _Rooms"
+msgstr "Пересунути до «_Кімнат»"
+
+#: data/resources/ui/sidebar.ui:50
+msgid "Move to _People"
+msgstr "Пересунути до «_Людей»"
+
+#: data/resources/ui/sidebar.ui:55
+#| msgid "Mark as Low _Priority"
+msgid "Move to Low _Priority"
+msgstr "Пересунути до «_Низький пріоритет»"
+
+#: data/resources/ui/sidebar.ui:67
+msgid "Re_join Room"
+msgstr "Увійти до кімнати"
+
+#: data/resources/ui/sidebar.ui:72
+msgid "_Forget Room"
+msgstr "За_бути про кімнату"
+
+#: data/resources/ui/sidebar.ui:91
 msgid "Switch Accounts"
 msgstr "Перемкнути обліковий запис"
 
-#: data/resources/ui/sidebar.ui:63
-#| msgid "Account Settings"
+#: data/resources/ui/sidebar.ui:113
 msgid "App Settings Menu"
 msgstr "Меню параметрів програми"
 
-#: data/resources/ui/sidebar.ui:73
-#| msgid "Room search"
+#: data/resources/ui/sidebar.ui:123
 msgid "Toggle Room Search"
 msgstr "Увімкнути або вимкнути пошук кімнати"
 
-#: data/resources/ui/sidebar.ui:85
-#| msgid "Room search"
+#: data/resources/ui/sidebar.ui:135
 msgid "Room Search"
 msgstr "Пошук кімнати"
 
-#: data/resources/ui/sidebar.ui:86
-#| msgid "Search for room members"
+#: data/resources/ui/sidebar.ui:136
 msgid "Search for a room"
 msgstr "Пошук кімнати"
 
-#: data/resources/ui/sidebar.ui:107
+#: data/resources/ui/sidebar.ui:152
 msgid "Sidebar"
 msgstr "Бічна панель"
 
-#: data/resources/ui/sidebar.ui:108
+#: data/resources/ui/sidebar.ui:153
 msgid "Allows to navigate between rooms"
 msgstr "Дозволяє навігацію між кімнатами"
 
@@ -918,6 +901,26 @@ msgstr "Не вдалося визначити тип вибраного фай�
 #: src/components/editable_avatar.rs:383
 msgid "No file was chosen"
 msgstr "Не вибрано жодного файла"
+
+#: src/components/location_viewer.rs:95
+msgid "Location at latitude {latitude} and longitude {longitude}"
+msgstr "Розташування за широтою {latitude} і довготою {longitude}"
+
+#: src/components/media_content_viewer.rs:161
+msgid "Image not Viewable"
+msgstr "Зображення не придатне до перегляду"
+
+#: src/components/media_content_viewer.rs:162
+msgid "Audio Clip not Playable"
+msgstr "Звуковий кліп не придатний до відтворення"
+
+#: src/components/media_content_viewer.rs:163
+msgid "Video not Playable"
+msgstr "Відео не придатне до відтворення"
+
+#: src/components/media_content_viewer.rs:164
+msgid "File not Viewable"
+msgstr "Файл не придатний до перегляду"
 
 #: src/error_page.rs:108
 msgid "Session removed successfully."
@@ -1215,7 +1218,7 @@ msgstr "Виберіть аватар"
 msgid "Invite new Members"
 msgstr "Запросити нових учасників"
 
-#: src/session/content/room_history/item_row.rs:201
+#: src/session/content/room_history/item_row.rs:257
 msgid "New Messages"
 msgstr "Нові повідомлення"
 
@@ -1228,12 +1231,7 @@ msgstr "Не вдалося отримати звуковий файл"
 msgid "Error reading audio file"
 msgstr "Помилка під час читання звукового файла"
 
-#: src/session/content/room_history/message_row/location.rs:111
-msgid "Location at latitude {latitude} and longitude {longitude}"
-msgstr "Розташування за широтою {latitude} і довготою {longitude}"
-
 #: src/session/content/room_history/message_row/media.rs:445
-#: src/session/media_viewer.rs:244
 msgid "Image file not supported"
 msgstr "Підтримки файла зображення не передбачено"
 
@@ -1259,26 +1257,36 @@ msgstr "«Фрактал» не вдалося розшифрувати це п�
 msgid "This message was removed."
 msgstr "Це повідомлення було вилучено."
 
-#: src/session/content/room_history/mod.rs:158
-#| msgid "The invitation for {user} has been revoked."
+#: src/session/content/room_history/mod.rs:156
 msgid "The location request has been cancelled."
 msgstr "Запит щодо визначення розташування було скасовано."
 
-#: src/session/content/room_history/mod.rs:162
-#| msgid "Failed to restore previous sessions"
+#: src/session/content/room_history/mod.rs:160
 msgid "Failed to retrieve current location."
 msgstr "Не вдалося отримати дані щодо поточного розташування."
 
-#. TODO Get the actual name of the file by reading
-#. the text/plain mime type.
-#: src/session/content/room_history/mod.rs:400
-#: src/session/content/room_history/mod.rs:774
-msgid "Image"
-msgstr "Зображення"
-
-#: src/session/content/room_history/mod.rs:832
+#: src/session/content/room_history/mod.rs:742
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Розташування користувача {geo_uri} {iso8601_datetime}"
+
+#: src/session/content/room_history/mod.rs:852
+#| msgid "Error reading audio file"
+msgid "Error reading file"
+msgstr "Помилка при зчитуванні файла"
+
+#: src/session/content/room_history/mod.rs:884
+msgid "Error getting file from drop"
+msgstr "Помилка під час отримання файла зі скидання"
+
+#: src/session/content/room_history/mod.rs:922
+#| msgid "Image from Clipboard"
+msgid "Error getting image from clipboard"
+msgstr "Помилка під час отримання зображення з буфера обміну"
+
+#: src/session/content/room_history/mod.rs:945
+#| msgid "Image from Clipboard"
+msgid "Error getting file from clipboard"
+msgstr "Помилка під час отримання файла з буфера обміну"
 
 #: src/session/content/room_history/state_row/creation.rs:62
 msgid "This is the continuation of an upgraded room."
@@ -1574,19 +1582,11 @@ msgstr ""
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Під час створення ключів шифрування сталася помилка."
 
-#: src/session/media_viewer.rs:251
-msgid "Could not retrieve image"
-msgstr "Не вдалося отримати зображення"
-
-#: src/session/media_viewer.rs:288
-msgid "Could not retrieve video"
-msgstr "Не вдалося отримати відео"
-
-#: src/session/mod.rs:463
+#: src/session/mod.rs:465
 msgid "Unable to store session"
 msgstr "Не вдалося зберегти сеанс"
 
-#: src/session/mod.rs:760
+#: src/session/mod.rs:757
 msgid "Failed to logout the session."
 msgstr "Не вдалося вийти з сеансу."
 
@@ -1607,40 +1607,40 @@ msgid "Normal user"
 msgstr "Звичайний користувач"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:427
+#: src/session/room/mod.rs:450
 msgid "Failed to forget {room}."
 msgstr "Не вдалося забути про {room}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:574
+#: src/session/room/mod.rs:643
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "Не вдалося пересунути {room} з {previous_category} до {new_category}."
 
-#: src/session/room/mod.rs:869
+#: src/session/room/mod.rs:943
 msgid "Unknown"
 msgstr "Невідомий"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1282
+#: src/session/room/mod.rs:1367
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "Не вдалося прийняти запрошення до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1316
+#: src/session/room/mod.rs:1401
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr "Не вдалося відмовити у запрошенні до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1486
+#: src/session/room/mod.rs:1571
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "Не вдалося запросити {user} до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1494
+#: src/session/room/mod.rs:1579
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1709,74 +1709,104 @@ msgstr "Увійти як до низькопріоритетної кімнат
 msgid "Reject Invite"
 msgstr "Відкинути запрошення"
 
-#: src/session/sidebar/category_row.rs:168
-msgid "Unmark as Favorite"
-msgstr "Вилучити з улюблених"
+#: src/session/sidebar/category_row.rs:165
+#| msgid "Join Room as Favorite"
+msgid "Join Room as People"
+msgstr "Долучитися як до кімнати «Люди»"
 
 #: src/session/sidebar/category_row.rs:169
-#: src/session/sidebar/category_row.rs:175
-msgid "Mark as Low Priority"
-msgstr "Позначити як низькопріоритетну"
+#: src/session/sidebar/category_row.rs:184
+#| msgid "Forget Room"
+msgid "Move to Rooms"
+msgstr "Пересунути до «Кімнат»"
 
 #: src/session/sidebar/category_row.rs:170
-#: src/session/sidebar/category_row.rs:176
-#: src/session/sidebar/category_row.rs:182
+#: src/session/sidebar/category_row.rs:177
+#: src/session/sidebar/category_row.rs:199
+#| msgid "Mark as Low Priority"
+msgid "Move to Low Priority"
+msgstr "Пересунути до «Низький пріоритет»"
+
+#: src/session/sidebar/category_row.rs:171
+#: src/session/sidebar/category_row.rs:178
+#: src/session/sidebar/category_row.rs:185
+#: src/session/sidebar/category_row.rs:200
 msgid "Leave Room"
 msgstr "Покинути кімнату"
 
-#: src/session/sidebar/category_row.rs:174
-#: src/session/sidebar/category_row.rs:180
-msgid "Mark as Favorite"
-msgstr "Додати до улюблених"
-
-#: src/session/sidebar/category_row.rs:181
-msgid "Unmark as Low Priority"
-msgstr "Скасувати позначення як низькопріоритетної"
-
+#: src/session/sidebar/category_row.rs:172
+#: src/session/sidebar/category_row.rs:179
 #: src/session/sidebar/category_row.rs:186
-msgid "Rejoin Room as Favorite"
-msgstr "Повторно увійти як до улюбленої кімнати"
+msgid "Move to People"
+msgstr "Пересунути до «Людей»"
 
-#: src/session/sidebar/category_row.rs:187
+#: src/session/sidebar/category_row.rs:176
+#: src/session/sidebar/category_row.rs:183
+#: src/session/sidebar/category_row.rs:197
+#| msgid "Mark as Favorite"
+msgid "Move to Favorites"
+msgstr "Пересунути до «Улюблених»"
+
+#: src/session/sidebar/category_row.rs:190
+#| msgid "Rejoin Room as Favorite"
+msgid "Rejoin Room as Favorites"
+msgstr "Повторно увійти як до кімнати «Улюблені»"
+
+#: src/session/sidebar/category_row.rs:191
 msgid "Rejoin Room"
 msgstr "Повторно увійти до кімнати"
 
-#: src/session/sidebar/category_row.rs:188
+#: src/session/sidebar/category_row.rs:192
 msgid "Rejoin Room as Low Priority"
 msgstr "Повторно увійти як до низькопріоритетної кімнати"
 
-#: src/session/sidebar/category_type.rs:31
+#: src/session/sidebar/category_row.rs:193
+#| msgid "Rejoin Room as Favorite"
+msgid "Rejoin Room as People"
+msgstr "Повторно увійти як до кімнати «Люди»"
+
+#: src/session/sidebar/category_row.rs:198
+#| msgid "Forget Room"
+msgid "Mov to Rooms"
+msgstr "Пересунути до «Кімнат»"
+
+#: src/session/sidebar/category_type.rs:32
 msgid "Verifications"
 msgstr "Перевірки"
 
-#: src/session/sidebar/category_type.rs:32
+#: src/session/sidebar/category_type.rs:33
 msgid "Invited"
 msgstr "Запрошено"
 
-#: src/session/sidebar/category_type.rs:33
-msgid "Favorite"
+#: src/session/sidebar/category_type.rs:34
+#| msgid "Favorite"
+msgid "Favorites"
 msgstr "Улюблені"
 
-#: src/session/sidebar/category_type.rs:34
+#: src/session/sidebar/category_type.rs:35
 msgid "Rooms"
 msgstr "Кімнати"
 
-#: src/session/sidebar/category_type.rs:35
+#: src/session/sidebar/category_type.rs:36
 msgid "Low Priority"
 msgstr "Низький пріоритет"
 
-#: src/session/sidebar/category_type.rs:36
+#: src/session/sidebar/category_type.rs:37
 msgid "Historical"
 msgstr "Історичні"
 
 #. Translators: This shouldn't ever be visible to the user,
-#: src/session/sidebar/category_type.rs:38
+#: src/session/sidebar/category_type.rs:39
 msgid "Outdated"
 msgstr "Застарілі"
 
-#: src/session/sidebar/category_type.rs:39
+#: src/session/sidebar/category_type.rs:40
 msgid "Spaces"
 msgstr "Простори"
+
+#: src/session/sidebar/category_type.rs:41
+msgid "People"
+msgstr "Люди"
 
 #: src/session/sidebar/entry_type.rs:21
 msgid "Explore"
@@ -1895,9 +1925,33 @@ msgstr "звук"
 msgid "file"
 msgstr "файл"
 
-#: src/window.rs:204
+#: src/window.rs:230
 msgid "Failed to restore previous sessions"
 msgstr "Не вдалося відновити попередні сеанси"
+
+#~ msgid "No Preview Available"
+#~ msgstr "Перегляд недоступний"
+
+#~ msgid "Unmark as _Favorite"
+#~ msgstr "Скасувати позначення як _улюбленої"
+
+#~ msgid "Unmark as Low _Priority"
+#~ msgstr "Скасувати позначення як _низькопріоритетної"
+
+#~ msgid "Image"
+#~ msgstr "Зображення"
+
+#~ msgid "Could not retrieve image"
+#~ msgstr "Не вдалося отримати зображення"
+
+#~ msgid "Could not retrieve video"
+#~ msgstr "Не вдалося отримати відео"
+
+#~ msgid "Unmark as Favorite"
+#~ msgstr "Вилучити з улюблених"
+
+#~ msgid "Unmark as Low Priority"
+#~ msgstr "Скасувати позначення як низькопріоритетної"
 
 #~ msgid "Retry"
 #~ msgstr "Повторити"
@@ -2337,9 +2391,6 @@ msgstr "Не вдалося відновити попередні сеанси"
 
 #~ msgid "© 2017–2020 Daniel García Moreno, et al."
 #~ msgstr "© 2017–2020 Daniel García Moreno, та ін."
-
-#~ msgid "Image from Clipboard"
-#~ msgstr "Зображення з буфера обміну"
 
 #~ msgid "Invite to {name}"
 #~ msgstr "Запросити в {name}"
