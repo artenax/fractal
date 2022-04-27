@@ -762,22 +762,17 @@ impl RoomHistory {
         let filename = filename_for_mime(Some(mime::IMAGE_PNG.as_ref()), None);
         let dialog = AttachmentDialog::for_image(&window, &filename, &image);
 
-        dialog.connect_local(
-            "send",
-            false,
-            clone!(@weak self as obj, @strong image => @default-return None, move |_| {
-                if let Some(room) = obj.room() {
-                    room.send_attachment(
-                        image.save_to_png_bytes().to_vec(),
-                        mime::IMAGE_PNG,
-                        &filename,
-                    );
-                }
+        if dialog.run_future().await != gtk::ResponseType::Ok {
+            return;
+        }
 
-                None
-            }),
-        );
-        dialog.present();
+        if let Some(room) = self.room() {
+            room.send_attachment(
+                image.save_to_png_bytes().to_vec(),
+                mime::IMAGE_PNG,
+                &filename,
+            );
+        }
     }
 
     pub fn select_file(&self) {
@@ -838,22 +833,13 @@ impl RoomHistory {
                 let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
                 let dialog = AttachmentDialog::for_file(&window, &filename, &file);
 
-                dialog.connect_local(
-                    "send",
-                    false,
-                    clone!(@weak self as obj => @default-return None, move |_| {
-                        if let Some(room) = obj.room() {
-                            room.send_attachment(
-                                bytes.clone(),
-                                mime.clone(),
-                                &filename,
-                            );
-                        }
+                if dialog.run_future().await != gtk::ResponseType::Ok {
+                    return;
+                }
 
-                        None
-                    }),
-                );
-                dialog.present();
+                if let Some(room) = self.room() {
+                    room.send_attachment(bytes.clone(), mime.clone(), &filename);
+                }
             }
             Err(err) => {
                 warn!("Could not read file: {}", err);
