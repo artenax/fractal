@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-04-13 15:22+0000\n"
-"PO-Revision-Date: 2022-04-17 16:28+0200\n"
+"POT-Creation-Date: 2022-05-02 11:33+0000\n"
+"PO-Revision-Date: 2022-05-03 14:02+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -170,10 +170,6 @@ msgstr "_Anuluj"
 msgid "_Send"
 msgstr "_Wyślij"
 
-#: data/resources/ui/attachment-dialog.ui:36
-msgid "No Preview Available"
-msgstr "Brak dostępnego podglądu"
-
 #: data/resources/ui/components-auth-dialog.ui:20
 msgid "Authentication"
 msgstr "Uwierzytelnianie"
@@ -240,13 +236,11 @@ msgstr "Wystąpił błąd podczas wyszukiwania"
 msgid "Invite"
 msgstr "Zaproszenie"
 
-#: data/resources/ui/content-invite.ui:108
-#: data/resources/ui/sidebar-room-row.ui:11
+#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:33
 msgid "_Reject"
 msgstr "_Odrzuć"
 
-#: data/resources/ui/content-invite.ui:118
-#: data/resources/ui/sidebar-room-row.ui:6
+#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:28
 msgid "_Accept"
 msgstr "_Przyjmij"
 
@@ -304,8 +298,7 @@ msgstr "_Informacje o pokoju"
 msgid "_Invite New Member"
 msgstr "_Zaproś nowego członka"
 
-#: data/resources/ui/content-room-history.ui:18
-#: data/resources/ui/sidebar-room-row.ui:40
+#: data/resources/ui/content-room-history.ui:18 data/resources/ui/sidebar.ui:62
 msgid "_Leave Room"
 msgstr "_Opuść pokój"
 
@@ -333,47 +326,47 @@ msgstr "Przełącz przeszukiwanie historii pokoju"
 msgid "Room History Search"
 msgstr "Przeszukiwanie historii pokoju"
 
-#: data/resources/ui/content-room-history.ui:144
+#: data/resources/ui/content-room-history.ui:142
 msgid "Unable to load room"
 msgstr "Nie można wczytać pokoju"
 
-#: data/resources/ui/content-room-history.ui:145
+#: data/resources/ui/content-room-history.ui:143
 msgid "Check your network connection."
 msgstr "Proszę sprawdzić połączenie z siecią."
 
-#: data/resources/ui/content-room-history.ui:148
+#: data/resources/ui/content-room-history.ui:146
 msgid "Try Again"
 msgstr "Spróbuj ponownie"
 
-#: data/resources/ui/content-room-history.ui:173
+#: data/resources/ui/content-room-history.ui:171
 msgid "Scroll to bottom"
 msgstr "Przewiń na dół"
 
-#: data/resources/ui/content-room-history.ui:185
+#: data/resources/ui/content-room-history.ui:183
 msgid "Drop Here to Send"
-msgstr "Upuszczenie tutaj wyśle"
+msgstr "Przeciągnięcie tutaj wyśle"
 
-#: data/resources/ui/content-room-history.ui:211
+#: data/resources/ui/content-room-history.ui:204
 msgid "Room History"
 msgstr "Historia pokoju"
 
-#: data/resources/ui/content-room-history.ui:249
+#: data/resources/ui/content-room-history.ui:242
 msgid "Enable Markdown Formatting"
 msgstr "Formatowanie Markdown"
 
-#: data/resources/ui/content-room-history.ui:270
+#: data/resources/ui/content-room-history.ui:263
 msgid "Message Entry"
 msgstr "Pole wpisywania wiadomości"
 
-#: data/resources/ui/content-room-history.ui:285
-msgid "Open Message Menu"
-msgstr "Otwórz menu wiadomości"
-
-#: data/resources/ui/content-room-history.ui:295
+#: data/resources/ui/content-room-history.ui:277
 msgid "Open Emoji Picker"
 msgstr "Otwórz wybór emoji"
 
-#: data/resources/ui/content-room-history.ui:310
+#: data/resources/ui/content-room-history.ui:288
+msgid "Open Message Menu"
+msgstr "Otwórz menu wiadomości"
+
+#: data/resources/ui/content-room-history.ui:303
 msgid "Send Message"
 msgstr "Wyślij wiadomość"
 
@@ -785,30 +778,6 @@ msgctxt "shortcut window"
 msgid "Close Room"
 msgstr "Zamknięcie pokoju"
 
-#: data/resources/ui/sidebar-room-row.ui:18
-msgid "Mark as _Favorite"
-msgstr "_Dodaj do ulubionych"
-
-#: data/resources/ui/sidebar-room-row.ui:23
-msgid "Unmark as _Favorite"
-msgstr "_Usuń z ulubionych"
-
-#: data/resources/ui/sidebar-room-row.ui:28
-msgid "Mark as Low _Priority"
-msgstr "_Nadaj niski priorytet"
-
-#: data/resources/ui/sidebar-room-row.ui:33
-msgid "Unmark as Low _Priority"
-msgstr "_Odbierz niski priorytet"
-
-#: data/resources/ui/sidebar-room-row.ui:45
-msgid "Re_join Room"
-msgstr "_Ponownie dołącz do pokoju"
-
-#: data/resources/ui/sidebar-room-row.ui:50
-msgid "_Forget Room"
-msgstr "_Zapomnij pokój"
-
 #: data/resources/ui/sidebar.ui:6
 msgid "_New Room"
 msgstr "_Nowy pokój"
@@ -825,31 +794,55 @@ msgstr "_Skróty klawiszowe"
 msgid "_About Fractal"
 msgstr "_O programie"
 
-#: data/resources/ui/sidebar.ui:41
+#: data/resources/ui/sidebar.ui:40
+msgid "Move to _Favorites"
+msgstr "Przenieś do _ulubionych"
+
+#: data/resources/ui/sidebar.ui:45
+msgid "Move to _Rooms"
+msgstr "_Przenieś do pokojów"
+
+#: data/resources/ui/sidebar.ui:50
+msgid "Move to _People"
+msgstr "Przenieś do _osób"
+
+#: data/resources/ui/sidebar.ui:55
+msgid "Move to Low _Priority"
+msgstr "Przenieś do _niskich priorytetów"
+
+#: data/resources/ui/sidebar.ui:67
+msgid "Re_join Room"
+msgstr "_Ponownie dołącz do pokoju"
+
+#: data/resources/ui/sidebar.ui:72
+msgid "_Forget Room"
+msgstr "_Zapomnij pokój"
+
+#: data/resources/ui/sidebar.ui:91
 msgid "Switch Accounts"
 msgstr "Przełącz konta"
 
-#: data/resources/ui/sidebar.ui:63
+#: data/resources/ui/sidebar.ui:113
 msgid "App Settings Menu"
 msgstr "Menu ustawień programu"
 
-#: data/resources/ui/sidebar.ui:73
+#: data/resources/ui/sidebar.ui:123
 msgid "Toggle Room Search"
 msgstr "Przełącz wyszukiwanie pokojów"
 
-#: data/resources/ui/sidebar.ui:85
+#: data/resources/ui/sidebar.ui:135
 msgid "Room Search"
 msgstr "Wyszukiwanie pokojów"
 
-#: data/resources/ui/sidebar.ui:86
+#: data/resources/ui/sidebar.ui:136
 msgid "Search for a room"
 msgstr "Wyszukiwanie pokoju"
 
-#: data/resources/ui/sidebar.ui:107
+#: data/resources/ui/sidebar.ui:152
 msgid "Sidebar"
 msgstr "Panel boczny"
 
-#: data/resources/ui/sidebar.ui:108
+#: data/resources/ui/sidebar.ui:153
 msgid "Allows to navigate between rooms"
 msgstr "Umożliwia przechodzenie między pokojami"
 
@@ -900,6 +893,26 @@ msgstr "Nie można ustalić typu wybranego pliku"
 #: src/components/editable_avatar.rs:383
 msgid "No file was chosen"
 msgstr "Nie wybrano pliku"
+
+#: src/components/location_viewer.rs:95
+msgid "Location at latitude {latitude} and longitude {longitude}"
+msgstr "Położenie na szerokości {latitude} i wysokości {longitude}"
+
+#: src/components/media_content_viewer.rs:161
+msgid "Image not Viewable"
+msgstr "Nie można wyświetlić obrazu"
+
+#: src/components/media_content_viewer.rs:162
+msgid "Audio Clip not Playable"
+msgstr "Nie można odtworzyć klipu dźwiękowego"
+
+#: src/components/media_content_viewer.rs:163
+msgid "Video not Playable"
+msgstr "Nie można odtworzyć filmu"
+
+#: src/components/media_content_viewer.rs:164
+msgid "File not Viewable"
+msgstr "Nie można wyświetlić pliku"
 
 #: src/error_page.rs:108
 msgid "Session removed successfully."
@@ -1195,7 +1208,7 @@ msgstr "Wybór awatara"
 msgid "Invite new Members"
 msgstr "Zaproś nowych członków"
 
-#: src/session/content/room_history/item_row.rs:201
+#: src/session/content/room_history/item_row.rs:257
 msgid "New Messages"
 msgstr "Nowe wiadomości"
 
@@ -1208,12 +1221,7 @@ msgstr "Nie można odebrać pliku dźwiękowego"
 msgid "Error reading audio file"
 msgstr "Błąd podczas odczytywania pliku dźwiękowego"
 
-#: src/session/content/room_history/message_row/location.rs:111
-msgid "Location at latitude {latitude} and longitude {longitude}"
-msgstr "Położenie na szerokości {latitude} i wysokości {longitude}"
-
 #: src/session/content/room_history/message_row/media.rs:445
-#: src/session/media_viewer.rs:244
 msgid "Image file not supported"
 msgstr "Plik obrazu jest nieobsługiwany"
 
@@ -1239,24 +1247,33 @@ msgstr "Fractal nie może odszyfrować tej wiadomości."
 msgid "This message was removed."
 msgstr "Ta wiadomość została usunięta."
 
-#: src/session/content/room_history/mod.rs:158
+#: src/session/content/room_history/mod.rs:156
 msgid "The location request has been cancelled."
 msgstr "Prośba o udostępnienie położenia została anulowana."
 
-#: src/session/content/room_history/mod.rs:162
+#: src/session/content/room_history/mod.rs:160
 msgid "Failed to retrieve current location."
 msgstr "Ustalenie obecnego położenia się nie powiodło."
 
-#. TODO Get the actual name of the file by reading
-#. the text/plain mime type.
-#: src/session/content/room_history/mod.rs:400
-#: src/session/content/room_history/mod.rs:774
-msgid "Image"
-msgstr "Obraz"
-
-#: src/session/content/room_history/mod.rs:832
+#: src/session/content/room_history/mod.rs:742
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Położenie użytkownika {geo_uri} w dniu {iso8601_datetime}"
+
+#: src/session/content/room_history/mod.rs:852
+msgid "Error reading file"
+msgstr "Błąd podczas odczytywania pliku"
+
+#: src/session/content/room_history/mod.rs:884
+msgid "Error getting file from drop"
+msgstr "Błąd podczas uzyskiwania pliku z przeciągnięcia"
+
+#: src/session/content/room_history/mod.rs:922
+msgid "Error getting image from clipboard"
+msgstr "Błąd podczas uzyskiwania obrazu ze schowka"
+
+#: src/session/content/room_history/mod.rs:945
+msgid "Error getting file from clipboard"
+msgstr "Błąd podczas uzyskiwania pliku ze schowka"
 
 #: src/session/content/room_history/state_row/creation.rs:62
 msgid "This is the continuation of an upgraded room."
@@ -1554,19 +1571,11 @@ msgstr "Anulowano uwierzytelnianie wymagane do utworzenia kluczy szyfrowania."
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Wystąpił błąd podczas tworzenia kluczy szyfrowania."
 
-#: src/session/media_viewer.rs:251
-msgid "Could not retrieve image"
-msgstr "Nie można odebrać obrazu"
-
-#: src/session/media_viewer.rs:288
-msgid "Could not retrieve video"
-msgstr "Nie można odebrać filmu"
-
-#: src/session/mod.rs:463
+#: src/session/mod.rs:465
 msgid "Unable to store session"
 msgstr "Nie można przechować sesji"
 
-#: src/session/mod.rs:760
+#: src/session/mod.rs:757
 msgid "Failed to logout the session."
 msgstr "Wylogowanie sesji się nie powiodło."
 
@@ -1587,24 +1596,24 @@ msgid "Normal user"
 msgstr "Zwykły użytkownik"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:427
+#: src/session/room/mod.rs:450
 msgid "Failed to forget {room}."
 msgstr "Zapomnienie pokoju {room} się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:574
+#: src/session/room/mod.rs:643
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr ""
 "Przeniesienie pokoju {room} z kategorii {previous_category} do "
 "{new_category} się nie powiodło."
 
-#: src/session/room/mod.rs:869
+#: src/session/room/mod.rs:943
 msgid "Unknown"
 msgstr "Nieznane"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1282
+#: src/session/room/mod.rs:1367
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 "Przyjęcie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -1612,7 +1621,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1316
+#: src/session/room/mod.rs:1401
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 "Odrzucenie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -1620,7 +1629,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1486
+#: src/session/room/mod.rs:1571
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr ""
 "Zaproszenie użytkownika {user} do pokoju {room} się nie powiodło. Proszę "
@@ -1628,7 +1637,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1494
+#: src/session/room/mod.rs:1579
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1695,80 +1704,102 @@ msgstr "Dołącz do pokoju jako niski priorytet"
 msgid "Reject Invite"
 msgstr "Odrzuć zaproszenie"
 
-#: src/session/sidebar/category_row.rs:168
-msgid "Unmark as Favorite"
-msgstr "Usuń z ulubionych"
+#: src/session/sidebar/category_row.rs:165
+msgid "Join Room as People"
+msgstr "Dołącz do pokoju jako osoby"
 
 #: src/session/sidebar/category_row.rs:169
-#: src/session/sidebar/category_row.rs:175
-msgid "Mark as Low Priority"
-msgstr "Nadaj niski priorytet"
+#: src/session/sidebar/category_row.rs:184
+msgid "Move to Rooms"
+msgstr "Przenieś do pokojów"
 
 #: src/session/sidebar/category_row.rs:170
-#: src/session/sidebar/category_row.rs:176
-#: src/session/sidebar/category_row.rs:182
+#: src/session/sidebar/category_row.rs:177
+#: src/session/sidebar/category_row.rs:199
+msgid "Move to Low Priority"
+msgstr "Przenieś do niskich priorytetów"
+
+#: src/session/sidebar/category_row.rs:171
+#: src/session/sidebar/category_row.rs:178
+#: src/session/sidebar/category_row.rs:185
+#: src/session/sidebar/category_row.rs:200
 msgid "Leave Room"
 msgstr "Opuść pokój"
 
-#: src/session/sidebar/category_row.rs:174
-#: src/session/sidebar/category_row.rs:180
-msgid "Mark as Favorite"
-msgstr "Dodaj do ulubionych"
-
-#: src/session/sidebar/category_row.rs:181
-msgid "Unmark as Low Priority"
-msgstr "Odbierz niski priorytet"
-
+#: src/session/sidebar/category_row.rs:172
+#: src/session/sidebar/category_row.rs:179
 #: src/session/sidebar/category_row.rs:186
-msgid "Rejoin Room as Favorite"
+msgid "Move to People"
+msgstr "Przenieś do osób"
+
+#: src/session/sidebar/category_row.rs:176
+#: src/session/sidebar/category_row.rs:183
+#: src/session/sidebar/category_row.rs:197
+msgid "Move to Favorites"
+msgstr "Przenieś do ulubionych"
+
+#: src/session/sidebar/category_row.rs:190
+msgid "Rejoin Room as Favorites"
 msgstr "Ponownie dołącz do pokoju jako ulubiony"
 
-#: src/session/sidebar/category_row.rs:187
+#: src/session/sidebar/category_row.rs:191
 msgid "Rejoin Room"
 msgstr "Ponownie dołącz do pokoju"
 
-#: src/session/sidebar/category_row.rs:188
+#: src/session/sidebar/category_row.rs:192
 msgid "Rejoin Room as Low Priority"
 msgstr "Ponownie dołącz do pokoju jako niski priorytet"
 
-#: src/session/sidebar/category_type.rs:31
+#: src/session/sidebar/category_row.rs:193
+msgid "Rejoin Room as People"
+msgstr "Ponownie dołącz do pokoju jako osoby"
+
+#: src/session/sidebar/category_row.rs:198
+msgid "Mov to Rooms"
+msgstr "Przenieś do pokojów"
+
+#: src/session/sidebar/category_type.rs:34
 msgid "Verifications"
 msgstr "Weryfikacje"
 
-#: src/session/sidebar/category_type.rs:32
+#: src/session/sidebar/category_type.rs:35
 msgid "Invited"
 msgstr "Zaproszono"
 
-#: src/session/sidebar/category_type.rs:33
-msgid "Favorite"
-msgstr "Ulubiony"
+#: src/session/sidebar/category_type.rs:36
+msgid "Favorites"
+msgstr "Ulubione"
 
-#: src/session/sidebar/category_type.rs:34
+#: src/session/sidebar/category_type.rs:37
 msgid "Rooms"
 msgstr "Pokoje"
 
-#: src/session/sidebar/category_type.rs:35
+#: src/session/sidebar/category_type.rs:38
 msgid "Low Priority"
 msgstr "Niski priorytet"
 
-#: src/session/sidebar/category_type.rs:36
+#: src/session/sidebar/category_type.rs:39
 msgid "Historical"
 msgstr "Przeszłe"
 
 #. Translators: This shouldn't ever be visible to the user,
-#: src/session/sidebar/category_type.rs:38
+#: src/session/sidebar/category_type.rs:41
 msgid "Outdated"
 msgstr "Przestarzałe"
 
-#: src/session/sidebar/category_type.rs:39
+#: src/session/sidebar/category_type.rs:42
 msgid "Spaces"
 msgstr "Miejsca"
 
-#: src/session/sidebar/entry_type.rs:21
+#: src/session/sidebar/category_type.rs:43
+msgid "People"
+msgstr "Osoby"
+
+#: src/session/sidebar/entry_type.rs:23
 msgid "Explore"
 msgstr "Odkrywaj"
 
-#: src/session/sidebar/entry_type.rs:22
+#: src/session/sidebar/entry_type.rs:24
 msgid "Forget Room"
 msgstr "Zapomnij pokój"
 
@@ -1878,6 +1909,6 @@ msgstr "dźwięk"
 msgid "file"
 msgstr "plik"
 
-#: src/window.rs:204
+#: src/window.rs:230
 msgid "Failed to restore previous sessions"
 msgstr "Przywrócenie poprzednich sesji się nie powiodło"
