@@ -137,7 +137,8 @@ impl AudioPlayer {
 
     /// Set the file to play.
     ///
-    /// This is a convenience method that calls [`set_media_file()`].
+    /// This is a convenience method that calls
+    /// [`AudioPlayer::set_media_file()`].
     pub fn set_file(&self, file: Option<&gio::File>) {
         self.set_media_file(file.map(gtk::MediaFile::for_file));
     }

@@ -280,7 +280,7 @@ impl PasswordValidity {
 /// A password should include a lower-case letter, an upper-case letter, a
 /// number and a symbol and be at a minimum 8 characters in length.
 ///
-/// See: https://spec.matrix.org/v1.1/client-server-api/#notes-on-password-management
+/// See: <https://spec.matrix.org/v1.1/client-server-api/#notes-on-password-management>
 pub fn validate_password(password: &str) -> PasswordValidity {
     let mut validity = PasswordValidity::new();
 
