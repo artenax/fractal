@@ -51,6 +51,32 @@ cargo_build = custom_target(
   ]
 )
 
+rustdoc_flags = ' '.join([
+  '-Zunstable-options',
+  '--enable-index-page',
+  '--extern-html-root-url=gio=https://gtk-rs.org/gtk-rs-core/stable/latest/docs/',
+  '--extern-html-root-url=glib=https://gtk-rs.org/gtk-rs-core/stable/latest/docs/',
+  '--extern-html-root-url=gsk4=https://gtk-rs.org/gtk4-rs/stable/latest/docs/',
+  '--extern-html-root-url=gdk4=https://gtk-rs.org/gtk4-rs/stable/latest/docs/',
+  '--extern-html-root-url=gtk4=https://gtk-rs.org/gtk4-rs/stable/latest/docs/',
+  '--extern-html-root-url=libadwaita=https://world.pages.gitlab.gnome.org/Rust/libadwaita-rs/stable/latest/docs/',
+  '--cfg=docsrs',
+])
+doc_env = ['RUSTDOCFLAGS=' + rustdoc_flags ]
+doc_deps = [
+  '--package=ruma',
+  '--package=ruma-common',
+  '--package=ruma-client-api',
+  '--package=matrix-sdk',
+  '--package=matrix-sdk-base',
+  '--package=matrix-sdk-common',
+  '--package=matrix-sdk-crypto',
+  '--package=matrix-qrcode',
+  '--package=matrix-sdk-sled',
+  '--package=matrix-sdk-store-encryption',
+  '--package=fractal',
+]
+
 cargo_doc = custom_target(
     'cargo-doc',
     build_by_default: false,
@@ -58,8 +84,8 @@ cargo_doc = custom_target(
     output: 'doc',
     console: true,
     command: [
-      'env', cargo_env,
+      'env', cargo_env + doc_env,
       cargo, 'doc',
-      cargo_options + ['--no-deps', '--document-private-items'],
+      cargo_options + doc_deps + ['--no-deps', '--document-private-items', '-Zrustdoc-map'] ,
     ],
   )

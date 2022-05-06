@@ -137,17 +137,6 @@ pages:
   stage: doc
   tags:
     - flatpak
-  variables:
-    RUSTDOCFLAGS: >
-      -Z unstable-options
-      --enable-index-page
-      --extern-html-root-url=gio=https://gtk-rs.org/gtk-rs-core/stable/latest/docs/gio/
-      --extern-html-root-url=gsk4=https://gtk-rs.org/gtk4-rs/stable/latest/docs/gsk4/
-      --extern-html-root-url=gdk4=https://gtk-rs.org/gtk4-rs/stable/latest/docs/gdk4/
-      --extern-html-root-url=gtk4=https://gtk-rs.org/gtk4-rs/stable/latest/docs/gtk4/
-      --extern-html-root-url=glib=https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/
-      --extern-html-root-url=libadwaita=https://world.pages.gitlab.gnome.org/Rust/libadwaita-rs/stable/latest/docs/libadwaita/
-      --extern-html-root-url=matrix-sdk=https://matrix-org.github.io/matrix-rust-sdk/matrix_sdk
   script:
     - flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
     - echo "ninja src/doc" | flatpak-builder --disable-rofiles-fuse --build-shell=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}
