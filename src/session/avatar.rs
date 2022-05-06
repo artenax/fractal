@@ -99,9 +99,7 @@ mod imp {
                     .session
                     .set(value.get::<Session>().unwrap().downgrade())
                     .unwrap(),
-                "display-name" => {
-                    let _ = obj.set_display_name(value.get().unwrap());
-                }
+                "display-name" => obj.set_display_name(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }

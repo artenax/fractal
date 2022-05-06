@@ -98,10 +98,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "show-header" => {
-                    let show_header = value.get().unwrap();
-                    let _ = obj.set_show_header(show_header);
-                }
+                "show-header" => obj.set_show_header(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }

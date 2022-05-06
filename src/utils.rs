@@ -56,7 +56,7 @@ macro_rules! spawn {
 #[macro_export]
 macro_rules! spawn_tokio {
     ($future:expr) => {
-        crate::RUNTIME.spawn($future)
+        $crate::RUNTIME.spawn($future)
     };
 }
 
