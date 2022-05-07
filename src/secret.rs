@@ -7,7 +7,7 @@ use libsecret::{
     Retrievable, Schema, SchemaAttributeType, SchemaFlags, SearchFlags, Value, COLLECTION_DEFAULT,
 };
 use log::error;
-use matrix_sdk::ruma::{DeviceId, UserId};
+use matrix_sdk::ruma::{DeviceId, OwnedDeviceId, OwnedUserId, UserId};
 use serde::{Deserialize, Serialize};
 use serde_json::error::Error as JsonError;
 use url::Url;
@@ -65,8 +65,8 @@ impl fmt::Display for SecretError {
 #[derive(Debug, Clone)]
 pub struct StoredSession {
     pub homeserver: Url,
-    pub user_id: Box<UserId>,
-    pub device_id: Box<DeviceId>,
+    pub user_id: OwnedUserId,
+    pub device_id: OwnedDeviceId,
     pub path: PathBuf,
     pub secret: Secret,
 }

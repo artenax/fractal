@@ -67,7 +67,7 @@ impl ReactionList {
         // Group reactions by key
         let mut grouped_reactions: HashMap<String, Vec<Event>> = HashMap::new();
         for event in new_reactions {
-            if let Some(AnyMessageLikeEventContent::Reaction(reaction)) = event.message_content() {
+            if let Some(AnyMessageLikeEventContent::Reaction(reaction)) = event.content() {
                 let relation = reaction.relates_to;
                 grouped_reactions
                     .entry(relation.key)

@@ -5,9 +5,7 @@ use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{glib, subclass::prelude::*, CompositeTemplate};
 use log::warn;
-use matrix_sdk::ruma::events::{
-    room::member::MembershipState, AnyStateEventContent, AnySyncStateEvent,
-};
+use matrix_sdk::ruma::events::{room::member::MembershipState, AnySyncStateEvent, SyncStateEvent};
 
 use self::{creation::StateCreation, tombstone::StateTombstone};
 use crate::gettext_f;
@@ -62,44 +60,39 @@ impl StateRow {
         // We may want to show more state events in the future
         // For a full list of state events see:
         // https://matrix-org.github.io/matrix-rust-sdk/matrix_sdk/events/enum.AnyStateEventContent.html
-        let message = match state.content() {
-            AnyStateEventContent::RoomCreate(event) => {
-                WidgetType::Creation(StateCreation::new(&event))
+        let message = match state {
+            AnySyncStateEvent::RoomCreate(SyncStateEvent::Original(event)) => {
+                WidgetType::Creation(StateCreation::new(&event.content))
             }
-            AnyStateEventContent::RoomEncryption(_event) => {
+            AnySyncStateEvent::RoomEncryption(_event) => {
                 WidgetType::Text(gettext("This room is encrypted from this point on."))
             }
-            AnyStateEventContent::RoomMember(event) => {
-                let display_name = event
+            AnySyncStateEvent::RoomMember(SyncStateEvent::Original(event)) => {
+                let content = &event.content;
+                let display_name = content
                     .displayname
                     .clone()
-                    .unwrap_or_else(|| state.state_key().into());
+                    .unwrap_or_else(|| event.state_key.to_string());
 
-                match event.membership {
+                match content.membership {
                     MembershipState::Join => {
-                        let message = match state.unsigned().prev_content {
-                            Some(AnyStateEventContent::RoomMember(prev))
-                                if event.membership != prev.membership =>
-                            {
-                                None
-                            }
-                            Some(AnyStateEventContent::RoomMember(prev))
-                                if event.displayname != prev.displayname =>
-                            {
-                                if let Some(prev_name) = prev.displayname {
-                                    if event.displayname == None {
+                        let message = match &event.unsigned.prev_content {
+                            Some(prev) if content.membership != prev.membership => None,
+                            Some(prev) if content.displayname != prev.displayname => {
+                                if let Some(prev_name) = &prev.displayname {
+                                    if content.displayname == None {
                                         Some(gettext_f(
                                             // Translators: Do NOT translate the content between
                                             // '{' and '}', this is a variable name.
                                             "{previous_user_name} removed their display name.",
-                                            &[("previous_user_name", &prev_name)],
+                                            &[("previous_user_name", prev_name)],
                                         ))
                                     } else {
                                         Some(gettext_f(
                                             // Translators: Do NOT translate the content between
                                             // '{' and '}', this is a variable name.
                                             "{previous_user_name} changed their display name to {new_user_name}.",
-                                            &[("previous_user_name", &prev_name),
+                                            &[("previous_user_name", prev_name),
                                             ("new_user_name", &display_name)]
                                         ))
                                     }
@@ -109,15 +102,13 @@ impl StateRow {
                                         // '{' and '}', this is a variable name.
                                         "{user_id} set their display name to {new_user_name}.",
                                         &[
-                                            ("user_id", state.state_key()),
+                                            ("user_id", event.state_key.as_ref()),
                                             ("new_user_name", &display_name),
                                         ],
                                     ))
                                 }
                             }
-                            Some(AnyStateEventContent::RoomMember(prev))
-                                if event.avatar_url != prev.avatar_url =>
-                            {
+                            Some(prev) if content.avatar_url != prev.avatar_url => {
                                 if prev.avatar_url == None {
                                     Some(gettext_f(
                                         // Translators: Do NOT translate the content between
@@ -125,7 +116,7 @@ impl StateRow {
                                         "{user} set their avatar.",
                                         &[("user", &display_name)],
                                     ))
-                                } else if event.avatar_url == None {
+                                } else if content.avatar_url == None {
                                     Some(gettext_f(
                                         // Translators: Do NOT translate the content between
                                         // '{' and '}', this is a variable name.
@@ -166,11 +157,9 @@ impl StateRow {
                         ))
                     }
                     MembershipState::Leave => {
-                        let message = match state.unsigned().prev_content {
-                            Some(AnyStateEventContent::RoomMember(prev))
-                                if prev.membership == MembershipState::Invite =>
-                            {
-                                if state.state_key() == state.sender() {
+                        let message = match &event.unsigned.prev_content {
+                            Some(prev) if prev.membership == MembershipState::Invite => {
+                                if event.state_key == event.sender {
                                     Some(gettext_f(
                                         // Translators: Do NOT translate the content between
                                         // '{' and '}', this is a variable name.
@@ -186,9 +175,7 @@ impl StateRow {
                                     ))
                                 }
                             }
-                            Some(AnyStateEventContent::RoomMember(prev))
-                                if prev.membership == MembershipState::Ban =>
-                            {
+                            Some(prev) if prev.membership == MembershipState::Ban => {
                                 Some(gettext_f(
                                     // Translators: Do NOT translate the content between
                                     // '{' and '}', this is a variable name.
@@ -200,7 +187,7 @@ impl StateRow {
                         };
 
                         WidgetType::Text(message.unwrap_or_else(|| {
-                            if state.state_key() == state.sender() {
+                            if event.state_key == event.sender {
                                 // Translators: Do NOT translate the content between '{' and '}',
                                 // this is a variable name.
                                 gettext_f("{user} left the room.", &[("user", &display_name)])
@@ -221,25 +208,25 @@ impl StateRow {
                         &[("user", &display_name)],
                     )),
                     _ => {
-                        warn!("Unsupported room member event: {:?}", state);
+                        warn!("Unsupported room member event: {:?}", event);
                         WidgetType::Text(gettext("An unsupported room member event was received."))
                     }
                 }
             }
-            AnyStateEventContent::RoomThirdPartyInvite(event) => {
-                let display_name = match event.display_name {
-                    s if s.is_empty() => state.state_key().into(),
+            AnySyncStateEvent::RoomThirdPartyInvite(SyncStateEvent::Original(event)) => {
+                let display_name = match &event.content.display_name {
+                    s if s.is_empty() => &event.state_key,
                     s => s,
                 };
                 WidgetType::Text(gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "{user} was invited to this room.",
-                    &[("user", &display_name)],
+                    &[("user", display_name)],
                 ))
             }
-            AnyStateEventContent::RoomTombstone(event) => {
-                WidgetType::Tombstone(StateTombstone::new(&event))
+            AnySyncStateEvent::RoomTombstone(SyncStateEvent::Original(event)) => {
+                WidgetType::Tombstone(StateTombstone::new(&event.content))
             }
             _ => {
                 warn!("Unsupported state event: {}", state.event_type());

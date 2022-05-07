@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use gtk::{
     glib,
     glib::{clone, DateTime},
@@ -12,11 +10,14 @@ use matrix_sdk::{
     media::MediaEventContent,
     ruma::{
         events::{
-            room::message::{MessageType, Relation},
+            room::{
+                message::{MessageType, Relation},
+                redaction::SyncRoomRedactionEvent,
+            },
             AnyMessageLikeEventContent, AnySyncMessageLikeEvent, AnySyncRoomEvent,
-            AnySyncStateEvent, MessageLikeUnsigned,
+            AnySyncStateEvent, MessageLikeUnsigned, SyncMessageLikeEvent, SyncStateEvent,
         },
-        EventId, MilliSecondsSinceUnixEpoch, TransactionId, UserId,
+        MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedTransactionId, OwnedUserId,
     },
     Error as MatrixError,
 };
@@ -95,6 +96,13 @@ mod imp {
                         None,
                         glib::ParamFlags::READABLE,
                     ),
+                    glib::ParamSpecObject::new(
+                        "reactions",
+                        "Reactions",
+                        "The reactions related to this event",
+                        ReactionList::static_type(),
+                        glib::ParamFlags::READABLE,
+                    ),
                 ]
             });
 
@@ -127,6 +135,7 @@ mod imp {
                 "source" => obj.source().to_value(),
                 "room" => obj.room().to_value(),
                 "time" => obj.time().to_value(),
+                "reactions" => obj.reactions().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -138,7 +147,7 @@ mod imp {
         }
 
         fn activatable(&self, obj: &Self::Type) -> bool {
-            match obj.message_content() {
+            match obj.original_content() {
                 // The event can be activated to open the media viewer if it's an image or a video.
                 Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
                     matches!(
@@ -151,7 +160,7 @@ mod imp {
         }
 
         fn can_hide_header(&self, obj: &Self::Type) -> bool {
-            match obj.message_content() {
+            match obj.original_content() {
                 Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
                     matches!(
                         message.msgtype,
@@ -223,7 +232,7 @@ impl Event {
         self.notify("activatable");
     }
 
-    pub fn matrix_sender(&self) -> Arc<UserId> {
+    pub fn matrix_sender(&self) -> OwnedUserId {
         let priv_ = self.imp();
 
         if let Some(event) = priv_.event.borrow().as_ref() {
@@ -235,13 +244,13 @@ impl Event {
                 .as_ref()
                 .unwrap()
                 .event
-                .get_field::<Arc<UserId>>("sender")
+                .get_field::<OwnedUserId>("sender")
                 .unwrap()
                 .unwrap()
         }
     }
 
-    pub fn matrix_event_id(&self) -> Box<EventId> {
+    pub fn matrix_event_id(&self) -> OwnedEventId {
         let priv_ = self.imp();
 
         if let Some(event) = priv_.event.borrow().as_ref() {
@@ -253,13 +262,13 @@ impl Event {
                 .as_ref()
                 .unwrap()
                 .event
-                .get_field::<Box<EventId>>("event_id")
+                .get_field::<OwnedEventId>("event_id")
                 .unwrap()
                 .unwrap()
         }
     }
 
-    pub fn matrix_transaction_id(&self) -> Option<Box<TransactionId>> {
+    pub fn matrix_transaction_id(&self) -> Option<OwnedTransactionId> {
         self.imp()
             .pure_event
             .borrow()
@@ -357,25 +366,31 @@ impl Event {
     }
 
     /// Find the related event if any
-    pub fn related_matrix_event(&self) -> Option<Box<EventId>> {
+    pub fn related_matrix_event(&self) -> Option<OwnedEventId> {
         match self.imp().event.borrow().as_ref()? {
             AnySyncRoomEvent::MessageLike(ref message) => match message {
-                AnySyncMessageLikeEvent::RoomRedaction(event) => Some(event.redacts.clone()),
-                _ => match message.content() {
-                    AnyMessageLikeEventContent::Reaction(event) => Some(event.relates_to.event_id),
-                    AnyMessageLikeEventContent::RoomMessage(event) => match event.relates_to {
+                AnySyncMessageLikeEvent::RoomRedaction(SyncRoomRedactionEvent::Original(event)) => {
+                    Some(event.redacts.clone())
+                }
+                AnySyncMessageLikeEvent::Reaction(SyncMessageLikeEvent::Original(event)) => {
+                    Some(event.content.relates_to.event_id.clone())
+                }
+                AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(event)) => {
+                    match &event.content.relates_to {
                         Some(relates_to) => match relates_to {
                             // TODO: Figure out Relation::Annotation(), Relation::Reference() but
                             // they are pre-specs for now See: https://github.com/uhoreg/matrix-doc/blob/aggregations-reactions/proposals/2677-reactions.md
-                            Relation::Reply { in_reply_to } => Some(in_reply_to.event_id),
-                            Relation::Replacement(replacement) => Some(replacement.event_id),
+                            Relation::Reply { in_reply_to } => Some(in_reply_to.event_id.clone()),
+                            Relation::Replacement(replacement) => {
+                                Some(replacement.event_id.clone())
+                            }
                             _ => None,
                         },
                         _ => None,
-                    },
-                    // TODO: RoomEncrypted needs https://github.com/ruma/ruma/issues/502
-                    _ => None,
-                },
+                    }
+                }
+                // TODO: RoomEncrypted needs https://github.com/ruma/ruma/issues/502
+                _ => None,
             },
             _ => None,
         }
@@ -387,11 +402,12 @@ impl Event {
         let priv_ = self.imp();
 
         if self.related_matrix_event().is_some() {
-            if let Some(AnySyncRoomEvent::MessageLike(message)) = priv_.event.borrow().as_ref() {
-                if let AnyMessageLikeEventContent::RoomMessage(content) = message.content() {
-                    if let Some(Relation::Reply { in_reply_to: _ }) = content.relates_to {
-                        return false;
-                    }
+            if let Some(AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
+                SyncMessageLikeEvent::Original(message),
+            ))) = priv_.event.borrow().as_ref()
+            {
+                if let Some(Relation::Reply { in_reply_to: _ }) = message.content.relates_to {
+                    return false;
                 }
             }
             return true;
@@ -399,55 +415,22 @@ impl Event {
 
         let event = priv_.event.borrow();
 
-        // List of all events to be hidden.
+        // List of all events to be shown.
         match event.as_ref() {
-            Some(AnySyncRoomEvent::MessageLike(message)) => matches!(
+            Some(AnySyncRoomEvent::MessageLike(message)) => !matches!(
                 message,
-                AnySyncMessageLikeEvent::CallAnswer(_)
-                    | AnySyncMessageLikeEvent::CallInvite(_)
-                    | AnySyncMessageLikeEvent::CallHangup(_)
-                    | AnySyncMessageLikeEvent::CallCandidates(_)
-                    | AnySyncMessageLikeEvent::KeyVerificationReady(_)
-                    | AnySyncMessageLikeEvent::KeyVerificationStart(_)
-                    | AnySyncMessageLikeEvent::KeyVerificationCancel(_)
-                    | AnySyncMessageLikeEvent::KeyVerificationAccept(_)
-                    | AnySyncMessageLikeEvent::KeyVerificationKey(_)
-                    | AnySyncMessageLikeEvent::KeyVerificationMac(_)
-                    | AnySyncMessageLikeEvent::KeyVerificationDone(_)
-                    | AnySyncMessageLikeEvent::RoomMessageFeedback(_)
-                    | AnySyncMessageLikeEvent::RoomRedaction(_)
+                AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(_))
+                    | AnySyncMessageLikeEvent::RoomEncrypted(SyncMessageLikeEvent::Original(_))
+                    | AnySyncMessageLikeEvent::Sticker(SyncMessageLikeEvent::Original(_))
             ),
-            Some(AnySyncRoomEvent::State(state)) => matches!(
+            Some(AnySyncRoomEvent::State(state)) => !matches!(
                 state,
-                AnySyncStateEvent::PolicyRuleRoom(_)
-                    | AnySyncStateEvent::PolicyRuleServer(_)
-                    | AnySyncStateEvent::PolicyRuleUser(_)
-                    | AnySyncStateEvent::RoomAliases(_)
-                    | AnySyncStateEvent::RoomAvatar(_)
-                    | AnySyncStateEvent::RoomCanonicalAlias(_)
-                    | AnySyncStateEvent::RoomEncryption(_)
-                    | AnySyncStateEvent::RoomJoinRules(_)
-                    | AnySyncStateEvent::RoomName(_)
-                    | AnySyncStateEvent::RoomPinnedEvents(_)
-                    | AnySyncStateEvent::RoomPowerLevels(_)
-                    | AnySyncStateEvent::RoomServerAcl(_)
-                    | AnySyncStateEvent::RoomTopic(_)
-                    | AnySyncStateEvent::SpaceParent(_)
-                    | AnySyncStateEvent::SpaceChild(_)
+                AnySyncStateEvent::RoomCreate(SyncStateEvent::Original(_))
+                    | AnySyncStateEvent::RoomMember(SyncStateEvent::Original(_))
+                    | AnySyncStateEvent::RoomThirdPartyInvite(SyncStateEvent::Original(_))
+                    | AnySyncStateEvent::RoomTombstone(SyncStateEvent::Original(_))
             ),
-            Some(AnySyncRoomEvent::RedactedMessageLike(_)) => true,
-            Some(AnySyncRoomEvent::RedactedState(_)) => true,
-            _ => false,
-        }
-    }
-
-    /// The content of this message.
-    ///
-    /// Returns `None` if this is not a message.
-    pub fn message_content(&self) -> Option<AnyMessageLikeEventContent> {
-        match self.matrix_event() {
-            Some(AnySyncRoomEvent::MessageLike(message)) => Some(message.content()),
-            _ => None,
+            _ => true,
         }
     }
 
@@ -459,7 +442,9 @@ impl Event {
     /// - `RoomMessage` with `Relation::Replacement`
     pub fn is_replacing_event(&self) -> bool {
         match self.matrix_event() {
-            Some(AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(message))) => {
+            Some(AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
+                SyncMessageLikeEvent::Original(message),
+            ))) => {
                 matches!(message.content.relates_to, Some(Relation::Replacement(_)))
             }
             Some(AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomRedaction(_))) => true,
@@ -542,7 +527,7 @@ impl Event {
     /// Whether this is a reaction.
     pub fn is_reaction(&self) -> bool {
         matches!(
-            self.message_content(),
+            self.original_content(),
             Some(AnyMessageLikeEventContent::Reaction(_))
         )
     }
@@ -560,9 +545,11 @@ impl Event {
     }
 
     /// The content of this matrix event.
+    ///
+    /// Returns `None` if this is not a message-like event.
     pub fn original_content(&self) -> Option<AnyMessageLikeEventContent> {
         match self.matrix_event()? {
-            AnySyncRoomEvent::MessageLike(message) => Some(message.content()),
+            AnySyncRoomEvent::MessageLike(message) => message.original_content(),
             _ => None,
         }
     }
@@ -571,6 +558,8 @@ impl Event {
     ///
     /// If this matrix event has been replaced, returns the replacing `Event`'s
     /// content.
+    ///
+    /// Returns `None` if this is not a message-like event.
     pub fn content(&self) -> Option<AnyMessageLikeEventContent> {
         self.replacement()
             .and_then(|replacement| replacement.content())
@@ -589,7 +578,7 @@ impl Event {
     /// error occurred while fetching the content. Panics on an incompatible
     /// event. `uid` is a unique identifier for this media.
     pub async fn get_media_content(&self) -> Result<(String, String, Vec<u8>), matrix_sdk::Error> {
-        if let AnyMessageLikeEventContent::RoomMessage(content) = self.message_content().unwrap() {
+        if let AnyMessageLikeEventContent::RoomMessage(content) = self.original_content().unwrap() {
             let client = self.room().session().client();
             match content.msgtype {
                 MessageType::File(content) => {
@@ -656,7 +645,7 @@ impl Event {
     }
 
     /// Get the id of the event this `Event` replies to, if any.
-    pub fn reply_to_id(&self) -> Option<Box<EventId>> {
+    pub fn reply_to_id(&self) -> Option<OwnedEventId> {
         match self.original_content()? {
             AnyMessageLikeEventContent::RoomMessage(message) => {
                 if let Some(Relation::Reply { in_reply_to }) = message.relates_to {

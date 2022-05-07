@@ -1,10 +1,11 @@
-use std::sync::Arc;
-
 use gtk::{gio, glib, prelude::*, subclass::prelude::*};
 use indexmap::IndexMap;
-use matrix_sdk::ruma::events::{room::member::RoomMemberEventContent, SyncStateEvent};
+use matrix_sdk::ruma::{
+    events::{room::member::RoomMemberEventContent, OriginalSyncStateEvent},
+    OwnedUserId, UserId,
+};
 
-use crate::session::room::{Member, Room, UserId};
+use crate::session::room::{Member, Room};
 
 mod imp {
     use std::cell::RefCell;
@@ -16,7 +17,7 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct MemberList {
-        pub members: RefCell<IndexMap<Arc<UserId>, Member>>,
+        pub members: RefCell<IndexMap<OwnedUserId, Member>>,
         pub room: OnceCell<WeakRef<Room>>,
     }
 
@@ -127,7 +128,7 @@ impl MemberList {
     /// Returns the member with the given ID.
     ///
     /// Creates a new member first if there is no member with the given ID.
-    pub fn member_by_id(&self, user_id: Arc<UserId>) -> Member {
+    pub fn member_by_id(&self, user_id: OwnedUserId) -> Member {
         let mut members = self.imp().members.borrow_mut();
         let mut was_member_added = false;
         let prev_len = members.len();
@@ -154,10 +155,12 @@ impl MemberList {
     ///
     /// Creates a new member first if there is no member matching the given
     /// event.
-    pub fn update_member_for_member_event(&self, event: &SyncStateEvent<RoomMemberEventContent>) {
-        if let Ok(user_id) = UserId::parse_arc(event.state_key.as_str()) {
-            self.member_by_id(user_id).update_from_member_event(event);
-        }
+    pub fn update_member_for_member_event(
+        &self,
+        event: &OriginalSyncStateEvent<RoomMemberEventContent>,
+    ) {
+        self.member_by_id(event.state_key.to_owned())
+            .update_from_member_event(event);
     }
 
     /// Returns whether the given user id is present in `MemberList`

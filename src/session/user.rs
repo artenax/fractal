@@ -1,10 +1,8 @@
-use std::sync::Arc;
-
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::error;
 use matrix_sdk::{
     encryption::identities::UserIdentity,
-    ruma::{MxcUri, UserId},
+    ruma::{OwnedMxcUri, OwnedUserId, UserId},
 };
 
 use crate::{
@@ -37,7 +35,7 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct User {
-        pub user_id: OnceCell<Arc<UserId>>,
+        pub user_id: OnceCell<OwnedUserId>,
         pub display_name: RefCell<Option<String>>,
         pub session: OnceCell<WeakRef<Session>>,
         pub avatar: OnceCell<Avatar>,
@@ -113,7 +111,7 @@ mod imp {
             match pspec.name() {
                 "user-id" => {
                     self.user_id
-                        .set(UserId::parse_arc(value.get::<&str>().unwrap()).unwrap())
+                        .set(UserId::parse(value.get::<&str>().unwrap()).unwrap())
                         .unwrap();
                 }
                 "display-name" => {
@@ -224,7 +222,7 @@ pub trait UserExt: IsA<User> {
             .unwrap()
     }
 
-    fn user_id(&self) -> Arc<UserId> {
+    fn user_id(&self) -> OwnedUserId {
         self.upcast_ref().imp().user_id.get().unwrap().clone()
     }
 
@@ -250,7 +248,7 @@ pub trait UserExt: IsA<User> {
         self.upcast_ref().imp().avatar.get().unwrap()
     }
 
-    fn set_avatar_url(&self, url: Option<Box<MxcUri>>) {
+    fn set_avatar_url(&self, url: Option<OwnedMxcUri>) {
         self.avatar().set_url(url);
     }
 

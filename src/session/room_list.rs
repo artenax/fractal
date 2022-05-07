@@ -5,7 +5,7 @@ use indexmap::map::IndexMap;
 use log::error;
 use matrix_sdk::{
     deserialized_responses::Rooms as ResponseRooms,
-    ruma::{RoomId, RoomOrAliasId},
+    ruma::{OwnedRoomId, OwnedRoomOrAliasId, RoomId, RoomOrAliasId},
 };
 
 use crate::{
@@ -25,8 +25,8 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct RoomList {
-        pub list: RefCell<IndexMap<Box<RoomId>, Room>>,
-        pub pending_rooms: RefCell<HashSet<Box<RoomOrAliasId>>>,
+        pub list: RefCell<IndexMap<OwnedRoomId, Room>>,
+        pub pending_rooms: RefCell<HashSet<OwnedRoomOrAliasId>>,
         pub session: OnceCell<WeakRef<Session>>,
     }
 
@@ -135,7 +135,7 @@ impl RoomList {
         self.emit_by_name::<()>("pending-rooms-changed", &[]);
     }
 
-    fn pending_rooms_insert(&self, identifier: Box<RoomOrAliasId>) {
+    fn pending_rooms_insert(&self, identifier: OwnedRoomOrAliasId) {
         self.imp().pending_rooms.borrow_mut().insert(identifier);
         self.emit_by_name::<()>("pending-rooms-changed", &[]);
     }
@@ -156,7 +156,7 @@ impl RoomList {
     }
 
     /// Waits till the Room becomes available
-    pub async fn get_wait(&self, room_id: Box<RoomId>) -> Option<Room> {
+    pub async fn get_wait(&self, room_id: OwnedRoomId) -> Option<Room> {
         if let Some(room) = self.imp().list.borrow().get(&*room_id) {
             Some(room.clone())
         } else {
@@ -178,7 +178,7 @@ impl RoomList {
         }
     }
 
-    fn get_full(&self, room_id: &RoomId) -> Option<(usize, Box<RoomId>, Room)> {
+    fn get_full(&self, room_id: &RoomId) -> Option<(usize, OwnedRoomId, Room)> {
         self.imp()
             .list
             .borrow()
@@ -301,7 +301,7 @@ impl RoomList {
         }
     }
 
-    pub fn join_by_id_or_alias(&self, identifier: Box<RoomOrAliasId>) {
+    pub fn join_by_id_or_alias(&self, identifier: OwnedRoomOrAliasId) {
         let client = self.session().client();
         let identifier_clone = identifier.clone();
 

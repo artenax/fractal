@@ -9,7 +9,7 @@ use gtk::{
     CompositeTemplate,
 };
 use log::error;
-use matrix_sdk::ruma::{api::client::discovery::get_capabilities, MxcUri};
+use matrix_sdk::ruma::{api::client::discovery::get_capabilities, MxcUri, OwnedMxcUri};
 
 mod change_password_subpage;
 mod deactivate_account_subpage;
@@ -51,7 +51,7 @@ mod imp {
         pub session_id: TemplateChild<gtk::Label>,
         #[template_child]
         pub deactivate_account_subpage: TemplateChild<DeactivateAccountSubpage>,
-        pub changing_avatar_to: RefCell<Option<Box<MxcUri>>>,
+        pub changing_avatar_to: RefCell<Option<OwnedMxcUri>>,
         pub removing_avatar: Cell<bool>,
         pub changing_display_name_to: RefCell<Option<String>>,
     }

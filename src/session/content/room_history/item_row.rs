@@ -113,7 +113,7 @@ mod imp {
                 let room_history = obj.room_history();
                 let popover = room_history.item_context_menu().to_owned();
 
-                if event.message_content().is_some() {
+                if event.content().is_some() {
                     let menu_model = Self::Type::event_message_menu_model();
                     let reaction_chooser = room_history.item_reaction_chooser();
                     if popover.menu_model().as_ref() != Some(menu_model) {

@@ -3,9 +3,9 @@ use matrix_sdk::{
     ruma::{
         events::{
             room::member::{MembershipState, RoomMemberEventContent},
-            StrippedStateEvent, SyncStateEvent,
+            OriginalSyncStateEvent, StrippedStateEvent,
         },
-        MxcUri, UserId,
+        OwnedMxcUri, UserId,
     },
     RoomMember,
 };
@@ -207,7 +207,7 @@ pub trait MemberEvent {
     fn sender(&self) -> &UserId;
     fn content(&self) -> &RoomMemberEventContent;
 
-    fn avatar_url(&self) -> Option<Box<MxcUri>> {
+    fn avatar_url(&self) -> Option<OwnedMxcUri> {
         self.content().avatar_url.to_owned()
     }
 
@@ -223,7 +223,7 @@ pub trait MemberEvent {
     }
 }
 
-impl MemberEvent for SyncStateEvent<RoomMemberEventContent> {
+impl MemberEvent for OriginalSyncStateEvent<RoomMemberEventContent> {
     fn sender(&self) -> &UserId {
         &self.sender
     }

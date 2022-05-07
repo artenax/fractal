@@ -1,13 +1,12 @@
-use std::sync::Arc;
-
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, warn};
 use matrix_sdk::ruma::{
     api::client::sync::sync_events::v3::ToDevice,
     events::{
         room::message::MessageType, AnySyncMessageLikeEvent, AnySyncRoomEvent, AnyToDeviceEvent,
+        SyncMessageLikeEvent,
     },
-    MilliSecondsSinceUnixEpoch, UserId,
+    MilliSecondsSinceUnixEpoch, OwnedUserId, UserId,
 };
 
 use crate::session::{
@@ -18,12 +17,12 @@ use crate::session::{
 
 #[derive(Hash, PartialEq, Eq, Debug)]
 pub struct FlowId {
-    user_id: Arc<UserId>,
+    user_id: OwnedUserId,
     flow_id: String,
 }
 
 impl FlowId {
-    pub fn new(user_id: Arc<UserId>, flow_id: String) -> Self {
+    pub fn new(user_id: OwnedUserId, flow_id: String) -> Self {
         Self { user_id, flow_id }
     }
 }
@@ -215,7 +214,7 @@ impl VerificationList {
             }
         }) {
             let request = match message_event {
-                AnySyncMessageLikeEvent::RoomMessage(message) => {
+                AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(message)) => {
                     if let MessageType::VerificationRequest(request) = &message.content.msgtype {
                         debug!("Received in-room verification event: {:?}", message);
                         // Ignore request that are too old
@@ -232,10 +231,10 @@ impl VerificationList {
 
                         let user_to_verify = if *request.to == *user.user_id() {
                             // The request was sent by another user to verify us
-                            room.members().member_by_id(message.sender.clone().into())
+                            room.members().member_by_id(message.sender.clone())
                         } else if *message.sender == *user.user_id() {
                             // The request was sent by us to verify another user
-                            room.members().member_by_id(request.to.clone().into())
+                            room.members().member_by_id(request.to.clone())
                         } else {
                             // Ignore the request when it doesn't verify us or wasn't set by us
                             continue;
@@ -270,31 +269,39 @@ impl VerificationList {
 
                     continue;
                 }
-                AnySyncMessageLikeEvent::KeyVerificationReady(e) => {
+                AnySyncMessageLikeEvent::KeyVerificationReady(SyncMessageLikeEvent::Original(
+                    e,
+                )) => {
                     debug!("Received in-room verification event: {:?}", e);
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
-                AnySyncMessageLikeEvent::KeyVerificationStart(e) => {
+                AnySyncMessageLikeEvent::KeyVerificationStart(SyncMessageLikeEvent::Original(
+                    e,
+                )) => {
                     debug!("Received in-room verification event: {:?}", e);
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
-                AnySyncMessageLikeEvent::KeyVerificationCancel(e) => {
+                AnySyncMessageLikeEvent::KeyVerificationCancel(SyncMessageLikeEvent::Original(
+                    e,
+                )) => {
                     debug!("Received in-room verification event: {:?}", e);
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
-                AnySyncMessageLikeEvent::KeyVerificationAccept(e) => {
+                AnySyncMessageLikeEvent::KeyVerificationAccept(SyncMessageLikeEvent::Original(
+                    e,
+                )) => {
                     debug!("Received in-room verification event: {:?}", e);
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
-                AnySyncMessageLikeEvent::KeyVerificationKey(e) => {
+                AnySyncMessageLikeEvent::KeyVerificationKey(SyncMessageLikeEvent::Original(e)) => {
                     debug!("Received in-room verification event: {:?}", e);
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
-                AnySyncMessageLikeEvent::KeyVerificationMac(e) => {
+                AnySyncMessageLikeEvent::KeyVerificationMac(SyncMessageLikeEvent::Original(e)) => {
                     debug!("Received in-room verification event: {:?}", e);
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
-                AnySyncMessageLikeEvent::KeyVerificationDone(e) => {
+                AnySyncMessageLikeEvent::KeyVerificationDone(SyncMessageLikeEvent::Original(e)) => {
                     debug!("Received in-room verification event: {:?}", e);
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }

@@ -9,12 +9,12 @@ use log::error;
 use matrix_sdk::{
     ruma::{
         api::{
-            client::account::change_password,
+            client::{account::change_password, error::ErrorKind},
             error::{FromHttpResponseError, ServerError},
         },
         assign,
     },
-    Error as MatrixError, HttpError,
+    Error as MatrixError, HttpError, RumaApiError,
 };
 
 use crate::{
@@ -319,9 +319,11 @@ impl ChangePasswordSubpage {
             Err(err) => match err {
                 AuthError::UserCancelled => {}
                 AuthError::ServerResponse(error)
-                    if matches!(error.as_ref(), MatrixError::Http(HttpError::ClientApi(
-                    FromHttpResponseError::Server(ServerError::Known(error)),
-                )) if error.kind.as_ref() == "M_WEAK_PASSWORD") =>
+                    if matches!(error.as_ref(), MatrixError::Http(HttpError::Api(
+                    FromHttpResponseError::Server(ServerError::Known(RumaApiError::ClientApi(
+                        error,
+                    ))),
+                )) if error.kind == ErrorKind::WeakPassword) =>
                 {
                     error!("Weak password: {:?}", error);
                     let _ = self.activate_action(

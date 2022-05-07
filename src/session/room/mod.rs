@@ -10,7 +10,7 @@ mod reaction_list;
 mod room_type;
 mod timeline;
 
-use std::{cell::RefCell, convert::TryInto, path::PathBuf, sync::Arc};
+use std::{cell::RefCell, convert::TryInto, path::PathBuf};
 
 use gettextrs::gettext;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
@@ -28,18 +28,20 @@ use matrix_sdk::{
                 member::MembershipState,
                 message::{MessageType, Relation},
                 name::RoomNameEventContent,
-                redaction::{RoomRedactionEventContent, SyncRoomRedactionEvent},
+                redaction::{OriginalSyncRoomRedactionEvent, RoomRedactionEventContent},
                 topic::RoomTopicEventContent,
             },
             tag::{TagInfo, TagName},
-            AnyRoomAccountDataEvent, AnyStateEventContent, AnyStrippedStateEvent,
-            AnySyncMessageLikeEvent, AnySyncRoomEvent, AnySyncStateEvent, EventContent,
-            MessageLikeEventType, MessageLikeUnsigned, StateEventType, SyncMessageLikeEvent,
+            AnyRoomAccountDataEvent, AnyStrippedStateEvent, AnySyncMessageLikeEvent,
+            AnySyncRoomEvent, AnySyncStateEvent, EventContent, MessageLikeEventType,
+            MessageLikeUnsigned, OriginalSyncMessageLikeEvent, StateEventType,
+            SyncMessageLikeEvent, SyncStateEvent,
         },
         receipt::ReceiptType,
         serde::Raw,
-        EventId, MilliSecondsSinceUnixEpoch, RoomId, UserId,
+        EventId, MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
     },
+    DisplayName,
 };
 use ruma::events::SyncEphemeralRoomEvent;
 
@@ -83,7 +85,7 @@ mod imp {
 
     #[derive(Default)]
     pub struct Room {
-        pub room_id: OnceCell<Box<RoomId>>,
+        pub room_id: OnceCell<OwnedRoomId>,
         pub matrix_room: RefCell<Option<MatrixRoom>>,
         pub session: OnceCell<WeakRef<Session>>,
         pub name: RefCell<Option<String>>,
@@ -104,8 +106,8 @@ mod imp {
         pub latest_read: RefCell<Option<Event>>,
         /// The highlight state of the room,
         pub highlight: Cell<HighlightFlags>,
-        pub predecessor: OnceCell<Box<RoomId>>,
-        pub successor: OnceCell<Box<RoomId>>,
+        pub predecessor: OnceCell<OwnedRoomId>,
+        pub successor: OnceCell<OwnedRoomId>,
         /// The most recent verification request event.
         pub verification: RefCell<Option<IdentityVerification>>,
     }
@@ -756,7 +758,7 @@ impl Room {
         for (event_id, receipts) in content.iter() {
             if let Some(users) = receipts.get(&ReceiptType::Read) {
                 for user in users.keys() {
-                    if user == user_id.as_ref() {
+                    if user == &user_id {
                         self.update_read_receipt(event_id.as_ref()).await;
                         return;
                     }
@@ -961,7 +963,18 @@ impl Room {
             clone!(@weak self as obj => async move {
                 // FIXME: We should retry to if the request failed
                 match handle.await.unwrap() {
-                        Ok(display_name) => obj.set_display_name(Some(display_name)),
+                        Ok(display_name) => { let name = match display_name {
+                            DisplayName::Named(s) | DisplayName::Calculated(s) | DisplayName::Aliased(s) => {
+                                s
+                            }
+                            // Translators: This is the name of a room that is empty but had another user before.
+                            // Do NOT translate the content between '{' and '}', this is a variable name.
+                            DisplayName::EmptyWas(s) => gettext_f("Empty Room (was {user})", &[("user", &s)]),
+                            // Translators: This is the name of a room without other users.
+                            DisplayName::Empty => gettext("Empty Room"),
+                        };
+                            obj.set_display_name(Some(name))
+                    }
                         Err(error) => error!("Couldn’t fetch display name: {}", error),
                 };
             })
@@ -1000,10 +1013,8 @@ impl Room {
         };
         let name_content = RoomNameEventContent::new(Some(room_name));
 
-        let handle = spawn_tokio!(async move {
-            let content = AnyStateEventContent::RoomName(name_content);
-            joined_room.send_state_event(content, "").await
-        });
+        let handle =
+            spawn_tokio!(async move { joined_room.send_state_event(name_content, "").await });
 
         spawn!(
             glib::PRIORITY_DEFAULT_IDLE,
@@ -1041,8 +1052,9 @@ impl Room {
         };
 
         let handle = spawn_tokio!(async move {
-            let content = AnyStateEventContent::RoomTopic(RoomTopicEventContent::new(topic));
-            joined_room.send_state_event(content, "").await
+            joined_room
+                .send_state_event(RoomTopicEventContent::new(topic), "")
+                .await
         });
 
         spawn!(
@@ -1111,27 +1123,29 @@ impl Room {
             .collect();
 
         for event in events.iter() {
-            match event {
-                AnySyncRoomEvent::State(AnySyncStateEvent::RoomMember(event)) => {
-                    self.members().update_member_for_member_event(event)
+            if let AnySyncRoomEvent::State(state_event) = event {
+                match state_event {
+                    AnySyncStateEvent::RoomMember(SyncStateEvent::Original(event)) => {
+                        self.members().update_member_for_member_event(event)
+                    }
+                    AnySyncStateEvent::RoomAvatar(SyncStateEvent::Original(event)) => {
+                        self.avatar().set_url(event.content.url.to_owned());
+                    }
+                    AnySyncStateEvent::RoomName(_) => {
+                        // FIXME: this doesn't take into account changes in the calculated name
+                        self.load_display_name()
+                    }
+                    AnySyncStateEvent::RoomTopic(_) => {
+                        self.notify("topic");
+                    }
+                    AnySyncStateEvent::RoomPowerLevels(SyncStateEvent::Original(event)) => {
+                        self.power_levels().update_from_event(event.clone());
+                    }
+                    AnySyncStateEvent::RoomTombstone(_) => {
+                        self.load_successor();
+                    }
+                    _ => {}
                 }
-                AnySyncRoomEvent::State(AnySyncStateEvent::RoomAvatar(event)) => {
-                    self.avatar().set_url(event.content.url.to_owned());
-                }
-                AnySyncRoomEvent::State(AnySyncStateEvent::RoomName(_)) => {
-                    // FIXME: this doesn't take into account changes in the calculated name
-                    self.load_display_name()
-                }
-                AnySyncRoomEvent::State(AnySyncStateEvent::RoomTopic(_)) => {
-                    self.notify("topic");
-                }
-                AnySyncRoomEvent::State(AnySyncStateEvent::RoomPowerLevels(event)) => {
-                    self.power_levels().update_from_event(event.clone());
-                }
-                AnySyncRoomEvent::State(AnySyncStateEvent::RoomTombstone(_)) => {
-                    self.load_successor();
-                }
-                _ => {}
             }
         }
         self.session()
@@ -1207,7 +1221,7 @@ impl Room {
             state_event
                 .and_then(|e| e.deserialize().ok())
                 .and_then(|e| {
-                    if let AnySyncStateEvent::RoomPowerLevels(e) = e {
+                    if let AnySyncStateEvent::RoomPowerLevels(SyncStateEvent::Original(e)) = e {
                         Some(e)
                     } else {
                         None
@@ -1232,10 +1246,10 @@ impl Room {
     ) {
         if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
             let (txn_id, event_id) = pending_event_ids();
-            let matrix_event = SyncMessageLikeEvent {
+            let matrix_event = OriginalSyncMessageLikeEvent {
                 content,
                 event_id,
-                sender: self.session().user().unwrap().user_id().as_ref().to_owned(),
+                sender: self.session().user().unwrap().user_id(),
                 origin_server_ts: MilliSecondsSinceUnixEpoch::now(),
                 unsigned: MessageLikeUnsigned::default(),
             };
@@ -1267,25 +1281,25 @@ impl Room {
     }
 
     /// Send a `key` reaction for the `relates_to` event ID in this room.
-    pub fn send_reaction(&self, key: String, relates_to: Box<EventId>) {
+    pub fn send_reaction(&self, key: String, relates_to: OwnedEventId) {
         self.send_room_message_event(ReactionEventContent::new(ReactionRelation::new(
             relates_to, key,
         )));
     }
 
     /// Redact `redacted_event_id` in this room because of `reason`.
-    pub fn redact(&self, redacted_event_id: Box<EventId>, reason: Option<String>) {
+    pub fn redact(&self, redacted_event_id: OwnedEventId, reason: Option<String>) {
         let (txn_id, event_id) = pending_event_ids();
         let content = if let Some(reason) = reason.as_ref() {
             RoomRedactionEventContent::with_reason(reason.clone())
         } else {
             RoomRedactionEventContent::new()
         };
-        let event = SyncRoomRedactionEvent {
+        let event = OriginalSyncRoomRedactionEvent {
             content,
             redacts: redacted_event_id.clone(),
             event_id,
-            sender: self.session().user().unwrap().user_id().as_ref().to_owned(),
+            sender: self.session().user().unwrap().user_id(),
             origin_server_ts: MilliSecondsSinceUnixEpoch::now(),
             unsigned: MessageLikeUnsigned::default(),
         };
@@ -1533,7 +1547,7 @@ impl Room {
 
     pub async fn invite(&self, users: &[User]) {
         let matrix_room = self.matrix_room();
-        let user_ids: Vec<Arc<UserId>> = users.iter().map(|user| user.user_id()).collect();
+        let user_ids: Vec<OwnedUserId> = users.iter().map(|user| user.user_id()).collect();
 
         if let MatrixRoom::Joined(matrix_room) = matrix_room {
             let handle = spawn_tokio!(async move {
@@ -1634,7 +1648,7 @@ impl Room {
 fn count_as_unread(event: &AnySyncRoomEvent) -> bool {
     match event {
         AnySyncRoomEvent::MessageLike(message_event) => match message_event {
-            AnySyncMessageLikeEvent::RoomMessage(message) => {
+            AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(message)) => {
                 if matches!(message.content.msgtype, MessageType::Notice(_)) {
                     return false;
                 }
@@ -1645,11 +1659,11 @@ fn count_as_unread(event: &AnySyncRoomEvent) -> bool {
 
                 true
             }
-            AnySyncMessageLikeEvent::Sticker(_) => true,
+            AnySyncMessageLikeEvent::Sticker(SyncMessageLikeEvent::Original(_)) => true,
             _ => false,
         },
-        AnySyncRoomEvent::State(state_event) => {
-            matches!(state_event.event_type(), StateEventType::RoomTombstone)
+        AnySyncRoomEvent::State(AnySyncStateEvent::RoomTombstone(SyncStateEvent::Original(_))) => {
+            true
         }
         _ => false,
     }

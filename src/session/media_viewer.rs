@@ -227,8 +227,7 @@ impl MediaViewer {
 
         if let Some(event) = self.event() {
             self.set_event_actions(Some(&event));
-            if let Some(AnyMessageLikeEventContent::RoomMessage(content)) = event.message_content()
-            {
+            if let Some(AnyMessageLikeEventContent::RoomMessage(content)) = event.content() {
                 match content.msgtype {
                     MessageType::Image(image) => {
                         self.set_body(Some(image.body));

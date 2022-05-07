@@ -90,7 +90,7 @@ where
             })
         );
 
-        if let Some(AnyMessageLikeEventContent::RoomMessage(message)) = event.message_content() {
+        if let Some(AnyMessageLikeEventContent::RoomMessage(message)) = event.content() {
             let user_id = event
                 .room()
                 .session()

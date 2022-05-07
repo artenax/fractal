@@ -5,7 +5,7 @@ use matrix_sdk::{
         error::{FromHttpResponseError, ServerError},
     },
     store::OpenStoreError,
-    ClientBuildError, Error, HttpError,
+    ClientBuildError, Error, HttpError, RumaApiError,
 };
 
 use crate::ngettext_f;
@@ -25,7 +25,9 @@ impl UserFacingError for HttpError {
                     gettext("Unable to connect to the homeserver.")
                 }
             }
-            HttpError::ClientApi(FromHttpResponseError::Server(ServerError::Known(error))) => {
+            HttpError::Api(FromHttpResponseError::Server(ServerError::Known(
+                RumaApiError::ClientApi(error),
+            ))) => {
                 match error.kind {
                     Forbidden => gettext("The provided username or password is invalid."),
                     UserDeactivated => gettext("The account is deactivated."),

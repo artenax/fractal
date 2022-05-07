@@ -67,7 +67,9 @@ use gtk::{
     gio::{self, prelude::*},
     glib::{self, closure, Object},
 };
-use matrix_sdk::ruma::{events::room::MediaSource, EventId, TransactionId, UInt};
+use matrix_sdk::ruma::{
+    events::room::MediaSource, EventId, OwnedEventId, OwnedTransactionId, TransactionId, UInt,
+};
 use mime::Mime;
 
 // Returns an expression that is the and’ed result of the given boolean
@@ -205,7 +207,7 @@ pub fn filename_for_mime(mime_type: Option<&str>, fallback: Option<mime::Name>) 
 ///
 /// Returns a `(transaction_id, event_id)` tuple. The `event_id` is derived from
 /// the `transaction_id`.
-pub fn pending_event_ids() -> (Box<TransactionId>, Box<EventId>) {
+pub fn pending_event_ids() -> (OwnedTransactionId, OwnedEventId) {
     let txn_id = TransactionId::new();
     let event_id = EventId::parse(format!("${}:fractal.gnome.org", txn_id)).unwrap();
     (txn_id, event_id)

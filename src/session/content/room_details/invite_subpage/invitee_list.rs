@@ -1,9 +1,7 @@
-use std::sync::Arc;
-
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::error;
 use matrix_sdk::{
-    ruma::{api::client::user_directory::search_users, UserId},
+    ruma::{api::client::user_directory::search_users, OwnedUserId, UserId},
     HttpError,
 };
 
@@ -48,7 +46,7 @@ mod imp {
         pub room: OnceCell<Room>,
         pub state: Cell<InviteeListState>,
         pub search_term: RefCell<Option<String>>,
-        pub invitee_list: RefCell<HashMap<Arc<UserId>, Invitee>>,
+        pub invitee_list: RefCell<HashMap<OwnedUserId, Invitee>>,
         pub abort_handle: RefCell<Option<AbortHandle>>,
     }
 
@@ -247,7 +245,7 @@ impl InviteeList {
                     .filter_map(|item| {
                         // Skip over users that are already in the room
                         if member_list.contains(&item.user_id) {
-                            self.remove_invitee(item.user_id.into());
+                            self.remove_invitee(item.user_id);
                             None
                         } else if let Some(user) = self.get_invitee(&item.user_id) {
                             // The avatar or the display name may have changed in the mean time
@@ -346,7 +344,7 @@ impl InviteeList {
             .collect()
     }
 
-    fn remove_invitee(&self, user_id: Arc<UserId>) {
+    fn remove_invitee(&self, user_id: OwnedUserId) {
         let removed = self.imp().invitee_list.borrow_mut().remove(&user_id);
         if let Some(user) = removed {
             user.set_invited(false);

@@ -1,6 +1,6 @@
 use gtk::{glib, glib::closure, prelude::*, subclass::prelude::*};
 use matrix_sdk::ruma::events::{
-    room::power_levels::RoomPowerLevelsEventContent, RoomEventType, SyncStateEvent,
+    room::power_levels::RoomPowerLevelsEventContent, OriginalSyncStateEvent, RoomEventType,
 };
 
 use crate::session::room::Member;
@@ -99,7 +99,7 @@ impl PowerLevels {
     }
 
     /// Updates the power levels from the given event.
-    pub fn update_from_event(&self, event: SyncStateEvent<RoomPowerLevelsEventContent>) {
+    pub fn update_from_event(&self, event: OriginalSyncStateEvent<RoomPowerLevelsEventContent>) {
         let content = BoxedPowerLevelsEventContent(event.content);
         self.imp().content.replace(content);
         self.notify("power-levels");

@@ -7,11 +7,8 @@ use matrix_sdk::{
     room::Room as MatrixRoom,
     ruma::{
         api::client::media::get_content_thumbnail::v3::Method,
-        events::{
-            room::{avatar::RoomAvatarEventContent, MediaSource},
-            AnyStateEventContent,
-        },
-        MxcUri,
+        events::room::{avatar::RoomAvatarEventContent, MediaSource},
+        MxcUri, OwnedMxcUri,
     },
     Client,
 };
@@ -30,7 +27,7 @@ mod imp {
     pub struct Avatar {
         pub image: RefCell<Option<gdk::Paintable>>,
         pub needed_size: Cell<u32>,
-        pub url: RefCell<Option<Box<MxcUri>>>,
+        pub url: RefCell<Option<OwnedMxcUri>>,
         pub display_name: RefCell<Option<String>>,
         pub session: OnceCell<WeakRef<Session>>,
     }
@@ -222,7 +219,7 @@ impl Avatar {
         self.imp().needed_size.get()
     }
 
-    pub fn set_url(&self, url: Option<Box<MxcUri>>) {
+    pub fn set_url(&self, url: Option<OwnedMxcUri>) {
         let priv_ = self.imp();
 
         if priv_.url.borrow().as_ref() == url.as_ref() {
@@ -241,7 +238,7 @@ impl Avatar {
         self.notify("url");
     }
 
-    pub fn url(&self) -> Option<Box<MxcUri>> {
+    pub fn url(&self) -> Option<OwnedMxcUri> {
         self.imp().url.borrow().to_owned()
     }
 }
@@ -253,7 +250,7 @@ pub async fn update_room_avatar_from_file<P>(
     matrix_client: &Client,
     matrix_room: &MatrixRoom,
     filename: Option<&P>,
-) -> Result<Option<Box<MxcUri>>, AvatarError>
+) -> Result<Option<OwnedMxcUri>, AvatarError>
 where
     P: AsRef<Path> + std::fmt::Debug,
 {
@@ -272,14 +269,12 @@ where
     };
     content.url = uri.clone();
 
-    joined_room
-        .send_state_event(AnyStateEventContent::RoomAvatar(content), "")
-        .await?;
+    joined_room.send_state_event(content, "").await?;
     Ok(uri)
 }
 
 /// Returns the URI of the room avatar after uploading it.
-async fn upload_avatar<P>(matrix_client: &Client, filename: &P) -> Result<Box<MxcUri>, AvatarError>
+async fn upload_avatar<P>(matrix_client: &Client, filename: &P) -> Result<OwnedMxcUri, AvatarError>
 where
     P: AsRef<Path> + std::fmt::Debug,
 {

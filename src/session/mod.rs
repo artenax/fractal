@@ -40,7 +40,7 @@ use matrix_sdk::{
         RoomId,
     },
     store::{make_store_config, OpenStoreError},
-    Client, ClientBuildError, Error, HttpError,
+    Client, ClientBuildError, Error, HttpError, RumaApiError,
 };
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use thiserror::Error;
@@ -700,9 +700,9 @@ impl Session {
                 }
             }
             Err(error) => {
-                if let matrix_sdk::Error::Http(HttpError::ClientApi(
-                    FromHttpResponseError::Server(ServerError::Known(ref error)),
-                )) = error
+                if let matrix_sdk::Error::Http(HttpError::Api(FromHttpResponseError::Server(
+                    ServerError::Known(RumaApiError::ClientApi(ref error)),
+                ))) = error
                 {
                     if let ErrorKind::UnknownToken { soft_logout: _ } = error.kind {
                         self.handle_logged_out();

@@ -1,0 +1,2 @@
+[build]
+rustflags = ["--cfg", "ruma_identifiers_storage=\"Arc\""]

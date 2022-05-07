@@ -3,7 +3,7 @@ use std::convert::{TryFrom, TryInto};
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
 use gtk::{gdk, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
-use log::error;
+use log::{error, warn};
 use matrix_sdk::{
     ruma::{
         api::{
@@ -13,11 +13,9 @@ use matrix_sdk::{
             },
             error::{FromHttpResponseError, ServerError},
         },
-        assign,
-        common::RoomName,
-        IdParseError,
+        assign, IdParseError, RoomName,
     },
-    HttpError,
+    HttpError, RumaApiError,
 };
 
 use crate::{
@@ -267,8 +265,8 @@ impl RoomCreation {
         priv_.cancel_button.set_sensitive(true);
 
         // Treat the room address already taken error special
-        if let HttpError::ClientApi(FromHttpResponseError::Server(ServerError::Known(
-            ref client_error,
+        if let HttpError::Api(FromHttpResponseError::Server(ServerError::Known(
+            RumaApiError::ClientApi(ref client_error),
         ))) = error
         {
             if client_error.kind == RumaClientErrorKind::RoomInUse {
@@ -294,14 +292,20 @@ impl RoomCreation {
         let (is_name_valid, has_error) =
             match <&RoomName>::try_from(priv_.room_name.text().as_str()) {
                 Ok(_) => (true, false),
-                Err(IdParseError::EmptyRoomName) => (false, false),
+                Err(IdParseError::Empty) => (false, false),
                 Err(IdParseError::MaximumLengthExceeded) => {
                     priv_
                         .room_name_error
                         .set_text(&gettext("Too long. Use a shorter name."));
                     (false, true)
                 }
-                Err(_) => unimplemented!(),
+                Err(error) => {
+                    warn!("Invalid room name: {error:?}");
+                    priv_
+                        .room_name_error
+                        .set_text(&gettext("Invalid room name."));
+                    (false, true)
+                }
             };
 
         if has_error {

@@ -14,7 +14,7 @@ use gtk::{gio, glib, prelude::*, subclass::prelude::*};
 use log::{error, warn};
 use matrix_sdk::{
     deserialized_responses::SyncRoomEvent,
-    ruma::{EventId, TransactionId},
+    ruma::{EventId, OwnedEventId, OwnedTransactionId, TransactionId},
     Error as MatrixError,
 };
 pub use timeline_day_divider::TimelineDayDivider;
@@ -61,16 +61,16 @@ mod imp {
     pub struct Timeline {
         pub room: OnceCell<WeakRef<Room>>,
         /// A store to keep track of related events that aren't known
-        pub relates_to_events: RefCell<HashMap<Box<EventId>, Vec<Box<EventId>>>>,
+        pub relates_to_events: RefCell<HashMap<OwnedEventId, Vec<OwnedEventId>>>,
         /// All events shown in the room history
         pub list: RefCell<VecDeque<TimelineItem>>,
         /// A Hashmap linking `EventId` to corresponding `Event`
-        pub event_map: RefCell<HashMap<Box<EventId>, Event>>,
+        pub event_map: RefCell<HashMap<OwnedEventId, Event>>,
         /// Maps the temporary `EventId` of the pending Event to the real
         /// `EventId`
-        pub pending_events: RefCell<HashMap<Box<TransactionId>, Box<EventId>>>,
+        pub pending_events: RefCell<HashMap<OwnedTransactionId, OwnedEventId>>,
         /// A Hashset of `EventId`s that where just redacted.
-        pub redacted_events: RefCell<HashSet<Box<EventId>>>,
+        pub redacted_events: RefCell<HashSet<OwnedEventId>>,
         pub state: Cell<TimelineState>,
         pub backward_stream: Arc<Mutex<Option<BackwardStream>>>,
         pub forward_handle: Arc<Mutex<Option<JoinHandle<()>>>>,
@@ -417,7 +417,7 @@ impl Timeline {
         let mut relates_to_events = priv_.relates_to_events.borrow_mut();
 
         // Group events by related event
-        let mut new_relations: HashMap<Box<EventId>, Vec<Event>> = HashMap::new();
+        let mut new_relations: HashMap<OwnedEventId, Vec<Event>> = HashMap::new();
         for event in events {
             if let Some(relates_to) = relates_to_events.remove(&event.matrix_event_id()) {
                 let mut replacing_events: Vec<Event> = vec![];
@@ -497,7 +497,7 @@ impl Timeline {
                 // `relates_to` once the `related_to` event is added to the list
                 let relates_to_event = relates_to_events.entry(relates_to_event_id).or_default();
 
-                let relations_ids: Vec<Box<EventId>> = new_relations
+                let relations_ids: Vec<OwnedEventId> = new_relations
                     .iter()
                     .map(|event| event.matrix_event_id())
                     .collect();
@@ -665,10 +665,7 @@ impl Timeline {
                     };
                     added -= 1;
                 } else {
-                    priv_
-                        .event_map
-                        .borrow_mut()
-                        .insert(event_id.to_owned(), event.clone());
+                    priv_.event_map.borrow_mut().insert(event_id, event.clone());
                     if event.is_hidden_event() {
                         hidden_events.push(event);
                         added -= 1;
