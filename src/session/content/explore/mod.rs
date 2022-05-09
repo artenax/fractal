@@ -158,6 +158,8 @@ impl Explore {
         if let Some(public_room_list) = &*self.imp().public_room_list.borrow() {
             public_room_list.load_public_rooms(true);
         }
+
+        self.imp().search_entry.grab_focus();
     }
 
     pub fn set_session(&self, session: Option<Session>) {
