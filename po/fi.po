@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2021-02-05 12:39+0000\n"
-"PO-Revision-Date: 2021-02-22 17:33+0200\n"
+"POT-Creation-Date: 2022-05-09 17:01+0000\n"
+"PO-Revision-Date: 2022-05-10 21:06+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: Finnish <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -16,159 +16,62 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
-#: fractal-gtk/res/gtk/help-overlay.ui:13
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Yleiset"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:18
-msgctxt "shortcut window"
-msgid "Close the active room"
-msgstr "Sulje aktiivinen huone"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:25
-msgctxt "shortcut window"
-msgid "Open main menu"
-msgstr "Avaa päävalikko"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:32
-msgctxt "shortcut window"
-msgid "Open / close the room sidebar search"
-msgstr "Avaa/sulje huoneen sivupalkkihaku"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:39
-msgctxt "shortcut window"
-msgid "Open the previous room in the list"
-msgstr "Avaa edellinen huone luettelossa"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:46
-msgctxt "shortcut window"
-msgid "Open the next room in the list"
-msgstr "Avaa seuraava huone luetteossa"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:53
-msgctxt "shortcut window"
-msgid "Open the previous room with unread messages in the list"
-msgstr "Avaa edellinen lukemattomia viestejä sisältävä huone luettelossa"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:60
-msgctxt "shortcut window"
-msgid "Open the next room with unread messages in the list"
-msgstr "Avaa seuraava lukemattomia viestejä sisältävä huone luettelossa"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:67
-msgctxt "shortcut window"
-msgid "Open the first room of the list"
-msgstr "Avaa luettelon ensimmäinen huone"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:74
-msgctxt "shortcut window"
-msgid "Open the last room of the list"
-msgstr "Avaa luettelon viimeinen huone"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:81
-msgctxt "shortcut window"
-msgid "View older messages"
-msgstr "Näytä vanhemmat viestit"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:88
-msgctxt "shortcut window"
-msgid "View newer messages"
-msgstr "Näytä uudemmat viestit"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:94
-msgctxt "shortcut window"
-msgid "Keyboard Shortcuts"
-msgstr "Pikanäppäimet"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:101
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "Lopeta"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:110
-msgctxt "shortcut message"
-msgid "Composing a new message"
-msgstr "Uuden viestin kirjoittaminen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:115
-msgctxt "shortcut message"
-msgid "Write on a new line"
-msgstr "Kirjoita uudelle riville"
-
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:3
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:5
-#: fractal-gtk/res/ui/login_flow.ui:19 fractal-gtk/src/appop/mod.rs:170
+#: data/org.gnome.Fractal.desktop.in.in:3
+#: data/org.gnome.Fractal.metainfo.xml.in.in:9
 msgid "Fractal"
 msgstr "Fractal"
 
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:4
+#: data/org.gnome.Fractal.desktop.in.in:4
 msgid ""
 "Fractal is a decentralized, secure messaging client for collaborative group "
 "communication."
 msgstr ""
 "Fractal on hajautettu ja turvallinen viestintäsovellus ryhmäviestintään."
 
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:5
+#: data/org.gnome.Fractal.desktop.in.in:5
 msgid "Fractal group messaging"
 msgstr "Fractal-ryhmäviestintä"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:14
-#| msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;"
+#: data/org.gnome.Fractal.desktop.in.in:14
 msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
 msgstr ""
 "Matrix;matrix.org;chat;irc;communications;talk;riot;element;keskustelu;"
 "pikaviestin;"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:13
-msgid "Type of password and token storage"
-msgstr "Salasanan ja poletin tallennustilan tyyppi"
+#: data/org.gnome.Fractal.gschema.xml.in:6
+msgid "Window width"
+msgstr "Ikkunan leveys"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:14
-msgid "Type of password and token storage, default value is: Secret Service"
-msgstr ""
-"Salasanan ja poletin tallennustilan tyyppi, oletusarvo on: Secret Service"
+#: data/org.gnome.Fractal.gschema.xml.in:10
+msgid "Window height"
+msgstr "Ikkunan korkeus"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:21
-msgid "If markdown sending is active"
-msgstr "Onko markdown-lähettäminen aktiivisena"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:22
-msgid "Whether support for sending markdown messages is on"
-msgstr "Onko tuki markdown-viestien lähettämiseen päällä"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:29
-msgid "X position of the main window on startup"
-msgstr "Pääikkunan X-sijainti käynnistyessä"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:34
-msgid "Y position of the main window on startup"
-msgstr "Pääikkunan Y-sijainti käynnistyessä"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:39
-msgid "Width of the main window on startup"
-msgstr "Pääikkunan leveys käynnistyksen yhteydessä"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:44
-msgid "Height of the main window on startup"
-msgstr "Pääikkunan korkeus käynnistyksen yhteydessä"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:49
-msgid "Whether the main window is maximized on startup"
+#: data/org.gnome.Fractal.gschema.xml.in:14
+#, fuzzy
+#| msgid "Whether the main window is maximized on startup"
+msgid "Window maximized state"
 msgstr "Onko pääikkunna suurennettu käynnistyessä"
 
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:8
-msgid "Daniel García Moreno"
-msgstr "Daniel García Moreno"
+#: data/org.gnome.Fractal.gschema.xml.in:18
+msgid "Enable markdown formatting"
+msgstr "Käytä markdown-muotoilua"
 
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:9
+#: data/org.gnome.Fractal.gschema.xml.in:19
+msgid "Whether messages should be processed as markdown when sending them"
+msgstr ""
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:8
+msgid "Julian Sparber"
+msgstr "Julian Sparber"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
 msgid "Matrix group messaging app"
 msgstr "Matrix-ryhmäviestintäsovellus"
 
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:11
+#: data/org.gnome.Fractal.metainfo.xml.in.in:12
 msgid ""
 "Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
 "is optimized for collaboration in large groups, such as free software "
@@ -178,892 +81,2265 @@ msgstr ""
 "ohjelmointikielellä toteutettuna. Sen käyttöliittymä on optimoitu suuria "
 "ryhmiä, kuten avoimen lähdekoodin projekteja, varten."
 
-#: fractal-gtk/res/ui/account_settings.ui:14 fractal-gtk/res/ui/main_menu.ui:94
-msgid "Account Settings"
-msgstr "Tilin asetukset"
-
-#: fractal-gtk/res/ui/account_settings.ui:30
-#: fractal-gtk/res/ui/main_window.ui:217 fractal-gtk/res/ui/main_window.ui:454
-#: fractal-gtk/res/ui/media_viewer.ui:36 fractal-gtk/res/ui/room_settings.ui:30
-msgid "Back"
-msgstr "Takaisin"
-
-#: fractal-gtk/res/ui/account_settings.ui:92
-msgid "Other people can find you by searching for any of these identifiers."
-msgstr ""
-"Muut ihmiset voivat löytää sinut etsimällä mitä tahansa näistä tunnisteista."
-
-#: fractal-gtk/res/ui/account_settings.ui:115
-msgid "Name"
-msgstr "Nimi"
-
-#: fractal-gtk/res/ui/account_settings.ui:138
-msgid "Type in your name"
-msgstr "Kirjoita nimesi"
-
-#: fractal-gtk/res/ui/account_settings.ui:167
-msgid "Email"
-msgstr "Sähköposti"
-
-#: fractal-gtk/res/ui/account_settings.ui:196
-msgid "Phone"
-msgstr "Puhelin"
-
-#: fractal-gtk/res/ui/account_settings.ui:225
-msgid "Password"
-msgstr "Salasana"
-
-#: fractal-gtk/res/ui/account_settings.ui:287
-msgid "Advanced Information"
-msgstr "Lisätiedot"
-
-#: fractal-gtk/res/ui/account_settings.ui:312
-msgid "Homeserver"
-msgstr "Kotipalvelin"
-
-#: fractal-gtk/res/ui/account_settings.ui:341
-msgid "Matrix ID"
-msgstr "Matrix-tunniste"
-
-#: fractal-gtk/res/ui/account_settings.ui:370
-msgid "Device ID"
-msgstr "Laitetunniste"
-
-#: fractal-gtk/res/ui/account_settings.ui:410
-#: fractal-gtk/res/ui/account_settings.ui:466
-msgid "Deactivate Account"
-msgstr "Deaktivoi tili"
-
-#: fractal-gtk/res/ui/account_settings.ui:431
-msgid ""
-"Deactivating your account means that you will lose all your messages, "
-"contacts, and files."
-msgstr ""
-"Tilin deaktivointi tarkoittaa, että menetät kaikki viestit, yhteystiedot ja "
-"tiedostot."
-
-#: fractal-gtk/res/ui/account_settings.ui:441
-msgid ""
-"To confirm that you really want to deactivate this account type in your "
-"password:"
-msgstr "Vahvista tilin deaktivointi antamalla salasanasi:"
-
-#: fractal-gtk/res/ui/account_settings.ui:456
-msgid "Also erase all messages"
-msgstr "Poista myös kaikki viestit"
-
-#: fractal-gtk/res/ui/account_settings.ui:523
-msgid "Check your email"
-msgstr "Tarkista sähköpostisi"
-
-#: fractal-gtk/res/ui/account_settings.ui:526
-#: fractal-gtk/res/ui/direct_chat.ui:83 fractal-gtk/res/ui/invite_user.ui:84
-#: fractal-gtk/res/ui/join_room.ui:71 fractal-gtk/res/ui/leave_room.ui:31
-#: fractal-gtk/res/ui/new_room.ui:24 fractal-gtk/src/appop/account.rs:87
-#: fractal-gtk/src/appop/account.rs:143 fractal-gtk/src/ui/attach.rs:41
-msgid "Cancel"
-msgstr "Peru"
-
-#: fractal-gtk/res/ui/account_settings.ui:534
-msgid "Apply"
-msgstr "Toteuta"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:8
-msgid "Room Directory"
-msgstr "Huonehakemisto"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:12
-msgid "Join Room"
-msgstr "Liity huoneeseen"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:18
-msgid "New Room"
-msgstr "Uusi huone"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:22
-msgid "New Direct Chat"
-msgstr "Uusi suorakeskustelu"
-
-#: fractal-gtk/res/ui/audio_player.ui:34 fractal-gtk/res/ui/audio_player.ui:45
-msgid "Play"
-msgstr "Toista"
-
-#: fractal-gtk/res/ui/direct_chat.ui:80
-msgid "New direct chat"
-msgstr "Uusi suorakeskustelu"
-
-#: fractal-gtk/res/ui/direct_chat.ui:91
-msgid "Start chat"
-msgstr "Aloita keskustelu"
-
-#: fractal-gtk/res/ui/invite.ui:18
-msgid "Invitation"
-msgstr "Kutsu"
-
-#: fractal-gtk/res/ui/invite.ui:32
-msgid "Reject"
-msgstr "Hylkää"
-
-#: fractal-gtk/res/ui/invite.ui:40
-msgid "Accept"
-msgstr "Hyväksy"
-
-#: fractal-gtk/res/ui/invite_user.ui:81 fractal-gtk/res/ui/invite_user.ui:92
-#: fractal-gtk/src/ui/invite.rs:133
-msgid "Invite"
-msgstr "Kutsu"
-
-#: fractal-gtk/res/ui/join_room.ui:34
-msgid "ID or Alias"
-msgstr "Tunniste tai alias"
-
-#: fractal-gtk/res/ui/join_room.ui:68
-msgid "Join room"
-msgstr "Liity huoneeseen"
-
-#: fractal-gtk/res/ui/join_room.ui:79 fractal-gtk/src/ui/directory.rs:245
-msgid "Join"
-msgstr "Liity"
-
-#: fractal-gtk/res/ui/kicked_room.ui:29 fractal-gtk/res/ui/msg_src_window.ui:32
-msgid "Close"
-msgstr "Sulje"
-
-#: fractal-gtk/res/ui/leave_room.ui:18
-msgid "Leave?"
-msgstr "Poistutaanko?"
-
-#: fractal-gtk/res/ui/leave_room.ui:19
-msgid ""
-"Once you leave, you won’t be able to interact with people in the room "
-"anymore."
-msgstr ""
-"Kun olet poistunut, et voi enää keskustella huoneessa olevien ihmisten "
-"kanssa."
-
-#: fractal-gtk/res/ui/leave_room.ui:39
-msgid "Leave room"
-msgstr "Poistu huoneesta"
-
-#: fractal-gtk/res/ui/login_flow.ui:29
-msgid "Welcome to Fractal"
-msgstr "Tervetuloa Fractaliin"
-
-#: fractal-gtk/res/ui/login_flow.ui:42 fractal-gtk/res/ui/login_flow.ui:211
-msgid "_Log In"
-msgstr "Ki_rjaudu sisään"
-
-#: fractal-gtk/res/ui/login_flow.ui:55
-msgid "_Create Account"
-msgstr "_Luo tili"
-
-#: fractal-gtk/res/ui/login_flow.ui:84
-msgid "Choose Provider"
-msgstr "Valitse palveluntarjoaja"
-
-#: fractal-gtk/res/ui/login_flow.ui:107
-msgid "_Next"
-msgstr "_Seuraava"
-
-#: fractal-gtk/res/ui/login_flow.ui:125
-msgid "What is your Provider?"
-msgstr "Mikä on palveluntarjoajasi?"
-
-#: fractal-gtk/res/ui/login_flow.ui:146
-msgid "Matrix provider domain, e.g. myserver.co"
-msgstr "Matrix-palveluntarjoajan verkkotunnus, esim. omapalvelin.fi.com"
-
-#: fractal-gtk/res/ui/login_flow.ui:161
-msgid "The domain may not be empty."
-msgstr "Verkkotunnus ei voi olla tyhjä."
-
-#: fractal-gtk/res/ui/login_flow.ui:188
-msgid "Log In"
-msgstr "Kirjaudu sisään"
-
-#: fractal-gtk/res/ui/login_flow.ui:236
-msgid "_User ID"
-msgstr "_Käyttäjätunnus"
-
-#: fractal-gtk/res/ui/login_flow.ui:252
-msgid "_Password"
-msgstr "_Salasana"
-
-#: fractal-gtk/res/ui/login_flow.ui:284
-msgid "User name, email, or phone number"
-msgstr "Käyttäjätunnus, sähköposti tai puhelinnumero"
-
-#: fractal-gtk/res/ui/login_flow.ui:317
-msgid "_Forgot Password?"
-msgstr "_Unohditko salasanasi?"
-
-#: fractal-gtk/res/ui/login_flow.ui:335
-msgid "Invalid username or password"
-msgstr "Virheellinen käyttäjätunnus tai salasana"
-
-#: fractal-gtk/res/ui/main_menu.ui:103
-msgid "Log Out"
-msgstr "Kirjaudu ulos"
-
-#: fractal-gtk/res/ui/main_menu.ui:120
-msgid "Keyboard _Shortcuts"
-msgstr "_Pikanäppäimet"
-
-#: fractal-gtk/res/ui/main_menu.ui:129
-msgid "_About Fractal"
-msgstr "_Tietoja - Fractal"
-
-#: fractal-gtk/res/ui/main_window.ui:56
-msgid "User"
-msgstr "Käyttäjä"
-
-#: fractal-gtk/res/ui/main_window.ui:82
-msgid "Add"
-msgstr "Lisää"
-
-#: fractal-gtk/res/ui/main_window.ui:111
-msgid "Room search"
-msgstr "Huonehaku"
-
-#: fractal-gtk/res/ui/main_window.ui:282
-msgid "Room Menu"
-msgstr "Huonevalikko"
-
-#: fractal-gtk/res/ui/main_window.ui:349
-msgid "No Room Selected"
-msgstr "Ei huonetta valittuna"
-
-#: fractal-gtk/res/ui/main_window.ui:350
-msgid "Join a room to start chatting."
-msgstr "Liity huoneeseen aloittaaksesi keskustelun."
-
-#: fractal-gtk/res/ui/main_window.ui:354
-msgid "No room"
-msgstr "Ei huonetta"
-
-#: fractal-gtk/res/ui/main_window.ui:494
-#: fractal-gtk/res/ui/server_chooser_menu.ui:51
-#: fractal-gtk/src/ui/connect/directory.rs:117
-msgid "Default Matrix Server"
-msgstr "Oletusarvoinen Matrix-palvelin"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:23
-msgid "Markdown"
-msgstr "Markdown"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:52
-msgid "> quote"
-msgstr "> lainaus"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:63
-msgid "**bold**"
-msgstr "**lihavoitu**"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:78
-msgid "`code`"
-msgstr "`koodi`"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:90
-msgid "*italic*"
-msgstr "*kursivoitu*"
-
-#: fractal-gtk/res/ui/media_viewer.ui:63
-msgid "Toggle fullscreen"
-msgstr "Koko näyttö päälle/pois"
-
-#: fractal-gtk/res/ui/media_viewer.ui:226
-msgid "Loading more media"
-msgstr "Ladataan lisää mediaa"
-
-#: fractal-gtk/res/ui/message_menu.ui:22
-msgid "Reply"
-msgstr "Vastaa"
-
-#: fractal-gtk/res/ui/message_menu.ui:29
-msgid "Open With…"
-msgstr "Avaa sovelluksella…"
-
-#: fractal-gtk/res/ui/message_menu.ui:37
-msgid "Save Image As…"
-msgstr "Tallenna kuva nimellä…"
-
-#: fractal-gtk/res/ui/message_menu.ui:45
-msgid "Save Video As…"
-msgstr "Tallenna video nimellä…"
-
-#: fractal-gtk/res/ui/message_menu.ui:53
-msgid "Copy Image"
-msgstr "Kopioi kuva"
-
-#: fractal-gtk/res/ui/message_menu.ui:61
-msgid "Copy Selection"
-msgstr "Kopioi valinta"
-
-#: fractal-gtk/res/ui/message_menu.ui:69
-msgid "Copy Text"
-msgstr "Kopioi teksti"
-
-#: fractal-gtk/res/ui/message_menu.ui:79
-msgid "View Source"
-msgstr "Näytä lähde"
-
-#: fractal-gtk/res/ui/message_menu.ui:94
-msgid "Delete Message"
-msgstr "Poista viesti"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:21
-msgid "Message Source"
-msgstr "Viestin lähde"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:24
-msgid "Copy To Clipboard"
-msgstr "Kopioi leikepöydälle"
-
-#: fractal-gtk/res/ui/new_room.ui:21
-msgid "Create new room"
-msgstr "Luo uusi huone"
-
-#: fractal-gtk/res/ui/new_room.ui:32
-msgid "Create"
-msgstr "Luo"
-
-#: fractal-gtk/res/ui/new_room.ui:71
-msgid "Room name"
-msgstr "Huoneen nimi"
-
-#: fractal-gtk/res/ui/new_room.ui:100
-msgid "Visibility"
-msgstr "Näkyvyys"
-
-#: fractal-gtk/res/ui/new_room.ui:114
-msgid "Private"
-msgstr "Yksityinen"
-
-#: fractal-gtk/res/ui/new_room.ui:125
-msgid "Public"
-msgstr "Julkinen"
-
-#: fractal-gtk/res/ui/password_dialog.ui:22
-#: fractal-gtk/src/widgets/file_dialog.rs:12
-#: fractal-gtk/src/widgets/file_dialog.rs:33
-msgid "_Cancel"
-msgstr "_Peru"
-
-#: fractal-gtk/res/ui/password_dialog.ui:35
-msgid "Ch_ange"
-msgstr "_Vaihda"
-
-#: fractal-gtk/res/ui/password_dialog.ui:125
-msgid "The passwords do not match."
-msgstr "Salasanat eivät täsmää."
-
-#: fractal-gtk/res/ui/password_dialog.ui:143
-msgid "_Verify New Password"
-msgstr "_Vahvista uusi salasana"
-
-#: fractal-gtk/res/ui/password_dialog.ui:160
-msgid "_New Password"
-msgstr "_Uusi salasana"
-
-#: fractal-gtk/res/ui/password_dialog.ui:204
-msgid "Current _Password"
-msgstr "_Nykyinen salasana"
-
-#: fractal-gtk/res/ui/room_menu.ui:8
-msgid "Room Details"
-msgstr "Huoneen tiedot"
-
-#: fractal-gtk/res/ui/room_menu.ui:12
-msgid "Invite to This Room"
-msgstr "Kutsu tähän huoneeseen"
-
-#: fractal-gtk/res/ui/room_menu.ui:18
-msgid "Leave Room"
-msgstr "Poistu huoneesta"
-
-#: fractal-gtk/res/ui/room_settings.ui:14
-msgid "Details"
-msgstr "Tiedot"
-
-#: fractal-gtk/res/ui/room_settings.ui:112
-msgid "Unknown"
-msgstr "Tuntematon"
-
-#: fractal-gtk/res/ui/room_settings.ui:133
-msgid "Add name"
-msgstr "Lisää nimi"
-
-#: fractal-gtk/res/ui/room_settings.ui:160
-msgid "Add topic"
-msgstr "Lisää aihe"
-
-#: fractal-gtk/res/ui/room_settings.ui:179
-msgid "Type in your room topic"
-msgstr "Kirjoita huoneesi aihe"
-
-#: fractal-gtk/res/ui/room_settings.ui:202
-msgid "No room description"
-msgstr "Ei huoneen kuvausta"
-
-#: fractal-gtk/res/ui/room_settings.ui:230
-msgid "Notifications"
-msgstr "Ilmoitukset"
-
-#: fractal-gtk/res/ui/room_settings.ui:258
-msgid "Notification sounds"
-msgstr "Ilmoitusäänet"
-
-#: fractal-gtk/res/ui/room_settings.ui:290
-msgid "For all messages"
-msgstr "Kaikille viesteille"
-
-#: fractal-gtk/res/ui/room_settings.ui:322
-msgid "Only for mentions"
-msgstr "Vain maininnoille"
-
-#: fractal-gtk/res/ui/room_settings.ui:352
-msgid "Shared Media"
-msgstr "Jaettu media"
-
-#: fractal-gtk/res/ui/room_settings.ui:394
-msgid "photos"
-msgstr "kuvat"
-
-#: fractal-gtk/res/ui/room_settings.ui:424
-msgid "videos"
-msgstr "videot"
-
-#: fractal-gtk/res/ui/room_settings.ui:454
-msgid "documents"
-msgstr "asiakirjat"
-
-#: fractal-gtk/res/ui/room_settings.ui:475
-msgid "New members can see"
-msgstr "Uudet jäsenet voivat nähdä"
-
-#: fractal-gtk/res/ui/room_settings.ui:507
-msgid "All room history"
-msgstr "Huoneen koko historian"
-
-#: fractal-gtk/res/ui/room_settings.ui:539
-msgid "History after they were invited"
-msgstr "Historian kutsumisen jälkeen"
-
-#: fractal-gtk/res/ui/room_settings.ui:569
-msgid "Room Visibility"
-msgstr "Huoneen näkyvyys"
-
-#: fractal-gtk/res/ui/room_settings.ui:604
-msgid "Allow guests"
-msgstr "Salli vieraat"
-
-#: fractal-gtk/res/ui/room_settings.ui:635
-msgid "Allow joining without invite"
-msgstr "Salli liittyminen ilman kutsua"
-
-#: fractal-gtk/res/ui/room_settings.ui:666
-msgid "Publish in room directory"
-msgstr "Julkaise huonehakemistossa"
-
-#: fractal-gtk/res/ui/room_settings.ui:695
-msgid "Join addresses"
-msgstr "Liittymisosoitteet"
-
-#: fractal-gtk/res/ui/room_settings.ui:749
-msgid "members"
-msgstr "jäsenet"
-
-#: fractal-gtk/res/ui/room_settings.ui:761
-msgid "Invite New Member"
-msgstr "Kutsu uusi jäsen"
-
-#: fractal-gtk/res/ui/room_settings.ui:786
-msgid "Search for room members"
-msgstr "Etsi huoneen jäseniä"
-
-#: fractal-gtk/res/ui/scroll_widget.ui:63
-msgid "Scroll to bottom"
-msgstr "Vieritä alas"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:30
-msgid "Show rooms from:"
-msgstr "Näytä huoneet:"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:65
-msgid "Your homeserver"
-msgstr "Kotipalvelimeltasi"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:93
-msgid "Other Protocol"
-msgstr "Muu protokolla"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:139
-msgid "Other Homeserver"
-msgstr "Muu kotipalvelin"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:156
-msgid "Homeserver URL"
-msgstr "Kotipalvelimen osoite"
-
-#: fractal-gtk/src/actions/account_settings.rs:31
-#: fractal-gtk/src/actions/room_settings.rs:37
-msgid "Images"
-msgstr "Kuvat"
-
-#: fractal-gtk/src/actions/account_settings.rs:32
-#: fractal-gtk/src/actions/room_settings.rs:39
-msgid "Select a new avatar"
-msgstr "Valitse uusi avatar"
-
-#: fractal-gtk/src/actions/global.rs:320
-msgid "Select a file"
-msgstr "Valitse tiedosto"
-
-#: fractal-gtk/src/actions/message.rs:57
-msgid "This message has no source."
-msgstr "Tällä viestillä ei ole lähdettä."
-
-#: fractal-gtk/src/actions/message.rs:131
-#: fractal-gtk/src/actions/message.rs:162
-msgid "Could not download the file"
-msgstr "Tiedostoa ei voitu ladata"
-
-#: fractal-gtk/src/actions/message.rs:138
-msgid "Couldn’t save file"
-msgstr "Tiedostoa ei voitu tallentaa"
-
-#: fractal-gtk/src/actions/room_settings.rs:53
-msgid "Couldn’t open file"
-msgstr "Tiedostoa ei voitu avata"
-
-#: fractal-gtk/src/appop/account.rs:65
-msgid "The validation code is not correct."
-msgstr "Vahvistuskoodi ei ole oikein."
-
-#: fractal-gtk/src/appop/account.rs:73
-msgid "Enter the code received via SMS"
-msgstr "Anna tekstiviestitse saatu koodi"
-
-#: fractal-gtk/src/appop/account.rs:88 fractal-gtk/src/appop/account.rs:144
+#: data/resources/ui/account-settings-change-password-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:54
+msgid "Change Password"
+msgstr "Vaihda salasana"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:76
+msgid "New Password"
+msgstr "Uusi salasana"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:81
+msgid "Confirm New Password"
+msgstr "Vahvista uusi salasana"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:94
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
+#: src/session/content/room_history/verification_info_bar.rs:181
 msgid "Continue"
 msgstr "Jatka"
 
-#: fractal-gtk/src/appop/account.rs:134
-msgid ""
-"In order to add this email address, go to your inbox and follow the link you "
-"received. Once you’ve done that, click Continue."
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:115
+msgid "Deactivate Account"
+msgstr "Deaktivoi tili"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:79
+#: data/resources/ui/account-settings-user-page.ui:80
+msgid "Matrix User ID"
+msgstr "Matrix-käyttäjätunniste"
+
+#: data/resources/ui/account-settings-device-row.ui:59
+#: src/session/content/verification/identity_verification_widget.rs:494
+#: src/session/content/verification/identity_verification_widget.rs:499
+#: src/session/content/verification/identity_verification_widget.rs:503
+#: src/session/content/verification/identity_verification_widget.rs:523
+#: src/session/content/verification/identity_verification_widget.rs:526
+#: src/session/content/verification/identity_verification_widget.rs:530
+msgid "Verify Session"
+msgstr "Vahvista istunto"
+
+#: data/resources/ui/account-settings-devices-page.ui:5
+msgid "Sessions"
+msgstr "Istunnot"
+
+#: data/resources/ui/account-settings-devices-page.ui:9
+#: data/resources/ui/account-settings-devices-page.ui:13
+msgid "Current Session"
+msgstr "Nykyinen istunto"
+
+#: data/resources/ui/account-settings-devices-page.ui:24
+#: data/resources/ui/account-settings-devices-page.ui:28
+msgid "Other Active Sessions"
+msgstr "Muut aktiiviset istunnot"
+
+#: data/resources/ui/account-settings-user-page.ui:5
+#: data/resources/ui/content-room-details.ui:9
+msgid "General"
+msgstr "Yleiset"
+
+#: data/resources/ui/account-settings-user-page.ui:38
+msgid "Name"
+msgstr "Nimi"
+
+#: data/resources/ui/account-settings-user-page.ui:63
+msgid "Advanced Information"
+msgstr "Lisätiedot"
+
+#: data/resources/ui/account-settings-user-page.ui:66
+msgid "Homeserver"
+msgstr "Kotipalvelin"
+
+#: data/resources/ui/account-settings-user-page.ui:94
+msgid "Session ID"
 msgstr ""
-"Lisää tämä sähköpostiosoite menemällä postilaatikkoosi ja seuraamalla "
-"vastaanottamaasi linkkiä. Kun olet tehnyt sen, napsauta Jatka."
 
-#: fractal-gtk/src/appop/account.rs:348
-msgid "Are you sure you want to delete your account?"
-msgstr "Haluatko varmasti poistaa tilisi?"
+#: data/resources/ui/account-settings.ui:4
+msgid "Account Settings"
+msgstr "Tilin asetukset"
 
-#: fractal-gtk/src/appop/mod.rs:176
-msgid "Fractal [{}]"
-msgstr "Fractal [{}]"
+#: data/resources/ui/attachment-dialog.ui:14
+#: data/resources/ui/content-invite-subpage.ui:12
+#: data/resources/ui/room-creation.ui:16
+msgid "_Cancel"
+msgstr "_Peru"
 
-#: fractal-gtk/src/appop/notify.rs:18
-msgid "An audio file has been added to the conversation."
-msgstr "Äänitiedosto on lisätty keskusteluun."
+#: data/resources/ui/attachment-dialog.ui:21
+msgid "_Send"
+msgstr "_Lähetä"
 
-#: fractal-gtk/src/appop/notify.rs:19
-msgid "An image has been added to the conversation."
-msgstr "Kuva on lisätty keskusteluun."
+#: data/resources/ui/components-auth-dialog.ui:20
+msgid "Authentication"
+msgstr "Tunnistautuminen"
 
-#: fractal-gtk/src/appop/notify.rs:20
-msgid "A video has been added to the conversation."
-msgstr "Video on lisätty keskusteluun."
+#: data/resources/ui/components-auth-dialog.ui:43
+msgid "Please authenticate the operation with your password"
+msgstr ""
 
-#: fractal-gtk/src/appop/notify.rs:21
-msgid "A file has been added to the conversation."
-msgstr "Tiedosto on lisätty keskusteluun."
+#: data/resources/ui/components-auth-dialog.ui:70
+msgid ""
+"Please authenticate the operation via the browser and once completed press "
+"confirm."
+msgstr ""
 
-#: fractal-gtk/src/appop/notify.rs:26
-msgid " (direct message)"
-msgstr " (suoraviesti)"
+#: data/resources/ui/components-auth-dialog.ui:80
+msgid "Authenticate via Browser"
+msgstr "Tunnistaudu selaimen kautta"
 
-#: fractal-gtk/src/appop/room.rs:352
-msgid "Leave {room_name}?"
-msgstr "Poistutaanko huoneesta {room_name}?"
+#: data/resources/ui/components-auth-dialog.ui:113
+#: data/resources/ui/identity-verification-widget.ui:449
+#: src/components/editable_avatar.rs:344
+#: src/session/content/room_history/verification_info_bar.rs:182
+#: src/session/room/event_actions.rs:210
+msgid "Cancel"
+msgstr "Peru"
 
-#: fractal-gtk/src/appop/room.rs:539
-msgid "The room ID is malformed"
-msgstr "Huoneen tunniste on muotoiltu väärin"
+#: data/resources/ui/components-auth-dialog.ui:118
+#: data/resources/ui/identity-verification-widget.ui:439
+msgid "Confirm"
+msgstr "Vahvista"
 
-#: fractal-gtk/src/appop/room.rs:607
-msgid "EMPTY ROOM"
-msgstr "TYHJÄ HUONE"
+#: data/resources/ui/components-loading-listbox-row.ui:32
+msgid "Try again"
+msgstr "Yritä uudelleen"
 
-#: fractal-gtk/src/appop/room.rs:609
-msgid "{m1} and {m2}"
-msgstr "{m1} ja {m2}"
+#: data/resources/ui/content-explore.ui:64
+msgid "No rooms matching the search were found"
+msgstr "Hakua vstaavia huoneita ei löytynyt"
 
-#: fractal-gtk/src/appop/room.rs:610
-msgid "{m1} and Others"
-msgstr "{m1} ja muita"
+#: data/resources/ui/content-explore.ui:96
+msgid "Room List"
+msgstr "Huoneluettelo"
 
-#: fractal-gtk/src/appop/room.rs:710
-msgid "Several users are typing…"
-msgstr "Useat käyttäjät kirjoittavat…"
+#: data/resources/ui/content-invite-subpage.ui:18
+msgid "I_nvite"
+msgstr "_Kutsu"
 
-#: fractal-gtk/src/appop/room.rs:713
-msgid "<b>{}</b> is typing…"
-msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
-msgstr[0] "<b>{}</b> kirjoittaa…"
-msgstr[1] "<b>{}</b> ja <b>{}</b> kirjoittavat…"
+#: data/resources/ui/content-invite-subpage.ui:87
+msgid "Search for users to invite them to this room."
+msgstr ""
 
-#: fractal-gtk/src/appop/sync.rs:24
-msgid "Syncing, this could take a while"
-msgstr "Synkronoidaan, tässä voi kestää hetki"
+#: data/resources/ui/content-invite-subpage.ui:123
+msgid "No users matching the search were found."
+msgstr "Hakua vastaavia jäseniä ei löytynyt."
 
-#: fractal-gtk/src/backend/directory.rs:35
-#: fractal-gtk/src/backend/directory.rs:81
-msgid "Error searching for rooms"
+#: data/resources/ui/content-invite-subpage.ui:132
+#, fuzzy
+#| msgid "Error searching for rooms"
+msgid "An error occurred while searching for matches"
 msgstr "Virhe huoneita etsiessä"
 
-#: fractal-gtk/src/backend/register.rs:42
-msgid "Can’t login, try again"
-msgstr "Kirjautuminen ei onnistu, yritä uudelleen"
+#: data/resources/ui/content-invite.ui:26
+#: data/resources/ui/content-invite.ui:51
+msgid "Invite"
+msgstr "Kutsu"
 
-#: fractal-gtk/src/backend/room.rs:403
-msgid "Error deleting message"
-msgstr "Virhe viestiä poistaessa"
+#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:33
+msgid "_Reject"
+msgstr "H_ylkää"
 
-#: fractal-gtk/src/backend/room.rs:443
-msgid "Can’t join the room, try again."
-msgstr "Huoneeseen ei voitu liittyä, yritä uudelleen."
+#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:28
+msgid "_Accept"
+msgstr "Hy_väksy"
 
-#: fractal-gtk/src/backend/room.rs:675 fractal-gtk/src/backend/room.rs:727
-msgid "Can’t create the room, try again"
-msgstr "Huonetta ei voitu luoda, yritä uudelleen"
+#: data/resources/ui/content-markdown-popover.ui:17
+msgid "_Markdown"
+msgstr "_Markdown"
 
-#: fractal-gtk/src/backend/user.rs:113
-msgid "Sorry, account settings can’t be loaded."
-msgstr "Valitettavasti tilin asetuksia ei voitu ladata."
+#: data/resources/ui/content-markdown-popover.ui:37
+msgid "> quote"
+msgstr "> lainaus"
 
-#: fractal-gtk/src/backend/user.rs:141
-msgid "Email is already in use"
-msgstr "Sähköpostiosoite on jo käytössä"
+#: data/resources/ui/content-markdown-popover.ui:46
+msgid "**bold**"
+msgstr "**lihavoitu**"
 
-#: fractal-gtk/src/backend/user.rs:144
-msgid "Please enter a valid email address."
-msgstr "Kirjoita kelvollinen sähköpostiosoite."
+#: data/resources/ui/content-markdown-popover.ui:59
+msgid "`code`"
+msgstr "`koodi`"
 
-#: fractal-gtk/src/backend/user.rs:147
-msgid "Couldn’t add the email address."
-msgstr "Sähköpostiosoitetta ei voitu lisätä."
+#: data/resources/ui/content-markdown-popover.ui:69
+msgid "*italic*"
+msgstr "*kursivoitu*"
 
-#: fractal-gtk/src/backend/user.rs:184
-msgid "Phone number is already in use"
-msgstr "Puhelinnumero on jo käytössä"
+#: data/resources/ui/content-member-page.ui:5
+msgid "Members"
+msgstr "Jäsenet"
 
-#: fractal-gtk/src/backend/user.rs:188
-msgid ""
-"Please enter your phone number in the format: \n"
-" + your country code and your phone number."
-msgstr ""
-"Kirjoita puhelinnumero seuraavassa muodossa: \n"
-" + maakoodi ja puhelinnumerosi."
+#: data/resources/ui/content-member-page.ui:24
+msgid "Invite new member"
+msgstr "Kutsu uusi jäsen"
 
-#: fractal-gtk/src/backend/user.rs:192
-msgid "Couldn’t add the phone number."
-msgstr "Puhelinnumeroa ei voitu lisätä."
+#: data/resources/ui/content-member-page.ui:33
+msgid "Search for room members"
+msgstr "Etsi huoneen jäseniä"
 
-#: fractal-gtk/src/backend/user.rs:330
-msgid "Couldn’t change the password"
-msgstr "Salasanaa ei voitu vaihtaa"
-
-#: fractal-gtk/src/backend/user.rs:383
-msgid "Couldn’t delete the account"
-msgstr "Tiliä ei voitu poistaa"
-
-#: fractal-gtk/src/ui/about.rs:12
-msgid "A Matrix.org client for GNOME"
-msgstr "Matrix-sovellus Gnomelle"
-
-#: fractal-gtk/src/ui/about.rs:14
-msgid "© 2017–2020 Daniel García Moreno, et al."
-msgstr "© 2017–2020 Daniel García Moreno, et al."
-
-#: fractal-gtk/src/ui/about.rs:21
-msgid "Learn more about Fractal"
-msgstr "Lisätietoja Fractalista"
-
-#: fractal-gtk/src/ui/about.rs:22
-msgid "translator-credits"
-msgstr "Jiri Grönroos"
-
-#: fractal-gtk/src/ui/about.rs:37
-msgid "Name by"
-msgstr "Nimennyt"
-
-#: fractal-gtk/src/ui/attach.rs:26
-msgid "Image from Clipboard"
-msgstr "Kuva leikepöydältä"
-
-#: fractal-gtk/src/ui/attach.rs:42
-msgid "Send"
-msgstr "Lähetä"
-
-#. Filename for the attached image
-#: fractal-gtk/src/ui/attach.rs:90
-msgid "image"
-msgstr "kuva"
-
-#: fractal-gtk/src/ui/invite.rs:131
-msgid "Invite to {name}"
-msgstr "Kutsu huoneeseen {name}"
-
-#: fractal-gtk/src/ui/invite.rs:183
-msgid "Join {room_name}?"
-msgstr "Liitytäänkö huoneeseen {room_name}?"
-
-#: fractal-gtk/src/ui/invite.rs:187
-msgid ""
-"You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</b>"
-msgstr ""
-"Sinut on kutsuttu huoneeseen <b>{room_name}</b> henkilön <b>{sender_name}</"
-"b> toimesta"
-
-#: fractal-gtk/src/ui/invite.rs:192
-msgid "You’ve been invited to join <b>{room_name}</b>"
-msgstr "Sinut on kutsuttu liittymään huoneeseen <b>{room_name}</b>"
-
-#: fractal-gtk/src/ui/mod.rs:77
-msgid "You don’t have permission to post to this room"
-msgstr "Sinulla ei ole oikeutta lähettää tähän huoneeseen"
-
-#: fractal-gtk/src/ui/mod.rs:159
-msgid "OK"
-msgstr "OK"
-
-#: fractal-gtk/src/ui/room_settings.rs:264
-msgid "Room · {} member"
-msgid_plural "Room · {} members"
-msgstr[0] "Huone · {} jäsen"
-msgstr[1] "Huone · {} jäsentä"
-
-#: fractal-gtk/src/ui/room_settings.rs:699
-msgid "{} member"
-msgid_plural "{} members"
-msgstr[0] "{} jäsen"
-msgstr[1] "{} jäsentä"
-
-#: fractal-gtk/src/widgets/file_dialog.rs:8
-msgid "Save media as"
-msgstr "Tallenna media nimellä"
-
-#: fractal-gtk/src/widgets/file_dialog.rs:11
-msgid "_Save"
-msgstr "_Tallenna"
-
-#: fractal-gtk/src/widgets/file_dialog.rs:32
-msgid "_Select"
-msgstr "_Valitse"
-
-#: fractal-gtk/src/widgets/inline_player.rs:513
-msgid "Could not retrieve file URI"
-msgstr "Tiedoston URI:a ei voitu noutaa"
-
-#: fractal-gtk/src/widgets/kicked_dialog.rs:46
-msgid "You have been kicked from {}"
-msgstr "Sinut on potkittu huoneesta {}"
-
-#: fractal-gtk/src/widgets/kicked_dialog.rs:50
-msgid ""
-"Kicked by: {}\n"
-" “{}”"
-msgstr ""
-"Potkun suoritti: {}\n"
-" “{}”"
-
-#: fractal-gtk/src/widgets/login.rs:95
-msgid "Malformed server URL"
-msgstr "Palvelimen osoite on muotoiltu väärin"
-
-#: fractal-gtk/src/widgets/media_viewer.rs:1026
-msgid "Error while loading previous media"
-msgstr "Virhe aiempaa mediaa ladatessa"
-
-#: fractal-gtk/src/widgets/members_list.rs:50
-msgid "No matching members found"
-msgstr "Vastaavia jäseniä ei löytynyt"
-
-#: fractal-gtk/src/widgets/members_list.rs:146
-msgid "Admin"
-msgstr "Ylläpitäjä"
-
-#: fractal-gtk/src/widgets/members_list.rs:147
-msgid "Moderator"
-msgstr "Moderaattori"
-
-#: fractal-gtk/src/widgets/members_list.rs:148
-msgid "Privileged"
-msgstr "Etuoikeutettu"
-
-#: fractal-gtk/src/widgets/message.rs:471
-#, c-format
-msgid "Last edited %c"
-msgstr "Viimeksi muokattu %c"
-
-#: fractal-gtk/src/widgets/message.rs:665
-#: fractal-gtk/src/widgets/message.rs:832
-msgid "Save"
-msgstr "Tallenna"
-
-#: fractal-gtk/src/widgets/message.rs:847
+#: data/resources/ui/content-message-file.ui:21
 msgid "Open"
 msgstr "Avaa"
 
-#. Use 12h time format (AM/PM)
-#: fractal-gtk/src/widgets/message.rs:990
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+#: data/resources/ui/content-message-file.ui:28
+#: src/session/room/event_actions.rs:209
+msgid "Save"
+msgstr "Tallenna"
 
-#. Use 24 time format
-#: fractal-gtk/src/widgets/message.rs:993
-msgid "%R"
-msgstr "%R"
+#: data/resources/ui/content-room-details.ui:4
+#: src/session/content/room_details/mod.rs:250
+msgid "Room Details"
+msgstr "Huoneen tiedot"
 
-#: fractal-gtk/src/widgets/room_history.rs:108
+#: data/resources/ui/content-room-history.ui:6
+msgid "Room _Details"
+msgstr "Huoneen _tiedot"
+
+#: data/resources/ui/content-room-history.ui:11
+msgid "_Invite New Member"
+msgstr "_Kutsu uusi jäsen"
+
+#: data/resources/ui/content-room-history.ui:18 data/resources/ui/sidebar.ui:62
+msgid "_Leave Room"
+msgstr "_Poistu huoneesta"
+
+#: data/resources/ui/content-room-history.ui:27
+msgid "_Location"
+msgstr "_Sijainti"
+
+#: data/resources/ui/content-room-history.ui:32
+msgid "_Attachment"
+msgstr "_Liite"
+
+#: data/resources/ui/content-room-history.ui:56
+msgid "Back"
+msgstr "Takaisin"
+
+#: data/resources/ui/content-room-history.ui:81
+msgid "Room Settings"
+msgstr "Huoneen asetukset"
+
+#: data/resources/ui/content-room-history.ui:89
+msgid "Toggle Room History Search"
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:107
+msgid "Room History Search"
+msgstr "Huonehistorian haku"
+
+#: data/resources/ui/content-room-history.ui:142
+msgid "Unable to load room"
+msgstr "Huoneen lataaminen ei onnistu"
+
+#: data/resources/ui/content-room-history.ui:143
+msgid "Check your network connection."
+msgstr "Tarkista internetyhteyden tila."
+
+#: data/resources/ui/content-room-history.ui:146
+msgid "Try Again"
+msgstr "Yritä uudelleen"
+
+#: data/resources/ui/content-room-history.ui:171
+msgid "Scroll to bottom"
+msgstr "Vieritä alas"
+
+#: data/resources/ui/content-room-history.ui:183
+msgid "Drop Here to Send"
+msgstr "Pudota tähän lähettääksesi"
+
+#: data/resources/ui/content-room-history.ui:204
+msgid "Room History"
+msgstr "Huonehistoria"
+
+#: data/resources/ui/content-room-history.ui:242
+msgid "Enable Markdown Formatting"
+msgstr "Käytä Markdown-muotoilua"
+
+#: data/resources/ui/content-room-history.ui:263
+#, fuzzy
+#| msgid "Message Source"
+msgid "Message Entry"
+msgstr "Viestin lähde"
+
+#: data/resources/ui/content-room-history.ui:277
+msgid "Open Emoji Picker"
+msgstr "Avaa emojivalitsin"
+
+#: data/resources/ui/content-room-history.ui:288
+msgid "Open Message Menu"
+msgstr "Avaa viestivalikko"
+
+#: data/resources/ui/content-room-history.ui:303
+msgid "Send Message"
+msgstr "Lähetä viesti"
+
+#: data/resources/ui/content-state-creation.ui:19
+msgid "Previous room"
+msgstr "Edellinen huone"
+
+#: data/resources/ui/content-state-tombstone.ui:14
+msgid "There is a newer version of this room."
+msgstr "Tästä huoneesta on uudempi versio."
+
+#: data/resources/ui/content-state-tombstone.ui:19
+msgid "Go there"
+msgstr "Siirry sinne"
+
+#: data/resources/ui/content.ui:36
+msgid "No Room Selected"
+msgstr "Ei huonetta valittuna"
+
+#: data/resources/ui/content.ui:37
+msgid "Join a room to start chatting."
+msgstr "Liity huoneeseen aloittaaksesi keskustelun."
+
+#: data/resources/ui/error-page.ui:40
+msgid ""
+"It seems like one of the Fractal sessions stored in the Secret Service is "
+"corrupted. If you know how to fix it you should do so."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:51
+msgid ""
+"Alternatively, we could disconnect this session for you. This means you will "
+"have to login again and you will lose access to your encrypted messages, "
+"unless you have a session open in another client or you have already backed "
+"up your encryption keys."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:74
+msgid "Clicking this button might disconnect more than one session!"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:86
+msgid "Disconnect the corrupted session"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:109
+msgid ""
+"Fractal relies on a Secret Service Provider to manage your sensitive session "
+"information and an error occurred while we were trying to store or get your "
+"session."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:124
+msgid ""
+"Here are a few things that might help you fix issues with the Secret Service:"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:147
+msgid ""
+"Make sure you have a Secret Service Provider installed, like gnome-keyring."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:172
+msgid "Check that you have a default keyring and that it is unlocked."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:187
+msgid ""
+"Check the application logs and your distribution’s documentation for more "
+"details."
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:11
+msgid "_Reply"
+msgstr "_Vastaa"
+
+#: data/resources/ui/event-menu.ui:16
+msgid "_Edit"
+msgstr "_Muokkaa"
+
+#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:86
+msgid "_Forward"
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:93
+msgid "_Select"
+msgstr "_Valitse"
+
+#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
+msgid "_Copy Text"
+msgstr "_Kopioi teksti"
+
+#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
+msgid "_Copy Image"
+msgstr "_Kopioi kuva"
+
+#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
+msgid "S_ave Image"
+msgstr "Tallenna _kuva"
+
+#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:106
+msgid "_Permalink"
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
+msgid "_View Source"
+msgstr "Näytä _lähde"
+
+#: data/resources/ui/event-menu.ui:63 data/resources/ui/event-menu.ui:118
+msgid "Re_move"
+msgstr "_Poista"
+
+#: data/resources/ui/event-source-dialog.ui:5
+#, fuzzy
+#| msgid "View Source"
+msgid "Event Source"
+msgstr "Näytä lähde"
+
+#: data/resources/ui/greeter.ui:43
+msgid ""
+"You are running an early stage development version. Be aware it is a work in "
+"progress and far from complete yet."
+msgstr ""
+
+#. Fractal is the application name and shouldn't be translated
+#: data/resources/ui/greeter.ui:83
+msgid "Welcome to Fractal"
+msgstr "Tervetuloa Fractaliin"
+
+#: data/resources/ui/greeter.ui:108
+msgid "_Log in"
+msgstr "Ki_rjaudu sisään"
+
+#: data/resources/ui/greeter.ui:118
+msgid "_Create Account"
+msgstr "_Luo tili"
+
+#: data/resources/ui/identity-verification-widget.ui:46
+#: src/session/content/room_history/verification_info_bar.rs:177
+msgid "Decline"
+msgstr "Kieltäydy"
+
+#: data/resources/ui/identity-verification-widget.ui:56
+#: src/session/content/room_history/verification_info_bar.rs:176
+msgid "Verify"
+msgstr "Vahvista"
+
+#: data/resources/ui/identity-verification-widget.ui:109
+#: data/resources/ui/identity-verification-widget.ui:210
+msgid "Can’t scan QR code?"
+msgstr "Etkö voi skannata QR-koodia?"
+
+#: data/resources/ui/identity-verification-widget.ui:117
+#: data/resources/ui/identity-verification-widget.ui:227
+msgid "Compare Emoji"
+msgstr "Vertaa emojia"
+
+#: data/resources/ui/identity-verification-widget.ui:144
+msgid "Scan Complete"
+msgstr "Skannaus valmistui"
+
+#: data/resources/ui/identity-verification-widget.ui:219
+msgid "Scan QR code with this session"
+msgstr "Skannaa QR-koodi tässä istunnossa"
+
+#: data/resources/ui/identity-verification-widget.ui:287
+msgid "Do Not Match"
+msgstr "Ei täsmää"
+
+#: data/resources/ui/identity-verification-widget.ui:297
+msgid "Match"
+msgstr "Täsmää"
+
+#: data/resources/ui/identity-verification-widget.ui:347
+msgid "Done"
+msgstr "Valmis"
+
+#: data/resources/ui/identity-verification-widget.ui:416
+msgid "Confirm Scan"
+msgstr "Vahvista skannaus"
+
+#: data/resources/ui/login-advanced-dialog.ui:5
+msgid "Homeserver Discovery"
+msgstr "Kotipalvelimen etsintä"
+
+#: data/resources/ui/login-advanced-dialog.ui:14
+msgid ""
+"Auto-discovery, also known as “well-known lookup”, allows to discover the "
+"URL of a Matrix homeserver from a domain name. This should only be disabled "
+"if your homeserver doesn’t support auto-discovery or if you want to provide "
+"the URL yourself."
+msgstr ""
+
+#: data/resources/ui/login-advanced-dialog.ui:17
+msgid "_Auto-discovery"
+msgstr ""
+
+#: data/resources/ui/login.ui:23
+msgid "_Next"
+msgstr "_Seuraava"
+
+#: data/resources/ui/login.ui:130 src/login/mod.rs:341
+msgid "Homeserver URL"
+msgstr "Kotipalvelimen osoite"
+
+#: data/resources/ui/login.ui:153
+msgid "Matrix Username"
+msgstr "Matrix-käyttäjänimi"
+
+#: data/resources/ui/login.ui:165
+msgid "Password"
+msgstr "Salasana"
+
+#: data/resources/ui/login.ui:171
+msgid "_Forgot Password?"
+msgstr "_Unohditko salasanasi?"
+
+#: data/resources/ui/login.ui:216
+msgid "Please follow the steps in the browser."
+msgstr ""
+
+#: data/resources/ui/member-menu.ui:6
+msgid "_Verify"
+msgstr "_Vahvista"
+
+#: data/resources/ui/member-menu.ui:14
+msgid "Make _Mod"
+msgstr ""
+
+#: data/resources/ui/member-menu.ui:20
+#, fuzzy
+#| msgid "Admin"
+msgid "Make _Admin"
+msgstr "Ylläpitäjä"
+
+#: data/resources/ui/member-menu.ui:26
+msgid "_Kick"
+msgstr "_Potki"
+
+#: data/resources/ui/room-creation.ui:4
+msgid "Create new Room"
+msgstr "Luo uusi huone"
+
+#: data/resources/ui/room-creation.ui:22
+msgid "C_reate"
+msgstr "_Luo"
+
+#: data/resources/ui/room-creation.ui:58
+msgid "Room Name"
+msgstr "Huoneen nimi"
+
+#: data/resources/ui/room-creation.ui:93
+msgid "Visibility"
+msgstr "Näkyvyys"
+
+#: data/resources/ui/room-creation.ui:103
+msgid "_Private"
+msgstr "_Yksityinen"
+
+#: data/resources/ui/room-creation.ui:110
+msgid "P_ublic"
+msgstr "_Julkinen"
+
+#: data/resources/ui/room-creation.ui:122
+msgid "Room Address"
+msgstr "Huoneen osoite"
+
+#: data/resources/ui/session-verification.ui:49
+#: src/session/content/verification/identity_verification_widget.rs:538
+msgid "Get Another Device"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:60
+#: src/session/content/verification/identity_verification_widget.rs:540
+msgid "Accept the verification request from another session or device."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:73
+msgid "No other devices logged into this account?"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:81
+#: data/resources/ui/session-verification.ui:176
+msgid "Recovery"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:91
+#: src/session/content/verification/session_verification.rs:240
+msgid "Reset"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:128
+msgid "Setup Encryption Identity"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:139
+msgid ""
+"You need to setup an encryption identity, since this is the first time you "
+"logged into your account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:147
+msgid "Setup"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:187
+msgid ""
+"Without another device you need a recovery passphrase or key to access your "
+"messages"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:195
+#: data/resources/ui/session-verification.ui:250
+msgid "Recovery Passphrase"
+msgstr "Palautuksen tunnuslause"
+
+#: data/resources/ui/session-verification.ui:204
+#: data/resources/ui/session-verification.ui:314
+msgid "Recovery Key"
+msgstr "Palautusavain"
+
+#: data/resources/ui/session-verification.ui:213
+msgid ""
+"If you don’t have any of these you can reset your identity, but be aware "
+"this makes your old messages inaccessible forever."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:222
+msgid "Reset Identity"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:261
+msgid ""
+"Your Recovery Passphrase was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:269
+msgid "If you opted for a Recovery Key instead go back and choose that option."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:280
+msgid "Passphrase"
+msgstr "Tunnuslause"
+
+#: data/resources/ui/session-verification.ui:285
+#: data/resources/ui/session-verification.ui:350
+msgid "Next"
+msgstr "Seuraava"
+
+#: data/resources/ui/session-verification.ui:325
+msgid "Your Recovery Key was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:333
+msgid ""
+"If you opted for a Recovery Passphrase instead go back and choose that "
+"option."
+msgstr ""
+
+#: data/resources/ui/shortcuts.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Yleiset"
+
+#: data/resources/ui/shortcuts.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Näytä pikanäppäimet"
+
+#: data/resources/ui/shortcuts.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Lopeta"
+
+#: data/resources/ui/shortcuts.ui:26
+msgctxt "shortcut window"
+msgid "Search Room List"
+msgstr "Etsi huoneluettelosta"
+
+#: data/resources/ui/shortcuts.ui:32
+msgctxt "shortcut window"
+msgid "Close Room"
+msgstr "Sulje huone"
+
+#: data/resources/ui/sidebar.ui:6
+msgid "_New Room"
+msgstr "_Uusi huone"
+
+#: data/resources/ui/sidebar.ui:12
+msgid "_Preferences"
+msgstr "_Asetukset"
+
+#: data/resources/ui/sidebar.ui:16
+msgid "_Keyboard Shortcuts"
+msgstr "_Pikanäppäimet"
+
+#: data/resources/ui/sidebar.ui:20
+msgid "_About Fractal"
+msgstr "_Tietoja - Fractal"
+
+#: data/resources/ui/sidebar.ui:40
+msgid "Move to _Favorites"
+msgstr "Siirrä _suosikkeihin"
+
+#: data/resources/ui/sidebar.ui:45
+#, fuzzy
+#| msgid "Invite to This Room"
+msgid "Move to _Rooms"
+msgstr "Kutsu tähän huoneeseen"
+
+#: data/resources/ui/sidebar.ui:50
+msgid "Move to _People"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:55
+msgid "Move to Low _Priority"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:67
+msgid "Re_join Room"
+msgstr "Liity _uudelleen huoneeseen"
+
+#: data/resources/ui/sidebar.ui:72
+msgid "_Forget Room"
+msgstr "_Unohda huone"
+
+#: data/resources/ui/sidebar.ui:91
+msgid "Switch Accounts"
+msgstr "Vaihda tilejä"
+
+#: data/resources/ui/sidebar.ui:113
+#, fuzzy
+#| msgid "Account Settings"
+msgid "App Settings Menu"
+msgstr "Tilin asetukset"
+
+#: data/resources/ui/sidebar.ui:123
+#, fuzzy
+#| msgid "Room search"
+msgid "Toggle Room Search"
+msgstr "Huonehaku"
+
+#: data/resources/ui/sidebar.ui:135
+msgid "Room Search"
+msgstr "Huonehaku"
+
+#: data/resources/ui/sidebar.ui:136
+msgid "Search for a room"
+msgstr "Etsi huonetta"
+
+#: data/resources/ui/sidebar.ui:152
+msgid "Sidebar"
+msgstr "Sivupalkki"
+
+#: data/resources/ui/sidebar.ui:153
+msgid "Allows to navigate between rooms"
+msgstr ""
+
+#: data/resources/ui/qr-code-scanner.ui:21
+msgid "Unable to connect to Camera"
+msgstr "Kameraan ei voi yhdistää"
+
+#: src/application.rs:167
+msgid "Learn more about Fractal"
+msgstr "Lisätietoja Fractalista"
+
+#: src/application.rs:171
+msgid "A Matrix client for GNOME"
+msgstr "Matrix-sovellus Gnomelle"
+
+#: src/application.rs:172
+msgid "© 2017-2022 The Fractal Team"
+msgstr "© 2017-2022 Fractal-tiimi"
+
+#: src/application.rs:186
+msgid "translator-credits"
+msgstr "Jiri Grönroos"
+
+#. This can't be added via the builder
+#: src/application.rs:190
+msgid "Name by"
+msgstr "Nimennyt"
+
+#: src/components/editable_avatar.rs:334
+#, fuzzy
+#| msgid "Choose Provider"
+msgid "Choose Avatar"
+msgstr "Valitse palveluntarjoaja"
+
+#: src/components/editable_avatar.rs:343
+msgid "Choose"
+msgstr "Valitse"
+
+#: src/components/editable_avatar.rs:366
+msgid "The chosen file is not an image"
+msgstr "Valittu tiedosto ei ole kuva"
+
+#: src/components/editable_avatar.rs:374
+msgid "Could not determine the type of the chosen file"
+msgstr ""
+
+#: src/components/editable_avatar.rs:383
+msgid "No file was chosen"
+msgstr "Tiedostoa ei valittu"
+
+#: src/components/location_viewer.rs:95
+msgid "Location at latitude {latitude} and longitude {longitude}"
+msgstr ""
+
+#: src/components/media_content_viewer.rs:161
+msgid "Image not Viewable"
+msgstr "Kuva ei ole katseltavissa"
+
+#: src/components/media_content_viewer.rs:162
+msgid "Audio Clip not Playable"
+msgstr "Äänileike ei ole toistettavissa"
+
+#: src/components/media_content_viewer.rs:163
+msgid "Video not Playable"
+msgstr "Video ei ole toistettavissa"
+
+#: src/components/media_content_viewer.rs:164
+msgid "File not Viewable"
+msgstr "Tiedosto ei ole katseltavissa"
+
+#: src/error_page.rs:108
+msgid "Session removed successfully."
+msgstr "Istunto poistettu onnistuneesti."
+
+#: src/error_page.rs:120
+msgid "Could not remove session from secret storage"
+msgstr ""
+
+#: src/login/mod.rs:336
+msgid "Domain Name"
+msgstr ""
+
+#: src/login/mod.rs:338
+msgid "The domain of your Matrix homeserver, for example gnome.org"
+msgstr "Matrix-kotipalvelimesi verkkotunnus, esimerkiksi gnome.org"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/login/mod.rs:345
+msgid "The URL of your Matrix homeserver, for example {address}"
+msgstr "Kotipalvelimesi URL-osoite, esimerkiksi {address}"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable
+#. name.
+#: src/login/mod.rs:471
+msgid "Connecting to {domain_name}"
+msgstr "Yhdistetään kohteeseen {domain_name}"
+
+#: src/secret.rs:52
+#, fuzzy
+#| msgid "Could not download the file"
+msgid "Could not unlock the secret storage"
+msgstr "Tiedostoa ei voitu ladata"
+
+#: src/secret.rs:55 src/secret.rs:59
+msgid "An unknown error occurred when interacting with the secret storage"
+msgstr ""
+
+#: src/secret.rs:88
+msgid "Malformed homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:95
+msgid "Could not find homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:109
+msgid "Malformed user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:116
+msgid "Could not find user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:125
+msgid "Could not find device ID in stored session"
+msgstr ""
+
+#: src/secret.rs:134
+msgid "Could not find database path in stored session"
+msgstr ""
+
+#: src/secret.rs:145
+msgid "Malformed secret in stored session"
+msgstr ""
+
+#: src/secret.rs:152
+msgid "No secret in stored session"
+msgstr ""
+
+#: src/secret.rs:159
+msgid "Could not get secret in stored session"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable
+#. name.
+#: src/secret.rs:272
+msgid "Fractal: Matrix credentials for {user_id}"
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:147
+msgid "Failed to load connected device."
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:192
+msgid "Failed to load the list of connected devices."
+msgstr "Yhdistettyjen laitteiden luettelon lataaminen epäonnistui."
+
+#: src/session/account_settings/devices_page/device_row.rs:110
+msgid "Disconnect Session"
+msgstr "Katkaise istunnon yhteys"
+
+#: src/session/account_settings/devices_page/device_row.rs:112
+msgid "Log Out"
+msgstr "Kirjaudu ulos"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/account_settings/devices_page/device_row.rs:216
+msgid "Failed to disconnect device “{device_name}”"
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_row.rs:230
+msgid ""
+"Fractal’s support for encryption is unstable so you might lose access to "
+"your encrypted message history. It is recommended to backup your encryption "
+"keys from another Matrix client before proceeding."
+msgstr ""
+
+#. Translators: Time in 24h format
+#: src/session/account_settings/devices_page/device_row.rs:288
+msgid "Last seen at %H:%M"
+msgstr "Viimeksi nähty %H.%M"
+
+#. Translators: Time in 12h format
+#: src/session/account_settings/devices_page/device_row.rs:291
+msgid "Last seen at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:300
+#, no-c-format
+msgid "Last seen Yesterday at %H:%M"
+msgstr "Viimeksi nähty eilen %H.%M"
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:305
+#, no-c-format
+msgid "Last seen Yesterday at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the name of the week day followed by
+#. a time in 24h format. i.e. "Last seen Monday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:314
+#, no-c-format
+msgid "Last seen %A at %H:%M"
+msgstr ""
+
+#. Translators: this is the week day name followed by
+#. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:319
+#, no-c-format
+msgid "Last seen %A at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 24h format i.e. "Last seen February 3 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:327
+#, no-c-format
+msgid "Last seen %B %-e at %H:%M"
+msgstr ""
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 12h format i.e. "Last seen February 3 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:333
+#, no-c-format
+msgid "Last seen %B %-e at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:340
+#, no-c-format
+msgid "Last seen %B %-e %Y at %H:%M"
+msgstr ""
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:346
+#, no-c-format
+msgid "Last seen %B %-e %Y at %l:%M %p"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:217
+msgid "Password must be at least 8 characters long"
+msgstr "Salasanan tulee olla vähintään 8 merkkiä pitkä"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:220
+msgid "Password must have at least one lower-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:224
+msgid "Password must have at least one upper-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:227
+msgid "Password must have at least one digit"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:229
+msgid "Password must have at least one symbol"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:255
+msgid "Passwords do not match"
+msgstr "Salasanat eivät täsmää"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:313
+msgid "Password changed successfully"
+msgstr "Salasana vaihdettu onnistuneesti"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:331
+msgid "Password rejected for being too weak"
+msgstr "Salasana hylättiin, koska se on liian heikko"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:338
+msgid "Could not change password"
+msgstr "Salasanaa ei voitu vaihtaa"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:200
+msgid "Account successfully deactivated"
+msgstr ""
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:210
+#, fuzzy
+#| msgid "Couldn’t delete the account"
+msgid "Could not deactivate account"
+msgstr "Tiliä ei voitu poistaa"
+
+#: src/session/account_settings/user_page/mod.rs:227
+msgid "Avatar removed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/mod.rs:245
+msgid "Avatar changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/mod.rs:291
+#, fuzzy
+#| msgid "Could not download the file"
+msgid "Could not upload avatar"
+msgstr "Tiedostoa ei voitu ladata"
+
+#: src/session/account_settings/user_page/mod.rs:316
+#, fuzzy
+#| msgid "Couldn’t change the password"
+msgid "Could not change avatar"
+msgstr "Salasanaa ei voitu vaihtaa"
+
+#: src/session/account_settings/user_page/mod.rs:348
+#, fuzzy
+#| msgid "Could not save the file"
+msgid "Could not remove avatar"
+msgstr "Tiedostoa ei voitu tallentaa"
+
+#: src/session/account_settings/user_page/mod.rs:397
+msgid "Name changed successfully"
+msgstr "Nimi vaihdettu onnistuneesti"
+
+#: src/session/account_settings/user_page/mod.rs:436
+msgid "Could not change display name"
+msgstr "Näyttönimeä ei voitu vaihtaa"
+
+#: src/session/content/explore/public_room_row.rs:222
+msgid "View"
+msgstr "Näytä"
+
+#: src/session/content/explore/public_room_row.rs:224
+msgid "Join"
+msgstr "Liity"
+
+#: src/session/content/invite.rs:136
+msgid "{user} invited you"
+msgstr "{user} kutsui sinut"
+
+#: src/session/content/room_details/member_page/mod.rs:237
+msgid "1 Member"
+msgid_plural "{n} Members"
+msgstr[0] "1 jäsen"
+msgstr[1] "{n} jäsentä"
+
+#: src/session/content/room_details/member_page/mod.rs:296
+msgid "1 Invited"
+msgid_plural "{n} Invited"
+msgstr[0] "1 kutsuttu"
+msgstr[1] "{n} kutsuttu"
+
+#: src/session/content/room_details/mod.rs:169
+msgid "Save Details"
+msgstr "Tallenna tiedot"
+
+#: src/session/content/room_details/mod.rs:170
+msgid "Edit Details"
+msgstr "Muokkaa tietoja"
+
+#: src/session/content/room_details/mod.rs:213
+#, fuzzy
+#| msgid "Choose Provider"
+msgid "Choose avatar"
+msgstr "Valitse palveluntarjoaja"
+
+#: src/session/content/room_details/mod.rs:244
+msgid "Invite new Members"
+msgstr "Kutsu uusia jäseniä"
+
+#: src/session/content/room_history/item_row.rs:257
 msgid "New Messages"
 msgstr "Uudet viestit"
 
+#: src/session/content/room_history/message_row/audio.rs:245
+#: src/session/content/room_history/message_row/audio.rs:249
+#, fuzzy
+#| msgid "Could not retrieve file URI"
+msgid "Could not retrieve audio file"
+msgstr "Tiedoston URI:a ei voitu noutaa"
+
+#: src/session/content/room_history/message_row/audio.rs:262
+msgid "Error reading audio file"
+msgstr "Virhe äänitiedostoa luettaessa"
+
+#: src/session/content/room_history/message_row/media.rs:445
+msgid "Image file not supported"
+msgstr "Kuvatiedosto ei ole tuettu"
+
+#: src/session/content/room_history/message_row/media.rs:484
+#: src/session/content/room_history/message_row/media.rs:489
+#, fuzzy
+#| msgid "Could not retrieve file URI"
+msgid "Could not retrieve media"
+msgstr "Tiedoston URI:a ei voitu noutaa"
+
+#: src/session/content/room_history/message_row/mod.rs:380
+msgid "Identity verification was started"
+msgstr "Identiteetin vahvistaminen aloitettiin"
+
+#: src/session/content/room_history/message_row/mod.rs:393
+#: src/session/content/room_history/message_row/mod.rs:440
+msgid "Unsupported event"
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:418
+msgid "Fractal couldn’t decrypt this message."
+msgstr "Fractal ei voinut purkaa tämän viestin salausta."
+
+#: src/session/content/room_history/message_row/mod.rs:429
+msgid "This message was removed."
+msgstr "Tämä viesti poistettiin."
+
+#: src/session/content/room_history/mod.rs:156
+msgid "The location request has been cancelled."
+msgstr "Sijaintipyyntö on peruttu."
+
+#: src/session/content/room_history/mod.rs:160
+msgid "Failed to retrieve current location."
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:742
+msgid "User Location {geo_uri} at {iso8601_datetime}"
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:852
+msgid "Error reading file"
+msgstr "Virhe tiedostoa luettaessa"
+
+#: src/session/content/room_history/mod.rs:884
+#, fuzzy
+#| msgid "Error searching for rooms"
+msgid "Error getting file from drop"
+msgstr "Virhe huoneita etsiessä"
+
+#: src/session/content/room_history/mod.rs:922
+#, fuzzy
+#| msgid "Image from Clipboard"
+msgid "Error getting image from clipboard"
+msgstr "Kuva leikepöydältä"
+
+#: src/session/content/room_history/mod.rs:945
+#, fuzzy
+#| msgid "Image from Clipboard"
+msgid "Error getting file from clipboard"
+msgstr "Kuva leikepöydältä"
+
+#: src/session/content/room_history/state_row/creation.rs:62
+msgid "This is the continuation of an upgraded room."
+msgstr ""
+
+#: src/session/content/room_history/state_row/creation.rs:68
+msgid "This is the beginning of this room."
+msgstr "Tämä on huoneen alku."
+
+#: src/session/content/room_history/state_row/mod.rs:68
+msgid "This room is encrypted from this point on."
+msgstr "Tämä huone on salattu tästä hetkestä lähtien."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:87
+msgid "{previous_user_name} removed their display name."
+msgstr "{previous_user_name} poisti näyttönimen."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:94
+msgid "{previous_user_name} changed their display name to {new_user_name}."
+msgstr "{previous_user_name} asetti uudeksi näyttönimekseen {new_user_name}."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:103
+msgid "{user_id} set their display name to {new_user_name}."
+msgstr "{user_id} asetti näyttönimekseen {new_user_name}."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:116
+msgid "{user} set their avatar."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:123
+msgid "{user} removed their avatar."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:130
+msgid "{user} changed their avatar."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:141
+msgid "{user} joined this room."
+msgstr "{user} liittyi tähän huoneeseen."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/state_row/mod.rs:147
+#: src/session/content/room_history/state_row/mod.rs:224
+#| msgid "Invite to This Room"
+msgid "{user} was invited to this room."
+msgstr "{user} kutsuttiin tähän huoneeseen."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:155
+msgid "{user} requested to be invited to this room."
+msgstr "{user} pyysi kutsua tähän huoneeseen."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:166
+msgid "{user} rejected the invite."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:173
+msgid "The invitation for {user} has been revoked."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:182
+msgid "{user} was unbanned."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:193
+msgid "{user} left the room."
+msgstr "{user} poistui huoneesta."
+
+#. Translators: Do NOT translate the content between '{' and
+#. '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:198
+msgid "{user} was kicked out of the room."
+msgstr "{user} potkittiin pois tästä huoneesta."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#: src/session/content/room_history/state_row/mod.rs:207
+msgid "{user} was banned."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:212
+msgid "An unsupported room member event was received."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:233
+msgid "An unsupported state event was received."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/verification_info_bar.rs:170
+msgid "{user_name} wants to be verified"
+msgstr "{user_name} haluaa tulla vahvistetuksi"
+
+#: src/session/content/room_history/verification_info_bar.rs:180
+msgid "Verification in progress"
+msgstr "Vahvistaminen meneillään"
+
+#: src/session/content/verification/identity_verification_widget.rs:493
+#: src/session/content/verification/identity_verification_widget.rs:522
+msgid "Verify the new session from the current session."
+msgstr "Vahvista uusi istunto nykyisestä istunnosta."
+
+#: src/session/content/verification/identity_verification_widget.rs:496
+msgid "Scan the QR code from another session logged into this account."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:498
+#: src/session/content/verification/identity_verification_widget.rs:525
+msgid ""
+"You scanned the QR code successfully. You may need to confirm the "
+"verification from the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:502
+msgid "Scan this QR code from the other session."
+msgstr "Skannaa tämä QR-koodi toisesta istunnosta."
+
+#: src/session/content/verification/identity_verification_widget.rs:505
+#: src/session/content/verification/identity_verification_widget.rs:532
+msgid "Check if the same emoji appear in the same order on the other device."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:507
+#: src/session/content/verification/identity_verification_widget.rs:534
+msgid "Request Complete"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:509
+msgid "This session is ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:511
+msgid "Get Started"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:513
+#: src/session/content/verification/identity_verification_widget.rs:543
+msgid "Does the other session show a confirmation shield?"
+msgstr "Näyttääkö toinen istunto vahvistuskilven?"
+
+#: src/session/content/verification/identity_verification_widget.rs:519
+msgid "Login Request From Another Session"
+msgstr "Kirjautumispyyntö toisesta istunnosta"
+
+#: src/session/content/verification/identity_verification_widget.rs:524
+msgid ""
+"Scan the QR code from this session from another session logged into this "
+"account."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:528
+msgid "Scan this QR code from the newly logged in session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:536
+msgid "The new session is now ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:548
+#: src/session/content/verification/identity_verification_widget.rs:554
+#: src/session/content/verification/identity_verification_widget.rs:564
+#: src/session/content/verification/identity_verification_widget.rs:571
+msgid "Verification Request"
+msgstr "Vahvistuspyyntö"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:553
+msgid ""
+"{user} asked to be verified. Verifying a user increases the security of the "
+"conversation."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:558
+msgid "Scan the QR code shown on the device of {user}."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:563
+msgid ""
+"You scanned the QR code successfully. {user} may need to confirm the "
+"verification."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:568
+msgid "Ask {user} to scan this QR code from their session."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:575
+msgid ""
+"Ask {user} if they see the following emoji appear in the same order on their "
+"screen."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:578
+msgid "Verification Complete"
+msgstr "Vahvistus valmistui"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:581
+msgid ""
+"{user} is verified and you can now be sure that your communication will be "
+"private."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:585
+msgid "Waiting for {user}"
+msgstr "Odotetaan käyttäjää {user}"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:591
+msgid "Ask {user} to accept the verification request."
+msgstr "Pyydä käyttäjää {user} hyväksymään vahvistuspyynnön."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:597
+msgid "Does {user} see a confirmation shield on their session?"
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:237
+msgid ""
+"If you lost access to all other sessions you can create a new crypto "
+"identity. Be careful because this will reset all verified users and make "
+"previously encrypted conversations unreadable."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:320
+msgid "You cancelled the authentication needed to create the encryption keys."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:324
+msgid "An error occurred during the creation of the encryption keys."
+msgstr "Salausavainten luomisen aikana tapahtui virhe."
+
+#: src/session/mod.rs:465
+msgid "Unable to store session"
+msgstr "Istuntoa ei voi tallettaa"
+
+#: src/session/mod.rs:757
+msgid "Failed to logout the session."
+msgstr ""
+
+#: src/session/room/event_actions.rs:205
+msgid "Save File"
+msgstr "Tallenna tiedosto"
+
+#: src/session/room/member_role.rs:48
+msgid "Admin"
+msgstr "Ylläpitäjä"
+
+#: src/session/room/member_role.rs:49
+msgid "Moderator"
+msgstr "Moderaattori"
+
+#: src/session/room/member_role.rs:50
+msgid "Normal user"
+msgstr "Normaali käyttäjä"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:452
+msgid "Failed to forget {room}."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:645
+msgid "Failed to move {room} from {previous_category} to {new_category}."
+msgstr ""
+
+#: src/session/room/mod.rs:945
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#. Translators: This is the name of a room that is empty but had another user before.
+#. Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:972
+msgid "Empty Room (was {user})"
+msgstr ""
+
+#. Translators: This is the name of a room without other users.
+#: src/session/room/mod.rs:974
+msgid "Empty Room"
+msgstr "Tyhjä huone"
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1381
+msgid "Failed to accept invitation for {room}. Try again later."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1415
+msgid "Failed to reject invitation for {room}. Try again later."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1585
+msgid "Failed to invite {user} to {room}. Try again later."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1593
+msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
+msgid_plural ""
+"Failed to invite {user} and {n} other users to {room}. Try again later."
+msgstr[0] ""
+msgstr[1] ""
+
 #. Translators: This is a date format in the day divider without the year
-#: fractal-gtk/src/widgets/room_history.rs:798
-msgid "%B %e"
+#: src/session/room/timeline/timeline_day_divider.rs:106
+#, fuzzy
+#| msgid "%B %e"
+msgid "%A, %B %e"
 msgstr "%e. %Bta"
 
 #. Translators: This is a date format in the day divider with the year
-#: fractal-gtk/src/widgets/room_history.rs:801
-msgid "%B %e, %Y"
+#: src/session/room/timeline/timeline_day_divider.rs:109
+#, fuzzy
+#| msgid "%B %e, %Y"
+msgid "%A, %B %e, %Y"
 msgstr "%e. %Bta %Y"
 
-#: fractal-gtk/src/widgets/roomlist.rs:480
-msgid "Invites"
-msgstr "Kutsut"
+#: src/session/room_creation/mod.rs:276
+msgid "The address is already taken."
+msgstr "Osoite on jo käytössä."
 
-#: fractal-gtk/src/widgets/roomlist.rs:481
-msgid "You don’t have any invitations"
-msgstr "Sinulla ei ole yhtäkään kutsua"
+#: src/session/room_creation/mod.rs:299
+msgid "Too long. Use a shorter name."
+msgstr "Liian pitkä. Käytä lyhyempää nimeä."
 
-#: fractal-gtk/src/widgets/roomlist.rs:485
+#: src/session/room_creation/mod.rs:306
+msgid "Invalid room name."
+msgstr "Virheellinen huoneen nimi"
+
+#: src/session/room_creation/mod.rs:333
+msgid "Can’t contain “:”"
+msgstr "Ei voi sisältää “:”"
+
+#: src/session/room_creation/mod.rs:338
+msgid "Can’t contain “#”"
+msgstr "Ei voi sisältää “#”"
+
+#: src/session/room_creation/mod.rs:343
+msgid "Too long. Use a shorter address."
+msgstr "Liian pitkä. Käytä lyhyempää osoitetta."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room_list.rs:326
+msgid "Failed to join room {room_name}. Try again later."
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:161
+#, fuzzy
+#| msgid "Join Room"
+msgid "Join Room as Favorite"
+msgstr "Liity huoneeseen"
+
+#: src/session/sidebar/category_row.rs:162
+msgid "Join Room"
+msgstr "Liity huoneeseen"
+
+#: src/session/sidebar/category_row.rs:163
+msgid "Join Room as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:164
+msgid "Reject Invite"
+msgstr "Hylkää ktusu"
+
+#: src/session/sidebar/category_row.rs:165
+#, fuzzy
+#| msgid "Join Room"
+msgid "Join Room as People"
+msgstr "Liity huoneeseen"
+
+#: src/session/sidebar/category_row.rs:169
+#: src/session/sidebar/category_row.rs:184
+msgid "Move to Rooms"
+msgstr "Siirrä huoneisiin"
+
+#: src/session/sidebar/category_row.rs:170
+#: src/session/sidebar/category_row.rs:177
+#: src/session/sidebar/category_row.rs:199
+msgid "Move to Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:171
+#: src/session/sidebar/category_row.rs:178
+#: src/session/sidebar/category_row.rs:185
+#: src/session/sidebar/category_row.rs:200
+msgid "Leave Room"
+msgstr "Poistu huoneesta"
+
+#: src/session/sidebar/category_row.rs:172
+#: src/session/sidebar/category_row.rs:179
+#: src/session/sidebar/category_row.rs:186
+msgid "Move to People"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:176
+#: src/session/sidebar/category_row.rs:183
+#: src/session/sidebar/category_row.rs:197
+msgid "Move to Favorites"
+msgstr "Siirrä suosikkeihin"
+
+#: src/session/sidebar/category_row.rs:190
+msgid "Rejoin Room as Favorites"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:191
+msgid "Rejoin Room"
+msgstr "Liity uudelleen huoneeseen"
+
+#: src/session/sidebar/category_row.rs:192
+msgid "Rejoin Room as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:193
+msgid "Rejoin Room as People"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:198
+msgid "Mov to Rooms"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:34
+msgid "Verifications"
+msgstr "Vahvistukset"
+
+#: src/session/sidebar/category_type.rs:35
+msgid "Invited"
+msgstr "Kutsuttu"
+
+#: src/session/sidebar/category_type.rs:36
 msgid "Favorites"
 msgstr "Suosikit"
 
-#: fractal-gtk/src/widgets/roomlist.rs:486
-msgid "Drag and drop rooms here to add them to your favorites"
-msgstr "Vedä ja pudota huoneet tänne lisätäksesi ne suosikkeihisi"
-
-#: fractal-gtk/src/widgets/roomlist.rs:490
+#: src/session/sidebar/category_type.rs:37
 msgid "Rooms"
 msgstr "Huoneet"
 
-#: fractal-gtk/src/widgets/roomlist.rs:491
-msgid "You don’t have any rooms yet"
-msgstr "Sinulla ei ole vielä yhtäkään huonetta"
+#: src/session/sidebar/category_type.rs:38
+msgid "Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:39
+msgid "Historical"
+msgstr ""
+
+#. Translators: This shouldn't ever be visible to the user,
+#: src/session/sidebar/category_type.rs:41
+msgid "Outdated"
+msgstr "Vanhentunut"
+
+#: src/session/sidebar/category_type.rs:42
+msgid "Spaces"
+msgstr "Avaruudet"
+
+#: src/session/sidebar/category_type.rs:43
+msgid "People"
+msgstr "Ihmiset"
+
+#: src/session/sidebar/entry_type.rs:23
+msgid "Explore"
+msgstr "Tutki"
+
+#: src/session/sidebar/entry_type.rs:24
+msgid "Forget Room"
+msgstr "Unohda huone"
+
+#: src/session/verification/identity_verification.rs:680
+msgid "You cancelled the verification process."
+msgstr "Peruit vahvistusprosessin."
+
+#: src/session/verification/identity_verification.rs:682
+msgid "The verification process failed because it reached a timeout."
+msgstr ""
+
+#: src/session/verification/identity_verification.rs:685
+msgid "You accepted the request from an other session."
+msgstr ""
+
+#: src/session/verification/identity_verification.rs:688
+msgid "The emoji did not match."
+msgstr "Emoji ei täsmännyt."
+
+#: src/session/verification/identity_verification.rs:697
+msgid "An unknown error occurred during the verification process."
+msgstr ""
+
+#: src/user_facing_error.rs:23
+msgid "The connection timed out. Try again later."
+msgstr "Yhteys aikakatkaistiin. Yritä myöhemmin uudelleen."
+
+#: src/user_facing_error.rs:25
+msgid "Unable to connect to the homeserver."
+msgstr "Kotipalvelimeen ei voi yhdistää."
+
+#: src/user_facing_error.rs:32
+msgid "The provided username or password is invalid."
+msgstr "Annettu käyttäjänimi tai salasana on virheellinen."
+
+#: src/user_facing_error.rs:33
+msgid "The account is deactivated."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/user_facing_error.rs:40
+msgid "You exceeded the homeserver’s rate limit, retry in 1 second."
+msgid_plural "You exceeded the homeserver’s rate limit, retry in {n} seconds."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/user_facing_error.rs:46
+msgid "You exceeded the homeserver’s rate limit, try again later."
+msgstr ""
+
+#: src/user_facing_error.rs:56
+msgid "An unknown connection error occurred."
+msgstr "Tapahtui tuntematon yhteysvirhe."
+
+#: src/user_facing_error.rs:64
+#, fuzzy
+#| msgid "Could not save the file"
+msgid "Could not decrypt the event"
+msgstr "Tiedostoa ei voitu tallentaa"
+
+#: src/user_facing_error.rs:66 src/user_facing_error.rs:86
+msgid "An unknown error occurred."
+msgstr "Tapahtui tuntematon virhe."
+
+#: src/user_facing_error.rs:73
+#, fuzzy
+#| msgid "Could not save the file"
+msgid "Could not open the store."
+msgstr "Tiedostoa ei voitu tallentaa"
+
+#: src/user_facing_error.rs:80
+msgid "This is not a valid URL"
+msgstr "Tämä ei ole kelvollinen URL-osoite"
+
+#: src/user_facing_error.rs:82
+msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
+msgstr ""
+
+#. Translators: Default name for image files.
+#: src/utils.rs:192
+msgid "image"
+msgstr "kuva"
+
+#. Translators: Default name for video files.
+#: src/utils.rs:194
+msgid "video"
+msgstr "video"
+
+#. Translators: Default name for audio files.
+#: src/utils.rs:196
+msgid "audio"
+msgstr "ääni"
+
+#. Translators: Default name for files.
+#: src/utils.rs:198
+msgid "file"
+msgstr "tiedosto"
+
+#: src/window.rs:230
+msgid "Failed to restore previous sessions"
+msgstr "Aiempien istuntojen palauttaminen epäonnistui"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Close the active room"
+#~ msgstr "Sulje aktiivinen huone"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open / close the room sidebar search"
+#~ msgstr "Avaa/sulje huoneen sivupalkkihaku"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room in the list"
+#~ msgstr "Avaa edellinen huone luettelossa"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room in the list"
+#~ msgstr "Avaa seuraava huone luetteossa"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room with unread messages in the list"
+#~ msgstr "Avaa edellinen lukemattomia viestejä sisältävä huone luettelossa"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room with unread messages in the list"
+#~ msgstr "Avaa seuraava lukemattomia viestejä sisältävä huone luettelossa"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the first room of the list"
+#~ msgstr "Avaa luettelon ensimmäinen huone"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the last room of the list"
+#~ msgstr "Avaa luettelon viimeinen huone"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View older messages"
+#~ msgstr "Näytä vanhemmat viestit"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View newer messages"
+#~ msgstr "Näytä uudemmat viestit"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Composing a new message"
+#~ msgstr "Uuden viestin kirjoittaminen"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Write on a new line"
+#~ msgstr "Kirjoita uudelle riville"
+
+#~ msgid "Type of password and token storage"
+#~ msgstr "Salasanan ja poletin tallennustilan tyyppi"
+
+#~ msgid "Type of password and token storage, default value is: Secret Service"
+#~ msgstr ""
+#~ "Salasanan ja poletin tallennustilan tyyppi, oletusarvo on: Secret Service"
+
+#~ msgid "If markdown sending is active"
+#~ msgstr "Onko markdown-lähettäminen aktiivisena"
+
+#~ msgid "Whether support for sending markdown messages is on"
+#~ msgstr "Onko tuki markdown-viestien lähettämiseen päällä"
+
+#~ msgid "X position of the main window on startup"
+#~ msgstr "Pääikkunan X-sijainti käynnistyessä"
+
+#~ msgid "Y position of the main window on startup"
+#~ msgstr "Pääikkunan Y-sijainti käynnistyessä"
+
+#~ msgid "Width of the main window on startup"
+#~ msgstr "Pääikkunan leveys käynnistyksen yhteydessä"
+
+#~ msgid "Height of the main window on startup"
+#~ msgstr "Pääikkunan korkeus käynnistyksen yhteydessä"
+
+#~ msgid "Daniel García Moreno"
+#~ msgstr "Daniel García Moreno"
+
+#~ msgid "Other people can find you by searching for any of these identifiers."
+#~ msgstr ""
+#~ "Muut ihmiset voivat löytää sinut etsimällä mitä tahansa näistä "
+#~ "tunnisteista."
+
+#~ msgid "Type in your name"
+#~ msgstr "Kirjoita nimesi"
+
+#~ msgid "Email"
+#~ msgstr "Sähköposti"
+
+#~ msgid "Phone"
+#~ msgstr "Puhelin"
+
+#~ msgid "Device ID"
+#~ msgstr "Laitetunniste"
+
+#~ msgid ""
+#~ "Deactivating your account means that you will lose all your messages, "
+#~ "contacts, and files."
+#~ msgstr ""
+#~ "Tilin deaktivointi tarkoittaa, että menetät kaikki viestit, yhteystiedot "
+#~ "ja tiedostot."
+
+#~ msgid ""
+#~ "To confirm that you really want to deactivate this account type in your "
+#~ "password:"
+#~ msgstr "Vahvista tilin deaktivointi antamalla salasanasi:"
+
+#~ msgid "Also erase all messages"
+#~ msgstr "Poista myös kaikki viestit"
+
+#~ msgid "Check your email"
+#~ msgstr "Tarkista sähköpostisi"
+
+#~ msgid "Apply"
+#~ msgstr "Toteuta"
+
+#~ msgid "New Direct Chat"
+#~ msgstr "Uusi suorakeskustelu"
+
+#~ msgid "Play"
+#~ msgstr "Toista"
+
+#~ msgid "New direct chat"
+#~ msgstr "Uusi suorakeskustelu"
+
+#~ msgid "Start chat"
+#~ msgstr "Aloita keskustelu"
+
+#~ msgid "Invitation"
+#~ msgstr "Kutsu"
+
+#~ msgid "ID or Alias"
+#~ msgstr "Tunniste tai alias"
+
+#~ msgid "Join room"
+#~ msgstr "Liity huoneeseen"
+
+#~ msgid "Close"
+#~ msgstr "Sulje"
+
+#~ msgid "Leave?"
+#~ msgstr "Poistutaanko?"
+
+#~ msgid ""
+#~ "Once you leave, you won’t be able to interact with people in the room "
+#~ "anymore."
+#~ msgstr ""
+#~ "Kun olet poistunut, et voi enää keskustella huoneessa olevien ihmisten "
+#~ "kanssa."
+
+#~ msgid "What is your Provider?"
+#~ msgstr "Mikä on palveluntarjoajasi?"
+
+#~ msgid "Matrix provider domain, e.g. myserver.co"
+#~ msgstr "Matrix-palveluntarjoajan verkkotunnus, esim. omapalvelin.fi.com"
+
+#~ msgid "The domain may not be empty."
+#~ msgstr "Verkkotunnus ei voi olla tyhjä."
+
+#~ msgid "Log In"
+#~ msgstr "Kirjaudu sisään"
+
+#~ msgid "_User ID"
+#~ msgstr "_Käyttäjätunnus"
+
+#~ msgid "_Password"
+#~ msgstr "_Salasana"
+
+#~ msgid "User name, email, or phone number"
+#~ msgstr "Käyttäjätunnus, sähköposti tai puhelinnumero"
+
+#~ msgid "Invalid username or password"
+#~ msgstr "Virheellinen käyttäjätunnus tai salasana"
+
+#~ msgid "Keyboard _Shortcuts"
+#~ msgstr "_Pikanäppäimet"
+
+#~ msgid "User"
+#~ msgstr "Käyttäjä"
+
+#~ msgid "Add"
+#~ msgstr "Lisää"
+
+#~ msgid "Room Menu"
+#~ msgstr "Huonevalikko"
+
+#~ msgid "No room"
+#~ msgstr "Ei huonetta"
+
+#~ msgid "Default Matrix Server"
+#~ msgstr "Oletusarvoinen Matrix-palvelin"
+
+#~ msgid "Toggle fullscreen"
+#~ msgstr "Koko näyttö päälle/pois"
+
+#~ msgid "Loading more media"
+#~ msgstr "Ladataan lisää mediaa"
+
+#~ msgid "Open With…"
+#~ msgstr "Avaa sovelluksella…"
+
+#~ msgid "Save Video As…"
+#~ msgstr "Tallenna video nimellä…"
+
+#~ msgid "Copy Selection"
+#~ msgstr "Kopioi valinta"
+
+#~ msgid "Delete Message"
+#~ msgstr "Poista viesti"
+
+#~ msgid "Copy To Clipboard"
+#~ msgstr "Kopioi leikepöydälle"
+
+#~ msgid "Ch_ange"
+#~ msgstr "_Vaihda"
+
+#~ msgid "Add name"
+#~ msgstr "Lisää nimi"
+
+#~ msgid "Add topic"
+#~ msgstr "Lisää aihe"
+
+#~ msgid "Type in your room topic"
+#~ msgstr "Kirjoita huoneesi aihe"
+
+#~ msgid "No room description"
+#~ msgstr "Ei huoneen kuvausta"
+
+#~ msgid "For all messages"
+#~ msgstr "Kaikille viesteille"
+
+#~ msgid "Only for mentions"
+#~ msgstr "Vain maininnoille"
+
+#~ msgid "Shared Media"
+#~ msgstr "Jaettu media"
+
+#~ msgid "photos"
+#~ msgstr "kuvat"
+
+#~ msgid "documents"
+#~ msgstr "asiakirjat"
+
+#~ msgid "New members can see"
+#~ msgstr "Uudet jäsenet voivat nähdä"
+
+#~ msgid "All room history"
+#~ msgstr "Huoneen koko historian"
+
+#~ msgid "History after they were invited"
+#~ msgstr "Historian kutsumisen jälkeen"
+
+#~ msgid "Room Visibility"
+#~ msgstr "Huoneen näkyvyys"
+
+#~ msgid "Allow guests"
+#~ msgstr "Salli vieraat"
+
+#~ msgid "Allow joining without invite"
+#~ msgstr "Salli liittyminen ilman kutsua"
+
+#~ msgid "Publish in room directory"
+#~ msgstr "Julkaise huonehakemistossa"
+
+#~ msgid "Show rooms from:"
+#~ msgstr "Näytä huoneet:"
+
+#~ msgid "Your homeserver"
+#~ msgstr "Kotipalvelimeltasi"
+
+#~ msgid "Other Protocol"
+#~ msgstr "Muu protokolla"
+
+#~ msgid "Other Homeserver"
+#~ msgstr "Muu kotipalvelin"
+
+#~ msgid "Images"
+#~ msgstr "Kuvat"
+
+#~ msgid "Select a new avatar"
+#~ msgstr "Valitse uusi avatar"
+
+#~ msgid "Select a file"
+#~ msgstr "Valitse tiedosto"
+
+#~ msgid "Couldn’t save file"
+#~ msgstr "Tiedostoa ei voitu tallentaa"
+
+#~ msgid "Couldn’t open file"
+#~ msgstr "Tiedostoa ei voitu avata"
+
+#~ msgid "The validation code is not correct."
+#~ msgstr "Vahvistuskoodi ei ole oikein."
+
+#~ msgid "Enter the code received via SMS"
+#~ msgstr "Anna tekstiviestitse saatu koodi"
+
+#~ msgid ""
+#~ "In order to add this email address, go to your inbox and follow the link "
+#~ "you received. Once you’ve done that, click Continue."
+#~ msgstr ""
+#~ "Lisää tämä sähköpostiosoite menemällä postilaatikkoosi ja seuraamalla "
+#~ "vastaanottamaasi linkkiä. Kun olet tehnyt sen, napsauta Jatka."
+
+#~ msgid "Are you sure you want to delete your account?"
+#~ msgstr "Haluatko varmasti poistaa tilisi?"
+
+#~ msgid "Fractal [{}]"
+#~ msgstr "Fractal [{}]"
+
+#~ msgid "An audio file has been added to the conversation."
+#~ msgstr "Äänitiedosto on lisätty keskusteluun."
+
+#~ msgid "An image has been added to the conversation."
+#~ msgstr "Kuva on lisätty keskusteluun."
+
+#~ msgid "A video has been added to the conversation."
+#~ msgstr "Video on lisätty keskusteluun."
+
+#~ msgid "A file has been added to the conversation."
+#~ msgstr "Tiedosto on lisätty keskusteluun."
+
+#~ msgid " (direct message)"
+#~ msgstr " (suoraviesti)"
+
+#~ msgid "Leave {room_name}?"
+#~ msgstr "Poistutaanko huoneesta {room_name}?"
+
+#~ msgid "The room ID is malformed"
+#~ msgstr "Huoneen tunniste on muotoiltu väärin"
+
+#~ msgid "EMPTY ROOM"
+#~ msgstr "TYHJÄ HUONE"
+
+#~ msgid "{m1} and {m2}"
+#~ msgstr "{m1} ja {m2}"
+
+#~ msgid "{m1} and Others"
+#~ msgstr "{m1} ja muita"
+
+#~ msgid "Several users are typing…"
+#~ msgstr "Useat käyttäjät kirjoittavat…"
+
+#~ msgid "<b>{}</b> is typing…"
+#~ msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+#~ msgstr[0] "<b>{}</b> kirjoittaa…"
+#~ msgstr[1] "<b>{}</b> ja <b>{}</b> kirjoittavat…"
+
+#~ msgid "Syncing, this could take a while"
+#~ msgstr "Synkronoidaan, tässä voi kestää hetki"
+
+#~ msgid "Can’t login, try again"
+#~ msgstr "Kirjautuminen ei onnistu, yritä uudelleen"
+
+#~ msgid "Error deleting message"
+#~ msgstr "Virhe viestiä poistaessa"
+
+#~ msgid "Can’t join the room, try again."
+#~ msgstr "Huoneeseen ei voitu liittyä, yritä uudelleen."
+
+#~ msgid "Can’t create the room, try again"
+#~ msgstr "Huonetta ei voitu luoda, yritä uudelleen"
+
+#~ msgid "Sorry, account settings can’t be loaded."
+#~ msgstr "Valitettavasti tilin asetuksia ei voitu ladata."
+
+#~ msgid "Email is already in use"
+#~ msgstr "Sähköpostiosoite on jo käytössä"
+
+#~ msgid "Please enter a valid email address."
+#~ msgstr "Kirjoita kelvollinen sähköpostiosoite."
+
+#~ msgid "Couldn’t add the email address."
+#~ msgstr "Sähköpostiosoitetta ei voitu lisätä."
+
+#~ msgid "Phone number is already in use"
+#~ msgstr "Puhelinnumero on jo käytössä"
+
+#~ msgid ""
+#~ "Please enter your phone number in the format: \n"
+#~ " + your country code and your phone number."
+#~ msgstr ""
+#~ "Kirjoita puhelinnumero seuraavassa muodossa: \n"
+#~ " + maakoodi ja puhelinnumerosi."
+
+#~ msgid "Couldn’t add the phone number."
+#~ msgstr "Puhelinnumeroa ei voitu lisätä."
+
+#~ msgid "© 2017–2020 Daniel García Moreno, et al."
+#~ msgstr "© 2017–2020 Daniel García Moreno, et al."
+
+#~ msgid "Join {room_name}?"
+#~ msgstr "Liitytäänkö huoneeseen {room_name}?"
+
+#~ msgid ""
+#~ "You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</"
+#~ "b>"
+#~ msgstr ""
+#~ "Sinut on kutsuttu huoneeseen <b>{room_name}</b> henkilön <b>{sender_name}"
+#~ "</b> toimesta"
+
+#~ msgid "You’ve been invited to join <b>{room_name}</b>"
+#~ msgstr "Sinut on kutsuttu liittymään huoneeseen <b>{room_name}</b>"
+
+#~ msgid "You don’t have permission to post to this room"
+#~ msgstr "Sinulla ei ole oikeutta lähettää tähän huoneeseen"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Room · {} member"
+#~ msgid_plural "Room · {} members"
+#~ msgstr[0] "Huone · {} jäsen"
+#~ msgstr[1] "Huone · {} jäsentä"
+
+#~ msgid "Save media as"
+#~ msgstr "Tallenna media nimellä"
+
+#~ msgid "_Save"
+#~ msgstr "_Tallenna"
+
+#~ msgid "You have been kicked from {}"
+#~ msgstr "Sinut on potkittu huoneesta {}"
+
+#~ msgid ""
+#~ "Kicked by: {}\n"
+#~ " “{}”"
+#~ msgstr ""
+#~ "Potkun suoritti: {}\n"
+#~ " “{}”"
+
+#~ msgid "Malformed server URL"
+#~ msgstr "Palvelimen osoite on muotoiltu väärin"
+
+#~ msgid "Error while loading previous media"
+#~ msgstr "Virhe aiempaa mediaa ladatessa"
+
+#~ msgid "Privileged"
+#~ msgstr "Etuoikeutettu"
+
+#, c-format
+#~ msgid "Last edited %c"
+#~ msgstr "Viimeksi muokattu %c"
+
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgid "%R"
+#~ msgstr "%R"
+
+#~ msgid "Invites"
+#~ msgstr "Kutsut"
+
+#~ msgid "You don’t have any invitations"
+#~ msgstr "Sinulla ei ole yhtäkään kutsua"
+
+#~ msgid "Drag and drop rooms here to add them to your favorites"
+#~ msgstr "Vedä ja pudota huoneet tänne lisätäksesi ne suosikkeihisi"
+
+#~ msgid "You don’t have any rooms yet"
+#~ msgstr "Sinulla ei ole vielä yhtäkään huonetta"
 
 #~ msgid "Select room image file"
 #~ msgstr "Valitse huoneen kuvatiedosto"
@@ -1080,9 +2356,6 @@ msgstr "Sinulla ei ole vielä yhtäkään huonetta"
 #~ msgid "Private Chat"
 #~ msgstr "Yksitynen keskustelu"
 
-#~ msgid "The identity server is invalid."
-#~ msgstr "Identiteettipalvelin on virheellinen."
-
 #~ msgid "Uploading video."
 #~ msgstr "Lähetetään videota."
 
@@ -1092,20 +2365,11 @@ msgstr "Sinulla ei ole vielä yhtäkään huonetta"
 #~ msgid "Uploading image."
 #~ msgstr "Lähetetään kuvaa."
 
-#~ msgid "Uploading file."
-#~ msgstr "Lähetetään tiedostoa."
-
 #~ msgid "Save as…"
 #~ msgstr "Tallenna nimellä…"
 
-#~ msgid "Error sending message"
-#~ msgstr "Virhe viestiä lähettäessä"
-
 #~ msgid "Media is not loaded yet."
 #~ msgstr "Media ei ole vielä latautunut."
-
-#~ msgid "Could not save the file"
-#~ msgstr "Tiedostoa ei voitu tallentaa"
 
 #~ msgid "Passwords didn’t match, try again"
 #~ msgstr "Salasanat eivät täsmää, yritä uudelleen"
@@ -1127,9 +2391,6 @@ msgstr "Sinulla ei ole vielä yhtäkään huonetta"
 
 #~ msgid "Identity server URL"
 #~ msgstr "Identiteettipalvelimen osoite"
-
-#~ msgid "Matrix Server"
-#~ msgstr "Matrix-palvelin"
 
 #~ msgid "Advanced"
 #~ msgstr "Lisäasetukset"
@@ -1169,9 +2430,6 @@ msgstr "Sinulla ei ole vielä yhtäkään huonetta"
 
 #~ msgid "Pick a new room avatar"
 #~ msgstr "Valitse uusi huoneavatar"
-
-#~ msgid "Attach files"
-#~ msgstr "Liitä tiedostoja"
 
 #~ msgid "Text formatting"
 #~ msgstr "Tekstin muotoilu"
