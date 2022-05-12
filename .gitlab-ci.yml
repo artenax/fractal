@@ -138,6 +138,8 @@ pages:
   tags:
     - flatpak
   script:
+    - flatpak install --user --noninteractive org.freedesktop.Sdk.Extension.rust-nightly//21.08
+    - sed -i 's|rust-stable|rust-nightly|g' ${MANIFEST_PATH}
     - flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
     - echo "ninja src/doc" | flatpak-builder --disable-rofiles-fuse --build-shell=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}
     - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/src/doc public

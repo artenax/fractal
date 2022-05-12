@@ -85,7 +85,7 @@ cargo_doc = custom_target(
     console: true,
     command: [
       'env', cargo_env + doc_env,
-      cargo, '+nightly', 'doc',
+      cargo, 'doc',
       cargo_options + doc_deps + ['--no-deps', '--document-private-items', '-Zrustdoc-map'] ,
     ],
   )
