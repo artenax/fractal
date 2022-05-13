@@ -11,11 +11,13 @@ use matrix_sdk::{
     ruma::{
         events::{
             room::{
+                encrypted::RoomEncryptedEventContent,
                 message::{MessageType, Relation},
                 redaction::SyncRoomRedactionEvent,
             },
             AnyMessageLikeEventContent, AnySyncMessageLikeEvent, AnySyncRoomEvent,
-            AnySyncStateEvent, MessageLikeUnsigned, SyncMessageLikeEvent, SyncStateEvent,
+            AnySyncStateEvent, MessageLikeUnsigned, OriginalSyncMessageLikeEvent,
+            SyncMessageLikeEvent, SyncStateEvent,
         },
         MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedTransactionId, OwnedUserId,
     },
@@ -27,7 +29,7 @@ use super::{
     Member, ReactionList, Room,
 };
 use crate::{
-    spawn_tokio,
+    spawn, spawn_tokio,
     utils::{filename_for_mime, media_type_uid},
 };
 
@@ -54,6 +56,7 @@ mod imp {
         pub replacing_events: RefCell<Vec<super::Event>>,
         pub reactions: ReactionList,
         pub source_changed_handler: RefCell<Option<SignalHandlerId>>,
+        pub keys_handle: RefCell<Option<SignalHandlerId>>,
         pub room: OnceCell<WeakRef<Room>>,
     }
 
@@ -221,6 +224,16 @@ impl Event {
         let priv_ = self.imp();
 
         if let Ok(deserialized) = event.event.deserialize() {
+            if let AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomEncrypted(
+                SyncMessageLikeEvent::Original(ref encrypted),
+            )) = deserialized
+            {
+                let encrypted = encrypted.to_owned();
+                spawn!(clone!(@weak self as obj => async move {
+                    obj.try_to_decrypt(encrypted).await;
+                }));
+            }
+
             priv_.event.replace(Some(deserialized));
         } else {
             warn!("Failed to deserialize event: {:?}", event);
@@ -230,6 +243,35 @@ impl Event {
 
         self.notify("event");
         self.notify("activatable");
+        self.notify("source");
+    }
+
+    async fn try_to_decrypt(&self, event: OriginalSyncMessageLikeEvent<RoomEncryptedEventContent>) {
+        let priv_ = self.imp();
+        let room = self.room().matrix_room();
+        let handle = spawn_tokio!(async move { room.decrypt_event(&event).await });
+
+        match handle.await.unwrap() {
+            Ok(decrypted) => {
+                if let Some(keys_handle) = priv_.keys_handle.take() {
+                    self.room().disconnect(keys_handle);
+                }
+                self.set_matrix_pure_event(decrypted.into());
+            }
+            Err(error) => {
+                warn!("Failed to decrypt event: {}", error);
+                if priv_.keys_handle.borrow().is_none() {
+                    let handle = self.room().connect_new_encryption_keys(
+                        clone!(@weak self as obj => move |_| {
+                            // Try to decrypt the event again
+                            obj.set_matrix_pure_event(obj.matrix_pure_event());
+                        }),
+                    );
+
+                    priv_.keys_handle.replace(Some(handle));
+                }
+            }
+        }
     }
 
     pub fn matrix_sender(&self) -> OwnedUserId {

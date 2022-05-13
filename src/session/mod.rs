@@ -26,6 +26,7 @@ use log::{debug, error, warn};
 use matrix_sdk::{
     config::{RequestConfig, SyncSettings},
     deserialized_responses::SyncResponse,
+    room::Room as MatrixRoom,
     ruma::{
         api::{
             client::{
@@ -36,7 +37,10 @@ use matrix_sdk::{
             error::{FromHttpResponseError, ServerError},
         },
         assign,
-        events::{direct::DirectEventContent, GlobalAccountDataEvent},
+        events::{
+            direct::DirectEventContent, room::encryption::SyncRoomEncryptionEvent,
+            GlobalAccountDataEvent,
+        },
         RoomId,
     },
     store::{make_store_config, OpenStoreError},
@@ -476,6 +480,7 @@ impl Session {
 
                 self.room_list().load();
                 self.setup_direct_room_handler();
+                self.setup_room_encrypted_changes();
 
                 self.sync();
 
@@ -880,6 +885,32 @@ impl Session {
                     .await;
             })
         );
+    }
+
+    fn setup_room_encrypted_changes(&self) {
+        let session_weak = glib::SendWeakRef::from(self.downgrade());
+        let client = self.client();
+        spawn_tokio!(async move {
+            client
+                .register_event_handler(
+                    move |_: SyncRoomEncryptionEvent, matrix_room: MatrixRoom| {
+                        let session_weak = session_weak.clone();
+                        async move {
+                            let ctx = glib::MainContext::default();
+                            ctx.spawn(async move {
+                                if let Some(session) = session_weak.upgrade() {
+                                    if let Some(room) =
+                                        session.room_list().get(matrix_room.room_id())
+                                    {
+                                        room.set_is_encrypted(true);
+                                    }
+                                }
+                            });
+                        }
+                    },
+                )
+                .await;
+        });
     }
 }
 

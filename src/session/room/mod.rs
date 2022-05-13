@@ -31,11 +31,12 @@ use matrix_sdk::{
                 redaction::{OriginalSyncRoomRedactionEvent, RoomRedactionEventContent},
                 topic::RoomTopicEventContent,
             },
+            room_key::ToDeviceRoomKeyEventContent,
             tag::{TagInfo, TagName},
             AnyRoomAccountDataEvent, AnyStrippedStateEvent, AnySyncMessageLikeEvent,
             AnySyncRoomEvent, AnySyncStateEvent, EventContent, MessageLikeEventType,
             MessageLikeUnsigned, OriginalSyncMessageLikeEvent, StateEventType,
-            SyncMessageLikeEvent, SyncStateEvent,
+            SyncMessageLikeEvent, SyncStateEvent, ToDeviceEvent,
         },
         receipt::ReceiptType,
         serde::Raw,
@@ -110,6 +111,8 @@ mod imp {
         pub successor: OnceCell<OwnedRoomId>,
         /// The most recent verification request event.
         pub verification: RefCell<Option<IdentityVerification>>,
+        /// Whether this room is encrypted
+        pub is_encrypted: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -241,6 +244,13 @@ mod imp {
                         IdentityVerification::static_type(),
                         glib::ParamFlags::READWRITE,
                     ),
+                    glib::ParamSpecBoolean::new(
+                        "encrypted",
+                        "Encrypted",
+                        "Whether this room is encrypted",
+                        false,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
+                    ),
                 ]
             });
 
@@ -276,6 +286,7 @@ mod imp {
                     obj.store_topic(topic);
                 }
                 "verification" => obj.set_verification(value.get().unwrap()),
+                "encrypted" => obj.set_is_encrypted(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -310,6 +321,7 @@ mod imp {
                     |id| id.as_ref().to_value(),
                 ),
                 "verification" => obj.verification().to_value(),
+                "encrypted" => obj.is_encrypted().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -319,6 +331,7 @@ mod imp {
                 vec![
                     Signal::builder("order-changed", &[], <()>::static_type().into()).build(),
                     Signal::builder("room-forgotten", &[], <()>::static_type().into()).build(),
+                    Signal::builder("new-encryption-keys", &[], <()>::static_type().into()).build(),
                 ]
             });
             SIGNALS.as_ref()
@@ -338,6 +351,7 @@ mod imp {
                 .unwrap();
 
             obj.load_power_levels();
+            obj.setup_is_encrypted();
 
             obj.bind_property("display-name", obj.avatar(), "display-name")
                 .flags(glib::BindingFlags::SYNC_CREATE)
@@ -1636,6 +1650,75 @@ impl Room {
         }
 
         self.set_latest_unread(latest_unread);
+    }
+
+    pub fn is_encrypted(&self) -> bool {
+        self.imp().is_encrypted.get()
+    }
+
+    pub fn set_is_encrypted(&self, is_encrypted: bool) {
+        let was_encrypted = self.is_encrypted();
+        if was_encrypted == is_encrypted {
+            return;
+        }
+
+        if was_encrypted && !is_encrypted {
+            error!("Encryption for a room can't be disabled");
+            return;
+        }
+
+        if self.matrix_room().is_encrypted() != is_encrypted {
+            // TODO: enable encryption if it isn't enabled yet
+        }
+
+        self.setup_is_encrypted();
+    }
+
+    fn setup_is_encrypted(&self) {
+        if !self.matrix_room().is_encrypted() {
+            return;
+        }
+        self.setup_new_encryption_keys_handler();
+        self.imp().is_encrypted.set(true);
+        self.notify("encrypted");
+    }
+
+    fn setup_new_encryption_keys_handler(&self) {
+        spawn!(
+            glib::PRIORITY_DEFAULT_IDLE,
+            clone!(@weak self as obj => async move {
+                let obj_weak = glib::SendWeakRef::from(obj.downgrade());
+                    obj.session().client().register_event_handler(
+                        move |event: ToDeviceEvent<ToDeviceRoomKeyEventContent>| {
+                            let obj_weak = obj_weak.clone();
+                            async move {
+                                let ctx = glib::MainContext::default();
+                                ctx.spawn(async move {
+                                        if let Some(room) = obj_weak.upgrade() {
+                                            if room.room_id() == event.content.room_id {
+                                                room.emit_by_name::<()>("new-encryption-keys", &[]);
+                                            }
+                                        }
+                                });
+                            }
+                        },
+                    )
+                    .await;
+            })
+        );
+    }
+
+    pub fn connect_new_encryption_keys<F: Fn(&Self) + 'static>(
+        &self,
+        f: F,
+    ) -> glib::SignalHandlerId {
+        self.connect_local("new-encryption-keys", true, move |values| {
+            let obj = values[0].get::<Self>().unwrap();
+
+            f(&obj);
+
+            None
+        })
     }
 }
 
