@@ -528,45 +528,76 @@ impl Room {
         let handle = spawn_tokio!(async move {
             match matrix_room {
                 MatrixRoom::Invited(room) => match category {
-                    RoomType::Invited => Ok(()),
+                    RoomType::Invited => {}
                     RoomType::Favorite => {
-                        room.accept_invitation().await
-                        // TODO: set favorite tag
+                        if let Some(tags) = room.tags().await? {
+                            if !tags.contains_key(&TagName::Favorite) {
+                                room.set_tag(TagName::Favorite, TagInfo::new()).await?;
+                            }
+                            if tags.contains_key(&TagName::LowPriority) {
+                                room.remove_tag(TagName::LowPriority).await?;
+                            }
+                        }
+                        room.accept_invitation().await?;
                     }
                     RoomType::Normal => {
-                        room.accept_invitation().await
-                        // TODO: remove tags
+                        if let Some(tags) = room.tags().await? {
+                            if tags.contains_key(&TagName::Favorite) {
+                                room.remove_tag(TagName::Favorite).await?;
+                            }
+                            if tags.contains_key(&TagName::LowPriority) {
+                                room.remove_tag(TagName::LowPriority).await?;
+                            }
+                        }
+
+                        if room.is_direct() {
+                            room.set_is_direct(false).await?;
+                        }
+
+                        room.accept_invitation().await?;
                     }
                     RoomType::LowPriority => {
-                        room.accept_invitation().await
-                        // TODO: set low priority tag
+                        if let Some(tags) = room.tags().await? {
+                            if tags.contains_key(&TagName::Favorite) {
+                                room.remove_tag(TagName::Favorite).await?;
+                            }
+                            if !tags.contains_key(&TagName::LowPriority) {
+                                room.set_tag(TagName::LowPriority, TagInfo::new()).await?;
+                            }
+                        }
+                        room.accept_invitation().await?;
                     }
-                    RoomType::Left => room.reject_invitation().await,
+                    RoomType::Left => room.reject_invitation().await?,
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
                     RoomType::Direct => {
                         if !room.is_direct() {
-                            // TODO: mark as direct by adding it to account data
+                            room.set_is_direct(true).await?;
+                        }
+
+                        if let Some(tags) = room.tags().await? {
+                            if tags.contains_key(&TagName::Favorite) {
+                                room.remove_tag(TagName::Favorite).await?;
+                            }
+                            if tags.contains_key(&TagName::LowPriority) {
+                                room.remove_tag(TagName::LowPriority).await?;
+                            }
                         }
 
                         room.accept_invitation().await?;
-
-                        Ok(())
                     }
                 },
                 MatrixRoom::Joined(room) => match category {
-                    RoomType::Invited => Ok(()),
+                    RoomType::Invited => {}
                     RoomType::Favorite => {
                         room.set_tag(TagName::Favorite, TagInfo::new()).await?;
                         if previous_category == RoomType::LowPriority {
                             room.remove_tag(TagName::LowPriority).await?;
                         }
-                        Ok(())
                     }
                     RoomType::Normal => {
                         if room.is_direct() {
-                            // TODO: remove the room from the list of direct
-                            // rooms via the account data
+                            room.set_is_direct(false).await?;
                         }
                         match previous_category {
                             RoomType::Favorite => {
@@ -577,21 +608,19 @@ impl Room {
                             }
                             _ => {}
                         }
-                        Ok(())
                     }
                     RoomType::LowPriority => {
                         room.set_tag(TagName::LowPriority, TagInfo::new()).await?;
                         if previous_category == RoomType::Favorite {
                             room.remove_tag(TagName::Favorite).await?;
                         }
-                        Ok(())
                     }
-                    RoomType::Left => room.leave().await,
+                    RoomType::Left => room.leave().await?,
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
                     RoomType::Direct => {
                         if !room.is_direct() {
-                            // TODO: Mark as direct by adding it to account data
+                            room.set_is_direct(true).await?;
                         }
 
                         if let Some(tags) = room.tags().await? {
@@ -602,30 +631,49 @@ impl Room {
                                 room.remove_tag(TagName::Favorite).await?;
                             }
                         }
-
-                        Ok(())
                     }
                 },
                 MatrixRoom::Left(room) => match category {
-                    RoomType::Invited => Ok(()),
+                    RoomType::Invited => {}
                     RoomType::Favorite => {
-                        room.join().await
-                        // TODO: set favorite tag
+                        if let Some(tags) = room.tags().await? {
+                            if !tags.contains_key(&TagName::Favorite) {
+                                room.set_tag(TagName::Favorite, TagInfo::new()).await?;
+                            }
+                            if tags.contains_key(&TagName::LowPriority) {
+                                room.remove_tag(TagName::LowPriority).await?;
+                            }
+                        }
+                        room.join().await?;
                     }
                     RoomType::Normal => {
-                        room.join().await
-                        // TODO: remove tags
+                        if let Some(tags) = room.tags().await? {
+                            if tags.contains_key(&TagName::Favorite) {
+                                room.remove_tag(TagName::Favorite).await?;
+                            }
+                            if tags.contains_key(&TagName::LowPriority) {
+                                room.remove_tag(TagName::LowPriority).await?;
+                            }
+                        }
+                        room.join().await?;
                     }
                     RoomType::LowPriority => {
-                        room.join().await
-                        // TODO: set low priority tag
+                        if let Some(tags) = room.tags().await? {
+                            if tags.contains_key(&TagName::Favorite) {
+                                room.remove_tag(TagName::Favorite).await?;
+                            }
+                            if !tags.contains_key(&TagName::LowPriority) {
+                                room.set_tag(TagName::LowPriority, TagInfo::new()).await?;
+                            }
+                        }
+                        room.join().await?;
                     }
-                    RoomType::Left => Ok(()),
+                    RoomType::Left => {}
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
                     RoomType::Direct => {
                         if !room.is_direct() {
-                            // TODO: Mark as direct by adding it to account data
+                            room.set_is_direct(true).await?;
                         }
 
                         if let Some(tags) = room.tags().await? {
@@ -638,10 +686,11 @@ impl Room {
                         }
 
                         room.join().await?;
-                        Ok(())
                     }
                 },
             }
+
+            Result::<_, matrix_sdk::Error>::Ok(())
         });
 
         spawn!(
