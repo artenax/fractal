@@ -13,6 +13,7 @@ If a dependency is not found, helps the user to install it.
 USAGE: ${0##*/} [OPTIONS]
 
 OPTIONS:
+    -s, --git-staged        Only check files staged to be committed
     -f, --force-install     Install missing dependencies without asking
     -v, --verbose           Use verbose output
     -h, --help              Display this help and exit
@@ -40,6 +41,7 @@ ok="${pos}ok${res}"
 fail="${neg}fail${res}"
 
 # Initialize variables
+git_staged=0
 force_install=0
 verbose=0
 
@@ -203,12 +205,32 @@ run_rustfmt() {
         echo ""
     fi
 
-    if ! cargo +nightly fmt --all -- --check; then
-        echo -e "  Checking code style result: $fail"
-        echo "Please fix the above issues, either manually or by running: cargo fmt --all"
-        exit 1
+
+    if [[ $git_staged -eq 1 ]]; then
+        staged_files=`git diff --name-only --cached | grep '.rs$'`
+        result=0
+        for file in ${staged_files[@]}; do
+
+            if ! rustfmt --unstable-features --skip-children --check $file; then
+                result=1
+            fi
+        done
+
+        if [[ $result -eq 1 ]]; then
+            echo -e "  Checking code style result: $fail"
+            echo "Please fix the above issues, either manually or by running: cargo fmt --all"
+            exit 1
+        else
+            echo -e "  Checking code style result: $ok"
+        fi
     else
-        echo -e "  Checking code style result: $ok"
+        if ! cargo +nightly fmt --all -- --check; then
+            echo -e "  Checking code style result: $fail"
+            echo "Please fix the above issues, either manually or by running: cargo fmt --all"
+            exit 1
+        else
+            echo -e "  Checking code style result: $ok"
+        fi
     fi
 }
 
@@ -263,7 +285,9 @@ run_typos() {
         echo ""
     fi
 
-    if ! typos --color always; then
+    staged_files=`git diff --name-only --cached`
+
+    if ! typos --color always ${staged_files}; then
         echo -e "  Checking spelling mistakes result: $fail"
         echo "Please fix the above issues, either manually or by running: typos -w"
         exit 1
@@ -444,6 +468,9 @@ check_resources() {
 
 # Check arguments
 while [[ "$1" ]]; do case $1 in
+    -s | --git-staged )
+        git_staged=1
+        ;;
     -f | --force-install )
         force_install=1
         ;;
@@ -459,6 +486,17 @@ while [[ "$1" ]]; do case $1 in
         exit 1
 esac; shift; done
 
+if [[ $git_staged -eq 1 ]]; then
+   staged_files=`git diff --name-only --cached`
+   if [[ -z $staged_files ]]; then
+      echo -e "$Failed to check files because none where staged"
+      exit 2
+   fi
+else
+   staged_files=""
+fi
+
+
 # Run
 check_cargo
 echo ""
@@ -468,5 +506,12 @@ run_typos
 echo ""
 check_potfiles
 echo ""
-check_resources
+if [[ $git_staged -eq 1 ]]; then
+   staged_files=`git diff --name-only --cached | grep data/resources/resources.gresource.xml`
+   if [[ -z $staged_files ]]; then
+        check_resources
+   fi
+else
+   check_resources
+fi
 echo ""

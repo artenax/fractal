@@ -11,7 +11,7 @@ res="\e[0m"
 echo "-- Pre-commit checks --"
 echo "To ignore these checks next time, run: git commit --no-verify"
 echo ""
-if scripts/checks.sh; then
+if scripts/checks.sh --git-staged; then
     echo ""
     echo -e "Pre-commit checks result: ${pos}ok${res}"
 elif [[ $? -eq 2 ]]; then
