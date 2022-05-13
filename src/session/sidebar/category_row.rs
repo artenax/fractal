@@ -195,7 +195,7 @@ impl CategoryRow {
             },
             CategoryType::Direct => match to_type {
                 CategoryType::Favorite => gettext("Move to Favorites"),
-                CategoryType::Normal => gettext("Mov to Rooms"),
+                CategoryType::Normal => gettext("Move to Rooms"),
                 CategoryType::LowPriority => gettext("Move to Low Priority"),
                 CategoryType::Left => gettext("Leave Room"),
                 _ => to_type.to_string(),
