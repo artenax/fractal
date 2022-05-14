@@ -326,6 +326,8 @@ login {
   border-radius: 10px;
   min-width: 0.7em;
   padding: 2px 5px;
+  color: currentColor;
+  background-color: alpha(currentColor, 0.15);
 }
 
 .sidebar-list row.room .highlight {
