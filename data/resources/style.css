@@ -268,7 +268,7 @@ login {
 }
 
 .sidebar-list sidebar-row > * > box {
-  padding: 12px 6px;
+  padding: 9px 9px;
 }
 
 .sidebar-list row:focus-within > * {
