@@ -272,6 +272,12 @@ pub trait UserExt: IsA<User> {
         let user = self.upcast_ref();
         Pill::for_user(user)
     }
+
+    /// Get the HTML mention representation for this `User`.
+    fn html_mention(&self) -> String {
+        let uri = self.user_id().matrix_to_uri();
+        format!("<a href=\"{uri}\">{}</a>", self.display_name())
+    }
 }
 
 impl<T: IsA<User>> UserExt for T {}

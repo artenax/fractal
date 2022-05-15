@@ -105,14 +105,10 @@ impl MessageText {
     ) {
         if let Some(body) = formatted
             .filter(is_valid_formatted_body)
-            .and_then(|formatted| {
-                let body = format!("<b>{}</b> {}", sender.display_name(), formatted.body);
-
-                parse_formatted_body(&body).map(|_| formatted.body)
-            })
+            .and_then(|formatted| parse_formatted_body(&formatted.body).map(|_| formatted.body))
         {
             let formatted = FormattedBody {
-                body: format!("<b>{}</b> {}", sender.display_name(), strip_reply(&body)),
+                body: format!("{} {}", sender.html_mention(), strip_reply(&body)),
                 format: MessageFormat::Html,
             };
 
@@ -120,7 +116,7 @@ impl MessageText {
             self.build_html(html, room);
         } else {
             self.build_text(
-                format!("<b>{}</b> {}", sender.display_name(), linkify(&body)),
+                format!("{} {}", sender.html_mention(), linkify(&body)),
                 WithMentions::Yes(room),
             );
         }
