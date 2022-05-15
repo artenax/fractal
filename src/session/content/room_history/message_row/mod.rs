@@ -261,7 +261,12 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.emote(message.formatted, message.body, event.sender());
+                    child.emote(
+                        message.formatted,
+                        message.body,
+                        event.sender(),
+                        &event.room(),
+                    );
                 }
                 MessageType::File(message) => {
                     let info = message.info.as_ref();
@@ -320,7 +325,7 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.markup(message.formatted, message.body);
+                    child.markup(message.formatted, message.body, &event.room());
                 }
                 MessageType::ServerNotice(message) => {
                     let child = if let Some(Ok(child)) =
@@ -344,7 +349,7 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.markup(message.formatted, message.body);
+                    child.markup(message.formatted, message.body, &event.room());
                 }
                 MessageType::Video(message) => {
                     let child = if let Some(Ok(child)) =

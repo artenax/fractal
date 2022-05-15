@@ -50,6 +50,13 @@ mod imp {
                         None,
                         glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
+                    glib::ParamSpecString::new(
+                        "use-markup",
+                        "Use Markup",
+                        "Whether the label's text is interpreted as Pango markup.",
+                        None,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
+                    ),
                 ]
             });
 
@@ -66,6 +73,7 @@ mod imp {
             match pspec.name() {
                 "label" => obj.set_label(value.get().unwrap()),
                 "placeholder" => obj.set_placeholder(value.get().unwrap()),
+                "use-markup" => obj.set_use_markup(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -74,15 +82,20 @@ mod imp {
             match pspec.name() {
                 "label" => obj.label().to_value(),
                 "placeholder" => obj.placeholder().to_value(),
+                "use-markup" => obj.uses_markup().to_value(),
                 _ => unimplemented!(),
             }
         }
 
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
-            self.label.set_parent(obj);
-            self.label.set_wrap(true);
-            self.label.connect_notify_local(
+
+            let label = &self.label;
+            label.set_parent(obj);
+            label.set_wrap(true);
+            label.set_xalign(0.0);
+            label.set_valign(gtk::Align::Start);
+            label.connect_notify_local(
                 Some("label"),
                 clone!(@weak obj => move |_, _| {
                     obj.invalidate_child_widgets();
@@ -170,7 +183,13 @@ glib::wrapper! {
 }
 
 impl LabelWithWidgets {
-    pub fn new<P: IsA<gtk::Widget>>(label: &str, widgets: Vec<P>) -> Self {
+    /// Create an empty `LabelWithWidget`.
+    pub fn new() -> Self {
+        glib::Object::new(&[]).expect("Failed to create LabelWithWidgets")
+    }
+
+    /// Create a `LabelWithWidget` with the given label and widgets.
+    pub fn with_label_and_widgets<P: IsA<gtk::Widget>>(label: &str, widgets: Vec<P>) -> Self {
         let obj: Self =
             glib::Object::new(&[("label", &label)]).expect("Failed to create LabelWithWidgets");
         // FIXME: use a property for widgets
@@ -214,7 +233,7 @@ impl LabelWithWidgets {
             let placeholder = priv_.placeholder.borrow();
             let placeholder = placeholder.as_deref().unwrap_or(DEFAULT_PLACEHOLDER);
             let label = label.replace(placeholder, OBJECT_REPLACEMENT_CHARACTER);
-            priv_.label.set_text(&label);
+            priv_.label.set_label(&label);
         }
 
         priv_.text.replace(label);
@@ -342,5 +361,20 @@ impl LabelWithWidgets {
                 break;
             }
         }
+    }
+
+    pub fn uses_markup(&self) -> bool {
+        self.imp().label.uses_markup()
+    }
+
+    /// Sets whether the text of the label contains markup.
+    pub fn set_use_markup(&self, use_markup: bool) {
+        self.imp().label.set_use_markup(use_markup);
+    }
+}
+
+impl Default for LabelWithWidgets {
+    fn default() -> Self {
+        Self::new()
     }
 }

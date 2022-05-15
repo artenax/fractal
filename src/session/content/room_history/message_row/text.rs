@@ -1,16 +1,23 @@
 use adw::{prelude::BinExt, subclass::prelude::*};
-use gtk::{glib, pango, prelude::*, subclass::prelude::*};
+use gtk::{glib, prelude::*, subclass::prelude::*};
 use html2pango::{
     block::{markup_html, HtmlBlock},
     html_escape, markup_links,
 };
 use log::warn;
-use matrix_sdk::ruma::events::room::message::{FormattedBody, MessageFormat};
+use matrix_sdk::ruma::{
+    events::room::message::{FormattedBody, MessageFormat},
+    matrix_uri::MatrixId,
+    MatrixToUri, MatrixUri,
+};
 use once_cell::sync::Lazy;
 use regex::Regex;
 use sourceview::prelude::*;
 
-use crate::session::{room::Member, UserExt};
+use crate::{
+    components::{LabelWithWidgets, Pill, DEFAULT_PLACEHOLDER},
+    session::{room::Member, Room, UserExt},
+};
 
 static EMOJI_REGEX: Lazy<Regex> = Lazy::new(|| {
     Regex::new(
@@ -27,20 +34,16 @@ static EMOJI_REGEX: Lazy<Regex> = Lazy::new(|| {
     .unwrap()
 });
 
+enum WithMentions<'a> {
+    Yes(&'a Room),
+    No,
+}
+
 mod imp {
-    use std::cell::RefCell;
-
-    use once_cell::sync::Lazy;
-
     use super::*;
 
     #[derive(Debug, Default)]
-    pub struct MessageText {
-        /// The displayed content of the message.
-        pub body: RefCell<Option<String>>,
-        /// The sender of the message(only used for emotes).
-        pub sender: RefCell<Option<Member>>,
-    }
+    pub struct MessageText {}
 
     #[glib::object_subclass]
     impl ObjectSubclass for MessageText {
@@ -49,56 +52,7 @@ mod imp {
         type ParentType = adw::Bin;
     }
 
-    impl ObjectImpl for MessageText {
-        fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecString::new(
-                        "body",
-                        "Body",
-                        "The displayed content of the message",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "sender",
-                        "Sender",
-                        "The sender of the message",
-                        Member::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                ]
-            });
-
-            PROPERTIES.as_ref()
-        }
-
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
-            match pspec.name() {
-                "body" => obj.set_body(value.get().unwrap()),
-                "sender" => obj.set_sender(value.get().unwrap()),
-                _ => unimplemented!(),
-            }
-        }
-
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "body" => obj.body().to_value(),
-                "sender" => obj.sender().to_value(),
-                _ => unimplemented!(),
-            }
-        }
-
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-        }
-    }
+    impl ObjectImpl for MessageText {}
 
     impl WidgetImpl for MessageText {}
 
@@ -107,6 +61,8 @@ mod imp {
 
 glib::wrapper! {
     /// A widget displaying the content of a text message.
+    // FIXME: We have to be able to allow text selection and override popover
+    // menu. See https://gitlab.gnome.org/GNOME/gtk/-/issues/4606
     pub struct MessageText(ObjectSubclass<imp::MessageText>)
         @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
 }
@@ -119,64 +75,34 @@ impl MessageText {
 
     /// Display the given plain text.
     pub fn text(&self, body: String) {
-        self.build_text(&body, false);
-        self.set_body(Some(body));
+        self.build_text(body, WithMentions::No);
     }
 
     /// Display the given text with markup.
     ///
     /// It will detect if it should display the body or the formatted body.
-    pub fn markup(&self, formatted: Option<FormattedBody>, body: String) {
-        if let Some((html_blocks, body)) =
-            formatted
-                .filter(is_valid_formatted_body)
-                .and_then(|formatted| {
-                    parse_formatted_body(strip_reply(&formatted.body))
-                        .map(|blocks| (blocks, formatted.body))
-                })
+    pub fn markup(&self, formatted: Option<FormattedBody>, body: String, room: &Room) {
+        if let Some(html_blocks) = formatted
+            .filter(is_valid_formatted_body)
+            .and_then(|formatted| parse_formatted_body(strip_reply(&formatted.body)))
         {
-            self.build_html(html_blocks);
-            self.set_body(Some(body));
+            self.build_html(html_blocks, room);
         } else {
             let body = linkify(strip_reply(&body));
-            self.build_text(&body, true);
-            self.set_body(Some(body));
+            self.build_text(body, WithMentions::Yes(room));
         }
-    }
-
-    pub fn set_body(&self, body: Option<String>) {
-        let priv_ = self.imp();
-
-        if body.as_ref() == priv_.body.borrow().as_ref() {
-            return;
-        }
-
-        priv_.body.replace(body);
-    }
-
-    pub fn body(&self) -> Option<String> {
-        self.imp().body.borrow().to_owned()
-    }
-
-    pub fn set_sender(&self, sender: Option<Member>) {
-        let priv_ = self.imp();
-
-        if sender.as_ref() == priv_.sender.borrow().as_ref() {
-            return;
-        }
-
-        priv_.sender.replace(sender);
-        self.notify("sender");
-    }
-
-    pub fn sender(&self) -> Option<Member> {
-        self.imp().sender.borrow().to_owned()
     }
 
     /// Display the given emote for `sender`.
     ///
     /// It will detect if it should display the body or the formatted body.
-    pub fn emote(&self, formatted: Option<FormattedBody>, body: String, sender: Member) {
+    pub fn emote(
+        &self,
+        formatted: Option<FormattedBody>,
+        body: String,
+        sender: Member,
+        room: &Room,
+    ) {
         if let Some(body) = formatted
             .filter(is_valid_formatted_body)
             .and_then(|formatted| {
@@ -185,54 +111,55 @@ impl MessageText {
                 parse_formatted_body(&body).map(|_| formatted.body)
             })
         {
-            // TODO: we need to bind the display name to the sender
             let formatted = FormattedBody {
                 body: format!("<b>{}</b> {}", sender.display_name(), strip_reply(&body)),
                 format: MessageFormat::Html,
             };
 
             let html = parse_formatted_body(&formatted.body).unwrap();
-            self.build_html(html);
-            self.set_body(Some(body));
-            self.set_sender(Some(sender));
+            self.build_html(html, room);
         } else {
-            // TODO: we need to bind the display name to the sender
-            let body = linkify(&body);
-            self.build_text(&format!("<b>{}</b> {}", sender.display_name(), &body), true);
-            self.set_body(Some(body));
-            self.set_sender(Some(sender));
+            self.build_text(
+                format!("<b>{}</b> {}", sender.display_name(), linkify(&body)),
+                WithMentions::Yes(room),
+            );
         }
     }
 
-    fn build_text(&self, text: &str, use_markup: bool) {
-        let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<gtk::Label>()) {
+    fn build_text(&self, text: String, with_mentions: WithMentions) {
+        let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<LabelWithWidgets>())
+        {
             child
         } else {
-            let child = gtk::Label::new(None);
-            set_label_styles(&child);
+            let child = LabelWithWidgets::new();
             self.set_child(Some(&child));
             child
         };
 
-        if EMOJI_REGEX.is_match(text) {
+        if EMOJI_REGEX.is_match(&text) {
             child.add_css_class("emoji");
         } else {
             child.remove_css_class("emoji");
         }
 
-        if use_markup {
-            child.set_markup(text);
+        if let WithMentions::Yes(room) = with_mentions {
+            let (label, widgets) = extract_mentions(&text, room);
+            child.set_use_markup(true);
+            child.set_label(Some(label));
+            child.set_widgets(widgets);
         } else {
-            child.set_text(text);
+            child.set_use_markup(false);
+            child.set_widgets(Vec::<gtk::Widget>::new());
+            child.set_label(Some(text));
         }
     }
 
-    fn build_html(&self, blocks: Vec<HtmlBlock>) {
+    fn build_html(&self, blocks: Vec<HtmlBlock>, room: &Room) {
         let child = gtk::Box::new(gtk::Orientation::Vertical, 6);
         self.set_child(Some(&child));
 
         for block in blocks {
-            let widget = create_widget_for_html_block(&block);
+            let widget = create_widget_for_html_block(&block, room);
             child.append(&widget);
         }
     }
@@ -250,24 +177,12 @@ fn parse_formatted_body(formatted: &str) -> Option<Vec<HtmlBlock>> {
     markup_html(formatted).ok()
 }
 
-fn set_label_styles(w: &gtk::Label) {
-    w.set_wrap(true);
-    w.set_wrap_mode(pango::WrapMode::WordChar);
-    w.set_justify(gtk::Justification::Left);
-    w.set_xalign(0.0);
-    w.set_valign(gtk::Align::Start);
-    w.set_halign(gtk::Align::Fill);
-    // FIXME: We have to be able to allow text selection and override popover
-    // menu. See https://gitlab.gnome.org/GNOME/gtk/-/issues/4606
-    // w.set_selectable(true);
-}
-
-fn create_widget_for_html_block(block: &HtmlBlock) -> gtk::Widget {
+fn create_widget_for_html_block(block: &HtmlBlock, room: &Room) -> gtk::Widget {
     match block {
         HtmlBlock::Heading(n, s) => {
-            let w = gtk::Label::new(None);
-            set_label_styles(&w);
-            w.set_markup(s);
+            let (label, widgets) = extract_mentions(s, room);
+            let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
+            w.set_use_markup(true);
             w.add_css_class(&format!("h{}", n));
             w.upcast::<gtk::Widget>()
         }
@@ -280,11 +195,11 @@ fn create_widget_for_html_block(block: &HtmlBlock) -> gtk::Widget {
                 let h_box = gtk::Box::new(gtk::Orientation::Horizontal, 6);
                 let bullet = gtk::Label::new(Some("•"));
                 bullet.set_valign(gtk::Align::Start);
-                let w = gtk::Label::new(None);
-                set_label_styles(&w);
+                let (label, widgets) = extract_mentions(li, room);
+                let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
+                w.set_use_markup(true);
                 h_box.append(&bullet);
                 h_box.append(&w);
-                w.set_markup(li);
                 bx.append(&h_box);
             }
 
@@ -299,11 +214,11 @@ fn create_widget_for_html_block(block: &HtmlBlock) -> gtk::Widget {
                 let h_box = gtk::Box::new(gtk::Orientation::Horizontal, 6);
                 let bullet = gtk::Label::new(Some(&format!("{}.", i + 1)));
                 bullet.set_valign(gtk::Align::Start);
-                let w = gtk::Label::new(None);
-                set_label_styles(&w);
+                let (label, widgets) = extract_mentions(ol, room);
+                let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
+                w.set_use_markup(true);
                 h_box.append(&bullet);
                 h_box.append(&w);
-                w.set_markup(ol);
                 bx.append(&h_box);
             }
 
@@ -326,15 +241,15 @@ fn create_widget_for_html_block(block: &HtmlBlock) -> gtk::Widget {
             let bx = gtk::Box::new(gtk::Orientation::Vertical, 6);
             bx.add_css_class("quote");
             for block in blocks.iter() {
-                let w = create_widget_for_html_block(block);
+                let w = create_widget_for_html_block(block, room);
                 bx.append(&w);
             }
             bx.upcast::<gtk::Widget>()
         }
         HtmlBlock::Text(s) => {
-            let w = gtk::Label::new(None);
-            set_label_styles(&w);
-            w.set_markup(s);
+            let (label, widgets) = extract_mentions(s, room);
+            let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
+            w.set_use_markup(true);
             w.upcast::<gtk::Widget>()
         }
     }
@@ -353,6 +268,77 @@ fn strip_reply(text: &str) -> &str {
     } else {
         text
     }
+}
+
+/// Extract mentions from the given string.
+///
+/// Returns a new string with placeholders and the corresponding widgets.
+fn extract_mentions(s: &str, room: &Room) -> (String, Vec<Pill>) {
+    let session = room.session();
+    let mut label = s.to_owned();
+    let mut widgets = vec![];
+
+    // The markup has been normalized by html2pango so we are sure of the format of
+    // links.
+    for (start, _) in s.rmatch_indices("<a href=") {
+        let uri_start = start + 9;
+        let link = &s[uri_start..];
+
+        let uri_end = if let Some(end) = link.find('"') {
+            end
+        } else {
+            continue;
+        };
+
+        let uri = &link[..uri_end];
+
+        let id = if let Ok(mx_uri) = MatrixUri::parse(uri) {
+            mx_uri.id().to_owned()
+        } else if let Ok(mx_to_uri) = MatrixToUri::parse(uri) {
+            mx_to_uri.id().to_owned()
+        } else {
+            continue;
+        };
+
+        let pill = match id {
+            MatrixId::Room(room_id) => {
+                if let Some(room) = session.room_list().get(&room_id) {
+                    Pill::for_room(&room)
+                } else {
+                    continue;
+                }
+            }
+            MatrixId::RoomAlias(room_alias) => {
+                // TODO: Handle non-canonical aliases.
+                if let Some(room) = session.client().rooms().iter().find_map(|matrix_room| {
+                    matrix_room
+                        .canonical_alias()
+                        .filter(|alias| alias == &room_alias)
+                        .and_then(|_| session.room_list().get(matrix_room.room_id()))
+                }) {
+                    Pill::for_room(&room)
+                } else {
+                    continue;
+                }
+            }
+            MatrixId::User(user_id) => {
+                let user = room.members().member_by_id(user_id).upcast();
+                Pill::for_user(&user)
+            }
+            _ => continue,
+        };
+
+        let end = if let Some(end) = link.find("</a>") {
+            uri_start + end + 4
+        } else {
+            continue;
+        };
+
+        label.replace_range(start..end, DEFAULT_PLACEHOLDER);
+        widgets.insert(0, pill);
+    }
+
+    (label, widgets)
 }
 
 impl Default for MessageText {

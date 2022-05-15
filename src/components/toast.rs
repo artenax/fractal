@@ -104,7 +104,11 @@ impl Toast {
                 .build()
                 .upcast()
         } else {
-            LabelWithWidgets::new(&self.title().unwrap_or_default(), self.widgets()).upcast()
+            LabelWithWidgets::with_label_and_widgets(
+                &self.title().unwrap_or_default(),
+                self.widgets(),
+            )
+            .upcast()
         }
     }
 }
