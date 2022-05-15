@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-05-02 11:33+0000\n"
-"PO-Revision-Date: 2022-05-03 14:02+0200\n"
+"POT-Creation-Date: 2022-05-13 13:34+0000\n"
+"PO-Revision-Date: 2022-05-15 14:20+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -1122,11 +1122,11 @@ msgstr "Hasła się nie zgadzają"
 msgid "Password changed successfully"
 msgstr "Pomyślnie zmieniono hasło"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:329
+#: src/session/account_settings/user_page/change_password_subpage.rs:331
 msgid "Password rejected for being too weak"
 msgstr "Hasło zostało odrzucone z powodu niskiej jakości"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:336
+#: src/session/account_settings/user_page/change_password_subpage.rs:338
 msgid "Could not change password"
 msgstr "Nie można zmienić hasła"
 
@@ -1230,20 +1230,20 @@ msgstr "Plik obrazu jest nieobsługiwany"
 msgid "Could not retrieve media"
 msgstr "Nie można odebrać multimediów"
 
-#: src/session/content/room_history/message_row/mod.rs:380
+#: src/session/content/room_history/message_row/mod.rs:377
 msgid "Identity verification was started"
 msgstr "Rozpoczęto weryfikację tożsamości"
 
-#: src/session/content/room_history/message_row/mod.rs:393
-#: src/session/content/room_history/message_row/mod.rs:440
+#: src/session/content/room_history/message_row/mod.rs:390
+#: src/session/content/room_history/message_row/mod.rs:437
 msgid "Unsupported event"
 msgstr "Nieobsługiwane wydarzenie"
 
-#: src/session/content/room_history/message_row/mod.rs:418
+#: src/session/content/room_history/message_row/mod.rs:415
 msgid "Fractal couldn’t decrypt this message."
 msgstr "Fractal nie może odszyfrować tej wiadomości."
 
-#: src/session/content/room_history/message_row/mod.rs:429
+#: src/session/content/room_history/message_row/mod.rs:426
 msgid "This message was removed."
 msgstr "Ta wiadomość została usunięta."
 
@@ -1283,19 +1283,19 @@ msgstr "To kontynuacja zaktualizowanego pokoju."
 msgid "This is the beginning of this room."
 msgstr "To początek tego pokoju."
 
-#: src/session/content/room_history/state_row/mod.rs:70
+#: src/session/content/room_history/state_row/mod.rs:68
 msgid "This room is encrypted from this point on."
 msgstr "Ten pokój jest zaszyfrowany od tego miejsca."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:94
+#: src/session/content/room_history/state_row/mod.rs:87
 msgid "{previous_user_name} removed their display name."
 msgstr "Użytkownik {previous_user_name} usunął swoją wyświetlaną nazwę."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:101
+#: src/session/content/room_history/state_row/mod.rs:94
 msgid "{previous_user_name} changed their display name to {new_user_name}."
 msgstr ""
 "Użytkownik {previous_user_name} zmienił swoją wyświetlaną nazwę na "
@@ -1303,32 +1303,32 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:110
+#: src/session/content/room_history/state_row/mod.rs:103
 msgid "{user_id} set their display name to {new_user_name}."
 msgstr ""
 "Użytkownik {user_id} ustawił swoją wyświetlaną nazwę na {new_user_name}."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:125
+#: src/session/content/room_history/state_row/mod.rs:116
 msgid "{user} set their avatar."
 msgstr "Użytkownik {user} ustawił swój awatar."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:132
+#: src/session/content/room_history/state_row/mod.rs:123
 msgid "{user} removed their avatar."
 msgstr "Użytkownik {user} usunął swój awatar."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:139
+#: src/session/content/room_history/state_row/mod.rs:130
 msgid "{user} changed their avatar."
 msgstr "Użytkownik {user} zmienił swój awatar."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:150
+#: src/session/content/room_history/state_row/mod.rs:141
 msgid "{user} joined this room."
 msgstr "Użytkownik {user} dołączył do tego pokoju."
 
@@ -1336,58 +1336,58 @@ msgstr "Użytkownik {user} dołączył do tego pokoju."
 #. a variable name.
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/room_history/state_row/mod.rs:156
-#: src/session/content/room_history/state_row/mod.rs:237
+#: src/session/content/room_history/state_row/mod.rs:147
+#: src/session/content/room_history/state_row/mod.rs:224
 msgid "{user} was invited to this room."
 msgstr "Użytkownik {user} został zaproszony do tego pokoju."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:164
+#: src/session/content/room_history/state_row/mod.rs:155
 msgid "{user} requested to be invited to this room."
 msgstr "Użytkownik {user} poprosił o zaproszenie do tego pokoju."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:177
+#: src/session/content/room_history/state_row/mod.rs:166
 msgid "{user} rejected the invite."
 msgstr "Użytkownik {user} odrzucił zaproszenie."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:184
+#: src/session/content/room_history/state_row/mod.rs:173
 msgid "The invitation for {user} has been revoked."
 msgstr "Zaproszenie użytkownika {user} zostało odwołane."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:195
+#: src/session/content/room_history/state_row/mod.rs:182
 msgid "{user} was unbanned."
 msgstr "Wykluczenie użytkownika {user} zostało cofnięte."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:206
+#: src/session/content/room_history/state_row/mod.rs:193
 msgid "{user} left the room."
 msgstr "Użytkownik {user} opuścił pokój."
 
 #. Translators: Do NOT translate the content between '{' and
 #. '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:211
+#: src/session/content/room_history/state_row/mod.rs:198
 msgid "{user} was kicked out of the room."
 msgstr "Użytkownik {user} został wyrzucony z pokoju."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is
 #. a variable name.
-#: src/session/content/room_history/state_row/mod.rs:220
+#: src/session/content/room_history/state_row/mod.rs:207
 msgid "{user} was banned."
 msgstr "Użytkownik {user} został wykluczony."
 
-#: src/session/content/room_history/state_row/mod.rs:225
+#: src/session/content/room_history/state_row/mod.rs:212
 msgid "An unsupported room member event was received."
 msgstr "Odebrano nieobsługiwane wydarzenie członka pokoju."
 
-#: src/session/content/room_history/state_row/mod.rs:246
+#: src/session/content/room_history/state_row/mod.rs:233
 msgid "An unsupported state event was received."
 msgstr "Odebrano nieobsługiwane wydarzenie stanu."
 
@@ -1596,24 +1596,35 @@ msgid "Normal user"
 msgstr "Zwykły użytkownik"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:450
+#: src/session/room/mod.rs:452
 msgid "Failed to forget {room}."
 msgstr "Zapomnienie pokoju {room} się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:643
+#: src/session/room/mod.rs:645
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr ""
 "Przeniesienie pokoju {room} z kategorii {previous_category} do "
 "{new_category} się nie powiodło."
 
-#: src/session/room/mod.rs:943
+#: src/session/room/mod.rs:945
 msgid "Unknown"
 msgstr "Nieznane"
 
+#. Translators: This is the name of a room that is empty but had another user before.
+#. Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:972
+msgid "Empty Room (was {user})"
+msgstr "Pusty pokój (wcześniej: {user})"
+
+#. Translators: This is the name of a room without other users.
+#: src/session/room/mod.rs:974
+msgid "Empty Room"
+msgstr "Pusty pokój"
+
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1367
+#: src/session/room/mod.rs:1381
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 "Przyjęcie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -1621,7 +1632,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1401
+#: src/session/room/mod.rs:1415
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 "Odrzucenie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -1629,7 +1640,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1571
+#: src/session/room/mod.rs:1585
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr ""
 "Zaproszenie użytkownika {user} do pokoju {room} się nie powiodło. Proszę "
@@ -1637,7 +1648,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1579
+#: src/session/room/mod.rs:1593
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1661,23 +1672,27 @@ msgstr "%A, %-d %B"
 msgid "%A, %B %e, %Y"
 msgstr "%A, %-d %B %Y"
 
-#: src/session/room_creation/mod.rs:278
+#: src/session/room_creation/mod.rs:276
 msgid "The address is already taken."
 msgstr "Adres jest już zajęty."
 
-#: src/session/room_creation/mod.rs:301
+#: src/session/room_creation/mod.rs:299
 msgid "Too long. Use a shorter name."
 msgstr "Za długa. Należy użyć krótszej nazwy."
 
-#: src/session/room_creation/mod.rs:329
+#: src/session/room_creation/mod.rs:306
+msgid "Invalid room name."
+msgstr "Nieprawidłowa nazwa pokoju."
+
+#: src/session/room_creation/mod.rs:333
 msgid "Can’t contain “:”"
 msgstr "Nie może zawierać znaku „:”"
 
-#: src/session/room_creation/mod.rs:334
+#: src/session/room_creation/mod.rs:338
 msgid "Can’t contain “#”"
 msgstr "Nie może zawierać znaku „#”"
 
-#: src/session/room_creation/mod.rs:339
+#: src/session/room_creation/mod.rs:343
 msgid "Too long. Use a shorter address."
 msgstr "Za długi. Należy użyć krótszego adresu."
 
@@ -1710,6 +1725,7 @@ msgstr "Dołącz do pokoju jako osoby"
 
 #: src/session/sidebar/category_row.rs:169
 #: src/session/sidebar/category_row.rs:184
+#: src/session/sidebar/category_row.rs:198
 msgid "Move to Rooms"
 msgstr "Przenieś do pokojów"
 
@@ -1753,10 +1769,6 @@ msgstr "Ponownie dołącz do pokoju jako niski priorytet"
 #: src/session/sidebar/category_row.rs:193
 msgid "Rejoin Room as People"
 msgstr "Ponownie dołącz do pokoju jako osoby"
-
-#: src/session/sidebar/category_row.rs:198
-msgid "Mov to Rooms"
-msgstr "Przenieś do pokojów"
 
 #: src/session/sidebar/category_type.rs:34
 msgid "Verifications"
@@ -1834,17 +1846,17 @@ msgstr ""
 msgid "Unable to connect to the homeserver."
 msgstr "Nie można połączyć się z serwerem domowym."
 
-#: src/user_facing_error.rs:30
+#: src/user_facing_error.rs:32
 msgid "The provided username or password is invalid."
 msgstr "Nieprawidłowa nazwa użytkownika lub hasło."
 
-#: src/user_facing_error.rs:31
+#: src/user_facing_error.rs:33
 msgid "The account is deactivated."
 msgstr "Konto jest zdezaktywowane."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name.
-#: src/user_facing_error.rs:38
+#: src/user_facing_error.rs:40
 msgid "You exceeded the homeserver’s rate limit, retry in 1 second."
 msgid_plural "You exceeded the homeserver’s rate limit, retry in {n} seconds."
 msgstr[0] ""
@@ -1857,55 +1869,55 @@ msgstr[2] ""
 "Przekroczono ograniczenie częstotliwości serwera domowego, proszę spróbować "
 "ponownie za {n} sekund."
 
-#: src/user_facing_error.rs:44
+#: src/user_facing_error.rs:46
 msgid "You exceeded the homeserver’s rate limit, try again later."
 msgstr ""
 "Przekroczono ograniczenie częstotliwości serwera domowego, proszę spróbować "
 "ponownie później."
 
-#: src/user_facing_error.rs:54
+#: src/user_facing_error.rs:56
 msgid "An unknown connection error occurred."
 msgstr "Wystąpił nieznany błąd połączenia."
 
-#: src/user_facing_error.rs:62
+#: src/user_facing_error.rs:64
 msgid "Could not decrypt the event"
 msgstr "Nie można odszyfrować wydarzenia"
 
-#: src/user_facing_error.rs:64 src/user_facing_error.rs:84
+#: src/user_facing_error.rs:66 src/user_facing_error.rs:86
 msgid "An unknown error occurred."
 msgstr "Wystąpił nieznany błąd."
 
-#: src/user_facing_error.rs:71
+#: src/user_facing_error.rs:73
 msgid "Could not open the store."
 msgstr "Nie można otworzyć przechowalni."
 
-#: src/user_facing_error.rs:78
+#: src/user_facing_error.rs:80
 msgid "This is not a valid URL"
 msgstr "To nieprawidłowy adres URL"
 
-#: src/user_facing_error.rs:80
+#: src/user_facing_error.rs:82
 msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
 msgstr ""
 "Automatyczne wykrycie serwera domowego się nie powiodło. Należy spróbować "
 "ręcznie podać pełny adres URL."
 
 #. Translators: Default name for image files.
-#: src/utils.rs:190
+#: src/utils.rs:192
 msgid "image"
 msgstr "obraz"
 
 #. Translators: Default name for video files.
-#: src/utils.rs:192
+#: src/utils.rs:194
 msgid "video"
 msgstr "film"
 
 #. Translators: Default name for audio files.
-#: src/utils.rs:194
+#: src/utils.rs:196
 msgid "audio"
 msgstr "dźwięk"
 
 #. Translators: Default name for files.
-#: src/utils.rs:196
+#: src/utils.rs:198
 msgid "file"
 msgstr "plik"
 
