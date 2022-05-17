@@ -17,7 +17,7 @@
           </object>
         </child>
         <child type="end">
-          <object class="GtkButton">
+          <object class="GtkButton" id="send_button">
             <property name="label" translatable="yes">_Send</property>
             <property name="use-underline">True</property>
             <property name="action-name">attachment-dialog.send</property>

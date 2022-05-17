@@ -13,6 +13,8 @@ mod imp {
     pub struct AttachmentDialog {
         pub send: Cell<bool>,
         #[template_child]
+        pub send_button: TemplateChild<gtk::Button>,
+        #[template_child]
         pub media: TemplateChild<MediaContentViewer>,
     }
 
@@ -63,6 +65,7 @@ impl AttachmentDialog {
         let obj: Self = glib::Object::new(&[("transient-for", transient_for), ("title", &title)])
             .expect("Failed to create AttachmentDialog");
         obj.imp().media.view_image(image);
+        obj.imp().send_button.grab_focus();
         obj
     }
 
@@ -70,6 +73,7 @@ impl AttachmentDialog {
         let obj: Self = glib::Object::new(&[("transient-for", transient_for), ("title", &title)])
             .expect("Failed to create AttachmentDialog");
         obj.imp().media.view_file(file.to_owned());
+        obj.imp().send_button.grab_focus();
         obj
     }
 
@@ -77,6 +81,7 @@ impl AttachmentDialog {
         let obj: Self = glib::Object::new(&[("transient-for", transient_for), ("title", &title)])
             .expect("Failed to create AttachmentDialog");
         obj.imp().media.view_location(geo_uri);
+        obj.imp().send_button.grab_focus();
         obj
     }
 
