@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-05-09 17:01+0000\n"
-"PO-Revision-Date: 2022-05-09 23:02+0300\n"
+"POT-Creation-Date: 2022-05-18 09:37+0000\n"
+"PO-Revision-Date: 2022-05-18 12:42+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -1237,20 +1237,25 @@ msgstr "Підтримки файла зображення не передбач
 msgid "Could not retrieve media"
 msgstr "Не вдалося отримати мультимедійні дані"
 
-#: src/session/content/room_history/message_row/mod.rs:380
+#: src/session/content/room_history/message_row/mod.rs:377
 msgid "Identity verification was started"
 msgstr "Розпочато перевірку профілю"
 
-#: src/session/content/room_history/message_row/mod.rs:393
-#: src/session/content/room_history/message_row/mod.rs:440
+#: src/session/content/room_history/message_row/mod.rs:390
+#: src/session/content/room_history/message_row/mod.rs:437
 msgid "Unsupported event"
 msgstr "Непідтримувана подія"
 
-#: src/session/content/room_history/message_row/mod.rs:418
-msgid "Fractal couldn’t decrypt this message."
-msgstr "«Фрактал» не вдалося розшифрувати це повідомлення."
+#: src/session/content/room_history/message_row/mod.rs:415
+#| msgid "Fractal couldn’t decrypt this message."
+msgid ""
+"Fractal couldn’t decrypt this message, but will retry once the keys are "
+"available."
+msgstr ""
+"«Фрактал» не вдалося розшифрувати це повідомлення, але програма повторить"
+" спробу, щойно стануть доступними ключі."
 
-#: src/session/content/room_history/message_row/mod.rs:429
+#: src/session/content/room_history/message_row/mod.rs:426
 msgid "This message was removed."
 msgstr "Це повідомлення було вилучено."
 
@@ -1576,11 +1581,11 @@ msgstr ""
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Під час створення ключів шифрування сталася помилка."
 
-#: src/session/mod.rs:465
+#: src/session/mod.rs:469
 msgid "Unable to store session"
 msgstr "Не вдалося зберегти сеанс"
 
-#: src/session/mod.rs:757
+#: src/session/mod.rs:762
 msgid "Failed to logout the session."
 msgstr "Не вдалося вийти з сеансу."
 
@@ -1601,51 +1606,51 @@ msgid "Normal user"
 msgstr "Звичайний користувач"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:452
+#: src/session/room/mod.rs:466
 msgid "Failed to forget {room}."
 msgstr "Не вдалося забути про {room}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:645
+#: src/session/room/mod.rs:659
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "Не вдалося пересунути {room} з {previous_category} до {new_category}."
 
-#: src/session/room/mod.rs:945
+#: src/session/room/mod.rs:959
 msgid "Unknown"
 msgstr "Невідомий"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:972
+#: src/session/room/mod.rs:986
 msgid "Empty Room (was {user})"
 msgstr "Порожня кімната (був {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:974
+#: src/session/room/mod.rs:988
 msgid "Empty Room"
 msgstr "Порожня кімната"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1381
+#: src/session/room/mod.rs:1395
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "Не вдалося прийняти запрошення до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1415
+#: src/session/room/mod.rs:1429
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr "Не вдалося відмовити у запрошенні до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1585
+#: src/session/room/mod.rs:1599
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "Не вдалося запросити {user} до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1593
+#: src/session/room/mod.rs:1607
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1681,7 +1686,6 @@ msgid "Too long. Use a shorter name."
 msgstr "Надто довга. Скористайтеся коротшою назвою."
 
 #: src/session/room_creation/mod.rs:306
-#| msgid "Invite to {name}"
 msgid "Invalid room name."
 msgstr "Некоректна назва кімнати."
 
@@ -1725,6 +1729,7 @@ msgstr "Долучитися як до кімнати «Люди»"
 
 #: src/session/sidebar/category_row.rs:169
 #: src/session/sidebar/category_row.rs:184
+#: src/session/sidebar/category_row.rs:198
 msgid "Move to Rooms"
 msgstr "Пересунути до «Кімнат»"
 
@@ -1768,10 +1773,6 @@ msgstr "Повторно увійти як до низькопріоритетн
 #: src/session/sidebar/category_row.rs:193
 msgid "Rejoin Room as People"
 msgstr "Повторно увійти як до кімнати «Люди»"
-
-#: src/session/sidebar/category_row.rs:198
-msgid "Mov to Rooms"
-msgstr "Пересунути до «Кімнат»"
 
 #: src/session/sidebar/category_type.rs:34
 msgid "Verifications"
@@ -1930,6 +1931,9 @@ msgstr "файл"
 #: src/window.rs:230
 msgid "Failed to restore previous sessions"
 msgstr "Не вдалося відновити попередні сеанси"
+
+#~ msgid "Mov to Rooms"
+#~ msgstr "Пересунути до «Кімнат»"
 
 #~ msgid "No Preview Available"
 #~ msgstr "Перегляд недоступний"
