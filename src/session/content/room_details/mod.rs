@@ -19,6 +19,8 @@ use crate::{
 };
 
 mod imp {
+    use std::cell::Cell;
+
     use glib::subclass::InitializingObject;
     use once_cell::unsync::OnceCell;
 
@@ -34,12 +36,17 @@ mod imp {
         #[template_child]
         pub avatar_edit_button: TemplateChild<adw::Bin>,
         #[template_child]
-        pub edit_toggle: TemplateChild<gtk::ToggleButton>,
+        pub edit_toggle: TemplateChild<gtk::Button>,
         #[template_child]
         pub room_name_entry: TemplateChild<gtk::Entry>,
         #[template_child]
         pub room_topic_text_view: TemplateChild<gtk::TextView>,
+        #[template_child]
+        pub room_topic_entry: TemplateChild<CustomEntry>,
+        #[template_child]
+        pub room_topic_label: TemplateChild<gtk::Label>,
         pub member_page: OnceCell<MemberPage>,
+        pub edit_mode: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -169,18 +176,33 @@ impl RoomDetails {
         let label_enabled = gettext("Save Details");
         let label_disabled = gettext("Edit Details");
 
-        edit_toggle.set_active(false);
         edit_toggle.set_label(&label_disabled);
 
         // Save changes of name and topic on toggle button release.
-        edit_toggle.connect_toggled(clone!(@weak self as this => move |button| {
-            if button.is_active() {
+        edit_toggle.connect_clicked(clone!(@weak self as this => move |button| {
+            let priv_ = this.imp();
+            if !priv_.edit_mode.get() {
+                priv_.edit_mode.set(true);
                 button.set_label(&label_enabled);
+                priv_.room_topic_text_view.set_justification(gtk::Justification::Left);
+                priv_.room_name_entry.set_xalign(0.0);
+                priv_.room_name_entry.set_halign(gtk::Align::Center);
+                priv_.room_name_entry.set_sensitive(true);
+                priv_.room_name_entry.set_width_chars(25);
+                priv_.room_topic_entry.set_sensitive(true);
+                priv_.room_topic_label.show();
                 return;
             }
+            priv_.edit_mode.set(false);
             button.set_label(&label_disabled);
+            priv_.room_topic_text_view.set_justification(gtk::Justification::Center);
+            priv_.room_name_entry.set_xalign(0.5);
+            priv_.room_name_entry.set_sensitive(false);
+            priv_.room_name_entry.set_halign(gtk::Align::Fill);
+            priv_.room_name_entry.set_width_chars(-1);
+            priv_.room_topic_entry.set_sensitive(false);
+            priv_.room_topic_label.hide();
 
-            let priv_ = this.imp();
             let room = this.room();
 
             let room_name = priv_.room_name_entry.buffer().text();
@@ -189,13 +211,6 @@ impl RoomDetails {
             room.store_room_name(room_name);
             room.store_topic(topic.to_string());
         }));
-
-        // End editing on enter.
-        priv_
-            .room_name_entry
-            .connect_activate(clone!(@weak self as this => move |_entry| {
-                this.imp().edit_toggle.set_active(false);
-            }));
 
         // Hide edit controls when the user is not eligible to perform the actions.
         let room = self.room();

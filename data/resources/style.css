@@ -526,13 +526,12 @@ message-reactions .reaction-count {
   background: none;
 }
 
-.room-details-name {
+.room-details-name:disabled {
   font-size: 2em;
-  margin-bottom: 6px;
 }
 
-.room-details-topic {
-  margin-bottom: 6px;
+.room-details-topic:not(:disabled) {
+  min-height: 102px;
 }
 
 .cutout-button {
