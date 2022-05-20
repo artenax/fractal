@@ -61,7 +61,7 @@ flatpak install --user gnome-nightly org.gnome.Fractal.Devel
 
 ### Minimum Rust version
 
-To build Fractal, Rust 1.58 is required. For development, you'll need to install the nightly
+To build Fractal, Rust 1.60 is required. For development, you'll need to install the nightly
 toolchain to be able to run our pre-commit hook that validates the formatting and lints the Rust
 code.
 

@@ -3,7 +3,7 @@ name = "fractal"
 version = "5.0.0-alpha"
 authors = ["Julian Sparber <julian@sparber.net>"]
 edition = "2018"
-rust-version = "1.58"
+rust-version = "1.60"
 
 [profile.release]
 debug = true
