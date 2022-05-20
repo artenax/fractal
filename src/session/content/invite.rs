@@ -178,7 +178,6 @@ impl Invite {
             }
         }
 
-        // FIXME: remove closure when room changes
         if let Some(ref room) = room {
             let handler_id = room.connect_notify_local(
                 Some("category"),

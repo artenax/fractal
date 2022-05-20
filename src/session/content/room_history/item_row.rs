@@ -151,8 +151,6 @@ glib::wrapper! {
         @extends gtk::Widget, adw::Bin, ContextMenuBin, @implements gtk::Accessible;
 }
 
-// TODO:
-// - [ ] Don't show rows for items that don't have a visible UI
 impl ItemRow {
     pub fn new(room_history: &RoomHistory) -> Self {
         glib::Object::new(&[("room-history", room_history)]).expect("Failed to create ItemRow")

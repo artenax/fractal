@@ -119,8 +119,6 @@ glib::wrapper! {
         @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
 }
 
-// TODO
-// - [] Implement widgets to show message events
 impl MessageRow {
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create MessageRow")
@@ -233,9 +231,6 @@ impl Default for MessageRow {
 /// If `compact` is true, the content should appear in a smaller format without
 /// interactions, if possible.
 fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
-    // TODO: create widgets for all event types
-    // TODO: display reaction events from event.relates_to()
-    // TODO: we should reuse the already present child widgets when possible
     match event.content() {
         Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
             let msgtype = if let Some(Relation::Replacement(replacement)) = message.relates_to {

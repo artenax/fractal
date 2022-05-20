@@ -49,8 +49,6 @@ glib::wrapper! {
         @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
 }
 
-// TODO
-// - [] Implement widgets to show state events
 impl StateRow {
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create StateRow")
