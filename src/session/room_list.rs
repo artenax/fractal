@@ -157,8 +157,8 @@ impl RoomList {
 
     /// Waits till the Room becomes available
     pub async fn get_wait(&self, room_id: OwnedRoomId) -> Option<Room> {
-        if let Some(room) = self.imp().list.borrow().get(&*room_id) {
-            Some(room.clone())
+        if let Some(room) = self.get(&room_id) {
+            Some(room)
         } else {
             let (sender, receiver) = futures::channel::oneshot::channel();
 
