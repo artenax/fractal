@@ -1,39 +1,5 @@
 use sourceview::prelude::BufferExt;
 
-/// FIXME: This should be addressed in ruma directly
-#[macro_export]
-macro_rules! fn_event {
-    ( $event:ident, $fun:ident ) => {
-        match &$event {
-            AnyRoomEvent::Message(event) => event.$fun(),
-            AnyRoomEvent::State(event) => event.$fun(),
-            AnyRoomEvent::RedactedMessage(event) => event.$fun(),
-            AnyRoomEvent::RedactedState(event) => event.$fun(),
-        }
-    };
-}
-
-/// FIXME: This should be addressed in ruma directly
-#[macro_export]
-macro_rules! event_from_sync_event {
-    ( $event:ident, $room_id:ident) => {
-        match $event {
-            AnySyncRoomEvent::MessageLike(event) => {
-                AnyRoomEvent::Message(event.into_full_event($room_id.clone()))
-            }
-            AnySyncRoomEvent::State(event) => {
-                AnyRoomEvent::State(event.into_full_event($room_id.clone()))
-            }
-            AnySyncRoomEvent::RedactedMessage(event) => {
-                AnyRoomEvent::RedactedMessage(event.into_full_event($room_id.clone()))
-            }
-            AnySyncRoomEvent::RedactedState(event) => {
-                AnyRoomEvent::RedactedState(event.into_full_event($room_id.clone()))
-            }
-        }
-    };
-}
-
 /// Spawn a future on the default `MainContext`
 ///
 /// This was taken from `gtk-macros`
