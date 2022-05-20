@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-05-18 09:37+0000\n"
-"PO-Revision-Date: 2022-05-18 12:42+0300\n"
+"POT-Creation-Date: 2022-05-20 13:38+0000\n"
+"PO-Revision-Date: 2022-05-20 17:14+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -138,7 +138,7 @@ msgid "Other Active Sessions"
 msgstr "Інші активні сеанси"
 
 #: data/resources/ui/account-settings-user-page.ui:5
-#: data/resources/ui/content-room-details.ui:9
+#: data/resources/ui/content-room-details.ui:10
 msgid "General"
 msgstr "Загальні"
 
@@ -288,9 +288,14 @@ msgid "Save"
 msgstr "Зберегти"
 
 #: data/resources/ui/content-room-details.ui:4
-#: src/session/content/room_details/mod.rs:250
+#: src/session/content/room_details/mod.rs:265
 msgid "Room Details"
 msgstr "Інформація про кімнату"
+
+#: data/resources/ui/content-room-details.ui:100
+#| msgid "No room description"
+msgid "Description"
+msgstr "Опис"
 
 #: data/resources/ui/content-room-history.ui:6
 msgid "Room _Details"
@@ -1199,23 +1204,23 @@ msgstr[1] "{n} запрошених"
 msgstr[2] "{n} запрошених"
 msgstr[3] "1 запрошений"
 
-#: src/session/content/room_details/mod.rs:169
+#: src/session/content/room_details/mod.rs:176
 msgid "Save Details"
 msgstr "Зберегти параметри"
 
-#: src/session/content/room_details/mod.rs:170
+#: src/session/content/room_details/mod.rs:177
 msgid "Edit Details"
 msgstr "Редагувати параметри"
 
-#: src/session/content/room_details/mod.rs:213
+#: src/session/content/room_details/mod.rs:228
 msgid "Choose avatar"
 msgstr "Виберіть аватар"
 
-#: src/session/content/room_details/mod.rs:244
+#: src/session/content/room_details/mod.rs:259
 msgid "Invite new Members"
 msgstr "Запросити нових учасників"
 
-#: src/session/content/room_history/item_row.rs:257
+#: src/session/content/room_history/item_row.rs:255
 msgid "New Messages"
 msgstr "Нові повідомлення"
 
@@ -1237,25 +1242,24 @@ msgstr "Підтримки файла зображення не передбач
 msgid "Could not retrieve media"
 msgstr "Не вдалося отримати мультимедійні дані"
 
-#: src/session/content/room_history/message_row/mod.rs:377
+#: src/session/content/room_history/message_row/mod.rs:372
 msgid "Identity verification was started"
 msgstr "Розпочато перевірку профілю"
 
-#: src/session/content/room_history/message_row/mod.rs:390
-#: src/session/content/room_history/message_row/mod.rs:437
+#: src/session/content/room_history/message_row/mod.rs:385
+#: src/session/content/room_history/message_row/mod.rs:432
 msgid "Unsupported event"
 msgstr "Непідтримувана подія"
 
-#: src/session/content/room_history/message_row/mod.rs:415
-#| msgid "Fractal couldn’t decrypt this message."
+#: src/session/content/room_history/message_row/mod.rs:410
 msgid ""
 "Fractal couldn’t decrypt this message, but will retry once the keys are "
 "available."
 msgstr ""
-"«Фрактал» не вдалося розшифрувати це повідомлення, але програма повторить"
-" спробу, щойно стануть доступними ключі."
+"«Фрактал» не вдалося розшифрувати це повідомлення, але програма повторить "
+"спробу, щойно стануть доступними ключі."
 
-#: src/session/content/room_history/message_row/mod.rs:426
+#: src/session/content/room_history/message_row/mod.rs:421
 msgid "This message was removed."
 msgstr "Це повідомлення було вилучено."
 
@@ -1295,49 +1299,49 @@ msgstr "Це продовження оновленої кімнати."
 msgid "This is the beginning of this room."
 msgstr "Це початок цієї кімнати."
 
-#: src/session/content/room_history/state_row/mod.rs:68
+#: src/session/content/room_history/state_row/mod.rs:66
 msgid "This room is encrypted from this point on."
 msgstr "Цю кімнату відтепер зашифровано."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:87
+#: src/session/content/room_history/state_row/mod.rs:85
 msgid "{previous_user_name} removed their display name."
 msgstr "{previous_user_name} вилучено власне показане ім'я"
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:94
+#: src/session/content/room_history/state_row/mod.rs:92
 msgid "{previous_user_name} changed their display name to {new_user_name}."
 msgstr "{previous_user_name} змінено показане ім'я на {new_user_name}."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:103
+#: src/session/content/room_history/state_row/mod.rs:101
 msgid "{user_id} set their display name to {new_user_name}."
 msgstr "{user_id} встановлено показане ім'я {new_user_name}."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:116
+#: src/session/content/room_history/state_row/mod.rs:114
 msgid "{user} set their avatar."
 msgstr "{user} встановлено аватар."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:123
+#: src/session/content/room_history/state_row/mod.rs:121
 msgid "{user} removed their avatar."
 msgstr "{user} вилучено аватар."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:130
+#: src/session/content/room_history/state_row/mod.rs:128
 msgid "{user} changed their avatar."
 msgstr "{user} змінено аватар."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:141
+#: src/session/content/room_history/state_row/mod.rs:139
 msgid "{user} joined this room."
 msgstr "{user} долучився/долучилася до цієї кімнати."
 
@@ -1345,58 +1349,58 @@ msgstr "{user} долучився/долучилася до цієї кімна�
 #. a variable name.
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/room_history/state_row/mod.rs:147
-#: src/session/content/room_history/state_row/mod.rs:224
+#: src/session/content/room_history/state_row/mod.rs:145
+#: src/session/content/room_history/state_row/mod.rs:222
 msgid "{user} was invited to this room."
 msgstr "{user} було запрошено до цієї кімнати."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:155
+#: src/session/content/room_history/state_row/mod.rs:153
 msgid "{user} requested to be invited to this room."
 msgstr "{user} надіслано запит щодо запрошення до цієї кімнати."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:166
+#: src/session/content/room_history/state_row/mod.rs:164
 msgid "{user} rejected the invite."
 msgstr "{user} відмовлено у запрошенні."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:173
+#: src/session/content/room_history/state_row/mod.rs:171
 msgid "The invitation for {user} has been revoked."
 msgstr "Запрошення {user} було відкликано."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:182
+#: src/session/content/room_history/state_row/mod.rs:180
 msgid "{user} was unbanned."
 msgstr "Блокування {user} скасовано."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:193
+#: src/session/content/room_history/state_row/mod.rs:191
 msgid "{user} left the room."
 msgstr "{user} полишено кімнату."
 
 #. Translators: Do NOT translate the content between '{' and
 #. '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:198
+#: src/session/content/room_history/state_row/mod.rs:196
 msgid "{user} was kicked out of the room."
 msgstr "{user} було викинуто з кімнати."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is
 #. a variable name.
-#: src/session/content/room_history/state_row/mod.rs:207
+#: src/session/content/room_history/state_row/mod.rs:205
 msgid "{user} was banned."
 msgstr "{user} було заблоковано."
 
-#: src/session/content/room_history/state_row/mod.rs:212
+#: src/session/content/room_history/state_row/mod.rs:210
 msgid "An unsupported room member event was received."
 msgstr "Було отримано непідтримуваний запис події від учасника кімнати."
 
-#: src/session/content/room_history/state_row/mod.rs:233
+#: src/session/content/room_history/state_row/mod.rs:231
 msgid "An unsupported state event was received."
 msgstr "Отримано повідомлення про непідтримуваний стан."
 
@@ -1611,46 +1615,46 @@ msgid "Failed to forget {room}."
 msgstr "Не вдалося забути про {room}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:659
+#: src/session/room/mod.rs:708
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "Не вдалося пересунути {room} з {previous_category} до {new_category}."
 
-#: src/session/room/mod.rs:959
+#: src/session/room/mod.rs:1008
 msgid "Unknown"
 msgstr "Невідомий"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:986
+#: src/session/room/mod.rs:1035
 msgid "Empty Room (was {user})"
 msgstr "Порожня кімната (був {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:988
+#: src/session/room/mod.rs:1037
 msgid "Empty Room"
 msgstr "Порожня кімната"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1395
+#: src/session/room/mod.rs:1444
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "Не вдалося прийняти запрошення до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1429
+#: src/session/room/mod.rs:1478
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr "Не вдалося відмовити у запрошенні до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1599
+#: src/session/room/mod.rs:1648
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "Не вдалося запросити {user} до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1607
+#: src/session/room/mod.rs:1656
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1909,22 +1913,22 @@ msgstr ""
 "адресу вручну."
 
 #. Translators: Default name for image files.
-#: src/utils.rs:192
+#: src/utils.rs:158
 msgid "image"
 msgstr "зображення"
 
 #. Translators: Default name for video files.
-#: src/utils.rs:194
+#: src/utils.rs:160
 msgid "video"
 msgstr "відео"
 
 #. Translators: Default name for audio files.
-#: src/utils.rs:196
+#: src/utils.rs:162
 msgid "audio"
 msgstr "звук"
 
 #. Translators: Default name for files.
-#: src/utils.rs:198
+#: src/utils.rs:164
 msgid "file"
 msgstr "файл"
 
@@ -2231,9 +2235,6 @@ msgstr "Не вдалося відновити попередні сеанси"
 
 #~ msgid "Type in your room topic"
 #~ msgstr "Введіть тему вашої кімнати"
-
-#~ msgid "No room description"
-#~ msgstr "Опис кімнати відсутній"
 
 #~ msgid "For all messages"
 #~ msgstr "Для всіх повідомлень"
