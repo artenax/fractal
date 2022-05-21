@@ -210,8 +210,7 @@ run_rustfmt() {
         staged_files=`git diff --name-only --cached | grep '.rs$'`
         result=0
         for file in ${staged_files[@]}; do
-
-            if ! rustfmt --unstable-features --skip-children --check $file; then
+            if ! cargo +nightly fmt -- --unstable-features --skip-children --check $file; then
                 result=1
             fi
         done
