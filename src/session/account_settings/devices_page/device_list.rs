@@ -202,8 +202,8 @@ impl DeviceList {
         self.set_loading(true);
 
         let handle = spawn_tokio!(async move {
-            let user_id = client.user_id().await.unwrap();
-            let crypto_devices = client.encryption().get_user_devices(&user_id).await;
+            let user_id = client.user_id().unwrap();
+            let crypto_devices = client.encryption().get_user_devices(user_id).await;
 
             let crypto_devices = match crypto_devices {
                 Ok(crypto_devices) => crypto_devices,
@@ -216,7 +216,7 @@ impl DeviceList {
                         .devices
                         .sort_unstable_by(|a, b| b.last_seen_ts.cmp(&a.last_seen_ts));
 
-                    let current_device = if let Some(current_device_id) = client.device_id().await {
+                    let current_device = if let Some(current_device_id) = client.device_id() {
                         if let Some(index) = response
                             .devices
                             .iter()

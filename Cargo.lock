@@ -203,9 +203,9 @@ dependencies = [
 
 [[package]]
 name = "async-once-cell"
-version = "0.3.0"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8e52116ee51c72c07a9db74c6f95213c95c462408bb5a689772d623a62b96471"
+checksum = "72faff1fdc615a0199d7bf71e6f389af54d46a66e9beb5d76c39e48eda93ecce"
 
 [[package]]
 name = "async-recursion"
@@ -2345,7 +2345,7 @@ checksum = "a3e378b66a060d48947b590737b30a1be76706c8dd7b8ba0f2fe3989c68a853f"
 [[package]]
 name = "matrix-sdk"
 version = "0.5.0"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#2d7fb1b61c25cec168bd120046c3ed75815822b2"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#fa7c1b60f6c681878a3648ebe701a16b60814d01"
 dependencies = [
  "anymap2",
  "async-once-cell",
@@ -2381,7 +2381,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk-base"
 version = "0.5.1"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#2d7fb1b61c25cec168bd120046c3ed75815822b2"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#fa7c1b60f6c681878a3648ebe701a16b60814d01"
 dependencies = [
  "async-stream",
  "async-trait",
@@ -2392,6 +2392,7 @@ dependencies = [
  "lru 0.7.5",
  "matrix-sdk-common",
  "matrix-sdk-crypto",
+ "once_cell",
  "ruma",
  "serde",
  "serde_json",
@@ -2403,7 +2404,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk-common"
 version = "0.5.0"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#2d7fb1b61c25cec168bd120046c3ed75815822b2"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#fa7c1b60f6c681878a3648ebe701a16b60814d01"
 dependencies = [
  "async-lock",
  "futures-util",
@@ -2417,7 +2418,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk-crypto"
 version = "0.5.0"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#2d7fb1b61c25cec168bd120046c3ed75815822b2"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#fa7c1b60f6c681878a3648ebe701a16b60814d01"
 dependencies = [
  "aes",
  "async-trait",
@@ -2445,7 +2446,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk-indexeddb"
 version = "0.1.0"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#2d7fb1b61c25cec168bd120046c3ed75815822b2"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#fa7c1b60f6c681878a3648ebe701a16b60814d01"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2469,7 +2470,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk-qrcode"
 version = "0.3.0"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#2d7fb1b61c25cec168bd120046c3ed75815822b2"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#fa7c1b60f6c681878a3648ebe701a16b60814d01"
 dependencies = [
  "base64",
  "byteorder",
@@ -2484,7 +2485,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk-sled"
 version = "0.1.0"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#2d7fb1b61c25cec168bd120046c3ed75815822b2"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#fa7c1b60f6c681878a3648ebe701a16b60814d01"
 dependencies = [
  "async-stream",
  "async-trait",
@@ -2507,7 +2508,7 @@ dependencies = [
 [[package]]
 name = "matrix-sdk-store-encryption"
 version = "0.1.0"
-source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#2d7fb1b61c25cec168bd120046c3ed75815822b2"
+source = "git+https://github.com/matrix-org/matrix-rust-sdk.git#fa7c1b60f6c681878a3648ebe701a16b60814d01"
 dependencies = [
  "blake3",
  "chacha20poly1305",
@@ -2803,9 +2804,9 @@ dependencies = [
 
 [[package]]
 name = "once_cell"
-version = "1.9.0"
+version = "1.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da32515d9f6e6e489d7bc9d84c71b060db7247dc035bbe44eac88cf87486d8d5"
+checksum = "7709cef83f0c1f58f666e746a08b21e0085f7440fa6a29cc194d68aac97a4225"
 
 [[package]]
 name = "opaque-debug"
@@ -4506,8 +4507,7 @@ checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
 [[package]]
 name = "vodozemac"
 version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3a42265bb5d65ba2807e477741ca3147a58d25ee5463860491fe0c24f4d21c1a"
+source = "git+https://github.com/matrix-org/vodozemac/?rev=d0e744287a14319c2a9148fef3747548c740fc36#d0e744287a14319c2a9148fef3747548c740fc36"
 dependencies = [
  "aes",
  "arrayvec 0.7.2",

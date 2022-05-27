@@ -179,10 +179,10 @@ impl UserPage {
                 let homeserver = client.homeserver().await;
                 priv_.homeserver.set_label(homeserver.as_ref());
 
-                let user_id = client.user_id().await.unwrap();
+                let user_id = client.user_id().unwrap();
                 priv_.user_id.set_label(user_id.as_ref());
 
-                let session_id = client.device_id().await.unwrap();
+                let session_id = client.device_id().unwrap();
                 priv_.session_id.set_label(session_id.as_ref());
             })
         );
