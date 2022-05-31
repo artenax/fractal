@@ -20,7 +20,7 @@ use deactivate_account_subpage::DeactivateAccountSubpage;
 use crate::{
     components::{ActionState, ButtonRow, EditableAvatar, EntryRow},
     session::{Session, User, UserExt},
-    spawn, spawn_tokio,
+    spawn, spawn_tokio, toast,
     utils::TemplateCallbacks,
 };
 
@@ -222,10 +222,7 @@ impl UserPage {
             avatar.show_temp_image(false);
             avatar.set_remove_state(ActionState::Success);
             avatar.set_edit_sensitive(true);
-            let _ = self.activate_action(
-                "win.add-toast",
-                Some(&gettext("Avatar removed successfully").to_variant()),
-            );
+            toast!(self, gettext("Avatar removed successfully"));
             glib::timeout_add_local_once(
                 Duration::from_secs(2),
                 clone!(@weak avatar => move || {
@@ -240,10 +237,7 @@ impl UserPage {
                 avatar.show_temp_image(false);
                 avatar.set_temp_image_from_file(None);
                 avatar.set_remove_sensitive(true);
-                let _ = self.activate_action(
-                    "win.add-toast",
-                    Some(&gettext("Avatar changed successfully").to_variant()),
-                );
+                toast!(self, gettext("Avatar changed successfully"));
                 glib::timeout_add_local_once(
                     Duration::from_secs(2),
                     clone!(@weak avatar => move || {
@@ -286,10 +280,7 @@ impl UserPage {
             Ok(res) => res.content_uri,
             Err(error) => {
                 error!("Could not upload user avatar: {}", error);
-                let _ = self.activate_action(
-                    "win.add-toast",
-                    Some(&gettext("Could not upload avatar").to_variant()),
-                );
+                toast!(self, gettext("Could not upload avatar"));
                 avatar.show_temp_image(false);
                 avatar.set_temp_image_from_file(None);
                 avatar.set_edit_state(ActionState::Default);
@@ -311,10 +302,7 @@ impl UserPage {
             Err(error) => {
                 if priv_.changing_avatar_to.take().is_some() {
                     error!("Could not change user avatar: {}", error);
-                    let _ = self.activate_action(
-                        "win.add-toast",
-                        Some(&gettext("Could not change avatar").to_variant()),
-                    );
+                    toast!(self, gettext("Could not change avatar"));
                     avatar.show_temp_image(false);
                     avatar.set_temp_image_from_file(None);
                     avatar.set_edit_state(ActionState::Default);
@@ -343,10 +331,7 @@ impl UserPage {
                 if priv_.removing_avatar.get() {
                     priv_.removing_avatar.set(false);
                     error!("Couldn’t remove user avatar: {}", error);
-                    let _ = self.activate_action(
-                        "win.add-toast",
-                        Some(&gettext("Could not remove avatar").to_variant()),
-                    );
+                    toast!(self, gettext("Could not remove avatar"));
                     avatar.show_temp_image(false);
                     avatar.set_remove_state(ActionState::Default);
                     avatar.set_edit_sensitive(true);
@@ -392,10 +377,7 @@ impl UserPage {
             entry.remove_css_class("error");
             entry.set_action_state(ActionState::Success);
             entry.set_entry_sensitive(true);
-            let _ = self.activate_action(
-                "win.add-toast",
-                Some(&gettext("Name changed successfully").to_variant()),
-            );
+            toast!(self, gettext("Name changed successfully"));
             glib::timeout_add_local_once(
                 Duration::from_secs(2),
                 clone!(@weak entry => move || {
@@ -431,10 +413,7 @@ impl UserPage {
             }
             Err(err) => {
                 error!("Couldn’t change user display name: {}", err);
-                let _ = self.activate_action(
-                    "win.add-toast",
-                    Some(&gettext("Could not change display name").to_variant()),
-                );
+                toast!(self, gettext("Could not change display name"));
                 entry.set_action_state(ActionState::Retry);
                 entry.add_css_class("error");
                 entry.set_entry_sensitive(true);

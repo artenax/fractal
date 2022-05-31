@@ -10,7 +10,7 @@ use gtk::{
 use log::error;
 
 use super::{ActionButton, ActionState};
-use crate::{session::Avatar, spawn};
+use crate::{session::Avatar, spawn, toast};
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -361,27 +361,18 @@ impl EditableAvatar {
                         self.emit_by_name::<()>("edit-avatar", &[&file]);
                     } else {
                         error!("The chosen file is not an image");
-                        let _ = self.activate_action(
-                            "win.add-toast",
-                            Some(&gettext("The chosen file is not an image").to_variant()),
-                        );
+                        toast!(self, gettext("The chosen file is not an image"));
                     }
                 } else {
                     error!("Could not get the content type of the file");
-                    let _ = self.activate_action(
-                        "win.add-toast",
-                        Some(
-                            &gettext("Could not determine the type of the chosen file")
-                                .to_variant(),
-                        ),
+                    toast!(
+                        self,
+                        gettext("Could not determine the type of the chosen file")
                     );
                 }
             } else {
                 error!("No file chosen");
-                let _ = self.activate_action(
-                    "win.add-toast",
-                    Some(&gettext("No file was chosen").to_variant()),
-                );
+                toast!(self, gettext("No file was chosen"));
             }
         }
     }

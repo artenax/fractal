@@ -20,7 +20,7 @@ use matrix_sdk::{
 use crate::{
     components::{AuthDialog, AuthError, PasswordEntryRow, SpinnerButton},
     session::Session,
-    spawn,
+    spawn, toast,
     utils::validate_password,
 };
 
@@ -308,10 +308,7 @@ impl ChangePasswordSubpage {
 
         match result {
             Ok(_) => {
-                let _ = self.activate_action(
-                    "win.add-toast",
-                    Some(&gettext("Password changed successfully").to_variant()),
-                );
+                toast!(self, gettext("Password changed successfully"));
                 priv_.password.set_text("");
                 priv_.confirm_password.set_text("");
                 self.activate_action("win.close-subpage", None).unwrap();
@@ -326,17 +323,11 @@ impl ChangePasswordSubpage {
                 )) if error.kind == ErrorKind::WeakPassword) =>
                 {
                     error!("Weak password: {:?}", error);
-                    let _ = self.activate_action(
-                        "win.add-toast",
-                        Some(&gettext("Password rejected for being too weak").to_variant()),
-                    );
+                    toast!(self, gettext("Password rejected for being too weak"));
                 }
                 _ => {
                     error!("Failed to change the password: {:?}", err);
-                    let _ = self.activate_action(
-                        "win.add-toast",
-                        Some(&gettext("Could not change password").to_variant()),
-                    );
+                    toast!(self, gettext("Could not change password"));
                 }
             },
         }

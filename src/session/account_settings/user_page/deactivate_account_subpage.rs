@@ -202,10 +202,7 @@ impl DeactivateAccountSubpage {
             }
             Err(err) => {
                 error!("Failed to deactivate account: {:?}", err);
-                let _ = self.activate_action(
-                    "win.add-toast",
-                    Some(&gettext("Could not deactivate account").to_variant()),
-                );
+                toast!(self, gettext("Could not deactivate account"));
             }
         }
         priv_.button.set_loading(false);

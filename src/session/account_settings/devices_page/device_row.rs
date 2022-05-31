@@ -5,8 +5,8 @@ use log::error;
 
 use super::Device;
 use crate::{
-    components::{AuthError, SpinnerButton, Toast},
-    gettext_f, spawn,
+    components::{AuthError, SpinnerButton},
+    gettext_f, spawn, toast,
 };
 
 mod imp {
@@ -210,12 +210,10 @@ impl DeviceRow {
                     Err(AuthError::UserCancelled) => {},
                     Err(err) => {
                         error!("Failed to disconnect device {}: {err:?}", device.device_id());
-                        if let Some(adw_window) = window.and_then(|w| w.downcast::<adw::PreferencesWindow>().ok()) {
-                            let device_name = device.display_name();
-                            // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-                            let error_message = gettext_f("Failed to disconnect device “{device_name}”", &[("device_name", device_name)]);
-                            adw_window.add_toast(&Toast::new(&error_message).into());
-                        }
+                        let device_name = device.display_name();
+                        // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                        let error_message = gettext_f("Failed to disconnect device “{device_name}”", &[("device_name", device_name)]);
+                        toast!(obj, error_message);
                     },
                 }
                 obj.imp().delete_logout_button.set_loading(false);
