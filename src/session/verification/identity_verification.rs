@@ -22,14 +22,13 @@ use tokio::sync::mpsc;
 
 use super::{VERIFICATION_CREATION_TIMEOUT, VERIFICATION_RECEIVE_TIMEOUT};
 use crate::{
-    components::Toast,
     contrib::Camera,
     session::{
         sidebar::{SidebarItem, SidebarItemImpl},
         user::UserExt,
         Session, User,
     },
-    spawn, spawn_tokio,
+    spawn, spawn_tokio, toast,
 };
 
 #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
@@ -697,9 +696,7 @@ impl IdentityVerification {
             gettext("An unknown error occurred during the verification process.")
         });
 
-        if let Some(window) = self.session().parent_window() {
-            window.add_toast(&Toast::new(&error_message));
-        }
+        toast!(self.session(), error_message);
     }
 
     pub fn display_name(&self) -> String {

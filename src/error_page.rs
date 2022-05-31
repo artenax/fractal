@@ -3,7 +3,7 @@ use gettextrs::gettext;
 use gtk::{self, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 use log::error;
 
-use crate::{components::Toast, secret, secret::SecretError, spawn, window::Window};
+use crate::{secret, secret::SecretError, spawn, toast, window::Window};
 
 pub enum ErrorSubpage {
     SecretErrorSession,
@@ -105,21 +105,16 @@ impl ErrorPage {
                         .as_ref()
                         .and_then(|root| root.downcast_ref::<Window>())
                     {
-                        window.add_toast(&Toast::new(&gettext("Session removed successfully.")));
+                        toast!(self, gettext("Session removed successfully."));
                         window.restore_sessions().await;
                     }
                 }
                 Err(err) => {
                     error!("Could not remove session from secret storage: {:?}", err);
-                    if let Some(window) = self
-                        .root()
-                        .as_ref()
-                        .and_then(|root| root.downcast_ref::<Window>())
-                    {
-                        window.add_toast(&Toast::new(&gettext(
-                            "Could not remove session from secret storage",
-                        )));
-                    }
+                    toast!(
+                        self,
+                        gettext("Could not remove session from secret storage")
+                    );
                 }
             }
         }

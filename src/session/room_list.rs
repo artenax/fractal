@@ -9,10 +9,9 @@ use matrix_sdk::{
 };
 
 use crate::{
-    components::Toast,
     gettext_f,
     session::{room::Room, Session},
-    spawn, spawn_tokio,
+    spawn, spawn_tokio, toast,
 };
 
 mod imp {
@@ -321,14 +320,14 @@ impl RoomList {
                     Err(error) => {
                         obj.pending_rooms_remove(&identifier);
                         error!("Joining room {} failed: {}", identifier, error);
-                        let error = Toast::new(
+
+                        let error = gettext_f(
                             // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-                            &gettext_f("Failed to join room {room_name}. Try again later.", &[("room_name", identifier.as_str())])
+                            "Failed to join room {room_name}. Try again later.",
+                            &[("room_name", identifier.as_str())]
                         );
 
-                        if let Some(window) = obj.session().parent_window() {
-                            window.add_toast(&error);
-                        }
+                        toast!(obj.session(), error);
                     }
                 }
             })

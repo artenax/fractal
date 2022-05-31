@@ -5,13 +5,12 @@ use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventCo
 use once_cell::sync::Lazy;
 
 use crate::{
-    components::Toast,
     session::{
         event_source_dialog::EventSourceDialog,
         room::{Event, RoomAction},
         user::UserExt,
     },
-    spawn,
+    spawn, toast,
     utils::cache_dir,
     UserFacingError, Window,
 };
@@ -190,12 +189,12 @@ where
         let window: Window = self.root().unwrap().downcast().unwrap();
         spawn!(
             glib::PRIORITY_LOW,
-            clone!(@weak window => async move {
+            clone!(@weak self as obj, @weak window => async move {
                 let (_, filename, data) = match event.get_media_content().await {
                     Ok(res) => res,
                     Err(err) => {
                         error!("Could not get file: {}", err);
-                        window.add_toast(&Toast::new(&err.to_user_facing()));
+                        toast!(obj, err.to_user_facing());
 
                         return;
                     }
@@ -236,15 +235,14 @@ where
     /// See `Event::get_media_content` for compatible events. Panics on an
     /// incompatible event.
     fn open_event_file(&self, event: Event) {
-        let window: Window = self.root().unwrap().downcast().unwrap();
         spawn!(
             glib::PRIORITY_LOW,
-            clone!(@weak window => async move {
+            clone!(@weak self as obj => async move {
                 let (uid, filename, data) = match event.get_media_content().await {
                     Ok(res) => res,
                     Err(err) => {
                         error!("Could not get file: {}", err);
-                        window.add_toast(&Toast::new(&err.to_user_facing()));
+                        toast!(obj, err.to_user_facing());
 
                         return;
                     }

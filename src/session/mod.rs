@@ -66,11 +66,10 @@ pub use self::{
     user::{User, UserActions, UserExt},
 };
 use crate::{
-    components::Toast,
     secret,
     secret::{Secret, StoredSession},
     session::sidebar::ItemList,
-    spawn, spawn_tokio, UserFacingError, Window,
+    spawn, spawn_tokio, toast, UserFacingError, Window,
 };
 
 #[derive(Error, Debug)]
@@ -235,7 +234,7 @@ mod imp {
                 vec![
                     Signal::builder(
                         "prepared",
-                        &[Option::<Toast>::static_type().into()],
+                        &[Option::<String>::static_type().into()],
                         <()>::static_type().into(),
                     )
                     .build(),
@@ -491,7 +490,7 @@ impl Session {
 
                 priv_.logout_on_dispose.set(false);
 
-                Some(Toast::new(&error.to_user_facing()))
+                Some(error.to_user_facing())
             }
         };
 
@@ -658,13 +657,13 @@ impl Session {
     }
 
     /// Connects the prepared signals to the function f given in input
-    pub fn connect_prepared<F: Fn(&Self, Option<Toast>) + 'static>(
+    pub fn connect_prepared<F: Fn(&Self, Option<String>) + 'static>(
         &self,
         f: F,
     ) -> glib::SignalHandlerId {
         self.connect_local("prepared", true, move |values| {
             let obj = values[0].get::<Self>().unwrap();
-            let err = values[1].get::<Option<Toast>>().unwrap();
+            let err = values[1].get::<Option<String>>().unwrap();
 
             f(&obj, err);
 
@@ -758,9 +757,7 @@ impl Session {
             }
             Err(error) => {
                 error!("Couldn’t logout the session {}", error);
-                if let Some(window) = self.parent_window() {
-                    window.add_toast(&Toast::new(&gettext("Failed to logout the session.")));
-                }
+                toast!(self, gettext("Failed to logout the session."));
             }
         }
     }

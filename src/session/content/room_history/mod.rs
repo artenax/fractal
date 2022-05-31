@@ -34,16 +34,15 @@ use self::{
     state_row::StateRow, verification_info_bar::VerificationInfoBar,
 };
 use crate::{
-    components::{CustomEntry, DragOverlay, Pill, ReactionChooser, RoomTitle, Toast},
+    components::{CustomEntry, DragOverlay, Pill, ReactionChooser, RoomTitle},
     i18n::gettext_f,
     session::{
         content::{MarkdownPopover, RoomDetails},
         room::{Event, Room, RoomType, Timeline, TimelineItem, TimelineState},
         user::UserExt,
     },
-    spawn,
+    spawn, toast,
     utils::filename_for_mime,
-    window::Window,
 };
 
 mod imp {
@@ -53,7 +52,7 @@ mod imp {
     use once_cell::unsync::OnceCell;
 
     use super::*;
-    use crate::{components::Toast, window::Window, Application};
+    use crate::Application;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/content-room-history.ui")]
@@ -162,14 +161,8 @@ mod imp {
                         _ => None,
                     };
 
-                    if let Some(window) = widget
-                        .root()
-                        .as_ref()
-                        .and_then(|root| root.downcast_ref::<Window>())
-                    {
-                        if let Some(message) = toast_error {
-                            window.add_toast(&Toast::new(&message));
-                        }
+                    if let Some(message) = toast_error {
+                        toast!(widget, message);
                     }
                 }));
             });
@@ -843,14 +836,7 @@ impl RoomHistory {
             }
             Err(err) => {
                 warn!("Could not read file: {}", err);
-
-                if let Some(window) = self
-                    .root()
-                    .as_ref()
-                    .and_then(|root| root.downcast_ref::<Window>())
-                {
-                    window.add_toast(&Toast::new(&gettext("Error reading file")));
-                }
+                toast!(self, gettext("Error reading file"));
             }
         }
     }
@@ -874,16 +860,10 @@ impl RoomHistory {
                     }
                     Err(error) => {
                         warn!("Could not get file from drop: {error:?}");
-
-                        if let Some(window) = obj
-                            .root()
-                            .as_ref()
-                            .and_then(|root| root.downcast_ref::<Window>())
-                        {
-                            window.add_toast(
-                                &Toast::new(&gettext("Error getting file from drop"))
-                            );
-                        }
+                        toast!(
+                            obj,
+                            gettext("Error getting file from drop")
+                        );
 
                         false
                     }
@@ -914,13 +894,7 @@ impl RoomHistory {
                 Err(error) => warn!("Could not get GdkTexture from the clipboard: {error:?}"),
             }
 
-            if let Some(window) = self
-                .root()
-                .as_ref()
-                .and_then(|root| root.downcast_ref::<Window>())
-            {
-                window.add_toast(&Toast::new(&gettext("Error getting image from clipboard")));
-            }
+            toast!(self, gettext("Error getting image from clipboard"));
         } else if formats.contains_type(gio::File::static_type()) {
             // There is a file in the clipboard.
             match clipboard
@@ -937,13 +911,7 @@ impl RoomHistory {
                 Err(error) => warn!("Could not get file from the clipboard: {error:?}"),
             }
 
-            if let Some(window) = self
-                .root()
-                .as_ref()
-                .and_then(|root| root.downcast_ref::<Window>())
-            {
-                window.add_toast(&Toast::new(&gettext("Error getting file from clipboard")));
-            }
+            toast!(self, gettext("Error getting file from clipboard"));
         }
     }
 

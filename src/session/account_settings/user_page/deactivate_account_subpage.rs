@@ -9,9 +9,9 @@ use log::error;
 use matrix_sdk::ruma::{api::client::account::deactivate, assign};
 
 use crate::{
-    components::{AuthDialog, EntryRow, SpinnerButton, Toast},
+    components::{AuthDialog, EntryRow, SpinnerButton},
     session::{Session, UserExt},
-    spawn,
+    spawn, toast,
 };
 
 mod imp {
@@ -194,10 +194,7 @@ impl DeactivateAccountSubpage {
         match result {
             Ok(_) => {
                 if let Some(session) = self.session() {
-                    session
-                        .parent_window()
-                        .unwrap()
-                        .add_toast(&Toast::new(&gettext("Account successfully deactivated")));
+                    toast!(session, gettext("Account successfully deactivated"));
                     session.handle_logged_out();
                 }
                 self.activate_action("account-settings.close", None)

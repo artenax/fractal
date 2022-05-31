@@ -5,9 +5,9 @@ use log::{debug, error};
 
 use super::IdentityVerificationWidget;
 use crate::{
-    components::{AuthDialog, AuthError, SpinnerButton, Toast},
+    components::{AuthDialog, AuthError, SpinnerButton},
     session::verification::{IdentityVerification, VerificationState},
-    spawn, Session, Window,
+    spawn, toast, Session, Window,
 };
 
 mod imp {
@@ -326,9 +326,7 @@ impl SessionVerification {
             };
 
             if let Some(error_message) = error_message {
-                if let Some(window) = obj.parent_window() {
-                    window.add_toast(&Toast::new(&error_message));
-                }
+                toast!(obj, error_message);
             } else {
                 // TODO tell user that the a crypto identity was created
                 obj.activate_action("session.show-content", None).unwrap();

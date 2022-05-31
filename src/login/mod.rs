@@ -22,8 +22,8 @@ use idp_button::IdpButton;
 use login_advanced_dialog::LoginAdvancedDialog;
 
 use crate::{
-    components::{EntryRow, PasswordEntryRow, SpinnerButton, Toast},
-    gettext_f, spawn, spawn_tokio,
+    components::{EntryRow, PasswordEntryRow, SpinnerButton},
+    gettext_f, spawn, spawn_tokio, toast,
     user_facing_error::UserFacingError,
     Session,
 };
@@ -380,7 +380,7 @@ impl Login {
                     }
                     Err(error) => {
                         warn!("Failed to discover homeserver: {}", error);
-                        obj.parent_window().add_toast(&Toast::new(&error.to_user_facing()));
+                        toast!(obj, error.to_user_facing());
                     }
                 };
                 obj.unfreeze();
@@ -448,7 +448,7 @@ impl Login {
                     }
                     Err(error) => {
                         warn!("Failed to check homeserver: {}", error);
-                        obj.parent_window().add_toast(&Toast::new(&error.to_user_facing()));
+                        toast!(obj, error.to_user_facing());
                     }
                 };
                 obj.unfreeze();
@@ -600,7 +600,7 @@ impl Login {
                 clone!(@weak self as login => move |session, error| {
                     match error {
                         Some(e) => {
-                            login.parent_window().add_toast(&e);
+                            toast!(login, e);
                             login.unfreeze();
                         },
                         None => {

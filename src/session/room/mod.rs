@@ -12,7 +12,7 @@ mod timeline;
 
 use std::{cell::RefCell, convert::TryInto, path::PathBuf};
 
-use gettextrs::gettext;
+use gettextrs::{gettext, ngettext};
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, info, warn};
 use matrix_sdk::{
@@ -42,7 +42,7 @@ use matrix_sdk::{
         serde::Raw,
         EventId, MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
     },
-    DisplayName,
+    DisplayName, Result as MatrixResult,
 };
 use ruma::events::SyncEphemeralRoomEvent;
 
@@ -63,8 +63,8 @@ pub use self::{
 };
 use super::verification::IdentityVerification;
 use crate::{
-    components::{Pill, Toast},
-    gettext_f, ngettext_f,
+    components::Pill,
+    gettext_f,
     prelude::*,
     session::{
         avatar::update_room_avatar_from_file,
@@ -72,7 +72,7 @@ use crate::{
         sidebar::{SidebarItem, SidebarItemImpl},
         Avatar, Session, User,
     },
-    spawn, spawn_tokio,
+    spawn, spawn_tokio, toast,
     utils::pending_event_ids,
 };
 
@@ -458,21 +458,17 @@ impl Room {
                         obj.emit_by_name::<()>("room-forgotten", &[]);
                     }
                     Err(error) => {
-                            error!("Couldn’t forget the room: {}", error);
+                        error!("Couldn’t forget the room: {}", error);
 
-                            let room_pill = Pill::for_room(&obj);
-                            let error = Toast::builder()
-                                // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-                                .title(gettext_f("Failed to forget {room}.", &[("room", "<widget>")]))
-                                .widgets(&[room_pill])
-                                .build();
+                        toast!(
+                            obj.session(),
+                            // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                            gettext("Failed to forget {room}."),
+                            @room = &obj,
+                        );
 
-                            if let Some(window) = obj.session().parent_window() {
-                                window.add_toast(&error);
-                            }
-
-                            // Load the previous category
-                            obj.load_category();
+                        // Load the previous category
+                        obj.load_category();
                     },
                 };
             })
@@ -699,24 +695,21 @@ impl Room {
                 match handle.await.unwrap() {
                         Ok(_) => {},
                         Err(error) => {
-                                error!("Couldn’t set the room category: {}", error);
+                            error!("Couldn’t set the room category: {}", error);
 
-                                let room_pill = Pill::for_room(&obj);
-                                let error = Toast::builder()
-                                    .title(gettext_f(
-                                        // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-                                        "Failed to move {room} from {previous_category} to {new_category}.",
-                                        &[("room", "<widget>"),("previous_category", &previous_category.to_string()), ("new_category", &category.to_string())],
-                                    ))
-                                    .widgets(&[room_pill])
-                                    .build();
+                            toast!(
+                                obj.session(),
+                                gettext(
+                                    // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                                    "Failed to move {room} from {previous_category} to {new_category}.",
+                                ),
+                                @room = obj,
+                                previous_category = previous_category.to_string(),
+                                new_category = category.to_string(),
+                            );
 
-                                if let Some(window) = obj.session().parent_window() {
-                                    window.add_toast(&error);
-                                }
-
-                                // Load the previous category
-                                obj.load_category();
+                            // Load the previous category
+                            obj.load_category();
                         },
                 };
             })
@@ -1426,7 +1419,7 @@ impl Room {
         );
     }
 
-    pub async fn accept_invite(&self) -> Result<(), Toast> {
+    pub async fn accept_invite(&self) -> MatrixResult<()> {
         let matrix_room = self.matrix_room();
 
         if let MatrixRoom::Invited(matrix_room) = matrix_room {
@@ -1436,20 +1429,15 @@ impl Room {
                 Err(error) => {
                     error!("Accepting invitation failed: {}", error);
 
-                    let room_pill = Pill::for_room(self);
-                    let error = Toast::builder()
-                        .title(gettext_f(
+                    toast!(
+                        self.session(),
+                        gettext(
                             // Translators: Do NOT translate the content between '{' and '}', this
                             // is a variable name.
                             "Failed to accept invitation for {room}. Try again later.",
-                            &[("room", "<widget>")],
-                        ))
-                        .widgets(&[room_pill])
-                        .build();
-
-                    if let Some(window) = self.session().parent_window() {
-                        window.add_toast(&error);
-                    }
+                        ),
+                        @room = self,
+                    );
 
                     Err(error)
                 }
@@ -1460,7 +1448,7 @@ impl Room {
         }
     }
 
-    pub async fn reject_invite(&self) -> Result<(), Toast> {
+    pub async fn reject_invite(&self) -> MatrixResult<()> {
         let matrix_room = self.matrix_room();
 
         if let MatrixRoom::Invited(matrix_room) = matrix_room {
@@ -1470,20 +1458,15 @@ impl Room {
                 Err(error) => {
                     error!("Rejecting invitation failed: {}", error);
 
-                    let room_pill = Pill::for_room(self);
-                    let error = Toast::builder()
-                        .title(gettext_f(
+                    toast!(
+                        self.session(),
+                        gettext(
                             // Translators: Do NOT translate the content between '{' and '}', this
                             // is a variable name.
                             "Failed to reject invitation for {room}. Try again later.",
-                            &[("room", "<widget>")],
-                        ))
-                        .widgets(&[room_pill])
-                        .build();
-
-                    if let Some(window) = self.session().parent_window() {
-                        window.add_toast(&error);
-                    }
+                        ),
+                        @room = self,
+                    );
 
                     Err(error)
                 }
@@ -1640,35 +1623,33 @@ impl Room {
                 let first_failed = failed_invites.first().unwrap();
 
                 // TODO: should we show all the failed users?
-                let error_message =
-                    if no_failed == 1 {
-                        gettext_f(
+                if no_failed == 1 {
+                    toast!(
+                        self.session(),
+                        gettext(
                             // Translators: Do NOT translate the content between '{' and '}', this
                             // is a variable name.
                             "Failed to invite {user} to {room}. Try again later.",
-                            &[("user", "<widget>"), ("room", "<widget>")],
-                        )
-                    } else {
-                        let n = (no_failed - 1) as u32;
-                        ngettext_f(
-                        // Translators: Do NOT translate the content between '{' and '}', this
-                        // is a variable name.
-                        "Failed to invite {user} and 1 other user to {room}. Try again later.",
-                        "Failed to invite {user} and {n} other users to {room}. Try again later.",
-                        n,
-                        &[("user", "<widget>"), ("room", "<widget>"), ("n", &n.to_string())],
-                    )
-                    };
-                let user_pill = Pill::for_user(first_failed);
-                let room_pill = Pill::for_room(self);
-                let error = Toast::builder()
-                    .title(error_message)
-                    .widgets(&[user_pill, room_pill])
-                    .build();
-
-                if let Some(window) = self.session().parent_window() {
-                    window.add_toast(&error);
-                }
+                        ),
+                        @user = first_failed,
+                        @room = self,
+                    );
+                } else {
+                    let n = (no_failed - 1) as u32;
+                    toast!(
+                        self.session(),
+                        ngettext(
+                            // Translators: Do NOT translate the content between '{' and '}', this
+                            // is a variable name.
+                            "Failed to invite {user} and 1 other user to {room}. Try again later.",
+                            "Failed to invite {user} and {n} other users to {room}. Try again later.",
+                            n,
+                        ),
+                        @user = first_failed,
+                        @room = self,
+                        n = n.to_string(),
+                    );
+                };
             }
         } else {
             error!("Can’t invite users, because this room isn’t a joined room");
