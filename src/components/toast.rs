@@ -131,12 +131,12 @@ impl ToastBuilder {
         Self::default()
     }
 
-    pub fn title(mut self, title: &str) -> Self {
-        self.title = Some(title.to_owned());
+    pub fn title(mut self, title: String) -> Self {
+        self.title = Some(title);
         self
     }
 
-    pub fn widgets(mut self, widgets: &[&impl IsA<gtk::Widget>]) -> Self {
+    pub fn widgets(mut self, widgets: &[impl IsA<gtk::Widget>]) -> Self {
         self.widgets = Some(widgets.iter().map(|w| w.upcast_ref().clone()).collect());
         self
     }

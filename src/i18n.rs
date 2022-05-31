@@ -1,14 +1,6 @@
 use gettextrs::{gettext, ngettext};
 
-fn freplace(s: String, args: &[(&str, &str)]) -> String {
-    let mut s = s;
-
-    for (k, v) in args {
-        s = s.replace(&format!("{{{}}}", k), v);
-    }
-
-    s
-}
+use crate::utils::freplace;
 
 /// Like `gettext`, but replaces named variables with the given dictionary.
 ///

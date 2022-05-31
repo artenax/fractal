@@ -2,7 +2,7 @@ use std::cmp::max;
 
 use gtk::{glib, glib::clone, pango, prelude::*, subclass::prelude::*};
 
-const DEFAULT_PLACEHOLDER: &str = "<widget>";
+pub const DEFAULT_PLACEHOLDER: &str = "<widget>";
 const PANGO_SCALE: i32 = 1024;
 const OBJECT_REPLACEMENT_CHARACTER: &str = "\u{FFFC}";
 fn pango_pixels(d: i32) -> i32 {

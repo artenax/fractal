@@ -26,6 +26,150 @@ macro_rules! spawn_tokio {
     };
 }
 
+/// Show a toast with the given message on the ancestor window of `widget`.
+///
+/// The simplest way to use this macros is for displaying a simple message. It
+/// can be anything that implements `AsRef<str>`.
+///
+/// ```ignore
+/// toast!(widget, gettext("Something happened"));
+/// ```
+///
+/// This macro also supports replacing named variables with their value. It
+/// supports both the `var` and the `var = expr` syntax. In this case the
+/// message and the variables must be `String`s.
+///
+/// ```ignore
+/// toast!(
+///     widget,
+///     gettext("Error number {n}: {msg}"),
+///     n = error_nb.to_string(),
+///     msg,
+/// );
+/// ```
+///
+/// To add `Pill`s to the toast, you can precede a [`Room`] or [`User`] with
+/// `@`.
+///
+/// ```ignore
+/// let room = Room::new(session, room_id);
+/// let member = Member::new(room, user_id);
+///
+/// toast!(
+///     widget,
+///     gettext("Could not contact {user} in {room}",
+///     @user = member,
+///     @room,
+/// );
+/// ```
+///
+/// For this macro to work, the ancestor window be a [`Window`](crate::Window)
+/// or an [`adw::PreferencesWindow`].
+///
+/// [`Room`]: crate::session::room::Room
+/// [`User`]: crate::session::user::User
+#[macro_export]
+macro_rules! toast {
+    ($widget:expr, $message:expr) => {
+        {
+            let message = $message;
+            if let Some(root) = $widget.root() {
+                if let Some(window) = root.downcast_ref::<$crate::Window>() {
+                    window.add_toast(&$crate::components::Toast::new(message.as_ref()));
+                } else if let Some(window) = root.downcast_ref::<adw::PreferencesWindow>() {
+                    use adw::prelude::PreferencesWindowExt;
+                    window.add_toast(&adw::Toast::new(message.as_ref()));
+                } else {
+                    log::error!("Trying to display a toast when the parent doesn't support it");
+                }
+            } else {
+                log::warn!("Could not display toast with message: {message}");
+            }
+        }
+    };
+    ($widget:expr, $message:expr, $($tail:tt)+) => {
+        {
+            let (string_vars, pill_vars) = $crate::_toast_accum!([], [], $($tail)+);
+            let string_dict: Vec<_> = string_vars
+                .iter()
+                .map(|(key, val): &(&str, String)| (key.as_ref(), val.as_ref()))
+                .collect();
+            let message = $crate::utils::freplace($message.into(), &*string_dict);
+
+            if let Some(root) = $widget.root() {
+                if pill_vars.is_empty() {
+                    if let Some(window) = root.downcast_ref::<$crate::Window>() {
+                        window.add_toast(&$crate::components::Toast::new(&message));
+                    } else if let Some(window) = root.downcast_ref::<adw::PreferencesWindow>() {
+                        use adw::prelude::PreferencesWindowExt;
+                        window.add_toast(&adw::Toast::new(&message));
+                    } else {
+                        log::error!("Trying to display a toast when the parent doesn't support it");
+                    }
+                } else if let Some(window) = root.downcast_ref::<$crate::Window>() {
+                    let pill_vars = std::collections::HashMap::<&str, $crate::components::Pill>::from(pill_vars);
+                    let mut swapped_label = String::new();
+                    let mut widgets = Vec::with_capacity(pill_vars.len());
+                    let mut last_end = 0;
+
+                    let mut matches = pill_vars
+                        .keys()
+                        .map(|key: &&str| {
+                            message
+                                .match_indices(&format!("{{{key}}}"))
+                                .map(|(start, _)| (start, key))
+                                .collect::<Vec<_>>()
+                        })
+                        .flatten()
+                        .collect::<Vec<_>>();
+                    matches.sort_unstable();
+
+                    for (start, key) in matches {
+                        swapped_label.push_str(&message[last_end..start]);
+                        swapped_label.push_str($crate::components::DEFAULT_PLACEHOLDER);
+                        last_end = start + key.len() + 2;
+                        widgets.push(pill_vars.get(key).unwrap().clone())
+                    }
+                    swapped_label.push_str(&message[last_end..message.len()]);
+
+                    let toast = $crate::components::Toast::builder()
+                        .title(swapped_label)
+                        .widgets(&widgets)
+                        .build();
+                    window.add_toast(&toast);
+                } else {
+                    log::error!("Trying to display a toast with pills when the parent doesn't support it");
+                }
+            } else {
+                log::warn!("Could not display toast with message: {message}");
+            }
+        }
+    };
+}
+#[doc(hidden)]
+#[macro_export]
+macro_rules! _toast_accum {
+    ([$($string_vars:tt)*], [$($pill_vars:tt)*], $var:ident, $($tail:tt)*) => {
+        $crate::_toast_accum!([$($string_vars)* (stringify!($var), $var),], [$($pill_vars)*], $($tail)*)
+    };
+    ([$($string_vars:tt)*], [$($pill_vars:tt)*], $var:ident = $val:expr, $($tail:tt)*) => {
+        $crate::_toast_accum!([$($string_vars)* (stringify!($var), $val),], [$($pill_vars)*], $($tail)*)
+    };
+    ([$($string_vars:tt)*], [$($pill_vars:tt)*], @$var:ident, $($tail:tt)*) => {
+        {
+            let pill: $crate::components::Pill = $var.to_pill();
+            $crate::_toast_accum!([$($string_vars)*], [$($pill_vars)* (stringify!($var), pill),], $($tail)*)
+        }
+    };
+    ([$($string_vars:tt)*], [$($pill_vars:tt)*], @$var:ident = $val:expr, $($tail:tt)*) => {
+        {
+            let pill: $crate::components::Pill = $val.to_pill();
+            $crate::_toast_accum!([$($string_vars)*], [$($pill_vars)* (stringify!($var), pill),], $($tail)*)
+        }
+    };
+    ([$($string_vars:tt)*], [$($pill_vars:tt)*],) => { ([$($string_vars)*], [$($pill_vars)*]) };
+}
+
 use std::{convert::TryInto, path::PathBuf, str::FromStr};
 
 use gettextrs::gettext;
@@ -283,4 +427,18 @@ pub fn validate_password(password: &str) -> PasswordValidity {
     validity.progress = passed * 100 / 5;
 
     validity
+}
+
+/// Replace variables in the given string with the given dictionary.
+///
+/// The expected format to replace is `{name}`, where `name` is the first string
+/// in the dictionary entry tuple.
+pub fn freplace(s: String, args: &[(&str, &str)]) -> String {
+    let mut s = s;
+
+    for (k, v) in args {
+        s = s.replace(&format!("{{{}}}", k), v);
+    }
+
+    s
 }

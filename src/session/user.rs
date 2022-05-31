@@ -6,6 +6,7 @@ use matrix_sdk::{
 };
 
 use crate::{
+    components::Pill,
     session::{
         verification::{IdentityVerification, VerificationState},
         Avatar, Session,
@@ -264,6 +265,12 @@ pub trait UserExt: IsA<User> {
         } else {
             UserActions::NONE
         }
+    }
+
+    /// Get a `Pill` representing this `User`.
+    fn to_pill(&self) -> Pill {
+        let user = self.upcast_ref();
+        Pill::for_user(user)
     }
 }
 

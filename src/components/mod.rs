@@ -36,7 +36,7 @@ pub use self::{
     editable_avatar::EditableAvatar,
     entry_row::EntryRow,
     in_app_notification::InAppNotification,
-    label_with_widgets::LabelWithWidgets,
+    label_with_widgets::{LabelWithWidgets, DEFAULT_PLACEHOLDER},
     loading_listbox_row::LoadingListBoxRow,
     location_viewer::LocationViewer,
     media_content_viewer::{ContentType, MediaContentViewer},

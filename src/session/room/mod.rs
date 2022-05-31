@@ -463,8 +463,8 @@ impl Room {
                             let room_pill = Pill::for_room(&obj);
                             let error = Toast::builder()
                                 // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-                                .title(&gettext_f("Failed to forget {room}.", &[("room", "<widget>")]))
-                                .widgets(&[&room_pill])
+                                .title(gettext_f("Failed to forget {room}.", &[("room", "<widget>")]))
+                                .widgets(&[room_pill])
                                 .build();
 
                             if let Some(window) = obj.session().parent_window() {
@@ -703,12 +703,12 @@ impl Room {
 
                                 let room_pill = Pill::for_room(&obj);
                                 let error = Toast::builder()
-                                    .title(&gettext_f(
+                                    .title(gettext_f(
                                         // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
                                         "Failed to move {room} from {previous_category} to {new_category}.",
                                         &[("room", "<widget>"),("previous_category", &previous_category.to_string()), ("new_category", &category.to_string())],
                                     ))
-                                    .widgets(&[&room_pill])
+                                    .widgets(&[room_pill])
                                     .build();
 
                                 if let Some(window) = obj.session().parent_window() {
@@ -1438,13 +1438,13 @@ impl Room {
 
                     let room_pill = Pill::for_room(self);
                     let error = Toast::builder()
-                        .title(&gettext_f(
+                        .title(gettext_f(
                             // Translators: Do NOT translate the content between '{' and '}', this
                             // is a variable name.
                             "Failed to accept invitation for {room}. Try again later.",
                             &[("room", "<widget>")],
                         ))
-                        .widgets(&[&room_pill])
+                        .widgets(&[room_pill])
                         .build();
 
                     if let Some(window) = self.session().parent_window() {
@@ -1472,13 +1472,13 @@ impl Room {
 
                     let room_pill = Pill::for_room(self);
                     let error = Toast::builder()
-                        .title(&gettext_f(
+                        .title(gettext_f(
                             // Translators: Do NOT translate the content between '{' and '}', this
                             // is a variable name.
                             "Failed to reject invitation for {room}. Try again later.",
                             &[("room", "<widget>")],
                         ))
-                        .widgets(&[&room_pill])
+                        .widgets(&[room_pill])
                         .build();
 
                     if let Some(window) = self.session().parent_window() {
@@ -1662,8 +1662,8 @@ impl Room {
                 let user_pill = Pill::for_user(first_failed);
                 let room_pill = Pill::for_room(self);
                 let error = Toast::builder()
-                    .title(&error_message)
-                    .widgets(&[&user_pill, &room_pill])
+                    .title(error_message)
+                    .widgets(&[user_pill, room_pill])
                     .build();
 
                 if let Some(window) = self.session().parent_window() {
@@ -1768,6 +1768,11 @@ impl Room {
 
             None
         })
+    }
+
+    /// Get a `Pill` representing this `Room`.
+    pub fn to_pill(&self) -> Pill {
+        Pill::for_room(self)
     }
 }
 
