@@ -412,7 +412,7 @@ fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
                 parent.set_child(Some(&child));
                 child
             };
-            child.text(gettext("Fractal couldn’t decrypt this message, but will retry once the keys are available."));
+            child.text(gettext("Unable to decrypt this message, decryption will be retried once the keys are available."));
         }
         Some(AnyMessageLikeEventContent::RoomRedaction(_)) => {
             let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
