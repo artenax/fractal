@@ -128,7 +128,7 @@ impl Default for SupportedMethods {
     }
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum UserAction {
     Accept,
     Match,
@@ -139,7 +139,7 @@ pub enum UserAction {
     ConfirmScanning,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Message {
     UserAction(UserAction),
     NotifyState,

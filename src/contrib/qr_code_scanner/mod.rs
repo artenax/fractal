@@ -124,6 +124,6 @@ impl QrCodeScanner {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, glib::Boxed)]
+#[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
 #[boxed_type(name = "QrVerificationDataBoxed")]
 struct QrVerificationDataBoxed(QrVerificationData);
