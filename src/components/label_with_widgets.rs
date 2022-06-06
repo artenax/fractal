@@ -206,7 +206,10 @@ impl LabelWithWidgets {
     pub fn set_widgets<P: IsA<gtk::Widget>>(&self, widgets: Vec<P>) {
         let priv_ = self.imp();
 
-        priv_.widgets.borrow_mut().clear();
+        for widget in priv_.widgets.take() {
+            widget.unparent();
+        }
+
         priv_
             .widgets
             .borrow_mut()
