@@ -46,7 +46,7 @@ use matrix_sdk::{
 use ruma::events::SyncEphemeralRoomEvent;
 
 pub use self::{
-    event::Event,
+    event::*,
     event_actions::EventActions,
     highlight_flags::HighlightFlags,
     member::{Member, Membership},
@@ -55,10 +55,7 @@ pub use self::{
     reaction_group::ReactionGroup,
     reaction_list::ReactionList,
     room_type::RoomType,
-    timeline::{
-        Timeline, TimelineDayDivider, TimelineItem, TimelineItemExt, TimelineNewMessagesDivider,
-        TimelineSpinner, TimelineState,
-    },
+    timeline::*,
 };
 use super::verification::IdentityVerification;
 use crate::{
@@ -103,7 +100,7 @@ mod imp {
         /// The event of the user's read receipt for this room.
         pub read_receipt: RefCell<Option<Event>>,
         /// The latest read event in the room's timeline.
-        pub latest_read: RefCell<Option<Event>>,
+        pub latest_read: RefCell<Option<SupportedEvent>>,
         /// The highlight state of the room,
         pub highlight: Cell<HighlightFlags>,
         pub predecessor: OnceCell<OwnedRoomId>,
@@ -827,7 +824,7 @@ impl Room {
         if Some(event_id)
             == self
                 .read_receipt()
-                .map(|event| event.matrix_event_id())
+                .and_then(|event| event.event_id())
                 .as_deref()
         {
             return;
@@ -872,7 +869,7 @@ impl Room {
                 timeline
                     .item(i)
                     .as_ref()
-                    .and_then(|obj| obj.downcast_ref::<Event>())
+                    .and_then(|obj| obj.downcast_ref::<SupportedEvent>())
                     .and_then(|event| {
                         // The user sent the event so it's the latest read event.
                         // Necessary because we don't get read receipts for the user's own events.
@@ -886,9 +883,8 @@ impl Room {
                         }
 
                         // The event is older than the read receipt so it has been read.
-                        if event.matrix_event().filter(count_as_unread).is_some()
-                            && event.matrix_origin_server_ts()
-                                <= read_receipt.matrix_origin_server_ts()
+                        if count_as_unread(&event.matrix_event())
+                            && event.origin_server_ts() <= read_receipt.origin_server_ts()
                         {
                             return Some(event.to_owned());
                         }
@@ -902,12 +898,12 @@ impl Room {
     }
 
     /// The latest read event in the room's timeline.
-    pub fn latest_read(&self) -> Option<Event> {
+    pub fn latest_read(&self) -> Option<SupportedEvent> {
         self.imp().latest_read.borrow().clone()
     }
 
     /// Set the latest read event.
-    fn set_latest_read(&self, latest_read: Option<Event>) {
+    fn set_latest_read(&self, latest_read: Option<SupportedEvent>) {
         if latest_read == self.latest_read() {
             return;
         }
@@ -974,7 +970,7 @@ impl Room {
                     if let Some(event) = timeline
                         .item(i)
                         .as_ref()
-                        .and_then(|obj| obj.downcast_ref::<Event>())
+                        .and_then(|obj| obj.downcast_ref::<SupportedEvent>())
                     {
                         // This is the event corresponding to the read receipt so there's no unread
                         // messages.
@@ -983,7 +979,7 @@ impl Room {
                         }
 
                         // The user hasn't read the latest message.
-                        if event.matrix_event().filter(count_as_unread).is_some() {
+                        if count_as_unread(&event.matrix_event()) {
                             return false;
                         }
                     }
@@ -1306,7 +1302,7 @@ impl Room {
             };
 
             let raw_event: Raw<AnySyncRoomEvent> = Raw::new(&matrix_event).unwrap().cast();
-            let event = Event::new(raw_event.into(), self);
+            let event = SupportedEvent::try_from_event(raw_event.into(), self).unwrap();
             self.imp()
                 .timeline
                 .get()
@@ -1357,7 +1353,7 @@ impl Room {
 
         if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
             let raw_event: Raw<AnySyncRoomEvent> = Raw::new(&event).unwrap().cast();
-            let event = Event::new(raw_event.into(), self);
+            let event = SupportedEvent::try_from_event(raw_event.into(), self).unwrap();
             self.imp()
                 .timeline
                 .get()

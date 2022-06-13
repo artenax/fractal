@@ -37,7 +37,7 @@ use crate::{
     i18n::gettext_f,
     session::{
         content::{MarkdownPopover, RoomDetails},
-        room::{Event, Room, RoomType, Timeline, TimelineItem, TimelineState},
+        room::{Room, RoomType, SupportedEvent, Timeline, TimelineItem, TimelineState},
         user::UserExt,
     },
     spawn, toast,
@@ -280,7 +280,7 @@ mod imp {
                         .model()
                         .and_then(|model| model.item(pos))
                         .as_ref()
-                        .and_then(|o| o.downcast_ref::<Event>())
+                        .and_then(|o| o.downcast_ref::<SupportedEvent>())
                     {
                         if let Some(room) = obj.room() {
                             room.session().show_media(event);

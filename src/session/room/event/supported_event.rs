@@ -1,9 +1,4 @@
-use gtk::{
-    glib,
-    glib::{clone, DateTime},
-    prelude::*,
-    subclass::prelude::*,
-};
+use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::warn;
 use matrix_sdk::{
     deserialized_responses::SyncRoomEvent,
@@ -16,88 +11,66 @@ use matrix_sdk::{
                 redaction::SyncRoomRedactionEvent,
             },
             AnyMessageLikeEventContent, AnySyncMessageLikeEvent, AnySyncRoomEvent,
-            AnySyncStateEvent, MessageLikeUnsigned, SyncMessageLikeEvent, SyncStateEvent,
+            AnySyncStateEvent, SyncMessageLikeEvent, SyncStateEvent,
         },
         serde::Raw,
         MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedTransactionId, OwnedUserId,
     },
     Error as MatrixError,
 };
+use serde_json::Error as JsonError;
 
-use super::{
-    timeline::{TimelineItem, TimelineItemImpl},
-    Member, ReactionList, Room,
-};
+use super::{BoxedSyncRoomEvent, Event, EventImpl};
 use crate::{
+    prelude::*,
+    session::room::{
+        timeline::{TimelineItem, TimelineItemImpl},
+        Member, ReactionList, Room,
+    },
     spawn, spawn_tokio,
     utils::{filename_for_mime, media_type_uid},
 };
 
 #[derive(Clone, Debug, glib::Boxed)]
-#[boxed_type(name = "BoxedSyncRoomEvent")]
-pub struct BoxedSyncRoomEvent(SyncRoomEvent);
+#[boxed_type(name = "BoxedAnySyncRoomEvent")]
+pub struct BoxedAnySyncRoomEvent(AnySyncRoomEvent);
 
 mod imp {
     use std::cell::RefCell;
 
-    use glib::{object::WeakRef, SignalHandlerId};
-    use once_cell::{sync::Lazy, unsync::OnceCell};
+    use glib::SignalHandlerId;
+    use once_cell::sync::Lazy;
 
     use super::*;
 
     #[derive(Debug, Default)]
-    pub struct Event {
-        /// The deserialized matrix event
-        pub event: RefCell<Option<AnySyncRoomEvent>>,
-        /// The SDK event containing encryption information and the serialized
-        /// event as `Raw`
-        pub pure_event: RefCell<Option<SyncRoomEvent>>,
+    pub struct SupportedEvent {
+        /// The deserialized Matrix event.
+        pub matrix_event: RefCell<Option<AnySyncRoomEvent>>,
         /// Events that replace this one, in the order they arrive.
-        pub replacing_events: RefCell<Vec<super::Event>>,
+        pub replacing_events: RefCell<Vec<super::SupportedEvent>>,
         pub reactions: ReactionList,
-        pub source_changed_handler: RefCell<Option<SignalHandlerId>>,
         pub keys_handle: RefCell<Option<SignalHandlerId>>,
-        pub room: OnceCell<WeakRef<Room>>,
+        pub source_changed_handler: RefCell<Option<SignalHandlerId>>,
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for Event {
-        const NAME: &'static str = "RoomEvent";
-        type Type = super::Event;
-        type ParentType = TimelineItem;
+    impl ObjectSubclass for SupportedEvent {
+        const NAME: &'static str = "RoomSupportedEvent";
+        type Type = super::SupportedEvent;
+        type ParentType = Event;
     }
 
-    impl ObjectImpl for Event {
+    impl ObjectImpl for SupportedEvent {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecBoxed::new(
-                        "event",
-                        "event",
-                        "The matrix event of this Event",
-                        BoxedSyncRoomEvent::static_type(),
+                        "matrix-event",
+                        "Matrix Event",
+                        "The deserialized Matrix event of this Event",
+                        BoxedAnySyncRoomEvent::static_type(),
                         glib::ParamFlags::WRITABLE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "source",
-                        "Source",
-                        "The source (JSON) of this Event",
-                        None,
-                        glib::ParamFlags::READABLE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "room",
-                        "Room",
-                        "The room containing this event",
-                        Room::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "time",
-                        "Time",
-                        "The locally formatted time of this matrix event",
-                        None,
-                        glib::ParamFlags::READABLE,
                     ),
                     glib::ParamSpecObject::new(
                         "reactions",
@@ -120,14 +93,9 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "event" => {
-                    let event = value.get::<BoxedSyncRoomEvent>().unwrap();
-                    obj.set_matrix_pure_event(event.0);
-                }
-                "room" => {
-                    self.room
-                        .set(value.get::<Room>().unwrap().downgrade())
-                        .unwrap();
+                "matrix-event" => {
+                    let matrix_event = value.get::<BoxedAnySyncRoomEvent>().unwrap();
+                    obj.set_matrix_event(matrix_event.0);
                 }
                 _ => unimplemented!(),
             }
@@ -135,20 +103,13 @@ mod imp {
 
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "source" => obj.source().to_value(),
-                "room" => obj.room().to_value(),
-                "time" => obj.time().to_value(),
                 "reactions" => obj.reactions().to_value(),
                 _ => unimplemented!(),
             }
         }
     }
 
-    impl TimelineItemImpl for Event {
-        fn selectable(&self, _obj: &Self::Type) -> bool {
-            true
-        }
-
+    impl TimelineItemImpl for SupportedEvent {
         fn activatable(&self, obj: &Self::Type) -> bool {
             match obj.original_content() {
                 // The event can be activated to open the media viewer if it's an image or a video.
@@ -181,72 +142,79 @@ mod imp {
             }
         }
 
-        fn sender(&self, obj: &Self::Type) -> Option<Member> {
-            Some(obj.room().members().member_by_id(obj.matrix_sender()))
+        fn event_sender(&self, obj: &Self::Type) -> Option<Member> {
+            Some(obj.sender())
+        }
+    }
+
+    impl EventImpl for SupportedEvent {
+        fn source(&self, obj: &Self::Type) -> String {
+            obj.replacement()
+                .map(|replacement| replacement.source())
+                .unwrap_or_else(|| obj.original_source())
+        }
+
+        fn origin_server_ts(&self, _obj: &Self::Type) -> Option<MilliSecondsSinceUnixEpoch> {
+            Some(
+                self.matrix_event
+                    .borrow()
+                    .as_ref()
+                    .unwrap()
+                    .origin_server_ts(),
+            )
         }
     }
 }
 
 glib::wrapper! {
-    /// GObject representation of a Matrix room event.
-    pub struct Event(ObjectSubclass<imp::Event>) @extends TimelineItem;
+    /// GObject representation of a supported Matrix room event.
+    pub struct SupportedEvent(ObjectSubclass<imp::SupportedEvent>) @extends TimelineItem, Event;
 }
 
 // TODO:
-// - [ ] implement operations for events: forward, reply, delete...
+// - [ ] implement operations for events: forward, reply, edit...
 
-impl Event {
-    pub fn new(event: SyncRoomEvent, room: &Room) -> Self {
-        let event = BoxedSyncRoomEvent(event);
-        glib::Object::new(&[("event", &event), ("room", room)]).expect("Failed to create Event")
-    }
-
-    pub fn sender(&self) -> Member {
-        self.room().members().member_by_id(self.matrix_sender())
-    }
-
-    pub fn room(&self) -> Room {
-        self.imp().room.get().unwrap().upgrade().unwrap()
-    }
-
-    /// Get the matrix event
+impl SupportedEvent {
+    /// Try to construct a new `SupportedEvent` with the given pure event and
+    /// room.
     ///
-    /// If the `SyncRoomEvent` couldn't be deserialized this is `None`
-    pub fn matrix_event(&self) -> Option<AnySyncRoomEvent> {
-        self.imp().event.borrow().clone()
+    /// Returns an error if the pure event fails to deserialize.
+    pub fn try_from_event(pure_event: SyncRoomEvent, room: &Room) -> Result<Self, JsonError> {
+        let matrix_event = BoxedAnySyncRoomEvent(pure_event.event.deserialize()?);
+        let pure_event = BoxedSyncRoomEvent(pure_event);
+        Ok(glib::Object::new(&[
+            ("pure-event", &pure_event),
+            ("matrix-event", &matrix_event),
+            ("room", room),
+        ])
+        .expect("Failed to create SupportedEvent"))
     }
 
-    pub fn matrix_pure_event(&self) -> SyncRoomEvent {
-        self.imp().pure_event.borrow().clone().unwrap()
-    }
-
-    pub fn set_matrix_pure_event(&self, event: SyncRoomEvent) {
-        let priv_ = self.imp();
-
-        if let Ok(deserialized) = event.event.deserialize() {
-            if let AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomEncrypted(
-                SyncMessageLikeEvent::Original(_),
-            )) = deserialized
-            {
-                let raw_event = event.event.clone();
-                spawn!(clone!(@weak self as obj => async move {
-                    obj.try_to_decrypt(raw_event.cast()).await;
-                }));
-            }
-
-            priv_.event.replace(Some(deserialized));
-        } else {
-            warn!("Failed to deserialize event: {:?}", event);
+    /// Set the deserialized Matrix event of this `SupportedEvent`.
+    fn set_matrix_event(&self, matrix_event: AnySyncRoomEvent) {
+        if let AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomEncrypted(
+            SyncMessageLikeEvent::Original(_),
+        )) = matrix_event
+        {
+            spawn!(clone!(@weak self as obj => async move {
+                obj.try_to_decrypt(obj.pure_event().event.cast()).await;
+            }));
         }
 
-        priv_.pure_event.replace(Some(event));
-
-        self.notify("event");
+        self.imp().matrix_event.replace(Some(matrix_event));
         self.notify("activatable");
-        self.notify("source");
     }
 
-    async fn try_to_decrypt(&self, event: Raw<OriginalSyncRoomEncryptedEvent>) {
+    /// The deserialized Matrix event of this `SupportedEvent`.
+    pub fn matrix_event(&self) -> AnySyncRoomEvent {
+        self.imp().matrix_event.borrow().clone().unwrap()
+    }
+
+    /// Try to decrypt this `SupportedEvent` with the current room keys.
+    ///
+    /// If decryption fails, it will be retried everytime we receive new room
+    /// keys.
+    pub async fn try_to_decrypt(&self, event: Raw<OriginalSyncRoomEncryptedEvent>) {
         let priv_ = self.imp();
         let room = self.room().matrix_room();
         let handle = spawn_tokio!(async move { room.decrypt_event(&event).await });
@@ -256,7 +224,10 @@ impl Event {
                 if let Some(keys_handle) = priv_.keys_handle.take() {
                     self.room().disconnect(keys_handle);
                 }
-                self.set_matrix_pure_event(decrypted.into());
+                let pure_event = SyncRoomEvent::from(decrypted);
+                let matrix_event = pure_event.event.deserialize().unwrap();
+                self.set_pure_event(pure_event);
+                self.set_matrix_event(matrix_event);
             }
             Err(error) => {
                 warn!("Failed to decrypt event: {}", error);
@@ -264,7 +235,7 @@ impl Event {
                     let handle = self.room().connect_new_encryption_keys(
                         clone!(@weak self as obj => move |_| {
                             // Try to decrypt the event again
-                            obj.set_matrix_pure_event(obj.matrix_pure_event());
+                            obj.set_matrix_event(obj.matrix_event());
                         }),
                     );
 
@@ -274,142 +245,50 @@ impl Event {
         }
     }
 
-    pub fn matrix_sender(&self) -> OwnedUserId {
-        let priv_ = self.imp();
-
-        if let Some(event) = priv_.event.borrow().as_ref() {
-            event.sender().into()
-        } else {
-            priv_
-                .pure_event
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .event
-                .get_field::<OwnedUserId>("sender")
-                .unwrap()
-                .unwrap()
-        }
-    }
-
-    pub fn matrix_event_id(&self) -> OwnedEventId {
-        let priv_ = self.imp();
-
-        if let Some(event) = priv_.event.borrow().as_ref() {
-            event.event_id().to_owned()
-        } else {
-            priv_
-                .pure_event
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .event
-                .get_field::<OwnedEventId>("event_id")
-                .unwrap()
-                .unwrap()
-        }
-    }
-
-    pub fn matrix_transaction_id(&self) -> Option<OwnedTransactionId> {
+    /// The event ID of this `SupportedEvent`.
+    pub fn event_id(&self) -> OwnedEventId {
         self.imp()
-            .pure_event
+            .matrix_event
             .borrow()
             .as_ref()
             .unwrap()
-            .event
-            .get_field::<MessageLikeUnsigned>("unsigned")
-            .ok()
-            .flatten()
-            .and_then(|unsigned| unsigned.transaction_id)
+            .event_id()
+            .to_owned()
     }
 
-    /// The original timestamp of this event.
-    pub fn matrix_origin_server_ts(&self) -> MilliSecondsSinceUnixEpoch {
-        let priv_ = self.imp();
-        if let Some(event) = priv_.event.borrow().as_ref() {
-            event.origin_server_ts().to_owned()
-        } else {
-            priv_
-                .pure_event
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .event
-                .get_field::<MilliSecondsSinceUnixEpoch>("origin_server_ts")
-                .unwrap()
-                .unwrap()
-        }
-    }
-
-    /// The pretty-formatted JSON of this matrix event.
-    pub fn original_source(&self) -> String {
-        // We have to convert it to a Value, because a RawValue cannot be
-        // pretty-printed.
-        let json: serde_json::Value = serde_json::from_str(
-            self.imp()
-                .pure_event
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .event
-                .json()
-                .get(),
-        )
-        .unwrap();
-
-        serde_json::to_string_pretty(&json).unwrap()
-    }
-
-    /// The pretty-formatted JSON used for this matrix event.
-    ///
-    /// If this matrix event has been replaced, returns the replacing `Event`'s
-    /// source.
-    pub fn source(&self) -> String {
-        self.replacement()
-            .map(|replacement| replacement.source())
-            .unwrap_or_else(|| self.original_source())
-    }
-
-    pub fn timestamp(&self) -> DateTime {
-        let priv_ = self.imp();
-        let ts = if let Some(event) = priv_.event.borrow().as_ref() {
-            event.origin_server_ts().as_secs()
-        } else {
-            priv_
-                .pure_event
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .event
-                .get_field::<MilliSecondsSinceUnixEpoch>("origin_server_ts")
-                .unwrap()
-                .unwrap()
-                .as_secs()
-        };
-
-        DateTime::from_unix_utc(ts.into())
-            .and_then(|t| t.to_local())
+    /// The user ID of the sender of this `SupportedEvent`.
+    pub fn sender_id(&self) -> OwnedUserId {
+        self.imp()
+            .matrix_event
+            .borrow()
+            .as_ref()
             .unwrap()
+            .sender()
+            .to_owned()
     }
 
-    pub fn time(&self) -> String {
-        let datetime = self.timestamp();
-
-        // FIXME Is there a cleaner way to do that?
-        let local_time = datetime.format("%X").unwrap().as_str().to_ascii_lowercase();
-
-        if local_time.ends_with("am") || local_time.ends_with("pm") {
-            // Use 12h time format (AM/PM)
-            datetime.format("%l∶%M %p").unwrap().to_string()
-        } else {
-            // Use 24 time format
-            datetime.format("%R").unwrap().to_string()
-        }
+    /// The room member that sent this `SupportedEvent`.
+    pub fn sender(&self) -> Member {
+        self.room().members().member_by_id(self.sender_id())
     }
 
-    /// Find the related event if any
-    pub fn related_matrix_event(&self) -> Option<OwnedEventId> {
-        match self.imp().event.borrow().as_ref()? {
+    /// The transaction ID of this `SupportedEvent`, if any.
+    ///
+    /// This is the random string sent with the event, if it was sent from this
+    /// session.
+    pub fn transaction_id(&self) -> Option<OwnedTransactionId> {
+        self.imp()
+            .matrix_event
+            .borrow()
+            .as_ref()
+            .unwrap()
+            .transaction_id()
+            .map(|txn_id| txn_id.to_owned())
+    }
+
+    /// The ID of the event this `SupportedEvent` relates to, if any.
+    pub fn related_event_id(&self) -> Option<OwnedEventId> {
+        match self.imp().matrix_event.borrow().as_ref()? {
             AnySyncRoomEvent::MessageLike(ref message) => match message {
                 AnySyncMessageLikeEvent::RoomRedaction(SyncRoomRedactionEvent::Original(event)) => {
                     Some(event.redacts.clone())
@@ -420,8 +299,6 @@ impl Event {
                 AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(event)) => {
                     match &event.content.relates_to {
                         Some(relates_to) => match relates_to {
-                            // TODO: Figure out Relation::Annotation(), Relation::Reference() but
-                            // they are pre-specs for now See: https://github.com/uhoreg/matrix-doc/blob/aggregations-reactions/proposals/2677-reactions.md
                             Relation::Reply { in_reply_to } => Some(in_reply_to.event_id.clone()),
                             Relation::Replacement(replacement) => {
                                 Some(replacement.event_id.clone())
@@ -438,63 +315,26 @@ impl Event {
         }
     }
 
-    /// Whether this event is hidden from the user or displayed in the room
-    /// history.
-    pub fn is_hidden_event(&self) -> bool {
-        let priv_ = self.imp();
-
-        if self.related_matrix_event().is_some() {
-            if let Some(AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
-                SyncMessageLikeEvent::Original(message),
-            ))) = priv_.event.borrow().as_ref()
-            {
-                if let Some(Relation::Reply { in_reply_to: _ }) = message.content.relates_to {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        let event = priv_.event.borrow();
-
-        // List of all events to be shown.
-        match event.as_ref() {
-            Some(AnySyncRoomEvent::MessageLike(message)) => !matches!(
-                message,
-                AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(_))
-                    | AnySyncMessageLikeEvent::RoomEncrypted(SyncMessageLikeEvent::Original(_))
-                    | AnySyncMessageLikeEvent::Sticker(SyncMessageLikeEvent::Original(_))
-            ),
-            Some(AnySyncRoomEvent::State(state)) => !matches!(
-                state,
-                AnySyncStateEvent::RoomCreate(SyncStateEvent::Original(_))
-                    | AnySyncStateEvent::RoomMember(SyncStateEvent::Original(_))
-                    | AnySyncStateEvent::RoomThirdPartyInvite(SyncStateEvent::Original(_))
-                    | AnySyncStateEvent::RoomTombstone(SyncStateEvent::Original(_))
-            ),
-            _ => true,
-        }
-    }
-
-    /// Whether this is a replacing `Event`.
+    /// Whether this `SupportedEvent` replaces another one.
     ///
-    /// Replacing matrix events are:
+    /// Replacing Matrix events are:
     ///
     /// - `RoomRedaction`
     /// - `RoomMessage` with `Relation::Replacement`
     pub fn is_replacing_event(&self) -> bool {
-        match self.matrix_event() {
-            Some(AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
+        match self.imp().matrix_event.borrow().as_ref().unwrap() {
+            AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
                 SyncMessageLikeEvent::Original(message),
-            ))) => {
+            )) => {
                 matches!(message.content.relates_to, Some(Relation::Replacement(_)))
             }
-            Some(AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomRedaction(_))) => true,
+            AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomRedaction(_)) => true,
             _ => false,
         }
     }
 
-    pub fn prepend_replacing_events(&self, events: Vec<Event>) {
+    /// Prepend the given events to the list of replacing events.
+    pub fn prepend_replacing_events(&self, events: Vec<SupportedEvent>) {
         let priv_ = self.imp();
         priv_.replacing_events.borrow_mut().splice(..0, events);
         if self.redacted() {
@@ -502,7 +342,8 @@ impl Event {
         }
     }
 
-    pub fn append_replacing_events(&self, events: Vec<Event>) {
+    /// Append the given events to the list of replacing events.
+    pub fn append_replacing_events(&self, events: Vec<SupportedEvent>) {
         let priv_ = self.imp();
         let old_replacement = self.replacement();
 
@@ -536,15 +377,14 @@ impl Event {
         }
     }
 
-    pub fn replacing_events(&self) -> Vec<Event> {
+    /// The replacing events of this `SupportedEvent`, in the order of the
+    /// timeline.
+    pub fn replacing_events(&self) -> Vec<SupportedEvent> {
         self.imp().replacing_events.borrow().clone()
     }
 
-    /// The `Event` that replaces this one, if any.
-    ///
-    /// If this matrix event has been redacted or replaced, returns the
-    /// corresponding `Event`, otherwise returns `None`.
-    pub fn replacement(&self) -> Option<Event> {
+    /// The event that replaces this `SupportedEvent`, if any.
+    pub fn replacement(&self) -> Option<SupportedEvent> {
         self.replacing_events()
             .iter()
             .rev()
@@ -552,21 +392,19 @@ impl Event {
             .cloned()
     }
 
-    /// Whether this matrix event has been redacted.
+    /// Whether this `SupportedEvent` has been redacted.
     pub fn redacted(&self) -> bool {
         self.replacement()
             .filter(|event| {
                 matches!(
                     event.matrix_event(),
-                    Some(AnySyncRoomEvent::MessageLike(
-                        AnySyncMessageLikeEvent::RoomRedaction(_)
-                    ))
+                    AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomRedaction(_))
                 )
             })
             .is_some()
     }
 
-    /// Whether this is a reaction.
+    /// Whether this `SupportedEvent` is a reaction.
     pub fn is_reaction(&self) -> bool {
         matches!(
             self.original_content(),
@@ -574,41 +412,38 @@ impl Event {
         )
     }
 
-    /// The reactions for this event.
+    /// The reactions for this `SupportedEvent`.
     pub fn reactions(&self) -> &ReactionList {
         &self.imp().reactions
     }
 
-    /// Add reactions to this event.
-    pub fn add_reactions(&self, reactions: Vec<Event>) {
+    /// Add reactions to this `SupportedEvent`.
+    pub fn add_reactions(&self, reactions: Vec<SupportedEvent>) {
         if !self.redacted() {
             self.imp().reactions.add_reactions(reactions);
         }
     }
 
-    /// The content of this matrix event.
-    ///
-    /// Returns `None` if this is not a message-like event.
+    /// The content of this `SupportedEvent`, if this is a message-like event.
     pub fn original_content(&self) -> Option<AnyMessageLikeEventContent> {
-        match self.matrix_event()? {
+        match self.matrix_event() {
             AnySyncRoomEvent::MessageLike(message) => message.original_content(),
             _ => None,
         }
     }
 
-    /// The content to display for this `Event`.
+    /// The content to display for this `SupportedEvent`, if this is a
+    /// message-like event.
     ///
-    /// If this matrix event has been replaced, returns the replacing `Event`'s
-    /// content.
-    ///
-    /// Returns `None` if this is not a message-like event.
+    /// If this event has been replaced, returns the replacing
+    /// `SupportedEvent`'s content.
     pub fn content(&self) -> Option<AnyMessageLikeEventContent> {
         self.replacement()
             .and_then(|replacement| replacement.content())
             .or_else(|| self.original_content())
     }
 
-    /// The content of a media message.
+    /// Fetch the content of the media message in this `SupportedEvent`.
     ///
     /// Compatible events:
     ///
@@ -617,9 +452,11 @@ impl Event {
     /// - Video message (`MessageType::Video`).
     /// - Audio message (`MessageType::Audio`).
     ///
-    /// Returns `Ok((uid, filename, binary_content))` on success, `Err` if an
-    /// error occurred while fetching the content. Panics on an incompatible
-    /// event. `uid` is a unique identifier for this media.
+    /// Returns `Ok((uid, filename, binary_content))` on success. `uid` is a
+    /// unique identifier for this media.
+    ///
+    /// Returns `Err` if an error occurred while fetching the content. Panics on
+    /// an incompatible event.
     pub async fn get_media_content(&self) -> Result<(String, String, Vec<u8>), matrix_sdk::Error> {
         if let AnyMessageLikeEventContent::RoomMessage(content) = self.original_content().unwrap() {
             let client = self.room().session().client();
@@ -704,7 +541,7 @@ impl Event {
         panic!("Trying to get the media content of an event of incompatible type");
     }
 
-    /// Get the id of the event this `Event` replies to, if any.
+    /// Get the ID of the event this `SupportedEvent` replies to, if any.
     pub fn reply_to_id(&self) -> Option<OwnedEventId> {
         match self.original_content()? {
             AnyMessageLikeEventContent::RoomMessage(message) => {
@@ -718,12 +555,12 @@ impl Event {
         }
     }
 
-    /// Whether this `Event` is a reply to another event.
+    /// Whether this `SupportedEvent` is a reply to another event.
     pub fn is_reply(&self) -> bool {
         self.reply_to_id().is_some()
     }
 
-    /// Get the `Event` this `Event` replies to, if any.
+    /// Get the `Event` this `SupportedEvent` replies to, if any.
     ///
     /// Returns `Ok(None)` if this event is not a reply.
     pub async fn reply_to_event(&self) -> Result<Option<Event>, MatrixError> {
@@ -739,5 +576,41 @@ impl Event {
             .fetch_event_by_id(&related_event_id)
             .await?;
         Ok(Some(event))
+    }
+
+    /// Whether this `SupportedEvent` is hidden from the user or displayed in
+    /// the room history.
+    pub fn is_hidden_event(&self) -> bool {
+        let priv_ = self.imp();
+
+        if self.related_event_id().is_some() {
+            if let Some(AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
+                SyncMessageLikeEvent::Original(message),
+            ))) = priv_.matrix_event.borrow().as_ref()
+            {
+                if let Some(Relation::Reply { in_reply_to: _ }) = message.content.relates_to {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // List of all events to be shown.
+        match priv_.matrix_event.borrow().as_ref() {
+            Some(AnySyncRoomEvent::MessageLike(message)) => !matches!(
+                message,
+                AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(_))
+                    | AnySyncMessageLikeEvent::RoomEncrypted(SyncMessageLikeEvent::Original(_))
+                    | AnySyncMessageLikeEvent::Sticker(SyncMessageLikeEvent::Original(_))
+            ),
+            Some(AnySyncRoomEvent::State(state)) => !matches!(
+                state,
+                AnySyncStateEvent::RoomCreate(SyncStateEvent::Original(_))
+                    | AnySyncStateEvent::RoomMember(SyncStateEvent::Original(_))
+                    | AnySyncStateEvent::RoomThirdPartyInvite(SyncStateEvent::Original(_))
+                    | AnySyncStateEvent::RoomTombstone(SyncStateEvent::Original(_))
+            ),
+            _ => true,
+        }
     }
 }

@@ -25,7 +25,7 @@ use self::{
     reaction_list::MessageReactionList, reply::MessageReply, text::MessageText,
 };
 use crate::{
-    components::Avatar, prelude::*, session::room::Event, spawn, utils::filename_for_mime,
+    components::Avatar, prelude::*, session::room::SupportedEvent, spawn, utils::filename_for_mime,
 };
 
 mod imp {
@@ -53,7 +53,7 @@ mod imp {
         pub reactions: TemplateChild<MessageReactionList>,
         pub source_changed_handler: RefCell<Option<SignalHandlerId>>,
         pub bindings: RefCell<Vec<glib::Binding>>,
-        pub event: RefCell<Option<Event>>,
+        pub event: RefCell<Option<SupportedEvent>>,
     }
 
     #[glib::object_subclass]
@@ -144,7 +144,7 @@ impl MessageRow {
         self.notify("show-header");
     }
 
-    pub fn set_event(&self, event: Event) {
+    pub fn set_event(&self, event: SupportedEvent) {
         let priv_ = self.imp();
         // Remove signals and bindings from the previous event
         if let Some(event) = priv_.event.take() {
@@ -195,14 +195,20 @@ impl MessageRow {
         priv_.event.replace(Some(event));
     }
 
-    fn update_content(&self, event: &Event) {
+    fn update_content(&self, event: &SupportedEvent) {
         if event.is_reply() {
             spawn!(
                 glib::PRIORITY_HIGH,
                 clone!(@weak self as obj, @weak event => async move {
                     let priv_ = obj.imp();
 
-                    if let Ok(Some(related_event)) = event.reply_to_event().await {
+                    if let Some(related_event) = event
+                        .reply_to_event()
+                        .await
+                        .ok()
+                        .flatten()
+                        .and_then(|event| event.downcast::<SupportedEvent>().ok())
+                    {
                         let reply = MessageReply::new();
                         reply.set_related_content_sender(related_event.sender().upcast());
                         build_content(reply.related_content(), &related_event, true);
@@ -229,7 +235,7 @@ impl Default for MessageRow {
 ///
 /// If `compact` is true, the content should appear in a smaller format without
 /// interactions, if possible.
-fn build_content(parent: &adw::Bin, event: &Event, compact: bool) {
+fn build_content(parent: &adw::Bin, event: &SupportedEvent, compact: bool) {
     match event.content() {
         Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
             let msgtype = if let Some(Relation::Replacement(replacement)) = message.relates_to {

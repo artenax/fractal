@@ -15,7 +15,7 @@ mod imp {
         pub selectable: fn(&super::TimelineItem) -> bool,
         pub activatable: fn(&super::TimelineItem) -> bool,
         pub can_hide_header: fn(&super::TimelineItem) -> bool,
-        pub sender: fn(&super::TimelineItem) -> Option<Member>,
+        pub event_sender: fn(&super::TimelineItem) -> Option<Member>,
     }
 
     unsafe impl ClassStruct for TimelineItemClass {
@@ -37,9 +37,9 @@ mod imp {
         (klass.as_ref().can_hide_header)(this)
     }
 
-    pub(super) fn timeline_item_sender(this: &super::TimelineItem) -> Option<Member> {
+    pub(super) fn timeline_item_event_sender(this: &super::TimelineItem) -> Option<Member> {
         let klass = this.class();
-        (klass.as_ref().sender)(this)
+        (klass.as_ref().event_sender)(this)
     }
 
     #[derive(Debug, Default)]
@@ -88,8 +88,8 @@ mod imp {
                         glib::ParamFlags::READABLE,
                     ),
                     glib::ParamSpecObject::new(
-                        "sender",
-                        "Sender",
+                        "event-sender",
+                        "Event Sender",
                         "If this item is a Matrix event, the sender of the event.",
                         Member::static_type(),
                         glib::ParamFlags::READABLE,
@@ -119,7 +119,7 @@ mod imp {
                 "activatable" => obj.activatable().to_value(),
                 "show-header" => obj.show_header().to_value(),
                 "can-hide-header" => obj.can_hide_header().to_value(),
-                "sender" => obj.sender().to_value(),
+                "event-sender" => obj.event_sender().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -163,7 +163,7 @@ pub trait TimelineItemExt: 'static {
     /// If this is a Matrix event, the sender of the event.
     ///
     /// Defaults to `None`.
-    fn sender(&self) -> Option<Member>;
+    fn event_sender(&self) -> Option<Member>;
 }
 
 impl<O: IsA<TimelineItem>> TimelineItemExt for O {
@@ -194,8 +194,8 @@ impl<O: IsA<TimelineItem>> TimelineItemExt for O {
         imp::timeline_item_can_hide_header(self.upcast_ref())
     }
 
-    fn sender(&self) -> Option<Member> {
-        imp::timeline_item_sender(self.upcast_ref())
+    fn event_sender(&self) -> Option<Member> {
+        imp::timeline_item_event_sender(self.upcast_ref())
     }
 }
 
@@ -217,7 +217,7 @@ pub trait TimelineItemImpl: ObjectImpl {
         false
     }
 
-    fn sender(&self, _obj: &Self::Type) -> Option<Member> {
+    fn event_sender(&self, _obj: &Self::Type) -> Option<Member> {
         None
     }
 }
@@ -236,7 +236,7 @@ where
         klass.selectable = selectable_trampoline::<T>;
         klass.activatable = activatable_trampoline::<T>;
         klass.can_hide_header = can_hide_header_trampoline::<T>;
-        klass.sender = sender_trampoline::<T>;
+        klass.event_sender = event_sender_trampoline::<T>;
     }
 }
 
@@ -268,11 +268,11 @@ where
     this.imp().can_hide_header(this)
 }
 
-fn sender_trampoline<T>(this: &TimelineItem) -> Option<Member>
+fn event_sender_trampoline<T>(this: &TimelineItem) -> Option<Member>
 where
     T: ObjectSubclass + TimelineItemImpl,
     T::Type: IsA<TimelineItem>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().sender(this)
+    this.imp().event_sender(this)
 }

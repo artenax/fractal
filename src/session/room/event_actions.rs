@@ -5,10 +5,10 @@ use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventCo
 use once_cell::sync::Lazy;
 
 use crate::{
+    prelude::*,
     session::{
         event_source_dialog::EventSourceDialog,
-        room::{Event, RoomAction},
-        user::UserExt,
+        room::{Event, RoomAction, SupportedEvent},
     },
     spawn, toast,
     utils::cache_dir,
@@ -90,119 +90,122 @@ where
             })
         );
 
-        if let Some(AnyMessageLikeEventContent::RoomMessage(message)) = event.content() {
-            let user_id = event
-                .room()
-                .session()
-                .user()
-                .map(|user| user.user_id())
-                .unwrap();
-            let user = event.room().members().member_by_id(user_id);
-            if event.sender() == user
-                || event
+        if let Some(event) = event.downcast_ref::<SupportedEvent>() {
+            if let Some(AnyMessageLikeEventContent::RoomMessage(message)) = event.content() {
+                let user_id = event
                     .room()
-                    .power_levels()
-                    .min_level_for_room_action(&RoomAction::Redact)
-                    <= user.power_level()
-            {
-                // Remove message
+                    .session()
+                    .user()
+                    .map(|user| user.user_id())
+                    .unwrap();
+                let user = event.room().members().member_by_id(user_id);
+                if event.sender() == user
+                    || event
+                        .room()
+                        .power_levels()
+                        .min_level_for_room_action(&RoomAction::Redact)
+                        <= user.power_level()
+                {
+                    // Remove message
+                    gtk_macros::action!(
+                        &action_group,
+                        "remove",
+                        clone!(@weak event, => move |_, _| {
+                            event.room().redact(event.event_id(), None);
+                        })
+                    );
+                }
+                // Send/redact a reaction
                 gtk_macros::action!(
                     &action_group,
-                    "remove",
-                    clone!(@weak event, => move |_, _| {
-                        event.room().redact(event.matrix_event_id(), None);
+                    "toggle-reaction",
+                    Some(&String::static_variant_type()),
+                    clone!(@weak event => move |_, variant| {
+                        let key: String = variant.unwrap().get().unwrap();
+                        let room = event.room();
+
+                        let reaction_group = event.reactions().reaction_group_by_key(&key);
+
+                        if let Some(reaction) = reaction_group.and_then(|group| group.user_reaction()) {
+                            // The user already sent that reaction, redact it.
+                            room.redact(reaction.event_id(), None);
+                        } else {
+                            // The user didn't send that redaction, send it.
+                            room.send_reaction(key, event.event_id());
+                        }
                     })
                 );
-            }
-            // Send/redact a reaction
-            gtk_macros::action!(
-                &action_group,
-                "toggle-reaction",
-                Some(&String::static_variant_type()),
-                clone!(@weak event => move |_, variant| {
-                    let key: String = variant.unwrap().get().unwrap();
-                    let room = event.room();
-
-                    let reaction_group = event.reactions().reaction_group_by_key(&key);
-
-                    if let Some(reaction) = reaction_group.and_then(|group| group.user_reaction()) {
-                        // The user already sent that reaction, redact it.
-                        room.redact(reaction.matrix_event_id(), None);
-                    } else {
-                        // The user didn't send that redaction, send it.
-                        room.send_reaction(key, event.matrix_event_id());
+                match message.msgtype {
+                    // Copy Text-Message
+                    MessageType::Text(text_message) => {
+                        gtk_macros::action!(
+                            &action_group,
+                            "copy-text",
+                            clone!(@weak self as widget => move |_, _| {
+                                widget.clipboard().set_text(&text_message.body);
+                            })
+                        );
                     }
-                })
-            );
-            match message.msgtype {
-                // Copy Text-Message
-                MessageType::Text(text_message) => {
-                    gtk_macros::action!(
-                        &action_group,
-                        "copy-text",
-                        clone!(@weak self as widget => move |_, _| {
-                            widget.clipboard().set_text(&text_message.body);
-                        })
-                    );
-                }
-                MessageType::File(_) => {
-                    // Save message's file
-                    gtk_macros::action!(
-                        &action_group,
-                        "file-save",
-                        clone!(@weak self as widget, @weak event => move |_, _| {
-                        widget.save_event_file(event);
-                        })
-                    );
+                    MessageType::File(_) => {
+                        // Save message's file
+                        gtk_macros::action!(
+                            &action_group,
+                            "file-save",
+                            clone!(@weak self as widget, @weak event => move |_, _| {
+                            widget.save_event_file(event);
+                            })
+                        );
 
-                    // Open message's file
-                    gtk_macros::action!(
-                        &action_group,
-                        "file-open",
-                        clone!(@weak self as widget, @weak event => move |_, _| {
-                        widget.open_event_file(event);
-                        })
-                    );
+                        // Open message's file
+                        gtk_macros::action!(
+                            &action_group,
+                            "file-open",
+                            clone!(@weak self as widget, @weak event => move |_, _| {
+                            widget.open_event_file(event);
+                            })
+                        );
+                    }
+                    MessageType::Emote(message) => {
+                        gtk_macros::action!(
+                            &action_group,
+                            "copy-text",
+                            clone!(@weak self as widget, @weak event => move |_, _| {
+                                let display_name = event.sender().display_name();
+                                let message = display_name + " " + &message.body;
+                                widget.clipboard().set_text(&message);
+                            })
+                        );
+                    }
+
+                    MessageType::Image(_) => {
+                        gtk_macros::action!(
+                            &action_group,
+                            "save-image",
+                            clone!(@weak self as widget, @weak event => move |_, _| {
+                                widget.save_event_file(event);
+                            })
+                        );
+                    }
+                    MessageType::Video(_) => {
+                        gtk_macros::action!(
+                            &action_group,
+                            "save-video",
+                            clone!(@weak self as widget, @weak event => move |_, _| {
+                                widget.save_event_file(event);
+                            })
+                        );
+                    }
+                    MessageType::Audio(_) => {
+                        gtk_macros::action!(
+                            &action_group,
+                            "save-audio",
+                            clone!(@weak self as widget, @weak event => move |_, _| {
+                                widget.save_event_file(event);
+                            })
+                        );
+                    }
+                    _ => {}
                 }
-                MessageType::Emote(message) => {
-                    gtk_macros::action!(
-                        &action_group,
-                        "copy-text",
-                        clone!(@weak self as widget, @weak event => move |_, _| {
-                            let display_name = event.sender().display_name();
-                            let message = display_name + " " + &message.body;
-                            widget.clipboard().set_text(&message);
-                        })
-                    );
-                }
-                MessageType::Image(_) => {
-                    gtk_macros::action!(
-                        &action_group,
-                        "save-image",
-                        clone!(@weak self as widget, @weak event => move |_, _| {
-                            widget.save_event_file(event);
-                        })
-                    );
-                }
-                MessageType::Video(_) => {
-                    gtk_macros::action!(
-                        &action_group,
-                        "save-video",
-                        clone!(@weak self as widget, @weak event => move |_, _| {
-                            widget.save_event_file(event);
-                        })
-                    );
-                }
-                MessageType::Audio(_) => {
-                    gtk_macros::action!(
-                        &action_group,
-                        "save-audio",
-                        clone!(@weak self as widget, @weak event => move |_, _| {
-                            widget.save_event_file(event);
-                        })
-                    );
-                }
-                _ => {}
             }
         }
         self.insert_action_group("event", Some(&action_group));
@@ -211,9 +214,9 @@ where
 
     /// Save the file in `event`.
     ///
-    /// See `Event::get_media_content` for compatible events. Panics on an
-    /// incompatible event.
-    fn save_event_file(&self, event: Event) {
+    /// See [`SupportedEvent::get_media_content()`] for compatible events.
+    /// Panics on an incompatible event.
+    fn save_event_file(&self, event: SupportedEvent) {
         let window: Window = self.root().unwrap().downcast().unwrap();
         spawn!(
             glib::PRIORITY_LOW,
@@ -260,9 +263,9 @@ where
 
     /// Open the file in `event`.
     ///
-    /// See `Event::get_media_content` for compatible events. Panics on an
-    /// incompatible event.
-    fn open_event_file(&self, event: Event) {
+    /// See [`SupportedEvent::get_media_content()`] for compatible events.
+    /// Panics on an incompatible event.
+    fn open_event_file(&self, event: SupportedEvent) {
         spawn!(
             glib::PRIORITY_LOW,
             clone!(@weak self as obj => async move {

@@ -5,11 +5,12 @@ use matrix_sdk::ruma::events::AnySyncRoomEvent;
 
 use crate::{
     components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl, ReactionChooser},
+    prelude::*,
     session::{
         content::room_history::{message_row::MessageRow, DividerRow, RoomHistory, StateRow},
         room::{
-            Event, EventActions, TimelineDayDivider, TimelineItem, TimelineNewMessagesDivider,
-            TimelineSpinner,
+            Event, EventActions, SupportedEvent, TimelineDayDivider, TimelineItem,
+            TimelineNewMessagesDivider, TimelineSpinner,
         },
     },
 };
@@ -95,7 +96,7 @@ mod imp {
                 .item
                 .borrow()
                 .as_ref()
-                .and_then(|item| item.downcast_ref::<Event>())
+                .and_then(|item| item.downcast_ref::<SupportedEvent>())
             {
                 if let Some(handler) = self.notify_handler.borrow_mut().take() {
                     event.disconnect(handler);
@@ -113,7 +114,10 @@ mod imp {
                 let room_history = obj.room_history();
                 let popover = room_history.item_context_menu().to_owned();
 
-                if event.content().is_some() {
+                if let Some(event) = event
+                    .downcast_ref::<SupportedEvent>()
+                    .filter(|event| event.content().is_some())
+                {
                     let menu_model = Self::Type::event_message_menu_model();
                     let reaction_chooser = room_history.item_reaction_chooser();
                     if popover.menu_model().as_ref() != Some(menu_model) {
@@ -189,7 +193,7 @@ impl ItemRow {
             .item
             .borrow()
             .as_ref()
-            .and_then(|item| item.downcast_ref::<Event>())
+            .and_then(|item| item.downcast_ref::<SupportedEvent>())
         {
             if let Some(handler) = priv_.notify_handler.borrow_mut().take() {
                 event.disconnect(handler);
@@ -199,15 +203,13 @@ impl ItemRow {
         }
 
         if let Some(ref item) = item {
-            if let Some(event) = item.downcast_ref::<Event>() {
-                self.set_action_group(self.set_event_actions(Some(event)));
+            if let Some(event) = item.downcast_ref::<SupportedEvent>() {
+                self.set_action_group(self.set_event_actions(Some(event.upcast_ref())));
 
-                let notify_handler = event.connect_notify_local(
-                    Some("event"),
-                    clone!(@weak self as obj => move |event, _| {
+                let notify_handler =
+                    event.connect_pure_event_notify(clone!(@weak self as obj => move |event| {
                         obj.set_event_widget(event);
-                    }),
-                );
+                    }));
                 priv_.notify_handler.replace(Some(notify_handler));
 
                 self.set_event_widget(event);
@@ -265,9 +267,9 @@ impl ItemRow {
         priv_.item.replace(item);
     }
 
-    fn set_event_widget(&self, event: &Event) {
+    fn set_event_widget(&self, event: &SupportedEvent) {
         match event.matrix_event() {
-            Some(AnySyncRoomEvent::State(state)) => {
+            AnySyncRoomEvent::State(state) => {
                 let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<StateRow>())
                 {
                     child

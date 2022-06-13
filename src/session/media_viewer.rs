@@ -6,7 +6,7 @@ use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventCo
 use super::room::EventActions;
 use crate::{
     components::{ContentType, MediaContentViewer},
-    session::room::Event,
+    session::room::SupportedEvent,
     spawn,
     utils::cache_dir,
     Window,
@@ -24,7 +24,7 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/media-viewer.ui")]
     pub struct MediaViewer {
         pub fullscreened: Cell<bool>,
-        pub event: RefCell<Option<WeakRef<Event>>>,
+        pub event: RefCell<Option<WeakRef<SupportedEvent>>>,
         pub body: RefCell<Option<String>>,
         #[template_child]
         pub flap: TemplateChild<adw::Flap>,
@@ -91,7 +91,7 @@ mod imp {
                         "event",
                         "Event",
                         "The media event to display",
-                        Event::static_type(),
+                        SupportedEvent::static_type(),
                         glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
                     glib::ParamSpecString::new(
@@ -164,7 +164,7 @@ impl MediaViewer {
         glib::Object::new(&[]).expect("Failed to create MediaViewer")
     }
 
-    pub fn event(&self) -> Option<Event> {
+    pub fn event(&self) -> Option<SupportedEvent> {
         self.imp()
             .event
             .borrow()
@@ -172,7 +172,7 @@ impl MediaViewer {
             .and_then(|event| event.upgrade())
     }
 
-    pub fn set_event(&self, event: Option<Event>) {
+    pub fn set_event(&self, event: Option<SupportedEvent>) {
         if event == self.event() {
             return;
         }
@@ -226,7 +226,7 @@ impl MediaViewer {
         self.imp().media.show_loading();
 
         if let Some(event) = self.event() {
-            self.set_event_actions(Some(&event));
+            self.set_event_actions(Some(event.upcast_ref()));
             if let Some(AnyMessageLikeEventContent::RoomMessage(content)) = event.content() {
                 match content.msgtype {
                     MessageType::Image(image) => {

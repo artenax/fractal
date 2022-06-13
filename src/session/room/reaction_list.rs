@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use matrix_sdk::ruma::events::AnyMessageLikeEventContent;
 
-use super::{Event, ReactionGroup};
+use super::{ReactionGroup, SupportedEvent};
 
 mod imp {
     use std::cell::RefCell;
@@ -45,7 +45,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// List of all `ReactionGroup`s for an `Event`. Implements `ListModel`.
+    /// List of all `ReactionGroup`s for a `SupportedEvent`. Implements `ListModel`.
     ///
     /// `ReactionGroup`s are sorted in "insertion order".
     pub struct ReactionList(ObjectSubclass<imp::ReactionList>)
@@ -57,15 +57,15 @@ impl ReactionList {
         glib::Object::new(&[]).expect("Failed to create ReactionList")
     }
 
-    /// Add reactions with the given reaction `Event`s.
+    /// Add reactions with the given reaction `SupportedEvent`s.
     ///
-    /// Ignores `Event`s that are not reactions.
-    pub fn add_reactions(&self, new_reactions: Vec<Event>) {
+    /// Ignores `SupportedEvent`s that are not reactions.
+    pub fn add_reactions(&self, new_reactions: Vec<SupportedEvent>) {
         let mut reactions = self.imp().reactions.borrow_mut();
         let prev_len = reactions.len();
 
         // Group reactions by key
-        let mut grouped_reactions: HashMap<String, Vec<Event>> = HashMap::new();
+        let mut grouped_reactions: HashMap<String, Vec<SupportedEvent>> = HashMap::new();
         for event in new_reactions {
             if let Some(AnyMessageLikeEventContent::Reaction(reaction)) = event.content() {
                 let relation = reaction.relates_to;

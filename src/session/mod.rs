@@ -63,7 +63,7 @@ use self::{
 };
 pub use self::{
     avatar::Avatar,
-    room::{Event, Room},
+    room::{Room, SupportedEvent},
     room_creation::RoomCreation,
     user::{User, UserActions, UserExt},
 };
@@ -896,7 +896,7 @@ impl Session {
     }
 
     /// Show a media event
-    pub fn show_media(&self, event: &Event) {
+    pub fn show_media(&self, event: &SupportedEvent) {
         let priv_ = self.imp();
         priv_.media_viewer.set_event(Some(event.clone()));
 

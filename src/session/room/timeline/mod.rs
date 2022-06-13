@@ -23,10 +23,8 @@ pub use timeline_new_messages_divider::TimelineNewMessagesDivider;
 pub use timeline_spinner::TimelineSpinner;
 use tokio::task::JoinHandle;
 
-use crate::{
-    session::room::{Event, Room},
-    spawn_tokio,
-};
+use super::{Event, Room, SupportedEvent, UnsupportedEvent};
+use crate::{prelude::*, spawn_tokio};
 
 #[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
@@ -195,7 +193,7 @@ impl Timeline {
             let mut previous_timestamp = if position > 0 {
                 list.get(position - 1)
                     .and_then(|item| item.downcast_ref::<Event>())
-                    .map(|event| event.timestamp())
+                    .and_then(|event| event.timestamp())
             } else {
                 None
             };
@@ -204,7 +202,7 @@ impl Timeline {
             for current in list.range(position..position + added) {
                 if let Some(current_timestamp) = current
                     .downcast_ref::<Event>()
-                    .map(|event| event.timestamp())
+                    .and_then(|event| event.timestamp())
                 {
                     if Some(current_timestamp.ymd()) != previous_timestamp.as_ref().map(|t| t.ymd())
                     {
@@ -252,13 +250,13 @@ impl Timeline {
             let mut previous_sender = if position > 0 {
                 list.get(position - 1)
                     .filter(|item| item.can_hide_header())
-                    .and_then(|item| item.sender())
+                    .and_then(|item| item.event_sender())
             } else {
                 None
             };
 
             for current in list.range(position..position + added) {
-                let current_sender = current.sender();
+                let current_sender = current.event_sender();
 
                 if !current.can_hide_header() {
                     current.set_show_header(false);
@@ -281,7 +279,7 @@ impl Timeline {
 
                 // Once the sender changes we can be sure that the visibility for headers will
                 // be correct
-                if next.sender() != previous_sender {
+                if next.event_sender() != previous_sender {
                     next.set_show_header(true);
                     break;
                 }
@@ -300,15 +298,16 @@ impl Timeline {
 
             for event in list
                 .range(position as usize..(position + added) as usize)
-                .filter_map(|item| item.downcast_ref::<Event>())
+                .filter_map(|item| item.downcast_ref::<SupportedEvent>())
             {
-                if let Some(relates_to) = relates_to_events.remove(&event.matrix_event_id()) {
-                    let mut replacing_events: Vec<Event> = vec![];
-                    let mut reactions: Vec<Event> = vec![];
+                if let Some(relates_to) = relates_to_events.remove(&event.event_id()) {
+                    let mut replacing_events = vec![];
+                    let mut reactions = vec![];
 
                     for relation_event_id in relates_to {
                         let relation = self
                             .event_by_id(&relation_event_id)
+                            .and_then(|event| event.downcast::<SupportedEvent>().ok())
                             .expect("Previously known event has disappeared");
 
                         if relation.is_replacing_event() {
@@ -326,7 +325,7 @@ impl Timeline {
                     event.add_reactions(reactions);
 
                     if event.redacted() {
-                        redacted_events.insert(event.matrix_event_id());
+                        redacted_events.insert(event.event_id());
                     }
                 }
             }
@@ -352,8 +351,8 @@ impl Timeline {
             let mut list = list.iter();
 
             while let Some(item) = list.next_back() {
-                if let Some(event) = item.downcast_ref::<Event>() {
-                    if redacted_events.remove(&event.matrix_event_id()) {
+                if let Some(event) = item.downcast_ref::<SupportedEvent>() {
+                    if redacted_events.remove(&event.event_id()) {
                         redacted_events_pos.push(i - 1);
                     }
                     if redacted_events.is_empty() {
@@ -412,20 +411,21 @@ impl Timeline {
         }
     }
 
-    fn add_hidden_events(&self, events: Vec<Event>, at_front: bool) {
+    fn add_hidden_events(&self, events: Vec<SupportedEvent>, at_front: bool) {
         let priv_ = self.imp();
         let mut relates_to_events = priv_.relates_to_events.borrow_mut();
 
         // Group events by related event
-        let mut new_relations: HashMap<OwnedEventId, Vec<Event>> = HashMap::new();
+        let mut new_relations: HashMap<_, Vec<_>> = HashMap::new();
         for event in events {
-            if let Some(relates_to) = relates_to_events.remove(&event.matrix_event_id()) {
-                let mut replacing_events: Vec<Event> = vec![];
-                let mut reactions: Vec<Event> = vec![];
+            if let Some(relates_to) = relates_to_events.remove(&event.event_id()) {
+                let mut replacing_events = vec![];
+                let mut reactions = vec![];
 
                 for relation_event_id in relates_to {
                     let relation = self
                         .event_by_id(&relation_event_id)
+                        .and_then(|event| event.downcast::<SupportedEvent>().ok())
                         .expect("Previously known event has disappeared");
 
                     if relation.is_replacing_event() {
@@ -443,7 +443,7 @@ impl Timeline {
                 event.add_reactions(reactions);
             }
 
-            if let Some(relates_to_event) = event.related_matrix_event() {
+            if let Some(relates_to_event) = event.related_event_id() {
                 let relations = new_relations.entry(relates_to_event).or_default();
                 relations.push(event);
             }
@@ -454,53 +454,54 @@ impl Timeline {
         for (relates_to_event_id, new_relations) in new_relations {
             if let Some(relates_to_event) = self.event_by_id(&relates_to_event_id) {
                 // Get the relations in relates_to_event otherwise they will be added in
-                // in items_changed and they might not be added at the right place.
-                let mut relations: Vec<Event> = relates_to_events
-                    .remove(&relates_to_event.matrix_event_id())
+                // items_changed and they might not be added at the right place.
+                let mut relations: Vec<_> = relates_to_events
+                    .remove(&relates_to_event_id)
                     .unwrap_or_default()
                     .into_iter()
                     .map(|event_id| {
                         self.event_by_id(&event_id)
+                            .and_then(|event| event.downcast::<SupportedEvent>().ok())
                             .expect("Previously known event has disappeared")
                     })
                     .collect();
 
-                if at_front {
-                    relations.splice(..0, new_relations);
-                } else {
-                    relations.extend(new_relations);
-                }
-
-                let mut replacing_events: Vec<Event> = vec![];
-                let mut reactions: Vec<Event> = vec![];
-
-                for relation in relations {
-                    if relation.is_replacing_event() {
-                        replacing_events.push(relation);
-                    } else if relation.is_reaction() {
-                        reactions.push(relation);
+                if let Some(relates_to_event) = relates_to_event.downcast_ref::<SupportedEvent>() {
+                    if at_front {
+                        relations.splice(..0, new_relations);
+                    } else {
+                        relations.extend(new_relations);
                     }
-                }
 
-                if !at_front || relates_to_event.replacing_events().is_empty() {
-                    relates_to_event.append_replacing_events(replacing_events);
-                } else {
-                    relates_to_event.prepend_replacing_events(replacing_events);
-                }
-                relates_to_event.add_reactions(reactions);
+                    let mut replacing_events = vec![];
+                    let mut reactions = vec![];
 
-                if relates_to_event.redacted() {
-                    redacted_events.insert(relates_to_event.matrix_event_id());
+                    for relation in relations {
+                        if relation.is_replacing_event() {
+                            replacing_events.push(relation);
+                        } else if relation.is_reaction() {
+                            reactions.push(relation);
+                        }
+                    }
+
+                    if !at_front || relates_to_event.replacing_events().is_empty() {
+                        relates_to_event.append_replacing_events(replacing_events);
+                    } else {
+                        relates_to_event.prepend_replacing_events(replacing_events);
+                    }
+                    relates_to_event.add_reactions(reactions);
+
+                    if relates_to_event.redacted() {
+                        redacted_events.insert(relates_to_event.event_id());
+                    }
                 }
             } else {
                 // Store the new event if the `related_to` event isn't known, we will update the
                 // `relates_to` once the `related_to` event is added to the list
                 let relates_to_event = relates_to_events.entry(relates_to_event_id).or_default();
 
-                let relations_ids: Vec<OwnedEventId> = new_relations
-                    .iter()
-                    .map(|event| event.matrix_event_id())
-                    .collect();
+                let relations_ids: Vec<_> =
+                    new_relations.iter().map(|event| event.event_id()).collect();
                 if at_front {
                     relates_to_event.splice(..0, relations_ids);
                 } else {
@@ -648,30 +649,43 @@ impl Timeline {
             };
 
             let mut pending_events = priv_.pending_events.borrow_mut();
-            let mut hidden_events: Vec<Event> = vec![];
+            let mut hidden_events = vec![];
 
-            for event in batch.into_iter() {
-                let event_id = event.matrix_event_id();
-
-                if let Some(pending_id) = event
-                    .matrix_transaction_id()
-                    .and_then(|txn_id| pending_events.remove(&txn_id))
+            for event in batch {
+                if let Some(event_id) = event
+                    .downcast_ref::<UnsupportedEvent>()
+                    .and_then(|event| event.event_id())
                 {
-                    let mut event_map = priv_.event_map.borrow_mut();
-
-                    if let Some(pending_event) = event_map.remove(&pending_id) {
-                        pending_event.set_matrix_pure_event(event.matrix_pure_event());
-                        event_map.insert(event_id, pending_event);
-                    };
+                    priv_.event_map.borrow_mut().insert(event_id, event);
                     added -= 1;
-                } else {
-                    priv_.event_map.borrow_mut().insert(event_id, event.clone());
-                    if event.is_hidden_event() {
-                        hidden_events.push(event);
+                } else if let Ok(event) = event.downcast::<SupportedEvent>() {
+                    let event_id = event.event_id();
+
+                    if let Some(pending_id) = event
+                        .transaction_id()
+                        .and_then(|txn_id| pending_events.remove(&txn_id))
+                    {
+                        let mut event_map = priv_.event_map.borrow_mut();
+
+                        if let Some(pending_event) = event_map.remove(&pending_id) {
+                            pending_event.set_pure_event(event.pure_event());
+                            event_map.insert(event_id, pending_event);
+                        };
                         added -= 1;
                     } else {
-                        priv_.list.borrow_mut().push_back(event.upcast());
+                        priv_
+                            .event_map
+                            .borrow_mut()
+                            .insert(event_id, event.clone().upcast());
+                        if event.is_hidden_event() {
+                            hidden_events.push(event);
+                            added -= 1;
+                        } else {
+                            priv_.list.borrow_mut().push_back(event.upcast());
+                        }
                     }
+                } else {
+                    added -= 1;
                 }
             }
 
@@ -684,18 +698,18 @@ impl Timeline {
     }
 
     /// Append an event that wasn't yet fully sent and received via a sync
-    pub fn append_pending(&self, txn_id: &TransactionId, event: Event) {
+    pub fn append_pending(&self, txn_id: &TransactionId, event: SupportedEvent) {
         let priv_ = self.imp();
 
         priv_
             .event_map
             .borrow_mut()
-            .insert(event.matrix_event_id(), event.clone());
+            .insert(event.event_id(), event.clone().upcast());
 
         priv_
             .pending_events
             .borrow_mut()
-            .insert(txn_id.to_owned(), event.matrix_event_id());
+            .insert(txn_id.to_owned(), event.event_id());
 
         let index = {
             let mut list = priv_.list.borrow_mut();
@@ -756,22 +770,32 @@ impl Timeline {
         let mut added = batch.len();
 
         {
-            let mut hidden_events: Vec<Event> = vec![];
+            let mut hidden_events: Vec<_> = vec![];
             // Extend the size of the list so that rust doesn't need to reallocate memory
             // multiple times
             priv_.list.borrow_mut().reserve(added);
 
             for event in batch {
-                priv_
-                    .event_map
-                    .borrow_mut()
-                    .insert(event.matrix_event_id(), event.clone());
-
-                if event.is_hidden_event() {
-                    hidden_events.push(event);
+                if let Some(event_id) = event
+                    .downcast_ref::<UnsupportedEvent>()
+                    .and_then(|event| event.event_id())
+                {
+                    priv_.event_map.borrow_mut().insert(event_id, event);
                     added -= 1;
+                } else if let Ok(event) = event.downcast::<SupportedEvent>() {
+                    priv_
+                        .event_map
+                        .borrow_mut()
+                        .insert(event.event_id(), event.clone().upcast());
+
+                    if event.is_hidden_event() {
+                        hidden_events.push(event);
+                        added -= 1;
+                    } else {
+                        priv_.list.borrow_mut().push_front(event.upcast());
+                    }
                 } else {
-                    priv_.list.borrow_mut().push_front(event.upcast());
+                    added -= 1;
                 }
             }
             self.add_hidden_events(hidden_events, true);

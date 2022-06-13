@@ -1,7 +1,7 @@
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 
-use super::Event;
-use crate::session::UserExt;
+use super::SupportedEvent;
+use crate::prelude::*;
 
 mod imp {
     use std::cell::RefCell;
@@ -16,7 +16,7 @@ mod imp {
         /// The key of the group.
         pub key: OnceCell<String>,
         /// The reactions in the group.
-        pub reactions: RefCell<IndexSet<Event>>,
+        pub reactions: RefCell<IndexSet<SupportedEvent>>,
     }
 
     #[glib::object_subclass]
@@ -108,14 +108,14 @@ impl ReactionGroup {
     }
 
     /// The reaction in this group sent by this user, if any.
-    pub fn user_reaction(&self) -> Option<Event> {
+    pub fn user_reaction(&self) -> Option<SupportedEvent> {
         let reactions = self.imp().reactions.borrow();
         if let Some(user) = reactions
             .first()
             .and_then(|event| event.room().session().user().cloned())
         {
             for reaction in reactions.iter().filter(|event| !event.redacted()) {
-                if reaction.matrix_sender() == user.user_id() {
+                if reaction.sender_id() == user.user_id() {
                     return Some(reaction.clone());
                 }
             }
@@ -129,7 +129,7 @@ impl ReactionGroup {
     }
 
     /// Add new reactions to this group.
-    pub fn add_reactions(&self, new_reactions: Vec<Event>) {
+    pub fn add_reactions(&self, new_reactions: Vec<SupportedEvent>) {
         let prev_has_user = self.has_user();
         let mut added_reactions = Vec::with_capacity(new_reactions.len());
 

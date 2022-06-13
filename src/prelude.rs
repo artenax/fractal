@@ -1,1 +1,4 @@
-pub use crate::session::UserExt;
+pub use crate::session::{
+    room::{EventExt, TimelineItemExt},
+    UserExt,
+};
