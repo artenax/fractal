@@ -27,7 +27,7 @@ pub(crate) mod imp {
 
         fn new() -> Self {
             Self {
-                block_size: Cell::new(8),
+                block_size: Cell::new(6),
                 ..Self::default()
             }
         }
@@ -47,7 +47,7 @@ pub(crate) mod imp {
                     "block-size",
                     1,
                     u32::MAX,
-                    8,
+                    6,
                     glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                 )]
             });
