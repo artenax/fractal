@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-05-21 12:55+0000\n"
-"PO-Revision-Date: 2022-05-25 12:32-0400\n"
+"POT-Creation-Date: 2022-06-06 10:26+0000\n"
+"PO-Revision-Date: 2022-06-15 19:27+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.3\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 42.0\n"
 
 #: data/org.gnome.Fractal.desktop.in.in:3
 #: data/org.gnome.Fractal.metainfo.xml.in.in:9
@@ -187,7 +187,7 @@ msgstr "通过浏览器认证"
 #: data/resources/ui/identity-verification-widget.ui:449
 #: src/components/editable_avatar.rs:344
 #: src/session/content/room_history/verification_info_bar.rs:182
-#: src/session/room/event_actions.rs:210
+#: src/session/room/event_actions.rs:209
 msgid "Cancel"
 msgstr "取消"
 
@@ -229,11 +229,11 @@ msgstr "搜索匹配项时发生错误"
 msgid "Invite"
 msgstr "邀请"
 
-#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:33
+#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:29
 msgid "_Reject"
 msgstr "拒绝(_R)"
 
-#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:28
+#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:24
 msgid "_Accept"
 msgstr "接受(_A)"
 
@@ -274,7 +274,7 @@ msgid "Open"
 msgstr "打开"
 
 #: data/resources/ui/content-message-file.ui:28
-#: src/session/room/event_actions.rs:209
+#: src/session/room/event_actions.rs:208
 msgid "Save"
 msgstr "保存"
 
@@ -295,7 +295,7 @@ msgstr "聊天室详情(_D)"
 msgid "_Invite New Member"
 msgstr "邀请新成员(_I)"
 
-#: data/resources/ui/content-room-history.ui:18 data/resources/ui/sidebar.ui:62
+#: data/resources/ui/content-room-history.ui:18 data/resources/ui/sidebar.ui:58
 msgid "_Leave Room"
 msgstr "离开聊天室(_L)"
 
@@ -759,66 +759,62 @@ msgid "_New Room"
 msgstr "新建聊天室(_N)"
 
 #: data/resources/ui/sidebar.ui:12
-msgid "_Preferences"
-msgstr "首选项(_P)"
-
-#: data/resources/ui/sidebar.ui:16
 msgid "_Keyboard Shortcuts"
 msgstr "快捷键(_K)"
 
-#: data/resources/ui/sidebar.ui:20
+#: data/resources/ui/sidebar.ui:16
 msgid "_About Fractal"
 msgstr "关于 Fractal(_A)"
 
-#: data/resources/ui/sidebar.ui:40
+#: data/resources/ui/sidebar.ui:36
 msgid "Move to _Favorites"
 msgstr "移至最爱(_F)"
 
-#: data/resources/ui/sidebar.ui:45
+#: data/resources/ui/sidebar.ui:41
 msgid "Move to _Rooms"
 msgstr "移至聊天室(_R)"
 
-#: data/resources/ui/sidebar.ui:50
+#: data/resources/ui/sidebar.ui:46
 msgid "Move to _People"
 msgstr "移至联系人(_P)"
 
-#: data/resources/ui/sidebar.ui:55
+#: data/resources/ui/sidebar.ui:51
 msgid "Move to Low _Priority"
 msgstr "移至低优先级(_P)"
 
-#: data/resources/ui/sidebar.ui:67
+#: data/resources/ui/sidebar.ui:63
 msgid "Re_join Room"
 msgstr "重新加入聊天室(_J)"
 
-#: data/resources/ui/sidebar.ui:72
+#: data/resources/ui/sidebar.ui:68
 msgid "_Forget Room"
 msgstr "忘记聊天室(_F)"
 
-#: data/resources/ui/sidebar.ui:91
+#: data/resources/ui/sidebar.ui:87
 msgid "Switch Accounts"
 msgstr "切换账户"
 
-#: data/resources/ui/sidebar.ui:113
+#: data/resources/ui/sidebar.ui:109
 msgid "App Settings Menu"
 msgstr "应用设置菜单"
 
-#: data/resources/ui/sidebar.ui:123
+#: data/resources/ui/sidebar.ui:119
 msgid "Toggle Room Search"
 msgstr "切换聊天室搜索"
 
-#: data/resources/ui/sidebar.ui:135
+#: data/resources/ui/sidebar.ui:131
 msgid "Room Search"
 msgstr "聊天室搜索"
 
-#: data/resources/ui/sidebar.ui:136
+#: data/resources/ui/sidebar.ui:132
 msgid "Search for a room"
 msgstr "搜索聊天室"
 
-#: data/resources/ui/sidebar.ui:152
+#: data/resources/ui/sidebar.ui:148
 msgid "Sidebar"
 msgstr "侧边栏"
 
-#: data/resources/ui/sidebar.ui:153
+#: data/resources/ui/sidebar.ui:149
 msgid "Allows to navigate between rooms"
 msgstr "允许在聊天室间导览"
 
@@ -855,15 +851,15 @@ msgstr "选择头像"
 msgid "Choose"
 msgstr "选择"
 
-#: src/components/editable_avatar.rs:366
+#: src/components/editable_avatar.rs:364
 msgid "The chosen file is not an image"
 msgstr "选择的文件不是图像"
 
-#: src/components/editable_avatar.rs:374
+#: src/components/editable_avatar.rs:370
 msgid "Could not determine the type of the chosen file"
 msgstr "无法判断选择文件的类型"
 
-#: src/components/editable_avatar.rs:383
+#: src/components/editable_avatar.rs:375
 msgid "No file was chosen"
 msgstr "未选择文件"
 
@@ -891,7 +887,7 @@ msgstr "文件无法查看"
 msgid "Session removed successfully."
 msgstr "会话已成功移除。"
 
-#: src/error_page.rs:120
+#: src/error_page.rs:116
 msgid "Could not remove session from secret storage"
 msgstr "无法从秘密存储移除会话"
 
@@ -982,11 +978,11 @@ msgid "Log Out"
 msgstr "登出"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/account_settings/devices_page/device_row.rs:216
+#: src/session/account_settings/devices_page/device_row.rs:215
 msgid "Failed to disconnect device “{device_name}”"
 msgstr "断开设备“{device_name}”的连接失败"
 
-#: src/session/account_settings/devices_page/device_row.rs:230
+#: src/session/account_settings/devices_page/device_row.rs:228
 msgid ""
 "Fractal’s support for encryption is unstable so you might lose access to "
 "your encrypted message history. It is recommended to backup your encryption "
@@ -996,39 +992,39 @@ msgstr ""
 "操作前从另一个 Matrix 客户端备份加密密钥。"
 
 #. Translators: Time in 24h format
-#: src/session/account_settings/devices_page/device_row.rs:288
+#: src/session/account_settings/devices_page/device_row.rs:286
 msgid "Last seen at %H:%M"
 msgstr "上次见于 %H:%M"
 
 #. Translators: Time in 12h format
-#: src/session/account_settings/devices_page/device_row.rs:291
+#: src/session/account_settings/devices_page/device_row.rs:289
 msgid "Last seen at %l:%M %p"
 msgstr "上次见于 %l:%M %p"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:300
+#: src/session/account_settings/devices_page/device_row.rs:298
 #, no-c-format
 msgid "Last seen Yesterday at %H:%M"
 msgstr "上次见于昨天 %H:%M"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:305
+#: src/session/account_settings/devices_page/device_row.rs:303
 #, no-c-format
 msgid "Last seen Yesterday at %l:%M %p"
 msgstr "上次见于昨天 %l:%M %p"
 
 #. Translators: this is the name of the week day followed by
 #. a time in 24h format. i.e. "Last seen Monday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:314
+#: src/session/account_settings/devices_page/device_row.rs:312
 #, no-c-format
 msgid "Last seen %A at %H:%M"
 msgstr "上次见于%A %H:%M"
 
 #. Translators: this is the week day name followed by
 #. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:319
+#: src/session/account_settings/devices_page/device_row.rs:317
 #, no-c-format
 msgid "Last seen %A at %l:%M %p"
 msgstr "上次见于%A %l:%M %p"
@@ -1036,7 +1032,7 @@ msgstr "上次见于%A %l:%M %p"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 24h format i.e. "Last seen February 3 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:327
+#: src/session/account_settings/devices_page/device_row.rs:325
 #, no-c-format
 msgid "Last seen %B %-e at %H:%M"
 msgstr "上次见于 %m 月 %d 日 %H:%M"
@@ -1044,7 +1040,7 @@ msgstr "上次见于 %m 月 %d 日 %H:%M"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 12h format i.e. "Last seen February 3 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:333
+#: src/session/account_settings/devices_page/device_row.rs:331
 #, no-c-format
 msgid "Last seen %B %-e at %l:%M %p"
 msgstr "上次见于 %m 月 %d 日 %l:%M %p"
@@ -1052,7 +1048,7 @@ msgstr "上次见于 %m 月 %d 日 %l:%M %p"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:340
+#: src/session/account_settings/devices_page/device_row.rs:338
 #, no-c-format
 msgid "Last seen %B %-e %Y at %H:%M"
 msgstr "上次见于 %Y 年 %m 月 %d 日 %H:%M"
@@ -1060,7 +1056,7 @@ msgstr "上次见于 %Y 年 %m 月 %d 日 %H:%M"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:346
+#: src/session/account_settings/devices_page/device_row.rs:344
 #, no-c-format
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "上次见于 %Y 年 %m 月 %d 日 %l:%M %p"
@@ -1089,51 +1085,51 @@ msgstr "密码必须包含至少一个符号"
 msgid "Passwords do not match"
 msgstr "密码不匹配"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:313
+#: src/session/account_settings/user_page/change_password_subpage.rs:311
 msgid "Password changed successfully"
 msgstr "密码已成功修改"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:331
+#: src/session/account_settings/user_page/change_password_subpage.rs:326
 msgid "Password rejected for being too weak"
 msgstr "密码因太弱已被拒绝"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:338
+#: src/session/account_settings/user_page/change_password_subpage.rs:330
 msgid "Could not change password"
 msgstr "无法修改密码"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:200
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:197
 msgid "Account successfully deactivated"
 msgstr "账户已成功停用"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:210
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:205
 msgid "Could not deactivate account"
 msgstr "无法停用账户"
 
-#: src/session/account_settings/user_page/mod.rs:227
+#: src/session/account_settings/user_page/mod.rs:225
 msgid "Avatar removed successfully"
 msgstr "头像已成功移除"
 
-#: src/session/account_settings/user_page/mod.rs:245
+#: src/session/account_settings/user_page/mod.rs:240
 msgid "Avatar changed successfully"
 msgstr "头像已成功更改"
 
-#: src/session/account_settings/user_page/mod.rs:291
+#: src/session/account_settings/user_page/mod.rs:283
 msgid "Could not upload avatar"
 msgstr "无法上传头像"
 
-#: src/session/account_settings/user_page/mod.rs:316
+#: src/session/account_settings/user_page/mod.rs:305
 msgid "Could not change avatar"
 msgstr "无法更改头像"
 
-#: src/session/account_settings/user_page/mod.rs:348
+#: src/session/account_settings/user_page/mod.rs:334
 msgid "Could not remove avatar"
 msgstr "无法移除头像"
 
-#: src/session/account_settings/user_page/mod.rs:397
+#: src/session/account_settings/user_page/mod.rs:380
 msgid "Name changed successfully"
 msgstr "名字已成功更改"
 
-#: src/session/account_settings/user_page/mod.rs:436
+#: src/session/account_settings/user_page/mod.rs:416
 msgid "Could not change display name"
 msgstr "无法更改展示名字"
 
@@ -1197,50 +1193,50 @@ msgstr "不支持该图像文件"
 msgid "Could not retrieve media"
 msgstr "无法找回媒体文件"
 
-#: src/session/content/room_history/message_row/mod.rs:372
+#: src/session/content/room_history/message_row/mod.rs:377
 msgid "Identity verification was started"
 msgstr "身份验证已开始"
 
-#: src/session/content/room_history/message_row/mod.rs:385
-#: src/session/content/room_history/message_row/mod.rs:432
+#: src/session/content/room_history/message_row/mod.rs:390
+#: src/session/content/room_history/message_row/mod.rs:437
 msgid "Unsupported event"
 msgstr "不支持的事件"
 
-#: src/session/content/room_history/message_row/mod.rs:410
+#: src/session/content/room_history/message_row/mod.rs:415
 msgid ""
-"Fractal couldn’t decrypt this message, but will retry once the keys are "
+"Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
-msgstr "Fractal 无法解密该消息，但将在密钥可用时重试。"
+msgstr "无法解密该消息，但将在密钥可用时重试。"
 
-#: src/session/content/room_history/message_row/mod.rs:421
+#: src/session/content/room_history/message_row/mod.rs:426
 msgid "This message was removed."
 msgstr "该消息已移除。"
 
-#: src/session/content/room_history/mod.rs:156
+#: src/session/content/room_history/mod.rs:155
 msgid "The location request has been cancelled."
 msgstr "定位请求已取消。"
 
-#: src/session/content/room_history/mod.rs:160
+#: src/session/content/room_history/mod.rs:159
 msgid "Failed to retrieve current location."
 msgstr "找回当前位置失败。"
 
-#: src/session/content/room_history/mod.rs:742
+#: src/session/content/room_history/mod.rs:735
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "用户定位 {geo_uri} 于 {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:852
+#: src/session/content/room_history/mod.rs:839
 msgid "Error reading file"
 msgstr "读取文件时出错"
 
-#: src/session/content/room_history/mod.rs:884
+#: src/session/content/room_history/mod.rs:865
 msgid "Error getting file from drop"
 msgstr "从拖放获取文件时出错"
 
-#: src/session/content/room_history/mod.rs:922
+#: src/session/content/room_history/mod.rs:897
 msgid "Error getting image from clipboard"
 msgstr "从剪贴板获取图像时出错"
 
-#: src/session/content/room_history/mod.rs:945
+#: src/session/content/room_history/mod.rs:914
 msgid "Error getting file from clipboard"
 msgstr "从剪贴板获取文件时出错"
 
@@ -1518,15 +1514,15 @@ msgstr "您取消了创建加密密钥需要的认证。"
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "创建加密密钥过程中发生了错误。"
 
-#: src/session/mod.rs:469
+#: src/session/mod.rs:468
 msgid "Unable to store session"
 msgstr "无法存储会话"
 
-#: src/session/mod.rs:762
+#: src/session/mod.rs:760
 msgid "Failed to logout the session."
 msgstr "登出该会话失败。"
 
-#: src/session/room/event_actions.rs:205
+#: src/session/room/event_actions.rs:204
 msgid "Save File"
 msgstr "保存文件"
 
@@ -1548,46 +1544,46 @@ msgid "Failed to forget {room}."
 msgstr "忘记 {room} 失败。"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:708
+#: src/session/room/mod.rs:704
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "将 {room} 从 {previous_category} 移至 {new_category} 失败。"
 
-#: src/session/room/mod.rs:1008
+#: src/session/room/mod.rs:1001
 msgid "Unknown"
 msgstr "未知"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:1035
+#: src/session/room/mod.rs:1028
 msgid "Empty Room (was {user})"
 msgstr "空聊天室（曾有成员 {user}）"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:1037
+#: src/session/room/mod.rs:1030
 msgid "Empty Room"
 msgstr "空聊天室"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1444
+#: src/session/room/mod.rs:1437
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "接受 {room} 的邀请失败。请稍后重试。"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1478
+#: src/session/room/mod.rs:1466
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr "拒绝 {room} 的邀请失败。请稍后重试。"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1648
+#: src/session/room/mod.rs:1632
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "邀请 {user} 到 {room} 失败。请稍后重试。"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1656
+#: src/session/room/mod.rs:1644
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1744,23 +1740,23 @@ msgstr "发现"
 msgid "Forget Room"
 msgstr "忘记聊天室"
 
-#: src/session/verification/identity_verification.rs:680
+#: src/session/verification/identity_verification.rs:679
 msgid "You cancelled the verification process."
 msgstr "您已取消验证进程。"
 
-#: src/session/verification/identity_verification.rs:682
+#: src/session/verification/identity_verification.rs:681
 msgid "The verification process failed because it reached a timeout."
 msgstr "验证进程已因超时失败。"
 
-#: src/session/verification/identity_verification.rs:685
+#: src/session/verification/identity_verification.rs:684
 msgid "You accepted the request from an other session."
 msgstr "您已从另一个会话接受了该请求。"
 
-#: src/session/verification/identity_verification.rs:688
+#: src/session/verification/identity_verification.rs:687
 msgid "The emoji did not match."
 msgstr "表情不匹配。"
 
-#: src/session/verification/identity_verification.rs:697
+#: src/session/verification/identity_verification.rs:696
 msgid "An unknown error occurred during the verification process."
 msgstr "验证进程中发生了未知错误。"
 
@@ -1816,28 +1812,31 @@ msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
 msgstr "主服务器自动发现已失败。请尝试手动输入完整网址。"
 
 #. Translators: Default name for image files.
-#: src/utils.rs:158
+#: src/utils.rs:302
 msgid "image"
 msgstr "图像"
 
 #. Translators: Default name for video files.
-#: src/utils.rs:160
+#: src/utils.rs:304
 msgid "video"
 msgstr "视频"
 
 #. Translators: Default name for audio files.
-#: src/utils.rs:162
+#: src/utils.rs:306
 msgid "audio"
 msgstr "音频"
 
 #. Translators: Default name for files.
-#: src/utils.rs:164
+#: src/utils.rs:308
 msgid "file"
 msgstr "文件"
 
 #: src/window.rs:230
 msgid "Failed to restore previous sessions"
 msgstr "恢复上次会话失败"
+
+#~ msgid "_Preferences"
+#~ msgstr "首选项(_P)"
 
 #~ msgid "Mov to Rooms"
 #~ msgstr "移至聊天室"
