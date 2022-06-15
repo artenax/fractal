@@ -203,6 +203,9 @@
                         <property name="halign">center</property>
                         <property name="margin-top">24</property>
                         <property name="margin-bottom">24</property>
+                        <style>
+                          <class name="card"/>
+                        </style>
                       </object>
                     </child>
                     <child>

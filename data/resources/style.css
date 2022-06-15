@@ -193,6 +193,12 @@ login {
   min-width: 250px;
 }
 
+.qrcode {
+  background-color: white;
+  color: black;
+  padding: 12px;
+}
+
 .sso-button {
   padding: 4px;
   -gtk-icon-size: 26px;
