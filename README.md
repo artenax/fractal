@@ -20,9 +20,9 @@ over and build Fractal with all the features (e.g end-to-end encryption) we have
 
 A year ago we started working on rewriting [Fractal](https://gitlab.gnome.org/GNOME/fractal/) from
 scratch using [GTK4](https://www.gtk.org/) and the [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk).
-This effort was called Fractal-next.
+This effort was called Fractal Next.
 
-Fractal-next now replaced our previous codebase, and has become the new nightly version. It isn't
+Fractal Next now replaced our previous codebase, and has become the new nightly version. It isn't
 yet ready for a release and you can follow along our progress towards it by looking at the
 [feature parity](https://gitlab.gnome.org/GNOME/fractal/-/milestones/18) and
 [Fractal v5 (fractal-next)](https://gitlab.gnome.org/GNOME/fractal/-/milestones/21) milestones.
@@ -31,22 +31,22 @@ yet ready for a release and you can follow along our progress towards it by look
 
 ### Stable version
 
-Flatpak is the recommended installation method. Until Fractal-next is ready, you can get the official
-Fractal Flatpak on Flathub.
+The current stable version is 4.4.0 (released August 2020).
+
+Flatpak is the recommended installation method.
+Until our next iteration is ready, you can get the official Fractal Flatpak on Flathub.
 
 <a href="https://flathub.org/apps/details/org.gnome.Fractal">
-<img src="https://flathub.org/assets/badges/flathub-badge-i-en.png" width="190px" />
-</a>
-
-Fractal can also be installed as a snap on any distro with snap support enabled
-
-<a href="https://snapcraft.io/fractal">
-<img src="https://github.com/snapcore/snap-store-badges/raw/master/EN/[EN]-snap-store-white.png" width="182px" />
+<img
+    src="https://flathub.org/assets/badges/flathub-badge-i-en.png"
+    alt="Download Fractal on Flathub"
+    width="240px"
+/>
 </a>
 
 ### Development version
 
-If you want to try Fractal-next without building it yourself, it is available as a nightly Flatpak
+If you want to try Fractal Next without building it yourself, it is available as a nightly Flatpak
 in the gnome-nightly repo.
 
 ```sh
@@ -86,6 +86,14 @@ flatpak install --user flathub org.freedesktop.Sdk.Extension.rust-stable//21.08
 flatpak install --user flathub org.freedesktop.Sdk.Extension.llvm12//21.08
 ```
 
+<table><tr><td>
+<p>ℹ️ The instructions below will build the same binary as the one available on the GNOME nightly
+repo. This is an optimised build so it can take a few minutes.</p>
+
+<p>If you're building Fractal for development, use the <code>org.gnome.Fractal.Hack.json</code> manifest
+instead.</p>
+</td></tr></table>
+
 Move inside the `build-aux` folder and then build and install the app:
 
 ```sh
@@ -96,13 +104,13 @@ flatpak-builder --user --install app org.gnome.Fractal.Devel.json
 Fractal Next can then be entirely removed from your system with:
 
 ```sh
-flatpak remove org.gnome.Fractal.Devel.json
+flatpak remove --delete-data org.gnome.Fractal.Devel
 ```
 
 ### GNU/Linux
 
-If you decide to ignore our recommendation and build on your host system, outside of Flatpak or
-snap, you will need Meson and Ninja (as well as Rust and Cargo).
+If you decide to ignore our recommendation and build on your host system,
+outside of Flatpak, you will need Meson and Ninja (as well as Rust and Cargo).
 
 ```sh
 meson . _build --prefix=/usr/local
@@ -114,10 +122,7 @@ sudo ninja -C _build install
 
 Fractal is translated by the GNOME translation team on [Damned lies](https://l10n.gnome.org/).
 
-If you want to add *a new language* you should update the file `fractal-gtk/po/LINGUAS` and add the
-code for that language to the list.
-
-Get the pot file from [the Fractal module page on Damned lies](https://l10n.gnome.org/module/fractal/).
+Find your language in the list on [the Fractal module page on Damned lies](https://l10n.gnome.org/module/fractal/).
 
 ### Password Storage
 
@@ -129,7 +134,7 @@ using GNOME or KDE this should work for you out of the box with gnome-keyring or
 
 * Does Fractal have encryption support? Will it ever?
 
-Yes, Fractal-next has encryption support using Cross-Signing. See
+Yes, the current development version (`main` branch) has encryption support using Cross-Signing. See
 <https://gitlab.gnome.org/GNOME/fractal/-/issues/717> for more info on the state of encryption.
 
 * Can I run Fractal with the window closed?
@@ -139,11 +144,11 @@ guidelines and paradigms. This will be revisited if or when GNOME gets a "Do Not
 
 ## The origin of Fractal
 
-Fractal-next is a complete rewrite of Fractal built on top of the
+The development version is a complete rewrite of Fractal built on top of the
 [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk) using [GTK4](https://gtk.org/).
 
 The previous version of Fractal was using GTK3 and its own backend to talk to a matrix homeserver,
-the code can be found in the [legacy](https://gitlab.gnome.org/GNOME/fractal/-/tree/legacy) branch.
+the code can be found in the [`legacy` branch](https://gitlab.gnome.org/GNOME/fractal/-/tree/legacy).
 
 Initial versions were based on Fest <https://github.com/fest-im/fest>, formerly called ruma-gtk.
 In the origins of the project it was called guillotine, based on French revolution, in relation with
