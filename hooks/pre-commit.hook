@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Depends on: scripts/checks.sh
 
 # Style helpers
