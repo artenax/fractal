@@ -1,3 +1,5 @@
+use std::fmt::Write;
+
 use adw::{prelude::BinExt, subclass::prelude::*};
 use gtk::{glib, prelude::*};
 use html2pango::{
@@ -145,8 +147,25 @@ impl MessageText {
     }
 }
 
+/// Transform URLs into links.
 fn linkify(text: &str) -> String {
     markup_links(&html_escape(text))
+}
+
+/// Make links show up on hover.
+fn hoverify_links(text: &str) -> String {
+    let mut res = String::with_capacity(text.len());
+
+    for (i, chunk) in text.split_inclusive("<a href=\"").enumerate() {
+        if i > 0 {
+            if let Some((url, _)) = chunk.split_once('"') {
+                write!(&mut res, "{url}\" title=\"").unwrap();
+            }
+        }
+        res.push_str(chunk);
+    }
+
+    res
 }
 
 fn is_valid_formatted_body(formatted: &FormattedBody) -> bool {
@@ -161,6 +180,7 @@ fn create_widget_for_html_block(block: &HtmlBlock, room: &Room) -> gtk::Widget {
     match block {
         HtmlBlock::Heading(n, s) => {
             let (label, widgets) = extract_mentions(s, room);
+            let label = hoverify_links(&label);
             let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
             w.set_use_markup(true);
             w.add_css_class(&format!("h{}", n));
@@ -176,6 +196,7 @@ fn create_widget_for_html_block(block: &HtmlBlock, room: &Room) -> gtk::Widget {
                 let bullet = gtk::Label::new(Some("•"));
                 bullet.set_valign(gtk::Align::Start);
                 let (label, widgets) = extract_mentions(li, room);
+                let label = hoverify_links(&label);
                 let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
                 w.set_use_markup(true);
                 h_box.append(&bullet);
@@ -195,6 +216,7 @@ fn create_widget_for_html_block(block: &HtmlBlock, room: &Room) -> gtk::Widget {
                 let bullet = gtk::Label::new(Some(&format!("{}.", i + 1)));
                 bullet.set_valign(gtk::Align::Start);
                 let (label, widgets) = extract_mentions(ol, room);
+                let label = hoverify_links(&label);
                 let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
                 w.set_use_markup(true);
                 h_box.append(&bullet);
@@ -228,6 +250,7 @@ fn create_widget_for_html_block(block: &HtmlBlock, room: &Room) -> gtk::Widget {
         }
         HtmlBlock::Text(s) => {
             let (label, widgets) = extract_mentions(s, room);
+            let label = hoverify_links(&label);
             let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
             w.set_use_markup(true);
             w.upcast::<gtk::Widget>()
