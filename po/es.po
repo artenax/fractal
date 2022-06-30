@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-04-07 13:04+0000\n"
-"PO-Revision-Date: 2022-04-12 08:06+0200\n"
+"POT-Creation-Date: 2022-06-06 10:26+0000\n"
+"PO-Revision-Date: 2022-06-30 14:04+0200\n"
 "Last-Translator: Daniel Mustieles García <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 41.0\n"
+"X-Generator: Gtranslator 42.0\n"
 
 #: data/org.gnome.Fractal.desktop.in.in:3
 #: data/org.gnome.Fractal.metainfo.xml.in.in:9
@@ -56,13 +56,12 @@ msgid "Window height"
 msgstr "Altura de la ventana"
 
 #: data/org.gnome.Fractal.gschema.xml.in:14
-#| msgid "Whether the main window is maximized on startup"
 msgid "Window maximized state"
 msgstr "Estado maximizado de la ventana"
 
 #: data/org.gnome.Fractal.gschema.xml.in:18
 msgid "Enable markdown formatting"
-msgstr ""
+msgstr "Activar formateado de markdown"
 
 #: data/org.gnome.Fractal.gschema.xml.in:19
 msgid "Whether messages should be processed as markdown when sending them"
@@ -88,17 +87,14 @@ msgstr ""
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:9
 #: data/resources/ui/account-settings-user-page.ui:54
-#| msgid "_New Password"
 msgid "Change Password"
 msgstr "Cambiar la contraseña"
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:76
-#| msgid "_New Password"
 msgid "New Password"
 msgstr "Contraseña nueva"
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:81
-#| msgid "_New Password"
 msgid "Confirm New Password"
 msgstr "Confirmar contraseña nueva"
 
@@ -115,7 +111,6 @@ msgstr "Desactivar Cuenta"
 
 #: data/resources/ui/account-settings-deactivate-account-subpage.ui:79
 #: data/resources/ui/account-settings-user-page.ui:80
-#| msgid "Matrix ID"
 msgid "Matrix User ID"
 msgstr "ID de usuario de Matrix"
 
@@ -126,7 +121,6 @@ msgstr "ID de usuario de Matrix"
 #: src/session/content/verification/identity_verification_widget.rs:523
 #: src/session/content/verification/identity_verification_widget.rs:526
 #: src/session/content/verification/identity_verification_widget.rs:530
-#| msgid "_Verify New Password"
 msgid "Verify Session"
 msgstr "Verificar la sesión"
 
@@ -136,7 +130,6 @@ msgstr "Sesiones"
 
 #: data/resources/ui/account-settings-devices-page.ui:9
 #: data/resources/ui/account-settings-devices-page.ui:13
-#| msgid "Current _Password"
 msgid "Current Session"
 msgstr "Sesión actual"
 
@@ -146,9 +139,7 @@ msgid "Other Active Sessions"
 msgstr "Otras sesiones activas"
 
 #: data/resources/ui/account-settings-user-page.ui:5
-#: data/resources/ui/content-room-details.ui:9
-#| msgctxt "shortcut window"
-#| msgid "General"
+#: data/resources/ui/content-room-details.ui:10
 msgid "General"
 msgstr "<b>General</b>"
 
@@ -179,13 +170,8 @@ msgid "_Cancel"
 msgstr "_Cancelar"
 
 #: data/resources/ui/attachment-dialog.ui:21
-#| msgid "Send"
 msgid "_Send"
 msgstr "_Enviar"
-
-#: data/resources/ui/attachment-dialog.ui:36
-msgid "No Preview Available"
-msgstr "No hay vista previa disponible"
 
 #: data/resources/ui/components-auth-dialog.ui:20
 msgid "Authentication"
@@ -203,18 +189,18 @@ msgstr ""
 
 #: data/resources/ui/components-auth-dialog.ui:80
 msgid "Authenticate via Browser"
-msgstr ""
+msgstr "Autenticar mediante navegador"
 
 #: data/resources/ui/components-auth-dialog.ui:113
-#: data/resources/ui/identity-verification-widget.ui:455
+#: data/resources/ui/identity-verification-widget.ui:449
 #: src/components/editable_avatar.rs:344
 #: src/session/content/room_history/verification_info_bar.rs:182
-#: src/session/room/event_actions.rs:210
+#: src/session/room/event_actions.rs:209
 msgid "Cancel"
 msgstr "Cancelar"
 
 #: data/resources/ui/components-auth-dialog.ui:118
-#: data/resources/ui/identity-verification-widget.ui:445
+#: data/resources/ui/identity-verification-widget.ui:439
 msgid "Confirm"
 msgstr "Confirmar"
 
@@ -229,15 +215,12 @@ msgid "No rooms matching the search were found"
 msgstr "No se encontraron miembros coincidentes"
 
 #: data/resources/ui/content-explore.ui:96
-#| msgid "Rooms"
 msgid "Room List"
 msgstr "Lista de salas"
 
 #: data/resources/ui/content-invite-subpage.ui:18
-#, fuzzy
-#| msgid "Invite"
 msgid "I_nvite"
-msgstr "Invitar"
+msgstr "I_nvitar"
 
 #: data/resources/ui/content-invite-subpage.ui:87
 msgid "Search for users to invite them to this room."
@@ -260,20 +243,15 @@ msgstr "Error al buscar salas"
 msgid "Invite"
 msgstr "Invitar"
 
-#: data/resources/ui/content-invite.ui:108
-#: data/resources/ui/sidebar-room-row.ui:11
-#| msgid "Reject"
+#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:29
 msgid "_Reject"
 msgstr "_Rechazar"
 
-#: data/resources/ui/content-invite.ui:118
-#: data/resources/ui/sidebar-room-row.ui:6
-#| msgid "Accept"
+#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:24
 msgid "_Accept"
 msgstr "_Aceptar"
 
 #: data/resources/ui/content-markdown-popover.ui:17
-#| msgid "Markdown"
 msgid "_Markdown"
 msgstr "_Marcado"
 
@@ -294,13 +272,10 @@ msgid "*italic*"
 msgstr "*cursiva*"
 
 #: data/resources/ui/content-member-page.ui:5
-#| msgid "members"
 msgid "Members"
 msgstr "Miembros"
 
 #: data/resources/ui/content-member-page.ui:24
-#, fuzzy
-#| msgid "Invite New Member"
 msgid "Invite new member"
 msgstr "Invitar a un nuevo miembro"
 
@@ -313,17 +288,20 @@ msgid "Open"
 msgstr "Abrir"
 
 #: data/resources/ui/content-message-file.ui:28
-#: src/session/room/event_actions.rs:209
+#: src/session/room/event_actions.rs:208
 msgid "Save"
 msgstr "Guardar"
 
 #: data/resources/ui/content-room-details.ui:4
-#: src/session/content/room_details/mod.rs:250
+#: src/session/content/room_details/mod.rs:265
 msgid "Room Details"
 msgstr "Detalles de sala"
 
+#: data/resources/ui/content-room-details.ui:100
+msgid "Description"
+msgstr "Descripción"
+
 #: data/resources/ui/content-room-history.ui:6
-#| msgid "Room Details"
 msgid "Room _Details"
 msgstr "_Detalles de la sala"
 
@@ -333,39 +311,90 @@ msgstr "_Detalles de la sala"
 msgid "_Invite New Member"
 msgstr "Invitar a un nuevo miembro"
 
-#: data/resources/ui/content-room-history.ui:18
-#: data/resources/ui/sidebar-room-row.ui:40
-#| msgid "Leave Room"
+#: data/resources/ui/content-room-history.ui:18 data/resources/ui/sidebar.ui:58
 msgid "_Leave Room"
 msgstr "_Abandonar la sala"
 
-#: data/resources/ui/content-room-history.ui:118
+#: data/resources/ui/content-room-history.ui:27
+msgid "_Location"
+msgstr "_Ubicación"
+
+#: data/resources/ui/content-room-history.ui:32
+msgid "_Attachment"
+msgstr "_Adjunto"
+
+#: data/resources/ui/content-room-history.ui:56
+msgid "Back"
+msgstr "Atrás"
+
+#: data/resources/ui/content-room-history.ui:81
+msgid "Room Settings"
+msgstr "Configuración de la sala"
+
+#: data/resources/ui/content-room-history.ui:89
+#, fuzzy
+#| msgid "Room History"
+msgid "Toggle Room History Search"
+msgstr "Histórico de la sala"
+
+#: data/resources/ui/content-room-history.ui:107
+#, fuzzy
+#| msgid "Room History"
+msgid "Room History Search"
+msgstr "Histórico de la sala"
+
+#: data/resources/ui/content-room-history.ui:142
 msgid "Unable to load room"
 msgstr "No se puede cargar la sala"
 
-#: data/resources/ui/content-room-history.ui:119
+#: data/resources/ui/content-room-history.ui:143
 msgid "Check your network connection."
 msgstr ""
 
-#: data/resources/ui/content-room-history.ui:122
+#: data/resources/ui/content-room-history.ui:146
 msgid "Try Again"
 msgstr "Intentarlo de nuevo"
 
-#: data/resources/ui/content-room-history.ui:147
+#: data/resources/ui/content-room-history.ui:171
 msgid "Scroll to bottom"
 msgstr "Ir al final"
 
-#: data/resources/ui/content-room-history.ui:159
+#: data/resources/ui/content-room-history.ui:183
 msgid "Drop Here to Send"
-msgstr ""
+msgstr "Arrastrar aquí para enviar"
 
-#: data/resources/ui/content-room-history.ui:185
-#| msgid "Room Directory"
+#: data/resources/ui/content-room-history.ui:204
 msgid "Room History"
 msgstr "Histórico de la sala"
 
+#: data/resources/ui/content-room-history.ui:242
+msgid "Enable Markdown Formatting"
+msgstr ""
+
+#: data/resources/ui/content-room-history.ui:263
+#, fuzzy
+#| msgid "Message Source"
+msgid "Message Entry"
+msgstr "Origen del mensaje"
+
+#: data/resources/ui/content-room-history.ui:277
+msgid "Open Emoji Picker"
+msgstr "Abrir el selector de emoticonos"
+
+#: data/resources/ui/content-room-history.ui:288
+#, fuzzy
+#| msgctxt "shortcut window"
+#| msgid "Open main menu"
+msgid "Open Message Menu"
+msgstr "Abrir el menú principal"
+
+#: data/resources/ui/content-room-history.ui:303
+#, fuzzy
+#| msgid "New Messages"
+msgid "Send Message"
+msgstr "Mensajes nuevos"
+
 #: data/resources/ui/content-state-creation.ui:19
-#| msgid "Leave room"
 msgid "Previous room"
 msgstr "Sala anterior"
 
@@ -377,11 +406,11 @@ msgstr "Hay una versión nueva de esta sala."
 msgid "Go there"
 msgstr "Ir ahí"
 
-#: data/resources/ui/content.ui:35
+#: data/resources/ui/content.ui:36
 msgid "No Room Selected"
 msgstr "No hay ninguna sala seleccionada"
 
-#: data/resources/ui/content.ui:36
+#: data/resources/ui/content.ui:37
 msgid "Join a room to start chatting."
 msgstr "Únase a una sala para empezar a hablar."
 
@@ -435,7 +464,6 @@ msgid ""
 msgstr ""
 
 #: data/resources/ui/event-menu.ui:11
-#| msgid "Reply"
 msgid "_Reply"
 msgstr "_Responder"
 
@@ -452,17 +480,14 @@ msgid "_Select"
 msgstr "_Seleccionar"
 
 #: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
-#| msgid "Copy Text"
 msgid "_Copy Text"
 msgstr "_Copiar texto"
 
 #: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
-#| msgid "Copy Image"
 msgid "_Copy Image"
 msgstr "_Copiar imagen"
 
 #: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
-#| msgid "Save Image As…"
 msgid "S_ave Image"
 msgstr "Gu_ardar imagen"
 
@@ -471,7 +496,6 @@ msgid "_Permalink"
 msgstr "Enlace _permanente"
 
 #: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
-#| msgid "View Source"
 msgid "_View Source"
 msgstr "_Ver código fuente"
 
@@ -480,7 +504,6 @@ msgid "Re_move"
 msgstr "Qui_tar"
 
 #: data/resources/ui/event-source-dialog.ui:5
-#| msgid "View Source"
 msgid "Event Source"
 msgstr "Fuente de eventos"
 
@@ -496,7 +519,6 @@ msgid "Welcome to Fractal"
 msgstr "Bienvenido/a a Fractal"
 
 #: data/resources/ui/greeter.ui:108
-#| msgid "_Log In"
 msgid "_Log in"
 msgstr "Iniciar _sesión"
 
@@ -504,47 +526,47 @@ msgstr "Iniciar _sesión"
 msgid "_Create Account"
 msgstr "_Crear cuenta"
 
-#: data/resources/ui/identity-verification-widget.ui:50
+#: data/resources/ui/identity-verification-widget.ui:46
 #: src/session/content/room_history/verification_info_bar.rs:177
 msgid "Decline"
 msgstr "Rechazar"
 
-#: data/resources/ui/identity-verification-widget.ui:60
+#: data/resources/ui/identity-verification-widget.ui:56
 #: src/session/content/room_history/verification_info_bar.rs:176
 msgid "Verify"
 msgstr "Verificar"
 
-#: data/resources/ui/identity-verification-widget.ui:115
-#: data/resources/ui/identity-verification-widget.ui:216
+#: data/resources/ui/identity-verification-widget.ui:109
+#: data/resources/ui/identity-verification-widget.ui:210
 msgid "Can’t scan QR code?"
 msgstr "¿No puede escanear el código QR?"
 
-#: data/resources/ui/identity-verification-widget.ui:123
-#: data/resources/ui/identity-verification-widget.ui:233
+#: data/resources/ui/identity-verification-widget.ui:117
+#: data/resources/ui/identity-verification-widget.ui:227
 msgid "Compare Emoji"
 msgstr "Comparar emoticonos"
 
-#: data/resources/ui/identity-verification-widget.ui:150
+#: data/resources/ui/identity-verification-widget.ui:144
 msgid "Scan Complete"
 msgstr ""
 
-#: data/resources/ui/identity-verification-widget.ui:225
+#: data/resources/ui/identity-verification-widget.ui:219
 msgid "Scan QR code with this session"
 msgstr ""
 
-#: data/resources/ui/identity-verification-widget.ui:293
+#: data/resources/ui/identity-verification-widget.ui:287
 msgid "Do Not Match"
 msgstr ""
 
-#: data/resources/ui/identity-verification-widget.ui:303
+#: data/resources/ui/identity-verification-widget.ui:297
 msgid "Match"
 msgstr "Coincidencia"
 
-#: data/resources/ui/identity-verification-widget.ui:353
+#: data/resources/ui/identity-verification-widget.ui:347
 msgid "Done"
 msgstr "Hecho"
 
-#: data/resources/ui/identity-verification-widget.ui:422
+#: data/resources/ui/identity-verification-widget.ui:416
 msgid "Confirm Scan"
 msgstr ""
 
@@ -575,10 +597,8 @@ msgid "Homeserver URL"
 msgstr "URL de servidor"
 
 #: data/resources/ui/login.ui:153
-#, fuzzy
-#| msgid "Matrix Server"
 msgid "Matrix Username"
-msgstr "Servidor de Matrix"
+msgstr "Nombre de usuario de Matrix"
 
 #: data/resources/ui/login.ui:165
 msgid "Password"
@@ -611,17 +631,14 @@ msgid "_Kick"
 msgstr "E_xpulsar"
 
 #: data/resources/ui/room-creation.ui:4
-#| msgid "Create new room"
 msgid "Create new Room"
 msgstr "Crear nueva sala"
 
 #: data/resources/ui/room-creation.ui:22
-#| msgid "Create"
 msgid "C_reate"
 msgstr "C_rear"
 
 #: data/resources/ui/room-creation.ui:58
-#| msgid "Room name"
 msgid "Room Name"
 msgstr "Nombre de la sala"
 
@@ -630,24 +647,21 @@ msgid "Visibility"
 msgstr "Visibilidad"
 
 #: data/resources/ui/room-creation.ui:103
-#| msgid "Private"
 msgid "_Private"
 msgstr "_Privada"
 
 #: data/resources/ui/room-creation.ui:110
-#| msgid "Public"
 msgid "P_ublic"
 msgstr "Pú_blica"
 
 #: data/resources/ui/room-creation.ui:122
-#| msgid "Join addresses"
 msgid "Room Address"
 msgstr "Dirección de la sala"
 
 #: data/resources/ui/session-verification.ui:49
 #: src/session/content/verification/identity_verification_widget.rs:538
 msgid "Get Another Device"
-msgstr ""
+msgstr "Obtener otro dispositivo"
 
 #: data/resources/ui/session-verification.ui:60
 #: src/session/content/verification/identity_verification_widget.rs:540
@@ -659,7 +673,7 @@ msgid "No other devices logged into this account?"
 msgstr ""
 
 #: data/resources/ui/session-verification.ui:81
-#: data/resources/ui/session-verification.ui:171
+#: data/resources/ui/session-verification.ui:176
 msgid "Recovery"
 msgstr "Recuperación"
 
@@ -668,70 +682,69 @@ msgstr "Recuperación"
 msgid "Reset"
 msgstr "Restablecer"
 
-#: data/resources/ui/session-verification.ui:123
+#: data/resources/ui/session-verification.ui:128
 msgid "Setup Encryption Identity"
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:134
+#: data/resources/ui/session-verification.ui:139
 msgid ""
 "You need to setup an encryption identity, since this is the first time you "
 "logged into your account."
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:142
+#: data/resources/ui/session-verification.ui:147
 msgid "Setup"
 msgstr "Configuración"
 
-#: data/resources/ui/session-verification.ui:182
+#: data/resources/ui/session-verification.ui:187
 msgid ""
 "Without another device you need a recovery passphrase or key to access your "
 "messages"
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:190
-#: data/resources/ui/session-verification.ui:245
+#: data/resources/ui/session-verification.ui:195
+#: data/resources/ui/session-verification.ui:250
 msgid "Recovery Passphrase"
 msgstr "Contraseña de recuperación"
 
-#: data/resources/ui/session-verification.ui:199
-#: data/resources/ui/session-verification.ui:306
+#: data/resources/ui/session-verification.ui:204
+#: data/resources/ui/session-verification.ui:314
 msgid "Recovery Key"
 msgstr "clave de recuperación"
 
-#: data/resources/ui/session-verification.ui:208
+#: data/resources/ui/session-verification.ui:213
 msgid ""
 "If you don’t have any of these you can reset your identity, but be aware "
 "this makes your old messages inaccessible forever."
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:217
+#: data/resources/ui/session-verification.ui:222
 msgid "Reset Identity"
-msgstr ""
+msgstr "Reiniciar identidad"
 
-#: data/resources/ui/session-verification.ui:256
+#: data/resources/ui/session-verification.ui:261
 msgid ""
 "Your Recovery Passphrase was set up when you first created this account."
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:264
+#: data/resources/ui/session-verification.ui:269
 msgid "If you opted for a Recovery Key instead go back and choose that option."
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:272
+#: data/resources/ui/session-verification.ui:280
 msgid "Passphrase"
 msgstr "Contraseña"
 
-#: data/resources/ui/session-verification.ui:278
-#: data/resources/ui/session-verification.ui:342
-#| msgid "_Next"
+#: data/resources/ui/session-verification.ui:285
+#: data/resources/ui/session-verification.ui:350
 msgid "Next"
 msgstr "Siguiente"
 
-#: data/resources/ui/session-verification.ui:317
+#: data/resources/ui/session-verification.ui:325
 msgid "Your Recovery Key was set up when you first created this account."
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:325
+#: data/resources/ui/session-verification.ui:333
 msgid ""
 "If you opted for a Recovery Passphrase instead go back and choose that "
 "option."
@@ -743,8 +756,6 @@ msgid "General"
 msgstr "General"
 
 #: data/resources/ui/shortcuts.ui:14
-#| msgctxt "shortcut window"
-#| msgid "Keyboard Shortcuts"
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "Mostrar atajos"
@@ -755,78 +766,106 @@ msgid "Quit"
 msgstr "Salir"
 
 #: data/resources/ui/shortcuts.ui:26
-#| msgid "Search for room members"
 msgctxt "shortcut window"
 msgid "Search Room List"
 msgstr "Buscar lista de salas"
 
 #: data/resources/ui/shortcuts.ui:32
-#| msgid "New Room"
 msgctxt "shortcut window"
 msgid "Close Room"
 msgstr "Cerrar la sala"
 
-#: data/resources/ui/sidebar-room-row.ui:18
-#| msgid "Favorites"
-msgid "Mark as _Favorite"
+#: data/resources/ui/sidebar.ui:6
+msgid "_New Room"
+msgstr "_Nueva sala"
+
+#: data/resources/ui/sidebar.ui:12
+msgid "_Keyboard Shortcuts"
+msgstr "Atajos del _teclado"
+
+#: data/resources/ui/sidebar.ui:16
+msgid "_About Fractal"
+msgstr "_Acerca de Fractal"
+
+#: data/resources/ui/sidebar.ui:36
+#, fuzzy
+#| msgid "Mark as _Favorite"
+msgid "Move to _Favorites"
 msgstr "Marcar como _favorita"
 
-#: data/resources/ui/sidebar-room-row.ui:23
-msgid "Unmark as _Favorite"
-msgstr "Desmarcar como _favorita"
+#: data/resources/ui/sidebar.ui:41
+#, fuzzy
+#| msgid "New Room"
+msgid "Move to _Rooms"
+msgstr "Nueva sala"
 
-#: data/resources/ui/sidebar-room-row.ui:28
-msgid "Mark as Low _Priority"
+#: data/resources/ui/sidebar.ui:46
+msgid "Move to _People"
 msgstr ""
 
-#: data/resources/ui/sidebar-room-row.ui:33
-msgid "Unmark as Low _Priority"
-msgstr ""
+#: data/resources/ui/sidebar.ui:51
+#, fuzzy
+#| msgid "Low Priority"
+msgid "Move to Low _Priority"
+msgstr "Prioridad baja"
 
-#: data/resources/ui/sidebar-room-row.ui:45
+#: data/resources/ui/sidebar.ui:63
 #, fuzzy
 #| msgid "Join Room"
 msgid "Re_join Room"
 msgstr "Unirse a una sala"
 
-#: data/resources/ui/sidebar-room-row.ui:50
-#| msgid "New Room"
+#: data/resources/ui/sidebar.ui:68
 msgid "_Forget Room"
 msgstr "_Olvidar sala"
 
-#: data/resources/ui/sidebar.ui:6
-#| msgid "New Room"
-msgid "_New Room"
-msgstr "_Nueva sala"
+#: data/resources/ui/sidebar.ui:87
+#, fuzzy
+#| msgid "Deactivate Account"
+msgid "Switch Accounts"
+msgstr "Desactivar Cuenta"
 
-#: data/resources/ui/sidebar.ui:12
-msgid "_Preferences"
-msgstr "_Preferencias"
+#: data/resources/ui/sidebar.ui:109
+#, fuzzy
+#| msgid "Account Settings"
+msgid "App Settings Menu"
+msgstr "Configuración de la cuenta"
 
-#: data/resources/ui/sidebar.ui:16
-#| msgctxt "shortcut window"
-#| msgid "Keyboard Shortcuts"
-msgid "_Keyboard Shortcuts"
-msgstr "Atajos del _teclado"
+#: data/resources/ui/sidebar.ui:119
+#, fuzzy
+#| msgid "Room search"
+msgid "Toggle Room Search"
+msgstr "Búsqueda de sala"
 
-#: data/resources/ui/sidebar.ui:20
-msgid "_About Fractal"
-msgstr "_Acerca de Fractal"
+#: data/resources/ui/sidebar.ui:131
+#, fuzzy
+#| msgid "Room search"
+msgid "Room Search"
+msgstr "Búsqueda de sala"
 
-#: data/resources/ui/sidebar.ui:94
+#: data/resources/ui/sidebar.ui:132
+#, fuzzy
+#| msgid "Search for room members"
+msgid "Search for a room"
+msgstr "Buscar miembros en la sala"
+
+#: data/resources/ui/sidebar.ui:148
 msgid "Sidebar"
 msgstr "Barra lateral"
 
+#: data/resources/ui/sidebar.ui:149
+msgid "Allows to navigate between rooms"
+msgstr "Permite navegar entre salas"
+
 #: data/resources/ui/qr-code-scanner.ui:21
 msgid "Unable to connect to Camera"
-msgstr ""
+msgstr "No se pudo conectar a la cámara"
 
 #: src/application.rs:167
 msgid "Learn more about Fractal"
 msgstr "Aprenda más acerca de Fractal"
 
 #: src/application.rs:171
-#| msgid "A Matrix.org client for GNOME"
 msgid "A Matrix client for GNOME"
 msgstr "Un cliente Matrix para GNOME"
 
@@ -846,7 +885,6 @@ msgid "Name by"
 msgstr "Nombre por"
 
 #: src/components/editable_avatar.rs:334
-#| msgid "Choose Provider"
 msgid "Choose Avatar"
 msgstr "Seleccionar avatar"
 
@@ -854,23 +892,43 @@ msgstr "Seleccionar avatar"
 msgid "Choose"
 msgstr "Elegir"
 
-#: src/components/editable_avatar.rs:366
+#: src/components/editable_avatar.rs:364
 msgid "The chosen file is not an image"
 msgstr "El archivo elegido no es una imagen"
 
-#: src/components/editable_avatar.rs:374
+#: src/components/editable_avatar.rs:370
 msgid "Could not determine the type of the chosen file"
 msgstr ""
 
-#: src/components/editable_avatar.rs:383
+#: src/components/editable_avatar.rs:375
 msgid "No file was chosen"
 msgstr "No se ha elegido ningún archivo"
+
+#: src/components/location_viewer.rs:95
+msgid "Location at latitude {latitude} and longitude {longitude}"
+msgstr ""
+
+#: src/components/media_content_viewer.rs:161
+msgid "Image not Viewable"
+msgstr "No se puede ver la imagen"
+
+#: src/components/media_content_viewer.rs:162
+msgid "Audio Clip not Playable"
+msgstr "No se puede reproducir el archivo de sonido"
+
+#: src/components/media_content_viewer.rs:163
+msgid "Video not Playable"
+msgstr "No se puede reproducir el vídeo"
+
+#: src/components/media_content_viewer.rs:164
+msgid "File not Viewable"
+msgstr "No se puede ver el archivo"
 
 #: src/error_page.rs:108
 msgid "Session removed successfully."
 msgstr "Sesión eliminada correctamente."
 
-#: src/error_page.rs:120
+#: src/error_page.rs:116
 msgid "Could not remove session from secret storage"
 msgstr ""
 
@@ -956,18 +1014,18 @@ msgstr ""
 
 #: src/session/account_settings/devices_page/device_row.rs:110
 msgid "Disconnect Session"
-msgstr ""
+msgstr "Sesión desconectada"
 
 #: src/session/account_settings/devices_page/device_row.rs:112
 msgid "Log Out"
 msgstr "Salir"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/account_settings/devices_page/device_row.rs:216
+#: src/session/account_settings/devices_page/device_row.rs:215
 msgid "Failed to disconnect device “{device_name}”"
 msgstr ""
 
-#: src/session/account_settings/devices_page/device_row.rs:230
+#: src/session/account_settings/devices_page/device_row.rs:228
 msgid ""
 "Fractal’s support for encryption is unstable so you might lose access to "
 "your encrypted message history. It is recommended to backup your encryption "
@@ -975,39 +1033,39 @@ msgid ""
 msgstr ""
 
 #. Translators: Time in 24h format
-#: src/session/account_settings/devices_page/device_row.rs:288
+#: src/session/account_settings/devices_page/device_row.rs:286
 msgid "Last seen at %H:%M"
 msgstr ""
 
 #. Translators: Time in 12h format
-#: src/session/account_settings/devices_page/device_row.rs:291
+#: src/session/account_settings/devices_page/device_row.rs:289
 msgid "Last seen at %l:%M %p"
 msgstr ""
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:300
+#: src/session/account_settings/devices_page/device_row.rs:298
 #, no-c-format
 msgid "Last seen Yesterday at %H:%M"
 msgstr ""
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:305
+#: src/session/account_settings/devices_page/device_row.rs:303
 #, no-c-format
 msgid "Last seen Yesterday at %l:%M %p"
 msgstr ""
 
 #. Translators: this is the name of the week day followed by
 #. a time in 24h format. i.e. "Last seen Monday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:314
+#: src/session/account_settings/devices_page/device_row.rs:312
 #, no-c-format
 msgid "Last seen %A at %H:%M"
 msgstr ""
 
 #. Translators: this is the week day name followed by
 #. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:319
+#: src/session/account_settings/devices_page/device_row.rs:317
 #, no-c-format
 msgid "Last seen %A at %l:%M %p"
 msgstr ""
@@ -1015,7 +1073,7 @@ msgstr ""
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 24h format i.e. "Last seen February 3 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:327
+#: src/session/account_settings/devices_page/device_row.rs:325
 #, no-c-format
 msgid "Last seen %B %-e at %H:%M"
 msgstr ""
@@ -1023,7 +1081,7 @@ msgstr ""
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 12h format i.e. "Last seen February 3 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:333
+#: src/session/account_settings/devices_page/device_row.rs:331
 #, no-c-format
 msgid "Last seen %B %-e at %l:%M %p"
 msgstr ""
@@ -1031,7 +1089,7 @@ msgstr ""
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:340
+#: src/session/account_settings/devices_page/device_row.rs:338
 #, no-c-format
 msgid "Last seen %B %-e %Y at %H:%M"
 msgstr ""
@@ -1039,89 +1097,86 @@ msgstr ""
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:346
+#: src/session/account_settings/devices_page/device_row.rs:344
 #, no-c-format
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr ""
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:217
 msgid "Password must be at least 8 characters long"
-msgstr ""
+msgstr "La contraseña debe tener al menos 8 caracteres"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:220
 msgid "Password must have at least one lower-case letter"
-msgstr ""
+msgstr "La contraseña debe tener al menos una minúscula"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:224
 msgid "Password must have at least one upper-case letter"
-msgstr ""
+msgstr "La contraseña debe tener al menos una mayúscula"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:227
 msgid "Password must have at least one digit"
-msgstr ""
+msgstr "La contraseña debe tener al menos un dígito"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:229
 msgid "Password must have at least one symbol"
-msgstr ""
+msgstr "La contraseña debe tener al menos un símbolo"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:255
-#| msgid "The passwords do not match."
 msgid "Passwords do not match"
 msgstr "Las contraseñas no coinciden"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:313
+#: src/session/account_settings/user_page/change_password_subpage.rs:311
 msgid "Password changed successfully"
 msgstr "Contraseña cambiada correctamente"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:329
+#: src/session/account_settings/user_page/change_password_subpage.rs:326
 msgid "Password rejected for being too weak"
-msgstr ""
+msgstr "Contraseña rechazada por ser demasiado débil"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:336
-#| msgid "Couldn’t change the password"
+#: src/session/account_settings/user_page/change_password_subpage.rs:330
 msgid "Could not change password"
 msgstr "No se pudo cambiar la contraseña"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:200
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:197
 msgid "Account successfully deactivated"
 msgstr "Cuenta desctivada correctamente"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:210
-#| msgid "Couldn’t delete the account"
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:205
 msgid "Could not deactivate account"
 msgstr "No se pudo desactivar la cuenta"
 
-#: src/session/account_settings/user_page/mod.rs:227
+#: src/session/account_settings/user_page/mod.rs:225
 msgid "Avatar removed successfully"
-msgstr ""
+msgstr "Avatar quitado correctamente"
 
-#: src/session/account_settings/user_page/mod.rs:245
+#: src/session/account_settings/user_page/mod.rs:240
 msgid "Avatar changed successfully"
-msgstr ""
+msgstr "Avatar cambiado correctamente"
 
-#: src/session/account_settings/user_page/mod.rs:291
+#: src/session/account_settings/user_page/mod.rs:283
 #, fuzzy
 #| msgid "Could not download the file"
 msgid "Could not upload avatar"
 msgstr "No se puede descargar el archivo"
 
-#: src/session/account_settings/user_page/mod.rs:316
+#: src/session/account_settings/user_page/mod.rs:305
 #, fuzzy
 #| msgid "Couldn’t change the password"
 msgid "Could not change avatar"
 msgstr "No se ha podido cambiar la contraseña"
 
-#: src/session/account_settings/user_page/mod.rs:348
+#: src/session/account_settings/user_page/mod.rs:334
 #, fuzzy
 #| msgid "Could not save the file"
 msgid "Could not remove avatar"
 msgstr "No se ha podido guardar el archivo"
 
-#: src/session/account_settings/user_page/mod.rs:397
+#: src/session/account_settings/user_page/mod.rs:380
 msgid "Name changed successfully"
-msgstr ""
+msgstr "Nombre cambiado correctamente"
 
-#: src/session/account_settings/user_page/mod.rs:436
+#: src/session/account_settings/user_page/mod.rs:416
 #, fuzzy
 #| msgid "Could not save the file"
 msgid "Could not change display name"
@@ -1129,7 +1184,7 @@ msgstr "No se ha podido guardar el archivo"
 
 #: src/session/content/explore/public_room_row.rs:222
 msgid "View"
-msgstr ""
+msgstr "Ver"
 
 #: src/session/content/explore/public_room_row.rs:224
 msgid "Join"
@@ -1137,11 +1192,9 @@ msgstr "Unirse"
 
 #: src/session/content/invite.rs:136
 msgid "{user} invited you"
-msgstr ""
+msgstr "{user} le ha invitado"
 
 #: src/session/content/room_details/member_page/mod.rs:237
-#| msgid "{} member"
-#| msgid_plural "{} members"
 msgid "1 Member"
 msgid_plural "{n} Members"
 msgstr[0] "1 miembro"
@@ -1155,43 +1208,27 @@ msgid_plural "{n} Invited"
 msgstr[0] "Invitar"
 msgstr[1] "Invitar"
 
-#: src/session/content/room_details/mod.rs:169
-#| msgid "Details"
+#: src/session/content/room_details/mod.rs:176
 msgid "Save Details"
 msgstr "Guardar detalles"
 
-#: src/session/content/room_details/mod.rs:170
-#| msgid "Details"
+#: src/session/content/room_details/mod.rs:177
 msgid "Edit Details"
 msgstr "Editar detalles"
 
-#: src/session/content/room_details/mod.rs:213
+#: src/session/content/room_details/mod.rs:228
 #, fuzzy
 #| msgid "Choose Provider"
 msgid "Choose avatar"
 msgstr "Seleccionar proveedor"
 
-#: src/session/content/room_details/mod.rs:244
+#: src/session/content/room_details/mod.rs:259
 #, fuzzy
 #| msgid "Invite New Member"
 msgid "Invite new Members"
 msgstr "Invitar a un nuevo miembro"
 
-#. Translators: This is a date format in the day divider without the year
-#: src/session/content/room_history/item_row.rs:168
-#, fuzzy
-#| msgid "%B %e"
-msgid "%A, %B %e"
-msgstr "%e %B"
-
-#. Translators: This is a date format in the day divider with the year
-#: src/session/content/room_history/item_row.rs:171
-#, fuzzy
-#| msgid "%B %e, %Y"
-msgid "%A, %B %e, %Y"
-msgstr "%e %B, %Y"
-
-#: src/session/content/room_history/item_row.rs:186
+#: src/session/content/room_history/item_row.rs:255
 msgid "New Messages"
 msgstr "Mensajes nuevos"
 
@@ -1209,7 +1246,6 @@ msgid "Error reading audio file"
 msgstr "Error al enviar mensaje"
 
 #: src/session/content/room_history/message_row/media.rs:445
-#: src/session/media_viewer.rs:244
 msgid "Image file not supported"
 msgstr "Archivo de imagen no soportado"
 
@@ -1220,31 +1256,58 @@ msgstr "Archivo de imagen no soportado"
 msgid "Could not retrieve media"
 msgstr "No se pudo obtener el URI del archivo"
 
-#: src/session/content/room_history/message_row/mod.rs:368
+#: src/session/content/room_history/message_row/mod.rs:377
 msgid "Identity verification was started"
-msgstr ""
+msgstr "Se ha iniciado la verificación de la identidad"
 
-#: src/session/content/room_history/message_row/mod.rs:381
-#: src/session/content/room_history/message_row/mod.rs:428
+#: src/session/content/room_history/message_row/mod.rs:390
+#: src/session/content/room_history/message_row/mod.rs:437
 msgid "Unsupported event"
 msgstr "Evento no soportado"
 
-#: src/session/content/room_history/message_row/mod.rs:406
-msgid "Fractal couldn’t decrypt this message."
-msgstr "Fracat no pudo descifrar este mensaje."
+#: src/session/content/room_history/message_row/mod.rs:415
+msgid ""
+"Unable to decrypt this message, decryption will be retried once the keys are "
+"available."
+msgstr ""
 
-#: src/session/content/room_history/message_row/mod.rs:417
-#| msgid "This message has no source."
+#: src/session/content/room_history/message_row/mod.rs:426
 msgid "This message was removed."
 msgstr "Se eliminó este mensaje."
 
-#. TODO Get the actual name of the file by reading
-#. the text/plain mime type.
-#: src/session/content/room_history/mod.rs:363
-#: src/session/content/room_history/mod.rs:736
-#| msgid "Images"
-msgid "Image"
-msgstr "Imagen"
+#: src/session/content/room_history/mod.rs:155
+msgid "The location request has been cancelled."
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:159
+msgid "Failed to retrieve current location."
+msgstr "Falló al obtener la ubicación actual."
+
+#: src/session/content/room_history/mod.rs:735
+msgid "User Location {geo_uri} at {iso8601_datetime}"
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:839
+#, fuzzy
+#| msgid "Error sending message"
+msgid "Error reading file"
+msgstr "Error al enviar mensaje"
+
+#: src/session/content/room_history/mod.rs:865
+msgid "Error getting file from drop"
+msgstr "Error al obtener el archivo al soltarlo"
+
+#: src/session/content/room_history/mod.rs:897
+#, fuzzy
+#| msgid "Image from Clipboard"
+msgid "Error getting image from clipboard"
+msgstr "Imagen del portapapeles"
+
+#: src/session/content/room_history/mod.rs:914
+#, fuzzy
+#| msgid "Image from Clipboard"
+msgid "Error getting file from clipboard"
+msgstr "Imagen del portapapeles"
 
 #: src/session/content/room_history/state_row/creation.rs:62
 msgid "This is the continuation of an upgraded room."
@@ -1254,58 +1317,58 @@ msgstr ""
 msgid "This is the beginning of this room."
 msgstr ""
 
-#: src/session/content/room_history/state_row/mod.rs:70
+#: src/session/content/room_history/state_row/mod.rs:66
 msgid "This room is encrypted from this point on."
 msgstr ""
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:94
+#: src/session/content/room_history/state_row/mod.rs:85
 msgid "{previous_user_name} removed their display name."
 msgstr ""
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:101
+#: src/session/content/room_history/state_row/mod.rs:92
 msgid "{previous_user_name} changed their display name to {new_user_name}."
 msgstr ""
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:110
+#: src/session/content/room_history/state_row/mod.rs:101
 msgid "{user_id} set their display name to {new_user_name}."
 msgstr ""
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:125
+#: src/session/content/room_history/state_row/mod.rs:114
 msgid "{user} set their avatar."
-msgstr ""
+msgstr "{user} ha establecido su avatar."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:132
+#: src/session/content/room_history/state_row/mod.rs:121
 msgid "{user} removed their avatar."
-msgstr ""
+msgstr "{user} ha quitado su avatar."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:139
+#: src/session/content/room_history/state_row/mod.rs:128
 msgid "{user} changed their avatar."
-msgstr ""
+msgstr "{user} ha cambiado su avatar."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:150
+#: src/session/content/room_history/state_row/mod.rs:139
 msgid "{user} joined this room."
-msgstr ""
+msgstr "{user} ha entrado en la sala."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is
 #. a variable name.
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/room_history/state_row/mod.rs:156
-#: src/session/content/room_history/state_row/mod.rs:237
+#: src/session/content/room_history/state_row/mod.rs:145
+#: src/session/content/room_history/state_row/mod.rs:222
 #, fuzzy
 #| msgid "Invite to This Room"
 msgid "{user} was invited to this room."
@@ -1313,51 +1376,51 @@ msgstr "Invitar a esta sala"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:164
+#: src/session/content/room_history/state_row/mod.rs:153
 msgid "{user} requested to be invited to this room."
-msgstr ""
+msgstr "{user} ha solicitado invitación para unirse a esta sala."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:177
+#: src/session/content/room_history/state_row/mod.rs:164
 msgid "{user} rejected the invite."
-msgstr ""
+msgstr "{user} ha rechazado la invitación."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:184
+#: src/session/content/room_history/state_row/mod.rs:171
 msgid "The invitation for {user} has been revoked."
 msgstr ""
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:195
+#: src/session/content/room_history/state_row/mod.rs:180
 msgid "{user} was unbanned."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:206
+#: src/session/content/room_history/state_row/mod.rs:191
 msgid "{user} left the room."
-msgstr ""
+msgstr "{user} ha abandonado la sala."
 
 #. Translators: Do NOT translate the content between '{' and
 #. '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:211
+#: src/session/content/room_history/state_row/mod.rs:196
 msgid "{user} was kicked out of the room."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is
 #. a variable name.
-#: src/session/content/room_history/state_row/mod.rs:220
+#: src/session/content/room_history/state_row/mod.rs:205
 msgid "{user} was banned."
 msgstr ""
 
-#: src/session/content/room_history/state_row/mod.rs:225
+#: src/session/content/room_history/state_row/mod.rs:210
 msgid "An unsupported room member event was received."
 msgstr ""
 
-#: src/session/content/room_history/state_row/mod.rs:246
+#: src/session/content/room_history/state_row/mod.rs:231
 msgid "An unsupported state event was received."
 msgstr ""
 
@@ -1436,7 +1499,6 @@ msgstr ""
 #: src/session/content/verification/identity_verification_widget.rs:554
 #: src/session/content/verification/identity_verification_widget.rs:564
 #: src/session/content/verification/identity_verification_widget.rs:571
-#| msgid "Notification sounds"
 msgid "Verification Request"
 msgstr "Solicitud de verificación"
 
@@ -1521,17 +1583,7 @@ msgstr ""
 msgid "An error occurred during the creation of the encryption keys."
 msgstr ""
 
-#: src/session/media_viewer.rs:251
-#| msgid "Could not retrieve file URI"
-msgid "Could not retrieve image"
-msgstr "No se pudo obtener la imagen"
-
-#: src/session/media_viewer.rs:288
-#| msgid "Could not retrieve file URI"
-msgid "Could not retrieve video"
-msgstr "No se pudo obtener el vídeo"
-
-#: src/session/mod.rs:463
+#: src/session/mod.rs:468
 msgid "Unable to store session"
 msgstr ""
 
@@ -1539,8 +1591,7 @@ msgstr ""
 msgid "Failed to logout the session."
 msgstr ""
 
-#: src/session/room/event_actions.rs:205
-#| msgid "Save"
+#: src/session/room/event_actions.rs:204
 msgid "Save File"
 msgstr "Guardar archivo"
 
@@ -1557,63 +1608,94 @@ msgid "Normal user"
 msgstr "Usuario normal"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:420
+#: src/session/room/mod.rs:466
 msgid "Failed to forget {room}."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:567
+#: src/session/room/mod.rs:704
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr ""
 
-#: src/session/room/mod.rs:864
+#: src/session/room/mod.rs:1001
 msgid "Unknown"
 msgstr "Desconocido"
 
+#. Translators: This is the name of a room that is empty but had another user before.
+#. Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:1028
+msgid "Empty Room (was {user})"
+msgstr ""
+
+#. Translators: This is the name of a room without other users.
+#: src/session/room/mod.rs:1030
+msgid "Empty Room"
+msgstr ""
+
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1277
+#: src/session/room/mod.rs:1437
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1311
+#: src/session/room/mod.rs:1466
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1481
+#: src/session/room/mod.rs:1632
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1489
+#: src/session/room/mod.rs:1644
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/session/room_creation/mod.rs:278
+#. Translators: This is a date format in the day divider without the year
+#: src/session/room/timeline/timeline_day_divider.rs:106
+#, fuzzy
+#| msgid "%B %e"
+msgid "%A, %B %e"
+msgstr "%e %B"
+
+#. Translators: This is a date format in the day divider with the year
+#: src/session/room/timeline/timeline_day_divider.rs:109
+#, fuzzy
+#| msgid "%B %e, %Y"
+msgid "%A, %B %e, %Y"
+msgstr "%e %B, %Y"
+
+#: src/session/room_creation/mod.rs:276
 msgid "The address is already taken."
 msgstr ""
 
-#: src/session/room_creation/mod.rs:301
+#: src/session/room_creation/mod.rs:299
 msgid "Too long. Use a shorter name."
 msgstr ""
 
-#: src/session/room_creation/mod.rs:329
+#: src/session/room_creation/mod.rs:306
+#, fuzzy
+#| msgid "Invite to {name}"
+msgid "Invalid room name."
+msgstr "Invitar a {name}"
+
+#: src/session/room_creation/mod.rs:333
 msgid "Can’t contain “:”"
-msgstr ""
+msgstr "No puede contener «:»"
 
-#: src/session/room_creation/mod.rs:334
+#: src/session/room_creation/mod.rs:338
 msgid "Can’t contain “#”"
-msgstr ""
+msgstr "No puede contener «#»"
 
-#: src/session/room_creation/mod.rs:339
+#: src/session/room_creation/mod.rs:343
 msgid "Too long. Use a shorter address."
 msgstr ""
 
@@ -1642,113 +1724,143 @@ msgstr ""
 msgid "Reject Invite"
 msgstr "Rechazar"
 
-#: src/session/sidebar/category_row.rs:168
-msgid "Unmark as Favorite"
-msgstr "Desmarcar como favorita"
+#: src/session/sidebar/category_row.rs:165
+#, fuzzy
+#| msgid "Join Room"
+msgid "Join Room as People"
+msgstr "Unirse a una sala"
 
 #: src/session/sidebar/category_row.rs:169
-#: src/session/sidebar/category_row.rs:175
-msgid "Mark as Low Priority"
-msgstr ""
+#: src/session/sidebar/category_row.rs:184
+#: src/session/sidebar/category_row.rs:198
+#, fuzzy
+#| msgid "New Room"
+msgid "Move to Rooms"
+msgstr "Nueva sala"
 
 #: src/session/sidebar/category_row.rs:170
-#: src/session/sidebar/category_row.rs:176
-#: src/session/sidebar/category_row.rs:182
+#: src/session/sidebar/category_row.rs:177
+#: src/session/sidebar/category_row.rs:199
+#, fuzzy
+#| msgid "Low Priority"
+msgid "Move to Low Priority"
+msgstr "Prioridad baja"
+
+#: src/session/sidebar/category_row.rs:171
+#: src/session/sidebar/category_row.rs:178
+#: src/session/sidebar/category_row.rs:185
+#: src/session/sidebar/category_row.rs:200
 msgid "Leave Room"
 msgstr "Abandonar sala"
 
-#: src/session/sidebar/category_row.rs:174
-#: src/session/sidebar/category_row.rs:180
+#: src/session/sidebar/category_row.rs:172
+#: src/session/sidebar/category_row.rs:179
+#: src/session/sidebar/category_row.rs:186
+msgid "Move to People"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:176
+#: src/session/sidebar/category_row.rs:183
+#: src/session/sidebar/category_row.rs:197
 #, fuzzy
 #| msgid "Favorites"
-msgid "Mark as Favorite"
+msgid "Move to Favorites"
 msgstr "Favoritos"
 
-#: src/session/sidebar/category_row.rs:181
-msgid "Unmark as Low Priority"
-msgstr ""
+#: src/session/sidebar/category_row.rs:190
+#, fuzzy
+#| msgid "Join Room"
+msgid "Rejoin Room as Favorites"
+msgstr "Unirse a una sala"
 
-#: src/session/sidebar/category_row.rs:186
-msgid "Rejoin Room as Favorite"
-msgstr ""
-
-#: src/session/sidebar/category_row.rs:187
+#: src/session/sidebar/category_row.rs:191
 #, fuzzy
 #| msgid "Join Room"
 msgid "Rejoin Room"
 msgstr "Unirse a una sala"
 
-#: src/session/sidebar/category_row.rs:188
+#: src/session/sidebar/category_row.rs:192
 msgid "Rejoin Room as Low Priority"
 msgstr ""
 
-#: src/session/sidebar/category_type.rs:31
+#: src/session/sidebar/category_row.rs:193
+#, fuzzy
+#| msgid "Join Room"
+msgid "Rejoin Room as People"
+msgstr "Unirse a una sala"
+
+#: src/session/sidebar/category_type.rs:34
 #, fuzzy
 #| msgid "Notifications"
 msgid "Verifications"
 msgstr "Notificaciones"
 
-#: src/session/sidebar/category_type.rs:32
+#: src/session/sidebar/category_type.rs:35
 #, fuzzy
 #| msgid "Invite"
 msgid "Invited"
 msgstr "Invitar"
 
-#: src/session/sidebar/category_type.rs:33
-#| msgid "Favorites"
-msgid "Favorite"
+#: src/session/sidebar/category_type.rs:36
+#, fuzzy
+#| msgid "Favorite"
+msgid "Favorites"
 msgstr "Favorita"
 
-#: src/session/sidebar/category_type.rs:34
+#: src/session/sidebar/category_type.rs:37
 msgid "Rooms"
 msgstr "Salas"
 
-#: src/session/sidebar/category_type.rs:35
+#: src/session/sidebar/category_type.rs:38
 msgid "Low Priority"
 msgstr "Prioridad baja"
 
-#: src/session/sidebar/category_type.rs:36
+#: src/session/sidebar/category_type.rs:39
 msgid "Historical"
 msgstr "Histórico"
 
 #. Translators: This shouldn't ever be visible to the user,
-#: src/session/sidebar/category_type.rs:38
+#: src/session/sidebar/category_type.rs:41
 msgid "Outdated"
 msgstr "Obsoleto"
 
-#: src/session/sidebar/category_type.rs:39
+#: src/session/sidebar/category_type.rs:42
 msgid "Spaces"
 msgstr "Espacios"
 
-#: src/session/sidebar/entry_type.rs:21
+#: src/session/sidebar/category_type.rs:43
+msgid "People"
+msgstr "Personas"
+
+#: src/session/sidebar/entry_type.rs:23
 msgid "Explore"
 msgstr "Explorar"
 
-#: src/session/sidebar/entry_type.rs:22
+#: src/session/sidebar/entry_type.rs:24
 #, fuzzy
 #| msgid "New Room"
 msgid "Forget Room"
 msgstr "Nueva sala"
 
-#: src/session/verification/identity_verification.rs:672
+#: src/session/verification/identity_verification.rs:679
 msgid "You cancelled the verification process."
 msgstr ""
 
-#: src/session/verification/identity_verification.rs:674
+#: src/session/verification/identity_verification.rs:681
 msgid "The verification process failed because it reached a timeout."
 msgstr ""
 
-#: src/session/verification/identity_verification.rs:677
+#: src/session/verification/identity_verification.rs:684
 msgid "You accepted the request from an other session."
 msgstr ""
 
-#: src/session/verification/identity_verification.rs:680
+#: src/session/verification/identity_verification.rs:687
 #, fuzzy
 #| msgid "The passwords do not match."
 msgid "The emoji did not match."
 msgstr "Las contraseñas no coinciden."
 
-#: src/session/verification/identity_verification.rs:689
+#: src/session/verification/identity_verification.rs:696
 msgid "An unknown error occurred during the verification process."
 msgstr ""
 
@@ -1760,88 +1872,110 @@ msgstr ""
 msgid "Unable to connect to the homeserver."
 msgstr ""
 
-#: src/user_facing_error.rs:30
+#: src/user_facing_error.rs:32
 #, fuzzy
 #| msgid "The identity server is invalid."
 msgid "The provided username or password is invalid."
 msgstr "La identidad del servidor no es válida."
 
-#: src/user_facing_error.rs:31
+#: src/user_facing_error.rs:33
 msgid "The account is deactivated."
 msgstr "Esta cuenta está desactivada."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name.
-#: src/user_facing_error.rs:38
+#: src/user_facing_error.rs:40
 msgid "You exceeded the homeserver’s rate limit, retry in 1 second."
 msgid_plural "You exceeded the homeserver’s rate limit, retry in {n} seconds."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/user_facing_error.rs:44
+#: src/user_facing_error.rs:46
 msgid "You exceeded the homeserver’s rate limit, try again later."
 msgstr ""
 
-#: src/user_facing_error.rs:54
+#: src/user_facing_error.rs:56
 msgid "An unknown connection error occurred."
 msgstr ""
 
-#: src/user_facing_error.rs:62
+#: src/user_facing_error.rs:64
 #, fuzzy
 #| msgid "Could not save the file"
 msgid "Could not decrypt the event"
 msgstr "No se ha podido guardar el archivo"
 
-#: src/user_facing_error.rs:64 src/user_facing_error.rs:84
+#: src/user_facing_error.rs:66 src/user_facing_error.rs:86
 msgid "An unknown error occurred."
-msgstr ""
+msgstr "Ocurrió un error desconocido."
 
-#: src/user_facing_error.rs:71
+#: src/user_facing_error.rs:73
 #, fuzzy
 #| msgid "Could not save the file"
 msgid "Could not open the store."
 msgstr "No se ha podido guardar el archivo"
 
-#: src/user_facing_error.rs:78
+#: src/user_facing_error.rs:80
 msgid "This is not a valid URL"
 msgstr "Esto no es un URL válido"
 
-#: src/user_facing_error.rs:80
+#: src/user_facing_error.rs:82
 msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
 msgstr ""
 
 #. Translators: Default name for image files.
-#: src/utils.rs:190
+#: src/utils.rs:302
 msgid "image"
 msgstr "imagen"
 
 #. Translators: Default name for video files.
-#: src/utils.rs:192
-#| msgid "videos"
+#: src/utils.rs:304
 msgid "video"
 msgstr "vídeo"
 
 #. Translators: Default name for audio files.
-#: src/utils.rs:194
+#: src/utils.rs:306
 msgid "audio"
 msgstr "sonido"
 
 #. Translators: Default name for files.
-#: src/utils.rs:196
+#: src/utils.rs:308
 msgid "file"
 msgstr "archivo"
 
-#: src/window.rs:204
+#: src/window.rs:230
 msgid "Failed to restore previous sessions"
 msgstr ""
+
+#~ msgid "No Preview Available"
+#~ msgstr "No hay vista previa disponible"
+
+#~ msgid "Unmark as _Favorite"
+#~ msgstr "Desmarcar como _favorita"
+
+#~ msgid "_Preferences"
+#~ msgstr "_Preferencias"
+
+#~ msgid "Fractal couldn’t decrypt this message."
+#~ msgstr "Fracat no pudo descifrar este mensaje."
+
+#~| msgid "Images"
+#~ msgid "Image"
+#~ msgstr "Imagen"
+
+#~| msgid "Could not retrieve file URI"
+#~ msgid "Could not retrieve image"
+#~ msgstr "No se pudo obtener la imagen"
+
+#~| msgid "Could not retrieve file URI"
+#~ msgid "Could not retrieve video"
+#~ msgstr "No se pudo obtener el vídeo"
+
+#~ msgid "Unmark as Favorite"
+#~ msgstr "Desmarcar como favorita"
 
 #~ msgctxt "shortcut window"
 #~ msgid "Close the active room"
 #~ msgstr "Cerrar la sala activa"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open main menu"
-#~ msgstr "Abrir el menú principal"
 
 #~ msgctxt "shortcut window"
 #~ msgid "Open / close the room sidebar search"
@@ -1915,9 +2049,6 @@ msgstr ""
 
 #~ msgid "Daniel García Moreno"
 #~ msgstr "Daniel García Moreno"
-
-#~ msgid "Back"
-#~ msgstr "Atrás"
 
 #~ msgid "Other people can find you by searching for any of these identifiers."
 #~ msgstr ""
@@ -2024,9 +2155,6 @@ msgstr ""
 #~ msgid "Add"
 #~ msgstr "Añadir"
 
-#~ msgid "Room search"
-#~ msgstr "Búsqueda de sala"
-
 #~ msgid "Room Menu"
 #~ msgstr "Menú de sala"
 
@@ -2054,9 +2182,6 @@ msgstr ""
 #~ msgid "Delete Message"
 #~ msgstr "Eliminar mensaje"
 
-#~ msgid "Message Source"
-#~ msgstr "Origen del mensaje"
-
 #~ msgid "Copy To Clipboard"
 #~ msgstr "Copiar al portapapeles"
 
@@ -2071,9 +2196,6 @@ msgstr ""
 
 #~ msgid "Type in your room topic"
 #~ msgstr "Escriba el tema de la sala"
-
-#~ msgid "No room description"
-#~ msgstr "No hay descripción de la sala"
 
 #~ msgid "For all messages"
 #~ msgstr "También todos los mensajes"
@@ -2236,12 +2358,6 @@ msgstr ""
 #~ msgid "© 2017–2020 Daniel García Moreno, et al."
 #~ msgstr "© 2017–2019 Daniel García Moreno y colaboraciones"
 
-#~ msgid "Image from Clipboard"
-#~ msgstr "Imagen del portapapeles"
-
-#~ msgid "Invite to {name}"
-#~ msgstr "Invitar a {name}"
-
 #~ msgid "Join {room_name}?"
 #~ msgstr "¿Unirse a {room_name}?"
 
@@ -2396,9 +2512,6 @@ msgstr ""
 
 #~ msgid "_Quit"
 #~ msgstr "_Salir"
-
-#~ msgid "Attach files"
-#~ msgstr "Adjuntar archivos"
 
 #~ msgid "Text formatting"
 #~ msgstr "Formato de texto"
