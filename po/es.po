@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
 "POT-Creation-Date: 2022-06-06 10:26+0000\n"
-"PO-Revision-Date: 2022-06-30 14:04+0200\n"
+"PO-Revision-Date: 2022-07-01 13:04+0200\n"
 "Last-Translator: Daniel Mustieles García <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -65,7 +65,7 @@ msgstr "Activar formateado de markdown"
 
 #: data/org.gnome.Fractal.gschema.xml.in:19
 msgid "Whether messages should be processed as markdown when sending them"
-msgstr ""
+msgstr "Indica si se deben procesar los mensajes como markdown al enviarlos"
 
 #: data/org.gnome.Fractal.metainfo.xml.in.in:8
 msgid "Julian Sparber"
@@ -179,13 +179,15 @@ msgstr "Autenticación"
 
 #: data/resources/ui/components-auth-dialog.ui:43
 msgid "Please authenticate the operation with your password"
-msgstr ""
+msgstr "Autentique la operación con su contraseña"
 
 #: data/resources/ui/components-auth-dialog.ui:70
 msgid ""
 "Please authenticate the operation via the browser and once completed press "
 "confirm."
 msgstr ""
+"Autentique la operación en el navegador y una vez completada pulse "
+"«Confirmar»."
 
 #: data/resources/ui/components-auth-dialog.ui:80
 msgid "Authenticate via Browser"
@@ -209,10 +211,8 @@ msgid "Try again"
 msgstr "Intentarlo de nuevo"
 
 #: data/resources/ui/content-explore.ui:64
-#, fuzzy
-#| msgid "No matching members found"
 msgid "No rooms matching the search were found"
-msgstr "No se encontraron miembros coincidentes"
+msgstr "No se han encontrado salas que coincidan con búsqueda"
 
 #: data/resources/ui/content-explore.ui:96
 msgid "Room List"
@@ -224,19 +224,15 @@ msgstr "I_nvitar"
 
 #: data/resources/ui/content-invite-subpage.ui:87
 msgid "Search for users to invite them to this room."
-msgstr ""
+msgstr "Buscar usuarios a los que invitar a esta sala."
 
 #: data/resources/ui/content-invite-subpage.ui:123
-#, fuzzy
-#| msgid "No matching members found"
 msgid "No users matching the search were found."
-msgstr "No se encontraron miembros coincidentes"
+msgstr "No se encontraron usuarios que coincidan con la búsqueda."
 
 #: data/resources/ui/content-invite-subpage.ui:132
-#, fuzzy
-#| msgid "Error searching for rooms"
 msgid "An error occurred while searching for matches"
-msgstr "Error al buscar salas"
+msgstr "Ocurrió un error al buscar coincidencias"
 
 #: data/resources/ui/content-invite.ui:26
 #: data/resources/ui/content-invite.ui:51
@@ -306,10 +302,8 @@ msgid "Room _Details"
 msgstr "_Detalles de la sala"
 
 #: data/resources/ui/content-room-history.ui:11
-#, fuzzy
-#| msgid "Invite New Member"
 msgid "_Invite New Member"
-msgstr "Invitar a un nuevo miembro"
+msgstr "_Invitar a un nuevo miembro"
 
 #: data/resources/ui/content-room-history.ui:18 data/resources/ui/sidebar.ui:58
 msgid "_Leave Room"
@@ -332,16 +326,12 @@ msgid "Room Settings"
 msgstr "Configuración de la sala"
 
 #: data/resources/ui/content-room-history.ui:89
-#, fuzzy
-#| msgid "Room History"
 msgid "Toggle Room History Search"
-msgstr "Histórico de la sala"
+msgstr "Conmutar el histórico de búsqueda de la sala"
 
 #: data/resources/ui/content-room-history.ui:107
-#, fuzzy
-#| msgid "Room History"
 msgid "Room History Search"
-msgstr "Histórico de la sala"
+msgstr "Histórico de búsqueda de la sala"
 
 #: data/resources/ui/content-room-history.ui:142
 msgid "Unable to load room"
@@ -349,7 +339,7 @@ msgstr "No se puede cargar la sala"
 
 #: data/resources/ui/content-room-history.ui:143
 msgid "Check your network connection."
-msgstr ""
+msgstr "Compruebe su conexión de red."
 
 #: data/resources/ui/content-room-history.ui:146
 msgid "Try Again"
@@ -369,30 +359,23 @@ msgstr "Histórico de la sala"
 
 #: data/resources/ui/content-room-history.ui:242
 msgid "Enable Markdown Formatting"
-msgstr ""
+msgstr "Activar formateado markdown"
 
 #: data/resources/ui/content-room-history.ui:263
-#, fuzzy
-#| msgid "Message Source"
 msgid "Message Entry"
-msgstr "Origen del mensaje"
+msgstr "Entrada de mensaje"
 
 #: data/resources/ui/content-room-history.ui:277
 msgid "Open Emoji Picker"
 msgstr "Abrir el selector de emoticonos"
 
 #: data/resources/ui/content-room-history.ui:288
-#, fuzzy
-#| msgctxt "shortcut window"
-#| msgid "Open main menu"
 msgid "Open Message Menu"
-msgstr "Abrir el menú principal"
+msgstr "Abrir el menú de mensajes"
 
 #: data/resources/ui/content-room-history.ui:303
-#, fuzzy
-#| msgid "New Messages"
 msgid "Send Message"
-msgstr "Mensajes nuevos"
+msgstr "Enviar mensaje"
 
 #: data/resources/ui/content-state-creation.ui:19
 msgid "Previous room"
@@ -419,6 +402,8 @@ msgid ""
 "It seems like one of the Fractal sessions stored in the Secret Service is "
 "corrupted. If you know how to fix it you should do so."
 msgstr ""
+"Parece que una de las sesiones de Fracal almacenada en el servicio de "
+"secretos esta corrupta. Si sabe como solucionarlo debería hacerlo."
 
 #: data/resources/ui/error-page.ui:51
 msgid ""
@@ -427,14 +412,18 @@ msgid ""
 "unless you have a session open in another client or you have already backed "
 "up your encryption keys."
 msgstr ""
+"Como alternativa, se puede desconectar esta sesión. Esto significa que "
+"deberá iniciar sesión de nuevo y que perderá el acceso a sus mensajes "
+"cifrados, a menos que tenga una sesión abierta en otro cliente o que tenga "
+"una copia de respaldo de sus claves de cifrado."
 
 #: data/resources/ui/error-page.ui:74
 msgid "Clicking this button might disconnect more than one session!"
-msgstr ""
+msgstr "Al pulsar este botón puede desconectar más de una sesión."
 
 #: data/resources/ui/error-page.ui:86
 msgid "Disconnect the corrupted session"
-msgstr ""
+msgstr "Desconectar la sesión corrupta"
 
 #: data/resources/ui/error-page.ui:109
 msgid ""
@@ -442,26 +431,36 @@ msgid ""
 "information and an error occurred while we were trying to store or get your "
 "session."
 msgstr ""
+"Fractal delega en el proveedor de servicio secreto la gestión de información "
+"sensible de la sesión y ocurrió un error al intentar almacenar o recuperar "
+"su sesión."
 
 #: data/resources/ui/error-page.ui:124
 msgid ""
 "Here are a few things that might help you fix issues with the Secret Service:"
 msgstr ""
+"Aqui hay algunas cosas que le pueden ayudar a corregir errores con el "
+"servicio secreto."
 
 #: data/resources/ui/error-page.ui:147
 msgid ""
 "Make sure you have a Secret Service Provider installed, like gnome-keyring."
 msgstr ""
+"Asegúrese de que tiene un proveedor de servicios secretos instalado, como "
+"gnome-keyring."
 
 #: data/resources/ui/error-page.ui:172
 msgid "Check that you have a default keyring and that it is unlocked."
 msgstr ""
+"Compruebe que tiene un depósito predeterminado y que está desbloqueado."
 
 #: data/resources/ui/error-page.ui:187
 msgid ""
 "Check the application logs and your distribution’s documentation for more "
 "details."
 msgstr ""
+"Compruebe los registros de la aplicación y la documentación de su "
+"distribución para obtener más detalles."
 
 #: data/resources/ui/event-menu.ui:11
 msgid "_Reply"
@@ -621,10 +620,8 @@ msgid "Make _Mod"
 msgstr ""
 
 #: data/resources/ui/member-menu.ui:20
-#, fuzzy
-#| msgid "Admin"
 msgid "Make _Admin"
-msgstr "Administrador"
+msgstr "Hacer _administrador"
 
 #: data/resources/ui/member-menu.ui:26
 msgid "_Kick"
@@ -788,10 +785,8 @@ msgid "_About Fractal"
 msgstr "_Acerca de Fractal"
 
 #: data/resources/ui/sidebar.ui:36
-#, fuzzy
-#| msgid "Mark as _Favorite"
 msgid "Move to _Favorites"
-msgstr "Marcar como _favorita"
+msgstr "Mover a _favoritos"
 
 #: data/resources/ui/sidebar.ui:41
 #, fuzzy
@@ -810,20 +805,16 @@ msgid "Move to Low _Priority"
 msgstr "Prioridad baja"
 
 #: data/resources/ui/sidebar.ui:63
-#, fuzzy
-#| msgid "Join Room"
 msgid "Re_join Room"
-msgstr "Unirse a una sala"
+msgstr "Vol_ver a unirse a una sala"
 
 #: data/resources/ui/sidebar.ui:68
 msgid "_Forget Room"
 msgstr "_Olvidar sala"
 
 #: data/resources/ui/sidebar.ui:87
-#, fuzzy
-#| msgid "Deactivate Account"
 msgid "Switch Accounts"
-msgstr "Desactivar Cuenta"
+msgstr "Cambiar cuentas"
 
 #: data/resources/ui/sidebar.ui:109
 #, fuzzy
@@ -838,8 +829,6 @@ msgid "Toggle Room Search"
 msgstr "Búsqueda de sala"
 
 #: data/resources/ui/sidebar.ui:131
-#, fuzzy
-#| msgid "Room search"
 msgid "Room Search"
 msgstr "Búsqueda de sala"
 
@@ -1155,22 +1144,16 @@ msgid "Avatar changed successfully"
 msgstr "Avatar cambiado correctamente"
 
 #: src/session/account_settings/user_page/mod.rs:283
-#, fuzzy
-#| msgid "Could not download the file"
 msgid "Could not upload avatar"
-msgstr "No se puede descargar el archivo"
+msgstr "No se pudo subir el avatar"
 
 #: src/session/account_settings/user_page/mod.rs:305
-#, fuzzy
-#| msgid "Couldn’t change the password"
 msgid "Could not change avatar"
-msgstr "No se ha podido cambiar la contraseña"
+msgstr "No se pudo cambiar el avatar"
 
 #: src/session/account_settings/user_page/mod.rs:334
-#, fuzzy
-#| msgid "Could not save the file"
 msgid "Could not remove avatar"
-msgstr "No se ha podido guardar el archivo"
+msgstr "No se pudo quitar el avatar"
 
 #: src/session/account_settings/user_page/mod.rs:380
 msgid "Name changed successfully"
@@ -1201,12 +1184,10 @@ msgstr[0] "1 miembro"
 msgstr[1] "{} miembros"
 
 #: src/session/content/room_details/member_page/mod.rs:296
-#, fuzzy
-#| msgid "Invite"
 msgid "1 Invited"
 msgid_plural "{n} Invited"
-msgstr[0] "Invitar"
-msgstr[1] "Invitar"
+msgstr[0] "1 invitado"
+msgstr[1] "{n} invitados"
 
 #: src/session/content/room_details/mod.rs:176
 msgid "Save Details"
@@ -1217,16 +1198,12 @@ msgid "Edit Details"
 msgstr "Editar detalles"
 
 #: src/session/content/room_details/mod.rs:228
-#, fuzzy
-#| msgid "Choose Provider"
 msgid "Choose avatar"
-msgstr "Seleccionar proveedor"
+msgstr "Elegir avatar"
 
 #: src/session/content/room_details/mod.rs:259
-#, fuzzy
-#| msgid "Invite New Member"
 msgid "Invite new Members"
-msgstr "Invitar a un nuevo miembro"
+msgstr "Invitar a nuevos miembros"
 
 #: src/session/content/room_history/item_row.rs:255
 msgid "New Messages"
@@ -1240,10 +1217,8 @@ msgid "Could not retrieve audio file"
 msgstr "No se pudo obtener el URI del archivo"
 
 #: src/session/content/room_history/message_row/audio.rs:262
-#, fuzzy
-#| msgid "Error sending message"
 msgid "Error reading audio file"
-msgstr "Error al enviar mensaje"
+msgstr "Error al leer el archivo de sonido"
 
 #: src/session/content/room_history/message_row/media.rs:445
 msgid "Image file not supported"
@@ -1288,10 +1263,8 @@ msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr ""
 
 #: src/session/content/room_history/mod.rs:839
-#, fuzzy
-#| msgid "Error sending message"
 msgid "Error reading file"
-msgstr "Error al enviar mensaje"
+msgstr "Error al leer el archivo"
 
 #: src/session/content/room_history/mod.rs:865
 msgid "Error getting file from drop"
@@ -1682,10 +1655,8 @@ msgid "Too long. Use a shorter name."
 msgstr ""
 
 #: src/session/room_creation/mod.rs:306
-#, fuzzy
-#| msgid "Invite to {name}"
 msgid "Invalid room name."
-msgstr "Invitar a {name}"
+msgstr "Nombre de sala no válido."
 
 #: src/session/room_creation/mod.rs:333
 msgid "Can’t contain “:”"
@@ -1719,10 +1690,8 @@ msgid "Join Room as Low Priority"
 msgstr ""
 
 #: src/session/sidebar/category_row.rs:164
-#, fuzzy
-#| msgid "Reject"
 msgid "Reject Invite"
-msgstr "Rechazar"
+msgstr "Rechazar invitación"
 
 #: src/session/sidebar/category_row.rs:165
 #, fuzzy
@@ -1733,18 +1702,14 @@ msgstr "Unirse a una sala"
 #: src/session/sidebar/category_row.rs:169
 #: src/session/sidebar/category_row.rs:184
 #: src/session/sidebar/category_row.rs:198
-#, fuzzy
-#| msgid "New Room"
 msgid "Move to Rooms"
-msgstr "Nueva sala"
+msgstr "Mover a Salas"
 
 #: src/session/sidebar/category_row.rs:170
 #: src/session/sidebar/category_row.rs:177
 #: src/session/sidebar/category_row.rs:199
-#, fuzzy
-#| msgid "Low Priority"
 msgid "Move to Low Priority"
-msgstr "Prioridad baja"
+msgstr "Mover a prioridad baja"
 
 #: src/session/sidebar/category_row.rs:171
 #: src/session/sidebar/category_row.rs:178
@@ -1762,10 +1727,8 @@ msgstr ""
 #: src/session/sidebar/category_row.rs:176
 #: src/session/sidebar/category_row.rs:183
 #: src/session/sidebar/category_row.rs:197
-#, fuzzy
-#| msgid "Favorites"
 msgid "Move to Favorites"
-msgstr "Favoritos"
+msgstr "Mover a favoritos"
 
 #: src/session/sidebar/category_row.rs:190
 #, fuzzy
@@ -1774,10 +1737,8 @@ msgid "Rejoin Room as Favorites"
 msgstr "Unirse a una sala"
 
 #: src/session/sidebar/category_row.rs:191
-#, fuzzy
-#| msgid "Join Room"
 msgid "Rejoin Room"
-msgstr "Unirse a una sala"
+msgstr "Volver a unirse a la sala"
 
 #: src/session/sidebar/category_row.rs:192
 msgid "Rejoin Room as Low Priority"
@@ -1790,22 +1751,16 @@ msgid "Rejoin Room as People"
 msgstr "Unirse a una sala"
 
 #: src/session/sidebar/category_type.rs:34
-#, fuzzy
-#| msgid "Notifications"
 msgid "Verifications"
-msgstr "Notificaciones"
+msgstr "Verificaciones"
 
 #: src/session/sidebar/category_type.rs:35
-#, fuzzy
-#| msgid "Invite"
 msgid "Invited"
-msgstr "Invitar"
+msgstr "Invitado"
 
 #: src/session/sidebar/category_type.rs:36
-#, fuzzy
-#| msgid "Favorite"
 msgid "Favorites"
-msgstr "Favorita"
+msgstr "Favoritos"
 
 #: src/session/sidebar/category_type.rs:37
 msgid "Rooms"
@@ -1837,10 +1792,8 @@ msgid "Explore"
 msgstr "Explorar"
 
 #: src/session/sidebar/entry_type.rs:24
-#, fuzzy
-#| msgid "New Room"
 msgid "Forget Room"
-msgstr "Nueva sala"
+msgstr "Olvidar sala"
 
 #: src/session/verification/identity_verification.rs:679
 msgid "You cancelled the verification process."
@@ -1855,10 +1808,8 @@ msgid "You accepted the request from an other session."
 msgstr ""
 
 #: src/session/verification/identity_verification.rs:687
-#, fuzzy
-#| msgid "The passwords do not match."
 msgid "The emoji did not match."
-msgstr "Las contraseñas no coinciden."
+msgstr "El emoticono no coincide."
 
 #: src/session/verification/identity_verification.rs:696
 msgid "An unknown error occurred during the verification process."
@@ -1899,20 +1850,16 @@ msgid "An unknown connection error occurred."
 msgstr ""
 
 #: src/user_facing_error.rs:64
-#, fuzzy
-#| msgid "Could not save the file"
 msgid "Could not decrypt the event"
-msgstr "No se ha podido guardar el archivo"
+msgstr "No se pudo descifrar el evento"
 
 #: src/user_facing_error.rs:66 src/user_facing_error.rs:86
 msgid "An unknown error occurred."
 msgstr "Ocurrió un error desconocido."
 
 #: src/user_facing_error.rs:73
-#, fuzzy
-#| msgid "Could not save the file"
 msgid "Could not open the store."
-msgstr "No se ha podido guardar el archivo"
+msgstr "No se pudo abrir la tienda."
 
 #: src/user_facing_error.rs:80
 msgid "This is not a valid URL"
