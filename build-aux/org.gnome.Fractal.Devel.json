@@ -1,14 +1,14 @@
 {
-    "app-id" : "org.gnome.Fractal.Devel",
-    "runtime" : "org.gnome.Platform",
-    "runtime-version" : "master",
-    "sdk" : "org.gnome.Sdk",
-    "sdk-extensions" : [
+    "app-id": "org.gnome.Fractal.Devel",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "42",
+    "sdk": "org.gnome.Sdk",
+    "sdk-extensions": [
         "org.freedesktop.Sdk.Extension.rust-stable",
         "org.freedesktop.Sdk.Extension.llvm12"
     ],
-    "command" : "fractal",
-    "finish-args" : [
+    "command": "fractal",
+    "finish-args": [
         "--socket=fallback-x11",
         "--socket=wayland",
         "--socket=pulseaudio",
@@ -19,18 +19,18 @@
         "--env=G_MESSAGES_DEBUG=none",
         "--env=RUST_BACKTRACE=1"
     ],
-    "build-options" : {
+    "build-options": {
         "append-ld-library-path": "/usr/lib/sdk/llvm12/lib",
-        "append-path" : "/usr/lib/sdk/llvm12/bin:/usr/lib/sdk/rust-stable/bin",
-        "build-args" : [
+        "append-path": "/usr/lib/sdk/llvm12/bin:/usr/lib/sdk/rust-stable/bin",
+        "build-args": [
             "--share=network"
         ],
-        "test-args" : [
+        "test-args": [
             "--socket=x11",
             "--share=network"
         ]
     },
-    "modules" : [
+    "modules": [
         {
             "name": "libshumate",
             "buildsystem": "meson",
@@ -48,16 +48,16 @@
             ]
         },
         {
-            "name" : "fractal",
-            "buildsystem" : "meson",
-            "run-tests" : true,
-            "config-opts" : [
+            "name": "fractal",
+            "buildsystem": "meson",
+            "run-tests": true,
+            "config-opts": [
                 "-Dprofile=development"
             ],
-            "sources" : [
+            "sources": [
                 {
-                    "type" : "dir",
-                    "path" : "../"
+                    "type": "dir",
+                    "path": "../"
                 }
             ]
         }
