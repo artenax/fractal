@@ -9,7 +9,7 @@ variables:
   FLATPAK_MODULE: "fractal"
   RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
   CI_IMAGE_X86_64: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:42"
-  CI_IMAGE_AARCH64: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/aarch64:gnome-nightly"
+  CI_IMAGE_AARCH64: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/aarch64:gnome-42"
 
 .hack:
   variables:
