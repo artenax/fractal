@@ -70,12 +70,13 @@ where
     ///
     /// Should be paired with the `EventActions` menu models.
     fn set_event_actions(&self, event: Option<&Event>) -> Option<gio::SimpleActionGroup> {
-        if event.is_none() {
-            self.insert_action_group("event", gio::ActionGroup::NONE);
-            return None;
-        }
-
-        let event = event.unwrap();
+        let event = match event {
+            Some(event) => event,
+            None => {
+                self.insert_action_group("event", gio::ActionGroup::NONE);
+                return None;
+            }
+        };
         let action_group = gio::SimpleActionGroup::new();
 
         // View Event Source
