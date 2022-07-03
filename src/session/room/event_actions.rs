@@ -174,6 +174,33 @@ where
                         })
                     );
                 }
+                MessageType::Image(_) => {
+                    gtk_macros::action!(
+                        &action_group,
+                        "save-image",
+                        clone!(@weak self as widget, @weak event => move |_, _| {
+                            widget.save_event_file(event);
+                        })
+                    );
+                }
+                MessageType::Video(_) => {
+                    gtk_macros::action!(
+                        &action_group,
+                        "save-video",
+                        clone!(@weak self as widget, @weak event => move |_, _| {
+                            widget.save_event_file(event);
+                        })
+                    );
+                }
+                MessageType::Audio(_) => {
+                    gtk_macros::action!(
+                        &action_group,
+                        "save-audio",
+                        clone!(@weak self as widget, @weak event => move |_, _| {
+                            widget.save_event_file(event);
+                        })
+                    );
+                }
                 _ => {}
             }
         }

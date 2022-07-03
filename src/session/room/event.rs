@@ -615,6 +615,7 @@ impl Event {
     /// - File message (`MessageType::File`).
     /// - Image message (`MessageType::Image`).
     /// - Video message (`MessageType::Video`).
+    /// - Audio message (`MessageType::Audio`).
     ///
     /// Returns `Ok((uid, filename, binary_content))` on success, `Err` if an
     /// error occurred while fetching the content. Panics on an incompatible
@@ -671,6 +672,23 @@ impl Event {
                                 .as_ref()
                                 .and_then(|info| info.mimetype.as_deref()),
                             Some(mime::VIDEO),
+                        )
+                    } else {
+                        content.body.clone()
+                    };
+                    let handle = spawn_tokio!(async move { client.get_file(content, true).await });
+                    let data = handle.await.unwrap()?.unwrap();
+                    return Ok((uid, filename, data));
+                }
+                MessageType::Audio(content) => {
+                    let uid = media_type_uid(content.source());
+                    let filename = if content.body.is_empty() {
+                        filename_for_mime(
+                            content
+                                .info
+                                .as_ref()
+                                .and_then(|info| info.mimetype.as_deref()),
+                            Some(mime::AUDIO),
                         )
                     } else {
                         content.body.clone()
