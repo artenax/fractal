@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-06-06 10:26+0000\n"
-"PO-Revision-Date: 2022-06-06 16:46+0300\n"
+"POT-Creation-Date: 2022-07-05 10:59+0000\n"
+"PO-Revision-Date: 2022-07-05 17:38+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -193,15 +193,15 @@ msgid "Authenticate via Browser"
 msgstr "Розпізнавання за допомогою браузера"
 
 #: data/resources/ui/components-auth-dialog.ui:113
-#: data/resources/ui/identity-verification-widget.ui:449
+#: data/resources/ui/identity-verification-widget.ui:452
 #: src/components/editable_avatar.rs:344
 #: src/session/content/room_history/verification_info_bar.rs:182
-#: src/session/room/event_actions.rs:209
+#: src/session/room/event_actions.rs:237
 msgid "Cancel"
 msgstr "Скасувати"
 
 #: data/resources/ui/components-auth-dialog.ui:118
-#: data/resources/ui/identity-verification-widget.ui:439
+#: data/resources/ui/identity-verification-widget.ui:442
 msgid "Confirm"
 msgstr "Підтвердити"
 
@@ -283,7 +283,7 @@ msgid "Open"
 msgstr "Відкрити"
 
 #: data/resources/ui/content-message-file.ui:28
-#: src/session/room/event_actions.rs:208
+#: src/session/room/event_actions.rs:236
 msgid "Save"
 msgstr "Зберегти"
 
@@ -470,35 +470,45 @@ msgstr "_Відповісти"
 msgid "_Edit"
 msgstr "З_мінити"
 
-#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:86
+#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:106
 msgid "_Forward"
 msgstr "П_ереспрямувати"
 
-#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:93
+#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:113
 msgid "_Select"
 msgstr "_Вибрати"
 
-#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
+#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:120
 msgid "_Copy Text"
 msgstr "_Копіювати текст"
 
-#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
+#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:82
 msgid "_Copy Image"
 msgstr "_Копіювати зображення"
 
-#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
+#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:87
 msgid "S_ave Image"
 msgstr "З_берегти зображення"
 
-#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:106
+#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:92
+#| msgid "Save Video As…"
+msgid "S_ave Video"
+msgstr "З_берегти відео"
+
+#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:97
+#| msgid "audio"
+msgid "S_ave Audio"
+msgstr "З_берегти звук"
+
+#: data/resources/ui/event-menu.ui:61 data/resources/ui/event-menu.ui:126
 msgid "_Permalink"
 msgstr "С_тале посилання"
 
-#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
+#: data/resources/ui/event-menu.ui:66 data/resources/ui/event-menu.ui:131
 msgid "_View Source"
 msgstr "П_ереглянути код"
 
-#: data/resources/ui/event-menu.ui:63 data/resources/ui/event-menu.ui:118
+#: data/resources/ui/event-menu.ui:73 data/resources/ui/event-menu.ui:138
 msgid "Re_move"
 msgstr "В_илучити"
 
@@ -538,12 +548,12 @@ msgid "Verify"
 msgstr "Перевірити"
 
 #: data/resources/ui/identity-verification-widget.ui:109
-#: data/resources/ui/identity-verification-widget.ui:210
+#: data/resources/ui/identity-verification-widget.ui:213
 msgid "Can’t scan QR code?"
 msgstr "Не вдалося сканувати QR-код?"
 
 #: data/resources/ui/identity-verification-widget.ui:117
-#: data/resources/ui/identity-verification-widget.ui:227
+#: data/resources/ui/identity-verification-widget.ui:230
 msgid "Compare Emoji"
 msgstr "Порівняти емодзі"
 
@@ -551,23 +561,23 @@ msgstr "Порівняти емодзі"
 msgid "Scan Complete"
 msgstr "Сканування завершено"
 
-#: data/resources/ui/identity-verification-widget.ui:219
+#: data/resources/ui/identity-verification-widget.ui:222
 msgid "Scan QR code with this session"
 msgstr "Сканувати QR-код з цим сеансом"
 
-#: data/resources/ui/identity-verification-widget.ui:287
+#: data/resources/ui/identity-verification-widget.ui:290
 msgid "Do Not Match"
 msgstr "Не збігається"
 
-#: data/resources/ui/identity-verification-widget.ui:297
+#: data/resources/ui/identity-verification-widget.ui:300
 msgid "Match"
 msgstr "Збігається"
 
-#: data/resources/ui/identity-verification-widget.ui:347
+#: data/resources/ui/identity-verification-widget.ui:350
 msgid "Done"
 msgstr "Виконано"
 
-#: data/resources/ui/identity-verification-widget.ui:416
+#: data/resources/ui/identity-verification-widget.ui:419
 msgid "Confirm Scan"
 msgstr "Підтвердити сканування"
 
@@ -737,7 +747,8 @@ msgstr ""
 "облікового запису."
 
 #: data/resources/ui/session-verification.ui:269
-msgid "If you opted for a Recovery Key instead go back and choose that option."
+msgid ""
+"If you opted for a Recovery Key instead go back and choose that option."
 msgstr ""
 "Якщо ви хочете вибрати ключ відновлення, поверніться і виберіть відповідний "
 "пункт."
@@ -953,7 +964,8 @@ msgstr "Не вдалося розблокувати зашифроване сх
 
 #: src/secret.rs:55 src/secret.rs:59
 msgid "An unknown error occurred when interacting with the secret storage"
-msgstr "Під час роботи із сховищем зашифрованих даних сталася невідома помилка"
+msgstr ""
+"Під час роботи із сховищем зашифрованих даних сталася невідома помилка"
 
 #: src/secret.rs:88
 msgid "Malformed homeserver in stored session"
@@ -965,7 +977,8 @@ msgstr "Не вдалося знайти дані домашнього серв�
 
 #: src/secret.rs:109
 msgid "Malformed user ID in stored session"
-msgstr "Помилкове форматування ідентифікатора користувача у збереженому сеансі"
+msgstr ""
+"Помилкове форматування ідентифікатора користувача у збереженому сеансі"
 
 #: src/secret.rs:116
 msgid "Could not find user ID in stored session"
@@ -1247,15 +1260,12 @@ msgid "Unsupported event"
 msgstr "Непідтримувана подія"
 
 #: src/session/content/room_history/message_row/mod.rs:415
-#| msgid ""
-#| "Fractal couldn’t decrypt this message, but will retry once the keys are "
-#| "available."
 msgid ""
 "Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
 msgstr ""
-"Не вдалося розшифрувати це повідомлення, але програма повторить "
-"спробу, щойно стануть доступними ключі."
+"Не вдалося розшифрувати це повідомлення, але програма повторить спробу, "
+"щойно стануть доступними ключі."
 
 #: src/session/content/room_history/message_row/mod.rs:426
 msgid "This message was removed."
@@ -1591,7 +1601,7 @@ msgstr "Не вдалося зберегти сеанс"
 msgid "Failed to logout the session."
 msgstr "Не вдалося вийти з сеансу."
 
-#: src/session/room/event_actions.rs:204
+#: src/session/room/event_actions.rs:232
 msgid "Save File"
 msgstr "Зберегти файл"
 
@@ -1642,7 +1652,8 @@ msgstr "Не вдалося прийняти запрошення до {room}. �
 #. is a variable name.
 #: src/session/room/mod.rs:1466
 msgid "Failed to reject invitation for {room}. Try again later."
-msgstr "Не вдалося відмовити у запрошенні до {room}. Повторіть спробу пізніше."
+msgstr ""
+"Не вдалося відмовити у запрошенні до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
@@ -2212,9 +2223,6 @@ msgstr "Не вдалося відновити попередні сеанси"
 
 #~ msgid "Open With…"
 #~ msgstr "Відкрити з допомогою…"
-
-#~ msgid "Save Video As…"
-#~ msgstr "Зберегти відео як…"
 
 #~ msgid "Copy Selection"
 #~ msgstr "Копіювати виділене"
