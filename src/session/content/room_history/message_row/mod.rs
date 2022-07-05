@@ -210,12 +210,12 @@ impl MessageRow {
                         build_content(reply.content(), &event, false);
                         priv_.content.set_child(Some(&reply));
                     } else {
-                        build_content(&*priv_.content, &event, false);
+                        build_content(&priv_.content, &event, false);
                     }
                 })
             );
         } else {
-            build_content(&*self.imp().content, event, false);
+            build_content(&self.imp().content, event, false);
         }
     }
 }

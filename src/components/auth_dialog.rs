@@ -119,7 +119,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
-            let response = (&[false]).to_variant();
+            let response = [false].to_variant();
             klass.add_binding_signal(
                 gdk::Key::Escape,
                 gdk::ModifierType::empty(),

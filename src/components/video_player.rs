@@ -112,7 +112,7 @@ impl VideoPlayer {
     }
 
     pub fn player(&self) -> &Player {
-        &*self.imp().player
+        &self.imp().player
     }
 
     pub fn compact(&self) -> bool {

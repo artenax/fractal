@@ -103,7 +103,7 @@ mod imp {
                     if let Some(matrix_public_room) = obj.matrix_public_room() {
                         obj.set_pending(obj.room_list().session()
                         .room_list()
-                        .is_pending_room((&*matrix_public_room.room_id).into()));
+                        .is_pending_room((*matrix_public_room.room_id).into()));
                     }
                 }));
         }
@@ -181,7 +181,7 @@ impl PublicRoom {
             priv_.room_handler.replace(Some(handler_id));
         }
 
-        self.set_pending(self.room_list().is_pending_room((&*room.room_id).into()));
+        self.set_pending(self.room_list().is_pending_room((*room.room_id).into()));
 
         priv_.matrix_public_room.set(room).unwrap();
     }

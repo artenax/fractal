@@ -865,7 +865,7 @@ impl Session {
                                     spawn!(async move {
                                         if let Some(session) = obj_weak.upgrade() {
                                             let room_ids = event.content.iter().fold(HashSet::new(), |mut acc, (_, rooms)| {
-                                                acc.extend(&*rooms);
+                                                acc.extend(rooms);
                                                 acc
                                             });
                                             for room_id in room_ids {

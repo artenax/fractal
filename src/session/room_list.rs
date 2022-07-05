@@ -164,7 +164,7 @@ impl RoomList {
             let sender = Cell::new(Some(sender));
             // FIXME: add a timeout
             let handler_id = self.connect_items_changed(move |obj, _, _, _| {
-                if let Some(room) = obj.get(&*room_id) {
+                if let Some(room) = obj.get(&room_id) {
                     if let Some(sender) = sender.take() {
                         sender.send(Some(room)).unwrap();
                     }
@@ -261,7 +261,7 @@ impl RoomList {
                 })
                 .clone();
 
-            self.pending_rooms_remove((&*room_id).into());
+            self.pending_rooms_remove((*room_id).into());
             room.handle_left_response(left_room);
         }
 
@@ -276,7 +276,7 @@ impl RoomList {
                 })
                 .clone();
 
-            self.pending_rooms_remove((&*room_id).into());
+            self.pending_rooms_remove((*room_id).into());
             room.handle_joined_response(joined_room);
         }
 
@@ -291,7 +291,7 @@ impl RoomList {
                 })
                 .clone();
 
-            self.pending_rooms_remove((&*room_id).into());
+            self.pending_rooms_remove((*room_id).into());
             room.handle_invited_response(invited_room);
         }
 
