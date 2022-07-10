@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-06-06 10:26+0000\n"
-"PO-Revision-Date: 2022-06-12 15:05+0200\n"
+"POT-Creation-Date: 2022-07-05 10:59+0000\n"
+"PO-Revision-Date: 2022-07-10 13:15+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -191,15 +191,15 @@ msgid "Authenticate via Browser"
 msgstr "Uwierzytelnij przez przeglądarkę"
 
 #: data/resources/ui/components-auth-dialog.ui:113
-#: data/resources/ui/identity-verification-widget.ui:449
+#: data/resources/ui/identity-verification-widget.ui:452
 #: src/components/editable_avatar.rs:344
 #: src/session/content/room_history/verification_info_bar.rs:182
-#: src/session/room/event_actions.rs:209
+#: src/session/room/event_actions.rs:237
 msgid "Cancel"
 msgstr "Anuluj"
 
 #: data/resources/ui/components-auth-dialog.ui:118
-#: data/resources/ui/identity-verification-widget.ui:439
+#: data/resources/ui/identity-verification-widget.ui:442
 msgid "Confirm"
 msgstr "Potwierdź"
 
@@ -281,7 +281,7 @@ msgid "Open"
 msgstr "Otwórz"
 
 #: data/resources/ui/content-message-file.ui:28
-#: src/session/room/event_actions.rs:208
+#: src/session/room/event_actions.rs:236
 msgid "Save"
 msgstr "Zapisz"
 
@@ -465,35 +465,43 @@ msgstr "_Odpowiedz"
 msgid "_Edit"
 msgstr "_Modyfikuj"
 
-#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:86
+#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:106
 msgid "_Forward"
 msgstr "_Przekaż dalej"
 
-#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:93
+#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:113
 msgid "_Select"
 msgstr "_Wybierz"
 
-#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
+#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:120
 msgid "_Copy Text"
 msgstr "S_kopiuj tekst"
 
-#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
+#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:82
 msgid "_Copy Image"
 msgstr "S_kopiuj obraz"
 
-#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
+#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:87
 msgid "S_ave Image"
 msgstr "_Zapisz obraz"
 
-#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:106
+#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:92
+msgid "S_ave Video"
+msgstr "_Zapisz film"
+
+#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:97
+msgid "S_ave Audio"
+msgstr "_Zapisz dźwięk"
+
+#: data/resources/ui/event-menu.ui:61 data/resources/ui/event-menu.ui:126
 msgid "_Permalink"
 msgstr "_Trwały odnośnik"
 
-#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
+#: data/resources/ui/event-menu.ui:66 data/resources/ui/event-menu.ui:131
 msgid "_View Source"
 msgstr "_Wyświetl źródło"
 
-#: data/resources/ui/event-menu.ui:63 data/resources/ui/event-menu.ui:118
+#: data/resources/ui/event-menu.ui:73 data/resources/ui/event-menu.ui:138
 msgid "Re_move"
 msgstr "_Usuń"
 
@@ -533,12 +541,12 @@ msgid "Verify"
 msgstr "Zweryfikuj"
 
 #: data/resources/ui/identity-verification-widget.ui:109
-#: data/resources/ui/identity-verification-widget.ui:210
+#: data/resources/ui/identity-verification-widget.ui:213
 msgid "Can’t scan QR code?"
 msgstr "Nie można zeskanować kodu QR?"
 
 #: data/resources/ui/identity-verification-widget.ui:117
-#: data/resources/ui/identity-verification-widget.ui:227
+#: data/resources/ui/identity-verification-widget.ui:230
 msgid "Compare Emoji"
 msgstr "Porównaj emoji"
 
@@ -546,23 +554,23 @@ msgstr "Porównaj emoji"
 msgid "Scan Complete"
 msgstr "Ukończono skanowanie"
 
-#: data/resources/ui/identity-verification-widget.ui:219
+#: data/resources/ui/identity-verification-widget.ui:222
 msgid "Scan QR code with this session"
 msgstr "Zeskanuj kod QR za pomocą tej sesji"
 
-#: data/resources/ui/identity-verification-widget.ui:287
+#: data/resources/ui/identity-verification-widget.ui:290
 msgid "Do Not Match"
 msgstr "Są inne"
 
-#: data/resources/ui/identity-verification-widget.ui:297
+#: data/resources/ui/identity-verification-widget.ui:300
 msgid "Match"
 msgstr "Są takie same"
 
-#: data/resources/ui/identity-verification-widget.ui:347
+#: data/resources/ui/identity-verification-widget.ui:350
 msgid "Done"
 msgstr "Gotowe"
 
-#: data/resources/ui/identity-verification-widget.ui:416
+#: data/resources/ui/identity-verification-widget.ui:419
 msgid "Confirm Scan"
 msgstr "Potwierdzenie zeskanowania"
 
@@ -1583,7 +1591,7 @@ msgstr "Nie można przechować sesji"
 msgid "Failed to logout the session."
 msgstr "Wylogowanie sesji się nie powiodło."
 
-#: src/session/room/event_actions.rs:204
+#: src/session/room/event_actions.rs:232
 msgid "Save File"
 msgstr "Zapis pliku"
 
