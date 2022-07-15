@@ -1,5 +1,5 @@
 use gtk::{gio, glib, prelude::*, subclass::prelude::*};
-use indexmap::IndexMap;
+use indexmap::{map::Entry, IndexMap};
 use matrix_sdk::ruma::{
     events::{room::member::RoomMemberEventContent, OriginalSyncStateEvent},
     OwnedUserId, UserId,
@@ -106,19 +106,29 @@ impl MemberList {
     /// If some of the values do not correspond to existing members, new members
     /// are created.
     pub fn update_from_room_members(&self, new_members: &[matrix_sdk::room::RoomMember]) {
-        let mut members = self.imp().members.borrow_mut();
+        let priv_ = self.imp();
+        let mut members = priv_.members.borrow_mut();
         let prev_len = members.len();
         for member in new_members {
-            members
-                .entry(member.user_id().into())
-                .or_insert_with_key(|user_id| Member::new(&self.room(), user_id))
-                .update_from_room_member(member);
+            if let Entry::Vacant(entry) = members.entry(member.user_id().into()) {
+                entry.insert(Member::new(&self.room(), member.user_id()));
+            }
         }
         let num_members_added = members.len().saturating_sub(prev_len);
 
-        // We can't have the borrow active when items_changed is emitted because that
-        // will probably cause reads of the members field.
+        // We can't have the borrow active when members are updated or items_changed is
+        // emitted because that will probably cause reads of the members field.
         std::mem::drop(members);
+
+        {
+            let members = priv_.members.borrow();
+            for room_member in new_members {
+                if let Some(member) = members.get(room_member.user_id()) {
+                    member.update_from_room_member(room_member);
+                }
+            }
+        }
+
         if num_members_added > 0 {
             // IndexMap preserves insertion order, so all the new items will be at the end.
             self.items_changed(prev_len as u32, 0, num_members_added as u32);
