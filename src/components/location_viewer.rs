@@ -5,7 +5,10 @@ use shumate::prelude::*;
 use crate::i18n::gettext_f;
 
 mod imp {
+    use std::cell::Cell;
+
     use glib::subclass::InitializingObject;
+    use once_cell::sync::Lazy;
 
     use super::*;
 
@@ -17,6 +20,7 @@ mod imp {
         #[template_child]
         pub marker_img: TemplateChild<gtk::Image>,
         pub marker: shumate::Marker,
+        pub compact: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -36,6 +40,40 @@ mod imp {
     }
 
     impl ObjectImpl for LocationViewer {
+        fn properties() -> &'static [glib::ParamSpec] {
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecBoolean::new(
+                    "compact",
+                    "Compact",
+                    "Whether to display this location in a compact format",
+                    false,
+                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
+                )]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "compact" => obj.set_compact(value.get().unwrap()),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "compact" => obj.compact().to_value(),
+                _ => unimplemented!(),
+            }
+        }
+
         fn constructed(&self, obj: &Self::Type) {
             self.marker.set_child(Some(&*self.marker_img));
 
@@ -70,6 +108,27 @@ impl LocationViewer {
     #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create LocationViewer")
+    }
+
+    /// Whether to display this location in a compact format.
+    pub fn compact(&self) -> bool {
+        self.imp().compact.get()
+    }
+
+    /// Set the compact format of this location.
+    pub fn set_compact(&self, compact: bool) {
+        if self.compact() == compact {
+            return;
+        }
+
+        let map = &self.imp().map;
+        map.set_show_zoom_buttons(!compact);
+        if let Some(license) = map.license() {
+            license.set_visible(!compact);
+        }
+
+        self.imp().compact.set(compact);
+        self.notify("compact");
     }
 
     pub fn set_geo_uri(&self, uri: &str) {

@@ -1,4 +1,5 @@
 mod audio;
+pub mod content;
 mod file;
 mod location;
 mod media;
@@ -8,25 +9,15 @@ mod reply;
 mod text;
 
 use adw::{prelude::*, subclass::prelude::*};
-use gettextrs::gettext;
 use gtk::{
     glib,
     glib::{clone, signal::SignalHandlerId},
     CompositeTemplate,
 };
-use log::warn;
-use matrix_sdk::ruma::events::{
-    room::message::{MessageType, Relation},
-    AnyMessageLikeEventContent,
-};
 
-use self::{
-    audio::MessageAudio, file::MessageFile, location::MessageLocation, media::MessageMedia,
-    reaction_list::MessageReactionList, reply::MessageReply, text::MessageText,
-};
-use crate::{
-    components::Avatar, prelude::*, session::room::SupportedEvent, spawn, utils::filename_for_mime,
-};
+pub use self::content::ContentFormat;
+use self::{content::MessageContent, reaction_list::MessageReactionList};
+use crate::{components::Avatar, prelude::*, session::room::SupportedEvent};
 
 mod imp {
     use std::cell::RefCell;
@@ -48,7 +39,7 @@ mod imp {
         #[template_child]
         pub timestamp: TemplateChild<gtk::Label>,
         #[template_child]
-        pub content: TemplateChild<adw::Bin>,
+        pub content: TemplateChild<MessageContent>,
         #[template_child]
         pub reactions: TemplateChild<MessageReactionList>,
         pub source_changed_handler: RefCell<Option<SignalHandlerId>>,
@@ -108,7 +99,20 @@ mod imp {
                 _ => unimplemented!(),
             }
         }
+
+        fn constructed(&self, obj: &Self::Type) {
+            self.content.connect_notify_local(
+                Some("format"),
+                clone!(@weak obj => move |content, _|
+                    obj.imp().reactions.set_visible(!matches!(
+                        content.format(),
+                        ContentFormat::Compact | ContentFormat::Ellipsized
+                    ));
+                ),
+            );
+        }
     }
+
     impl WidgetImpl for MessageRow {}
     impl BinImpl for MessageRow {}
 }
@@ -142,6 +146,10 @@ impl MessageRow {
         }
 
         self.notify("show-header");
+    }
+
+    pub fn set_content_format(&self, format: ContentFormat) {
+        self.imp().content.set_format(format);
     }
 
     pub fn set_event(&self, event: SupportedEvent) {
@@ -196,249 +204,12 @@ impl MessageRow {
     }
 
     fn update_content(&self, event: &SupportedEvent) {
-        if event.is_reply() {
-            spawn!(
-                glib::PRIORITY_HIGH,
-                clone!(@weak self as obj, @weak event => async move {
-                    let priv_ = obj.imp();
-
-                    if let Some(related_event) = event
-                        .reply_to_event()
-                        .await
-                        .ok()
-                        .flatten()
-                        .and_then(|event| event.downcast::<SupportedEvent>().ok())
-                    {
-                        let reply = MessageReply::new();
-                        reply.set_related_content_sender(related_event.sender().upcast());
-                        build_content(reply.related_content(), &related_event, true);
-                        build_content(reply.content(), &event, false);
-                        priv_.content.set_child(Some(&reply));
-                    } else {
-                        build_content(&priv_.content, &event, false);
-                    }
-                })
-            );
-        } else {
-            build_content(&self.imp().content, event, false);
-        }
+        self.imp().content.update_for_event(event);
     }
 }
 
 impl Default for MessageRow {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-/// Build the content widget of `event` as a child of `parent`.
-///
-/// If `compact` is true, the content should appear in a smaller format without
-/// interactions, if possible.
-fn build_content(parent: &adw::Bin, event: &SupportedEvent, compact: bool) {
-    match event.content() {
-        Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
-            let msgtype = if let Some(Relation::Replacement(replacement)) = message.relates_to {
-                replacement.new_content.msgtype
-            } else {
-                message.msgtype
-            };
-            match msgtype {
-                MessageType::Audio(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageAudio>())
-                    {
-                        child
-                    } else {
-                        let child = MessageAudio::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
-                    child.audio(message, &event.room().session(), compact);
-                }
-                MessageType::Emote(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
-                        child
-                    } else {
-                        let child = MessageText::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
-                    child.emote(
-                        message.formatted,
-                        message.body,
-                        event.sender(),
-                        &event.room(),
-                    );
-                }
-                MessageType::File(message) => {
-                    let info = message.info.as_ref();
-                    let filename = message
-                        .filename
-                        .filter(|name| !name.is_empty())
-                        .or(Some(message.body))
-                        .filter(|name| !name.is_empty())
-                        .unwrap_or_else(|| {
-                            filename_for_mime(info.and_then(|info| info.mimetype.as_deref()), None)
-                        });
-
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageFile>())
-                    {
-                        child
-                    } else {
-                        let child = MessageFile::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
-                    child.set_filename(Some(filename));
-                    child.set_compact(compact);
-                }
-                MessageType::Image(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageMedia>())
-                    {
-                        child
-                    } else {
-                        let child = MessageMedia::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
-                    child.image(message, &event.room().session(), compact);
-                }
-                MessageType::Location(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageLocation>())
-                    {
-                        child
-                    } else {
-                        let child = MessageLocation::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
-                    child.set_geo_uri(&message.geo_uri);
-                }
-                MessageType::Notice(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
-                        child
-                    } else {
-                        let child = MessageText::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
-                    child.markup(message.formatted, message.body, &event.room());
-                }
-                MessageType::ServerNotice(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
-                        child
-                    } else {
-                        let child = MessageText::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
-                    child.text(message.body);
-                }
-                MessageType::Text(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
-                        child
-                    } else {
-                        let child = MessageText::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
-                    child.markup(message.formatted, message.body, &event.room());
-                }
-                MessageType::Video(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageMedia>())
-                    {
-                        child
-                    } else {
-                        let child = MessageMedia::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
-                    child.video(message, &event.room().session(), compact);
-                }
-                MessageType::VerificationRequest(_) => {
-                    // TODO: show more information about the verification
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
-                        child
-                    } else {
-                        let child = MessageText::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
-                    child.text(gettext("Identity verification was started"));
-                }
-                _ => {
-                    warn!("Event not supported: {:?}", msgtype);
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
-                        child
-                    } else {
-                        let child = MessageText::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
-                    child.text(gettext("Unsupported event"));
-                }
-            }
-        }
-        Some(AnyMessageLikeEventContent::Sticker(content)) => {
-            let child =
-                if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageMedia>()) {
-                    child
-                } else {
-                    let child = MessageMedia::new();
-                    parent.set_child(Some(&child));
-                    child
-                };
-            child.sticker(content, &event.room().session(), compact);
-        }
-        Some(AnyMessageLikeEventContent::RoomEncrypted(_)) => {
-            let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
-            {
-                child
-            } else {
-                let child = MessageText::new();
-                parent.set_child(Some(&child));
-                child
-            };
-            child.text(gettext("Unable to decrypt this message, decryption will be retried once the keys are available."));
-        }
-        Some(AnyMessageLikeEventContent::RoomRedaction(_)) => {
-            let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
-            {
-                child
-            } else {
-                let child = MessageText::new();
-                parent.set_child(Some(&child));
-                child
-            };
-            child.text(gettext("This message was removed."));
-        }
-        _ => {
-            let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
-            {
-                child
-            } else {
-                let child = MessageText::new();
-                parent.set_child(Some(&child));
-                child
-            };
-            child.text(gettext("Unsupported event"));
-        }
     }
 }

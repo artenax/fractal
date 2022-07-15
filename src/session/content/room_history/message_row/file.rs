@@ -1,6 +1,8 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, prelude::*, CompositeTemplate};
 
+use super::ContentFormat;
+
 mod imp {
     use std::cell::{Cell, RefCell};
 
@@ -124,6 +126,13 @@ impl MessageFile {
 
     pub fn compact(&self) -> bool {
         self.imp().compact.get()
+    }
+
+    pub fn set_format(&self, format: ContentFormat) {
+        self.set_compact(matches!(
+            format,
+            ContentFormat::Compact | ContentFormat::Ellipsized
+        ));
     }
 }
 

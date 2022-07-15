@@ -18,6 +18,7 @@ use matrix_sdk::{
     },
 };
 
+use super::ContentFormat;
 use crate::{
     components::VideoPlayer,
     session::Session,
@@ -336,10 +337,11 @@ impl MessageMedia {
     }
 
     /// Display the given `image`, in a `compact` format or not.
-    pub fn image(&self, image: ImageMessageEventContent, session: &Session, compact: bool) {
+    pub fn image(&self, image: ImageMessageEventContent, session: &Session, format: ContentFormat) {
         let info = image.info.as_deref();
         let width = uint_to_i32(info.and_then(|info| info.width));
         let height = uint_to_i32(info.and_then(|info| info.height));
+        let compact = matches!(format, ContentFormat::Compact | ContentFormat::Ellipsized);
 
         self.set_width(width);
         self.set_height(height);
@@ -348,11 +350,12 @@ impl MessageMedia {
     }
 
     /// Display the given `sticker`, in a `compact` format or not.
-    pub fn sticker(&self, sticker: StickerEventContent, session: &Session, compact: bool) {
+    pub fn sticker(&self, sticker: StickerEventContent, session: &Session, format: ContentFormat) {
         let info = &sticker.info;
         let width = uint_to_i32(info.width);
         let height = uint_to_i32(info.height);
         let body = Some(sticker.body.clone());
+        let compact = matches!(format, ContentFormat::Compact | ContentFormat::Ellipsized);
 
         self.set_width(width);
         self.set_height(height);
@@ -361,11 +364,12 @@ impl MessageMedia {
     }
 
     /// Display the given `video`, in a `compact` format or not.
-    pub fn video(&self, video: VideoMessageEventContent, session: &Session, compact: bool) {
+    pub fn video(&self, video: VideoMessageEventContent, session: &Session, format: ContentFormat) {
         let info = &video.info.as_deref();
         let width = uint_to_i32(info.and_then(|info| info.width));
         let height = uint_to_i32(info.and_then(|info| info.height));
         let body = Some(video.body.clone());
+        let compact = matches!(format, ContentFormat::Compact | ContentFormat::Ellipsized);
 
         self.set_width(width);
         self.set_height(height);

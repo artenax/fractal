@@ -14,6 +14,7 @@ use matrix_sdk::ruma::{
 };
 use sourceview::prelude::*;
 
+use super::ContentFormat;
 use crate::{
     components::{LabelWithWidgets, Pill, DEFAULT_PLACEHOLDER},
     session::{room::Member, Room, UserExt},
@@ -60,22 +61,28 @@ impl MessageText {
     }
 
     /// Display the given plain text.
-    pub fn text(&self, body: String) {
-        self.build_text(body, WithMentions::No);
+    pub fn text(&self, body: String, format: ContentFormat) {
+        self.build_text(body, WithMentions::No, format);
     }
 
     /// Display the given text with markup.
     ///
     /// It will detect if it should display the body or the formatted body.
-    pub fn markup(&self, formatted: Option<FormattedBody>, body: String, room: &Room) {
+    pub fn markup(
+        &self,
+        formatted: Option<FormattedBody>,
+        body: String,
+        room: &Room,
+        format: ContentFormat,
+    ) {
         if let Some(html_blocks) = formatted
             .filter(is_valid_formatted_body)
             .and_then(|formatted| parse_formatted_body(strip_reply(&formatted.body)))
         {
-            self.build_html(html_blocks, room);
+            self.build_html(html_blocks, room, format);
         } else {
             let body = linkify(strip_reply(&body));
-            self.build_text(body, WithMentions::Yes(room));
+            self.build_text(body, WithMentions::Yes(room), format);
         }
     }
 
@@ -88,6 +95,7 @@ impl MessageText {
         body: String,
         sender: Member,
         room: &Room,
+        format: ContentFormat,
     ) {
         if let Some(body) = formatted
             .filter(is_valid_formatted_body)
@@ -99,16 +107,17 @@ impl MessageText {
             };
 
             let html = parse_formatted_body(&formatted.body).unwrap();
-            self.build_html(html, room);
+            self.build_html(html, room, format);
         } else {
             self.build_text(
                 format!("{} {}", sender.html_mention(), linkify(&body)),
                 WithMentions::Yes(room),
+                format,
             );
         }
     }
 
-    fn build_text(&self, text: String, with_mentions: WithMentions) {
+    fn build_text(&self, text: String, with_mentions: WithMentions, format: ContentFormat) {
         let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<LabelWithWidgets>())
         {
             child
@@ -134,15 +143,23 @@ impl MessageText {
             child.set_widgets(Vec::<gtk::Widget>::new());
             child.set_label(Some(text));
         }
+
+        child.set_ellipsize(format == ContentFormat::Ellipsized);
     }
 
-    fn build_html(&self, blocks: Vec<HtmlBlock>, room: &Room) {
+    fn build_html(&self, blocks: Vec<HtmlBlock>, room: &Room, format: ContentFormat) {
         let child = gtk::Box::new(gtk::Orientation::Vertical, 6);
         self.set_child(Some(&child));
 
+        let ellipsize = format == ContentFormat::Ellipsized;
+        let len = blocks.len();
         for block in blocks {
-            let widget = create_widget_for_html_block(&block, room);
+            let widget = create_widget_for_html_block(&block, room, ellipsize, len > 1);
             child.append(&widget);
+
+            if ellipsize {
+                break;
+            }
         }
     }
 }
@@ -176,14 +193,23 @@ fn parse_formatted_body(formatted: &str) -> Option<Vec<HtmlBlock>> {
     markup_html(formatted).ok()
 }
 
-fn create_widget_for_html_block(block: &HtmlBlock, room: &Room) -> gtk::Widget {
+fn create_widget_for_html_block(
+    block: &HtmlBlock,
+    room: &Room,
+    ellipsize: bool,
+    has_more: bool,
+) -> gtk::Widget {
     match block {
         HtmlBlock::Heading(n, s) => {
             let (label, widgets) = extract_mentions(s, room);
-            let label = hoverify_links(&label);
+            let mut label = hoverify_links(&label);
+            if ellipsize && has_more && !label.ends_with('…') && !label.ends_with("...") {
+                label.push('…');
+            }
             let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
             w.set_use_markup(true);
             w.add_css_class(&format!("h{}", n));
+            w.set_ellipsize(ellipsize);
             w.upcast::<gtk::Widget>()
         }
         HtmlBlock::UList(elements) => {
@@ -196,12 +222,24 @@ fn create_widget_for_html_block(block: &HtmlBlock, room: &Room) -> gtk::Widget {
                 let bullet = gtk::Label::new(Some("•"));
                 bullet.set_valign(gtk::Align::Start);
                 let (label, widgets) = extract_mentions(li, room);
-                let label = hoverify_links(&label);
+                let mut label = hoverify_links(&label);
+                if ellipsize
+                    && (has_more || elements.len() > 1)
+                    && !label.ends_with('…')
+                    && !label.ends_with("...")
+                {
+                    label.push('…');
+                }
                 let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
                 w.set_use_markup(true);
+                w.set_ellipsize(ellipsize);
                 h_box.append(&bullet);
                 h_box.append(&w);
                 bx.append(&h_box);
+
+                if ellipsize {
+                    break;
+                }
             }
 
             bx.upcast::<gtk::Widget>()
@@ -216,43 +254,82 @@ fn create_widget_for_html_block(block: &HtmlBlock, room: &Room) -> gtk::Widget {
                 let bullet = gtk::Label::new(Some(&format!("{}.", i + 1)));
                 bullet.set_valign(gtk::Align::Start);
                 let (label, widgets) = extract_mentions(ol, room);
-                let label = hoverify_links(&label);
+                let mut label = hoverify_links(&label);
+                if ellipsize
+                    && (has_more || elements.len() > 1)
+                    && !label.ends_with('…')
+                    && !label.ends_with("...")
+                {
+                    label.push('…');
+                }
                 let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
                 w.set_use_markup(true);
+                w.set_ellipsize(ellipsize);
                 h_box.append(&bullet);
                 h_box.append(&w);
                 bx.append(&h_box);
+
+                if ellipsize {
+                    break;
+                }
             }
 
             bx.upcast::<gtk::Widget>()
         }
         HtmlBlock::Code(s) => {
-            let scrolled = gtk::ScrolledWindow::new();
-            scrolled.set_policy(gtk::PolicyType::Automatic, gtk::PolicyType::Never);
-            let buffer = sourceview::Buffer::new(None);
-            buffer.set_highlight_matching_brackets(false);
-            buffer.set_text(s);
-            crate::utils::setup_style_scheme(&buffer);
-            let view = sourceview::View::with_buffer(&buffer);
-            view.set_editable(false);
-            view.add_css_class("codeview");
-            scrolled.set_child(Some(&view));
-            scrolled.upcast::<gtk::Widget>()
+            if ellipsize {
+                let label = if let Some(pos) = s.find('\n') {
+                    format!("<tt>{}…</tt>", &s[0..pos])
+                } else if has_more {
+                    format!("<tt>{s}…</tt>")
+                } else {
+                    format!("<tt>{s}</tt>")
+                };
+                let w = LabelWithWidgets::with_label_and_widgets(&label, Vec::<gtk::Widget>::new());
+                w.set_use_markup(true);
+                w.set_ellipsize(ellipsize);
+                w.upcast::<gtk::Widget>()
+            } else {
+                let scrolled = gtk::ScrolledWindow::new();
+                scrolled.set_policy(gtk::PolicyType::Automatic, gtk::PolicyType::Never);
+                let buffer = sourceview::Buffer::new(None);
+                buffer.set_highlight_matching_brackets(false);
+                buffer.set_text(s);
+                crate::utils::setup_style_scheme(&buffer);
+                let view = sourceview::View::with_buffer(&buffer);
+                view.set_editable(false);
+                view.add_css_class("codeview");
+                scrolled.set_child(Some(&view));
+                scrolled.upcast::<gtk::Widget>()
+            }
         }
         HtmlBlock::Quote(blocks) => {
             let bx = gtk::Box::new(gtk::Orientation::Vertical, 6);
             bx.add_css_class("quote");
             for block in blocks.iter() {
-                let w = create_widget_for_html_block(block, room);
+                let w = create_widget_for_html_block(
+                    block,
+                    room,
+                    ellipsize,
+                    has_more || blocks.len() > 1,
+                );
                 bx.append(&w);
+
+                if ellipsize {
+                    break;
+                }
             }
             bx.upcast::<gtk::Widget>()
         }
         HtmlBlock::Text(s) => {
             let (label, widgets) = extract_mentions(s, room);
-            let label = hoverify_links(&label);
+            let mut label = hoverify_links(&label);
+            if ellipsize && has_more && !label.ends_with('…') && !label.ends_with("...") {
+                label.push('…');
+            }
             let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
             w.set_use_markup(true);
+            w.set_ellipsize(ellipsize);
             w.upcast::<gtk::Widget>()
         }
     }

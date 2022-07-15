@@ -41,7 +41,7 @@
               </object>
             </child>
             <child>
-              <object class="AdwBin" id="content">
+              <object class="ContentMessageContent" id="content">
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <style>

@@ -10,7 +10,7 @@ fn pango_pixels(d: i32) -> i32 {
 }
 
 mod imp {
-    use std::cell::RefCell;
+    use std::cell::{Cell, RefCell};
 
     use super::*;
 
@@ -21,6 +21,7 @@ mod imp {
         pub label: gtk::Label,
         pub placeholder: RefCell<Option<String>>,
         pub text: RefCell<Option<String>>,
+        pub ellipsize: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -57,6 +58,13 @@ mod imp {
                         None,
                         glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
+                    glib::ParamSpecString::new(
+                        "ellipsize",
+                        "Ellipsize",
+                        "Whether the label's text should be ellipsized.",
+                        None,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
+                    ),
                 ]
             });
 
@@ -74,6 +82,7 @@ mod imp {
                 "label" => obj.set_label(value.get().unwrap()),
                 "placeholder" => obj.set_placeholder(value.get().unwrap()),
                 "use-markup" => obj.set_use_markup(value.get().unwrap()),
+                "ellipsize" => obj.set_ellipsize(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -83,6 +92,7 @@ mod imp {
                 "label" => obj.label().to_value(),
                 "placeholder" => obj.placeholder().to_value(),
                 "use-markup" => obj.uses_markup().to_value(),
+                "ellipsize" => obj.ellipsize().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -234,15 +244,8 @@ impl LabelWithWidgets {
             return;
         }
 
-        if let Some(ref label) = label {
-            let placeholder = priv_.placeholder.borrow();
-            let placeholder = placeholder.as_deref().unwrap_or(DEFAULT_PLACEHOLDER);
-            let label = label.replace(placeholder, OBJECT_REPLACEMENT_CHARACTER);
-            priv_.label.set_label(&label);
-        }
-
         priv_.text.replace(label);
-        self.invalidate_child_widgets();
+        self.update_label();
         self.notify("label");
     }
 
@@ -257,14 +260,8 @@ impl LabelWithWidgets {
             return;
         }
 
-        if let Some(text) = &*priv_.text.borrow() {
-            let placeholder = placeholder.as_deref().unwrap_or(DEFAULT_PLACEHOLDER);
-            let label = text.replace(placeholder, OBJECT_REPLACEMENT_CHARACTER);
-            priv_.label.set_text(&label);
-        }
-
         priv_.placeholder.replace(placeholder);
-        self.invalidate_child_widgets();
+        self.update_label();
         self.notify("placeholder");
     }
 
@@ -375,6 +372,55 @@ impl LabelWithWidgets {
     /// Sets whether the text of the label contains markup.
     pub fn set_use_markup(&self, use_markup: bool) {
         self.imp().label.set_use_markup(use_markup);
+    }
+
+    /// Whether the text of the label is ellipsized.
+    pub fn ellipsize(&self) -> bool {
+        self.imp().ellipsize.get()
+    }
+
+    /// Sets whether the text of the label should be ellipsized.
+    pub fn set_ellipsize(&self, ellipsize: bool) {
+        if self.ellipsize() == ellipsize {
+            return;
+        }
+
+        self.imp().ellipsize.set(true);
+        self.update_label();
+        self.notify("ellipsize");
+    }
+
+    fn update_label(&self) {
+        let priv_ = self.imp();
+        if self.ellipsize() {
+            // Workaround: if both wrap and ellipsize are set, and there are
+            // widgets inserted, GtkLabel reports an erroneous minimum width.
+            priv_.label.set_wrap(false);
+            priv_.label.set_ellipsize(pango::EllipsizeMode::End);
+
+            if let Some(label) = priv_.text.borrow().as_ref() {
+                let placeholder = priv_.placeholder.borrow();
+                let placeholder = placeholder.as_deref().unwrap_or(DEFAULT_PLACEHOLDER);
+                let label = label.replace(placeholder, OBJECT_REPLACEMENT_CHARACTER);
+                let label = if let Some(pos) = label.find('\n') {
+                    format!("{}…", &label[0..pos])
+                } else {
+                    label
+                };
+                priv_.label.set_label(&label);
+            }
+        } else {
+            priv_.label.set_wrap(true);
+            priv_.label.set_ellipsize(pango::EllipsizeMode::None);
+
+            if let Some(label) = priv_.text.borrow().as_ref() {
+                let placeholder = priv_.placeholder.borrow();
+                let placeholder = placeholder.as_deref().unwrap_or(DEFAULT_PLACEHOLDER);
+                let label = label.replace(placeholder, OBJECT_REPLACEMENT_CHARACTER);
+                priv_.label.set_label(&label);
+            }
+        }
+        self.invalidate_child_widgets();
     }
 }
 

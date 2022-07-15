@@ -1,6 +1,7 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{glib, CompositeTemplate};
 
+use super::ContentFormat;
 use crate::components::LocationViewer;
 
 mod imp {
@@ -40,13 +41,26 @@ mod imp {
         fn measure(
             &self,
             _widget: &Self::Type,
-            _orientation: gtk::Orientation,
+            orientation: gtk::Orientation,
             _for_size: i32,
         ) -> (i32, i32, i32, i32) {
-            (300, 300, -1, -1)
+            if self.location.compact() {
+                if orientation == gtk::Orientation::Horizontal {
+                    (75, 75, -1, -1)
+                } else {
+                    (50, 50, -1, -1)
+                }
+            } else {
+                (300, 300, -1, -1)
+            }
         }
 
         fn size_allocate(&self, _widget: &Self::Type, width: i32, height: i32, baseline: i32) {
+            let width = if self.location.compact() {
+                width.min(75)
+            } else {
+                width
+            };
             self.location
                 .size_allocate(&gtk::Allocation::new(0, 0, width, height), baseline)
         }
@@ -66,7 +80,12 @@ impl MessageLocation {
         glib::Object::new(&[]).expect("Failed to create MessageLocation")
     }
 
-    pub fn set_geo_uri(&self, uri: &str) {
-        self.imp().location.set_geo_uri(uri);
+    pub fn set_geo_uri(&self, uri: &str, format: ContentFormat) {
+        let location = &self.imp().location;
+        location.set_geo_uri(uri);
+        location.set_compact(matches!(
+            format,
+            ContentFormat::Compact | ContentFormat::Ellipsized
+        ))
     }
 }

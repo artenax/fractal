@@ -8,7 +8,7 @@ use gtk::{
 use log::warn;
 use matrix_sdk::{media::MediaEventContent, ruma::events::room::message::AudioMessageEventContent};
 
-use super::media::MediaState;
+use super::{media::MediaState, ContentFormat};
 use crate::{components::AudioPlayer, session::Session, spawn, spawn_tokio, utils::media_type_uid};
 
 mod imp {
@@ -198,9 +198,10 @@ impl MessageAudio {
     }
 
     /// Display the given `audio` message.
-    pub fn audio(&self, audio: AudioMessageEventContent, session: &Session, compact: bool) {
+    pub fn audio(&self, audio: AudioMessageEventContent, session: &Session, format: ContentFormat) {
         self.set_body(Some(audio.body.clone()));
 
+        let compact = matches!(format, ContentFormat::Compact | ContentFormat::Ellipsized);
         self.set_compact(compact);
         if compact {
             self.set_state(MediaState::Ready);
