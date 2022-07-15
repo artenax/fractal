@@ -13,7 +13,7 @@ use super::{
 mod supported_event;
 mod unsupported_event;
 
-pub use supported_event::SupportedEvent;
+pub use supported_event::{count_as_unread, SupportedEvent};
 pub use unsupported_event::UnsupportedEvent;
 
 #[derive(Clone, Debug, glib::Boxed)]

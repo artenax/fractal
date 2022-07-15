@@ -26,17 +26,15 @@ use matrix_sdk::{
             receipt::{ReceiptEventContent, ReceiptType},
             room::{
                 member::MembershipState,
-                message::{MessageType, Relation},
                 name::RoomNameEventContent,
                 redaction::{OriginalSyncRoomRedactionEvent, RoomRedactionEventContent},
                 topic::RoomTopicEventContent,
             },
             room_key::ToDeviceRoomKeyEventContent,
             tag::{TagInfo, TagName},
-            AnyRoomAccountDataEvent, AnyStrippedStateEvent, AnySyncMessageLikeEvent,
-            AnySyncStateEvent, AnySyncTimelineEvent, EventContent, MessageLikeEventType,
-            MessageLikeUnsigned, OriginalSyncMessageLikeEvent, StateEventType,
-            SyncMessageLikeEvent, SyncStateEvent, ToDeviceEvent,
+            AnyRoomAccountDataEvent, AnyStrippedStateEvent, AnySyncStateEvent,
+            AnySyncTimelineEvent, EventContent, MessageLikeEventType, MessageLikeUnsigned,
+            OriginalSyncMessageLikeEvent, StateEventType, SyncStateEvent, ToDeviceEvent,
         },
         serde::Raw,
         EventId, MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
@@ -885,7 +883,7 @@ impl Room {
                         }
 
                         // The event is older than the read receipt so it has been read.
-                        if count_as_unread(&event.matrix_event())
+                        if event.counts_as_unread()
                             && event.origin_server_ts() <= read_receipt.origin_server_ts()
                         {
                             return Some(event.to_owned());
@@ -981,7 +979,7 @@ impl Room {
                         }
 
                         // The user hasn't read the latest message.
-                        if count_as_unread(&event.matrix_event()) {
+                        if event.counts_as_unread() {
                             return false;
                         }
                     }
@@ -1664,7 +1662,7 @@ impl Room {
         let mut latest_unread = self.latest_unread();
 
         for event in events {
-            if count_as_unread(event) {
+            if event::count_as_unread(event) {
                 latest_unread = latest_unread.max(event.origin_server_ts().get().into());
                 break;
             }
@@ -1742,35 +1740,5 @@ impl Room {
     /// Get a `Pill` representing this `Room`.
     pub fn to_pill(&self) -> Pill {
         Pill::for_room(self)
-    }
-}
-
-/// Whether the given event can count as an unread message.
-///
-/// This follows the algorithm in [MSC2654], excluding events that we don't
-/// show in the timeline.
-///
-/// [MSC2654]: https://github.com/matrix-org/matrix-spec-proposals/pull/2654
-fn count_as_unread(event: &AnySyncTimelineEvent) -> bool {
-    match event {
-        AnySyncTimelineEvent::MessageLike(message_event) => match message_event {
-            AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(message)) => {
-                if matches!(message.content.msgtype, MessageType::Notice(_)) {
-                    return false;
-                }
-
-                if matches!(message.content.relates_to, Some(Relation::Replacement(_))) {
-                    return false;
-                }
-
-                true
-            }
-            AnySyncMessageLikeEvent::Sticker(SyncMessageLikeEvent::Original(_)) => true,
-            _ => false,
-        },
-        AnySyncTimelineEvent::State(AnySyncStateEvent::RoomTombstone(
-            SyncStateEvent::Original(_),
-        )) => true,
-        _ => false,
     }
 }

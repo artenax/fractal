@@ -619,4 +619,44 @@ impl SupportedEvent {
             _ => true,
         }
     }
+
+    /// Whether this `SupportedEvent` can count as an unread message.
+    ///
+    /// This follows the algorithm in [MSC2654], excluding events that we don't
+    /// show in the timeline.
+    ///
+    /// [MSC2654]: https://github.com/matrix-org/matrix-spec-proposals/pull/2654
+    pub fn counts_as_unread(&self) -> bool {
+        count_as_unread(&self.matrix_event())
+    }
+}
+
+/// Whether the given event can count as an unread message.
+///
+/// This follows the algorithm in [MSC2654], excluding events that we don't
+/// show in the timeline.
+///
+/// [MSC2654]: https://github.com/matrix-org/matrix-spec-proposals/pull/2654
+pub fn count_as_unread(event: &AnySyncTimelineEvent) -> bool {
+    match event {
+        AnySyncTimelineEvent::MessageLike(message_event) => match message_event {
+            AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(message)) => {
+                if matches!(message.content.msgtype, MessageType::Notice(_)) {
+                    return false;
+                }
+
+                if matches!(message.content.relates_to, Some(Relation::Replacement(_))) {
+                    return false;
+                }
+
+                true
+            }
+            AnySyncMessageLikeEvent::Sticker(SyncMessageLikeEvent::Original(_)) => true,
+            _ => false,
+        },
+        AnySyncTimelineEvent::State(AnySyncStateEvent::RoomTombstone(
+            SyncStateEvent::Original(_),
+        )) => true,
+        _ => false,
+    }
 }
