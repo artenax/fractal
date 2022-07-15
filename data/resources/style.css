@@ -190,6 +190,10 @@ location-viewer .map-marker {
   color: @accent_color;
 }
 
+entry .inline-pill {
+	margin-bottom: -0.5em;
+}
+
 
 /* Login */
 
