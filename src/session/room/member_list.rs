@@ -116,8 +116,9 @@ impl MemberList {
         }
         let num_members_added = members.len().saturating_sub(prev_len);
 
-        // We can't have the borrow active when members are updated or items_changed is
-        // emitted because that will probably cause reads of the members field.
+        // We can't have the mut borrow active when members are updated or items_changed
+        // is emitted because that will probably cause reads of the members
+        // field.
         std::mem::drop(members);
 
         {

@@ -496,6 +496,32 @@ message-reactions .reaction-count {
   color: @view_fg_color;
 }
 
+.completion-popover contents {
+  padding: 0;
+}
+
+.completion-popover viewport {
+  padding: 8px;
+}
+
+.completion-popover list {
+  background-color: transparent;
+}
+
+.completion-popover .completion-row {
+  border-radius: 6px;
+  margin: 3px 0px;
+  padding: 6px;
+}
+
+.completion-popover .completion-row:first-child {
+  margin-top: 0px;
+}
+
+.completion-popover .completion-row:last-child {
+  margin-bottom: 0px;
+}
+
 
 /* Event Source Dialog */
 

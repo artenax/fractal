@@ -48,6 +48,7 @@ pub use self::{
     event_actions::EventActions,
     highlight_flags::HighlightFlags,
     member::{Member, Membership},
+    member_list::MemberList,
     member_role::MemberRole,
     power_levels::{PowerLevel, PowerLevels, RoomAction, POWER_LEVEL_MAX, POWER_LEVEL_MIN},
     reaction_group::ReactionGroup,
@@ -62,7 +63,6 @@ use crate::{
     prelude::*,
     session::{
         avatar::update_room_avatar_from_file,
-        room::member_list::MemberList,
         sidebar::{SidebarItem, SidebarItemImpl},
         Avatar, Session, User,
     },

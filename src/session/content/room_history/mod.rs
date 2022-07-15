@@ -1,4 +1,5 @@
 mod attachment_dialog;
+mod completion;
 mod divider_row;
 mod item_row;
 mod message_row;
@@ -29,8 +30,8 @@ use ruma::events::{room::message::LocationMessageEventContent, AnyMessageLikeEve
 use sourceview::prelude::*;
 
 use self::{
-    attachment_dialog::AttachmentDialog, divider_row::DividerRow, item_row::ItemRow,
-    state_row::StateRow, verification_info_bar::VerificationInfoBar,
+    attachment_dialog::AttachmentDialog, completion::CompletionPopover, divider_row::DividerRow,
+    item_row::ItemRow, state_row::StateRow, verification_info_bar::VerificationInfoBar,
 };
 use crate::{
     components::{CustomEntry, DragOverlay, Pill, ReactionChooser, RoomTitle},
@@ -66,6 +67,7 @@ mod imp {
         pub sticky: Cell<bool>,
         pub item_context_menu: OnceCell<gtk::PopoverMenu>,
         pub item_reaction_chooser: ReactionChooser,
+        pub completion: CompletionPopover,
         #[template_child]
         pub headerbar: TemplateChild<adw::HeaderBar>,
         #[template_child]
@@ -332,6 +334,17 @@ mod imp {
                         }));
                     }
                 }));
+            self.message_entry
+                .connect_copy_clipboard(clone!(@weak obj => move |entry| {
+                    entry.stop_signal_emission_by_name("copy-clipboard");
+                    obj.copy_buffer_selection_to_clipboard();
+                }));
+            self.message_entry
+                .connect_cut_clipboard(clone!(@weak obj => move |entry| {
+                    entry.stop_signal_emission_by_name("cut-clipboard");
+                    obj.copy_buffer_selection_to_clipboard();
+                    entry.buffer().delete_selection(true, true);
+                }));
 
             key_events
                 .connect_key_pressed(clone!(@weak obj => @default-return Inhibit(false), move |_, key, _, modifier| {
@@ -369,9 +382,15 @@ mod imp {
                 .bind("markdown-enabled", obj, "markdown-enabled")
                 .build();
 
+            self.completion.set_parent(&*self.message_entry);
+
             obj.setup_drop_target();
 
             self.parent_constructed(obj);
+        }
+
+        fn dispose(&self, _obj: &Self::Type) {
+            self.completion.unparent();
         }
     }
 
@@ -453,6 +472,7 @@ impl RoomHistory {
         self.update_view();
         self.start_loading();
         self.update_room_state();
+        self.update_completion();
         self.notify("room");
         self.notify("empty");
     }
@@ -923,6 +943,30 @@ impl RoomHistory {
 
     pub fn item_reaction_chooser(&self) -> &ReactionChooser {
         &self.imp().item_reaction_chooser
+    }
+
+    // Update the completion for the current room.
+    fn update_completion(&self) {
+        if let Some(room) = self.room() {
+            let completion = &self.imp().completion;
+            completion.set_user_id(Some(room.session().user().unwrap().user_id().to_string()));
+            completion.set_members(Some(room.members()))
+        }
+    }
+
+    // Copy the selection in the message entry to the clipboard while replacing
+    // mentions.
+    fn copy_buffer_selection_to_clipboard(&self) {
+        if let Some((start, end)) = self.imp().message_entry.buffer().selection_bounds() {
+            let content: String = self
+                .split_buffer_mentions(start, end)
+                .map(|chunk| match chunk {
+                    MentionChunk::Text(str) => str,
+                    MentionChunk::Mention { name, .. } => name,
+                })
+                .collect();
+            self.clipboard().set_text(&content);
+        }
     }
 }
 
