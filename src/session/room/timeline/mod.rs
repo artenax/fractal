@@ -651,7 +651,7 @@ impl Timeline {
             let mut pending_events = priv_.pending_events.borrow_mut();
             let mut hidden_events = vec![];
 
-            for event in batch {
+            for event in batch.into_iter() {
                 if let Some(event_id) = event
                     .downcast_ref::<UnsupportedEvent>()
                     .and_then(|event| event.event_id())
@@ -660,6 +660,15 @@ impl Timeline {
                     added -= 1;
                 } else if let Ok(event) = event.downcast::<SupportedEvent>() {
                     let event_id = event.event_id();
+
+                    if event.counts_as_unread() {
+                        event.sender().set_latest_activity(
+                            event
+                                .origin_server_ts()
+                                .map(|ts| ts.0.into())
+                                .unwrap_or_default(),
+                        );
+                    }
 
                     if let Some(pending_id) = event
                         .transaction_id()
@@ -783,6 +792,15 @@ impl Timeline {
                     priv_.event_map.borrow_mut().insert(event_id, event);
                     added -= 1;
                 } else if let Ok(event) = event.downcast::<SupportedEvent>() {
+                    if event.counts_as_unread() {
+                        event.sender().set_latest_activity(
+                            event
+                                .origin_server_ts()
+                                .map(|ts| ts.0.into())
+                                .unwrap_or_default(),
+                        );
+                    }
+
                     priv_
                         .event_map
                         .borrow_mut()

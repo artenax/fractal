@@ -69,6 +69,8 @@ mod imp {
     pub struct Member {
         pub power_level: Cell<PowerLevel>,
         pub membership: Cell<Membership>,
+        /// The timestamp of the latest activity of this member.
+        pub latest_activity: Cell<u64>,
     }
 
     #[glib::object_subclass]
@@ -99,16 +101,39 @@ mod imp {
                         Membership::default() as i32,
                         glib::ParamFlags::READABLE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
+                    glib::ParamSpecUInt64::new(
+                        "latest-activity",
+                        "Latest Activity",
+                        "The timestamp of the latest activity of this member",
+                        u64::MIN,
+                        u64::MAX,
+                        0,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
+                    ),
                 ]
             });
 
             PROPERTIES.as_ref()
         }
 
+        fn set_property(
+            &self,
+            obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "latest-activity" => obj.set_latest_activity(value.get().unwrap()),
+                _ => unimplemented!(),
+            }
+        }
+
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "power-level" => obj.power_level().to_value(),
                 "membership" => obj.membership().to_value(),
+                "latest-activity" => obj.latest_activity().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -167,6 +192,19 @@ impl Member {
         let priv_ = imp::Member::from_instance(self);
         priv_.membership.replace(membership);
         self.notify("membership");
+    }
+
+    pub fn latest_activity(&self) -> u64 {
+        self.imp().latest_activity.get()
+    }
+
+    pub fn set_latest_activity(&self, activity: u64) {
+        if self.latest_activity() >= activity {
+            return;
+        }
+
+        self.imp().latest_activity.set(activity);
+        self.notify("latest-activity");
     }
 
     /// Update the user based on the room member.
