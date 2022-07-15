@@ -461,6 +461,12 @@ impl RoomHistory {
         self.imp().room.borrow().clone()
     }
 
+    /// Get an iterator over chunks of the message entry's text between the
+    /// given start and end, split by mentions.
+    fn split_buffer_mentions(&self, start: gtk::TextIter, end: gtk::TextIter) -> SplitMentions {
+        SplitMentions { iter: start, end }
+    }
+
     pub fn send_text_message(&self) {
         let priv_ = self.imp();
         let buffer = priv_.message_entry.buffer();
@@ -472,56 +478,22 @@ impl RoomHistory {
         let mut plain_body = String::with_capacity(body_len);
         // formatted_body is Markdown if is_markdown is true, and HTML if false.
         let mut formatted_body = String::with_capacity(body_len);
-        // uncopied_text_location is the start of the text we haven't copied to
-        // plain_body and formatted_body.
-        let mut uncopied_text_location = start_iter;
 
-        let mut iter = start_iter;
-        loop {
-            if let Some(anchor) = iter.child_anchor() {
-                let widgets = anchor.widgets();
-                let pill = widgets.first().unwrap().downcast_ref::<Pill>().unwrap();
-                let (url, label) = pill
-                    .user()
-                    .map(|user| {
-                        (
-                            user.user_id().matrix_to_uri().to_string(),
-                            user.display_name(),
-                        )
-                    })
-                    .or_else(|| {
-                        pill.room().map(|room| {
-                            (
-                                // No server name needed. matrix.to URIs for mentions aren't
-                                // routable
-                                room.room_id().matrix_to_uri().to_string(),
-                                room.display_name(),
-                            )
-                        })
-                    })
-                    .unwrap();
-
-                // Add more uncopied characters from message
-                let some_text = buffer.text(&uncopied_text_location, &iter, false);
-                plain_body.push_str(&some_text);
-                formatted_body.push_str(&some_text);
-                uncopied_text_location = iter;
-
-                // Add mention
-                has_mentions = true;
-                plain_body.push_str(&label);
-                formatted_body.push_str(&if is_markdown {
-                    format!("[{}]({})", label, url)
-                } else {
-                    format!("<a href='{}'>{}</a>", url, label)
-                });
-            }
-            if !iter.forward_char() {
-                // Add remaining uncopied characters
-                let some_text = buffer.text(&uncopied_text_location, &iter, false);
-                plain_body.push_str(&some_text);
-                formatted_body.push_str(&some_text);
-                break;
+        for chunk in self.split_buffer_mentions(start_iter, end_iter) {
+            match chunk {
+                MentionChunk::Text(text) => {
+                    plain_body.push_str(&text);
+                    formatted_body.push_str(&text);
+                }
+                MentionChunk::Mention { name, uri } => {
+                    has_mentions = true;
+                    plain_body.push_str(&name);
+                    formatted_body.push_str(&if is_markdown {
+                        format!("[{name}]({uri})")
+                    } else {
+                        format!("<a href=\"{uri}\">{name}</a>")
+                    });
+                }
             }
         }
 
@@ -957,5 +929,81 @@ impl RoomHistory {
 impl Default for RoomHistory {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+enum MentionChunk {
+    Text(String),
+    Mention { name: String, uri: String },
+}
+
+struct SplitMentions {
+    iter: gtk::TextIter,
+    end: gtk::TextIter,
+}
+
+impl Iterator for SplitMentions {
+    type Item = MentionChunk;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.iter == self.end {
+            // We reached the end.
+            return None;
+        }
+
+        if let Some(pill) = self
+            .iter
+            .child_anchor()
+            .map(|anchor| anchor.widgets())
+            .as_ref()
+            .and_then(|widgets| widgets.first())
+            .and_then(|widget| widget.downcast_ref::<Pill>())
+        {
+            // This chunk is a mention.
+            let (name, uri) = if let Some(user) = pill.user() {
+                (
+                    user.display_name(),
+                    user.user_id().matrix_to_uri().to_string(),
+                )
+            } else if let Some(room) = pill.room() {
+                (
+                    room.display_name(),
+                    room.room_id().matrix_to_uri().to_string(),
+                )
+            } else {
+                unreachable!()
+            };
+
+            self.iter.forward_cursor_position();
+
+            return Some(MentionChunk::Mention { name, uri });
+        }
+
+        // This chunk is not a mention. Go forward until the next mention or the
+        // end and return the text in between.
+        let start = self.iter;
+        while self.iter.forward_cursor_position() && self.iter != self.end {
+            if self
+                .iter
+                .child_anchor()
+                .map(|anchor| anchor.widgets())
+                .as_ref()
+                .and_then(|widgets| widgets.first())
+                .and_then(|widget| widget.downcast_ref::<Pill>())
+                .is_some()
+            {
+                break;
+            }
+        }
+
+        let text = self.iter.buffer().text(&start, &self.iter, false);
+        // We might somehow have an empty string before the end, or at the end,
+        // because of hidden `char`s in the buffer, so we must only return
+        // `None` when we have an empty string at the end.
+        if self.iter == self.end && text.is_empty() {
+            None
+        } else {
+            Some(MentionChunk::Text(text.into()))
+        }
     }
 }
