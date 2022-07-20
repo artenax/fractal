@@ -488,7 +488,7 @@ impl Session {
                 None
             }
             Err(error) => {
-                error!("Failed to prepare the session: {}", error);
+                error!("Failed to prepare the session: {:?}", error);
 
                 priv_.logout_on_dispose.set(false);
 
@@ -503,6 +503,11 @@ impl Session {
         let sender = self.create_new_sync_response_sender();
         let client = self.client();
         let handle = spawn_tokio!(async move {
+            let sync_token = client.sync_token().await;
+            if sync_token.is_none() {
+                debug!("Proceeding to initial sync…");
+            }
+
             // TODO: only create the filter once and reuse it in the future
             let room_event_filter = assign!(RoomEventFilter::default(), {
                 lazy_load_options: LazyLoadOptions::Enabled {include_redundant_members: false},
@@ -564,6 +569,7 @@ impl Session {
             let priv_ = obj.imp();
             if !obj.has_cross_signing_keys().await {
                 if need_new_identity.await.unwrap() {
+                    debug!("No E2EE identity found for this user, we need to create a new one…");
                     let encryption = obj.client().encryption();
 
                     let handle = spawn_tokio!(async move { encryption.bootstrap_cross_signing(None).await });
@@ -576,6 +582,7 @@ impl Session {
                     }
                 }
 
+                debug!("The cross-signing keys were not found, we need to verify this session…");
                 priv_.logout_on_dispose.set(true);
                 obj.create_session_verification().await;
 

@@ -2,7 +2,7 @@ use adw::subclass::prelude::AdwApplicationWindowImpl;
 use gettextrs::gettext;
 use glib::signal::Inhibit;
 use gtk::{self, gdk, gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
-use log::warn;
+use log::{info, warn};
 
 use crate::{
     account_switcher::AccountSwitcher,
@@ -197,6 +197,14 @@ impl Window {
                     self.switch_to_greeter_page(false);
                 } else {
                     for stored_session in sessions {
+                        info!(
+                            "Restoring previous session for user: {}",
+                            stored_session.user_id
+                        );
+                        if let Some(path) = stored_session.path.to_str() {
+                            info!("Database path: {path}");
+                        }
+
                         let session = Session::new();
                         spawn!(
                             glib::PRIORITY_DEFAULT_IDLE,
