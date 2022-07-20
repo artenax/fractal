@@ -10,7 +10,7 @@ mod sidebar;
 mod user;
 pub mod verification;
 
-use std::{collections::HashSet, convert::TryFrom, fs, path::Path, time::Duration};
+use std::{collections::HashSet, convert::TryFrom, fs, path::PathBuf, time::Duration};
 
 use adw::subclass::prelude::BinImpl;
 use futures::StreamExt;
@@ -24,7 +24,7 @@ use gtk::{
 };
 use log::{debug, error, warn};
 use matrix_sdk::{
-    config::{RequestConfig, SyncSettings},
+    config::{RequestConfig, StoreConfig, SyncSettings},
     deserialized_responses::SyncResponse,
     room::Room as MatrixRoom,
     ruma::{
@@ -43,8 +43,8 @@ use matrix_sdk::{
         },
         RoomId,
     },
-    store::{make_store_config, OpenStoreError},
-    Client, ClientBuildError, Error, HttpError, RumaApiError,
+    store::{MigrationConflictStrategy, OpenStoreError, StateStore},
+    Client, ClientBuildError, Error, HttpError, RumaApiError, StoreError,
 };
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use thiserror::Error;
@@ -335,10 +335,13 @@ impl Session {
         };
 
         let handle = spawn_tokio!(async move {
-            let client = create_client(&homeserver, &path, &passphrase, use_discovery).await?;
+            let client =
+                create_client(&homeserver, path.clone(), passphrase.clone(), use_discovery).await?;
 
             let response = client
-                .login(&username, &password, None, Some("Fractal"))
+                .login_username(&username, &password)
+                .initial_device_display_name("Fractal")
+                .send()
                 .await;
             match response {
                 Ok(response) => Ok((
@@ -378,24 +381,23 @@ impl Session {
                 .collect()
         };
         let handle = spawn_tokio!(async move {
-            let client = create_client(&homeserver, &path, &passphrase, true).await?;
+            let client = create_client(&homeserver, path.clone(), passphrase.clone(), true).await?;
 
-            let response = client
-                .login_with_sso(
-                    |sso_url| async move {
-                        let ctx = glib::MainContext::default();
-                        ctx.spawn(async move {
-                            gtk::show_uri(gtk::Window::NONE, &sso_url, gdk::CURRENT_TIME);
-                        });
-                        Ok(())
-                    },
-                    None,
-                    None,
-                    None,
-                    Some("Fractal"),
-                    idp_id.as_deref(),
-                )
-                .await;
+            let mut login = client
+                .login_sso(|sso_url| async move {
+                    let ctx = glib::MainContext::default();
+                    ctx.spawn(async move {
+                        gtk::show_uri(gtk::Window::NONE, &sso_url, gdk::CURRENT_TIME);
+                    });
+                    Ok(())
+                })
+                .initial_device_display_name("Fractal");
+
+            if let Some(idp_id) = idp_id.as_deref() {
+                login = login.identity_provider_id(idp_id);
+            }
+
+            let response = login.send().await;
             match response {
                 Ok(response) => Ok((
                     client,
@@ -425,8 +427,8 @@ impl Session {
         let handle = spawn_tokio!(async move {
             let client = create_client(
                 &session.homeserver,
-                &session.path,
-                &session.secret.passphrase,
+                session.path.clone(),
+                session.secret.passphrase.clone(),
                 false,
             )
             .await?;
@@ -856,7 +858,7 @@ impl Session {
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 let obj_weak = glib::SendWeakRef::from(obj.downgrade());
-                    obj.client().register_event_handler(
+                    obj.client().add_event_handler(
                         move |event: GlobalAccountDataEvent<DirectEventContent>| {
                             let obj_weak = obj_weak.clone();
                             async move {
@@ -889,23 +891,19 @@ impl Session {
         let client = self.client();
         spawn_tokio!(async move {
             client
-                .register_event_handler(
-                    move |_: SyncRoomEncryptionEvent, matrix_room: MatrixRoom| {
-                        let session_weak = session_weak.clone();
-                        async move {
-                            let ctx = glib::MainContext::default();
-                            ctx.spawn(async move {
-                                if let Some(session) = session_weak.upgrade() {
-                                    if let Some(room) =
-                                        session.room_list().get(matrix_room.room_id())
-                                    {
-                                        room.set_is_encrypted(true);
-                                    }
+                .add_event_handler(move |_: SyncRoomEncryptionEvent, matrix_room: MatrixRoom| {
+                    let session_weak = session_weak.clone();
+                    async move {
+                        let ctx = glib::MainContext::default();
+                        ctx.spawn(async move {
+                            if let Some(session) = session_weak.upgrade() {
+                                if let Some(room) = session.room_list().get(matrix_room.room_id()) {
+                                    room.set_is_encrypted(true);
                                 }
-                            });
-                        }
-                    },
-                )
+                            }
+                        });
+                    }
+                })
                 .await;
         });
     }
@@ -919,11 +917,20 @@ impl Default for Session {
 
 async fn create_client(
     homeserver: &Url,
-    path: &Path,
-    passphrase: &str,
+    path: PathBuf,
+    passphrase: String,
     use_discovery: bool,
 ) -> Result<Client, ClientSetupError> {
-    let store_config = make_store_config(path, Some(passphrase))?;
+    let state_store = StateStore::builder()
+        .path(path)
+        .passphrase(passphrase)
+        .migration_conflict_strategy(MigrationConflictStrategy::Drop)
+        .build()
+        .map_err(|err| OpenStoreError::from(StoreError::backend(err)))?;
+    let crypto_store = state_store.open_crypto_store()?;
+    let store_config = StoreConfig::new()
+        .state_store(state_store)
+        .crypto_store(crypto_store);
     Client::builder()
         .homeserver_url(homeserver)
         .store_config(store_config)

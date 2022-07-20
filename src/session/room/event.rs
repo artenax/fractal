@@ -11,14 +11,14 @@ use matrix_sdk::{
     ruma::{
         events::{
             room::{
-                encrypted::RoomEncryptedEventContent,
+                encrypted::OriginalSyncRoomEncryptedEvent,
                 message::{MessageType, Relation},
                 redaction::SyncRoomRedactionEvent,
             },
             AnyMessageLikeEventContent, AnySyncMessageLikeEvent, AnySyncRoomEvent,
-            AnySyncStateEvent, MessageLikeUnsigned, OriginalSyncMessageLikeEvent,
-            SyncMessageLikeEvent, SyncStateEvent,
+            AnySyncStateEvent, MessageLikeUnsigned, SyncMessageLikeEvent, SyncStateEvent,
         },
+        serde::Raw,
         MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedTransactionId, OwnedUserId,
     },
     Error as MatrixError,
@@ -225,12 +225,12 @@ impl Event {
 
         if let Ok(deserialized) = event.event.deserialize() {
             if let AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomEncrypted(
-                SyncMessageLikeEvent::Original(ref encrypted),
+                SyncMessageLikeEvent::Original(_),
             )) = deserialized
             {
-                let encrypted = encrypted.to_owned();
+                let raw_event = event.event.clone();
                 spawn!(clone!(@weak self as obj => async move {
-                    obj.try_to_decrypt(encrypted).await;
+                    obj.try_to_decrypt(raw_event.cast()).await;
                 }));
             }
 
@@ -246,7 +246,7 @@ impl Event {
         self.notify("source");
     }
 
-    async fn try_to_decrypt(&self, event: OriginalSyncMessageLikeEvent<RoomEncryptedEventContent>) {
+    async fn try_to_decrypt(&self, event: Raw<OriginalSyncRoomEncryptedEvent>) {
         let priv_ = self.imp();
         let room = self.room().matrix_room();
         let handle = spawn_tokio!(async move { room.decrypt_event(&event).await });

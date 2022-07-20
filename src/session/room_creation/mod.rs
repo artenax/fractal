@@ -1,9 +1,7 @@
-use std::convert::{TryFrom, TryInto};
-
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
 use gtk::{gdk, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
-use log::{error, warn};
+use log::error;
 use matrix_sdk::{
     ruma::{
         api::{
@@ -13,7 +11,7 @@ use matrix_sdk::{
             },
             error::{FromHttpResponseError, ServerError},
         },
-        assign, IdParseError, RoomName,
+        assign,
     },
     HttpError, RumaApiError,
 };
@@ -141,11 +139,6 @@ mod imp {
                     obj.create_room();
                 }));
 
-            self.room_name
-                .connect_text_notify(clone!(@weak obj = > move |_| {
-                    obj.validate_input();
-                }));
-
             self.room_address
                 .connect_text_notify(clone!(@weak obj = > move |_| {
                     obj.validate_input();
@@ -222,12 +215,9 @@ impl RoomCreation {
         };
 
         let handle = spawn_tokio!(async move {
-            // We don't allow invalid room names to be entered by the user
-            let name = room_name.as_str().try_into().unwrap();
-
             let request = assign!(create_room::v3::Request::new(),
             {
-                name: Some(name),
+                name: Some(&room_name),
                 visibility,
                 room_alias_name: room_address.as_deref()
             });
@@ -288,39 +278,11 @@ impl RoomCreation {
     fn validate_input(&self) {
         let priv_ = self.imp();
 
-        // Validate room name
-        let (is_name_valid, has_error) =
-            match <&RoomName>::try_from(priv_.room_name.text().as_str()) {
-                Ok(_) => (true, false),
-                Err(IdParseError::Empty) => (false, false),
-                Err(IdParseError::MaximumLengthExceeded) => {
-                    priv_
-                        .room_name_error
-                        .set_text(&gettext("Too long. Use a shorter name."));
-                    (false, true)
-                }
-                Err(error) => {
-                    warn!("Invalid room name: {error:?}");
-                    priv_
-                        .room_name_error
-                        .set_text(&gettext("Invalid room name."));
-                    (false, true)
-                }
-            };
-
-        if has_error {
-            priv_.room_name.add_css_class("error");
-        } else {
-            priv_.room_name.remove_css_class("error");
-        }
-
-        priv_.room_name_error_revealer.set_reveal_child(has_error);
-
         // Validate room address
 
         // Only public rooms have a address
         if priv_.private_button.is_active() {
-            priv_.create_button.set_sensitive(is_name_valid);
+            priv_.create_button.set_sensitive(false);
             return;
         }
 
@@ -360,9 +322,7 @@ impl RoomCreation {
         priv_
             .room_address_error_revealer
             .set_reveal_child(has_error);
-        priv_
-            .create_button
-            .set_sensitive(is_name_valid && is_address_valid);
+        priv_.create_button.set_sensitive(is_address_valid);
     }
 
     fn cancel(&self) {

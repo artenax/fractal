@@ -10,7 +10,7 @@ mod reaction_list;
 mod room_type;
 mod timeline;
 
-use std::{cell::RefCell, convert::TryInto, path::PathBuf};
+use std::{cell::RefCell, path::PathBuf};
 
 use gettextrs::{gettext, ngettext};
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
@@ -23,7 +23,7 @@ use matrix_sdk::{
         api::client::sync::sync_events::v3::InvitedRoom,
         events::{
             reaction::{ReactionEventContent, Relation as ReactionRelation},
-            receipt::ReceiptEventContent,
+            receipt::{ReceiptEventContent, ReceiptType},
             room::{
                 member::MembershipState,
                 message::{MessageType, Relation},
@@ -38,7 +38,6 @@ use matrix_sdk::{
             MessageLikeUnsigned, OriginalSyncMessageLikeEvent, StateEventType,
             SyncMessageLikeEvent, SyncStateEvent, ToDeviceEvent,
         },
-        receipt::ReceiptType,
         serde::Raw,
         EventId, MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
     },
@@ -786,17 +785,16 @@ impl Room {
 
                 // Listen to changes in the read receipts.
                 let room_weak = glib::SendWeakRef::from(obj.downgrade());
-                obj.session().client().register_event_handler(
-                    move |event: SyncEphemeralRoomEvent<ReceiptEventContent>, matrix_room: MatrixRoom| {
+                obj.session().client().add_room_event_handler(
+                    obj.room_id(),
+                    move |event: SyncEphemeralRoomEvent<ReceiptEventContent>| {
                         let room_weak = room_weak.clone();
                         async move {
                             let ctx = glib::MainContext::default();
                             ctx.spawn(async move {
                                 spawn!(async move {
                                     if let Some(obj) = room_weak.upgrade() {
-                                        if matrix_room.room_id() == obj.room_id() {
-                                            obj.handle_receipt_event(event.content).await
-                                        }
+                                        obj.handle_receipt_event(event.content).await
                                     }
                                 });
                             });
@@ -1060,13 +1058,7 @@ impl Room {
                 return;
             }
         };
-        let room_name = match room_name.try_into() {
-            Ok(room_name) => room_name,
-            Err(e) => {
-                error!("Invalid room name: {}", e);
-                return;
-            }
-        };
+
         let name_content = RoomNameEventContent::new(Some(room_name));
 
         let handle =
@@ -1718,17 +1710,16 @@ impl Room {
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 let obj_weak = glib::SendWeakRef::from(obj.downgrade());
-                    obj.session().client().register_event_handler(
-                        move |event: ToDeviceEvent<ToDeviceRoomKeyEventContent>| {
+                    obj.session().client().add_room_event_handler(
+                        obj.room_id(),
+                        move |_: ToDeviceEvent<ToDeviceRoomKeyEventContent>| {
                             let obj_weak = obj_weak.clone();
                             async move {
                                 let ctx = glib::MainContext::default();
                                 ctx.spawn(async move {
-                                        if let Some(room) = obj_weak.upgrade() {
-                                            if room.room_id() == event.content.room_id {
-                                                room.emit_by_name::<()>("new-encryption-keys", &[]);
-                                            }
-                                        }
+                                    if let Some(room) = obj_weak.upgrade() {
+                                        room.emit_by_name::<()>("new-encryption-keys", &[]);
+                                    }
                                 });
                             }
                         },

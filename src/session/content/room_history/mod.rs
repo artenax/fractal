@@ -489,7 +489,7 @@ impl RoomHistory {
                             (
                                 // No server name needed. matrix.to URIs for mentions aren't
                                 // routable
-                                room.room_id().matrix_to_uri([]).to_string(),
+                                room.room_id().matrix_to_uri().to_string(),
                                 room.display_name(),
                             )
                         })

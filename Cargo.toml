@@ -72,5 +72,6 @@ git = "https://github.com/matrix-org/matrix-rust-sdk.git"
 features = ["socks", "sso-login", "markdown", "qrcode", "experimental-timeline"]
 
 [dependencies.ruma]
-version = "0.6.2"
+git = "https://github.com/ruma/ruma"
+rev = "ca8c66c885241a7ba3805399604eda4a38979f6b"
 features = ["unstable-pre-spec", "client-api-c"]
