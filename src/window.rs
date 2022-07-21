@@ -6,7 +6,6 @@ use log::{info, warn};
 
 use crate::{
     account_switcher::AccountSwitcher,
-    components::{InAppNotification, Toast},
     config::{APP_ID, PROFILE},
     secret::{self, SecretError},
     spawn, Application, ErrorPage, Greeter, Login, Session,
@@ -34,7 +33,7 @@ mod imp {
         #[template_child]
         pub sessions: TemplateChild<gtk::Stack>,
         #[template_child]
-        pub error_list: TemplateChild<gio::ListStore>,
+        pub toast_overlay: TemplateChild<adw::ToastOverlay>,
         pub account_switcher: AccountSwitcher,
     }
 
@@ -45,8 +44,6 @@ mod imp {
         type ParentType = adw::ApplicationWindow;
 
         fn class_init(klass: &mut Self::Class) {
-            Toast::static_type();
-            InAppNotification::static_type();
             Self::bind_template(klass);
 
             klass.add_binding_action(
@@ -321,8 +318,8 @@ impl Window {
     }
 
     /// This appends a new toast to the list
-    pub fn add_toast(&self, toast: &Toast) {
-        self.imp().error_list.append(toast);
+    pub fn add_toast(&self, toast: &adw::Toast) {
+        self.imp().toast_overlay.add_toast(toast);
     }
 
     pub fn account_switcher(&self) -> &AccountSwitcher {

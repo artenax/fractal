@@ -72,19 +72,7 @@ macro_rules! spawn_tokio {
 macro_rules! toast {
     ($widget:expr, $message:expr) => {
         {
-            let message = $message;
-            if let Some(root) = $widget.root() {
-                if let Some(window) = root.downcast_ref::<$crate::Window>() {
-                    window.add_toast(&$crate::components::Toast::new(message.as_ref()));
-                } else if let Some(window) = root.downcast_ref::<adw::PreferencesWindow>() {
-                    use adw::prelude::PreferencesWindowExt;
-                    window.add_toast(&adw::Toast::new(message.as_ref()));
-                } else {
-                    log::error!("Trying to display a toast when the parent doesn't support it");
-                }
-            } else {
-                log::warn!("Could not display toast with message: {message}");
-            }
+            $crate::_add_toast!($widget, adw::Toast::new($message.as_ref()));
         }
     };
     ($widget:expr, $message:expr, $($tail:tt)+) => {
@@ -96,53 +84,46 @@ macro_rules! toast {
                 .collect();
             let message = $crate::utils::freplace($message.into(), &*string_dict);
 
-            if let Some(root) = $widget.root() {
-                if pill_vars.is_empty() {
-                    if let Some(window) = root.downcast_ref::<$crate::Window>() {
-                        window.add_toast(&$crate::components::Toast::new(&message));
-                    } else if let Some(window) = root.downcast_ref::<adw::PreferencesWindow>() {
-                        use adw::prelude::PreferencesWindowExt;
-                        window.add_toast(&adw::Toast::new(&message));
-                    } else {
-                        log::error!("Trying to display a toast when the parent doesn't support it");
-                    }
-                } else if let Some(window) = root.downcast_ref::<$crate::Window>() {
-                    let pill_vars = std::collections::HashMap::<&str, $crate::components::Pill>::from(pill_vars);
-                    let mut swapped_label = String::new();
-                    let mut widgets = Vec::with_capacity(pill_vars.len());
-                    let mut last_end = 0;
-
-                    let mut matches = pill_vars
-                        .keys()
-                        .map(|key: &&str| {
-                            message
-                                .match_indices(&format!("{{{key}}}"))
-                                .map(|(start, _)| (start, key))
-                                .collect::<Vec<_>>()
-                        })
-                        .flatten()
-                        .collect::<Vec<_>>();
-                    matches.sort_unstable();
-
-                    for (start, key) in matches {
-                        swapped_label.push_str(&message[last_end..start]);
-                        swapped_label.push_str($crate::components::DEFAULT_PLACEHOLDER);
-                        last_end = start + key.len() + 2;
-                        widgets.push(pill_vars.get(key).unwrap().clone())
-                    }
-                    swapped_label.push_str(&message[last_end..message.len()]);
-
-                    let toast = $crate::components::Toast::builder()
-                        .title(swapped_label)
-                        .widgets(&widgets)
-                        .build();
-                    window.add_toast(&toast);
-                } else {
-                    log::error!("Trying to display a toast with pills when the parent doesn't support it");
-                }
+            let toast = if pill_vars.is_empty() {
+                adw::Toast::new($message.as_ref())
             } else {
-                log::warn!("Could not display toast with message: {message}");
-            }
+                let pill_vars = std::collections::HashMap::<&str, $crate::components::Pill>::from(pill_vars);
+                let mut swapped_label = String::new();
+                let mut widgets = Vec::with_capacity(pill_vars.len());
+                let mut last_end = 0;
+
+                let mut matches = pill_vars
+                    .keys()
+                    .map(|key: &&str| {
+                        message
+                            .match_indices(&format!("{{{key}}}"))
+                            .map(|(start, _)| (start, key))
+                            .collect::<Vec<_>>()
+                    })
+                    .flatten()
+                    .collect::<Vec<_>>();
+                matches.sort_unstable();
+
+                for (start, key) in matches {
+                    swapped_label.push_str(&message[last_end..start]);
+                    swapped_label.push_str($crate::components::DEFAULT_PLACEHOLDER);
+                    last_end = start + key.len() + 2;
+                    widgets.push(pill_vars.get(key).unwrap().clone())
+                }
+                swapped_label.push_str(&message[last_end..message.len()]);
+
+                let widget = $crate::components::LabelWithWidgets::with_label_and_widgets(
+                    &swapped_label,
+                    widgets,
+                )
+                .upcast::<gtk::Widget>();
+
+                adw::Toast::builder()
+                    .custom_title(&widget)
+                    .build()
+            };
+
+            $crate::_add_toast!($widget, toast);
         }
     };
 }
@@ -168,6 +149,24 @@ macro_rules! _toast_accum {
         }
     };
     ([$($string_vars:tt)*], [$($pill_vars:tt)*],) => { ([$($string_vars)*], [$($pill_vars)*]) };
+}
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! _add_toast {
+    ($widget:expr, $toast:expr) => {{
+        use gtk::prelude::WidgetExt;
+        if let Some(root) = $widget.root() {
+            if let Some(window) = root.downcast_ref::<$crate::Window>() {
+                window.add_toast($toast.as_ref());
+            } else if let Some(window) = root.downcast_ref::<adw::PreferencesWindow>() {
+                use adw::prelude::PreferencesWindowExt;
+                window.add_toast($toast.as_ref());
+            } else {
+                panic!("Trying to display a toast when the parent doesn't support it");
+            }
+        }
+    }};
 }
 
 use std::{convert::TryInto, path::PathBuf, str::FromStr};

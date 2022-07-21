@@ -6,7 +6,7 @@ mod room_history;
 pub mod verification;
 
 use adw::subclass::prelude::*;
-use gtk::{gio, glib, glib::clone, prelude::*, CompositeTemplate};
+use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
 
 use self::{
     explore::Explore, invite::Invite, markdown_popover::MarkdownPopover, room_details::RoomDetails,
@@ -33,7 +33,6 @@ mod imp {
         pub compact: Cell<bool>,
         pub session: RefCell<Option<WeakRef<Session>>>,
         pub item: RefCell<Option<glib::Object>>,
-        pub error_list: RefCell<Option<gio::ListStore>>,
         pub signal_handler: RefCell<Option<SignalHandlerId>>,
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
@@ -99,13 +98,6 @@ mod imp {
                         glib::Object::static_type(),
                         glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
-                    glib::ParamSpecObject::new(
-                        "error-list",
-                        "Error List",
-                        "A list of errors shown as in-app-notification",
-                        gio::ListStore::static_type(),
-                        glib::ParamFlags::READWRITE,
-                    ),
                 ]
             });
 
@@ -126,9 +118,6 @@ mod imp {
                 }
                 "session" => obj.set_session(value.get().unwrap()),
                 "item" => obj.set_item(value.get().unwrap()),
-                "error-list" => {
-                    self.error_list.replace(value.get().unwrap());
-                }
                 _ => unimplemented!(),
             }
         }
@@ -138,7 +127,6 @@ mod imp {
                 "compact" => self.compact.get().to_value(),
                 "session" => obj.session().to_value(),
                 "item" => obj.item().to_value(),
-                "error-list" => self.error_list.borrow().to_value(),
                 _ => unimplemented!(),
             }
         }

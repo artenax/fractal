@@ -9,7 +9,6 @@ mod custom_entry;
 mod drag_overlay;
 mod editable_avatar;
 mod entry_row;
-mod in_app_notification;
 mod label_with_widgets;
 mod loading_listbox_row;
 mod location_viewer;
@@ -19,7 +18,6 @@ mod pill;
 mod reaction_chooser;
 mod room_title;
 mod spinner_button;
-mod toast;
 mod video_player;
 mod video_player_renderer;
 
@@ -35,7 +33,6 @@ pub use self::{
     drag_overlay::DragOverlay,
     editable_avatar::EditableAvatar,
     entry_row::EntryRow,
-    in_app_notification::InAppNotification,
     label_with_widgets::{LabelWithWidgets, DEFAULT_PLACEHOLDER},
     loading_listbox_row::LoadingListBoxRow,
     location_viewer::LocationViewer,
@@ -45,7 +42,6 @@ pub use self::{
     reaction_chooser::ReactionChooser,
     room_title::RoomTitle,
     spinner_button::SpinnerButton,
-    toast::Toast,
     video_player::VideoPlayer,
     video_player_renderer::VideoPlayerRenderer,
 };

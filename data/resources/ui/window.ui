@@ -4,16 +4,7 @@
     <property name="default-width">600</property>
     <property name="default-height">400</property>
     <property name="content">
-      <object class="GtkOverlay">
-        <child type="overlay">
-          <object class="InAppNotification">
-            <property name="error-list">
-              <object class="GListStore" id="error_list">
-                <property name="item-type">ComponentsToast</property>
-              </object>
-            </property>
-          </object>
-        </child>
+      <object class="AdwToastOverlay" id="toast_overlay">
         <child>
           <object class="GtkStack" id="main_stack">
             <property name="visible-child">loading</property>
