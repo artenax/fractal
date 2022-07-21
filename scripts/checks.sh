@@ -207,7 +207,7 @@ run_rustfmt() {
 
 
     if [[ $git_staged -eq 1 ]]; then
-        staged_files=`git diff --name-only --cached | grep '.rs$'`
+        staged_files=`git diff --name-only --cached | xargs ls -d 2>/dev/null | grep '.rs$'`
         result=0
         for file in ${staged_files[@]}; do
             if ! cargo +nightly fmt -- --unstable-features --skip-children --check $file; then
@@ -284,7 +284,7 @@ run_typos() {
         echo ""
     fi
 
-    staged_files=`git diff --name-only --cached`
+    staged_files=`git diff --name-only --cached | xargs ls -d 2>/dev/null`
 
     if ! typos --color always ${staged_files}; then
         echo -e "  Checking spelling mistakes result: $fail"
@@ -506,7 +506,7 @@ echo ""
 check_potfiles
 echo ""
 if [[ $git_staged -eq 1 ]]; then
-   staged_files=`git diff --name-only --cached | grep data/resources/resources.gresource.xml`
+   staged_files=`git diff --name-only --cached | xargs ls -d 2>/dev/null | grep data/resources/resources.gresource.xml`
    if [[ -z $staged_files ]]; then
         check_resources
    fi
