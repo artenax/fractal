@@ -34,6 +34,7 @@ use crate::{
     components::Avatar,
     session::{
         room::{Room, RoomType},
+        user::UserExt,
         verification::IdentityVerification,
         User,
     },
@@ -46,7 +47,7 @@ mod imp {
         convert::TryFrom,
     };
 
-    use glib::subclass::InitializingObject;
+    use glib::{signal::SignalHandlerId, subclass::InitializingObject};
     use once_cell::{sync::Lazy, unsync::OnceCell};
 
     use super::*;
@@ -68,11 +69,14 @@ mod imp {
         pub account_switcher_button: TemplateChild<gtk::MenuButton>,
         #[template_child]
         pub room_row_menu: TemplateChild<gio::MenuModel>,
+        #[template_child]
+        pub offline_info_bar: TemplateChild<gtk::InfoBar>,
         pub room_row_popover: OnceCell<gtk::PopoverMenu>,
         pub user: RefCell<Option<User>>,
         /// The type of the source that activated drop mode.
         pub drop_source_type: Cell<Option<RoomType>>,
         pub drop_binding: RefCell<Option<glib::Binding>>,
+        pub offline_handler_id: RefCell<Option<SignalHandlerId>>,
     }
 
     #[glib::object_subclass]
@@ -367,8 +371,30 @@ impl Sidebar {
     }
 
     fn set_user(&self, user: Option<User>) {
-        if self.user() == user {
+        let prev_user = self.user();
+        if prev_user == user {
             return;
+        }
+
+        if let Some(prev_user) = prev_user {
+            if let Some(handler_id) = self.imp().offline_handler_id.take() {
+                prev_user.session().disconnect(handler_id);
+            }
+        }
+
+        if let Some(user) = user.as_ref() {
+            let session = user.session();
+            let handler_id = session.connect_notify_local(
+                Some("offline"),
+                clone!(@weak self as obj => move |session, _| {
+                    obj.imp().offline_info_bar.set_revealed(session.is_offline());
+                }),
+            );
+            self.imp()
+                .offline_info_bar
+                .set_revealed(session.is_offline());
+
+            self.imp().offline_handler_id.replace(Some(handler_id));
         }
 
         self.imp().user.replace(user);

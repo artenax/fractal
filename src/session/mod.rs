@@ -15,7 +15,15 @@ use std::{collections::HashSet, convert::TryFrom, fs, path::PathBuf, time::Durat
 use adw::subclass::prelude::BinImpl;
 use futures::StreamExt;
 use gettextrs::gettext;
-use gtk::{self, gdk, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{
+    self, gdk, gio,
+    gio::prelude::*,
+    glib,
+    glib::{clone, signal::SignalHandlerId},
+    prelude::*,
+    subclass::prelude::*,
+    CompositeTemplate,
+};
 use log::{debug, error, warn};
 use matrix_sdk::{
     config::{RequestConfig, StoreConfig, SyncSettings},
@@ -63,7 +71,9 @@ use crate::{
     secret,
     secret::{Secret, StoredSession},
     session::sidebar::ItemList,
-    spawn, spawn_tokio, toast, UserFacingError, Window,
+    spawn, spawn_tokio, toast,
+    utils::check_if_reachable,
+    UserFacingError, Window,
 };
 
 #[derive(Error, Debug)]
@@ -111,9 +121,12 @@ mod imp {
         pub item_list: OnceCell<ItemList>,
         pub user: OnceCell<User>,
         pub is_ready: Cell<bool>,
+        pub prepared: Cell<bool>,
         pub logout_on_dispose: Cell<bool>,
         pub info: OnceCell<StoredSession>,
         pub sync_tokio_handle: RefCell<Option<JoinHandle<()>>>,
+        pub offline_handler_id: RefCell<Option<SignalHandlerId>>,
+        pub offline: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -208,6 +221,13 @@ mod imp {
                         User::static_type(),
                         glib::ParamFlags::READABLE,
                     ),
+                    glib::ParamSpecBoolean::new(
+                        "offline",
+                        "Offline",
+                        "Whether this session has a connection to the homeserver",
+                        false,
+                        glib::ParamFlags::READABLE,
+                    ),
                 ]
             });
 
@@ -218,6 +238,7 @@ mod imp {
             match pspec.name() {
                 "item-list" => obj.item_list().to_value(),
                 "user" => obj.user().to_value(),
+                "offline" => obj.is_offline().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -253,9 +274,23 @@ mod imp {
                     }
                 }),
             );
+
+            let monitor = gio::NetworkMonitor::default();
+            let handler_id = monitor.connect_network_changed(clone!(@weak obj => move |_, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.update_offline().await;
+                }));
+            }));
+
+            self.offline_handler_id.replace(Some(handler_id));
         }
 
         fn dispose(&self, obj: &Self::Type) {
+            // Needs to be disconnected or else it may restart the sync
+            if let Some(handler_id) = self.offline_handler_id.take() {
+                gio::NetworkMonitor::default().disconnect(handler_id);
+            }
+
             if let Some(handle) = self.sync_tokio_handle.take() {
                 handle.abort();
             }
@@ -467,11 +502,13 @@ impl Session {
                 };
 
                 priv_.info.set(session).unwrap();
+                self.update_offline().await;
 
                 self.room_list().load();
                 self.setup_direct_room_handler();
                 self.setup_room_encrypted_changes();
 
+                self.set_is_prepared(true);
                 self.sync();
 
                 None
@@ -489,6 +526,10 @@ impl Session {
     }
 
     fn sync(&self) {
+        if !self.is_prepared() || self.is_offline() {
+            return;
+        }
+
         let client = self.client();
         let session_weak: glib::SendWeakRef<Session> = self.downgrade().into();
 
@@ -587,6 +628,18 @@ impl Session {
         self.imp().is_ready.get()
     }
 
+    fn set_is_prepared(&self, prepared: bool) {
+        if self.is_prepared() == prepared {
+            return;
+        }
+
+        self.imp().prepared.set(prepared);
+    }
+
+    fn is_prepared(&self) -> bool {
+        self.imp().prepared.get()
+    }
+
     pub fn room_list(&self) -> &RoomList {
         self.item_list().room_list()
     }
@@ -632,6 +685,46 @@ impl Session {
             .borrow()
             .clone()
             .expect("The session isn't ready")
+    }
+
+    pub fn is_offline(&self) -> bool {
+        self.imp().offline.get()
+    }
+
+    async fn update_offline(&self) {
+        let priv_ = self.imp();
+        let monitor = gio::NetworkMonitor::default();
+
+        let is_offline = if monitor.is_network_available() {
+            if let Some(info) = priv_.info.get() {
+                !check_if_reachable(&info.homeserver).await
+            } else {
+                false
+            }
+        } else {
+            true
+        };
+
+        if self.is_offline() == is_offline {
+            return;
+        }
+
+        if is_offline {
+            debug!("This session is now offline");
+        } else {
+            debug!("This session is now online");
+        }
+
+        priv_.offline.set(is_offline);
+
+        if let Some(handle) = priv_.sync_tokio_handle.take() {
+            handle.abort();
+        }
+
+        // Restart the sync loop when online
+        self.sync();
+
+        self.notify("offline");
     }
 
     /// Connects the prepared signals to the function f given in input
