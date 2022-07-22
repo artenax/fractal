@@ -56,6 +56,21 @@ mod imp {
             app.setup_gactions();
             app.setup_accels();
 
+            let monitor = gio::NetworkMonitor::default();
+            monitor.connect_network_changed(clone!(@weak app => move |monitor, _| {
+                app.lookup_action("show-login")
+                    .unwrap()
+                    .downcast::<gio::SimpleAction>()
+                    .unwrap()
+                    .set_enabled(monitor.is_network_available());
+            }));
+
+            app.lookup_action("show-login")
+                .unwrap()
+                .downcast::<gio::SimpleAction>()
+                .unwrap()
+                .set_enabled(monitor.is_network_available());
+
             app.get_main_window().present();
         }
 
