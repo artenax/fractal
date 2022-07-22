@@ -3,7 +3,7 @@ mod public_room_list;
 mod public_room_row;
 
 use adw::subclass::prelude::*;
-use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
 use log::error;
 use ruma::api::client::thirdparty::get_protocols;
 

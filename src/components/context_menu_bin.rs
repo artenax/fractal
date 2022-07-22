@@ -1,5 +1,5 @@
 use adw::subclass::prelude::*;
-use gtk::{gdk, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{gdk, glib, glib::clone, prelude::*, CompositeTemplate};
 use log::debug;
 
 mod imp {

@@ -15,7 +15,6 @@ use adw::{prelude::*, subclass::prelude::*};
 use gtk::{
     gio, glib,
     glib::{clone, closure},
-    subclass::prelude::*,
     CompositeTemplate,
 };
 

@@ -1,7 +1,7 @@
 use std::convert::TryFrom;
 
 use adw::{prelude::*, subclass::prelude::*};
-use gtk::{gdk, glib, glib::clone, subclass::prelude::*};
+use gtk::{gdk, glib, glib::clone};
 
 use super::EntryType;
 use crate::session::{

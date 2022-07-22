@@ -1,6 +1,6 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
-use gtk::{gdk, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
+use gtk::{gdk, gio, glib, glib::clone, CompositeTemplate};
 use log::warn;
 
 use super::{AudioPlayer, LocationViewer};

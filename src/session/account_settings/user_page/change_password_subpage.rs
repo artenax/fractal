@@ -2,7 +2,6 @@ use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{
     glib::{self, clone},
-    subclass::prelude::*,
     CompositeTemplate,
 };
 use log::error;

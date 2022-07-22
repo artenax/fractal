@@ -1,6 +1,6 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
-use gtk::{gio, glib, glib::clone, subclass::prelude::*};
+use gtk::{gio, glib, glib::clone};
 use matrix_sdk::ruma::events::AnySyncRoomEvent;
 
 use crate::{

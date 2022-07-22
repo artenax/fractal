@@ -2,7 +2,6 @@ use adw::{prelude::*, subclass::prelude::*};
 use gtk::{
     glib,
     glib::{clone, FromVariant},
-    subclass::prelude::*,
     CompositeTemplate,
 };
 

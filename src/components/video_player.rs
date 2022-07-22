@@ -1,7 +1,7 @@
 use adw::subclass::prelude::*;
 use gst::ClockTime;
 use gst_player::{Player, PlayerGMainContextSignalDispatcher};
-use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{gio, glib, prelude::*, CompositeTemplate};
 
 use super::VideoPlayerRenderer;
 

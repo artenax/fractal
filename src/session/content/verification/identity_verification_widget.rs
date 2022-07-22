@@ -1,6 +1,6 @@
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
-use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
 use log::warn;
 use matrix_sdk::encryption::verification::QrVerificationData;
 

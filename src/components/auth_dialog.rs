@@ -6,7 +6,6 @@ use gtk::{
     gio::prelude::*,
     glib::{self, clone},
     prelude::*,
-    subclass::prelude::*,
     CompositeTemplate,
 };
 use matrix_sdk::{

@@ -6,7 +6,7 @@ mod room_history;
 pub mod verification;
 
 use adw::subclass::prelude::*;
-use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{gio, glib, glib::clone, prelude::*, CompositeTemplate};
 
 use self::{
     explore::Explore, invite::Invite, markdown_popover::MarkdownPopover, room_details::RoomDetails,

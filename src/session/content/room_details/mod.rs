@@ -6,7 +6,6 @@ use gettextrs::gettext;
 use gtk::{
     gdk,
     glib::{self, clone, closure},
-    subclass::prelude::*,
     CompositeTemplate,
 };
 use matrix_sdk::ruma::events::RoomEventType;

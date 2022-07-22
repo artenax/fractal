@@ -4,7 +4,6 @@ use gtk::{
     gdk, gio, glib,
     glib::{clone, closure_local},
     prelude::*,
-    subclass::prelude::*,
     CompositeTemplate,
 };
 use log::error;

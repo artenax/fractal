@@ -1,7 +1,6 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{
     glib::{self, clone, closure},
-    subclass::prelude::*,
     CompositeTemplate,
 };
 use log::warn;

@@ -1,5 +1,5 @@
 use adw::subclass::prelude::*;
-use gtk::{glib, glib::closure_local, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{glib, glib::closure_local, prelude::*, CompositeTemplate};
 
 #[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]

@@ -1,5 +1,5 @@
 use adw::{prelude::BinExt, subclass::prelude::*};
-use gtk::{glib, prelude::*, subclass::prelude::*};
+use gtk::{glib, prelude::*};
 use html2pango::{
     block::{markup_html, HtmlBlock},
     html_escape, markup_links,

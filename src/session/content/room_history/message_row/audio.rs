@@ -3,7 +3,6 @@ use gettextrs::gettext;
 use gtk::{
     gio,
     glib::{self, clone},
-    subclass::prelude::*,
     CompositeTemplate,
 };
 use log::warn;

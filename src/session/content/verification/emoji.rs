@@ -1,5 +1,5 @@
 use adw::subclass::prelude::*;
-use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{glib, prelude::*, CompositeTemplate};
 use matrix_sdk::encryption::verification::Emoji as MatrixEmoji;
 mod imp {
     use glib::subclass::InitializingObject;

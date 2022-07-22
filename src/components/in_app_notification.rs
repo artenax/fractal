@@ -1,5 +1,5 @@
 use adw::subclass::prelude::*;
-use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{gio, glib, glib::clone, prelude::*, CompositeTemplate};
 
 use crate::components::Toast;
 

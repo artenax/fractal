@@ -1,5 +1,5 @@
 use adw::{prelude::*, subclass::prelude::*};
-use gtk::{glib, subclass::prelude::*, CompositeTemplate};
+use gtk::{glib, CompositeTemplate};
 use matrix_sdk::ruma::events::room::tombstone::RoomTombstoneEventContent;
 
 mod imp {

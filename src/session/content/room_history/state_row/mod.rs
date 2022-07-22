@@ -3,7 +3,7 @@ mod tombstone;
 
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
-use gtk::{glib, subclass::prelude::*, CompositeTemplate};
+use gtk::{glib, CompositeTemplate};
 use log::warn;
 use matrix_sdk::ruma::events::{room::member::MembershipState, AnySyncStateEvent, SyncStateEvent};
 

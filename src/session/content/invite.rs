@@ -1,5 +1,5 @@
 use adw::subclass::prelude::*;
-use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
 
 use crate::{
     components::{Avatar, LabelWithWidgets, Pill, SpinnerButton},

@@ -1,5 +1,5 @@
 use adw::{prelude::*, subclass::prelude::*};
-use gtk::{glib, subclass::prelude::*};
+use gtk::glib;
 
 use crate::session::room::{MemberRole, PowerLevel, POWER_LEVEL_MAX, POWER_LEVEL_MIN};
 

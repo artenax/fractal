@@ -12,7 +12,6 @@ use gettextrs::gettext;
 use gtk::{
     glib,
     glib::{clone, signal::SignalHandlerId},
-    subclass::prelude::*,
     CompositeTemplate,
 };
 use log::warn;

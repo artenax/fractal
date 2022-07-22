@@ -1,7 +1,7 @@
 use std::cell::Cell;
 
 use adw::subclass::prelude::*;
-use gtk::{gdk, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{gdk, glib, prelude::*, CompositeTemplate};
 
 mod imp {
     use glib::subclass::InitializingObject;

@@ -3,7 +3,6 @@ use gtk::{
     glib,
     glib::{clone, closure_local},
     prelude::*,
-    subclass::prelude::*,
     CompositeTemplate,
 };
 

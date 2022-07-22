@@ -18,7 +18,6 @@ use gtk::{
     gdk, gio, glib,
     glib::{clone, signal::Inhibit},
     prelude::*,
-    subclass::prelude::*,
     CompositeTemplate,
 };
 use log::warn;
