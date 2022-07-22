@@ -15,13 +15,7 @@ use std::{collections::HashSet, convert::TryFrom, fs, path::PathBuf, time::Durat
 use adw::subclass::prelude::BinImpl;
 use futures::StreamExt;
 use gettextrs::gettext;
-use gtk::{
-    self, gdk, glib,
-    glib::{clone, source::SourceId, SyncSender},
-    prelude::*,
-    subclass::prelude::*,
-    CompositeTemplate,
-};
+use gtk::{self, gdk, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 use log::{debug, error, warn};
 use matrix_sdk::{
     config::{RequestConfig, StoreConfig, SyncSettings},
@@ -119,7 +113,6 @@ mod imp {
         pub is_ready: Cell<bool>,
         pub logout_on_dispose: Cell<bool>,
         pub info: OnceCell<StoredSession>,
-        pub source_id: RefCell<Option<SourceId>>,
         pub sync_tokio_handle: RefCell<Option<JoinHandle<()>>>,
     }
 
@@ -263,10 +256,6 @@ mod imp {
         }
 
         fn dispose(&self, obj: &Self::Type) {
-            if let Some(source_id) = self.source_id.take() {
-                source_id.remove();
-            }
-
             if let Some(handle) = self.sync_tokio_handle.take() {
                 handle.abort();
             }
@@ -500,8 +489,9 @@ impl Session {
     }
 
     fn sync(&self) {
-        let sender = self.create_new_sync_response_sender();
         let client = self.client();
+        let session_weak: glib::SendWeakRef<Session> = self.downgrade().into();
+
         let handle = spawn_tokio!(async move {
             let sync_token = client.sync_token().await;
             if sync_token.is_none() {
@@ -523,15 +513,15 @@ impl Session {
                 .timeout(Duration::from_secs(30))
                 .filter(filter.into());
 
-            // We need to automatically restart the stream because it gets killed on error
-            loop {
-                let mut sync_stream = Box::pin(client.sync_stream(sync_settings.clone()).await);
-                while let Some(response) = sync_stream.next().await {
-                    if sender.send(response).is_err() {
-                        debug!("Stop syncing because the session was disposed");
-                        return;
+            let mut sync_stream = Box::pin(client.sync_stream(sync_settings).await);
+            while let Some(response) = sync_stream.next().await {
+                let session_weak = session_weak.clone();
+                let ctx = glib::MainContext::default();
+                ctx.spawn(async move {
+                    if let Some(session) = session_weak.upgrade() {
+                        session.handle_sync_response(response);
                     }
-                }
+                });
             }
         });
 
@@ -642,27 +632,6 @@ impl Session {
             .borrow()
             .clone()
             .expect("The session isn't ready")
-    }
-
-    /// Sets up the required channel to receive new room events
-    fn create_new_sync_response_sender(
-        &self,
-    ) -> SyncSender<Result<SyncResponse, matrix_sdk::Error>> {
-        let (sender, receiver) = glib::MainContext::sync_channel::<
-            Result<SyncResponse, matrix_sdk::Error>,
-        >(Default::default(), 100);
-        let source_id = receiver.attach(
-            None,
-            clone!(@weak self as obj => @default-return glib::Continue(false), move |response| {
-                obj.handle_sync_response(response);
-
-                glib::Continue(true)
-            }),
-        );
-
-        self.imp().source_id.replace(Some(source_id));
-
-        sender
     }
 
     /// Connects the prepared signals to the function f given in input
@@ -794,10 +763,6 @@ impl Session {
         let info = priv_.info.get().unwrap();
 
         priv_.is_ready.set(false);
-
-        if let Some(source_id) = priv_.source_id.take() {
-            source_id.remove();
-        }
 
         if let Some(handle) = priv_.sync_tokio_handle.take() {
             handle.abort();
