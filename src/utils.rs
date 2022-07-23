@@ -357,6 +357,11 @@ impl TemplateCallbacks {
     fn object_is_some(obj: Option<glib::Object>) -> bool {
         obj.is_some()
     }
+
+    #[template_callback]
+    fn invert_boolean(boolean: bool) -> bool {
+        !boolean
+    }
 }
 
 /// The result of a password validation.

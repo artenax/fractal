@@ -41,7 +41,7 @@ use matrix_sdk::{
         serde::Raw,
         EventId, MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
     },
-    DisplayName, Result as MatrixResult,
+    DisplayName, Result as MatrixResult, RoomMember,
 };
 use ruma::events::SyncEphemeralRoomEvent;
 
@@ -1232,7 +1232,7 @@ impl Room {
 
         priv_.members_loaded.set(true);
         let matrix_room = self.matrix_room();
-        let handle = spawn_tokio!(async move { matrix_room.active_members().await });
+        let handle = spawn_tokio!(async move { matrix_room.members().await });
         spawn!(
             glib::PRIORITY_LOW,
             clone!(@weak self as obj => async move {
@@ -1241,6 +1241,9 @@ impl Room {
                 match handle.await.unwrap() {
                     Ok(members) => {
                         // Add all members needed to display room events.
+                        let members: Vec<RoomMember> = members.into_iter().filter(|member| {
+                            &MembershipState::Leave != member.membership()
+                        }).collect();
                         obj.members().update_from_room_members(&members);
                     },
                     Err(error) => {

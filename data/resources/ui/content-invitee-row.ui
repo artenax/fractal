@@ -59,7 +59,39 @@
           </object>
         </child>
         <child>
-          <object class="GtkCheckButton" id="check_button" />
+          <object class="GtkCheckButton" id="check_button">
+            <binding name="visible">
+                <closure type="gboolean" function="invert_boolean">
+                  <closure type="gboolean" function="string_not_empty">
+                    <lookup name="invite-exception" type="Invitee">
+                      <lookup name="user">ContentInviteInviteeRow</lookup>
+                    </lookup>
+                  </closure>
+                </closure>
+          </binding>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <binding name="visible">
+              <closure type="gboolean" function="string_not_empty">
+                <lookup name="invite-exception" type="Invitee">
+                  <lookup name="user">ContentInviteInviteeRow</lookup>
+                </lookup>
+              </closure>
+            </binding>
+            <property name="hexpand">True</property>
+            <property name="halign">end</property>
+            <property name="ellipsize">end</property>
+            <binding name="label">
+              <lookup name="invite-exception" type="Invitee">
+                <lookup name="user">ContentInviteInviteeRow</lookup>
+              </lookup>
+            </binding>
+            <style>
+              <class name="subtitle"/>
+            </style>
+          </object>
         </child>
       </object>
     </property>

@@ -54,6 +54,7 @@ src/session/account_settings/user_page/deactivate_account_subpage.rs
 src/session/account_settings/user_page/mod.rs
 src/session/content/explore/public_room_row.rs
 src/session/content/invite.rs
+src/session/content/room_details/invite_subpage/invitee_list.rs
 src/session/content/room_details/member_page/mod.rs
 src/session/content/room_details/mod.rs
 src/session/content/room_history/item_row.rs

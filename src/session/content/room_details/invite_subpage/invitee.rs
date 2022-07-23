@@ -14,6 +14,7 @@ mod imp {
     pub struct Invitee {
         pub invited: Cell<bool>,
         pub anchor: RefCell<Option<gtk::TextChildAnchor>>,
+        pub invite_exception: RefCell<Option<String>>,
     }
 
     #[glib::object_subclass]
@@ -41,6 +42,13 @@ mod imp {
                         gtk::TextChildAnchor::static_type(),
                         glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
+                    glib::ParamSpecString::new(
+                        "invite-exception",
+                        "Invite Exception",
+                        "The reason the user can't be invited",
+                        None,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
+                    ),
                 ]
             });
 
@@ -57,6 +65,7 @@ mod imp {
             match pspec.name() {
                 "invited" => obj.set_invited(value.get().unwrap()),
                 "anchor" => obj.set_anchor(value.get().unwrap()),
+                "invite-exception" => obj.set_invite_exception(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -65,6 +74,7 @@ mod imp {
             match pspec.name() {
                 "invited" => obj.is_invited().to_value(),
                 "anchor" => obj.anchor().to_value(),
+                "invite-exception" => obj.invite_exception().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -124,5 +134,18 @@ impl Invitee {
 
         self.imp().anchor.replace(anchor);
         self.notify("anchor");
+    }
+
+    pub fn invite_exception(&self) -> Option<String> {
+        self.imp().invite_exception.borrow().clone()
+    }
+
+    pub fn set_invite_exception(&self, exception: Option<String>) {
+        if exception == self.invite_exception() {
+            return;
+        }
+
+        self.imp().invite_exception.replace(exception);
+        self.notify("invite-exception");
     }
 }

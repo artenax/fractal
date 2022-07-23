@@ -10,6 +10,7 @@ mod imp {
     use once_cell::sync::Lazy;
 
     use super::*;
+    use crate::utils::TemplateCallbacks;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/content-invitee-row.ui")]
@@ -28,6 +29,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            TemplateCallbacks::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {

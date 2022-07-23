@@ -5,7 +5,7 @@ use matrix_sdk::ruma::{
     OwnedUserId, UserId,
 };
 
-use crate::session::room::{Member, Room};
+use crate::session::room::{Member, Membership, Room};
 
 mod imp {
     use std::cell::RefCell;
@@ -163,8 +163,14 @@ impl MemberList {
             .update_from_member_event(event);
     }
 
-    /// Returns whether the given user id is present in `MemberList`
-    pub fn contains(&self, user_id: &UserId) -> bool {
-        self.imp().members.borrow().contains_key(user_id)
+    /// Returns the Membership of a given UserId.
+    ///
+    /// If the user has no Membership, Membership::Leave will be returned
+    pub fn get_membership(&self, user_id: &UserId) -> Membership {
+        self.imp()
+            .members
+            .borrow()
+            .get(user_id)
+            .map_or_else(|| Membership::Leave, |member| member.membership())
     }
 }

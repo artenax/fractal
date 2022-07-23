@@ -1,13 +1,17 @@
+use gettextrs::gettext;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::error;
 use matrix_sdk::{
-    ruma::{api::client::user_directory::search_users, OwnedUserId, UserId},
+    ruma::{
+        api::client::{profile::get_profile, user_directory::search_users},
+        OwnedUserId, UserId,
+    },
     HttpError,
 };
 
 use super::Invitee;
 use crate::{
-    session::{user::UserExt, Room},
+    session::{room::Membership, user::UserExt, Room},
     spawn, spawn_tokio,
 };
 
@@ -229,55 +233,99 @@ impl InviteeList {
         let session = self.room().session();
         let member_list = self.room().members();
 
-        if Some(search_term) != self.search_term() {
+        if Some(&search_term) != self.search_term().as_ref() {
             return;
         }
 
         match response {
-            Ok(response) if response.results.is_empty() => {
-                self.set_state(InviteeListState::NoMatching);
-                self.clear_list();
-            }
-            Ok(response) => {
+            Ok(mut response) => {
+                // If the search term looks like an UserId and is not already in the response,
+                // insert it.
+                if let Ok(user_id) = UserId::parse(&search_term) {
+                    if !response.results.iter().any(|item| item.user_id == user_id) {
+                        let user = search_users::v3::User::new(user_id);
+                        response.results.insert(0, user);
+                    }
+                }
+
                 let users: Vec<Invitee> = response
                     .results
                     .into_iter()
-                    .filter_map(|item| {
-                        // Skip over users that are already in the room
-                        if member_list.contains(&item.user_id) {
-                            self.remove_invitee(item.user_id);
-                            None
-                        } else if let Some(user) = self.get_invitee(&item.user_id) {
-                            // The avatar or the display name may have changed in the mean time
-                            user.set_avatar_url(item.avatar_url);
-                            user.set_display_name(item.display_name);
-                            Some(user)
-                        } else {
-                            let user = Invitee::new(
-                                &session,
-                                &item.user_id,
-                                item.display_name.as_deref(),
-                                item.avatar_url.as_deref(),
-                            );
+                    .map(|item| {
+                        let user = match self.get_invitee(&item.user_id) {
+                            Some(user) => {
+                                // The avatar or the display name may have changed in the meantime
+                                user.set_avatar_url(item.avatar_url);
+                                user.set_display_name(item.display_name);
 
-                            user.connect_notify_local(
-                                Some("invited"),
-                                clone!(@weak self as obj => move |user, _| {
-                                    if user.is_invited() {
-                                        obj.add_invitee(user.clone());
-                                    } else {
-                                        obj.remove_invitee(user.user_id())
-                                    }
-                                }),
-                            );
+                                user
+                            }
+                            None => {
+                                let user = Invitee::new(
+                                    &session,
+                                    &item.user_id,
+                                    item.display_name.as_deref(),
+                                    item.avatar_url.as_deref(),
+                                );
+                                user.connect_notify_local(
+                                    Some("invited"),
+                                    clone!(@weak self as obj => move |user, _| {
+                                        if user.is_invited() && user.invite_exception().is_none() {
+                                            obj.add_invitee(user.clone());
+                                        } else {
+                                            obj.remove_invitee(user.user_id())
+                                        }
+                                    }),
+                                );
+                                // If it is the "custom user" from the search term, fetch the avatar
+                                // and display name
+                                let user_id = user.user_id();
+                                if user_id == search_term {
+                                    let client = session.client();
+                                    let handle = spawn_tokio!(async move {
+                                        let request = get_profile::v3::Request::new(&user_id);
+                                        client.send(request, None).await
+                                    });
+                                    spawn!(clone!(@weak user => async move {
+                                        let response = handle.await.unwrap();
+                                        let (display_name, avatar_url) = match response {
+                                            Ok(response) => {
+                                                (response.displayname, response.avatar_url)
+                                            },
+                                            Err(_) => {
+                                                return;
+                                            }
+                                        };
+                                        // If the display name and or the avatar were returned, the Invitee gets updated.
+                                        if display_name.is_some() {
+                                            user.set_display_name(display_name);
+                                        }
+                                        if avatar_url.is_some() {
+                                            user.set_avatar_url(avatar_url);
+                                        }
+                                    }));
+                                }
 
-                            Some(user)
-                        }
+                                user
+                            }
+                        };
+                        // 'Disable' users that can't be invited
+                        match member_list.get_membership(&item.user_id) {
+                            Membership::Join => user.set_invite_exception(Some(gettext("Member"))),
+                            Membership::Ban => user.set_invite_exception(Some(gettext("Banned"))),
+                            Membership::Invite => {
+                                user.set_invite_exception(Some(gettext("Invited")))
+                            }
+                            _ => {}
+                        };
+                        user
                     })
                     .collect();
-
+                match users.is_empty() {
+                    true => self.set_state(InviteeListState::NoMatching),
+                    false => self.set_state(InviteeListState::Matching),
+                }
                 self.set_list(users);
-                self.set_state(InviteeListState::Matching);
             }
             Err(error) => {
                 error!("Couldn’t load matching users: {}", error);
@@ -292,7 +340,7 @@ impl InviteeList {
         let search_term = if let Some(search_term) = self.search_term() {
             search_term
         } else {
-            // Do nothing for no search term execpt when currently loading
+            // Do nothing for no search term except when currently loading
             if self.state() == InviteeListState::Loading {
                 self.set_state(InviteeListState::Initial);
             }
