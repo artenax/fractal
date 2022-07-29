@@ -24,8 +24,7 @@ This effort was called Fractal Next.
 
 Fractal Next now replaced our previous codebase, and has become the new nightly version. It isn't
 yet ready for a release and you can follow along our progress towards it by looking at the
-[feature parity](https://gitlab.gnome.org/GNOME/fractal/-/milestones/18) and
-[Fractal v5 (fractal-next)](https://gitlab.gnome.org/GNOME/fractal/-/milestones/21) milestones.
+[Fractal v5 (Fractal-next)](https://gitlab.gnome.org/GNOME/fractal/-/milestones/18) milestone.
 
 ## Installation instructions
 
