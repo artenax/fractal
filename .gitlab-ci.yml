@@ -8,8 +8,7 @@ stages:
 variables:
   FLATPAK_MODULE: "fractal"
   RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-  CI_IMAGE_X86_64: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:42"
-  CI_IMAGE_AARCH64: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/aarch64:gnome-42"
+  CI_IMAGE: "quay.io/gnome_infrastructure/gnome-runtime-images:gnome-42"
 
 .hack:
   variables:
@@ -22,6 +21,7 @@ variables:
     APP_ID: "org.gnome.Fractal.Devel"  
 
 .build_template:
+  image: '${CI_IMAGE}'
   script:
     - >
       xvfb-run -a -s "-screen 0 1024x768x24"
@@ -43,18 +43,16 @@ variables:
 
 .build_x86_64:
   extends: .build_template
-  image: '${CI_IMAGE_X86_64}'
   tags:
     - flatpak
 
 .build_aarch64:
   extends: .build_template
-  image: '${CI_IMAGE_AARCH64}'
   tags:
     - flatpak-aarch64
 
 .publish_nightly_template:
-  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/flat-manager-client'
+  image: 'quay.io/gnome_infrastructure/gnome-runtime-images:flat-manager-client'
   stage: 'deploy'
   timeout: '100m'
   script:
@@ -84,7 +82,7 @@ checks:
 # Lint the code
 cargo-clippy:
   extends: .hack
-  image: '${CI_IMAGE_X86_64}'
+  image: '${CI_IMAGE}'
   stage: check
   tags:
     - flatpak
@@ -133,7 +131,7 @@ build-aarch64:
 # Only on main
 pages:
   extends: .devel
-  image: '${CI_IMAGE_X86_64}'
+  image: '${CI_IMAGE}'
   stage: doc
   tags:
     - flatpak
