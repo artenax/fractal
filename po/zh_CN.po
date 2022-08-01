@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-06-06 10:26+0000\n"
-"PO-Revision-Date: 2022-06-15 19:27+0800\n"
+"POT-Creation-Date: 2022-07-10 11:15+0000\n"
+"PO-Revision-Date: 2022-07-29 20:29+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -184,15 +184,15 @@ msgid "Authenticate via Browser"
 msgstr "通过浏览器认证"
 
 #: data/resources/ui/components-auth-dialog.ui:113
-#: data/resources/ui/identity-verification-widget.ui:449
+#: data/resources/ui/identity-verification-widget.ui:452
 #: src/components/editable_avatar.rs:344
 #: src/session/content/room_history/verification_info_bar.rs:182
-#: src/session/room/event_actions.rs:209
+#: src/session/room/event_actions.rs:237
 msgid "Cancel"
 msgstr "取消"
 
 #: data/resources/ui/components-auth-dialog.ui:118
-#: data/resources/ui/identity-verification-widget.ui:439
+#: data/resources/ui/identity-verification-widget.ui:442
 msgid "Confirm"
 msgstr "确认"
 
@@ -274,7 +274,7 @@ msgid "Open"
 msgstr "打开"
 
 #: data/resources/ui/content-message-file.ui:28
-#: src/session/room/event_actions.rs:208
+#: src/session/room/event_actions.rs:236
 msgid "Save"
 msgstr "保存"
 
@@ -450,35 +450,43 @@ msgstr "回复(_R)"
 msgid "_Edit"
 msgstr "编辑(_E)"
 
-#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:86
+#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:106
 msgid "_Forward"
 msgstr "前进(_F)"
 
-#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:93
+#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:113
 msgid "_Select"
 msgstr "选择(_S)"
 
-#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
+#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:120
 msgid "_Copy Text"
 msgstr "复制文本(_C)"
 
-#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
+#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:82
 msgid "_Copy Image"
 msgstr "复制图像(_C)"
 
-#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
+#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:87
 msgid "S_ave Image"
 msgstr "保存图像(_A)"
 
-#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:106
+#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:92
+msgid "S_ave Video"
+msgstr "保存视频(_A)"
+
+#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:97
+msgid "S_ave Audio"
+msgstr "保存音频(_A)"
+
+#: data/resources/ui/event-menu.ui:61 data/resources/ui/event-menu.ui:126
 msgid "_Permalink"
 msgstr "永久链接(_P)"
 
-#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
+#: data/resources/ui/event-menu.ui:66 data/resources/ui/event-menu.ui:131
 msgid "_View Source"
 msgstr "查看来源(_V)"
 
-#: data/resources/ui/event-menu.ui:63 data/resources/ui/event-menu.ui:118
+#: data/resources/ui/event-menu.ui:73 data/resources/ui/event-menu.ui:138
 msgid "Re_move"
 msgstr "移除(_M)"
 
@@ -516,12 +524,12 @@ msgid "Verify"
 msgstr "验证"
 
 #: data/resources/ui/identity-verification-widget.ui:109
-#: data/resources/ui/identity-verification-widget.ui:210
+#: data/resources/ui/identity-verification-widget.ui:213
 msgid "Can’t scan QR code?"
 msgstr "无法扫描二维码吗？"
 
 #: data/resources/ui/identity-verification-widget.ui:117
-#: data/resources/ui/identity-verification-widget.ui:227
+#: data/resources/ui/identity-verification-widget.ui:230
 msgid "Compare Emoji"
 msgstr "比对表情"
 
@@ -529,23 +537,23 @@ msgstr "比对表情"
 msgid "Scan Complete"
 msgstr "扫描完成"
 
-#: data/resources/ui/identity-verification-widget.ui:219
+#: data/resources/ui/identity-verification-widget.ui:222
 msgid "Scan QR code with this session"
 msgstr "用该会话扫描二维码"
 
-#: data/resources/ui/identity-verification-widget.ui:287
+#: data/resources/ui/identity-verification-widget.ui:290
 msgid "Do Not Match"
 msgstr "不匹配"
 
-#: data/resources/ui/identity-verification-widget.ui:297
+#: data/resources/ui/identity-verification-widget.ui:300
 msgid "Match"
 msgstr "匹配"
 
-#: data/resources/ui/identity-verification-widget.ui:347
+#: data/resources/ui/identity-verification-widget.ui:350
 msgid "Done"
 msgstr "完成"
 
-#: data/resources/ui/identity-verification-widget.ui:416
+#: data/resources/ui/identity-verification-widget.ui:419
 msgid "Confirm Scan"
 msgstr "确认扫描"
 
@@ -1522,7 +1530,7 @@ msgstr "无法存储会话"
 msgid "Failed to logout the session."
 msgstr "登出该会话失败。"
 
-#: src/session/room/event_actions.rs:204
+#: src/session/room/event_actions.rs:232
 msgid "Save File"
 msgstr "保存文件"
 
@@ -2056,9 +2064,6 @@ msgstr "恢复上次会话失败"
 
 #~ msgid "Open With…"
 #~ msgstr "打开方式…"
-
-#~ msgid "Save Video As…"
-#~ msgstr "保存视频为…"
 
 #~ msgid "Copy Selection"
 #~ msgstr "复制选区"
