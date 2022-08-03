@@ -49,7 +49,8 @@ If you want to try Fractal Next without building it yourself, it is available as
 in the gnome-nightly repo.
 
 ```sh
-# Add the gnome-nightly repo
+# Add Flathub-beta and the gnome-nightly repo
+flatpak remote-add --user --if-not-exists flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
 flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
 
 # Install the nightly build
@@ -71,18 +72,18 @@ Flatpak is the recommended way of building and installing Fractal.
 First you need to make sure you have the GNOME SDK and Rust toolchain installed.
 
 ```sh
-# Add Flathub and the gnome-nightly repo
-flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+# Add Flathub-beta and the gnome-nightly repo
+flatpak remote-add --user --if-not-exists flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
 flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
 
 # Install the gnome-nightly Sdk and Platform runtime
-flatpak install --user gnome-nightly org.gnome.Sdk org.gnome.Platform
+flatpak install --user gnome-nightly org.gnome.Sdk//master org.gnome.Platform//master
 
-# Install the required rust-stable extension from Flathub
-flatpak install --user flathub org.freedesktop.Sdk.Extension.rust-stable//21.08
+# Install the required rust-stable extension from Flathub-beta
+flatpak install --user flathub-beta org.freedesktop.Sdk.Extension.rust-stable//22.08beta
 
-# Install the required llvm extension from Flathub
-flatpak install --user flathub org.freedesktop.Sdk.Extension.llvm12//21.08
+# Install the required llvm extension from Flathub-beta
+flatpak install --user flathub-beta org.freedesktop.Sdk.Extension.llvm14//22.08beta
 ```
 
 <table><tr><td>
