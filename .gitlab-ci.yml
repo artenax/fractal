@@ -8,7 +8,7 @@ stages:
 variables:
   FLATPAK_MODULE: "fractal"
   RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-  CI_IMAGE: "quay.io/gnome_infrastructure/gnome-runtime-images:gnome-42"
+  CI_IMAGE: "quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master"
 
 .hack:
   variables:
