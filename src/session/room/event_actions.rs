@@ -266,18 +266,17 @@ where
                     }
                 };
 
-                let dialog = gtk::FileChooserDialog::new(
+                let dialog = gtk::FileChooserNative::new(
                     Some(&gettext("Save File")),
                     Some(&window),
                     gtk::FileChooserAction::Save,
-                    &[
-                        (&gettext("Save"), gtk::ResponseType::Accept),
-                        (&gettext("Cancel"), gtk::ResponseType::Cancel),
-                    ],
+                    Some(&gettext("Save")),
+                    Some(&gettext("Cancel")),
                 );
                 dialog.set_current_name(&filename);
 
                 let response = dialog.run_future().await;
+
                 if response == gtk::ResponseType::Accept {
                     if let Some(file) = dialog.file() {
                         file.replace_contents(
@@ -291,7 +290,7 @@ where
                     }
                 }
 
-                dialog.close();
+                dialog.destroy();
             })
         );
     }
