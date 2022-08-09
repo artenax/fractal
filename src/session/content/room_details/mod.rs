@@ -1,4 +1,5 @@
 mod general_page;
+mod history_viewer;
 mod invite_subpage;
 mod member_page;
 
