@@ -22,6 +22,7 @@ data/resources/ui/content-explore-servers-popover.ui
 data/resources/ui/content-explore.ui
 data/resources/ui/content-invite-subpage.ui
 data/resources/ui/content-invite.ui
+data/resources/ui/content-media-history-viewer.ui
 data/resources/ui/content-member-page.ui
 data/resources/ui/content-message-file.ui
 data/resources/ui/content-message-row.ui

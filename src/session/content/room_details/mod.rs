@@ -11,7 +11,11 @@ use gtk::{glib, CompositeTemplate};
 use log::warn;
 
 pub use self::{general_page::GeneralPage, invite_subpage::InviteSubpage, member_page::MemberPage};
-use crate::{components::ToastableWindow, prelude::*, session::Room};
+use crate::{
+    components::ToastableWindow,
+    prelude::*,
+    session::{content::room_details::history_viewer::MediaHistoryViewer, Room},
+};
 
 #[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
@@ -22,6 +26,7 @@ pub enum PageName {
     General,
     Members,
     Invite,
+    MediaHistory,
 }
 
 impl glib::variant::StaticVariantType for PageName {
@@ -36,6 +41,7 @@ impl glib::variant::FromVariant for PageName {
             "general" => Some(PageName::General),
             "members" => Some(PageName::Members),
             "invite" => Some(PageName::Invite),
+            "media-history" => Some(PageName::MediaHistory),
             "" => Some(PageName::None),
             _ => None,
         }
@@ -49,6 +55,7 @@ impl glib::variant::ToVariant for PageName {
             PageName::General => "general",
             PageName::Members => "members",
             PageName::Invite => "invite",
+            PageName::MediaHistory => "media-history",
         }
         .to_variant()
     }
@@ -233,6 +240,22 @@ impl RoomDetails {
 
                 self.set_title(Some(&gettext("Invite new Members")));
                 imp.main_stack.set_visible_child(&invite_page);
+            }
+            PageName::MediaHistory => {
+                let media_page = if let Some(media_page) = list_stack_children
+                    .get(&PageName::MediaHistory)
+                    .and_then(glib::object::WeakRef::upgrade)
+                {
+                    media_page
+                } else {
+                    let media_page = MediaHistoryViewer::new(self.room()).upcast::<gtk::Widget>();
+                    list_stack_children.insert(PageName::MediaHistory, media_page.downgrade());
+                    imp.main_stack.add_child(&media_page);
+                    media_page
+                };
+
+                self.set_title(Some(&gettext("Media")));
+                imp.main_stack.set_visible_child(&media_page);
             }
             PageName::None => {
                 warn!("Can't switch to PageName::None");
