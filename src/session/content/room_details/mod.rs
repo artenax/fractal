@@ -14,7 +14,10 @@ pub use self::{general_page::GeneralPage, invite_subpage::InviteSubpage, member_
 use crate::{
     components::ToastableWindow,
     prelude::*,
-    session::{content::room_details::history_viewer::MediaHistoryViewer, Room},
+    session::{
+        content::room_details::history_viewer::{FileHistoryViewer, MediaHistoryViewer},
+        Room,
+    },
 };
 
 #[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
@@ -27,6 +30,7 @@ pub enum PageName {
     Members,
     Invite,
     MediaHistory,
+    FileHistory,
 }
 
 impl glib::variant::StaticVariantType for PageName {
@@ -42,6 +46,7 @@ impl glib::variant::FromVariant for PageName {
             "members" => Some(PageName::Members),
             "invite" => Some(PageName::Invite),
             "media-history" => Some(PageName::MediaHistory),
+            "file-history" => Some(PageName::FileHistory),
             "" => Some(PageName::None),
             _ => None,
         }
@@ -56,6 +61,7 @@ impl glib::variant::ToVariant for PageName {
             PageName::Members => "members",
             PageName::Invite => "invite",
             PageName::MediaHistory => "media-history",
+            PageName::FileHistory => "file-history",
         }
         .to_variant()
     }
@@ -256,6 +262,22 @@ impl RoomDetails {
 
                 self.set_title(Some(&gettext("Media")));
                 imp.main_stack.set_visible_child(&media_page);
+            }
+            PageName::FileHistory => {
+                let file_page = if let Some(file_page) = list_stack_children
+                    .get(&PageName::FileHistory)
+                    .and_then(glib::object::WeakRef::upgrade)
+                {
+                    file_page
+                } else {
+                    let file_page = FileHistoryViewer::new(self.room()).upcast::<gtk::Widget>();
+                    list_stack_children.insert(PageName::FileHistory, file_page.downgrade());
+                    imp.main_stack.add_child(&file_page);
+                    file_page
+                };
+
+                self.set_title(Some(&gettext("File")));
+                imp.main_stack.set_visible_child(&file_page);
             }
             PageName::None => {
                 warn!("Can't switch to PageName::None");

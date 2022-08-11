@@ -81,6 +81,8 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="content-explore-server-row.ui">ui/content-explore-server-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-explore-servers-popover.ui">ui/content-explore-servers-popover.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-explore.ui">ui/content-explore.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="content-file-history-viewer-row.ui">ui/content-file-history-viewer-row.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="content-file-history-viewer.ui">ui/content-file-history-viewer.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-invite-subpage.ui">ui/content-invite-subpage.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-invite.ui">ui/content-invite.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-invitee-item.ui">ui/content-invitee-item.ui</file>

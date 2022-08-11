@@ -20,6 +20,7 @@ data/resources/ui/components-auth-dialog.ui
 data/resources/ui/components-loading-listbox-row.ui
 data/resources/ui/content-explore-servers-popover.ui
 data/resources/ui/content-explore.ui
+data/resources/ui/content-file-history-viewer.ui
 data/resources/ui/content-invite-subpage.ui
 data/resources/ui/content-invite.ui
 data/resources/ui/content-media-history-viewer.ui
@@ -73,6 +74,7 @@ src/session/account_settings/user_page/mod.rs
 src/session/content/explore/public_room_row.rs
 src/session/content/invite.rs
 src/session/content/room_details/general_page/mod.rs
+src/session/content/room_details/history_viewer/file_row.rs
 src/session/content/room_details/invite_subpage/invitee_list.rs
 src/session/content/room_details/member_page/mod.rs
 src/session/content/room_details/mod.rs

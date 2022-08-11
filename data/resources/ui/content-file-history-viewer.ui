@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ContentFileHistoryViewer" parent="AdwBin">
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkHeaderBar">
+            <property name="title-widget">
+              <object class="AdwWindowTitle">
+                <property name="title" translatable="yes">Files</property>
+              </object>
+            </property>
+            <child type="start">
+              <object class="GtkButton">
+                <property name="action-name">details.previous-page</property>
+                <property name="icon-name">go-previous-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="hscrollbar-policy">never</property>
+            <property name="vexpand">True</property>
+            <child>
+              <object class="AdwClampScrollable">
+                <property name="maximum-size">400</property>
+                <property name="tightening-threshold">400</property>
+                <child>
+                  <object class="GtkListView" id="list_view">
+                    <property name="show-separators">True</property>
+                    <property name="factory">
+                      <object class="GtkBuilderListItemFactory">
+                        <property name="bytes"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="GtkListItem">
+    <property name="activatable">False</property>
+    <property name="child">
+      <object class="ContentFileHistoryViewerRow">
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+        <binding name="event">
+          <lookup name="item">GtkListItem</lookup>
+        </binding>
+      </object>
+    </property>
+  </template>
+</interface>
+                        ]]></property>
+                      </object>
+                    </property>
+                    <style>
+                      <class name="navigation-sidebar"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -659,6 +659,13 @@ mediahistoryvieweritem > overlay > image {
 }
 
 
+/* File History Viewer */
+
+filehistoryviewer listview > row {
+  border-radius: 0;
+}
+
+
 /* Room Details */
 
 .room-details listview {
