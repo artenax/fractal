@@ -185,7 +185,7 @@ impl Member {
 
     /// Update the user based on the room member state event
     pub fn update_from_member_event(&self, event: &impl MemberEvent) {
-        if event.sender() != &*self.user_id() {
+        if event.state_key() != &*self.user_id() {
             log::error!("Tried Member update from MemberEvent with wrong user ID.");
             return;
         };
@@ -206,6 +206,7 @@ impl Member {
 pub trait MemberEvent {
     fn sender(&self) -> &UserId;
     fn content(&self) -> &RoomMemberEventContent;
+    fn state_key(&self) -> &UserId;
 
     fn avatar_url(&self) -> Option<OwnedMxcUri> {
         self.content().avatar_url.to_owned()
@@ -230,6 +231,9 @@ impl MemberEvent for OriginalSyncStateEvent<RoomMemberEventContent> {
     fn content(&self) -> &RoomMemberEventContent {
         &self.content
     }
+    fn state_key(&self) -> &UserId {
+        &self.state_key
+    }
 }
 impl MemberEvent for StrippedStateEvent<RoomMemberEventContent> {
     fn sender(&self) -> &UserId {
@@ -237,5 +241,8 @@ impl MemberEvent for StrippedStateEvent<RoomMemberEventContent> {
     }
     fn content(&self) -> &RoomMemberEventContent {
         &self.content
+    }
+    fn state_key(&self) -> &UserId {
+        &self.state_key
     }
 }
