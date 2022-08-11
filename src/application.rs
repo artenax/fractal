@@ -160,17 +160,19 @@ impl Application {
     }
 
     fn show_about_dialog(&self) {
-        let dialog = gtk::AboutDialog::builder()
-            .logo_icon_name(config::APP_ID)
+        let dialog = adw::AboutWindow::builder()
+            .application_name("Fractal")
+            .application_icon(config::APP_ID)
+            .developer_name(&gettext("The Fractal Team"))
             .license_type(gtk::License::Gpl30)
             .website("https://gitlab.gnome.org/GNOME/fractal/")
-            .website_label(gettext("Learn more about Fractal").as_str())
+            .issue_url("https://gitlab.gnome.org/GNOME/fractal/-/issues")
+            .support_url("https://matrix.to/#/#fractal:gnome.org")
             .version(config::VERSION)
             .transient_for(&self.get_main_window())
             .modal(true)
-            .comments(gettext("A Matrix client for GNOME").as_str())
-            .copyright(gettext("© 2017-2022 The Fractal Team").as_str())
-            .authors(vec![
+            .copyright(&gettext("© 2017-2022 The Fractal Team"))
+            .developers(vec![
                 "Alejandro Domínguez".to_string(),
                 "Alexandre Franke".to_string(),
                 "Bilal Elmoussaoui".to_string(),
@@ -182,12 +184,12 @@ impl Application {
                 "Kévin Commaille".to_string(),
                 "Saurav Sachidanand".to_string(),
             ])
-            .artists(vec!["Tobias Bernard".to_string()])
-            .translator_credits(gettext("translator-credits").as_str())
+            .designers(vec!["Tobias Bernard".to_string()])
+            .translator_credits(&gettext("translator-credits"))
             .build();
 
         // This can't be added via the builder
-        dialog.add_credit_section(gettext("Name by").as_str(), &["Regina Bíró"]);
+        dialog.add_credit_section(Some(&gettext("Name by")), &["Regina Bíró"]);
 
         dialog.show();
     }
