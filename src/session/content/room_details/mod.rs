@@ -15,7 +15,9 @@ use crate::{
     components::ToastableWindow,
     prelude::*,
     session::{
-        content::room_details::history_viewer::{FileHistoryViewer, MediaHistoryViewer},
+        content::room_details::history_viewer::{
+            AudioHistoryViewer, FileHistoryViewer, MediaHistoryViewer,
+        },
         Room,
     },
 };
@@ -31,6 +33,7 @@ pub enum PageName {
     Invite,
     MediaHistory,
     FileHistory,
+    AudioHistory,
 }
 
 impl glib::variant::StaticVariantType for PageName {
@@ -47,6 +50,7 @@ impl glib::variant::FromVariant for PageName {
             "invite" => Some(PageName::Invite),
             "media-history" => Some(PageName::MediaHistory),
             "file-history" => Some(PageName::FileHistory),
+            "audio-history" => Some(PageName::AudioHistory),
             "" => Some(PageName::None),
             _ => None,
         }
@@ -62,6 +66,7 @@ impl glib::variant::ToVariant for PageName {
             PageName::Invite => "invite",
             PageName::MediaHistory => "media-history",
             PageName::FileHistory => "file-history",
+            PageName::AudioHistory => "audio-history",
         }
         .to_variant()
     }
@@ -278,6 +283,22 @@ impl RoomDetails {
 
                 self.set_title(Some(&gettext("File")));
                 imp.main_stack.set_visible_child(&file_page);
+            }
+            PageName::AudioHistory => {
+                let audio_page = if let Some(audio_page) = list_stack_children
+                    .get(&PageName::AudioHistory)
+                    .and_then(glib::object::WeakRef::upgrade)
+                {
+                    audio_page
+                } else {
+                    let audio_page = AudioHistoryViewer::new(self.room()).upcast::<gtk::Widget>();
+                    list_stack_children.insert(PageName::AudioHistory, audio_page.downgrade());
+                    imp.main_stack.add_child(&audio_page);
+                    audio_page
+                };
+
+                self.set_title(Some(&gettext("Audio")));
+                imp.main_stack.set_visible_child(&audio_page);
             }
             PageName::None => {
                 warn!("Can't switch to PageName::None");

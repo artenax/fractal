@@ -666,6 +666,13 @@ filehistoryviewer listview > row {
 }
 
 
+/* Audio History Viewer */
+
+audiohistoryviewer listview > row {
+  border-radius: 0;
+}
+
+
 /* Room Details */
 
 .room-details listview {
