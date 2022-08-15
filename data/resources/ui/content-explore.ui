@@ -79,14 +79,8 @@
                     <property name="tightening-threshold">550</property>
                     <property name="child">
                       <object class="GtkListView" id="listview">
-                        <property name="show-separators">True</property>
-                        <property name="margin-top">24</property>
-                        <property name="margin-bottom">24</property>
-                        <property name="margin-start">24</property>
                         <property name="margin-end">24</property>
-                        <style>
-                          <class name="card"/>
-                        </style>
+                        <property name="margin-start">24</property>
                         <property name="factory">
                           <object class="GtkBuilderListItemFactory">
                             <property name="resource">/org/gnome/Fractal/content-explore-item.ui</property>

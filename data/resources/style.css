@@ -489,11 +489,13 @@ message-reactions .reaction-count {
 
 
 /* Explore */
-
-.explore listview row {
-  padding: 12px;
+.explore listview {
+	background: transparent;
 }
 
+.explore .padded-button {
+  min-width: 64px;
+}
 
 /* Invite */
 
