@@ -446,3 +446,19 @@ pub fn freplace(s: String, args: &[(&str, &str)]) -> String {
 
     s
 }
+
+pub async fn check_if_reachable(hostname: &impl AsRef<str>) -> bool {
+    let address = gio::NetworkAddress::parse_uri(hostname.as_ref(), 80).unwrap();
+    let monitor = gio::NetworkMonitor::default();
+    match monitor.can_reach_future(&address).await {
+        Ok(()) => true,
+        Err(error) => {
+            log::error!(
+                "Homeserver {} isn't reachable: {}",
+                hostname.as_ref(),
+                error
+            );
+            false
+        }
+    }
+}
