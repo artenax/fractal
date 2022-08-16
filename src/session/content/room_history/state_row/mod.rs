@@ -78,7 +78,7 @@ impl StateRow {
                             Some(prev) if content.membership != prev.membership => None,
                             Some(prev) if content.displayname != prev.displayname => {
                                 if let Some(prev_name) = &prev.displayname {
-                                    if content.displayname == None {
+                                    if content.displayname.is_none() {
                                         Some(gettext_f(
                                             // Translators: Do NOT translate the content between
                                             // '{' and '}', this is a variable name.
@@ -107,14 +107,14 @@ impl StateRow {
                                 }
                             }
                             Some(prev) if content.avatar_url != prev.avatar_url => {
-                                if prev.avatar_url == None {
+                                if prev.avatar_url.is_none() {
                                     Some(gettext_f(
                                         // Translators: Do NOT translate the content between
                                         // '{' and '}', this is a variable name.
                                         "{user} set their avatar.",
                                         &[("user", &display_name)],
                                     ))
-                                } else if content.avatar_url == None {
+                                } else if content.avatar_url.is_none() {
                                     Some(gettext_f(
                                         // Translators: Do NOT translate the content between
                                         // '{' and '}', this is a variable name.
