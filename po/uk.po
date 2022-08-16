@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-08-14 07:43+0000\n"
-"PO-Revision-Date: 2022-08-14 23:10+0300\n"
+"POT-Creation-Date: 2022-08-16 10:54+0000\n"
+"PO-Revision-Date: 2022-08-16 21:05+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -523,15 +523,15 @@ msgstr ""
 "врахувати, що цю роботу ще не завершено, і її результати далекі від повноти."
 
 #. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:83
+#: data/resources/ui/greeter.ui:101
 msgid "Welcome to Fractal"
 msgstr "Вітаємо у «Фракталі»"
 
-#: data/resources/ui/greeter.ui:108
+#: data/resources/ui/greeter.ui:126
 msgid "_Log in"
 msgstr "_Увійти"
 
-#: data/resources/ui/greeter.ui:118
+#: data/resources/ui/greeter.ui:136
 msgid "_Create Account"
 msgstr "С_творити обліковий запис"
 
@@ -603,23 +603,23 @@ msgstr "_Автовизначення"
 msgid "_Next"
 msgstr "_Далі"
 
-#: data/resources/ui/login.ui:130 src/login/mod.rs:341
+#: data/resources/ui/login.ui:148 src/login/mod.rs:360
 msgid "Homeserver URL"
 msgstr "Адреса домашнього сервера"
 
-#: data/resources/ui/login.ui:153
+#: data/resources/ui/login.ui:171
 msgid "Matrix Username"
 msgstr "Ім'я користувача Matrix"
 
-#: data/resources/ui/login.ui:165
+#: data/resources/ui/login.ui:183
 msgid "Password"
 msgstr "Пароль"
 
-#: data/resources/ui/login.ui:171
+#: data/resources/ui/login.ui:189
 msgid "_Forgot Password?"
 msgstr "За_були пароль?"
 
-#: data/resources/ui/login.ui:216
+#: data/resources/ui/login.ui:234
 msgid "Please follow the steps in the browser."
 msgstr "Будь ласка, виконайте настанови з браузера."
 
@@ -855,11 +855,15 @@ msgstr "Пошук кімнати"
 msgid "Search for a room"
 msgstr "Пошук кімнати"
 
-#: data/resources/ui/sidebar.ui:148
+#: data/resources/ui/sidebar.ui:142
+msgid "Offline"
+msgstr "Поза мережею"
+
+#: data/resources/ui/sidebar.ui:162
 msgid "Sidebar"
 msgstr "Бічна панель"
 
-#: data/resources/ui/sidebar.ui:149
+#: data/resources/ui/sidebar.ui:163
 msgid "Allows to navigate between rooms"
 msgstr "Дозволяє навігацію між кімнатами"
 
@@ -867,24 +871,21 @@ msgstr "Дозволяє навігацію між кімнатами"
 msgid "Unable to connect to Camera"
 msgstr "Не вдалося встановити з'єднання з «Камерою»"
 
-#: src/application.rs:167
-msgid "Learn more about Fractal"
-msgstr "Дізнайтеся більше про «Фрактал»"
+#: src/application.rs:181
+#| msgid "© 2017-2022 The Fractal Team"
+msgid "The Fractal Team"
+msgstr "Команда «Фрактал»"
 
-#: src/application.rs:171
-msgid "A Matrix client for GNOME"
-msgstr "Клієнт Matrix для GNOME"
-
-#: src/application.rs:172
+#: src/application.rs:189
 msgid "© 2017-2022 The Fractal Team"
 msgstr "© Команда «Фрактал», 2017-2022"
 
-#: src/application.rs:186
+#: src/application.rs:203
 msgid "translator-credits"
 msgstr "Artem Polishchuk <ego.cordatus@gmail.com>, 2019."
 
 #. This can't be added via the builder
-#: src/application.rs:190
+#: src/application.rs:207
 msgid "Name by"
 msgstr "Авторка назви"
 
@@ -936,23 +937,33 @@ msgstr "Сеанс успішно вилучено."
 msgid "Could not remove session from secret storage"
 msgstr "Не вдалося вилучити сеанс із зашифрованого сховища"
 
-#: src/login/mod.rs:336
+#: src/greeter.rs:82 src/login/mod.rs:663 src/window.rs:347
+#| msgid "Check your network connection."
+msgid "No network connection"
+msgstr "Немає з'єднання з мережею"
+
+#: src/greeter.rs:88 src/login/mod.rs:671 src/window.rs:352
+#| msgid "Check your network connection."
+msgid "No Internet connection"
+msgstr "Відсутнє з'єднання з інтернетом"
+
+#: src/login/mod.rs:355
 msgid "Domain Name"
 msgstr "Назва домену"
 
-#: src/login/mod.rs:338
+#: src/login/mod.rs:357
 msgid "The domain of your Matrix homeserver, for example gnome.org"
 msgstr "Домен вашого домашнього сервера Matrix, наприклад gnome.org"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/login/mod.rs:345
+#: src/login/mod.rs:364
 msgid "The URL of your Matrix homeserver, for example {address}"
 msgstr "Адреса вашого домашнього сервера Matrix, наприклад {address}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/login/mod.rs:471
+#: src/login/mod.rs:490
 msgid "Connecting to {domain_name}"
 msgstr "Встановлюємо з'єднання із {domain_name}"
 
@@ -1195,7 +1206,6 @@ msgid "{user} invited you"
 msgstr "{user} запросив/запросила вас"
 
 #: src/session/content/room_details/invite_subpage/invitee_list.rs:314
-#| msgid "Members"
 msgid "Member"
 msgstr "Учасник"
 
@@ -1605,11 +1615,11 @@ msgstr ""
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Під час створення ключів шифрування сталася помилка."
 
-#: src/session/mod.rs:470
+#: src/session/mod.rs:494
 msgid "Unable to store session"
 msgstr "Не вдалося зберегти сеанс"
 
-#: src/session/mod.rs:769
+#: src/session/mod.rs:831
 msgid "Failed to logout the session."
 msgstr "Не вдалося вийти з сеансу."
 
@@ -1941,9 +1951,15 @@ msgstr "звук"
 msgid "file"
 msgstr "файл"
 
-#: src/window.rs:235
+#: src/window.rs:246
 msgid "Failed to restore previous sessions"
 msgstr "Не вдалося відновити попередні сеанси"
+
+#~ msgid "Learn more about Fractal"
+#~ msgstr "Дізнайтеся більше про «Фрактал»"
+
+#~ msgid "A Matrix client for GNOME"
+#~ msgstr "Клієнт Matrix для GNOME"
 
 #~ msgid "Too long. Use a shorter name."
 #~ msgstr "Надто довга. Скористайтеся коротшою назвою."
