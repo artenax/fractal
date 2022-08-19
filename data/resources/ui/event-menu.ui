@@ -8,16 +8,19 @@
     </section>
     <section>
       <item>
+        <!-- Translators: In this string, 'Reply' is a verb. -->
         <attribute name="label" translatable="yes">_Reply</attribute>
         <attribute name="action">event.reply</attribute>
         <attribute name="hidden-when">action-missing</attribute>
       </item>
       <item>
+        <!-- Translators: In this string, 'Edit' is a verb. -->
         <attribute name="label" translatable="yes">_Edit</attribute>
         <attribute name="action">event.edit</attribute>
         <attribute name="hidden-when">action-missing</attribute>
       </item>
       <item>
+        <!-- Translators: In this string, 'Forward' is a verb. -->
         <attribute name="label" translatable="yes">_Forward</attribute>
         <attribute name="action">event.forward</attribute>
         <attribute name="hidden-when">action-missing</attribute>
@@ -108,6 +111,7 @@
   <menu id="state_menu_model">
     <section>
       <item>
+        <!-- Translators: In this string, 'Forward' is a verb. -->
         <attribute name="label" translatable="yes">_Forward</attribute>
         <attribute name="action">event.forward</attribute>
         <attribute name="hidden-when">action-missing</attribute>

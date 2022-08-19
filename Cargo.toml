@@ -78,4 +78,9 @@ features = ["socks", "sso-login", "markdown", "qrcode", "experimental-timeline"]
 [dependencies.ruma]
 git = "https://github.com/ruma/ruma"
 rev = "c745d3baf720b38a254e640a526717864e87a065"
-features = ["unstable-pre-spec", "client-api-c"]
+features = [
+    "unstable-pre-spec",
+    "client-api-c",
+    "unstable-msc3440",
+    "unstable-sanitize",
+]

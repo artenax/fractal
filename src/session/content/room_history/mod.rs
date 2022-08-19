@@ -17,24 +17,33 @@ use futures::TryFutureExt;
 use gettextrs::gettext;
 use gtk::{
     gdk, gio, glib,
-    glib::{clone, signal::Inhibit},
+    glib::{clone, signal::Inhibit, FromVariant},
     prelude::*,
     CompositeTemplate,
 };
 use log::{error, warn};
-use matrix_sdk::ruma::events::room::message::{
-    EmoteMessageEventContent, FormattedBody, MessageType, RoomMessageEventContent,
-    TextMessageEventContent,
+use matrix_sdk::ruma::{
+    events::{
+        room::message::{
+            EmoteMessageEventContent, FormattedBody, MessageType, TextMessageEventContent,
+        },
+        AnySyncMessageLikeEvent, AnySyncTimelineEvent, SyncMessageLikeEvent,
+    },
+    EventId,
 };
-use ruma::events::{room::message::LocationMessageEventContent, AnyMessageLikeEventContent};
+use ruma::events::{
+    room::message::{ForwardThread, LocationMessageEventContent, RoomMessageEventContent},
+    AnyMessageLikeEventContent,
+};
 use sourceview::prelude::*;
 
 use self::{
     attachment_dialog::AttachmentDialog, completion::CompletionPopover, divider_row::DividerRow,
-    item_row::ItemRow, state_row::StateRow, verification_info_bar::VerificationInfoBar,
+    item_row::ItemRow, message_row::content::MessageContent, state_row::StateRow,
+    verification_info_bar::VerificationInfoBar,
 };
 use crate::{
-    components::{CustomEntry, DragOverlay, Pill, ReactionChooser, RoomTitle},
+    components::{CustomEntry, DragOverlay, LabelWithWidgets, Pill, ReactionChooser, RoomTitle},
     i18n::gettext_f,
     session::{
         content::{room_details, MarkdownPopover, RoomDetails},
@@ -42,8 +51,22 @@ use crate::{
         user::UserExt,
     },
     spawn, spawn_tokio, toast,
-    utils::filename_for_mime,
+    utils::{filename_for_mime, TemplateCallbacks},
 };
+
+#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[repr(i32)]
+#[enum_type(name = "RelatedEventType")]
+pub enum RelatedEventType {
+    None = 0,
+    Reply = 1,
+}
+
+impl Default for RelatedEventType {
+    fn default() -> Self {
+        Self::None
+    }
+}
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -98,6 +121,12 @@ mod imp {
         #[template_child]
         pub drag_overlay: TemplateChild<DragOverlay>,
         pub invite_action_watch: RefCell<Option<gtk::ExpressionWatch>>,
+        #[template_child]
+        pub related_event_header: TemplateChild<LabelWithWidgets>,
+        #[template_child]
+        pub related_event_content: TemplateChild<MessageContent>,
+        pub related_event_type: Cell<RelatedEventType>,
+        pub related_event: RefCell<Option<SupportedEvent>>,
     }
 
     #[glib::object_subclass]
@@ -113,6 +142,8 @@ mod imp {
             VerificationInfoBar::static_type();
             Timeline::static_type();
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
+            TemplateCallbacks::bind_template_callbacks(klass);
             klass.set_accessible_role(gtk::AccessibleRole::Group);
             klass.install_action(
                 "room-history.send-text-message",
@@ -174,6 +205,27 @@ mod imp {
                     }
                 }));
             });
+
+            klass.install_action(
+                "room-history.clear-related-event",
+                None,
+                move |widget, _, _| widget.clear_related_event(),
+            );
+
+            klass.install_action("room-history.reply", Some("s"), move |widget, _, v| {
+                if let Some(event_id) = v
+                    .and_then(String::from_variant)
+                    .and_then(|s| EventId::parse(s).ok())
+                {
+                    if let Some(event) = widget
+                        .room()
+                        .and_then(|room| room.timeline().event_by_id(&event_id))
+                        .and_then(|event| event.downcast().ok())
+                    {
+                        widget.set_reply_to(event);
+                    }
+                }
+            });
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -221,6 +273,21 @@ mod imp {
                         true,
                         glib::ParamFlags::READWRITE,
                     ),
+                    glib::ParamSpecEnum::new(
+                        "related-event-type",
+                        "Related event type",
+                        "The type of related event of the composer",
+                        RelatedEventType::static_type(),
+                        RelatedEventType::default() as i32,
+                        glib::ParamFlags::READABLE,
+                    ),
+                    glib::ParamSpecObject::new(
+                        "related-event",
+                        "Related Event",
+                        "The related event of the composer",
+                        SupportedEvent::static_type(),
+                        glib::ParamFlags::READABLE,
+                    ),
                 ]
             });
 
@@ -264,6 +331,8 @@ mod imp {
                 "empty" => obj.room().is_none().to_value(),
                 "markdown-enabled" => self.md_enabled.get().to_value(),
                 "sticky" => obj.sticky().to_value(),
+                "related-event-type" => obj.related_event_type().to_value(),
+                "related-event" => obj.related_event().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -319,6 +388,12 @@ mod imp {
                 }
                 obj.start_loading();
             }));
+            adj.connect_page_size_notify(clone!(@weak obj => move |_| {
+                if obj.sticky() {
+                    obj.scroll_down();
+                }
+                obj.start_loading();
+            }));
 
             let key_events = gtk::EventControllerKey::new();
             self.message_entry.add_controller(&key_events);
@@ -349,8 +424,11 @@ mod imp {
 
             key_events
                 .connect_key_pressed(clone!(@weak obj => @default-return Inhibit(false), move |_, key, _, modifier| {
-                if !modifier.contains(gdk::ModifierType::SHIFT_MASK) && (key == gdk::Key::Return || key == gdk::Key::KP_Enter) {
+                if modifier.is_empty() && (key == gdk::Key::Return || key == gdk::Key::KP_Enter) {
                     obj.activate_action("room-history.send-text-message", None).unwrap();
+                    Inhibit(true)
+                } else if modifier.is_empty() && key == gdk::Key::Escape && obj.related_event_type() != RelatedEventType::None {
+                    obj.clear_related_event();
                     Inhibit(true)
                 } else {
                     Inhibit(false)
@@ -408,6 +486,7 @@ glib::wrapper! {
         @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
 }
 
+#[gtk::template_callbacks]
 impl RoomHistory {
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create RoomHistory")
@@ -436,6 +515,8 @@ impl RoomHistory {
             if let Some(invite_action) = priv_.invite_action_watch.take() {
                 invite_action.unwatch();
             }
+
+            self.clear_related_event();
         }
 
         if let Some(ref room) = room {
@@ -491,6 +572,64 @@ impl RoomHistory {
         self.imp().room.borrow().clone()
     }
 
+    pub fn related_event_type(&self) -> RelatedEventType {
+        self.imp().related_event_type.get()
+    }
+
+    fn set_related_event_type(&self, related_type: RelatedEventType) {
+        if self.related_event_type() == related_type {
+            return;
+        }
+
+        self.imp().related_event_type.set(related_type);
+        self.notify("related-event-type");
+    }
+
+    pub fn related_event(&self) -> Option<SupportedEvent> {
+        self.imp().related_event.borrow().clone()
+    }
+
+    fn set_related_event(&self, event: Option<SupportedEvent>) {
+        let prev_event = self.related_event();
+
+        if prev_event == event {
+            return;
+        }
+
+        if let Some(event) = &prev_event {
+            self.set_event_highlight(&event.event_id(), false);
+        }
+        if let Some(event) = &event {
+            self.set_event_highlight(&event.event_id(), true);
+        }
+
+        self.imp().related_event.replace(event);
+        self.notify("related-event");
+    }
+
+    pub fn clear_related_event(&self) {
+        self.set_related_event(None);
+        self.set_related_event_type(RelatedEventType::default());
+    }
+
+    pub fn set_reply_to(&self, event: SupportedEvent) {
+        let priv_ = self.imp();
+        priv_
+            .related_event_header
+            .set_widgets(vec![Pill::for_user(event.sender().upcast_ref())]);
+        priv_
+            .related_event_header
+            // Translators: Do NOT translate the content between '{' and '}',
+            // this is a variable name. In this string, 'Reply' is a noun.
+            .set_label(Some(gettext_f("Reply to {user}", &[("user", "<widget>")])));
+
+        priv_.related_event_content.update_for_event(&event);
+
+        self.set_related_event_type(RelatedEventType::Reply);
+        self.set_related_event(Some(event));
+        priv_.message_entry.grab_focus();
+    }
+
     /// Get an iterator over chunks of the message entry's text between the
     /// given start and end, split by mentions.
     fn split_buffer_mentions(&self, start: gtk::TextIter, end: gtk::TextIter) -> SplitMentions {
@@ -542,22 +681,47 @@ impl RoomHistory {
             None
         };
 
-        let content = RoomMessageEventContent::new(if is_emote {
+        let content = if is_emote {
             MessageType::Emote(if let Some(html_body) = html_body {
                 EmoteMessageEventContent::html(plain_body, html_body)
             } else {
                 EmoteMessageEventContent::plain(plain_body)
             })
+            .into()
         } else {
-            MessageType::Text(if let Some(html_body) = html_body {
+            let msg_type = MessageType::Text(if let Some(html_body) = html_body {
                 TextMessageEventContent::html(plain_body, html_body)
             } else {
                 TextMessageEventContent::plain(plain_body)
-            })
-        });
+            });
+
+            if self.related_event_type() == RelatedEventType::Reply {
+                // TODO: Use replacement event.
+                let related_event = self.related_event().unwrap().matrix_event();
+                if let AnySyncTimelineEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
+                    SyncMessageLikeEvent::Original(related_message_event),
+                )) = related_event
+                {
+                    let full_related_message_event = related_message_event
+                        .into_full_event(self.room().unwrap().room_id().to_owned());
+                    RoomMessageEventContent::reply(
+                        msg_type,
+                        &full_related_message_event,
+                        ForwardThread::Yes,
+                    )
+                } else {
+                    // The message was redacted after being selected so ignore
+                    // the reply.
+                    msg_type.into()
+                }
+            } else {
+                msg_type.into()
+            }
+        };
 
         self.room().unwrap().send_room_message_event(content);
         buffer.set_text("");
+        self.clear_related_event();
     }
 
     pub fn leave(&self) {
@@ -990,6 +1154,53 @@ impl RoomHistory {
                 })
                 .collect();
             self.clipboard().set_text(&content);
+        }
+    }
+
+    #[template_callback]
+    fn handle_related_event_click(&self, n_pressed: i32) {
+        if n_pressed == 1 {
+            if let Some(related_event) = &*self.imp().related_event.borrow() {
+                self.scroll_to_event(&related_event.event_id());
+            }
+        }
+    }
+
+    fn scroll_to_event(&self, event_id: &EventId) {
+        let room = match self.room() {
+            Some(room) => room,
+            None => return,
+        };
+
+        if let Some(pos) = room.timeline().find_event_position(event_id) {
+            let pos = pos as u32;
+            let _ = self
+                .imp()
+                .listview
+                .activate_action("list.scroll-to-item", Some(&pos.to_variant()));
+        }
+    }
+
+    fn set_event_highlight(&self, event_id: &EventId, highlight: bool) {
+        let mut child = self.imp().listview.first_child();
+        while let Some(widget) = child {
+            if widget
+                .first_child()
+                .and_then(|w| w.downcast::<ItemRow>().ok())
+                .and_then(|row| row.item())
+                .and_then(|item| item.downcast::<SupportedEvent>().ok())
+                .filter(|event| event.event_id() == event_id)
+                .is_some()
+            {
+                if highlight && !widget.has_css_class("highlight") {
+                    widget.add_css_class("highlight");
+                } else if !highlight && widget.has_css_class("highlight") {
+                    widget.remove_css_class("highlight");
+                }
+
+                break;
+            }
+            child = widget.next_sibling();
         }
     }
 }

@@ -418,6 +418,10 @@ login {
   margin-right: 46px;
 }
 
+.room-history row.highlight {
+  background-color: alpha(@accent_bg_color, .1);
+}
+
 .room-history .event-content .emoji {
   font-size: 3em;
 }
@@ -438,7 +442,8 @@ login {
   padding: 2px 5px;
 }
 
-.room-history .event-content .quote {
+.room-history .event-content .quote,
+.related-event-content {
   border-left: 2px solid @accent_bg_color;
   padding-left: 6px;
   opacity: 0.7;
@@ -523,6 +528,21 @@ message-reactions .reaction-count {
 
 .completion-popover .completion-row:last-child {
   margin-bottom: 0px;
+}
+
+.related-event-toolbar {
+  padding: 0 6px 0 12px;
+}
+
+.related-event-toolbar button {
+  margin: 12px 6px;
+  min-height: 24px;
+  min-width: 24px;
+}
+
+.related-event-content {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 

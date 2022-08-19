@@ -125,6 +125,8 @@ where
                     .map(|user| user.user_id())
                     .unwrap();
                 let user = event.room().members().member_by_id(user_id);
+
+                // Remove message
                 if event.sender() == user
                     || event
                         .room()
@@ -132,7 +134,6 @@ where
                         .min_level_for_room_action(&RoomAction::Redact)
                         <= user.power_level()
                 {
-                    // Remove message
                     gtk_macros::action!(
                         &action_group,
                         "remove",
@@ -141,6 +142,7 @@ where
                         })
                     );
                 }
+
                 // Send/redact a reaction
                 gtk_macros::action!(
                     &action_group,
@@ -161,6 +163,20 @@ where
                         }
                     })
                 );
+
+                // Reply
+                gtk_macros::action!(
+                    &action_group,
+                    "reply",
+                    None,
+                    clone!(@weak event, @weak self as widget => move |_, _| {
+                        let _ = widget.activate_action(
+                            "room-history.reply",
+                            Some(&event.event_id().as_str().to_variant())
+                        );
+                    })
+                );
+
                 match message.msgtype {
                     // Copy Text-Message
                     MessageType::Text(text_message) => {
