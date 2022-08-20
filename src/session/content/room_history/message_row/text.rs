@@ -10,29 +10,13 @@ use matrix_sdk::ruma::{
     matrix_uri::MatrixId,
     MatrixToUri, MatrixUri,
 };
-use once_cell::sync::Lazy;
-use regex::Regex;
 use sourceview::prelude::*;
 
 use crate::{
     components::{LabelWithWidgets, Pill, DEFAULT_PLACEHOLDER},
     session::{room::Member, Room, UserExt},
+    utils::EMOJI_REGEX,
 };
-
-static EMOJI_REGEX: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(
-        r"(?x)
-        ^
-        [\p{White_Space}\p{Emoji_Component}]*
-        [\p{Emoji}--\p{Decimal_Number}]+
-        [\p{White_Space}\p{Emoji}\p{Emoji_Component}--\p{Decimal_Number}]*
-        $
-        # That string is made of at least one emoji, except digits, possibly more,
-        # possibly with modifiers, possibly with spaces, but nothing else
-        ",
-    )
-    .unwrap()
-});
 
 enum WithMentions<'a> {
     Yes(&'a Room),

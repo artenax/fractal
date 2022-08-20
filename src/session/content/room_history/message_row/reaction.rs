@@ -1,7 +1,7 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, prelude::*, CompositeTemplate};
 
-use crate::session::room::ReactionGroup;
+use crate::{session::room::ReactionGroup, utils::EMOJI_REGEX};
 
 mod imp {
     use glib::subclass::InitializingObject;
@@ -95,6 +95,13 @@ impl MessageReaction {
         let priv_ = self.imp();
         let key = group.key();
         priv_.reaction_key.set_label(key);
+
+        if EMOJI_REGEX.is_match(key) {
+            priv_.reaction_key.add_css_class("emoji");
+        } else {
+            priv_.reaction_key.remove_css_class("emoji");
+        }
+
         priv_
             .button
             .set_action_target_value(Some(&key.to_variant()));

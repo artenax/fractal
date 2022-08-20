@@ -444,6 +444,9 @@ message-reactions .toggle:checked {
 }
 
 message-reactions .reaction-key {
+  font-size: 0.8em;
+}
+message-reactions .reaction-key.emoji{
   font-size: 1.1em;
 }
 

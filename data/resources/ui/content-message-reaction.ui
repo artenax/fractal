@@ -12,6 +12,8 @@
           <object class="GtkBox">
             <child>
               <object class="GtkLabel" id="reaction_key">
+                <property name="max-width-chars">23</property>
+                <property name="ellipsize">end</property>
                 <style>
                   <class name="reaction-key"/>
                 </style>
