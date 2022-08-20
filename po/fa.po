@@ -2,17 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2021-02-05 12:39+0000\n"
-"PO-Revision-Date: 2022-03-04 21:49+0330\n"
-"Last-Translator: eshagh <eshagh094@gmail.com>\n"
+"POT-Creation-Date: 2022-08-02 07:38+0000\n"
+"PO-Revision-Date: 2022-08-16 15:25+0430\n"
+"Last-Translator: MohammadSaleh Kamyab <mskf1383@envs.net>\n"
 "Language-Team: Persian\n"
 "Language: fa\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Loco-Source-Locale: en_DE\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.1\n"
 "X-DL-Team: fa\n"
 "X-DL-Module: fractal\n"
 "X-DL-Branch: master\n"
@@ -20,1035 +20,2316 @@ msgstr ""
 "X-DL-State: Translating\n"
 "X-Loco-Parser: loco_parse_po\n"
 
-#: fractal-gtk/res/gtk/help-overlay.ui:13
-msgctxt "shortcut window"
-msgid "General"
-msgstr "عمومی"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:18
-msgctxt "shortcut window"
-msgid "Close the active room"
-msgstr "بستن اتاق فعّال"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:25
-msgctxt "shortcut window"
-msgid "Open main menu"
-msgstr "گشودن فهرست اصلی"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:32
-msgctxt "shortcut window"
-msgid "Open / close the room sidebar search"
-msgstr "گشودن / بستن نوار جست‌وجو"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:39
-msgctxt "shortcut window"
-msgid "Open the previous room in the list"
-msgstr "گشودن اتاق قبلی در فهرست"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:46
-msgctxt "shortcut window"
-msgid "Open the next room in the list"
-msgstr "گشودن اتاق بعدی در فهرست"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:53
-msgctxt "shortcut window"
-msgid "Open the previous room with unread messages in the list"
-msgstr "گشودن اتاق قبلی با پیام‌های خوانده نشده در فهرست"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:60
-msgctxt "shortcut window"
-msgid "Open the next room with unread messages in the list"
-msgstr "گشودن اتاق بعدی با پیام‌های خوانده نشده در فهرست"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:67
-msgctxt "shortcut window"
-msgid "Open the first room of the list"
-msgstr "گشودن اولین اتاق در فهرست"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:74
-msgctxt "shortcut window"
-msgid "Open the last room of the list"
-msgstr "گشودن آخرین اتاق در فهرست"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:81
-msgctxt "shortcut window"
-msgid "View older messages"
-msgstr "مشاهده پیام‌های قدیمی‌تر"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:88
-msgctxt "shortcut window"
-msgid "View newer messages"
-msgstr "مشاهده پیام‌های جدیدتر"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:94
-msgctxt "shortcut window"
-msgid "Keyboard Shortcuts"
-msgstr "میان‌برهای صفحه‌کلید"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:101
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "خروج"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:110
-msgctxt "shortcut message"
-msgid "Composing a new message"
-msgstr "نوشتن پیام جدید"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:115
-msgctxt "shortcut message"
-msgid "Write on a new line"
-msgstr "نوشتن روی یک خط جدید"
-
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:3
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:5
-#: fractal-gtk/res/ui/login_flow.ui:19 fractal-gtk/src/appop/mod.rs:170
+#: data/org.gnome.Fractal.desktop.in.in:3
+#: data/org.gnome.Fractal.metainfo.xml.in.in:9
 msgid "Fractal"
 msgstr "فرکتال"
 
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:4
+#: data/org.gnome.Fractal.desktop.in.in:4
 msgid ""
 "Fractal is a decentralized, secure messaging client for collaborative group "
 "communication."
-msgstr "فرکتال یک کارخواه پیام رسانی غیرمتمرکز و ایمن برای ارتباطات گروهی مشترک است."
+msgstr "فرکتال یک کارخواه پیام‌رسانی نامتمرکز و ایمن برای ارتباطات گروهی مشترک است."
 
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:5
+#: data/org.gnome.Fractal.desktop.in.in:5
 msgid "Fractal group messaging"
-msgstr "پیام‌های گروهی فرکتال"
+msgstr "پیام‌رسانی گروهی فرکتال"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:14
-#| msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;"
+#: data/org.gnome.Fractal.desktop.in.in:14
 msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
-msgstr "ماتریکس;matrix.org;گفت‌وگو;کانال irc;ارتباطات;صحبت;شورش;عنصر;"
+msgstr ""
+"Matrix;matrix.org;chat;irc;communications;talk;riot;element;fractal;ماتریکس;"
+"ماتریس;گفت‌وگو;گفتگو;المنت;گپ;پیام‌رسان;پیامرسان;"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:13
-msgid "Type of password and token storage"
-msgstr "گذرواژه و توکن ذخیره شده را بنویسید"
+#: data/org.gnome.Fractal.gschema.xml.in:6
+msgid "Window width"
+msgstr "پهنای پنجره"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:14
-msgid "Type of password and token storage, default value is: Secret Service"
-msgstr "گذرواژه و توکن ذخیره شده را بنویسید، به طور پیش‌گزیده این است: Secret Service"
+#: data/org.gnome.Fractal.gschema.xml.in:10
+msgid "Window height"
+msgstr "بلندای پنجره"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:21
-msgid "If markdown sending is active"
-msgstr "اگر ارسال با مارک‌دون(زبان نشانه گذاری) فعّال است"
+#: data/org.gnome.Fractal.gschema.xml.in:14
+msgid "Window maximized state"
+msgstr "وضعیت بیشنه‌سازی پنجره"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:22
-msgid "Whether support for sending markdown messages is on"
-msgstr "مشخص می‌کند که آیا پشتیبانی برای ارسال پیام‌های مارک‌دون روشن است یا خیر"
+#: data/org.gnome.Fractal.gschema.xml.in:18
+msgid "Enable markdown formatting"
+msgstr "به کار انداختن قالب‌بندی مارک‌دون"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:29
-msgid "X position of the main window on startup"
-msgstr "موقعیت X پنجرهٔ اصلی هنگام راه‌اندازی"
+#: data/org.gnome.Fractal.gschema.xml.in:19
+msgid "Whether messages should be processed as markdown when sending them"
+msgstr ""
+"مشخص می‌کند که آیا پیام‌ها هنگام ارسال باید به عنوان مارک‌دون پردازش شوند یا خیر"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:34
-msgid "Y position of the main window on startup"
-msgstr "موقعیت Y پنجرهٔ اصلی هنگام راه‌اندازی"
+#: data/org.gnome.Fractal.metainfo.xml.in.in:8
+msgid "Julian Sparber"
+msgstr "Julian Sparber"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:39
-msgid "Width of the main window on startup"
-msgstr "عرض پنجرهٔ اصلی هنگام راه‌اندازی"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:44
-msgid "Height of the main window on startup"
-msgstr "ارتفاع پنجرهٔ اصلی هنگام راه‌اندازی"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:49
-msgid "Whether the main window is maximized on startup"
-msgstr "مشخص می‌کند که آیا پنجرهٔ اصلی هنگام راه‌اندازی بیشینه باشد یا خیر"
-
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:8
-msgid "Daniel García Moreno"
-msgstr "دانیل گارسیا مورنو"
-
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:9
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
 msgid "Matrix group messaging app"
-msgstr "برنامهٔ پیام‌رسانی برای ماتریکس"
+msgstr "کارهٔ پیام‌رسانی گروهی برای ماتریکس"
 
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:11
+#: data/org.gnome.Fractal.metainfo.xml.in.in:12
 msgid ""
 "Fractal is a Matrix messaging app for GNOME written in Rust. Its interface is "
 "optimized for collaboration in large groups, such as free software projects."
 msgstr ""
-"فرکتال یک برنامهٔ پیام‌رسانی ماتریکس برای گنوم است که به زبان راست نوشته شده است. "
+"فرکتال یک کارهٔ پیام‌رسانی ماتریکس برای گنوم است که به زبان راست نوشته شده است. "
 "رابط آن برای همکاری در گروه‌های بزرگ، مانند پروژه‌های نرم‌افزار آزاد، بهینه شده است."
 
-#: fractal-gtk/res/ui/account_settings.ui:14 fractal-gtk/res/ui/main_menu.ui:94
-msgid "Account Settings"
-msgstr "تنظیمات حساب"
-
-#: fractal-gtk/res/ui/account_settings.ui:30 fractal-gtk/res/ui/main_window.ui:217
-#: fractal-gtk/res/ui/main_window.ui:454 fractal-gtk/res/ui/media_viewer.ui:36
-#: fractal-gtk/res/ui/room_settings.ui:30
-msgid "Back"
-msgstr "بازگشت"
-
-#: fractal-gtk/res/ui/account_settings.ui:92
-msgid "Other people can find you by searching for any of these identifiers."
-msgstr "دیگران می‌توانند با جست‌وجوی هر یک از این شناسه ها شما را پیدا کنند."
-
-#: fractal-gtk/res/ui/account_settings.ui:115
-msgid "Name"
-msgstr "نام"
-
-#: fractal-gtk/res/ui/account_settings.ui:138
-msgid "Type in your name"
-msgstr "نام خود را بنویسید"
-
-#: fractal-gtk/res/ui/account_settings.ui:167
-msgid "Email"
-msgstr "رایانامه"
-
-#: fractal-gtk/res/ui/account_settings.ui:196
-msgid "Phone"
-msgstr "تلفن"
-
-#: fractal-gtk/res/ui/account_settings.ui:225
-msgid "Password"
-msgstr "گذرواژه"
-
-#: fractal-gtk/res/ui/account_settings.ui:287
-msgid "Advanced Information"
-msgstr "اطّلاعات پیشرفته"
-
-#: fractal-gtk/res/ui/account_settings.ui:312
-msgid "Homeserver"
-msgstr "کارساز خانگی"
-
-#: fractal-gtk/res/ui/account_settings.ui:341
-msgid "Matrix ID"
-msgstr "شناسه ماتریکس"
-
-#: fractal-gtk/res/ui/account_settings.ui:370
-msgid "Device ID"
-msgstr "شناسه دستگاه"
-
-#: fractal-gtk/res/ui/account_settings.ui:410
-#: fractal-gtk/res/ui/account_settings.ui:466
-msgid "Deactivate Account"
-msgstr "غیرفعّال کردن حساب"
-
-#: fractal-gtk/res/ui/account_settings.ui:431
-msgid ""
-"Deactivating your account means that you will lose all your messages, contacts, and "
-"files."
-msgstr ""
-"غیرفعّال کردن حساب به این معنی است که تمامی پیام‌ها، مخاطبین و پرونده‌های خود را از "
-"دست خواهید داد."
-
-#: fractal-gtk/res/ui/account_settings.ui:441
-msgid ""
-"To confirm that you really want to deactivate this account type in your password:"
-msgstr ""
-"برای تأیید اینکه واقعاً می‌خواهید این حساب را غیرفعّال کنید گذرواژه خود را وارد کنید:"
-
-#: fractal-gtk/res/ui/account_settings.ui:456
-msgid "Also erase all messages"
-msgstr "همچنین تمام پیام‌ها را پاک می‌کند"
-
-#: fractal-gtk/res/ui/account_settings.ui:523
-msgid "Check your email"
-msgstr "رایانامهٔ خود را چک کنید"
-
-#: fractal-gtk/res/ui/account_settings.ui:526 fractal-gtk/res/ui/direct_chat.ui:83
-#: fractal-gtk/res/ui/invite_user.ui:84 fractal-gtk/res/ui/join_room.ui:71
-#: fractal-gtk/res/ui/leave_room.ui:31 fractal-gtk/res/ui/new_room.ui:24
-#: fractal-gtk/src/appop/account.rs:87 fractal-gtk/src/appop/account.rs:143
-#: fractal-gtk/src/ui/attach.rs:41
-msgid "Cancel"
-msgstr "لغو"
-
-#: fractal-gtk/res/ui/account_settings.ui:534
-msgid "Apply"
-msgstr "اعمال"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:8
-msgid "Room Directory"
-msgstr "فهرست اتاق"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:12
-msgid "Join Room"
-msgstr "عضویت به اتاق"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:18
-msgid "New Room"
-msgstr "اتاق جدید"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:22
-msgid "New Direct Chat"
-msgstr "گفت‌وگوی مستقیم جدید"
-
-#: fractal-gtk/res/ui/audio_player.ui:34 fractal-gtk/res/ui/audio_player.ui:45
-msgid "Play"
-msgstr "پخش"
-
-#: fractal-gtk/res/ui/direct_chat.ui:80
-msgid "New direct chat"
-msgstr "گفت‌وگوی مستقیم جدید"
-
-#: fractal-gtk/res/ui/direct_chat.ui:91
-msgid "Start chat"
-msgstr "شروع گفت‌وگو"
-
-#: fractal-gtk/res/ui/invite.ui:18
-msgid "Invitation"
-msgstr "دعوت"
-
-#: fractal-gtk/res/ui/invite.ui:32
-msgid "Reject"
-msgstr "رد کردن"
-
-#: fractal-gtk/res/ui/invite.ui:40
-msgid "Accept"
-msgstr "پذیرش"
-
-#: fractal-gtk/res/ui/invite_user.ui:81 fractal-gtk/res/ui/invite_user.ui:92
-#: fractal-gtk/src/ui/invite.rs:133
-msgid "Invite"
-msgstr "دعوت"
-
-#: fractal-gtk/res/ui/join_room.ui:34
-msgid "ID or Alias"
-msgstr "شناسه یا نام مستعار"
-
-#: fractal-gtk/res/ui/join_room.ui:68
-msgid "Join room"
-msgstr "عضویت به اتاق"
-
-#: fractal-gtk/res/ui/join_room.ui:79 fractal-gtk/src/ui/directory.rs:245
-msgid "Join"
-msgstr "عضویت"
-
-#: fractal-gtk/res/ui/kicked_room.ui:29 fractal-gtk/res/ui/msg_src_window.ui:32
-msgid "Close"
-msgstr "بستن"
-
-#: fractal-gtk/res/ui/leave_room.ui:18
-msgid "Leave?"
-msgstr "خروج؟"
-
-#: fractal-gtk/res/ui/leave_room.ui:19
-msgid "Once you leave, you won’t be able to interact with people in the room anymore."
-msgstr "پس از خروج دیگر نمی‌توانید با افراد حاضر در اتاق تعامل داشته باشید."
-
-#: fractal-gtk/res/ui/leave_room.ui:39
-msgid "Leave room"
-msgstr "خروج از اتاق"
-
-#: fractal-gtk/res/ui/login_flow.ui:29
-msgid "Welcome to Fractal"
-msgstr "به فرکتال خوش آمدید"
-
-#: fractal-gtk/res/ui/login_flow.ui:42 fractal-gtk/res/ui/login_flow.ui:211
-msgid "_Log In"
-msgstr "_ورود"
-
-#: fractal-gtk/res/ui/login_flow.ui:55
-msgid "_Create Account"
-msgstr "_ایجاد حساب"
-
-#: fractal-gtk/res/ui/login_flow.ui:84
-msgid "Choose Provider"
-msgstr "کارساز(ارائه دهنده) را انتخاب کنید"
-
-#: fractal-gtk/res/ui/login_flow.ui:107
-msgid "_Next"
-msgstr "_بعدی"
-
-#: fractal-gtk/res/ui/login_flow.ui:125
-msgid "What is your Provider?"
-msgstr "کارساز(ارائه دهنده) شما چیست؟"
-
-#: fractal-gtk/res/ui/login_flow.ui:146
-msgid "Matrix provider domain, e.g. myserver.co"
-msgstr "نشانی کارساز ماتریکس، برای مثال myserver.co"
-
-#: fractal-gtk/res/ui/login_flow.ui:161
-msgid "The domain may not be empty."
-msgstr "دامنه ممکن است خالی نباشد."
-
-#: fractal-gtk/res/ui/login_flow.ui:188
-msgid "Log In"
-msgstr "ورود"
-
-#: fractal-gtk/res/ui/login_flow.ui:236
-msgid "_User ID"
-msgstr "_شناسهٔ کاربر"
-
-#: fractal-gtk/res/ui/login_flow.ui:252
-msgid "_Password"
-msgstr "_گذرواژه"
-
-#: fractal-gtk/res/ui/login_flow.ui:284
-msgid "User name, email, or phone number"
-msgstr "نام کاربری، رایانامه یا شماره تلفن"
-
-#: fractal-gtk/res/ui/login_flow.ui:317
-msgid "_Forgot Password?"
-msgstr "گذرواژه را _فراموش کرده‌اید؟"
-
-#: fractal-gtk/res/ui/login_flow.ui:335
-msgid "Invalid username or password"
-msgstr "نام کاربری یا گذرواژه اشتباه است"
-
-#: fractal-gtk/res/ui/main_menu.ui:103
-msgid "Log Out"
-msgstr "خروج"
-
-#: fractal-gtk/res/ui/main_menu.ui:120
-msgid "Keyboard _Shortcuts"
-msgstr "_میان‌برهای صفحه‌کلید"
-
-#: fractal-gtk/res/ui/main_menu.ui:129
-msgid "_About Fractal"
-msgstr "_درباره فرکتال"
-
-#: fractal-gtk/res/ui/main_window.ui:56
-msgid "User"
-msgstr "کاربر"
-
-#: fractal-gtk/res/ui/main_window.ui:82
-msgid "Add"
-msgstr "افزودن"
-
-#: fractal-gtk/res/ui/main_window.ui:111
-msgid "Room search"
-msgstr "جست‌وجوی اتاق"
-
-#: fractal-gtk/res/ui/main_window.ui:282
-msgid "Room Menu"
-msgstr "فهرست اتاق"
-
-#: fractal-gtk/res/ui/main_window.ui:349
-#| msgid "No room selected"
-msgid "No Room Selected"
-msgstr "اتاقی انتخاب نشده است"
-
-#: fractal-gtk/res/ui/main_window.ui:350
-#| msgid "Join a room to start chatting"
-msgid "Join a room to start chatting."
-msgstr "برای شروع یک گفت‌وگو به یک اتاق بپیوندید."
-
-#: fractal-gtk/res/ui/main_window.ui:354
-msgid "No room"
-msgstr "اتاقی نیست"
-
-#: fractal-gtk/res/ui/main_window.ui:494 fractal-gtk/res/ui/server_chooser_menu.ui:51
-#: fractal-gtk/src/ui/connect/directory.rs:117
-msgid "Default Matrix Server"
-msgstr "کارساز ماتریکس فعلی"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:23
-msgid "Markdown"
-msgstr "مارک‌دون"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:52
-msgid "> quote"
-msgstr "> نقل قول"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:63
-msgid "**bold**"
-msgstr "**ضخیم**"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:78
-msgid "`code`"
-msgstr "`کد`"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:90
-msgid "*italic*"
-msgstr "*مورب*"
-
-#: fractal-gtk/res/ui/media_viewer.ui:63
-msgid "Toggle fullscreen"
-msgstr "ورود به حالت تمام صفحه"
-
-#: fractal-gtk/res/ui/media_viewer.ui:226
-msgid "Loading more media"
-msgstr "بارگذاری رسانه بیشتر"
-
-#: fractal-gtk/res/ui/message_menu.ui:22
-msgid "Reply"
-msgstr "پاسخ"
-
-#: fractal-gtk/res/ui/message_menu.ui:29
-msgid "Open With…"
-msgstr "گشودن با…"
-
-#: fractal-gtk/res/ui/message_menu.ui:37
-msgid "Save Image As…"
-msgstr "ذخیره تصویر به عنوان…"
-
-#: fractal-gtk/res/ui/message_menu.ui:45
-msgid "Save Video As…"
-msgstr "ذخیره ویدیو به عنوان…"
-
-#: fractal-gtk/res/ui/message_menu.ui:53
-msgid "Copy Image"
-msgstr "رونوشت از تصویر"
-
-#: fractal-gtk/res/ui/message_menu.ui:61
-msgid "Copy Selection"
-msgstr "رونوشت قسمتی که انتخاب شده"
-
-#: fractal-gtk/res/ui/message_menu.ui:69
-msgid "Copy Text"
-msgstr "رونوشت از متن"
-
-#: fractal-gtk/res/ui/message_menu.ui:79
-msgid "View Source"
-msgstr "مشاهده منبع"
-
-#: fractal-gtk/res/ui/message_menu.ui:94
-msgid "Delete Message"
-msgstr "حذف پیام"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:21
-msgid "Message Source"
-msgstr "منبع پیام"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:24
-msgid "Copy To Clipboard"
-msgstr "رونوشت به تخته‌گیره"
-
-#: fractal-gtk/res/ui/new_room.ui:21
-msgid "Create new room"
-msgstr "ایجاد اتاق جدید"
-
-#: fractal-gtk/res/ui/new_room.ui:32
-msgid "Create"
-msgstr "ایجاد"
-
-#: fractal-gtk/res/ui/new_room.ui:71
-msgid "Room name"
-msgstr "نام اتاق"
-
-#: fractal-gtk/res/ui/new_room.ui:100
-msgid "Visibility"
-msgstr "دید"
-
-#: fractal-gtk/res/ui/new_room.ui:114
-msgid "Private"
-msgstr "خصوصی"
-
-#: fractal-gtk/res/ui/new_room.ui:125
-msgid "Public"
-msgstr "عمومی"
-
-#: fractal-gtk/res/ui/password_dialog.ui:22 fractal-gtk/src/widgets/file_dialog.rs:12
-#: fractal-gtk/src/widgets/file_dialog.rs:33
-msgid "_Cancel"
-msgstr "_لغو"
-
-#: fractal-gtk/res/ui/password_dialog.ui:35
-msgid "Ch_ange"
-msgstr "_تغییر"
-
-#: fractal-gtk/res/ui/password_dialog.ui:125
-msgid "The passwords do not match."
-msgstr "گذرواژه‌ها با هم تفاوت دارند."
-
-#: fractal-gtk/res/ui/password_dialog.ui:143
-msgid "_Verify New Password"
-msgstr "_تأیید گذرواژه جدید"
-
-#: fractal-gtk/res/ui/password_dialog.ui:160
-msgid "_New Password"
-msgstr "گذرواژه _جدید"
-
-#: fractal-gtk/res/ui/password_dialog.ui:204
-msgid "Current _Password"
-msgstr "_گذرواژهٔ کنونی"
-
-#: fractal-gtk/res/ui/room_menu.ui:8
-msgid "Room Details"
-msgstr "اطّلاعات اتاق"
-
-#: fractal-gtk/res/ui/room_menu.ui:12
-msgid "Invite to This Room"
-msgstr "دعوت به این اتاق"
-
-#: fractal-gtk/res/ui/room_menu.ui:18
-msgid "Leave Room"
-msgstr "خروج از اتاق"
-
-#: fractal-gtk/res/ui/room_settings.ui:14
-msgid "Details"
-msgstr "جزئیات"
-
-#: fractal-gtk/res/ui/room_settings.ui:112
-msgid "Unknown"
-msgstr "ناشناخته"
-
-#: fractal-gtk/res/ui/room_settings.ui:133
-msgid "Add name"
-msgstr "افزودن نام"
-
-#: fractal-gtk/res/ui/room_settings.ui:160
-msgid "Add topic"
-msgstr "افزودن موضوع"
-
-#: fractal-gtk/res/ui/room_settings.ui:179
-msgid "Type in your room topic"
-msgstr "نام موضوع اتاق خود را بنویسید"
-
-#: fractal-gtk/res/ui/room_settings.ui:202
-msgid "No room description"
-msgstr "بدون توضیحات اتاق"
-
-#: fractal-gtk/res/ui/room_settings.ui:230
-msgid "Notifications"
-msgstr "آگهی‌ها"
-
-#: fractal-gtk/res/ui/room_settings.ui:258
-msgid "Notification sounds"
-msgstr "صدای آگهی‌ها"
-
-#: fractal-gtk/res/ui/room_settings.ui:290
-msgid "For all messages"
-msgstr "برای همه پیام‌ها"
-
-#: fractal-gtk/res/ui/room_settings.ui:322
-msgid "Only for mentions"
-msgstr "فقط برای نام‌برده"
-
-#: fractal-gtk/res/ui/room_settings.ui:352
-msgid "Shared Media"
-msgstr "رسانهٔ هم‌رسانی شده"
-
-#: fractal-gtk/res/ui/room_settings.ui:394
-msgid "photos"
-msgstr "تصویر‌ها"
-
-#: fractal-gtk/res/ui/room_settings.ui:424
-msgid "videos"
-msgstr "ویدیوها"
-
-#: fractal-gtk/res/ui/room_settings.ui:454
-msgid "documents"
-msgstr "اسناد"
-
-#: fractal-gtk/res/ui/room_settings.ui:475
-msgid "New members can see"
-msgstr "اعضای جدید می‌توانند ببینند"
-
-#: fractal-gtk/res/ui/room_settings.ui:507
-msgid "All room history"
-msgstr "تمام تاریخچهٔ اتاق"
-
-#: fractal-gtk/res/ui/room_settings.ui:539
-msgid "History after they were invited"
-msgstr "تاریخچه پس از دعوت آنها"
-
-#: fractal-gtk/res/ui/room_settings.ui:569
-msgid "Room Visibility"
-msgstr "دید اتاق"
-
-#: fractal-gtk/res/ui/room_settings.ui:604
-msgid "Allow guests"
-msgstr "اجازه به مهمان‌ها"
-
-#: fractal-gtk/res/ui/room_settings.ui:635
-msgid "Allow joining without invite"
-msgstr "اجازه به عضویت بدون دعوت"
-
-#: fractal-gtk/res/ui/room_settings.ui:666
-msgid "Publish in room directory"
-msgstr "انتشار در فهرست اتاق"
-
-#: fractal-gtk/res/ui/room_settings.ui:695
-msgid "Join addresses"
-msgstr "عضویت به آدرس‌ها"
-
-#: fractal-gtk/res/ui/room_settings.ui:749
-msgid "members"
-msgstr "اعضا"
-
-#: fractal-gtk/res/ui/room_settings.ui:761
-msgid "Invite New Member"
-msgstr "دعوت عضو جدید"
-
-#: fractal-gtk/res/ui/room_settings.ui:786
-msgid "Search for room members"
-msgstr "جست‌وجو برای اعضای اتاق"
-
-#: fractal-gtk/res/ui/scroll_widget.ui:63
-msgid "Scroll to bottom"
-msgstr "پیمایش به پایین"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:30
-msgid "Show rooms from:"
-msgstr "نمایش اتاق‌ها از:"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:65
-msgid "Your homeserver"
-msgstr "کارساز خانگی شما"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:93
-msgid "Other Protocol"
-msgstr "شیوه‌نامه‌ای دیگر"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:139
-msgid "Other Homeserver"
-msgstr "کارسازهای خانگی دیگر"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:156
-msgid "Homeserver URL"
-msgstr "نشانی کارساز خانگی"
-
-#: fractal-gtk/src/actions/account_settings.rs:31
-#: fractal-gtk/src/actions/room_settings.rs:37
-msgid "Images"
-msgstr "تصاویر"
-
-#: fractal-gtk/src/actions/account_settings.rs:32
-#: fractal-gtk/src/actions/room_settings.rs:39
-msgid "Select a new avatar"
-msgstr "انتخاب یک چهرک جدید"
-
-#: fractal-gtk/src/actions/global.rs:320
-msgid "Select a file"
-msgstr "انتخاب یک پرونده"
-
-#: fractal-gtk/src/actions/message.rs:57
-msgid "This message has no source."
-msgstr "این پیام منبع ندارد."
-
-#: fractal-gtk/src/actions/message.rs:131 fractal-gtk/src/actions/message.rs:162
-msgid "Could not download the file"
-msgstr "پرونده بارگیری نشد"
-
-#: fractal-gtk/src/actions/message.rs:138
-msgid "Couldn’t save file"
-msgstr "پرونده ذخیره نشد"
-
-#: fractal-gtk/src/actions/room_settings.rs:53
-msgid "Couldn’t open file"
-msgstr "پرونده باز نشد"
-
-#: fractal-gtk/src/appop/account.rs:65
-msgid "The validation code is not correct."
-msgstr "کد اعتبارسنجی نادرست است."
-
-#: fractal-gtk/src/appop/account.rs:73
-msgid "Enter the code received via SMS"
-msgstr "کدی که از طریق پیامک ارسال شده است را وارد کنید"
-
-#: fractal-gtk/src/appop/account.rs:88 fractal-gtk/src/appop/account.rs:144
+#: data/resources/ui/account-settings-change-password-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:54
+msgid "Change Password"
+msgstr "تغییر گذرواژه"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:76
+msgid "New Password"
+msgstr "گذرواژهٔ جدید"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:81
+msgid "Confirm New Password"
+msgstr "تأیید گذواژهٔ جدید"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:94
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
+#: src/session/content/room_history/verification_info_bar.rs:181
 msgid "Continue"
 msgstr "ادامه"
 
-#: fractal-gtk/src/appop/account.rs:134
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:9
+#: data/resources/ui/account-settings-user-page.ui:115
+msgid "Deactivate Account"
+msgstr "غیرفعّال کردن حساب"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:79
+#: data/resources/ui/account-settings-user-page.ui:80
+msgid "Matrix User ID"
+msgstr "شناسهٔ کاربری ماتریکس"
+
+#: data/resources/ui/account-settings-device-row.ui:59
+#: src/session/content/verification/identity_verification_widget.rs:494
+#: src/session/content/verification/identity_verification_widget.rs:499
+#: src/session/content/verification/identity_verification_widget.rs:503
+#: src/session/content/verification/identity_verification_widget.rs:523
+#: src/session/content/verification/identity_verification_widget.rs:526
+#: src/session/content/verification/identity_verification_widget.rs:530
+msgid "Verify Session"
+msgstr "تأیید نشست"
+
+#: data/resources/ui/account-settings-devices-page.ui:5
+msgid "Sessions"
+msgstr "نشست‌ها"
+
+#: data/resources/ui/account-settings-devices-page.ui:9
+#: data/resources/ui/account-settings-devices-page.ui:13
+msgid "Current Session"
+msgstr "نشست کنونی"
+
+#: data/resources/ui/account-settings-devices-page.ui:24
+#: data/resources/ui/account-settings-devices-page.ui:28
+msgid "Other Active Sessions"
+msgstr "نشست‌های فعّال دیگر"
+
+#: data/resources/ui/account-settings-user-page.ui:5
+#: data/resources/ui/content-room-details.ui:10
+msgid "General"
+msgstr "عمومی"
+
+#: data/resources/ui/account-settings-user-page.ui:38
+msgid "Name"
+msgstr "نام"
+
+#: data/resources/ui/account-settings-user-page.ui:63
+msgid "Advanced Information"
+msgstr "اطّلاعات پیشرفته"
+
+#: data/resources/ui/account-settings-user-page.ui:66
+msgid "Homeserver"
+msgstr "کارساز خانگی"
+
+#: data/resources/ui/account-settings-user-page.ui:94
+msgid "Session ID"
+msgstr "شناسهٔ نشست"
+
+#: data/resources/ui/account-settings.ui:4
+msgid "Account Settings"
+msgstr "تنظیمات حساب"
+
+#: data/resources/ui/attachment-dialog.ui:14
+#: data/resources/ui/content-invite-subpage.ui:12
+#: data/resources/ui/room-creation.ui:16
+msgid "_Cancel"
+msgstr "_لغو"
+
+#: data/resources/ui/attachment-dialog.ui:21
+msgid "_Send"
+msgstr "_ارسال"
+
+#: data/resources/ui/components-auth-dialog.ui:20
+msgid "Authentication"
+msgstr "احراز هویت"
+
+#: data/resources/ui/components-auth-dialog.ui:43
+msgid "Please authenticate the operation with your password"
+msgstr "لطفاً فرایند را با گذرواژه‌تان احراز هویت کنید"
+
+#: data/resources/ui/components-auth-dialog.ui:70
 msgid ""
-"In order to add this email address, go to your inbox and follow the link you "
-"received. Once you’ve done that, click Continue."
-msgstr ""
-"برای افزودن این رایانامه، به صندوق پستی خود بروید و روی پیوندی که دریافت کرده‌اید "
-"کلیک کنید. پس از انجام این کار، روی ادامه کلیک کنید."
+"Please authenticate the operation via the browser and once completed press "
+"confirm."
+msgstr "لطفاً فرایند را با مرورگر احراز هویت کنید و سپس روی تأیید بزنید."
 
-#: fractal-gtk/src/appop/account.rs:348
-msgid "Are you sure you want to delete your account?"
-msgstr "آیا مطمئنید که می‌خواهید حساب خود را حذف کنید؟"
+#: data/resources/ui/components-auth-dialog.ui:80
+msgid "Authenticate via Browser"
+msgstr "احراز هویت با مرورگر"
 
-#: fractal-gtk/src/appop/mod.rs:176
-msgid "Fractal [{}]"
-msgstr "فرکتال [{}]"
+#: data/resources/ui/components-auth-dialog.ui:113
+#: data/resources/ui/identity-verification-widget.ui:452
+#: src/components/editable_avatar.rs:344
+#: src/session/content/room_history/verification_info_bar.rs:182
+#: src/session/room/event_actions.rs:237
+msgid "Cancel"
+msgstr "لغو"
 
-#: fractal-gtk/src/appop/notify.rs:18
-msgid "An audio file has been added to the conversation."
-msgstr "یک پرونده صوتی به گفت‌وگو اضافه شد."
+#: data/resources/ui/components-auth-dialog.ui:118
+#: data/resources/ui/identity-verification-widget.ui:442
+msgid "Confirm"
+msgstr "تأیید"
 
-#: fractal-gtk/src/appop/notify.rs:19
-msgid "An image has been added to the conversation."
-msgstr "یک تصویر به گفت‌وگو اضافه شد."
+#: data/resources/ui/components-loading-listbox-row.ui:32
+msgid "Try again"
+msgstr "تلاش دوباره"
 
-#: fractal-gtk/src/appop/notify.rs:20
-msgid "A video has been added to the conversation."
-msgstr "یک ویدیو به گفت‌وگو اضافه شد."
+#: data/resources/ui/content-explore.ui:64
+msgid "No rooms matching the search were found"
+msgstr "اتاقی مطابق با جست‌وجو پیدا نشد"
 
-#: fractal-gtk/src/appop/notify.rs:21
-msgid "A file has been added to the conversation."
-msgstr "یک پرونده به گفت‌وگو اضافه شد."
+#: data/resources/ui/content-explore.ui:96
+msgid "Room List"
+msgstr "سیاههٔ اتاق‌ها"
 
-#: fractal-gtk/src/appop/notify.rs:26
-msgid " (direct message)"
-msgstr " (پیام مستقیم)"
+#: data/resources/ui/content-invite-subpage.ui:18
+msgid "I_nvite"
+msgstr "_دعوت"
 
-#: fractal-gtk/src/appop/room.rs:352
-msgid "Leave {room_name}?"
-msgstr "خروج از {room_name}؟"
+#: data/resources/ui/content-invite-subpage.ui:87
+msgid "Search for users to invite them to this room."
+msgstr "کاربرانی که می‌خواهید به این اتاق دعوت کنید را جست‌وجو کنید."
 
-#: fractal-gtk/src/appop/room.rs:539
-msgid "The room ID is malformed"
-msgstr "شناسه اتاق بد شکل است"
+#: data/resources/ui/content-invite-subpage.ui:123
+msgid "No users matching the search were found."
+msgstr "کاربری مطابق با جست‌وجو پیدا نشد."
 
-#: fractal-gtk/src/appop/room.rs:607
-msgid "EMPTY ROOM"
-msgstr "اتاق خالی"
+#: data/resources/ui/content-invite-subpage.ui:132
+msgid "An error occurred while searching for matches"
+msgstr "خطای هنگام جست‌وجو رخ داد"
 
-#: fractal-gtk/src/appop/room.rs:609
-msgid "{m1} and {m2}"
-msgstr "{m1} و {m2}"
+#: data/resources/ui/content-invite.ui:26 data/resources/ui/content-invite.ui:51
+msgid "Invite"
+msgstr "دعوت"
 
-#: fractal-gtk/src/appop/room.rs:610
-msgid "{m1} and Others"
-msgstr "{m1} و دیگران"
+#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:29
+msgid "_Reject"
+msgstr "_رد کردن"
 
-#: fractal-gtk/src/appop/room.rs:710
-msgid "Several users are typing…"
-msgstr "چند کاربر در حال نوشتن هستند…"
+#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:24
+msgid "_Accept"
+msgstr "_پذیرش"
 
-#: fractal-gtk/src/appop/room.rs:713
-msgid "<b>{}</b> is typing…"
-msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
-msgstr[0] "<b>{}</b> در حال نوشتن…"
-msgstr[1] "<b>{}</b> و <b>{}</b> در حال نوشتن…"
+#: data/resources/ui/content-markdown-popover.ui:17
+msgid "_Markdown"
+msgstr "_مارک‌دون"
 
-#: fractal-gtk/src/appop/sync.rs:24
-msgid "Syncing, this could take a while"
-msgstr "در حال همگام‌سازی، ممکن است کمی طول بکشد"
+#: data/resources/ui/content-markdown-popover.ui:37
+msgid "> quote"
+msgstr "> نقل قول"
 
-#: fractal-gtk/src/backend/directory.rs:35 fractal-gtk/src/backend/directory.rs:81
-msgid "Error searching for rooms"
-msgstr "خطا در جست‌وجو برای اتاق‌ها"
+#: data/resources/ui/content-markdown-popover.ui:46
+msgid "**bold**"
+msgstr "**ضخیم**"
 
-#: fractal-gtk/src/backend/register.rs:42
-msgid "Can’t login, try again"
-msgstr "نمی‌توان وارد شد، دوباره امتحان کنید"
+#: data/resources/ui/content-markdown-popover.ui:59
+msgid "`code`"
+msgstr "`کد`"
 
-#: fractal-gtk/src/backend/room.rs:403
-msgid "Error deleting message"
-msgstr "خطا در حذف پیام"
+#: data/resources/ui/content-markdown-popover.ui:69
+msgid "*italic*"
+msgstr "*کج*"
 
-#: fractal-gtk/src/backend/room.rs:443
-msgid "Can’t join the room, try again."
-msgstr "نمی‌توان عضو اتاق شد، دوباره امتحان کنید."
+#: data/resources/ui/content-member-page.ui:5
+msgid "Members"
+msgstr "اعضا"
 
-#: fractal-gtk/src/backend/room.rs:675 fractal-gtk/src/backend/room.rs:727
-msgid "Can’t create the room, try again"
-msgstr "نمی‌توان اتاق ساخت، دوباره امتحان کنید"
+#: data/resources/ui/content-member-page.ui:24
+msgid "Invite new member"
+msgstr "دعوت عضو جدید"
 
-#: fractal-gtk/src/backend/user.rs:113
-msgid "Sorry, account settings can’t be loaded."
-msgstr "متأسفیم، تنظیمات حساب نمی‌تواند بارگذاری شود."
+#: data/resources/ui/content-member-page.ui:33
+msgid "Search for room members"
+msgstr "جست‌وجو برای اعضای اتاق"
 
-#: fractal-gtk/src/backend/user.rs:141
-msgid "Email is already in use"
-msgstr "رایانامه هم‌اکنون استفاده شده است"
+#: data/resources/ui/content-message-file.ui:21
+msgid "Open"
+msgstr "گشودن"
 
-#: fractal-gtk/src/backend/user.rs:144
-msgid "Please enter a valid email address."
-msgstr "لطفاً یک رایانامه معتبر وارد کنید."
+#: data/resources/ui/content-message-file.ui:28
+#: src/session/room/event_actions.rs:236
+msgid "Save"
+msgstr "ذخیره"
 
-#: fractal-gtk/src/backend/user.rs:147
-msgid "Couldn’t add the email address."
-msgstr "آدرس رایانامه اضافه نشد."
+#: data/resources/ui/content-room-details.ui:4
+#: src/session/content/room_details/mod.rs:265
+msgid "Room Details"
+msgstr "جزئیات اتاق"
 
-#: fractal-gtk/src/backend/user.rs:184
-msgid "Phone number is already in use"
-msgstr "شماره تلفن هم‌اکنون استفاده شده است"
+#: data/resources/ui/content-room-details.ui:100
+msgid "Description"
+msgstr "توضیحات"
 
-#: fractal-gtk/src/backend/user.rs:188
+#: data/resources/ui/content-room-history.ui:6
+msgid "Room _Details"
+msgstr "_جزئیات اتاق"
+
+#: data/resources/ui/content-room-history.ui:11
+msgid "_Invite New Member"
+msgstr "_دعوت عضو جدید"
+
+#: data/resources/ui/content-room-history.ui:18 data/resources/ui/sidebar.ui:58
+msgid "_Leave Room"
+msgstr "_ترک اتاق"
+
+#: data/resources/ui/content-room-history.ui:27
+msgid "_Location"
+msgstr "_مکان"
+
+#: data/resources/ui/content-room-history.ui:32
+msgid "_Attachment"
+msgstr "_پیوست"
+
+#: data/resources/ui/content-room-history.ui:56
+msgid "Back"
+msgstr "بازگشت"
+
+#: data/resources/ui/content-room-history.ui:81
+msgid "Room Settings"
+msgstr "تنظیمات اتاق"
+
+#: data/resources/ui/content-room-history.ui:89
+msgid "Toggle Room History Search"
+msgstr "تعویض حالت جست‌وجوی تاریخچهٔ اتاق"
+
+#: data/resources/ui/content-room-history.ui:107
+msgid "Room History Search"
+msgstr "جست‌وجوی تاریخچهٔ اتاق"
+
+#: data/resources/ui/content-room-history.ui:142
+msgid "Unable to load room"
+msgstr "ناتوانی در بار کردن اتاق"
+
+#: data/resources/ui/content-room-history.ui:143
+msgid "Check your network connection."
+msgstr "اتّصال شبکه‌تان را بررسی کنید."
+
+#: data/resources/ui/content-room-history.ui:146
+msgid "Try Again"
+msgstr "تلاش دوباره"
+
+#: data/resources/ui/content-room-history.ui:171
+msgid "Scroll to bottom"
+msgstr "لغزش به پایین"
+
+#: data/resources/ui/content-room-history.ui:183
+msgid "Drop Here to Send"
+msgstr "برای ارسال، این‌جا بیندازید"
+
+#: data/resources/ui/content-room-history.ui:204
+msgid "Room History"
+msgstr "تاریخچهٔ اتاق"
+
+#: data/resources/ui/content-room-history.ui:242
+msgid "Enable Markdown Formatting"
+msgstr "به کار انداختن قالب‌بندی مارک‌دون"
+
+#: data/resources/ui/content-room-history.ui:263
+msgid "Message Entry"
+msgstr "ورودی پیام"
+
+#: data/resources/ui/content-room-history.ui:277
+msgid "Open Emoji Picker"
+msgstr "گشودن گزینشگر ایموجی"
+
+#: data/resources/ui/content-room-history.ui:288
+msgid "Open Message Menu"
+msgstr "گشودن فهرست پیام"
+
+#: data/resources/ui/content-room-history.ui:303
+msgid "Send Message"
+msgstr "ارسال پیام"
+
+#: data/resources/ui/content-state-creation.ui:19
+msgid "Previous room"
+msgstr "اتاق قبلی"
+
+#: data/resources/ui/content-state-tombstone.ui:14
+msgid "There is a newer version of this room."
+msgstr "نگارش جدیدتری از این اتاق موجود است."
+
+#: data/resources/ui/content-state-tombstone.ui:19
+msgid "Go there"
+msgstr "رفتن به آن‌جا"
+
+#: data/resources/ui/content.ui:36
+msgid "No Room Selected"
+msgstr "اتاقی گزیده نشده است"
+
+#: data/resources/ui/content.ui:37
+msgid "Join a room to start chatting."
+msgstr "برای شروع گفت‌وگو به یک اتاق بپیوندید."
+
+#: data/resources/ui/error-page.ui:40
 msgid ""
-"Please enter your phone number in the format: \n"
-" + your country code and your phone number."
+"It seems like one of the Fractal sessions stored in the Secret Service is "
+"corrupted. If you know how to fix it you should do so."
 msgstr ""
-"لطفاً شماره تلفن خود را با این صورت وارد کنید: \n"
-" + کد کشور و شماره تلفن."
 
-#: fractal-gtk/src/backend/user.rs:192
-msgid "Couldn’t add the phone number."
-msgstr "شماره تلفن اضافه نشد."
+#: data/resources/ui/error-page.ui:51
+msgid ""
+"Alternatively, we could disconnect this session for you. This means you will "
+"have to login again and you will lose access to your encrypted messages, unless "
+"you have a session open in another client or you have already backed up your "
+"encryption keys."
+msgstr ""
 
-#: fractal-gtk/src/backend/user.rs:330
-msgid "Couldn’t change the password"
-msgstr "گذرواژه عوض نشد"
+#: data/resources/ui/error-page.ui:74
+msgid "Clicking this button might disconnect more than one session!"
+msgstr ""
 
-#: fractal-gtk/src/backend/user.rs:383
-msgid "Couldn’t delete the account"
-msgstr "حساب شما حذف نشد"
+#: data/resources/ui/error-page.ui:86
+msgid "Disconnect the corrupted session"
+msgstr ""
 
-#: fractal-gtk/src/ui/about.rs:12
-msgid "A Matrix.org client for GNOME"
-msgstr "کارخواه ماتریکس برای گنوم"
+#: data/resources/ui/error-page.ui:109
+msgid ""
+"Fractal relies on a Secret Service Provider to manage your sensitive session "
+"information and an error occurred while we were trying to store or get your "
+"session."
+msgstr ""
 
-#: fractal-gtk/src/ui/about.rs:14
-msgid "© 2017–2020 Daniel García Moreno, et al."
-msgstr "© ۲۰۱۷–۲۰۲۰ دانیل گارسیا مورنو، و همکاران."
+#: data/resources/ui/error-page.ui:124
+msgid ""
+"Here are a few things that might help you fix issues with the Secret Service:"
+msgstr ""
 
-#: fractal-gtk/src/ui/about.rs:21
+#: data/resources/ui/error-page.ui:147
+msgid "Make sure you have a Secret Service Provider installed, like gnome-keyring."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:172
+msgid "Check that you have a default keyring and that it is unlocked."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:187
+msgid ""
+"Check the application logs and your distribution’s documentation for more "
+"details."
+msgstr ""
+
+#: data/resources/ui/event-menu.ui:11
+msgid "_Reply"
+msgstr "_پاسخ"
+
+#: data/resources/ui/event-menu.ui:16
+msgid "_Edit"
+msgstr "_ویرایش"
+
+#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:106
+msgid "_Forward"
+msgstr "_پیشروی"
+
+#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:113
+msgid "_Select"
+msgstr "_گزینش"
+
+#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:120
+msgid "_Copy Text"
+msgstr "_رونوشت از متن"
+
+#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:82
+msgid "_Copy Image"
+msgstr "_رونوشت از تصویر"
+
+#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:87
+msgid "S_ave Image"
+msgstr "_ذخیرهٔ تصویر"
+
+#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:92
+msgid "S_ave Video"
+msgstr "_ذخیرهٔ ویدیو"
+
+#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:97
+msgid "S_ave Audio"
+msgstr "_ذخیرهٔ صدا"
+
+#: data/resources/ui/event-menu.ui:61 data/resources/ui/event-menu.ui:126
+msgid "_Permalink"
+msgstr "_پایاپیوند"
+
+#: data/resources/ui/event-menu.ui:66 data/resources/ui/event-menu.ui:131
+msgid "_View Source"
+msgstr "_مشاهده منبع"
+
+#: data/resources/ui/event-menu.ui:73 data/resources/ui/event-menu.ui:138
+msgid "Re_move"
+msgstr "_برداشتن"
+
+#: data/resources/ui/event-source-dialog.ui:5
+msgid "Event Source"
+msgstr "منبع رویداد"
+
+#: data/resources/ui/greeter.ui:43
+msgid ""
+"You are running an early stage development version. Be aware it is a work in "
+"progress and far from complete yet."
+msgstr ""
+
+#. Fractal is the application name and shouldn't be translated
+#: data/resources/ui/greeter.ui:83
+msgid "Welcome to Fractal"
+msgstr "به فرکتال خوش آمدید"
+
+#: data/resources/ui/greeter.ui:108
+msgid "_Log in"
+msgstr "_ورود"
+
+#: data/resources/ui/greeter.ui:118
+msgid "_Create Account"
+msgstr "_ایجاد حساب"
+
+#: data/resources/ui/identity-verification-widget.ui:46
+#: src/session/content/room_history/verification_info_bar.rs:177
+msgid "Decline"
+msgstr "رد کردن"
+
+#: data/resources/ui/identity-verification-widget.ui:56
+#: src/session/content/room_history/verification_info_bar.rs:176
+msgid "Verify"
+msgstr "تأیید اعتبار"
+
+#: data/resources/ui/identity-verification-widget.ui:109
+#: data/resources/ui/identity-verification-widget.ui:213
+msgid "Can’t scan QR code?"
+msgstr "نمی‌توانید رمز QR را پویش کنید؟"
+
+#: data/resources/ui/identity-verification-widget.ui:117
+#: data/resources/ui/identity-verification-widget.ui:230
+msgid "Compare Emoji"
+msgstr "مقایسهٔ ایموجی"
+
+#: data/resources/ui/identity-verification-widget.ui:144
+msgid "Scan Complete"
+msgstr "پویش تکمیل شد"
+
+#: data/resources/ui/identity-verification-widget.ui:222
+msgid "Scan QR code with this session"
+msgstr "پویش رمز QR با این نشست"
+
+#: data/resources/ui/identity-verification-widget.ui:290
+msgid "Do Not Match"
+msgstr "یک‌سان نیستند"
+
+#: data/resources/ui/identity-verification-widget.ui:300
+msgid "Match"
+msgstr "یک‌سانند"
+
+#: data/resources/ui/identity-verification-widget.ui:350
+msgid "Done"
+msgstr "تمام"
+
+#: data/resources/ui/identity-verification-widget.ui:419
+msgid "Confirm Scan"
+msgstr "تأیید پویش"
+
+#: data/resources/ui/login-advanced-dialog.ui:5
+msgid "Homeserver Discovery"
+msgstr "کشف کارساز خانگی"
+
+#: data/resources/ui/login-advanced-dialog.ui:14
+msgid ""
+"Auto-discovery, also known as “well-known lookup”, allows to discover the URL of "
+"a Matrix homeserver from a domain name. This should only be disabled if your "
+"homeserver doesn’t support auto-discovery or if you want to provide the URL "
+"yourself."
+msgstr ""
+
+#: data/resources/ui/login-advanced-dialog.ui:17
+msgid "_Auto-discovery"
+msgstr "_کشف خودکار"
+
+#: data/resources/ui/login.ui:23
+msgid "_Next"
+msgstr "_بعدی"
+
+#: data/resources/ui/login.ui:130 src/login/mod.rs:341
+msgid "Homeserver URL"
+msgstr "نشانی کارساز خانگی"
+
+#: data/resources/ui/login.ui:153
+msgid "Matrix Username"
+msgstr "نام کاربری ماتریکس"
+
+#: data/resources/ui/login.ui:165
+msgid "Password"
+msgstr "گذرواژه"
+
+#: data/resources/ui/login.ui:171
+msgid "_Forgot Password?"
+msgstr "گذرواژه را _فراموش کرده‌اید؟"
+
+#: data/resources/ui/login.ui:216
+msgid "Please follow the steps in the browser."
+msgstr "لطفاً مراحل را در مرورگر دنبال کنید."
+
+#: data/resources/ui/member-menu.ui:6
+msgid "_Verify"
+msgstr "_تأیید اعتبار"
+
+#: data/resources/ui/member-menu.ui:14
+msgid "Make _Mod"
+msgstr "_ناظر کردن"
+
+#: data/resources/ui/member-menu.ui:20
+msgid "Make _Admin"
+msgstr "_مدیر کردن"
+
+#: data/resources/ui/member-menu.ui:26
+msgid "_Kick"
+msgstr "_اخراج"
+
+#: data/resources/ui/room-creation.ui:4
+msgid "Create new Room"
+msgstr "ایجاد اتاق جدید"
+
+#: data/resources/ui/room-creation.ui:22
+msgid "C_reate"
+msgstr "_ایجاد"
+
+#: data/resources/ui/room-creation.ui:58
+msgid "Room Name"
+msgstr "نام اتاق"
+
+#: data/resources/ui/room-creation.ui:93
+msgid "Visibility"
+msgstr "پدیداری"
+
+#: data/resources/ui/room-creation.ui:103
+msgid "_Private"
+msgstr "_خصوصی"
+
+#: data/resources/ui/room-creation.ui:110
+msgid "P_ublic"
+msgstr "_عمومی"
+
+#: data/resources/ui/room-creation.ui:122
+msgid "Room Address"
+msgstr "نشانی‌های اتاق"
+
+#: data/resources/ui/session-verification.ui:49
+#: src/session/content/verification/identity_verification_widget.rs:538
+msgid "Get Another Device"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:60
+#: src/session/content/verification/identity_verification_widget.rs:540
+msgid "Accept the verification request from another session or device."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:73
+msgid "No other devices logged into this account?"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:81
+#: data/resources/ui/session-verification.ui:176
+msgid "Recovery"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:91
+#: src/session/content/verification/session_verification.rs:240
+msgid "Reset"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:128
+msgid "Setup Encryption Identity"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:139
+msgid ""
+"You need to setup an encryption identity, since this is the first time you "
+"logged into your account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:147
+msgid "Setup"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:187
+msgid ""
+"Without another device you need a recovery passphrase or key to access your "
+"messages"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:195
+#: data/resources/ui/session-verification.ui:250
+msgid "Recovery Passphrase"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:204
+#: data/resources/ui/session-verification.ui:314
+msgid "Recovery Key"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:213
+msgid ""
+"If you don’t have any of these you can reset your identity, but be aware this "
+"makes your old messages inaccessible forever."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:222
+msgid "Reset Identity"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:261
+msgid "Your Recovery Passphrase was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:269
+msgid "If you opted for a Recovery Key instead go back and choose that option."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:280
+msgid "Passphrase"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:285
+#: data/resources/ui/session-verification.ui:350
+#, fuzzy
+#| msgid "_Next"
+msgid "Next"
+msgstr "_بعدی"
+
+#: data/resources/ui/session-verification.ui:325
+msgid "Your Recovery Key was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:333
+msgid ""
+"If you opted for a Recovery Passphrase instead go back and choose that option."
+msgstr ""
+
+#: data/resources/ui/shortcuts.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "عمومی"
+
+#: data/resources/ui/shortcuts.ui:14
+#, fuzzy
+#| msgctxt "shortcut window"
+#| msgid "Keyboard Shortcuts"
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "میان‌برهای صفحه‌کلید"
+
+#: data/resources/ui/shortcuts.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "خروج"
+
+#: data/resources/ui/shortcuts.ui:26
+#, fuzzy
+#| msgid "Search for room members"
+msgctxt "shortcut window"
+msgid "Search Room List"
+msgstr "جست‌وجو برای اعضای اتاق"
+
+#: data/resources/ui/shortcuts.ui:32
+#, fuzzy
+#| msgid "New Room"
+msgctxt "shortcut window"
+msgid "Close Room"
+msgstr "اتاق جدید"
+
+#: data/resources/ui/sidebar.ui:6
+#, fuzzy
+#| msgid "New Room"
+msgid "_New Room"
+msgstr "اتاق جدید"
+
+#: data/resources/ui/sidebar.ui:12
+#, fuzzy
+#| msgctxt "shortcut window"
+#| msgid "Keyboard Shortcuts"
+msgid "_Keyboard Shortcuts"
+msgstr "میان‌برهای صفحه‌کلید"
+
+#: data/resources/ui/sidebar.ui:16
+msgid "_About Fractal"
+msgstr "_درباره فرکتال"
+
+#: data/resources/ui/sidebar.ui:36
+#, fuzzy
+#| msgid "Favorites"
+msgid "Move to _Favorites"
+msgstr "موارد دلخواه"
+
+#: data/resources/ui/sidebar.ui:41
+#, fuzzy
+#| msgid "Invite to This Room"
+msgid "Move to _Rooms"
+msgstr "دعوت به این اتاق"
+
+#: data/resources/ui/sidebar.ui:46
+msgid "Move to _People"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:51
+msgid "Move to Low _Priority"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:63
+msgid "Re_join Room"
+msgstr "_پیوستن دوباره به اتاق"
+
+#: data/resources/ui/sidebar.ui:68
+#, fuzzy
+#| msgid "New Room"
+msgid "_Forget Room"
+msgstr "اتاق جدید"
+
+#: data/resources/ui/sidebar.ui:87
+#, fuzzy
+#| msgid "Deactivate Account"
+msgid "Switch Accounts"
+msgstr "غیرفعّال کردن حساب"
+
+#: data/resources/ui/sidebar.ui:109
+#, fuzzy
+#| msgid "Account Settings"
+msgid "App Settings Menu"
+msgstr "تنظیمات حساب"
+
+#: data/resources/ui/sidebar.ui:119
+#, fuzzy
+#| msgid "Room search"
+msgid "Toggle Room Search"
+msgstr "جست‌وجوی اتاق"
+
+#: data/resources/ui/sidebar.ui:131
+#, fuzzy
+#| msgid "Room search"
+msgid "Room Search"
+msgstr "جست‌وجوی اتاق"
+
+#: data/resources/ui/sidebar.ui:132
+#, fuzzy
+#| msgid "Search for room members"
+msgid "Search for a room"
+msgstr "جست‌وجو برای اعضای اتاق"
+
+#: data/resources/ui/sidebar.ui:148
+msgid "Sidebar"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:149
+msgid "Allows to navigate between rooms"
+msgstr ""
+
+#: data/resources/ui/qr-code-scanner.ui:21
+msgid "Unable to connect to Camera"
+msgstr ""
+
+#: src/application.rs:167
 msgid "Learn more about Fractal"
 msgstr "درباره فرکتال بیشتر بدانید"
 
-#: fractal-gtk/src/ui/about.rs:22
+#: src/application.rs:171
+#, fuzzy
+#| msgid "A Matrix.org client for GNOME"
+msgid "A Matrix client for GNOME"
+msgstr "کارخواه ماتریکس برای گنوم"
+
+#: src/application.rs:172
+msgid "© 2017-2022 The Fractal Team"
+msgstr ""
+
+#: src/application.rs:186
 msgid "translator-credits"
 msgstr ""
 "بهزاد اصبحی <behzadasbahi@protonmail.com>\n"
 "سید اسحاق مقیم شهیدانی <eshagh094@gmail.com>"
 
-#: fractal-gtk/src/ui/about.rs:37
+#. This can't be added via the builder
+#: src/application.rs:190
 msgid "Name by"
 msgstr "نام توسط"
 
-#: fractal-gtk/src/ui/attach.rs:26
-msgid "Image from Clipboard"
-msgstr "تصویر از تخته‌گیره"
+#: src/components/editable_avatar.rs:334
+#, fuzzy
+#| msgid "Choose Provider"
+msgid "Choose Avatar"
+msgstr "کارساز(ارائه دهنده) را انتخاب کنید"
 
-#: fractal-gtk/src/ui/attach.rs:42
-msgid "Send"
-msgstr "ارسال"
-
-#. Filename for the attached image
-#: fractal-gtk/src/ui/attach.rs:90
-msgid "image"
-msgstr "تصویر"
-
-#: fractal-gtk/src/ui/invite.rs:131
-msgid "Invite to {name}"
-msgstr "دعوت به {name}"
-
-#: fractal-gtk/src/ui/invite.rs:183
-msgid "Join {room_name}?"
-msgstr "عضویت به {room_name}؟"
-
-#: fractal-gtk/src/ui/invite.rs:187
-msgid "You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</b>"
+#: src/components/editable_avatar.rs:343
+msgid "Choose"
 msgstr ""
-"شما برای پیوستن به اتاق <b>{room_name}</b> توسط <b>{sender_name}</b> دعوت شده‌اید"
 
-#: fractal-gtk/src/ui/invite.rs:192
-msgid "You’ve been invited to join <b>{room_name}</b>"
-msgstr "شما برای عضویت به <b>{room_name}</b> دعوت شده‌اید"
+#: src/components/editable_avatar.rs:364
+msgid "The chosen file is not an image"
+msgstr ""
 
-#: fractal-gtk/src/ui/mod.rs:77
-msgid "You don’t have permission to post to this room"
-msgstr "شما هنوز اجازه ارسال در این اتاق ندارید"
+#: src/components/editable_avatar.rs:370
+msgid "Could not determine the type of the chosen file"
+msgstr ""
 
-#: fractal-gtk/src/ui/mod.rs:159
-msgid "OK"
-msgstr "باشه"
+#: src/components/editable_avatar.rs:375
+msgid "No file was chosen"
+msgstr ""
 
-#: fractal-gtk/src/ui/room_settings.rs:264
-msgid "Room · {} member"
-msgid_plural "Room · {} members"
-msgstr[0] "اتاق · {} عضو"
-msgstr[1] "اتاق · {} عضو"
+#: src/components/location_viewer.rs:95
+msgid "Location at latitude {latitude} and longitude {longitude}"
+msgstr ""
 
-#: fractal-gtk/src/ui/room_settings.rs:699
-msgid "{} member"
-msgid_plural "{} members"
-msgstr[0] "{} عضو"
-msgstr[1] "{} عضو"
+#: src/components/media_content_viewer.rs:161
+msgid "Image not Viewable"
+msgstr ""
 
-#: fractal-gtk/src/widgets/file_dialog.rs:8
-msgid "Save media as"
-msgstr "ذخیرهٔ رسانه به عنوان"
+#: src/components/media_content_viewer.rs:162
+msgid "Audio Clip not Playable"
+msgstr ""
 
-#: fractal-gtk/src/widgets/file_dialog.rs:11
-msgid "_Save"
-msgstr "_ذخیره"
+#: src/components/media_content_viewer.rs:163
+msgid "Video not Playable"
+msgstr ""
 
-#: fractal-gtk/src/widgets/file_dialog.rs:32
-msgid "_Select"
-msgstr "_گزینش"
+#: src/components/media_content_viewer.rs:164
+msgid "File not Viewable"
+msgstr ""
 
-#: fractal-gtk/src/widgets/inline_player.rs:513
-msgid "Could not retrieve file URI"
-msgstr "URI پرونده بازیابی نشد"
+#: src/error_page.rs:108
+msgid "Session removed successfully."
+msgstr ""
 
-#: fractal-gtk/src/widgets/kicked_dialog.rs:46
-msgid "You have been kicked from {}"
-msgstr "شما از {} اخراج شدید"
+#: src/error_page.rs:116
+msgid "Could not remove session from secret storage"
+msgstr ""
 
-#: fractal-gtk/src/widgets/kicked_dialog.rs:50
+#: src/login/mod.rs:336
+msgid "Domain Name"
+msgstr ""
+
+#: src/login/mod.rs:338
+msgid "The domain of your Matrix homeserver, for example gnome.org"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/login/mod.rs:345
+msgid "The URL of your Matrix homeserver, for example {address}"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable
+#. name.
+#: src/login/mod.rs:471
+msgid "Connecting to {domain_name}"
+msgstr ""
+
+#: src/secret.rs:52
+#, fuzzy
+#| msgid "Could not download the file"
+msgid "Could not unlock the secret storage"
+msgstr "پرونده بارگیری نشد"
+
+#: src/secret.rs:55 src/secret.rs:59
+msgid "An unknown error occurred when interacting with the secret storage"
+msgstr ""
+
+#: src/secret.rs:88
+msgid "Malformed homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:95
+msgid "Could not find homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:109
+msgid "Malformed user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:116
+msgid "Could not find user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:125
+msgid "Could not find device ID in stored session"
+msgstr ""
+
+#: src/secret.rs:134
+msgid "Could not find database path in stored session"
+msgstr ""
+
+#: src/secret.rs:145
+msgid "Malformed secret in stored session"
+msgstr ""
+
+#: src/secret.rs:152
+msgid "No secret in stored session"
+msgstr ""
+
+#: src/secret.rs:159
+msgid "Could not get secret in stored session"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable
+#. name.
+#: src/secret.rs:272
+msgid "Fractal: Matrix credentials for {user_id}"
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:147
+msgid "Failed to load connected device."
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:192
+msgid "Failed to load the list of connected devices."
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_row.rs:110
+msgid "Disconnect Session"
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_row.rs:112
+msgid "Log Out"
+msgstr "خروج"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/account_settings/devices_page/device_row.rs:215
+msgid "Failed to disconnect device “{device_name}”"
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_row.rs:228
 msgid ""
-"Kicked by: {}\n"
-" “{}”"
+"Fractal’s support for encryption is unstable so you might lose access to your "
+"encrypted message history. It is recommended to backup your encryption keys from "
+"another Matrix client before proceeding."
 msgstr ""
-"حذف شده توسط: {}\n"
-" «{}»"
 
-#: fractal-gtk/src/widgets/login.rs:95
-msgid "Malformed server URL"
-msgstr "نشانی کارساز نادرست است"
+#. Translators: Time in 24h format
+#: src/session/account_settings/devices_page/device_row.rs:286
+msgid "Last seen at %H:%M"
+msgstr ""
 
-#: fractal-gtk/src/widgets/media_viewer.rs:1026
-msgid "Error while loading previous media"
-msgstr "خطا هنگام بارگیری رسانهٔ قبلی"
+#. Translators: Time in 12h format
+#: src/session/account_settings/devices_page/device_row.rs:289
+msgid "Last seen at %l:%M %p"
+msgstr ""
 
-#: fractal-gtk/src/widgets/members_list.rs:50
-msgid "No matching members found"
-msgstr "هیچ عضو منطبقی یافت نشد"
+#. Translators: this is the word Yesterday followed by
+#. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:298
+#, no-c-format
+msgid "Last seen Yesterday at %H:%M"
+msgstr ""
 
-#: fractal-gtk/src/widgets/members_list.rs:146
-msgid "Admin"
-msgstr "مدیر"
+#. Translators: this is the word Yesterday followed by
+#. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:303
+#, no-c-format
+msgid "Last seen Yesterday at %l:%M %p"
+msgstr ""
 
-#: fractal-gtk/src/widgets/members_list.rs:147
-msgid "Moderator"
-msgstr "ناظر"
+#. Translators: this is the name of the week day followed by
+#. a time in 24h format. i.e. "Last seen Monday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:312
+#, no-c-format
+msgid "Last seen %A at %H:%M"
+msgstr ""
 
-#: fractal-gtk/src/widgets/members_list.rs:148
-msgid "Privileged"
-msgstr "ممتاز"
+#. Translators: this is the week day name followed by
+#. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:317
+#, no-c-format
+msgid "Last seen %A at %l:%M %p"
+msgstr ""
 
-#: fractal-gtk/src/widgets/message.rs:471
-#, c-format
-msgid "Last edited %c"
-msgstr "آخرین ویرایش %c"
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 24h format i.e. "Last seen February 3 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:325
+#, no-c-format
+msgid "Last seen %B %-e at %H:%M"
+msgstr ""
 
-#: fractal-gtk/src/widgets/message.rs:665 fractal-gtk/src/widgets/message.rs:832
-msgid "Save"
-msgstr "ذخیره"
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 12h format i.e. "Last seen February 3 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:331
+#, no-c-format
+msgid "Last seen %B %-e at %l:%M %p"
+msgstr ""
 
-#: fractal-gtk/src/widgets/message.rs:847
-msgid "Open"
-msgstr "گشودن"
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:338
+#, no-c-format
+msgid "Last seen %B %-e %Y at %H:%M"
+msgstr ""
 
-#. Use 12h time format (AM/PM)
-#: fractal-gtk/src/widgets/message.rs:990
-msgid "%l∶%M %p"
-msgstr "%Ol∶%OM %p"
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:344
+#, no-c-format
+msgid "Last seen %B %-e %Y at %l:%M %p"
+msgstr ""
 
-#. Use 24 time format
-#: fractal-gtk/src/widgets/message.rs:993
-msgid "%R"
-msgstr "%OH∶%OM"
+#: src/session/account_settings/user_page/change_password_subpage.rs:217
+msgid "Password must be at least 8 characters long"
+msgstr ""
 
-#: fractal-gtk/src/widgets/room_history.rs:108
+#: src/session/account_settings/user_page/change_password_subpage.rs:220
+msgid "Password must have at least one lower-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:224
+msgid "Password must have at least one upper-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:227
+msgid "Password must have at least one digit"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:229
+msgid "Password must have at least one symbol"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:255
+#, fuzzy
+#| msgid "The passwords do not match."
+msgid "Passwords do not match"
+msgstr "گذرواژه‌ها با هم تفاوت دارند."
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:311
+msgid "Password changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:326
+msgid "Password rejected for being too weak"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:330
+#, fuzzy
+#| msgid "Couldn’t change the password"
+msgid "Could not change password"
+msgstr "گذرواژه عوض نشد"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:197
+msgid "Account successfully deactivated"
+msgstr ""
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:205
+#, fuzzy
+#| msgid "Couldn’t delete the account"
+msgid "Could not deactivate account"
+msgstr "حساب شما حذف نشد"
+
+#: src/session/account_settings/user_page/mod.rs:225
+msgid "Avatar removed successfully"
+msgstr "چهرک با موفقیت برداشته شد"
+
+#: src/session/account_settings/user_page/mod.rs:240
+msgid "Avatar changed successfully"
+msgstr "چهرک با موفقیت تغییر یافت"
+
+#: src/session/account_settings/user_page/mod.rs:283
+msgid "Could not upload avatar"
+msgstr "ناتوانی در بارگذاری چهرک"
+
+#: src/session/account_settings/user_page/mod.rs:305
+msgid "Could not change avatar"
+msgstr "ناتوانی در تغییر چهرک"
+
+#: src/session/account_settings/user_page/mod.rs:334
+msgid "Could not remove avatar"
+msgstr "ناتوانی در برداشتن چهرک"
+
+#: src/session/account_settings/user_page/mod.rs:380
+msgid "Name changed successfully"
+msgstr "نام با موفقیت تغییر یافت"
+
+#: src/session/account_settings/user_page/mod.rs:416
+msgid "Could not change display name"
+msgstr "ناتوانی در تغییر نام نمایشی"
+
+#: src/session/content/explore/public_room_row.rs:222
+msgid "View"
+msgstr "دیدن"
+
+#: src/session/content/explore/public_room_row.rs:224
+msgid "Join"
+msgstr "پیوستن"
+
+#: src/session/content/invite.rs:136
+msgid "{user} invited you"
+msgstr "{user} شما را دعوت کرده است"
+
+#: src/session/content/room_details/member_page/mod.rs:237
+msgid "1 Member"
+msgid_plural "{n} Members"
+msgstr[0] "۱ عضو"
+msgstr[1] "{n} عضو"
+
+#: src/session/content/room_details/member_page/mod.rs:296
+msgid "1 Invited"
+msgid_plural "{n} Invited"
+msgstr[0] "۱ دعوت شده"
+msgstr[1] "{n} دعوت شده"
+
+#: src/session/content/room_details/mod.rs:176
+msgid "Save Details"
+msgstr "ذخیرهٔ جزئیات"
+
+#: src/session/content/room_details/mod.rs:177
+msgid "Edit Details"
+msgstr "ویرایش جزئیات"
+
+#: src/session/content/room_details/mod.rs:228
+msgid "Choose avatar"
+msgstr "انتخاب چهرک"
+
+#: src/session/content/room_details/mod.rs:259
+msgid "Invite new Members"
+msgstr "دعوت اعضای جدید"
+
+#: src/session/content/room_history/item_row.rs:255
 msgid "New Messages"
 msgstr "پیام‌های جدید"
 
+#: src/session/content/room_history/message_row/audio.rs:245
+#: src/session/content/room_history/message_row/audio.rs:249
+#, fuzzy
+#| msgid "Could not retrieve file URI"
+msgid "Could not retrieve audio file"
+msgstr "URI پرونده بازیابی نشد"
+
+#: src/session/content/room_history/message_row/audio.rs:262
+msgid "Error reading audio file"
+msgstr ""
+
+#: src/session/content/room_history/message_row/media.rs:445
+msgid "Image file not supported"
+msgstr ""
+
+#: src/session/content/room_history/message_row/media.rs:484
+#: src/session/content/room_history/message_row/media.rs:489
+#, fuzzy
+#| msgid "Could not retrieve file URI"
+msgid "Could not retrieve media"
+msgstr "URI پرونده بازیابی نشد"
+
+#: src/session/content/room_history/message_row/mod.rs:377
+msgid "Identity verification was started"
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:390
+#: src/session/content/room_history/message_row/mod.rs:437
+msgid "Unsupported event"
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:415
+msgid ""
+"Unable to decrypt this message, decryption will be retried once the keys are "
+"available."
+msgstr ""
+
+#: src/session/content/room_history/message_row/mod.rs:426
+#, fuzzy
+#| msgid "This message has no source."
+msgid "This message was removed."
+msgstr "این پیام منبع ندارد."
+
+#: src/session/content/room_history/mod.rs:155
+msgid "The location request has been cancelled."
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:159
+msgid "Failed to retrieve current location."
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:735
+msgid "User Location {geo_uri} at {iso8601_datetime}"
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:839
+#, fuzzy
+#| msgid "Error searching for rooms"
+msgid "Error reading file"
+msgstr "خطا در جست‌وجو برای اتاق‌ها"
+
+#: src/session/content/room_history/mod.rs:865
+#, fuzzy
+#| msgid "Error searching for rooms"
+msgid "Error getting file from drop"
+msgstr "خطا در جست‌وجو برای اتاق‌ها"
+
+#: src/session/content/room_history/mod.rs:897
+#, fuzzy
+#| msgid "Image from Clipboard"
+msgid "Error getting image from clipboard"
+msgstr "تصویر از تخته‌گیره"
+
+#: src/session/content/room_history/mod.rs:914
+#, fuzzy
+#| msgid "Image from Clipboard"
+msgid "Error getting file from clipboard"
+msgstr "تصویر از تخته‌گیره"
+
+#: src/session/content/room_history/state_row/creation.rs:62
+msgid "This is the continuation of an upgraded room."
+msgstr ""
+
+#: src/session/content/room_history/state_row/creation.rs:68
+msgid "This is the beginning of this room."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:66
+msgid "This room is encrypted from this point on."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:85
+msgid "{previous_user_name} removed their display name."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:92
+msgid "{previous_user_name} changed their display name to {new_user_name}."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:101
+msgid "{user_id} set their display name to {new_user_name}."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:114
+msgid "{user} set their avatar."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:121
+msgid "{user} removed their avatar."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:128
+msgid "{user} changed their avatar."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:139
+msgid "{user} joined this room."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/state_row/mod.rs:145
+#: src/session/content/room_history/state_row/mod.rs:222
+#, fuzzy
+#| msgid "Invite to This Room"
+msgid "{user} was invited to this room."
+msgstr "دعوت به این اتاق"
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:153
+msgid "{user} requested to be invited to this room."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:164
+msgid "{user} rejected the invite."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:171
+msgid "The invitation for {user} has been revoked."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:180
+msgid "{user} was unbanned."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:191
+msgid "{user} left the room."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and
+#. '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:196
+msgid "{user} was kicked out of the room."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#: src/session/content/room_history/state_row/mod.rs:205
+msgid "{user} was banned."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:210
+msgid "An unsupported room member event was received."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:231
+msgid "An unsupported state event was received."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/verification_info_bar.rs:170
+msgid "{user_name} wants to be verified"
+msgstr ""
+
+#: src/session/content/room_history/verification_info_bar.rs:180
+msgid "Verification in progress"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:493
+#: src/session/content/verification/identity_verification_widget.rs:522
+msgid "Verify the new session from the current session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:496
+msgid "Scan the QR code from another session logged into this account."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:498
+#: src/session/content/verification/identity_verification_widget.rs:525
+msgid ""
+"You scanned the QR code successfully. You may need to confirm the verification "
+"from the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:502
+msgid "Scan this QR code from the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:505
+#: src/session/content/verification/identity_verification_widget.rs:532
+msgid "Check if the same emoji appear in the same order on the other device."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:507
+#: src/session/content/verification/identity_verification_widget.rs:534
+msgid "Request Complete"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:509
+msgid "This session is ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:511
+msgid "Get Started"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:513
+#: src/session/content/verification/identity_verification_widget.rs:543
+msgid "Does the other session show a confirmation shield?"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:519
+msgid "Login Request From Another Session"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:524
+msgid ""
+"Scan the QR code from this session from another session logged into this account."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:528
+msgid "Scan this QR code from the newly logged in session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:536
+msgid "The new session is now ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:548
+#: src/session/content/verification/identity_verification_widget.rs:554
+#: src/session/content/verification/identity_verification_widget.rs:564
+#: src/session/content/verification/identity_verification_widget.rs:571
+#, fuzzy
+#| msgid "Notification sounds"
+msgid "Verification Request"
+msgstr "صدای آگهی‌ها"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:553
+msgid ""
+"{user} asked to be verified. Verifying a user increases the security of the "
+"conversation."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:558
+msgid "Scan the QR code shown on the device of {user}."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:563
+msgid ""
+"You scanned the QR code successfully. {user} may need to confirm the "
+"verification."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:568
+msgid "Ask {user} to scan this QR code from their session."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:575
+msgid ""
+"Ask {user} if they see the following emoji appear in the same order on their "
+"screen."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:578
+msgid "Verification Complete"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:581
+msgid ""
+"{user} is verified and you can now be sure that your communication will be "
+"private."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:585
+msgid "Waiting for {user}"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:591
+msgid "Ask {user} to accept the verification request."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:597
+msgid "Does {user} see a confirmation shield on their session?"
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:237
+msgid ""
+"If you lost access to all other sessions you can create a new crypto identity. "
+"Be careful because this will reset all verified users and make previously "
+"encrypted conversations unreadable."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:320
+msgid "You cancelled the authentication needed to create the encryption keys."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:324
+msgid "An error occurred during the creation of the encryption keys."
+msgstr ""
+
+#: src/session/mod.rs:470
+msgid "Unable to store session"
+msgstr ""
+
+#: src/session/mod.rs:769
+msgid "Failed to logout the session."
+msgstr ""
+
+#: src/session/room/event_actions.rs:232
+msgid "Save File"
+msgstr "ذخیرهٔ پرونده"
+
+#: src/session/room/member_role.rs:48
+msgid "Admin"
+msgstr "مدیر"
+
+#: src/session/room/member_role.rs:49
+msgid "Moderator"
+msgstr "ناظر"
+
+#: src/session/room/member_role.rs:50
+msgid "Normal user"
+msgstr "کاربر عادی"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:465
+msgid "Failed to forget {room}."
+msgstr "شکست در فراموش کردن {room}."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:703
+msgid "Failed to move {room} from {previous_category} to {new_category}."
+msgstr "شکست در انتقال {room} از {previous_category} به {new_category}."
+
+#: src/session/room/mod.rs:999
+msgid "Unknown"
+msgstr "ناشناخته"
+
+#. Translators: This is the name of a room that is empty but had another user before.
+#. Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:1026
+msgid "Empty Room (was {user})"
+msgstr "اتاق خالی ({user} بود)"
+
+#. Translators: This is the name of a room without other users.
+#: src/session/room/mod.rs:1028
+msgid "Empty Room"
+msgstr "اتاق خالی"
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1429
+msgid "Failed to accept invitation for {room}. Try again later."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1458
+msgid "Failed to reject invitation for {room}. Try again later."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1624
+msgid "Failed to invite {user} to {room}. Try again later."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1636
+msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
+msgid_plural ""
+"Failed to invite {user} and {n} other users to {room}. Try again later."
+msgstr[0] ""
+msgstr[1] ""
+
 #. Translators: This is a date format in the day divider without the year
-#: fractal-gtk/src/widgets/room_history.rs:798
-msgid "%B %e"
+#: src/session/room/timeline/timeline_day_divider.rs:106
+#, fuzzy
+#| msgid "%B %e"
+msgid "%A, %B %e"
 msgstr "%Oe %B"
 
 #. Translators: This is a date format in the day divider with the year
-#: fractal-gtk/src/widgets/room_history.rs:801
-msgid "%B %e, %Y"
+#: src/session/room/timeline/timeline_day_divider.rs:109
+#, fuzzy
+#| msgid "%B %e, %Y"
+msgid "%A, %B %e, %Y"
 msgstr "%Oe %B، %OY"
 
-#: fractal-gtk/src/widgets/roomlist.rs:480
-msgid "Invites"
-msgstr "دعوت‌ها"
+#: src/session/room_creation/mod.rs:266
+msgid "The address is already taken."
+msgstr ""
 
-#: fractal-gtk/src/widgets/roomlist.rs:481
-msgid "You don’t have any invitations"
-msgstr "شما هیچ دعوتنامه‌ای ندارید"
+#: src/session/room_creation/mod.rs:295
+msgid "Can’t contain “:”"
+msgstr "نمی‌تواند حاوی «:» باشد"
 
-#: fractal-gtk/src/widgets/roomlist.rs:485
+#: src/session/room_creation/mod.rs:300
+msgid "Can’t contain “#”"
+msgstr "نمی‌تواند حاوی «#» باشد"
+
+#: src/session/room_creation/mod.rs:305
+msgid "Too long. Use a shorter address."
+msgstr "بسیار بلند است. از یک نشانی کوتاه‌تر استفاده کنید."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room_list.rs:326
+msgid "Failed to join room {room_name}. Try again later."
+msgstr "شکست در پیوستن به اتاق {room_name}. بعداً دوباره تلاش کنید."
+
+#: src/session/sidebar/category_row.rs:161
+msgid "Join Room as Favorite"
+msgstr "پیوستن به اتاق به عنوان دلخواه"
+
+#: src/session/sidebar/category_row.rs:162
+msgid "Join Room"
+msgstr "پیوستن به اتاق"
+
+#: src/session/sidebar/category_row.rs:163
+msgid "Join Room as Low Priority"
+msgstr "پیوستن به اتاق به عنوان کم‌اهمّیت"
+
+#: src/session/sidebar/category_row.rs:164
+msgid "Reject Invite"
+msgstr "رد کردن دعوت"
+
+#: src/session/sidebar/category_row.rs:165
+msgid "Join Room as People"
+msgstr "پیوستن به اتاق به عنوان افراد"
+
+#: src/session/sidebar/category_row.rs:169 src/session/sidebar/category_row.rs:184
+#: src/session/sidebar/category_row.rs:198
+msgid "Move to Rooms"
+msgstr "انتقال به اتاق‌ها"
+
+#: src/session/sidebar/category_row.rs:170 src/session/sidebar/category_row.rs:177
+#: src/session/sidebar/category_row.rs:199
+msgid "Move to Low Priority"
+msgstr "انتقال به کم‌اهمّیت"
+
+#: src/session/sidebar/category_row.rs:171 src/session/sidebar/category_row.rs:178
+#: src/session/sidebar/category_row.rs:185 src/session/sidebar/category_row.rs:200
+msgid "Leave Room"
+msgstr "ترک اتاق"
+
+#: src/session/sidebar/category_row.rs:172 src/session/sidebar/category_row.rs:179
+#: src/session/sidebar/category_row.rs:186
+msgid "Move to People"
+msgstr "انتقال به افراد"
+
+#: src/session/sidebar/category_row.rs:176 src/session/sidebar/category_row.rs:183
+#: src/session/sidebar/category_row.rs:197
+msgid "Move to Favorites"
+msgstr "انتقال به موارد دلخواه"
+
+#: src/session/sidebar/category_row.rs:190
+msgid "Rejoin Room as Favorites"
+msgstr "پیوستن دوباره به اتاق به عنوان موارد دلخواه"
+
+#: src/session/sidebar/category_row.rs:191
+msgid "Rejoin Room"
+msgstr "پیوستن دوباره به اتاق"
+
+#: src/session/sidebar/category_row.rs:192
+msgid "Rejoin Room as Low Priority"
+msgstr "پیوستن دوباره به اتاق به عنوان کم‌اهمّیت"
+
+#: src/session/sidebar/category_row.rs:193
+msgid "Rejoin Room as People"
+msgstr "پیوستن دوباره به اتاق به عنوان افراد"
+
+#: src/session/sidebar/category_type.rs:34
+msgid "Verifications"
+msgstr "اعتبارسنجی‌ها"
+
+#: src/session/sidebar/category_type.rs:35
+msgid "Invited"
+msgstr "دعوت شده"
+
+#: src/session/sidebar/category_type.rs:36
 msgid "Favorites"
 msgstr "موارد دلخواه"
 
-#: fractal-gtk/src/widgets/roomlist.rs:486
-msgid "Drag and drop rooms here to add them to your favorites"
-msgstr "اتاق‌ها را به اینجا بکشید و رها کنید تا به موارد دلخواه شما اضافه شوند"
-
-#: fractal-gtk/src/widgets/roomlist.rs:490
+#: src/session/sidebar/category_type.rs:37
 msgid "Rooms"
 msgstr "اتاق‌ها"
 
-#: fractal-gtk/src/widgets/roomlist.rs:491
-msgid "You don’t have any rooms yet"
-msgstr "شما هنوز اتاق ندارید"
+#: src/session/sidebar/category_type.rs:38
+msgid "Low Priority"
+msgstr "کم‌اهمّیت"
+
+#: src/session/sidebar/category_type.rs:39
+msgid "Historical"
+msgstr "تاریخی"
+
+#. Translators: This shouldn't ever be visible to the user,
+#: src/session/sidebar/category_type.rs:41
+msgid "Outdated"
+msgstr "تاریخ‌گذشته"
+
+#: src/session/sidebar/category_type.rs:42
+msgid "Spaces"
+msgstr "فضاها"
+
+#: src/session/sidebar/category_type.rs:43
+msgid "People"
+msgstr "افراد"
+
+#: src/session/sidebar/entry_type.rs:23
+msgid "Explore"
+msgstr "کاوش"
+
+#: src/session/sidebar/entry_type.rs:24
+msgid "Forget Room"
+msgstr "فراموش کردن اتاق"
+
+#: src/session/verification/identity_verification.rs:679
+msgid "You cancelled the verification process."
+msgstr "شما فرایند اعتبارسنجی را لغو کردید."
+
+#: src/session/verification/identity_verification.rs:681
+msgid "The verification process failed because it reached a timeout."
+msgstr "فرایند اعتبارسنجی شکست خورد؛ زیرا مهلت اتّصال تمام شد."
+
+#: src/session/verification/identity_verification.rs:684
+msgid "You accepted the request from an other session."
+msgstr "شما درخواستی از یک نشست دیگر را پذیرفتید."
+
+#: src/session/verification/identity_verification.rs:687
+msgid "The emoji did not match."
+msgstr "ایموجی‌ها با هم تفاوت دارند."
+
+#: src/session/verification/identity_verification.rs:696
+msgid "An unknown error occurred during the verification process."
+msgstr ""
+
+#: src/user_facing_error.rs:23
+msgid "The connection timed out. Try again later."
+msgstr ""
+
+#: src/user_facing_error.rs:25
+msgid "Unable to connect to the homeserver."
+msgstr ""
+
+#: src/user_facing_error.rs:32
+#, fuzzy
+#| msgid "Invalid username or password"
+msgid "The provided username or password is invalid."
+msgstr "نام کاربری یا گذرواژه اشتباه است"
+
+#: src/user_facing_error.rs:33
+msgid "The account is deactivated."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/user_facing_error.rs:40
+msgid "You exceeded the homeserver’s rate limit, retry in 1 second."
+msgid_plural "You exceeded the homeserver’s rate limit, retry in {n} seconds."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/user_facing_error.rs:46
+msgid "You exceeded the homeserver’s rate limit, try again later."
+msgstr ""
+
+#: src/user_facing_error.rs:56
+msgid "An unknown connection error occurred."
+msgstr ""
+
+#: src/user_facing_error.rs:64
+msgid "Could not decrypt the event"
+msgstr "ناتوانی در رمزگشایی رویداد"
+
+#: src/user_facing_error.rs:66 src/user_facing_error.rs:86
+msgid "An unknown error occurred."
+msgstr "خطایی ناشناخته رخ داد."
+
+#: src/user_facing_error.rs:73
+msgid "Could not open the store."
+msgstr "ناتوانی در گشودن فروشگاه."
+
+#: src/user_facing_error.rs:80
+msgid "This is not a valid URL"
+msgstr "این یک نشانی معتبر نیست"
+
+#: src/user_facing_error.rs:82
+msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
+msgstr ""
+
+#. Translators: Default name for image files.
+#: src/utils.rs:302
+msgid "image"
+msgstr "تصویر"
+
+#. Translators: Default name for video files.
+#: src/utils.rs:304
+msgid "video"
+msgstr "ویدیو"
+
+#. Translators: Default name for audio files.
+#: src/utils.rs:306
+msgid "audio"
+msgstr "صدا"
+
+#. Translators: Default name for files.
+#: src/utils.rs:308
+msgid "file"
+msgstr "پرونده"
+
+#: src/window.rs:238
+msgid "Failed to restore previous sessions"
+msgstr "شکست در بازیابی نشست‌های پیشین"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Close the active room"
+#~ msgstr "بستن اتاق فعّال"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open / close the room sidebar search"
+#~ msgstr "گشودن / بستن نوار جست‌وجو"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room in the list"
+#~ msgstr "گشودن اتاق قبلی در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room in the list"
+#~ msgstr "گشودن اتاق بعدی در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room with unread messages in the list"
+#~ msgstr "گشودن اتاق قبلی با پیام‌های خوانده نشده در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room with unread messages in the list"
+#~ msgstr "گشودن اتاق بعدی با پیام‌های خوانده نشده در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the first room of the list"
+#~ msgstr "گشودن اولین اتاق در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the last room of the list"
+#~ msgstr "گشودن آخرین اتاق در فهرست"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View older messages"
+#~ msgstr "مشاهده پیام‌های قدیمی‌تر"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View newer messages"
+#~ msgstr "مشاهده پیام‌های جدیدتر"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Composing a new message"
+#~ msgstr "نوشتن پیام جدید"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Write on a new line"
+#~ msgstr "نوشتن روی یک خط جدید"
+
+#~ msgid "Type of password and token storage"
+#~ msgstr "گذرواژه و توکن ذخیره شده را بنویسید"
+
+#~ msgid "Type of password and token storage, default value is: Secret Service"
+#~ msgstr ""
+#~ "گذرواژه و توکن ذخیره شده را بنویسید، به طور پیش‌گزیده این است: Secret Service"
+
+#~ msgid "If markdown sending is active"
+#~ msgstr "اگر ارسال با مارک‌دون(زبان نشانه گذاری) فعّال است"
+
+#~ msgid "Whether support for sending markdown messages is on"
+#~ msgstr "مشخص می‌کند که آیا پشتیبانی برای ارسال پیام‌های مارک‌دون روشن است یا خیر"
+
+#~ msgid "X position of the main window on startup"
+#~ msgstr "موقعیت X پنجرهٔ اصلی هنگام راه‌اندازی"
+
+#~ msgid "Y position of the main window on startup"
+#~ msgstr "موقعیت Y پنجرهٔ اصلی هنگام راه‌اندازی"
+
+#~ msgid "Width of the main window on startup"
+#~ msgstr "عرض پنجرهٔ اصلی هنگام راه‌اندازی"
+
+#~ msgid "Height of the main window on startup"
+#~ msgstr "ارتفاع پنجرهٔ اصلی هنگام راه‌اندازی"
+
+#~ msgid "Daniel García Moreno"
+#~ msgstr "دانیل گارسیا مورنو"
+
+#~ msgid "Other people can find you by searching for any of these identifiers."
+#~ msgstr "دیگران می‌توانند با جست‌وجوی هر یک از این شناسه ها شما را پیدا کنند."
+
+#~ msgid "Type in your name"
+#~ msgstr "نام خود را بنویسید"
+
+#~ msgid "Email"
+#~ msgstr "رایانامه"
+
+#~ msgid "Phone"
+#~ msgstr "تلفن"
+
+#~ msgid "Device ID"
+#~ msgstr "شناسه دستگاه"
+
+#~ msgid ""
+#~ "Deactivating your account means that you will lose all your messages, "
+#~ "contacts, and files."
+#~ msgstr ""
+#~ "غیرفعّال کردن حساب به این معنی است که تمامی پیام‌ها، مخاطبین و پرونده‌های خود را "
+#~ "از دست خواهید داد."
+
+#~ msgid ""
+#~ "To confirm that you really want to deactivate this account type in your "
+#~ "password:"
+#~ msgstr ""
+#~ "برای تأیید اینکه واقعاً می‌خواهید این حساب را غیرفعّال کنید گذرواژه خود را وارد "
+#~ "کنید:"
+
+#~ msgid "Also erase all messages"
+#~ msgstr "همچنین تمام پیام‌ها را پاک می‌کند"
+
+#~ msgid "Check your email"
+#~ msgstr "رایانامهٔ خود را چک کنید"
+
+#~ msgid "Apply"
+#~ msgstr "اعمال"
+
+#~ msgid "New Direct Chat"
+#~ msgstr "گفت‌وگوی مستقیم جدید"
+
+#~ msgid "Play"
+#~ msgstr "پخش"
+
+#~ msgid "New direct chat"
+#~ msgstr "گفت‌وگوی مستقیم جدید"
+
+#~ msgid "Start chat"
+#~ msgstr "شروع گفت‌وگو"
+
+#~ msgid "Invitation"
+#~ msgstr "دعوت"
+
+#~ msgid "ID or Alias"
+#~ msgstr "شناسه یا نام مستعار"
+
+#~ msgid "Join room"
+#~ msgstr "عضویت به اتاق"
+
+#~ msgid "Close"
+#~ msgstr "بستن"
+
+#~ msgid "Leave?"
+#~ msgstr "خروج؟"
+
+#~ msgid ""
+#~ "Once you leave, you won’t be able to interact with people in the room anymore."
+#~ msgstr "پس از خروج دیگر نمی‌توانید با افراد حاضر در اتاق تعامل داشته باشید."
+
+#~ msgid "What is your Provider?"
+#~ msgstr "کارساز(ارائه دهنده) شما چیست؟"
+
+#~ msgid "Matrix provider domain, e.g. myserver.co"
+#~ msgstr "نشانی کارساز ماتریکس، برای مثال myserver.co"
+
+#~ msgid "The domain may not be empty."
+#~ msgstr "دامنه ممکن است خالی نباشد."
+
+#~ msgid "Log In"
+#~ msgstr "ورود"
+
+#~ msgid "_User ID"
+#~ msgstr "_شناسهٔ کاربر"
+
+#~ msgid "_Password"
+#~ msgstr "_گذرواژه"
+
+#~ msgid "User name, email, or phone number"
+#~ msgstr "نام کاربری، رایانامه یا شماره تلفن"
+
+#~ msgid "Keyboard _Shortcuts"
+#~ msgstr "_میان‌برهای صفحه‌کلید"
+
+#~ msgid "User"
+#~ msgstr "کاربر"
+
+#~ msgid "Add"
+#~ msgstr "افزودن"
+
+#~ msgid "Room Menu"
+#~ msgstr "فهرست اتاق"
+
+#~ msgid "No room"
+#~ msgstr "اتاقی نیست"
+
+#~ msgid "Default Matrix Server"
+#~ msgstr "کارساز ماتریکس فعلی"
+
+#~ msgid "Toggle fullscreen"
+#~ msgstr "ورود به حالت تمام صفحه"
+
+#~ msgid "Loading more media"
+#~ msgstr "بارگذاری رسانه بیشتر"
+
+#~ msgid "Open With…"
+#~ msgstr "گشودن با…"
+
+#~ msgid "Copy Selection"
+#~ msgstr "رونوشت قسمتی که انتخاب شده"
+
+#~ msgid "Delete Message"
+#~ msgstr "حذف پیام"
+
+#~ msgid "Copy To Clipboard"
+#~ msgstr "رونوشت به تخته‌گیره"
+
+#~ msgid "Ch_ange"
+#~ msgstr "_تغییر"
+
+#~ msgid "Add name"
+#~ msgstr "افزودن نام"
+
+#~ msgid "Add topic"
+#~ msgstr "افزودن موضوع"
+
+#~ msgid "Type in your room topic"
+#~ msgstr "نام موضوع اتاق خود را بنویسید"
+
+#~ msgid "For all messages"
+#~ msgstr "برای همه پیام‌ها"
+
+#~ msgid "Only for mentions"
+#~ msgstr "فقط برای نام‌برده"
+
+#~ msgid "Shared Media"
+#~ msgstr "رسانهٔ هم‌رسانی شده"
+
+#~ msgid "photos"
+#~ msgstr "تصویر‌ها"
+
+#~ msgid "documents"
+#~ msgstr "اسناد"
+
+#~ msgid "New members can see"
+#~ msgstr "اعضای جدید می‌توانند ببینند"
+
+#~ msgid "All room history"
+#~ msgstr "تمام تاریخچهٔ اتاق"
+
+#~ msgid "History after they were invited"
+#~ msgstr "تاریخچه پس از دعوت آنها"
+
+#~ msgid "Room Visibility"
+#~ msgstr "دید اتاق"
+
+#~ msgid "Allow guests"
+#~ msgstr "اجازه به مهمان‌ها"
+
+#~ msgid "Allow joining without invite"
+#~ msgstr "اجازه به عضویت بدون دعوت"
+
+#~ msgid "Publish in room directory"
+#~ msgstr "انتشار در فهرست اتاق"
+
+#~ msgid "Show rooms from:"
+#~ msgstr "نمایش اتاق‌ها از:"
+
+#~ msgid "Your homeserver"
+#~ msgstr "کارساز خانگی شما"
+
+#~ msgid "Other Protocol"
+#~ msgstr "شیوه‌نامه‌ای دیگر"
+
+#~ msgid "Other Homeserver"
+#~ msgstr "کارسازهای خانگی دیگر"
+
+#~ msgid "Images"
+#~ msgstr "تصاویر"
+
+#~ msgid "Select a new avatar"
+#~ msgstr "انتخاب یک چهرک جدید"
+
+#~ msgid "Select a file"
+#~ msgstr "انتخاب یک پرونده"
+
+#~ msgid "Couldn’t save file"
+#~ msgstr "پرونده ذخیره نشد"
+
+#~ msgid "Couldn’t open file"
+#~ msgstr "پرونده باز نشد"
+
+#~ msgid "The validation code is not correct."
+#~ msgstr "کد اعتبارسنجی نادرست است."
+
+#~ msgid "Enter the code received via SMS"
+#~ msgstr "کدی که از طریق پیامک ارسال شده است را وارد کنید"
+
+#~ msgid ""
+#~ "In order to add this email address, go to your inbox and follow the link you "
+#~ "received. Once you’ve done that, click Continue."
+#~ msgstr ""
+#~ "برای افزودن این رایانامه، به صندوق پستی خود بروید و روی پیوندی که دریافت "
+#~ "کرده‌اید کلیک کنید. پس از انجام این کار، روی ادامه کلیک کنید."
+
+#~ msgid "Are you sure you want to delete your account?"
+#~ msgstr "آیا مطمئنید که می‌خواهید حساب خود را حذف کنید؟"
+
+#~ msgid "Fractal [{}]"
+#~ msgstr "فرکتال [{}]"
+
+#~ msgid "An audio file has been added to the conversation."
+#~ msgstr "یک پرونده صوتی به گفت‌وگو اضافه شد."
+
+#~ msgid "An image has been added to the conversation."
+#~ msgstr "یک تصویر به گفت‌وگو اضافه شد."
+
+#~ msgid "A video has been added to the conversation."
+#~ msgstr "یک ویدیو به گفت‌وگو اضافه شد."
+
+#~ msgid "A file has been added to the conversation."
+#~ msgstr "یک پرونده به گفت‌وگو اضافه شد."
+
+#~ msgid " (direct message)"
+#~ msgstr " (پیام مستقیم)"
+
+#~ msgid "Leave {room_name}?"
+#~ msgstr "خروج از {room_name}؟"
+
+#~ msgid "The room ID is malformed"
+#~ msgstr "شناسه اتاق بد شکل است"
+
+#~ msgid "EMPTY ROOM"
+#~ msgstr "اتاق خالی"
+
+#~ msgid "{m1} and {m2}"
+#~ msgstr "{m1} و {m2}"
+
+#~ msgid "{m1} and Others"
+#~ msgstr "{m1} و دیگران"
+
+#~ msgid "Several users are typing…"
+#~ msgstr "چند کاربر در حال نوشتن هستند…"
+
+#~ msgid "<b>{}</b> is typing…"
+#~ msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+#~ msgstr[0] "<b>{}</b> در حال نوشتن…"
+#~ msgstr[1] "<b>{}</b> و <b>{}</b> در حال نوشتن…"
+
+#~ msgid "Syncing, this could take a while"
+#~ msgstr "در حال همگام‌سازی، ممکن است کمی طول بکشد"
+
+#~ msgid "Can’t login, try again"
+#~ msgstr "نمی‌توان وارد شد، دوباره امتحان کنید"
+
+#~ msgid "Error deleting message"
+#~ msgstr "خطا در حذف پیام"
+
+#~ msgid "Can’t join the room, try again."
+#~ msgstr "نمی‌توان عضو اتاق شد، دوباره امتحان کنید."
+
+#~ msgid "Can’t create the room, try again"
+#~ msgstr "نمی‌توان اتاق ساخت، دوباره امتحان کنید"
+
+#~ msgid "Sorry, account settings can’t be loaded."
+#~ msgstr "متأسفیم، تنظیمات حساب نمی‌تواند بارگذاری شود."
+
+#~ msgid "Email is already in use"
+#~ msgstr "رایانامه هم‌اکنون استفاده شده است"
+
+#~ msgid "Please enter a valid email address."
+#~ msgstr "لطفاً یک رایانامه معتبر وارد کنید."
+
+#~ msgid "Couldn’t add the email address."
+#~ msgstr "آدرس رایانامه اضافه نشد."
+
+#~ msgid "Phone number is already in use"
+#~ msgstr "شماره تلفن هم‌اکنون استفاده شده است"
+
+#~ msgid ""
+#~ "Please enter your phone number in the format: \n"
+#~ " + your country code and your phone number."
+#~ msgstr ""
+#~ "لطفاً شماره تلفن خود را با این صورت وارد کنید: \n"
+#~ " + کد کشور و شماره تلفن."
+
+#~ msgid "Couldn’t add the phone number."
+#~ msgstr "شماره تلفن اضافه نشد."
+
+#~ msgid "© 2017–2020 Daniel García Moreno, et al."
+#~ msgstr "© ۲۰۱۷–۲۰۲۰ دانیل گارسیا مورنو، و همکاران."
+
+#~ msgid "Invite to {name}"
+#~ msgstr "دعوت به {name}"
+
+#~ msgid "Join {room_name}?"
+#~ msgstr "عضویت به {room_name}؟"
+
+#~ msgid ""
+#~ "You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</b>"
+#~ msgstr ""
+#~ "شما برای پیوستن به اتاق <b>{room_name}</b> توسط <b>{sender_name}</b> دعوت "
+#~ "شده‌اید"
+
+#~ msgid "You’ve been invited to join <b>{room_name}</b>"
+#~ msgstr "شما برای عضویت به <b>{room_name}</b> دعوت شده‌اید"
+
+#~ msgid "You don’t have permission to post to this room"
+#~ msgstr "شما هنوز اجازه ارسال در این اتاق ندارید"
+
+#~ msgid "OK"
+#~ msgstr "باشه"
+
+#~ msgid "Room · {} member"
+#~ msgid_plural "Room · {} members"
+#~ msgstr[0] "اتاق · {} عضو"
+#~ msgstr[1] "اتاق · {} عضو"
+
+#~ msgid "Save media as"
+#~ msgstr "ذخیرهٔ رسانه به عنوان"
+
+#~ msgid "_Save"
+#~ msgstr "_ذخیره"
+
+#~ msgid "You have been kicked from {}"
+#~ msgstr "شما از {} اخراج شدید"
+
+#~ msgid ""
+#~ "Kicked by: {}\n"
+#~ " “{}”"
+#~ msgstr ""
+#~ "حذف شده توسط: {}\n"
+#~ " «{}»"
+
+#~ msgid "Malformed server URL"
+#~ msgstr "نشانی کارساز نادرست است"
+
+#~ msgid "Error while loading previous media"
+#~ msgstr "خطا هنگام بارگیری رسانهٔ قبلی"
+
+#~ msgid "Privileged"
+#~ msgstr "ممتاز"
+
+#, c-format
+#~ msgid "Last edited %c"
+#~ msgstr "آخرین ویرایش %c"
+
+#~ msgid "%l∶%M %p"
+#~ msgstr "%Ol∶%OM %p"
+
+#~ msgid "%R"
+#~ msgstr "%OH∶%OM"
+
+#~ msgid "Invites"
+#~ msgstr "دعوت‌ها"
+
+#~ msgid "You don’t have any invitations"
+#~ msgstr "شما هیچ دعوتنامه‌ای ندارید"
+
+#~ msgid "Drag and drop rooms here to add them to your favorites"
+#~ msgstr "اتاق‌ها را به اینجا بکشید و رها کنید تا به موارد دلخواه شما اضافه شوند"
+
+#~ msgid "You don’t have any rooms yet"
+#~ msgstr "شما هنوز اتاق ندارید"
