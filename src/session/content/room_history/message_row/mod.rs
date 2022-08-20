@@ -138,9 +138,9 @@ impl MessageRow {
         priv_.header.set_visible(visible);
 
         if let Some(list_item) = self.parent().and_then(|w| w.parent()) {
-            if visible {
-                list_item.set_css_classes(&["has-header"]);
-            } else {
+            if visible && !list_item.has_css_class("has-header") {
+                list_item.add_css_class("has-header");
+            } else if !visible && list_item.has_css_class("has-header") {
                 list_item.remove_css_class("has-header");
             }
         }
