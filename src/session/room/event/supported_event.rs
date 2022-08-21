@@ -107,6 +107,14 @@ mod imp {
                 _ => unimplemented!(),
             }
         }
+
+        fn constructed(&self, obj: &Self::Type) {
+            obj.connect_notify_local(Some("source"), |obj, _| {
+                if let Ok(matrix_event) = obj.pure_event().event.deserialize() {
+                    obj.set_matrix_event(matrix_event);
+                }
+            });
+        }
     }
 
     impl TimelineItemImpl for SupportedEvent {

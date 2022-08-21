@@ -265,7 +265,6 @@ impl<O: IsA<Event>> EventExt for O {
         let priv_ = self.upcast_ref().imp();
         priv_.pure_event.replace(Some(pure_event));
 
-        self.notify("pure-event");
         self.notify("source");
     }
 

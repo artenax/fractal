@@ -5,6 +5,7 @@ use matrix_sdk::ruma::events::AnySyncTimelineEvent;
 
 use crate::{
     components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl, ReactionChooser},
+    prelude::*,
     session::{
         content::room_history::{message_row::MessageRow, DividerRow, RoomHistory, StateRow},
         room::{
