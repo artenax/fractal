@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-07-05 10:59+0000\n"
-"PO-Revision-Date: 2022-07-05 22:10+0200\n"
+"POT-Creation-Date: 2022-08-16 10:54+0000\n"
+"PO-Revision-Date: 2022-08-16 13:14+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: data/org.gnome.Fractal.desktop.in.in:3
 #: data/org.gnome.Fractal.metainfo.xml.in.in:9
@@ -188,7 +188,7 @@ msgstr "Autentisera via webbläsare"
 
 #: data/resources/ui/components-auth-dialog.ui:113
 #: data/resources/ui/identity-verification-widget.ui:452
-#: src/components/editable_avatar.rs:344
+#: src/components/editable_avatar.rs:343
 #: src/session/content/room_history/verification_info_bar.rs:182
 #: src/session/room/event_actions.rs:237
 msgid "Cancel"
@@ -282,7 +282,7 @@ msgid "Save"
 msgstr "Spara"
 
 #: data/resources/ui/content-room-details.ui:4
-#: src/session/content/room_details/mod.rs:265
+#: src/session/content/room_details/mod.rs:264
 msgid "Room Details"
 msgstr "Rumsdetaljer"
 
@@ -513,15 +513,15 @@ msgstr ""
 "utveckling och ännu långt från klar."
 
 #. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:83
+#: data/resources/ui/greeter.ui:101
 msgid "Welcome to Fractal"
 msgstr "Välkommen till Fractal"
 
-#: data/resources/ui/greeter.ui:108
+#: data/resources/ui/greeter.ui:126
 msgid "_Log in"
 msgstr "_Logga in"
 
-#: data/resources/ui/greeter.ui:118
+#: data/resources/ui/greeter.ui:136
 msgid "_Create Account"
 msgstr "_Skapa konto"
 
@@ -593,23 +593,23 @@ msgstr "_Automatisk identifiering"
 msgid "_Next"
 msgstr "_Nästa"
 
-#: data/resources/ui/login.ui:130 src/login/mod.rs:341
+#: data/resources/ui/login.ui:148 src/login/mod.rs:360
 msgid "Homeserver URL"
 msgstr "URL för hemserver"
 
-#: data/resources/ui/login.ui:153
+#: data/resources/ui/login.ui:171
 msgid "Matrix Username"
 msgstr "Matrix-användarnamn"
 
-#: data/resources/ui/login.ui:165
+#: data/resources/ui/login.ui:183
 msgid "Password"
 msgstr "Lösenord"
 
-#: data/resources/ui/login.ui:171
+#: data/resources/ui/login.ui:189
 msgid "_Forgot Password?"
 msgstr "_Glömt lösenordet?"
 
-#: data/resources/ui/login.ui:216
+#: data/resources/ui/login.ui:234
 msgid "Please follow the steps in the browser."
 msgstr "Följ stegen i webbläsaren."
 
@@ -843,11 +843,15 @@ msgstr "Rumssökning"
 msgid "Search for a room"
 msgstr "Sök efter ett rum"
 
-#: data/resources/ui/sidebar.ui:148
+#: data/resources/ui/sidebar.ui:142
+msgid "Offline"
+msgstr "Frånkopplad"
+
+#: data/resources/ui/sidebar.ui:162
 msgid "Sidebar"
 msgstr "Sidopanel"
 
-#: data/resources/ui/sidebar.ui:149
+#: data/resources/ui/sidebar.ui:163
 msgid "Allows to navigate between rooms"
 msgstr "Tillåter navigering mellan rum"
 
@@ -855,19 +859,15 @@ msgstr "Tillåter navigering mellan rum"
 msgid "Unable to connect to Camera"
 msgstr "Kunde inte ansluta till kamera"
 
-#: src/application.rs:167
-msgid "Learn more about Fractal"
-msgstr "Lär dig mer om Fractal"
+#: src/application.rs:181
+msgid "The Fractal Team"
+msgstr "Fractal-gruppen"
 
-#: src/application.rs:171
-msgid "A Matrix client for GNOME"
-msgstr "En Matrix-klient för GNOME"
-
-#: src/application.rs:172
+#: src/application.rs:189
 msgid "© 2017-2022 The Fractal Team"
 msgstr "© 2017-2022 Fractal-gruppen"
 
-#: src/application.rs:186
+#: src/application.rs:203
 msgid "translator-credits"
 msgstr ""
 "Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
@@ -877,27 +877,27 @@ msgstr ""
 "<tp-sv@listor.tp-sv.se>."
 
 #. This can't be added via the builder
-#: src/application.rs:190
+#: src/application.rs:207
 msgid "Name by"
 msgstr "Namn av"
 
-#: src/components/editable_avatar.rs:334
+#: src/components/editable_avatar.rs:333
 msgid "Choose Avatar"
 msgstr "Välj profilbild"
 
-#: src/components/editable_avatar.rs:343
+#: src/components/editable_avatar.rs:342
 msgid "Choose"
 msgstr "Välj"
 
-#: src/components/editable_avatar.rs:364
+#: src/components/editable_avatar.rs:363
 msgid "The chosen file is not an image"
 msgstr "Den valda filen är inte en bild"
 
-#: src/components/editable_avatar.rs:370
+#: src/components/editable_avatar.rs:369
 msgid "Could not determine the type of the chosen file"
 msgstr "Kunde inte avgöra den valda filens typ"
 
-#: src/components/editable_avatar.rs:375
+#: src/components/editable_avatar.rs:374
 msgid "No file was chosen"
 msgstr "Ingen fil valdes"
 
@@ -929,23 +929,31 @@ msgstr "Sessionen togs bort."
 msgid "Could not remove session from secret storage"
 msgstr "Kunde inte ta bort sessionen från hemlighetslagring"
 
-#: src/login/mod.rs:336
+#: src/greeter.rs:82 src/login/mod.rs:663 src/window.rs:347
+msgid "No network connection"
+msgstr "Ingen nätverksanslutning"
+
+#: src/greeter.rs:88 src/login/mod.rs:671 src/window.rs:352
+msgid "No Internet connection"
+msgstr "Ingen internetanslutning"
+
+#: src/login/mod.rs:355
 msgid "Domain Name"
 msgstr "Domännamn"
 
-#: src/login/mod.rs:338
+#: src/login/mod.rs:357
 msgid "The domain of your Matrix homeserver, for example gnome.org"
 msgstr "Domänen för din Matrix-hemserver, exempelvis gnome.org"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/login/mod.rs:345
+#: src/login/mod.rs:364
 msgid "The URL of your Matrix homeserver, for example {address}"
 msgstr "Domänen för din Matrix-hemserver, exempelvis {address}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/login/mod.rs:471
+#: src/login/mod.rs:490
 msgid "Connecting to {domain_name}"
 msgstr "Ansluter till {domain_name}"
 
@@ -1100,75 +1108,75 @@ msgstr "Senast sedd %-e %B %Y %H:%M"
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "Senast sedd %-e %B %Y %l:%M %p"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:217
+#: src/session/account_settings/user_page/change_password_subpage.rs:216
 msgid "Password must be at least 8 characters long"
 msgstr "Lösenordet måste vara minst 8 tecken långt"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:220
+#: src/session/account_settings/user_page/change_password_subpage.rs:219
 msgid "Password must have at least one lower-case letter"
 msgstr "Lösenordet måste innehålla minst en gemen"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:224
+#: src/session/account_settings/user_page/change_password_subpage.rs:223
 msgid "Password must have at least one upper-case letter"
 msgstr "Lösenordet måste innehålla minst en versal"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:227
+#: src/session/account_settings/user_page/change_password_subpage.rs:226
 msgid "Password must have at least one digit"
 msgstr "Lösenordet måste innehålla minst en siffra"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:229
+#: src/session/account_settings/user_page/change_password_subpage.rs:228
 msgid "Password must have at least one symbol"
 msgstr "Lösenordet måste innehålla minst en symbol"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:255
+#: src/session/account_settings/user_page/change_password_subpage.rs:254
 msgid "Passwords do not match"
 msgstr "Lösenorden stämmer inte överens"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:311
+#: src/session/account_settings/user_page/change_password_subpage.rs:310
 msgid "Password changed successfully"
 msgstr "Lösenordet ändrades"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:326
+#: src/session/account_settings/user_page/change_password_subpage.rs:325
 msgid "Password rejected for being too weak"
 msgstr "Lösenordet förkastades för att det är för svagt"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:330
+#: src/session/account_settings/user_page/change_password_subpage.rs:329
 msgid "Could not change password"
 msgstr "Kunde inte ändra lösenordet"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:197
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:196
 msgid "Account successfully deactivated"
 msgstr "Kontot inaktiverades"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:205
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:204
 msgid "Could not deactivate account"
 msgstr "Kunde inte inaktivera kontot"
 
-#: src/session/account_settings/user_page/mod.rs:225
+#: src/session/account_settings/user_page/mod.rs:224
 msgid "Avatar removed successfully"
 msgstr "Profilbilden togs bort"
 
-#: src/session/account_settings/user_page/mod.rs:240
+#: src/session/account_settings/user_page/mod.rs:239
 msgid "Avatar changed successfully"
 msgstr "Profilbilden ändrades"
 
-#: src/session/account_settings/user_page/mod.rs:283
+#: src/session/account_settings/user_page/mod.rs:282
 msgid "Could not upload avatar"
 msgstr "Kunde inte skicka profilbilden"
 
-#: src/session/account_settings/user_page/mod.rs:305
+#: src/session/account_settings/user_page/mod.rs:304
 msgid "Could not change avatar"
 msgstr "Kunde inte ändra profilbilden"
 
-#: src/session/account_settings/user_page/mod.rs:334
+#: src/session/account_settings/user_page/mod.rs:333
 msgid "Could not remove avatar"
 msgstr "Kunde inte ta bort profilbilden"
 
-#: src/session/account_settings/user_page/mod.rs:380
+#: src/session/account_settings/user_page/mod.rs:379
 msgid "Name changed successfully"
 msgstr "Namnet ändrades"
 
-#: src/session/account_settings/user_page/mod.rs:416
+#: src/session/account_settings/user_page/mod.rs:415
 msgid "Could not change display name"
 msgstr "Kunde inte ändra visningsnamnet"
 
@@ -1184,31 +1192,44 @@ msgstr "Gå in"
 msgid "{user} invited you"
 msgstr "{user} har bjudit in dig"
 
-#: src/session/content/room_details/member_page/mod.rs:237
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:314
+msgid "Member"
+msgstr "Medlem"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:315
+msgid "Banned"
+msgstr "Bannlyst"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:317
+#: src/session/sidebar/category_type.rs:35
+msgid "Invited"
+msgstr "Inbjuden"
+
+#: src/session/content/room_details/member_page/mod.rs:236
 msgid "1 Member"
 msgid_plural "{n} Members"
 msgstr[0] "1 medlem"
 msgstr[1] "{n} medlemmar"
 
-#: src/session/content/room_details/member_page/mod.rs:296
+#: src/session/content/room_details/member_page/mod.rs:295
 msgid "1 Invited"
 msgid_plural "{n} Invited"
 msgstr[0] "1 inbjuden"
 msgstr[1] "{n} inbjudna"
 
-#: src/session/content/room_details/mod.rs:176
+#: src/session/content/room_details/mod.rs:175
 msgid "Save Details"
 msgstr "Spara detaljer"
 
-#: src/session/content/room_details/mod.rs:177
+#: src/session/content/room_details/mod.rs:176
 msgid "Edit Details"
 msgstr "Redigera detaljer"
 
-#: src/session/content/room_details/mod.rs:228
+#: src/session/content/room_details/mod.rs:227
 msgid "Choose avatar"
 msgstr "Välj profilbild"
 
-#: src/session/content/room_details/mod.rs:259
+#: src/session/content/room_details/mod.rs:258
 msgid "Invite new Members"
 msgstr "Bjud in nya medlemmar"
 
@@ -1216,34 +1237,34 @@ msgstr "Bjud in nya medlemmar"
 msgid "New Messages"
 msgstr "Nya meddelanden"
 
-#: src/session/content/room_history/message_row/audio.rs:245
-#: src/session/content/room_history/message_row/audio.rs:249
+#: src/session/content/room_history/message_row/audio.rs:244
+#: src/session/content/room_history/message_row/audio.rs:248
 msgid "Could not retrieve audio file"
 msgstr "Kunde inte erhålla ljudfil"
 
-#: src/session/content/room_history/message_row/audio.rs:262
+#: src/session/content/room_history/message_row/audio.rs:261
 msgid "Error reading audio file"
 msgstr "Fel vid läsning av ljudfil"
 
-#: src/session/content/room_history/message_row/media.rs:445
+#: src/session/content/room_history/message_row/media.rs:444
 msgid "Image file not supported"
 msgstr "Bildfilen stöds inte"
 
-#: src/session/content/room_history/message_row/media.rs:484
-#: src/session/content/room_history/message_row/media.rs:489
+#: src/session/content/room_history/message_row/media.rs:483
+#: src/session/content/room_history/message_row/media.rs:488
 msgid "Could not retrieve media"
 msgstr "Kunde inte erhålla media"
 
-#: src/session/content/room_history/message_row/mod.rs:377
+#: src/session/content/room_history/message_row/mod.rs:376
 msgid "Identity verification was started"
 msgstr "Identitetsverifiering startades"
 
-#: src/session/content/room_history/message_row/mod.rs:390
-#: src/session/content/room_history/message_row/mod.rs:437
+#: src/session/content/room_history/message_row/mod.rs:389
+#: src/session/content/room_history/message_row/mod.rs:436
 msgid "Unsupported event"
 msgstr "Händelsen stöds inte"
 
-#: src/session/content/room_history/message_row/mod.rs:415
+#: src/session/content/room_history/message_row/mod.rs:414
 msgid ""
 "Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
@@ -1251,35 +1272,35 @@ msgstr ""
 "Kunde inte dekryptera detta meddelande, försöker dekryptera igen när "
 "nycklarna är tillgängliga."
 
-#: src/session/content/room_history/message_row/mod.rs:426
+#: src/session/content/room_history/message_row/mod.rs:425
 msgid "This message was removed."
 msgstr "Det här meddelandet togs bort."
 
-#: src/session/content/room_history/mod.rs:155
+#: src/session/content/room_history/mod.rs:154
 msgid "The location request has been cancelled."
 msgstr "Platsförfrågan har avbrutits."
 
-#: src/session/content/room_history/mod.rs:159
+#: src/session/content/room_history/mod.rs:158
 msgid "Failed to retrieve current location."
 msgstr "Misslyckades med att erhålla aktuell plats."
 
-#: src/session/content/room_history/mod.rs:735
+#: src/session/content/room_history/mod.rs:734
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Användarplats {geo_uri}, tid {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:839
+#: src/session/content/room_history/mod.rs:838
 msgid "Error reading file"
 msgstr "Fel vid läsning av fil"
 
-#: src/session/content/room_history/mod.rs:865
+#: src/session/content/room_history/mod.rs:864
 msgid "Error getting file from drop"
 msgstr "Fel då släppt fil skulle erhållas"
 
-#: src/session/content/room_history/mod.rs:897
+#: src/session/content/room_history/mod.rs:896
 msgid "Error getting image from clipboard"
 msgstr "Fel då bilden skulle erhållas från urklipp"
 
-#: src/session/content/room_history/mod.rs:914
+#: src/session/content/room_history/mod.rs:913
 msgid "Error getting file from clipboard"
 msgstr "Fel då filen skulle erhållas från urklipp"
 
@@ -1572,11 +1593,11 @@ msgstr ""
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Ett fel inträffade under skapandet av krypteringsnycklarna."
 
-#: src/session/mod.rs:468
+#: src/session/mod.rs:494
 msgid "Unable to store session"
 msgstr "Kunde inte lagra session"
 
-#: src/session/mod.rs:760
+#: src/session/mod.rs:831
 msgid "Failed to logout the session."
 msgstr "Misslyckades med att logga ut sessionen."
 
@@ -1597,54 +1618,54 @@ msgid "Normal user"
 msgstr "Vanlig användare"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:466
+#: src/session/room/mod.rs:465
 msgid "Failed to forget {room}."
 msgstr "Misslyckades med att glömma {room}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:704
+#: src/session/room/mod.rs:703
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr ""
 "Misslyckades med att flytta {room} från {previous_category} till "
 "{new_category}."
 
-#: src/session/room/mod.rs:1001
+#: src/session/room/mod.rs:999
 msgid "Unknown"
 msgstr "Okänt"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:1028
+#: src/session/room/mod.rs:1026
 msgid "Empty Room (was {user})"
 msgstr "Tomt rum (var {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:1030
+#: src/session/room/mod.rs:1028
 msgid "Empty Room"
 msgstr "Tomt rum"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1437
+#: src/session/room/mod.rs:1432
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 "Misslyckades med att acceptera inbjudan för {room}. Försök igen senare."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1466
+#: src/session/room/mod.rs:1461
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr "Misslyckades med att avvisa inbjudan för {room}. Försök igen senare."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1632
+#: src/session/room/mod.rs:1627
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "Misslyckades med att bjuda in {user} till {room}. Försök igen senare."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1644
+#: src/session/room/mod.rs:1639
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1665,27 +1686,19 @@ msgstr "%A, %-e %B"
 msgid "%A, %B %e, %Y"
 msgstr "%A, %-e %B, %Y"
 
-#: src/session/room_creation/mod.rs:276
+#: src/session/room_creation/mod.rs:266
 msgid "The address is already taken."
 msgstr "Adressen används redan."
 
-#: src/session/room_creation/mod.rs:299
-msgid "Too long. Use a shorter name."
-msgstr "För långt. Använd ett kortare namn."
-
-#: src/session/room_creation/mod.rs:306
-msgid "Invalid room name."
-msgstr "Ogiltigt rumsnamn."
-
-#: src/session/room_creation/mod.rs:333
+#: src/session/room_creation/mod.rs:295
 msgid "Can’t contain “:”"
 msgstr "Får inte innehålla ”:”"
 
-#: src/session/room_creation/mod.rs:338
+#: src/session/room_creation/mod.rs:300
 msgid "Can’t contain “#”"
 msgstr "Får inte innehålla ”#”"
 
-#: src/session/room_creation/mod.rs:343
+#: src/session/room_creation/mod.rs:305
 msgid "Too long. Use a shorter address."
 msgstr "För lång. Använd en kortare adress."
 
@@ -1766,10 +1779,6 @@ msgstr "Gå in i rum igen som person"
 #: src/session/sidebar/category_type.rs:34
 msgid "Verifications"
 msgstr "Verifieringar"
-
-#: src/session/sidebar/category_type.rs:35
-msgid "Invited"
-msgstr "Inbjuden"
 
 #: src/session/sidebar/category_type.rs:36
 msgid "Favorites"
@@ -1884,25 +1893,37 @@ msgstr ""
 "fullständig URL manuellt."
 
 #. Translators: Default name for image files.
-#: src/utils.rs:302
+#: src/utils.rs:301
 msgid "image"
 msgstr "bild"
 
 #. Translators: Default name for video files.
-#: src/utils.rs:304
+#: src/utils.rs:303
 msgid "video"
 msgstr "video"
 
 #. Translators: Default name for audio files.
-#: src/utils.rs:306
+#: src/utils.rs:305
 msgid "audio"
 msgstr "ljud"
 
 #. Translators: Default name for files.
-#: src/utils.rs:308
+#: src/utils.rs:307
 msgid "file"
 msgstr "fil"
 
-#: src/window.rs:230
+#: src/window.rs:246
 msgid "Failed to restore previous sessions"
 msgstr "Misslyckades med att återställa tidigare sessioner"
+
+#~ msgid "Learn more about Fractal"
+#~ msgstr "Lär dig mer om Fractal"
+
+#~ msgid "A Matrix client for GNOME"
+#~ msgstr "En Matrix-klient för GNOME"
+
+#~ msgid "Too long. Use a shorter name."
+#~ msgstr "För långt. Använd ett kortare namn."
+
+#~ msgid "Invalid room name."
+#~ msgstr "Ogiltigt rumsnamn."
