@@ -49,18 +49,7 @@ mod imp {
                     obj.activate_action("win.toggle-fullscreen", None).unwrap();
                 }
 
-                if let Some(stream) = obj
-                    .imp()
-                    .media
-                    .child()
-                    .and_then(|w| w.downcast::<gtk::Video>().ok())
-                    .and_then(|video| video.media_stream())
-                {
-                    if stream.is_playing() {
-                        stream.pause();
-                        stream.seek(0);
-                    }
-                }
+                obj.imp().media.stop_playback();
                 obj.activate_action("session.show-content", None).unwrap();
             });
             klass.add_binding_action(

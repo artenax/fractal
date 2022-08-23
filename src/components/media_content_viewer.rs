@@ -129,6 +129,21 @@ impl MediaContentViewer {
         glib::Object::new(&[("autoplay", &autoplay)]).expect("Failed to create MediaContentViewer")
     }
 
+    pub fn stop_playback(&self) {
+        if let Some(stream) = self
+            .imp()
+            .viewer
+            .child()
+            .and_then(|c| c.downcast::<gtk::Video>().ok())
+            .and_then(|v| v.media_stream())
+        {
+            if stream.is_playing() {
+                stream.pause();
+                stream.seek(0);
+            }
+        }
+    }
+
     pub fn autoplay(&self) -> bool {
         self.imp().autoplay.get()
     }
