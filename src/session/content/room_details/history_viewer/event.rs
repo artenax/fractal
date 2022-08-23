@@ -1,8 +1,8 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use matrix_sdk::deserialized_responses::TimelineEvent;
-use ruma::events::{AnyMessageLikeEventContent, AnySyncTimelineEvent};
+use ruma::events::{room::message::MessageType, AnyMessageLikeEventContent, AnySyncTimelineEvent};
 
-use crate::session::Room;
+use crate::{session::Room, spawn_tokio, utils::media::filename_for_mime};
 
 #[derive(Clone, Debug, glib::Boxed)]
 #[boxed_type(name = "BoxedAnySyncTimelineEvent")]
@@ -68,5 +68,35 @@ impl HistoryViewerEvent {
             AnySyncTimelineEvent::MessageLike(message) => message.original_content(),
             _ => None,
         }
+    }
+
+    pub async fn get_file_content(&self) -> Result<(String, Vec<u8>), matrix_sdk::Error> {
+        if let AnyMessageLikeEventContent::RoomMessage(content) = self.original_content().unwrap() {
+            let media = self.room().unwrap().session().client().media();
+
+            if let MessageType::File(content) = content.msgtype {
+                let filename = content
+                    .filename
+                    .as_ref()
+                    .filter(|name| !name.is_empty())
+                    .or(Some(&content.body))
+                    .filter(|name| !name.is_empty())
+                    .cloned()
+                    .unwrap_or_else(|| {
+                        filename_for_mime(
+                            content
+                                .info
+                                .as_ref()
+                                .and_then(|info| info.mimetype.as_deref()),
+                            None,
+                        )
+                    });
+                let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+                let data = handle.await.unwrap()?.unwrap();
+                return Ok((filename, data));
+            }
+        }
+
+        panic!("Trying to get the content of an event of incompatible type");
     }
 }
