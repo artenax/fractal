@@ -87,6 +87,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -234,10 +235,17 @@ glib::wrapper! {
         @extends gtk::Widget, @implements gtk::Accessible;
 }
 
+#[gtk::template_callbacks]
 impl MessageMedia {
     /// Create a new media message.
     pub fn new() -> Self {
         glib::Object::new(&[])
+    }
+
+    #[template_callback]
+    fn handle_release(&self) {
+        self.activate_action("message-row.show-media", None)
+            .unwrap();
     }
 
     /// The intended display width of the media.

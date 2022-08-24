@@ -144,19 +144,6 @@ mod imp {
             }
         }
 
-        fn activatable(&self) -> bool {
-            match self.obj().content() {
-                // The event can be activated to open the media viewer if it's an image or a video.
-                TimelineItemContent::Message(message) => {
-                    matches!(
-                        message.msgtype(),
-                        MessageType::Image(_) | MessageType::Video(_)
-                    )
-                }
-                _ => false,
-            }
-        }
-
         fn can_hide_header(&self) -> bool {
             match self.obj().content() {
                 TimelineItemContent::Message(message) => {
@@ -254,7 +241,6 @@ impl Event {
         );
         imp.item.replace(Some(item));
 
-        self.notify("activatable");
         self.notify("source");
     }
 

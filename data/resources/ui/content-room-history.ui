@@ -202,7 +202,6 @@
                                 <style>
                                   <class name="navigation-sidebar"/>
                                 </style>
-                                <property name="single-click-activate">True</property>
                                 <accessibility>
                                   <property name="label" translatable="yes">Room History</property>
                                 </accessibility>

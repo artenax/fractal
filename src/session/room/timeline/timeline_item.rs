@@ -19,7 +19,6 @@ mod imp {
         pub parent_class: glib::object::ObjectClass,
         pub is_visible: fn(&super::TimelineItem) -> bool,
         pub selectable: fn(&super::TimelineItem) -> bool,
-        pub activatable: fn(&super::TimelineItem) -> bool,
         pub can_hide_header: fn(&super::TimelineItem) -> bool,
         pub event_sender: fn(&super::TimelineItem) -> Option<Member>,
     }
@@ -36,11 +35,6 @@ mod imp {
     pub(super) fn timeline_item_selectable(this: &super::TimelineItem) -> bool {
         let klass = this.class();
         (klass.as_ref().selectable)(this)
-    }
-
-    pub(super) fn timeline_item_activatable(this: &super::TimelineItem) -> bool {
-        let klass = this.class();
-        (klass.as_ref().activatable)(this)
     }
 
     pub(super) fn timeline_item_can_hide_header(this: &super::TimelineItem) -> bool {
@@ -76,9 +70,6 @@ mod imp {
                     glib::ParamSpecBoolean::builder("selectable")
                         .read_only()
                         .build(),
-                    glib::ParamSpecBoolean::builder("activatable")
-                        .read_only()
-                        .build(),
                     glib::ParamSpecBoolean::builder("show-header")
                         .explicit_notify()
                         .build(),
@@ -107,7 +98,6 @@ mod imp {
             match pspec.name() {
                 "is-visible" => obj.is_visible().to_value(),
                 "selectable" => obj.selectable().to_value(),
-                "activatable" => obj.activatable().to_value(),
                 "show-header" => obj.show_header().to_value(),
                 "can-hide-header" => obj.can_hide_header().to_value(),
                 "event-sender" => obj.event_sender().to_value(),
@@ -181,11 +171,6 @@ pub trait TimelineItemExt: 'static {
     /// Defaults to `false`.
     fn selectable(&self) -> bool;
 
-    /// Whether this `TimelineItem` is activatable.
-    ///
-    /// Defaults to `false`.
-    fn activatable(&self) -> bool;
-
     /// Whether this `TimelineItem` should show its header.
     ///
     /// Defaults to `false`.
@@ -212,10 +197,6 @@ impl<O: IsA<TimelineItem>> TimelineItemExt for O {
 
     fn selectable(&self) -> bool {
         imp::timeline_item_selectable(self.upcast_ref())
-    }
-
-    fn activatable(&self) -> bool {
-        imp::timeline_item_activatable(self.upcast_ref())
     }
 
     fn show_header(&self) -> bool {
@@ -256,10 +237,6 @@ pub trait TimelineItemImpl: ObjectImpl {
         false
     }
 
-    fn activatable(&self) -> bool {
-        false
-    }
-
     fn can_hide_header(&self) -> bool {
         false
     }
@@ -282,7 +259,6 @@ where
 
         klass.is_visible = is_visible_trampoline::<T>;
         klass.selectable = selectable_trampoline::<T>;
-        klass.activatable = activatable_trampoline::<T>;
         klass.can_hide_header = can_hide_header_trampoline::<T>;
         klass.event_sender = event_sender_trampoline::<T>;
     }
@@ -305,15 +281,6 @@ where
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
     this.imp().selectable()
-}
-
-fn activatable_trampoline<T>(this: &TimelineItem) -> bool
-where
-    T: ObjectSubclass + TimelineItemImpl,
-    T::Type: IsA<TimelineItem>,
-{
-    let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().activatable()
 }
 
 fn can_hide_header_trampoline<T>(this: &TimelineItem) -> bool

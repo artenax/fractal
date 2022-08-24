@@ -14,6 +14,7 @@ use gtk::{
     glib::{clone, signal::SignalHandlerId},
     CompositeTemplate,
 };
+use matrix_sdk::{room::timeline::TimelineItemContent, ruma::events::room::message::MessageType};
 
 pub use self::content::ContentFormat;
 use self::{content::MessageContent, reaction_list::MessageReactionList};
@@ -55,6 +56,10 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+
+            klass.install_action("message-row.show-media", None, move |obj, _, _| {
+                obj.show_media();
+            });
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -200,5 +205,18 @@ impl MessageRow {
     /// Get the texture displayed by this widget, if any.
     pub fn texture(&self) -> Option<gdk::Texture> {
         self.imp().content.texture()
+    }
+
+    fn show_media(&self) {
+        if let Some(event) = self.imp().event.borrow().as_ref() {
+            if let TimelineItemContent::Message(content) = event.content() {
+                if matches!(
+                    content.msgtype(),
+                    MessageType::Image(_) | MessageType::Video(_)
+                ) {
+                    event.room().session().show_media(event);
+                }
+            }
+        }
     }
 }

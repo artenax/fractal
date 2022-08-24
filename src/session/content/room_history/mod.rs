@@ -50,9 +50,7 @@ use crate::{
     i18n::gettext_f,
     session::{
         content::{room_details, RoomDetails},
-        room::{
-            Event, EventKey, Room, RoomAction, RoomType, Timeline, TimelineItem, TimelineState,
-        },
+        room::{Event, EventKey, Room, RoomAction, RoomType, Timeline, TimelineState},
         user::UserExt,
     },
     spawn, spawn_tokio, toast,
@@ -301,8 +299,8 @@ mod imp {
             factory.connect_setup(clone!(@weak obj => move |_, item| {
                 let row = ItemRow::new(&obj);
                 item.set_child(Some(&row));
-                ItemRow::this_expression("item").chain_property::<TimelineItem>("activatable").bind(item, "activatable", Some(&row));
                 item.bind_property("item", &row, "item").build();
+                item.set_activatable(false);
                 item.set_selectable(false);
             }));
             self.listview.set_factory(Some(&factory));
@@ -310,20 +308,6 @@ mod imp {
             // Needed to use the natural height of GtkPictures
             self.listview
                 .set_vscroll_policy(gtk::ScrollablePolicy::Natural);
-
-            self.listview
-                .connect_activate(clone!(@weak obj => move |listview, pos| {
-                    if let Some(event) = listview
-                        .model()
-                        .and_then(|model| model.item(pos))
-                        .as_ref()
-                        .and_then(|o| o.downcast_ref::<Event>())
-                    {
-                        if let Some(room) = obj.room() {
-                            room.session().show_media(event);
-                        }
-                    }
-                }));
 
             obj.set_sticky(true);
             let adj = self.listview.vadjustment().unwrap();
