@@ -90,6 +90,8 @@ mod imp {
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
+        pub overlay: TemplateChild<gtk::Overlay>,
+        #[template_child]
         pub leaflet: TemplateChild<adw::Leaflet>,
         #[template_child]
         pub sidebar: TemplateChild<Sidebar>,
@@ -468,7 +470,7 @@ impl Session {
 
                     let handle = spawn_tokio!(async move { encryption.bootstrap_cross_signing(None).await });
                     if handle.await.is_ok() {
-                        imp.stack.set_visible_child(&*imp.leaflet);
+                        imp.stack.set_visible_child(&*imp.overlay);
                         if let Some(window) = obj.parent_window() {
                             window.switch_to_sessions_page();
                         }
@@ -810,7 +812,7 @@ impl Session {
     pub fn show_content(&self) {
         let imp = self.imp();
 
-        imp.stack.set_visible_child(&*imp.leaflet);
+        imp.stack.set_visible_child(&*imp.overlay);
 
         if let Some(window) = self.parent_window() {
             window.switch_to_sessions_page();
@@ -821,8 +823,7 @@ impl Session {
     pub fn show_media(&self, event: &Event) {
         let imp = self.imp();
         imp.media_viewer.set_event(Some(event.clone()));
-
-        imp.stack.set_visible_child(&*imp.media_viewer);
+        imp.media_viewer.set_visible(true);
     }
 
     pub async fn cross_signing_status(&self) -> Option<CrossSigningStatus> {

@@ -50,7 +50,7 @@ mod imp {
                 }
 
                 obj.imp().media.stop_playback();
-                obj.activate_action("session.show-content", None).unwrap();
+                obj.set_visible(false);
             });
             klass.add_binding_action(
                 gdk::Key::Escape,
