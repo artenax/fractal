@@ -146,6 +146,11 @@ levelbar.discrete.error block.filled {
   background-color: @yellow_5;
 }
 
+media-viewer headerbar {
+  background: none;
+  box-shadow: none;
+}
+
 media-content-viewer controls {
   min-width: 300px;
 }

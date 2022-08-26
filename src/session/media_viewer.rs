@@ -1,5 +1,5 @@
 use adw::{prelude::*, subclass::prelude::*};
-use gtk::{gdk, gio, glib, glib::clone, CompositeTemplate};
+use gtk::{gdk, gio, glib, glib::clone, graphene, CompositeTemplate};
 use log::warn;
 use matrix_sdk::{room::timeline::TimelineItemContent, ruma::events::room::message::MessageType};
 
@@ -12,11 +12,13 @@ use crate::{
     Window,
 };
 
+const ANIMATION_DURATION: u32 = 250;
+
 mod imp {
     use std::cell::{Cell, RefCell};
 
     use glib::{object::WeakRef, subclass::InitializingObject};
-    use once_cell::sync::Lazy;
+    use once_cell::{sync::Lazy, unsync::OnceCell};
 
     use super::*;
 
@@ -26,8 +28,11 @@ mod imp {
         pub fullscreened: Cell<bool>,
         pub event: WeakRef<Event>,
         pub body: RefCell<Option<String>>,
+        pub animation: OnceCell<adw::TimedAnimation>,
         #[template_child]
         pub flap: TemplateChild<adw::Flap>,
+        #[template_child]
+        pub header_bar: TemplateChild<gtk::HeaderBar>,
         #[template_child]
         pub menu: TemplateChild<gtk::MenuButton>,
         #[template_child]
@@ -46,6 +51,7 @@ mod imp {
             Self::bind_template(klass);
             Self::Type::bind_template_callbacks(klass);
 
+            klass.set_css_name("media-viewer");
             klass.install_action("media-viewer.close", None, move |obj, _, _| {
                 if obj.fullscreened() {
                     obj.activate_action("win.toggle-fullscreen", None).unwrap();
@@ -53,6 +59,12 @@ mod imp {
 
                 obj.imp().media.stop_playback();
                 obj.imp().revealer.set_reveal_child(false);
+
+                let animation = obj.imp().animation.get().unwrap();
+
+                animation.set_value_from(animation.value());
+                animation.set_value_to(0.0);
+                animation.play();
             });
             klass.add_binding_action(
                 gdk::Key::Escape,
@@ -109,6 +121,14 @@ mod imp {
             self.parent_constructed();
 
             let obj = self.obj();
+            let target = adw::CallbackAnimationTarget::new(clone!(@weak obj => move |value| {
+                // This is needed to fade the header bar content
+                obj.imp().header_bar.set_opacity(value);
+
+                obj.queue_draw();
+            }));
+            let animation = adw::TimedAnimation::new(&*obj, 0.0, 1.0, ANIMATION_DURATION, &target);
+            self.animation.set(animation).unwrap();
 
             self.menu
                 .set_menu_model(Some(Self::Type::event_media_menu_model()));
@@ -132,7 +152,21 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for MediaViewer {}
+    impl WidgetImpl for MediaViewer {
+        fn snapshot(&self, snapshot: &gtk::Snapshot) {
+            let obj = self.obj();
+            let progress = self.animation.get().unwrap().value() as f32;
+
+            if progress > 0.0 {
+                let background_color = gdk::RGBA::new(0.0, 0.0, 0.0, 1.0 * progress);
+                let bounds = graphene::Rect::new(0.0, 0.0, obj.width() as f32, obj.height() as f32);
+                snapshot.append_color(&background_color, &bounds);
+            }
+
+            obj.snapshot_child(&*self.flap, snapshot);
+        }
+    }
+
     impl BinImpl for MediaViewer {}
 }
 
@@ -155,6 +189,11 @@ impl MediaViewer {
 
         imp.revealer.set_source_widget(Some(source_widget));
         imp.revealer.set_reveal_child(true);
+
+        let animation = imp.animation.get().unwrap();
+        animation.set_value_from(animation.value());
+        animation.set_value_to(1.0);
+        animation.play();
     }
 
     /// The media event to display.

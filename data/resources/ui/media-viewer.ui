@@ -7,7 +7,10 @@
         <property name="locked" bind-source="MediaViewer" bind-property="fullscreened" bind-flags="sync-create|invert-boolean"/>
         <property name="reveal-flap" bind-source="MediaViewer" bind-property="fullscreened" bind-flags="sync-create|invert-boolean"/>
         <child type="flap">
-          <object class="GtkHeaderBar">
+          <object class="GtkHeaderBar" id="header_bar">
+            <style>
+              <class name="osd"/>
+            </style>
             <property name="title-widget">
               <object class="GtkLabel">
                 <binding name="label">
