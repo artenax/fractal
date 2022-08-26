@@ -5,7 +5,7 @@ use matrix_sdk::{room::timeline::TimelineItemContent, ruma::events::room::messag
 
 use super::room::{EventActions, EventTexture};
 use crate::{
-    components::{ContentType, ImagePaintable, MediaContentViewer},
+    components::{ContentType, ImagePaintable, MediaContentViewer, ScaleRevealer},
     session::room::Event,
     spawn,
     utils::cache_dir,
@@ -31,6 +31,8 @@ mod imp {
         #[template_child]
         pub menu: TemplateChild<gtk::MenuButton>,
         #[template_child]
+        pub revealer: TemplateChild<ScaleRevealer>,
+        #[template_child]
         pub media: TemplateChild<MediaContentViewer>,
     }
 
@@ -50,7 +52,7 @@ mod imp {
                 }
 
                 obj.imp().media.stop_playback();
-                obj.set_visible(false);
+                obj.imp().revealer.set_reveal_child(false);
             });
             klass.add_binding_action(
                 gdk::Key::Escape,
@@ -106,11 +108,13 @@ mod imp {
         fn constructed(&self) {
             self.parent_constructed();
 
+            let obj = self.obj();
+
             self.menu
                 .set_menu_model(Some(Self::Type::event_media_menu_model()));
 
             // Bind `fullscreened` to the window property of the same name.
-            self.obj().connect_notify_local(Some("root"), |obj, _| {
+            obj.connect_notify_local(Some("root"), |obj, _| {
                 if let Some(window) = obj.root().and_then(|root| root.downcast::<Window>().ok()) {
                     window
                         .bind_property("fullscreened", obj, "fullscreened")
@@ -118,6 +122,13 @@ mod imp {
                         .build();
                 }
             });
+
+            self.revealer
+                .connect_transition_done(clone!(@weak obj => move |revealer| {
+                    if !revealer.reveals_child() {
+                        obj.set_visible(false);
+                    }
+                }));
         }
     }
 
@@ -134,6 +145,16 @@ glib::wrapper! {
 impl MediaViewer {
     pub fn new() -> Self {
         glib::Object::new(&[])
+    }
+
+    /// Reveal this widget by transitioning from `source_widget`.
+    pub fn reveal(&self, source_widget: &impl IsA<gtk::Widget>) {
+        let imp = self.imp();
+
+        self.set_visible(true);
+
+        imp.revealer.set_source_widget(Some(source_widget));
+        imp.revealer.set_reveal_child(true);
     }
 
     /// The media event to display.

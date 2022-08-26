@@ -48,11 +48,15 @@
           </object>
         </child>
         <child>
-          <object class="ComponentsMediaContentViewer" id="media">
-            <property name="autoplay">true</property>
+          <object class="ComponentsScaleRevealer" id="revealer">
             <property name="halign">center</property>
             <property name="valign">center</property>
             <property name="vexpand">true</property>
+            <property name="child">
+              <object class="ComponentsMediaContentViewer" id="media">
+                <property name="autoplay">true</property>
+              </object>
+            </property>
           </object>
         </child>
       </object>

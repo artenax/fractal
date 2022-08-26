@@ -2,7 +2,7 @@
 <interface>
   <template class="ContentMessageMedia" parent="GtkWidget">
     <property name="focusable">True</property>
-    <property name="valign">center</property>
+    <property name="halign">start</property>
     <child>
       <object class="GtkOverlay" id="media">
         <style>

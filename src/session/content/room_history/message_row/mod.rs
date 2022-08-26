@@ -17,7 +17,7 @@ use gtk::{
 use matrix_sdk::{room::timeline::TimelineItemContent, ruma::events::room::message::MessageType};
 
 pub use self::content::ContentFormat;
-use self::{content::MessageContent, reaction_list::MessageReactionList};
+use self::{content::MessageContent, media::MessageMedia, reaction_list::MessageReactionList};
 use crate::{components::Avatar, prelude::*, session::room::Event};
 
 mod imp {
@@ -208,13 +208,15 @@ impl MessageRow {
     }
 
     fn show_media(&self) {
-        if let Some(event) = self.imp().event.borrow().as_ref() {
+        let imp = self.imp();
+        if let Some(event) = imp.event.borrow().as_ref() {
             if let TimelineItemContent::Message(content) = event.content() {
                 if matches!(
                     content.msgtype(),
                     MessageType::Image(_) | MessageType::Video(_)
                 ) {
-                    event.room().session().show_media(event);
+                    let media_widget = imp.content.child().and_downcast::<MessageMedia>().unwrap();
+                    event.room().session().show_media(event, &media_widget);
                 }
             }
         }

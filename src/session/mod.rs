@@ -820,10 +820,10 @@ impl Session {
     }
 
     /// Show a media event
-    pub fn show_media(&self, event: &Event) {
+    pub fn show_media(&self, event: &Event, source_widget: &impl IsA<gtk::Widget>) {
         let imp = self.imp();
         imp.media_viewer.set_event(Some(event.clone()));
-        imp.media_viewer.set_visible(true);
+        imp.media_viewer.reveal(source_widget);
     }
 
     pub async fn cross_signing_status(&self) -> Option<CrossSigningStatus> {

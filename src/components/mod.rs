@@ -17,6 +17,7 @@ mod overlapping_box;
 mod pill;
 mod reaction_chooser;
 mod room_title;
+mod scale_revealer;
 mod spinner_button;
 mod video_player;
 mod video_player_renderer;
@@ -41,6 +42,7 @@ pub use self::{
     pill::Pill,
     reaction_chooser::ReactionChooser,
     room_title::RoomTitle,
+    scale_revealer::ScaleRevealer,
     spinner_button::SpinnerButton,
     video_player::VideoPlayer,
     video_player_renderer::VideoPlayerRenderer,
