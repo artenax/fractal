@@ -93,6 +93,7 @@ mod imp {
             let label = &self.label;
             label.set_parent(obj);
             label.set_wrap(true);
+            label.set_wrap_mode(pango::WrapMode::WordChar);
             label.set_xalign(0.0);
             label.set_valign(gtk::Align::Start);
             label.connect_notify_local(
