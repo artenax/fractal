@@ -9,6 +9,10 @@ textview, text {
   font-weight: bold;
 }
 
+.line-height {
+  line-height: 150%;
+}
+
 button.pill.large {
   padding: 12px 40px;
 }
