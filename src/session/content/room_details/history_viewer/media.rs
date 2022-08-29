@@ -1,10 +1,12 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{glib, glib::clone, CompositeTemplate};
+use log::error;
+use ruma::events::AnyMessageLikeEventContent;
 
 use crate::{
     session::{
         content::room_details::history_viewer::{MediaItem, Timeline, TimelineFilter},
-        Room,
+        MediaViewer, Room,
     },
     spawn,
 };
@@ -21,6 +23,8 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/content-media-history-viewer.ui")]
     pub struct MediaHistoryViewer {
         pub room_timeline: OnceCell<Timeline>,
+        #[template_child]
+        pub media_viewer: TemplateChild<MediaViewer>,
         #[template_child]
         pub grid_view: TemplateChild<gtk::GridView>,
     }
@@ -81,6 +85,23 @@ glib::wrapper! {
 impl MediaHistoryViewer {
     pub fn new(room: &Room) -> Self {
         glib::Object::builder().property("room", room).build()
+    }
+
+    pub fn show_media(&self, item: &MediaItem) {
+        let imp = self.imp();
+        let event = item.event().unwrap();
+
+        let Some(AnyMessageLikeEventContent::RoomMessage(message)) = event.original_content() else {
+            error!("Trying to open the media viewer with an event that is not a message");
+            return;
+        };
+
+        imp.media_viewer.set_message(
+            &event.room().unwrap(),
+            event.matrix_event().0.event_id().into(),
+            message.msgtype,
+        );
+        imp.media_viewer.reveal(item);
     }
 
     fn set_room(&self, room: &Room) {

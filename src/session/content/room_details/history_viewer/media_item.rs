@@ -13,7 +13,8 @@ use matrix_sdk::{
 };
 
 use crate::{
-    session::content::room_details::history_viewer::HistoryViewerEvent, spawn, spawn_tokio, Session,
+    session::content::room_details::{history_viewer::HistoryViewerEvent, MediaHistoryViewer},
+    spawn, spawn_tokio, Session,
 };
 
 mod imp {
@@ -43,6 +44,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
 
             klass.set_css_name("mediahistoryvieweritem");
         }
@@ -106,6 +108,7 @@ glib::wrapper! {
         @extends gtk::Widget;
 }
 
+#[gtk::template_callbacks]
 impl MediaItem {
     pub fn set_event(&self, event: Option<HistoryViewerEvent>) {
         if self.event() == event {
@@ -223,5 +226,15 @@ impl MediaItem {
                 }
             })
         );
+    }
+
+    #[template_callback]
+    fn handle_release(&self) {
+        let media_history_viewer = self
+            .ancestor(MediaHistoryViewer::static_type())
+            .unwrap()
+            .downcast::<MediaHistoryViewer>()
+            .unwrap();
+        media_history_viewer.show_media(self);
     }
 }

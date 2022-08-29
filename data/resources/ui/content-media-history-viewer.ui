@@ -2,45 +2,52 @@
 <interface>
   <template class="ContentMediaHistoryViewer" parent="AdwBin">
     <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkHeaderBar">
-            <style>
-              <class name="osd"/>
-            </style>
-            <property name="title-widget">
-              <object class="AdwWindowTitle">
-                <property name="title" translatable="yes">Media</property>
-              </object>
-            </property>
-            <child type="start">
-              <object class="GtkButton">
-                <property name="action-name">details.previous-page</property>
-                <property name="icon-name">go-previous-symbolic</property>
-              </object>
-            </child>
+      <object class="GtkOverlay">
+        <child type="overlay">
+          <object class="MediaViewer" id="media_viewer">
+            <property name="visible">False</property>
           </object>
         </child>
         <child>
-          <object class="GtkScrolledWindow">
-            <property name="hscrollbar-policy">never</property>
-            <property name="vexpand">True</property>
-            <style>
-              <class name="osd"/>
-            </style>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
             <child>
-              <object class="AdwClampScrollable">
-                <property name="maximum-size">1000</property>
-                <property name="tightening-threshold">800</property>
-                <property name="vscroll-policy">natural</property>
+              <object class="GtkHeaderBar">
+                <style>
+                  <class name="osd"/>
+                </style>
+                <property name="title-widget">
+                  <object class="AdwWindowTitle">
+                    <property name="title" translatable="yes">Media</property>
+                  </object>
+                </property>
+                <child type="start">
+                  <object class="GtkButton">
+                    <property name="action-name">details.previous-page</property>
+                    <property name="icon-name">go-previous-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="hscrollbar-policy">never</property>
+                <property name="vexpand">True</property>
+                <style>
+                  <class name="osd"/>
+                </style>
                 <child>
-                  <object class="GtkGridView" id="grid_view">
-                    <property name="min-columns">2</property>
-                    <property name="max-columns">5</property>
-                    <property name="factory">
-                      <object class="GtkBuilderListItemFactory">
-                        <property name="bytes"><![CDATA[
+                  <object class="AdwClampScrollable">
+                    <property name="maximum-size">1000</property>
+                    <property name="tightening-threshold">800</property>
+                    <property name="vscroll-policy">natural</property>
+                    <child>
+                      <object class="GtkGridView" id="grid_view">
+                        <property name="min-columns">2</property>
+                        <property name="max-columns">5</property>
+                        <property name="factory">
+                          <object class="GtkBuilderListItemFactory">
+                            <property name="bytes"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="GtkListItem">
@@ -55,9 +62,11 @@
     </property>
   </template>
 </interface>
-                        ]]></property>
+                            ]]></property>
+                          </object>
+                        </property>
                       </object>
-                    </property>
+                    </child>
                   </object>
                 </child>
               </object>

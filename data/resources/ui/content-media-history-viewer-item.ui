@@ -2,6 +2,11 @@
 <interface>
   <template class="ContentMediaHistoryViewerItem" parent="GtkWidget">
     <child>
+      <object class="GtkGestureClick">
+        <signal name="released" handler="handle_release" swapped="true"/>
+      </object>
+    </child>
+    <child>
       <object class="GtkOverlay" id="overlay">
         <child>
           <object class="GtkPicture" id="picture">
