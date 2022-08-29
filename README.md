@@ -57,78 +57,24 @@ flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.or
 flatpak install --user gnome-nightly org.gnome.Fractal.Devel
 ```
 
-## Build Instructions
+### Runtime Dependencies
 
-### Minimum Rust version
+Fractal doesn't store your **password** but uses [Secret Service](https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/)
+to store your other **credentials** so you should have something providing that service on your
+system. If you're using GNOME or KDE this should work for you out of the box with gnome-keyring or
+ksecretservice.
 
-To build Fractal, Rust 1.60 is required. For development, you'll need to install the nightly
-toolchain to be able to run our pre-commit hook that validates the formatting and lints the Rust
-code.
+## Contributing
 
-### Flatpak
+### Code
 
-Flatpak is the recommended way of building and installing Fractal.
-
-First you need to make sure you have the GNOME SDK and Rust toolchain installed.
-
-```sh
-# Add Flathub-beta and the gnome-nightly repo
-flatpak remote-add --user --if-not-exists flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
-flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
-
-# Install the gnome-nightly Sdk and Platform runtime
-flatpak install --user gnome-nightly org.gnome.Sdk//master org.gnome.Platform//master
-
-# Install the required rust-stable extension from Flathub-beta
-flatpak install --user flathub-beta org.freedesktop.Sdk.Extension.rust-stable//22.08beta
-
-# Install the required llvm extension from Flathub-beta
-flatpak install --user flathub-beta org.freedesktop.Sdk.Extension.llvm14//22.08beta
-```
-
-<table><tr><td>
-<p>ℹ️ The instructions below will build the same binary as the one available on the GNOME nightly
-repo. This is an optimised build so it can take a few minutes.</p>
-
-<p>If you're building Fractal for development, use the <code>org.gnome.Fractal.Hack.json</code> manifest
-instead.</p>
-</td></tr></table>
-
-Move inside the `build-aux` folder and then build and install the app:
-
-```sh
-cd build-aux
-flatpak-builder --user --install app org.gnome.Fractal.Devel.json
-```
-
-Fractal Next can then be entirely removed from your system with:
-
-```sh
-flatpak remove --delete-data org.gnome.Fractal.Devel
-```
-
-### GNU/Linux
-
-If you decide to ignore our recommendation and build on your host system,
-outside of Flatpak, you will need Meson and Ninja (as well as Rust and Cargo).
-
-```sh
-meson . _build --prefix=/usr/local
-ninja -C _build
-sudo ninja -C _build install
-```
+Please follow our [contributing guidelines](CONTRIBUTING.md).
 
 ### Translations
 
 Fractal is translated by the GNOME translation team on [Damned lies](https://l10n.gnome.org/).
 
 Find your language in the list on [the Fractal module page on Damned lies](https://l10n.gnome.org/module/fractal/).
-
-### Password Storage
-
-Fractal uses [Secret Service](https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/)
-to store the password so you should have something providing that service on your system. If you're
-using GNOME or KDE this should work for you out of the box with gnome-keyring or ksecretservice.
 
 ## Frequently Asked Questions
 
