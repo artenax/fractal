@@ -3,7 +3,7 @@ build/
 _build/
 builddir/
 build-aux/app
-build-aux/.flatpak-builder/
+.flatpak-builder
 src/config.rs
 *.ui.in~
 *.ui~
@@ -11,3 +11,4 @@ src/config.rs
 subprojects/libadwaita
 subprojects/gtksourceview
 .vscode
+.fenv
