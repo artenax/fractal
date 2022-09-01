@@ -174,8 +174,8 @@ impl Event {
     pub fn new(pure_event: SyncRoomEvent, room: &Room) -> Self {
         SupportedEvent::try_from_event(pure_event.clone(), room)
             .map(|event| event.upcast())
-            .unwrap_or_else(|_| {
-                warn!("Failed to deserialize event: {:?}", pure_event);
+            .unwrap_or_else(|error| {
+                warn!("Failed to deserialize event: {error}; {pure_event:?}");
                 UnsupportedEvent::new(pure_event, room).upcast()
             })
     }
