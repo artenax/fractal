@@ -407,8 +407,7 @@ fn build_content(parent: &adw::Bin, event: &SupportedEvent, compact: bool) {
                 };
             child.sticker(content, &event.room().session(), compact);
         }
-        Some(AnyMessageLikeEventContent::RoomEncrypted(content)) => {
-            warn!("Couldn’t decrypt event {:?}", content);
+        Some(AnyMessageLikeEventContent::RoomEncrypted(_)) => {
             let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
             {
                 child

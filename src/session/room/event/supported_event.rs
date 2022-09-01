@@ -1,5 +1,5 @@
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::warn;
+use log::debug;
 use matrix_sdk::{
     deserialized_responses::SyncRoomEvent,
     media::MediaEventContent,
@@ -216,8 +216,10 @@ impl SupportedEvent {
     /// keys.
     pub async fn try_to_decrypt(&self, event: Raw<OriginalSyncRoomEncryptedEvent>) {
         let priv_ = self.imp();
-        let room = self.room().matrix_room();
-        let handle = spawn_tokio!(async move { room.decrypt_event(&event).await });
+        let room = self.room();
+        let matrix_room = room.matrix_room();
+        let event_id = self.event_id();
+        let handle = spawn_tokio!(async move { matrix_room.decrypt_event(&event).await });
 
         match handle.await.unwrap() {
             Ok(decrypted) => {
@@ -230,7 +232,11 @@ impl SupportedEvent {
                 self.set_matrix_event(matrix_event);
             }
             Err(error) => {
-                warn!("Failed to decrypt event: {}", error);
+                let room_name = room.display_name();
+                let room_id = room.room_id();
+                debug!(
+                    "Failed to decrypt event {event_id} in room {room_name} ({room_id}): {error:?}"
+                );
                 if priv_.keys_handle.borrow().is_none() {
                     let handle = self.room().connect_new_encryption_keys(
                         clone!(@weak self as obj => move |_| {
