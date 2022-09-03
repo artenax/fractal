@@ -12,11 +12,10 @@
       collaboration in large groups, such as free software projects.
     </p>
   </description>
-  <metadata_license>CC0</metadata_license>
+  <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
-  <developer_name>Julian Sparber</developer_name>
+  <developer_name>The Fractal Team</developer_name>
   <update_contact>jsparber@gnome.org</update_contact>
-  <project_group>GNOME</project_group>
   <translation type="gettext">fractal</translation>
 
   <screenshots>
@@ -28,12 +27,19 @@
   <url type="homepage">https://gitlab.gnome.org/GNOME/fractal</url>
   <url type="bugtracker">https://gitlab.gnome.org/GNOME/fractal/issues/</url>
   <url type="donation">https://www.gnome.org/donate/</url>
+  <url type="translate">https://l10n.gnome.org/module/fractal/</url>
+  <url type="contact">https://matrix.to/#/#fractal:gnome.org</url>
+  <url type="contribute">https://gitlab.gnome.org/GNOME/fractal/-/blob/main/CONTRIBUTING.md</url>
 
-  <kudos>
-    <kudo>HiDpiIcon</kudo>
-    <kudo>ModernToolkit</kudo>
-    <kudo>Notifications</kudo>
-  </kudos>
+  <requires>
+    <display_length compare="ge">360</display_length>
+    <internet>always</internet>
+  </requires>
+  <recommends>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </recommends>
   <custom>
     <value key="Purism::form_factor">workstation</value>
     <value key="Purism::form_factor">mobile</value>
@@ -132,13 +138,9 @@
           <li>Typing notifications</li>
           <li>Badges are shown for operators and moderators</li>
           <li>Keyboard shortcuts for easier navigation across rooms</li>
-          <li>Better uploads:
-            <ul>
-              <li>Audio and video files are now tagged correctly</li>
-              <li>Image files have a thumbnail</li>
-              <li>Various tweaks to the file chooser</li>
-            </ul>
-          </li>
+          <li>Audio and video files are now tagged correctly</li>
+          <li>Image files have a thumbnail</li>
+          <li>Various tweaks to the file chooser</li>
         </ul>
         <p>Bugfixes:</p>
         <ul>
