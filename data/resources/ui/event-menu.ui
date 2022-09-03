@@ -98,6 +98,11 @@
         <attribute name="action">event.save-audio</attribute>
         <attribute name="hidden-when">action-missing</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">_Permalink</attribute>
+        <attribute name="action">event.permalink</attribute>
+        <attribute name="hidden-when">action-missing</attribute>
+      </item>
     </section>
   </menu>
   <menu id="state_menu_model">

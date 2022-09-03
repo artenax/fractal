@@ -10,7 +10,7 @@ use crate::{
         event_source_dialog::EventSourceDialog,
         room::{Event, RoomAction, SupportedEvent},
     },
-    spawn, toast,
+    spawn, spawn_tokio, toast,
     utils::cache_dir,
     UserFacingError, Window,
 };
@@ -89,6 +89,34 @@ where
                 dialog.show();
             })
         );
+
+        // Create a permalink
+        if event.event_id().is_some() {
+            gtk_macros::action!(
+                &action_group,
+                "permalink",
+                clone!(@weak self as widget, @weak event => move |_, _| {
+                    let matrix_room = event.room().matrix_room();
+                    let event_id = event.event_id().unwrap();
+                    spawn!(clone!(@weak widget => async move {
+                            let handle = spawn_tokio!(async move {
+                                matrix_room.matrix_to_event_permalink(event_id).await
+                            });
+                            match handle.await.unwrap() {
+                                Ok(permalink) => {
+                                        widget.clipboard().set_text(&permalink.to_string());
+                                        toast!(widget, gettext("Permalink copied to clipboard"));
+                                    },
+                                Err(error) => {
+                                    error!("Could not get permalink: {}", error);
+                                    toast!(widget, gettext("Failed to copy the permalink"));
+                                }
+                            }
+                        })
+                    );
+                })
+            );
+        }
 
         if let Some(event) = event.downcast_ref::<SupportedEvent>() {
             if let Some(AnyMessageLikeEventContent::RoomMessage(message)) = event.content() {
