@@ -49,8 +49,7 @@ If you want to try Fractal Next without building it yourself, it is available as
 in the gnome-nightly repo.
 
 ```sh
-# Add Flathub-beta and the gnome-nightly repo
-flatpak remote-add --user --if-not-exists flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
+# Add the gnome-nightly repo
 flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
 
 # Install the nightly build
