@@ -40,6 +40,7 @@ Until our next iteration is ready, you can get the official Fractal Flatpak on F
     src="https://flathub.org/assets/badges/flathub-badge-i-en.png"
     alt="Download Fractal on Flathub"
     width="240px"
+    height="80px"
 />
 </a>
 
@@ -47,6 +48,30 @@ Until our next iteration is ready, you can get the official Fractal Flatpak on F
 
 If you want to try Fractal Next without building it yourself, it is available as a nightly Flatpak
 in the gnome-nightly repo.
+
+First, setup the GNOME nightlies.
+
+<a href="https://nightly.gnome.org/gnome-nightly.flatpakrepo ">
+<img
+    src="https://gitlab.gnome.org/GNOME/fractal/uploads/447997cccc862eb27483b9c61b8a8a12/gnome-nightly.png"
+    alt="Add gnome-nightly repository"
+    width="240px"
+    height="80px"
+/>
+</a>
+
+Then install the application.
+
+<a href="https://nightly.gnome.org/repo/appstream/org.gnome.Fractal.Devel.flatpakref">
+<img
+    src="https://gitlab.gnome.org/GNOME/fractal/uploads/a688e9176e8e76d630993869c13a0222/download-fractal-nightly.png"
+    alt="Download Fractal Nightly"
+    width="240px"
+    height="80px"
+/>
+</a>
+
+Or from the command line:
 
 ```sh
 # Add the gnome-nightly repo
