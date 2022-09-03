@@ -143,6 +143,7 @@ where
                             "copy-text",
                             clone!(@weak self as widget => move |_, _| {
                                 widget.clipboard().set_text(&text_message.body);
+                                toast!(widget, gettext("Message copied to clipboard"));
                             })
                         );
                     }
@@ -173,6 +174,7 @@ where
                                 let display_name = event.sender().display_name();
                                 let message = display_name + " " + &message.body;
                                 widget.clipboard().set_text(&message);
+                                toast!(widget, gettext("Message copied to clipboard"));
                             })
                         );
                     }
