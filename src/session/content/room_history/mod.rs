@@ -20,7 +20,7 @@ use gtk::{
     prelude::*,
     CompositeTemplate,
 };
-use log::warn;
+use log::{error, warn};
 use matrix_sdk::ruma::events::room::message::{
     EmoteMessageEventContent, FormattedBody, MessageType, RoomMessageEventContent,
     TextMessageEventContent,
@@ -40,7 +40,7 @@ use crate::{
         room::{Room, RoomType, SupportedEvent, Timeline, TimelineItem, TimelineState},
         user::UserExt,
     },
-    spawn, toast,
+    spawn, spawn_tokio, toast,
     utils::filename_for_mime,
 };
 
@@ -124,6 +124,12 @@ mod imp {
 
             klass.install_action("room-history.try-again", None, move |widget, _, _| {
                 widget.try_again();
+            });
+
+            klass.install_action("room-history.permalink", None, move |widget, _, _| {
+                spawn!(clone!(@weak widget => async move {
+                    widget.permalink().await;
+                }));
             });
 
             klass.install_action("room-history.details", None, move |widget, _, _| {
@@ -555,6 +561,23 @@ impl RoomHistory {
     pub fn leave(&self) {
         if let Some(room) = &*self.imp().room.borrow() {
             room.set_category(RoomType::Left);
+        }
+    }
+
+    pub async fn permalink(&self) {
+        if let Some(room) = self.room() {
+            let room = room.matrix_room();
+            let handle = spawn_tokio!(async move { room.matrix_to_permalink().await });
+            match handle.await.unwrap() {
+                Ok(permalink) => {
+                    self.clipboard().set_text(&permalink.to_string());
+                    toast!(self, gettext("Permalink copied to clipboard"));
+                }
+                Err(error) => {
+                    error!("Could not get permalink: {}", error);
+                    toast!(self, gettext("Failed to copy the permalink"));
+                }
+            }
         }
     }
 

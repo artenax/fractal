@@ -12,6 +12,10 @@
         <attribute name="action">room-history.invite-members</attribute>
         <attribute name="hidden-when">action-disabled</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">Room _Permalink</attribute>
+        <attribute name="action">room-history.permalink</attribute>
+      </item>
     </section>
     <section>
       <item>

@@ -399,7 +399,7 @@ impl Room {
             .is_direct()
     }
 
-    fn matrix_room(&self) -> MatrixRoom {
+    pub fn matrix_room(&self) -> MatrixRoom {
         self.imp().matrix_room.borrow().as_ref().unwrap().clone()
     }
 
