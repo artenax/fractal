@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-07-10 11:15+0000\n"
-"PO-Revision-Date: 2022-07-29 20:29+0800\n"
+"POT-Creation-Date: 2022-09-03 20:55+0000\n"
+"PO-Revision-Date: 2022-09-04 14:48+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Generator: Gtranslator 42.0\n"
 
 #: data/org.gnome.Fractal.desktop.in.in:3
-#: data/org.gnome.Fractal.metainfo.xml.in.in:9
+#: data/org.gnome.Fractal.metainfo.xml.in.in:7
 msgid "Fractal"
 msgstr "Fractal"
 
@@ -61,14 +61,10 @@ msgid "Whether messages should be processed as markdown when sending them"
 msgstr "发送消息时是否将其作为 Markdown 处理"
 
 #: data/org.gnome.Fractal.metainfo.xml.in.in:8
-msgid "Julian Sparber"
-msgstr "Julian Sparber"
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:10
 msgid "Matrix group messaging app"
 msgstr "Matrix 团组聊天应用"
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:12
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
 msgid ""
 "Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
 "is optimized for collaboration in large groups, such as free software "
@@ -76,6 +72,10 @@ msgid ""
 msgstr ""
 "Fractal 是一个用 Rust 为 GNOME 编写的 Matrix 聊天应用。它的界面是为如自由软件"
 "工程等大型合作团队优化的。"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:181
+msgid "The Fractal Team"
+msgstr "Fractal 团队"
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:9
 #: data/resources/ui/account-settings-user-page.ui:54
@@ -185,9 +185,9 @@ msgstr "通过浏览器认证"
 
 #: data/resources/ui/components-auth-dialog.ui:113
 #: data/resources/ui/identity-verification-widget.ui:452
-#: src/components/editable_avatar.rs:344
+#: src/components/editable_avatar.rs:343
 #: src/session/content/room_history/verification_info_bar.rs:182
-#: src/session/room/event_actions.rs:237
+#: src/session/room/event_actions.rs:270
 msgid "Cancel"
 msgstr "取消"
 
@@ -204,7 +204,7 @@ msgstr "重试"
 msgid "No rooms matching the search were found"
 msgstr "未发现匹配搜索的聊天室"
 
-#: data/resources/ui/content-explore.ui:96
+#: data/resources/ui/content-explore.ui:90
 msgid "Room List"
 msgstr "聊天室列表"
 
@@ -274,12 +274,12 @@ msgid "Open"
 msgstr "打开"
 
 #: data/resources/ui/content-message-file.ui:28
-#: src/session/room/event_actions.rs:236
+#: src/session/room/event_actions.rs:269
 msgid "Save"
 msgstr "保存"
 
 #: data/resources/ui/content-room-details.ui:4
-#: src/session/content/room_details/mod.rs:265
+#: src/session/content/room_details/mod.rs:264
 msgid "Room Details"
 msgstr "聊天室详情"
 
@@ -295,75 +295,79 @@ msgstr "聊天室详情(_D)"
 msgid "_Invite New Member"
 msgstr "邀请新成员(_I)"
 
-#: data/resources/ui/content-room-history.ui:18 data/resources/ui/sidebar.ui:58
+#: data/resources/ui/content-room-history.ui:16
+msgid "Room _Permalink"
+msgstr "聊天室永久链接(_P)"
+
+#: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:58
 msgid "_Leave Room"
 msgstr "离开聊天室(_L)"
 
-#: data/resources/ui/content-room-history.ui:27
+#: data/resources/ui/content-room-history.ui:31
 msgid "_Location"
 msgstr "位置(_L)"
 
-#: data/resources/ui/content-room-history.ui:32
+#: data/resources/ui/content-room-history.ui:36
 msgid "_Attachment"
 msgstr "附件(_A)"
 
-#: data/resources/ui/content-room-history.ui:56
+#: data/resources/ui/content-room-history.ui:60
 msgid "Back"
 msgstr "返回"
 
-#: data/resources/ui/content-room-history.ui:81
+#: data/resources/ui/content-room-history.ui:85
 msgid "Room Settings"
 msgstr "聊天室设置"
 
-#: data/resources/ui/content-room-history.ui:89
+#: data/resources/ui/content-room-history.ui:93
 msgid "Toggle Room History Search"
 msgstr "切换聊天室历史搜索"
 
-#: data/resources/ui/content-room-history.ui:107
+#: data/resources/ui/content-room-history.ui:111
 msgid "Room History Search"
 msgstr "聊天室历史搜索"
 
-#: data/resources/ui/content-room-history.ui:142
+#: data/resources/ui/content-room-history.ui:146
 msgid "Unable to load room"
 msgstr "无法加载聊天室"
 
-#: data/resources/ui/content-room-history.ui:143
+#: data/resources/ui/content-room-history.ui:147
 msgid "Check your network connection."
 msgstr "检查您的网络连接。"
 
-#: data/resources/ui/content-room-history.ui:146
+#: data/resources/ui/content-room-history.ui:150
 msgid "Try Again"
 msgstr "重试"
 
-#: data/resources/ui/content-room-history.ui:171
+#: data/resources/ui/content-room-history.ui:175
 msgid "Scroll to bottom"
 msgstr "滚动到底部"
 
-#: data/resources/ui/content-room-history.ui:183
+#: data/resources/ui/content-room-history.ui:187
 msgid "Drop Here to Send"
 msgstr "拖到这里发送"
 
-#: data/resources/ui/content-room-history.ui:204
+#: data/resources/ui/content-room-history.ui:208
 msgid "Room History"
 msgstr "聊天室历史"
 
-#: data/resources/ui/content-room-history.ui:242
+#: data/resources/ui/content-room-history.ui:246
 msgid "Enable Markdown Formatting"
 msgstr "启用 Markdown 格式化"
 
-#: data/resources/ui/content-room-history.ui:263
+#: data/resources/ui/content-room-history.ui:267
 msgid "Message Entry"
 msgstr "消息条目"
 
-#: data/resources/ui/content-room-history.ui:277
+#: data/resources/ui/content-room-history.ui:281
 msgid "Open Emoji Picker"
 msgstr "打开表情选择器"
 
-#: data/resources/ui/content-room-history.ui:288
+#: data/resources/ui/content-room-history.ui:292
 msgid "Open Message Menu"
 msgstr "打开消息菜单"
 
-#: data/resources/ui/content-room-history.ui:303
+#: data/resources/ui/content-room-history.ui:307
 msgid "Send Message"
 msgstr "发送消息"
 
@@ -450,15 +454,15 @@ msgstr "回复(_R)"
 msgid "_Edit"
 msgstr "编辑(_E)"
 
-#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:106
+#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:111
 msgid "_Forward"
 msgstr "前进(_F)"
 
-#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:113
+#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:118
 msgid "_Select"
 msgstr "选择(_S)"
 
-#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:120
+#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:125
 msgid "_Copy Text"
 msgstr "复制文本(_C)"
 
@@ -478,15 +482,16 @@ msgstr "保存视频(_A)"
 msgid "S_ave Audio"
 msgstr "保存音频(_A)"
 
-#: data/resources/ui/event-menu.ui:61 data/resources/ui/event-menu.ui:126
+#: data/resources/ui/event-menu.ui:61 data/resources/ui/event-menu.ui:102
+#: data/resources/ui/event-menu.ui:131
 msgid "_Permalink"
 msgstr "永久链接(_P)"
 
-#: data/resources/ui/event-menu.ui:66 data/resources/ui/event-menu.ui:131
+#: data/resources/ui/event-menu.ui:66 data/resources/ui/event-menu.ui:136
 msgid "_View Source"
 msgstr "查看来源(_V)"
 
-#: data/resources/ui/event-menu.ui:73 data/resources/ui/event-menu.ui:138
+#: data/resources/ui/event-menu.ui:73 data/resources/ui/event-menu.ui:143
 msgid "Re_move"
 msgstr "移除(_M)"
 
@@ -501,15 +506,15 @@ msgid ""
 msgstr "您正在运行早期开发版本。请注意它在开发过程中且远未完成。"
 
 #. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:83
+#: data/resources/ui/greeter.ui:101
 msgid "Welcome to Fractal"
 msgstr "欢迎使用 Fractal"
 
-#: data/resources/ui/greeter.ui:108
+#: data/resources/ui/greeter.ui:126
 msgid "_Log in"
 msgstr "登录(_L)"
 
-#: data/resources/ui/greeter.ui:118
+#: data/resources/ui/greeter.ui:136
 msgid "_Create Account"
 msgstr "创建账号(_C)"
 
@@ -579,23 +584,23 @@ msgstr "自动发现(_A)"
 msgid "_Next"
 msgstr "下一步(_N)"
 
-#: data/resources/ui/login.ui:130 src/login/mod.rs:341
+#: data/resources/ui/login.ui:148 src/login/mod.rs:360
 msgid "Homeserver URL"
 msgstr "主服务器网址"
 
-#: data/resources/ui/login.ui:153
+#: data/resources/ui/login.ui:171
 msgid "Matrix Username"
 msgstr "Matrix 用户名"
 
-#: data/resources/ui/login.ui:165
+#: data/resources/ui/login.ui:183
 msgid "Password"
 msgstr "密码"
 
-#: data/resources/ui/login.ui:171
+#: data/resources/ui/login.ui:189
 msgid "_Forgot Password?"
 msgstr "忘记了密码？(_F)"
 
-#: data/resources/ui/login.ui:216
+#: data/resources/ui/login.ui:234
 msgid "Please follow the steps in the browser."
 msgstr "请遵循浏览器中的步骤。"
 
@@ -818,11 +823,15 @@ msgstr "聊天室搜索"
 msgid "Search for a room"
 msgstr "搜索聊天室"
 
-#: data/resources/ui/sidebar.ui:148
+#: data/resources/ui/sidebar.ui:142
+msgid "Offline"
+msgstr "离线"
+
+#: data/resources/ui/sidebar.ui:162
 msgid "Sidebar"
 msgstr "侧边栏"
 
-#: data/resources/ui/sidebar.ui:149
+#: data/resources/ui/sidebar.ui:163
 msgid "Allows to navigate between rooms"
 msgstr "允许在聊天室间导览"
 
@@ -830,44 +839,36 @@ msgstr "允许在聊天室间导览"
 msgid "Unable to connect to Camera"
 msgstr "无法连接至摄像头"
 
-#: src/application.rs:167
-msgid "Learn more about Fractal"
-msgstr "了解更多关于 Fractal 信息"
-
-#: src/application.rs:171
-msgid "A Matrix client for GNOME"
-msgstr "一个 GNOME Matrix 客户端"
-
-#: src/application.rs:172
+#: src/application.rs:189
 msgid "© 2017-2022 The Fractal Team"
 msgstr "© 2017-2022 Fractal 团队"
 
-#: src/application.rs:186
+#: src/application.rs:203
 msgid "translator-credits"
 msgstr "lumingzh <lumingzh@qq.com>, 2018-2022"
 
 #. This can't be added via the builder
-#: src/application.rs:190
+#: src/application.rs:207
 msgid "Name by"
 msgstr "名字"
 
-#: src/components/editable_avatar.rs:334
+#: src/components/editable_avatar.rs:333
 msgid "Choose Avatar"
 msgstr "选择头像"
 
-#: src/components/editable_avatar.rs:343
+#: src/components/editable_avatar.rs:342
 msgid "Choose"
 msgstr "选择"
 
-#: src/components/editable_avatar.rs:364
+#: src/components/editable_avatar.rs:363
 msgid "The chosen file is not an image"
 msgstr "选择的文件不是图像"
 
-#: src/components/editable_avatar.rs:370
+#: src/components/editable_avatar.rs:369
 msgid "Could not determine the type of the chosen file"
 msgstr "无法判断选择文件的类型"
 
-#: src/components/editable_avatar.rs:375
+#: src/components/editable_avatar.rs:374
 msgid "No file was chosen"
 msgstr "未选择文件"
 
@@ -875,19 +876,19 @@ msgstr "未选择文件"
 msgid "Location at latitude {latitude} and longitude {longitude}"
 msgstr "位置在纬度 {latitude} 和经度 {longitude}"
 
-#: src/components/media_content_viewer.rs:161
+#: src/components/media_content_viewer.rs:176
 msgid "Image not Viewable"
 msgstr "图像无法查看"
 
-#: src/components/media_content_viewer.rs:162
+#: src/components/media_content_viewer.rs:177
 msgid "Audio Clip not Playable"
 msgstr "音频片段无法播放"
 
-#: src/components/media_content_viewer.rs:163
+#: src/components/media_content_viewer.rs:178
 msgid "Video not Playable"
 msgstr "视频无法播放"
 
-#: src/components/media_content_viewer.rs:164
+#: src/components/media_content_viewer.rs:179
 msgid "File not Viewable"
 msgstr "文件无法查看"
 
@@ -899,23 +900,31 @@ msgstr "会话已成功移除。"
 msgid "Could not remove session from secret storage"
 msgstr "无法从秘密存储移除会话"
 
-#: src/login/mod.rs:336
+#: src/greeter.rs:82 src/login/mod.rs:663 src/window.rs:347
+msgid "No network connection"
+msgstr "无网络连接"
+
+#: src/greeter.rs:88 src/login/mod.rs:671 src/window.rs:352
+msgid "No Internet connection"
+msgstr "没有互联网连接"
+
+#: src/login/mod.rs:355
 msgid "Domain Name"
 msgstr "域名"
 
-#: src/login/mod.rs:338
+#: src/login/mod.rs:357
 msgid "The domain of your Matrix homeserver, for example gnome.org"
 msgstr "您的 Matrix 主服务器域名，比如 gnome.org"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/login/mod.rs:345
+#: src/login/mod.rs:364
 msgid "The URL of your Matrix homeserver, for example {address}"
 msgstr "您的 Matrix 主服务器网址，比如 {address}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/login/mod.rs:471
+#: src/login/mod.rs:490
 msgid "Connecting to {domain_name}"
 msgstr "正在连接至 {domain_name}"
 
@@ -1069,75 +1078,75 @@ msgstr "上次见于 %Y 年 %m 月 %d 日 %H:%M"
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "上次见于 %Y 年 %m 月 %d 日 %l:%M %p"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:217
+#: src/session/account_settings/user_page/change_password_subpage.rs:216
 msgid "Password must be at least 8 characters long"
 msgstr "密码长度必须至少 8 个字符"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:220
+#: src/session/account_settings/user_page/change_password_subpage.rs:219
 msgid "Password must have at least one lower-case letter"
 msgstr "密码必须包含至少一个小写字母"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:224
+#: src/session/account_settings/user_page/change_password_subpage.rs:223
 msgid "Password must have at least one upper-case letter"
 msgstr "密码必须包含至少一个大写字母"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:227
+#: src/session/account_settings/user_page/change_password_subpage.rs:226
 msgid "Password must have at least one digit"
 msgstr "密码必须包含至少一个数字"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:229
+#: src/session/account_settings/user_page/change_password_subpage.rs:228
 msgid "Password must have at least one symbol"
 msgstr "密码必须包含至少一个符号"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:255
+#: src/session/account_settings/user_page/change_password_subpage.rs:254
 msgid "Passwords do not match"
 msgstr "密码不匹配"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:311
+#: src/session/account_settings/user_page/change_password_subpage.rs:310
 msgid "Password changed successfully"
 msgstr "密码已成功修改"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:326
+#: src/session/account_settings/user_page/change_password_subpage.rs:325
 msgid "Password rejected for being too weak"
 msgstr "密码因太弱已被拒绝"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:330
+#: src/session/account_settings/user_page/change_password_subpage.rs:329
 msgid "Could not change password"
 msgstr "无法修改密码"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:197
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:196
 msgid "Account successfully deactivated"
 msgstr "账户已成功停用"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:205
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:204
 msgid "Could not deactivate account"
 msgstr "无法停用账户"
 
-#: src/session/account_settings/user_page/mod.rs:225
+#: src/session/account_settings/user_page/mod.rs:224
 msgid "Avatar removed successfully"
 msgstr "头像已成功移除"
 
-#: src/session/account_settings/user_page/mod.rs:240
+#: src/session/account_settings/user_page/mod.rs:239
 msgid "Avatar changed successfully"
 msgstr "头像已成功更改"
 
-#: src/session/account_settings/user_page/mod.rs:283
+#: src/session/account_settings/user_page/mod.rs:282
 msgid "Could not upload avatar"
 msgstr "无法上传头像"
 
-#: src/session/account_settings/user_page/mod.rs:305
+#: src/session/account_settings/user_page/mod.rs:304
 msgid "Could not change avatar"
 msgstr "无法更改头像"
 
-#: src/session/account_settings/user_page/mod.rs:334
+#: src/session/account_settings/user_page/mod.rs:333
 msgid "Could not remove avatar"
 msgstr "无法移除头像"
 
-#: src/session/account_settings/user_page/mod.rs:380
+#: src/session/account_settings/user_page/mod.rs:379
 msgid "Name changed successfully"
 msgstr "名字已成功更改"
 
-#: src/session/account_settings/user_page/mod.rs:416
+#: src/session/account_settings/user_page/mod.rs:415
 msgid "Could not change display name"
 msgstr "无法更改展示名字"
 
@@ -1153,98 +1162,121 @@ msgstr "加入"
 msgid "{user} invited you"
 msgstr "{user} 邀请了您"
 
-#: src/session/content/room_details/member_page/mod.rs:237
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:314
+msgid "Member"
+msgstr "成员"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:315
+msgid "Banned"
+msgstr "已封禁"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:317
+#: src/session/sidebar/category_type.rs:35
+msgid "Invited"
+msgstr "邀请"
+
+#: src/session/content/room_details/member_page/mod.rs:236
 msgid "1 Member"
 msgid_plural "{n} Members"
 msgstr[0] "{n} 个成员"
 
-#: src/session/content/room_details/member_page/mod.rs:296
+#: src/session/content/room_details/member_page/mod.rs:295
 msgid "1 Invited"
 msgid_plural "{n} Invited"
 msgstr[0] "{n} 个邀请"
 
-#: src/session/content/room_details/mod.rs:176
+#: src/session/content/room_details/mod.rs:175
 msgid "Save Details"
 msgstr "保存详情"
 
-#: src/session/content/room_details/mod.rs:177
+#: src/session/content/room_details/mod.rs:176
 msgid "Edit Details"
 msgstr "编辑详情"
 
-#: src/session/content/room_details/mod.rs:228
+#: src/session/content/room_details/mod.rs:227
 msgid "Choose avatar"
 msgstr "选择头像"
 
-#: src/session/content/room_details/mod.rs:259
+#: src/session/content/room_details/mod.rs:258
 msgid "Invite new Members"
 msgstr "邀请新成员"
 
-#: src/session/content/room_history/item_row.rs:255
+#: src/session/content/room_history/item_row.rs:257
 msgid "New Messages"
 msgstr "新消息"
 
-#: src/session/content/room_history/message_row/audio.rs:245
-#: src/session/content/room_history/message_row/audio.rs:249
+#: src/session/content/room_history/message_row/audio.rs:244
+#: src/session/content/room_history/message_row/audio.rs:248
 msgid "Could not retrieve audio file"
 msgstr "无法找回音频文件"
 
-#: src/session/content/room_history/message_row/audio.rs:262
+#: src/session/content/room_history/message_row/audio.rs:261
 msgid "Error reading audio file"
 msgstr "读取音频文件时出错"
 
-#: src/session/content/room_history/message_row/media.rs:445
+#: src/session/content/room_history/message_row/media.rs:444
 msgid "Image file not supported"
 msgstr "不支持该图像文件"
 
-#: src/session/content/room_history/message_row/media.rs:484
-#: src/session/content/room_history/message_row/media.rs:489
+#: src/session/content/room_history/message_row/media.rs:483
+#: src/session/content/room_history/message_row/media.rs:488
 msgid "Could not retrieve media"
 msgstr "无法找回媒体文件"
 
-#: src/session/content/room_history/message_row/mod.rs:377
+#: src/session/content/room_history/message_row/mod.rs:382
 msgid "Identity verification was started"
 msgstr "身份验证已开始"
 
-#: src/session/content/room_history/message_row/mod.rs:390
-#: src/session/content/room_history/message_row/mod.rs:437
+#: src/session/content/room_history/message_row/mod.rs:395
+#: src/session/content/room_history/message_row/mod.rs:441
 msgid "Unsupported event"
 msgstr "不支持的事件"
 
-#: src/session/content/room_history/message_row/mod.rs:415
+#: src/session/content/room_history/message_row/mod.rs:419
 msgid ""
 "Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
 msgstr "无法解密该消息，但将在密钥可用时重试。"
 
-#: src/session/content/room_history/message_row/mod.rs:426
+#: src/session/content/room_history/message_row/mod.rs:430
 msgid "This message was removed."
 msgstr "该消息已移除。"
 
-#: src/session/content/room_history/mod.rs:155
+#: src/session/content/room_history/mod.rs:160
 msgid "The location request has been cancelled."
 msgstr "定位请求已取消。"
 
-#: src/session/content/room_history/mod.rs:159
+#: src/session/content/room_history/mod.rs:164
 msgid "Failed to retrieve current location."
 msgstr "找回当前位置失败。"
 
-#: src/session/content/room_history/mod.rs:735
+#: src/session/content/room_history/mod.rs:574
+#: src/session/room/event_actions.rs:108
+msgid "Permalink copied to clipboard"
+msgstr "永久链接已复制到剪贴板"
+
+#: src/session/content/room_history/mod.rs:578
+#: src/session/room/event_actions.rs:112
+msgid "Failed to copy the permalink"
+msgstr "复制该永久链接失败"
+
+#: src/session/content/room_history/mod.rs:757
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "用户定位 {geo_uri} 于 {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:839
+#: src/session/content/room_history/mod.rs:861
 msgid "Error reading file"
 msgstr "读取文件时出错"
 
-#: src/session/content/room_history/mod.rs:865
+#: src/session/content/room_history/mod.rs:887
 msgid "Error getting file from drop"
 msgstr "从拖放获取文件时出错"
 
-#: src/session/content/room_history/mod.rs:897
+#: src/session/content/room_history/mod.rs:919
 msgid "Error getting image from clipboard"
 msgstr "从剪贴板获取图像时出错"
 
-#: src/session/content/room_history/mod.rs:914
+#: src/session/content/room_history/mod.rs:936
 msgid "Error getting file from clipboard"
 msgstr "从剪贴板获取文件时出错"
 
@@ -1522,15 +1554,19 @@ msgstr "您取消了创建加密密钥需要的认证。"
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "创建加密密钥过程中发生了错误。"
 
-#: src/session/mod.rs:468
+#: src/session/mod.rs:494
 msgid "Unable to store session"
 msgstr "无法存储会话"
 
-#: src/session/mod.rs:760
+#: src/session/mod.rs:831
 msgid "Failed to logout the session."
 msgstr "登出该会话失败。"
 
-#: src/session/room/event_actions.rs:232
+#: src/session/room/event_actions.rs:174 src/session/room/event_actions.rs:205
+msgid "Message copied to clipboard"
+msgstr "消息已复制到剪贴板"
+
+#: src/session/room/event_actions.rs:265
 msgid "Save File"
 msgstr "保存文件"
 
@@ -1547,51 +1583,51 @@ msgid "Normal user"
 msgstr "普通用户"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:466
+#: src/session/room/mod.rs:462
 msgid "Failed to forget {room}."
 msgstr "忘记 {room} 失败。"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:704
+#: src/session/room/mod.rs:700
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "将 {room} 从 {previous_category} 移至 {new_category} 失败。"
 
-#: src/session/room/mod.rs:1001
+#: src/session/room/mod.rs:995
 msgid "Unknown"
 msgstr "未知"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:1028
+#: src/session/room/mod.rs:1022
 msgid "Empty Room (was {user})"
 msgstr "空聊天室（曾有成员 {user}）"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:1030
+#: src/session/room/mod.rs:1024
 msgid "Empty Room"
 msgstr "空聊天室"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1437
+#: src/session/room/mod.rs:1428
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "接受 {room} 的邀请失败。请稍后重试。"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1466
+#: src/session/room/mod.rs:1457
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr "拒绝 {room} 的邀请失败。请稍后重试。"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1632
+#: src/session/room/mod.rs:1623
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "邀请 {user} 到 {room} 失败。请稍后重试。"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1644
+#: src/session/room/mod.rs:1635
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1607,27 +1643,19 @@ msgstr "%m 月 %d 日，%A"
 msgid "%A, %B %e, %Y"
 msgstr "%Y 年 %m 月 %d 日，%A"
 
-#: src/session/room_creation/mod.rs:276
+#: src/session/room_creation/mod.rs:266
 msgid "The address is already taken."
 msgstr "该地址已被使用。"
 
-#: src/session/room_creation/mod.rs:299
-msgid "Too long. Use a shorter name."
-msgstr "太长了。请使用短一点的名字。"
-
-#: src/session/room_creation/mod.rs:306
-msgid "Invalid room name."
-msgstr "无效的聊天室名称。"
-
-#: src/session/room_creation/mod.rs:333
+#: src/session/room_creation/mod.rs:295
 msgid "Can’t contain “:”"
 msgstr "不能包含“:”"
 
-#: src/session/room_creation/mod.rs:338
+#: src/session/room_creation/mod.rs:300
 msgid "Can’t contain “#”"
 msgstr "不能包含“#”"
 
-#: src/session/room_creation/mod.rs:343
+#: src/session/room_creation/mod.rs:305
 msgid "Too long. Use a shorter address."
 msgstr "太长了。请使用短一点的地址。"
 
@@ -1706,10 +1734,6 @@ msgstr "重新加入聊天室并设为联系人"
 #: src/session/sidebar/category_type.rs:34
 msgid "Verifications"
 msgstr "验证"
-
-#: src/session/sidebar/category_type.rs:35
-msgid "Invited"
-msgstr "邀请"
 
 #: src/session/sidebar/category_type.rs:36
 msgid "Favorites"
@@ -1839,9 +1863,24 @@ msgstr "音频"
 msgid "file"
 msgstr "文件"
 
-#: src/window.rs:230
+#: src/window.rs:246
 msgid "Failed to restore previous sessions"
 msgstr "恢复上次会话失败"
+
+#~ msgid "Julian Sparber"
+#~ msgstr "Julian Sparber"
+
+#~ msgid "Learn more about Fractal"
+#~ msgstr "了解更多关于 Fractal 信息"
+
+#~ msgid "A Matrix client for GNOME"
+#~ msgstr "一个 GNOME Matrix 客户端"
+
+#~ msgid "Too long. Use a shorter name."
+#~ msgstr "太长了。请使用短一点的名字。"
+
+#~ msgid "Invalid room name."
+#~ msgstr "无效的聊天室名称。"
 
 #~ msgid "_Preferences"
 #~ msgstr "首选项(_P)"
