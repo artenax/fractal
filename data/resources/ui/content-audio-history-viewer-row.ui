@@ -5,7 +5,8 @@
       <object class="GtkBox">
         <property name="spacing">12</property>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="play_button">
+            <property name="action-name">audio-row.toggle-play</property>
             <property name="icon-name">media-playback-start-symbolic</property>
             <property name="valign">center</property>
             <style>
