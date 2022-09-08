@@ -1,29 +1,37 @@
-use adw::{prelude::*, subclass::prelude::*};
+use adw::{
+    prelude::*,
+    subclass::{bin::BinImpl, prelude::*},
+};
+use gettextrs::gettext;
 use gtk::{
+    gio,
     glib::{self, clone, closure},
     CompositeTemplate,
 };
 use log::warn;
 
 mod member_menu;
-mod member_row;
+mod members_list_view;
 
-use self::{member_menu::MemberMenu, member_row::MemberRow};
+use members_list_view::{MembersListView, MembershipSubpageItem};
+
+use self::member_menu::MemberMenu;
 use crate::{
-    components::{Avatar, Badge},
-    ngettext_f,
     prelude::*,
     session::{
-        content::RoomDetails,
+        content::room_details::member_page::members_list_view::extra_lists::ExtraLists,
         room::{Member, Membership, RoomAction},
         Room, User, UserActions,
     },
     spawn,
 };
 
-const MAX_LIST_HEIGHT: i32 = 300;
-
 mod imp {
+    use std::{
+        cell::{Cell, RefCell},
+        collections::HashMap,
+    };
+
     use glib::subclass::InitializingObject;
     use once_cell::{sync::Lazy, unsync::OnceCell};
 
@@ -32,36 +40,27 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/content-member-page.ui")]
     pub struct MemberPage {
-        pub room: OnceCell<Room>,
-        #[template_child]
-        pub member_count: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub invite_button: TemplateChild<gtk::Button>,
+        pub room: RefCell<Option<Room>>,
         #[template_child]
         pub members_search_entry: TemplateChild<gtk::SearchEntry>,
         #[template_child]
-        pub members_list_view: TemplateChild<gtk::ListView>,
+        pub list_stack: TemplateChild<gtk::Stack>,
         #[template_child]
-        pub members_scroll: TemplateChild<gtk::ScrolledWindow>,
+        pub invite_button: TemplateChild<gtk::Button>,
         pub member_menu: OnceCell<MemberMenu>,
-        #[template_child]
-        pub invited_section: TemplateChild<adw::PreferencesGroup>,
-        #[template_child]
-        pub invited_list_view: TemplateChild<gtk::ListView>,
-        #[template_child]
-        pub invited_scroll: TemplateChild<gtk::ScrolledWindow>,
+        pub list_stack_children: RefCell<HashMap<Membership, glib::WeakRef<MembersListView>>>,
+        pub state: Cell<Membership>,
+        pub invite_action_watch: RefCell<Option<gtk::ExpressionWatch>>,
     }
 
     #[glib::object_subclass]
     impl ObjectSubclass for MemberPage {
         const NAME: &'static str = "ContentMemberPage";
         type Type = super::MemberPage;
-        type ParentType = adw::PreferencesPage;
+        type ParentType = adw::Bin;
 
         fn class_init(klass: &mut Self::Class) {
-            Avatar::static_type();
-            Badge::static_type();
-            MemberRow::static_type();
+            MembersListView::static_type();
             Self::bind_template(klass);
 
             klass.install_action("member.verify", None, move |widget, _, _| {
@@ -69,6 +68,28 @@ mod imp {
                     widget.verify_member(member);
                 } else {
                     warn!("No member was selected to be verified");
+                }
+            });
+
+            klass.install_action("members.subpage", Some("u"), move |widget, _, param| {
+                use std::convert::TryFrom;
+
+                let state = param
+                    .and_then(|variant| variant.get::<u32>())
+                    .and_then(|u| Membership::try_from(u).ok());
+
+                if let Some(state) = state {
+                    widget.set_state(state);
+                }
+            });
+
+            klass.install_action("members.previous", None, move |widget, _, _| {
+                if widget.state() == Membership::Join {
+                    widget
+                        .activate_action("details.previous-page", None)
+                        .unwrap();
+                } else {
+                    widget.set_state(Membership::Join);
                 }
             });
         }
@@ -87,7 +108,7 @@ mod imp {
                         "Room",
                         "The room backing all details of the member page",
                         Room::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
                     glib::ParamSpecObject::new(
                         "member-menu",
@@ -95,6 +116,14 @@ mod imp {
                         "The object holding information needed for the menu of each MemberRow",
                         MemberMenu::static_type(),
                         glib::ParamFlags::READABLE,
+                    ),
+                    glib::ParamSpecEnum::new(
+                        "state",
+                        "State",
+                        "The membership state of the displayed members",
+                        Membership::static_type(),
+                        Membership::default() as i32,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
                 ]
             });
@@ -111,33 +140,35 @@ mod imp {
         ) {
             match pspec.name() {
                 "room" => obj.set_room(value.get().unwrap()),
+                "state" => obj.set_state(value.get().unwrap()),
+
                 _ => unimplemented!(),
             }
         }
 
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "room" => self.room.get().to_value(),
+                "room" => obj.room().to_value(),
                 "member-menu" => obj.member_menu().to_value(),
+                "state" => obj.state().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-
-            obj.init_members_list();
-            obj.init_invited_list();
-            obj.init_invite_button();
+        fn dispose(&self, _: &Self::Type) {
+            if let Some(invite_action) = self.invite_action_watch.take() {
+                invite_action.unwatch();
+            }
         }
     }
+
     impl WidgetImpl for MemberPage {}
-    impl PreferencesPageImpl for MemberPage {}
+    impl BinImpl for MemberPage {}
 }
 
 glib::wrapper! {
     pub struct MemberPage(ObjectSubclass<imp::MemberPage>)
-        @extends gtk::Widget, adw::PreferencesPage;
+        @extends gtk::Widget, adw::Bin;
 }
 
 impl MemberPage {
@@ -145,35 +176,34 @@ impl MemberPage {
         glib::Object::new(&[("room", room)]).expect("Failed to create MemberPage")
     }
 
-    pub fn room(&self) -> &Room {
-        self.imp().room.get().unwrap()
+    pub fn room(&self) -> Option<Room> {
+        self.imp().room.borrow().as_ref().cloned()
     }
 
-    fn set_room(&self, room: Room) {
-        self.imp().room.set(room).expect("Room already initialized");
-    }
-
-    fn init_members_list(&self) {
+    pub fn set_room(&self, room: Option<Room>) {
         let priv_ = self.imp();
-        let members = self.room().members();
+        let prev_room = self.room();
 
-        // Only keep the members that are in the join membership state
-        let joined_expression = gtk::PropertyExpression::new(
-            Member::static_type(),
-            gtk::Expression::NONE,
-            "membership",
-        )
-        .chain_closure::<bool>(closure!(
-            |_: Option<glib::Object>, membership: Membership| { membership == Membership::Join }
-        ));
-        let joined_filter = gtk::BoolFilter::new(Some(joined_expression));
-        let joined_members = gtk::FilterListModel::new(Some(members), Some(&joined_filter));
+        if prev_room == room {
+            return;
+        }
 
-        // Set up the members count.
-        self.member_count_changed(joined_members.n_items());
-        joined_members.connect_items_changed(clone!(@weak self as obj => move |members, _, _, _| {
-            obj.member_count_changed(members.n_items());
-        }));
+        if let Some(invite_action) = priv_.invite_action_watch.take() {
+            invite_action.unwatch();
+        }
+
+        if let Some(room) = room.as_ref() {
+            self.init_members_list(room);
+            self.init_invite_button(room);
+            self.set_state(Membership::Join);
+        }
+
+        priv_.room.replace(room);
+        self.notify("room");
+    }
+
+    fn init_members_list(&self, room: &Room) {
+        let priv_ = self.imp();
 
         // Sort the members list by power level, then display name.
         let sorter = gtk::MultiSorter::new();
@@ -187,6 +217,7 @@ impl MemberPage {
                 .sort_order(gtk::SortType::Descending)
                 .build(),
         );
+
         sorter.append(&gtk::StringSorter::new(Some(
             &gtk::PropertyExpression::new(
                 Member::static_type(),
@@ -194,134 +225,29 @@ impl MemberPage {
                 "display-name",
             ),
         )));
-        let sorted_members = gtk::SortListModel::new(Some(&joined_members), Some(&sorter));
 
-        fn search_string(member: Member) -> String {
-            format!(
-                "{} {} {} {}",
-                member.display_name(),
-                member.user_id(),
-                member.role(),
-                member.power_level(),
-            )
-        }
+        let members = gtk::SortListModel::new(Some(room.members()), Some(&sorter));
 
-        let member_expr = gtk::ClosureExpression::new::<String, &[gtk::Expression], _>(
-            &[],
-            closure!(|member: Option<Member>| { member.map(search_string).unwrap_or_default() }),
-        );
-        let filter = gtk::StringFilter::builder()
-            .match_mode(gtk::StringFilterMatchMode::Substring)
-            .expression(&member_expr)
-            .ignore_case(true)
-            .build();
-        priv_
-            .members_search_entry
-            .bind_property("text", &filter, "search")
-            .flags(glib::BindingFlags::SYNC_CREATE)
-            .build();
+        let joined_members = self.build_filtered_list(&members, Membership::Join);
+        let invited_members = self.build_filtered_list(&members, Membership::Invite);
+        let banned_members = self.build_filtered_list(&members, Membership::Ban);
 
-        let filter_model = gtk::FilterListModel::new(Some(&sorted_members), Some(&filter));
-        let model = gtk::NoSelection::new(Some(&filter_model));
-        priv_.members_list_view.set_model(Some(&model));
-    }
-
-    fn member_count_changed(&self, n: u32) {
-        let priv_ = self.imp();
-        priv_
-            .member_count
-            // Translators: Do NOT translate the content between '{' and '}', this is a variable
-            // name.
-            .set_text(&ngettext_f(
-                "1 Member",
-                "{n} Members",
-                n,
-                &[("n", &n.to_string())],
-            ));
-        // FIXME: This won't be needed when we can request the natural height
-        // on AdwPreferencesPage
-        // See: https://gitlab.gnome.org/GNOME/libadwaita/-/issues/77
-        if n > 5 {
-            priv_.members_scroll.set_min_content_height(MAX_LIST_HEIGHT);
-        } else {
-            priv_.members_scroll.set_min_content_height(-1);
-        }
-    }
-
-    fn init_invited_list(&self) {
-        let priv_ = self.imp();
-        let members = self.room().members();
-
-        // Only keep the members that are in the join membership state
-        let invited_expression = gtk::PropertyExpression::new(
-            Member::static_type(),
-            gtk::Expression::NONE,
-            "membership",
-        )
-        .chain_closure::<bool>(closure!(
-            |_: Option<glib::Object>, membership: Membership| { membership == Membership::Invite }
-        ));
-        let invited_filter = gtk::BoolFilter::new(Some(invited_expression));
-        let invited_members = gtk::FilterListModel::new(Some(members), Some(&invited_filter));
-
-        // Set up the invited section visibility and the invited count.
-        self.invited_count_changed(invited_members.n_items());
-        invited_members.connect_items_changed(
-            clone!(@weak self as obj => move |members, _, _, _| {
-                obj.invited_count_changed(members.n_items());
-            }),
+        let main_list = ExtraLists::new(
+            &joined_members,
+            &MembershipSubpageItem::new(Membership::Invite, &invited_members),
+            &MembershipSubpageItem::new(Membership::Ban, &banned_members),
         );
 
-        // Sort the invited list by display name.
-        let sorter = gtk::StringSorter::new(Some(&gtk::PropertyExpression::new(
-            Member::static_type(),
-            gtk::Expression::NONE,
-            "display-name",
-        )));
-        let sorted_invited = gtk::SortListModel::new(Some(&invited_members), Some(&sorter));
-
-        let model = gtk::NoSelection::new(Some(&sorted_invited));
-        priv_.invited_list_view.set_model(Some(&model));
-    }
-
-    fn invited_count_changed(&self, n: u32) {
-        let priv_ = self.imp();
-        priv_.invited_section.set_visible(n > 0);
-        priv_
-            .invited_section
-            // Translators: Do NOT translate the content between '{' and '}', this is a variable
-            // name.
-            .set_title(&ngettext_f(
-                "1 Invited",
-                "{n} Invited",
-                n,
-                &[("n", &n.to_string())],
-            ));
-        // FIXME: This won't be needed when we can request the natural height
-        // on AdwPreferencesPage
-        // See: https://gitlab.gnome.org/GNOME/libadwaita/-/issues/77
-        if n > 5 {
-            priv_.invited_scroll.set_min_content_height(MAX_LIST_HEIGHT);
-        } else {
-            priv_.invited_scroll.set_min_content_height(-1);
-        }
-    }
-
-    fn init_invite_button(&self) {
-        let invite_button = &*self.imp().invite_button;
-
-        let invite_possible = self.room().new_allowed_expr(RoomAction::Invite);
-        const NONE_OBJECT: Option<&glib::Object> = None;
-        invite_possible.bind(invite_button, "sensitive", NONE_OBJECT);
-
-        invite_button.connect_clicked(clone!(@weak self as obj => move |_| {
-            let window = obj
-            .root()
-            .unwrap()
-            .downcast::<RoomDetails>()
-            .unwrap();
-            window.present_invite_subpage();
-        }));
+        let mut list_stack_children = priv_.list_stack_children.borrow_mut();
+        let joined_view = MembersListView::new(&main_list);
+        priv_.list_stack.add_child(&joined_view);
+        list_stack_children.insert(Membership::Join, joined_view.downgrade());
+        let invited_view = MembersListView::new(&invited_members);
+        priv_.list_stack.add_child(&invited_view);
+        list_stack_children.insert(Membership::Invite, invited_view.downgrade());
+        let banned_view = MembersListView::new(&banned_members);
+        priv_.list_stack.add_child(&banned_view);
+        list_stack_children.insert(Membership::Ban, banned_view.downgrade());
     }
 
     pub fn member_menu(&self) -> &MemberMenu {
@@ -351,5 +277,121 @@ impl MemberPage {
         spawn!(clone!(@weak self as obj => async move {
             member.upcast::<User>().verify_identity().await;
         }));
+    }
+
+    pub fn state(&self) -> Membership {
+        self.imp().state.get()
+    }
+
+    pub fn set_state(&self, state: Membership) {
+        let priv_ = self.imp();
+
+        if self.state() == state {
+            return;
+        }
+
+        if state == Membership::Join {
+            priv_
+                .list_stack
+                .set_transition_type(gtk::StackTransitionType::SlideRight)
+        } else {
+            priv_
+                .list_stack
+                .set_transition_type(gtk::StackTransitionType::SlideLeft)
+        }
+
+        if let Some(window) = self.root().and_then(|w| w.downcast::<adw::Window>().ok()) {
+            match state {
+                Membership::Invite => window.set_title(Some(&gettext("Invited Room Members"))),
+                Membership::Ban => window.set_title(Some(&gettext("Banned Room Members"))),
+                _ => window.set_title(Some(&gettext("Room Members"))),
+            }
+        }
+
+        if let Some(view) = priv_
+            .list_stack_children
+            .borrow()
+            .get(&state)
+            .and_then(glib::WeakRef::upgrade)
+        {
+            priv_.list_stack.set_visible_child(&view);
+        }
+
+        self.imp().state.set(state);
+        self.notify("state");
+    }
+
+    fn build_filtered_list(
+        &self,
+        model: &impl IsA<gio::ListModel>,
+        state: Membership,
+    ) -> gio::ListModel {
+        let membership_expression = gtk::PropertyExpression::new(
+            Member::static_type(),
+            gtk::Expression::NONE,
+            "membership",
+        )
+        .chain_closure::<bool>(closure!(
+            |_: Option<glib::Object>, this_state: Membership| this_state == state
+        ));
+
+        let membership_filter = gtk::BoolFilter::new(Some(&membership_expression));
+
+        fn search_string(member: Member) -> String {
+            format!(
+                "{} {} {} {}",
+                member.display_name(),
+                member.user_id(),
+                member.role(),
+                member.power_level(),
+            )
+        }
+
+        let member_expr = gtk::ClosureExpression::new::<String, &[gtk::Expression], _>(
+            &[],
+            closure!(|member: Option<Member>| { member.map(search_string).unwrap_or_default() }),
+        );
+        let search_filter = gtk::StringFilter::builder()
+            .match_mode(gtk::StringFilterMatchMode::Substring)
+            .expression(&member_expr)
+            .ignore_case(true)
+            .build();
+
+        self.imp()
+            .members_search_entry
+            .bind_property("text", &search_filter, "search")
+            .flags(glib::BindingFlags::SYNC_CREATE)
+            .build();
+
+        let filter = gtk::EveryFilter::new();
+
+        filter.append(&membership_filter);
+        filter.append(&search_filter);
+
+        let filter_model = gtk::FilterListModel::new(Some(model), Some(&filter));
+        filter_model.upcast()
+    }
+
+    fn init_invite_button(&self, room: &Room) {
+        let invite_possible = room.new_allowed_expr(RoomAction::Invite);
+
+        let watch = invite_possible.watch(
+            glib::Object::NONE,
+            clone!(@weak self as obj => move || {
+                obj.update_invite_button();
+            }),
+        );
+
+        self.imp().invite_action_watch.replace(Some(watch));
+        self.update_invite_button();
+    }
+
+    fn update_invite_button(&self) {
+        if let Some(invite_action) = &*self.imp().invite_action_watch.borrow() {
+            let allow_invite = invite_action
+                .evaluate_as::<bool>()
+                .expect("Created expression needs to be valid and a boolean");
+            self.imp().invite_button.set_visible(allow_invite);
+        };
     }
 }

@@ -37,7 +37,7 @@ use crate::{
     components::{CustomEntry, DragOverlay, Pill, ReactionChooser, RoomTitle},
     i18n::gettext_f,
     session::{
-        content::{MarkdownPopover, RoomDetails},
+        content::{room_details, MarkdownPopover, RoomDetails},
         room::{Room, RoomType, SupportedEvent, Timeline, TimelineItem, TimelineState},
         user::UserExt,
     },
@@ -135,10 +135,10 @@ mod imp {
             });
 
             klass.install_action("room-history.details", None, move |widget, _, _| {
-                widget.open_room_details("general");
+                widget.open_room_details(room_details::PageName::General);
             });
             klass.install_action("room-history.invite-members", None, move |widget, _, _| {
-                widget.open_invite_members();
+                widget.open_room_details(room_details::PageName::Invite);
             });
 
             klass.install_action("room-history.scroll-down", None, move |widget, _, _| {
@@ -574,19 +574,10 @@ impl RoomHistory {
     }
 
     /// Opens the room details on the page with the given name.
-    pub fn open_room_details(&self, page_name: &str) {
+    pub fn open_room_details(&self, page_name: room_details::PageName) {
         if let Some(room) = self.room() {
             let window = RoomDetails::new(&self.parent_window(), &room);
-            window.set_property("visible-page-name", page_name);
-            window.show();
-        }
-    }
-
-    pub fn open_invite_members(&self) {
-        if let Some(room) = self.room() {
-            let window = RoomDetails::new(&self.parent_window(), &room);
-            window.set_property("visible-page-name", "members");
-            window.present_invite_subpage();
+            window.set_visible_page(page_name);
             window.show();
         }
     }

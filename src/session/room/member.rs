@@ -1,3 +1,4 @@
+use gettextrs::gettext;
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use matrix_sdk::{
     room::RoomMember,
@@ -9,6 +10,7 @@ use matrix_sdk::{
         OwnedMxcUri, UserId,
     },
 };
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 use crate::{
     prelude::*,
@@ -21,7 +23,7 @@ use crate::{
     },
 };
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum, IntoPrimitive, TryFromPrimitive)]
 #[repr(u32)]
 #[enum_type(name = "Membership")]
 pub enum Membership {
@@ -36,6 +38,20 @@ pub enum Membership {
 impl Default for Membership {
     fn default() -> Self {
         Membership::Leave
+    }
+}
+
+impl std::fmt::Display for Membership {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let label = match self {
+            Membership::Leave => gettext("Left"),
+            Membership::Join => gettext("Joined"),
+            Membership::Invite => gettext("Invited"),
+            Membership::Ban => gettext("Banned"),
+            Membership::Knock => gettext("Knocked"),
+            Membership::Custom => gettext("Custom"),
+        };
+        f.write_str(&label)
     }
 }
 

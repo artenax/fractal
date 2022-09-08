@@ -54,6 +54,8 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="content-invitee-row.ui">ui/content-invitee-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-markdown-popover.ui">ui/content-markdown-popover.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-member-item.ui">ui/content-member-item.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="content-member-page-list-view.ui">ui/content-member-page-list-view.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="content-member-page-membership-subpage-row.ui">ui/content-member-page-membership-subpage-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-member-page.ui">ui/content-member-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-member-row.ui">ui/content-member-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-message-audio.ui">ui/content-message-audio.ui</file>

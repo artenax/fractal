@@ -1,75 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="ContentMemberPage" parent="AdwPreferencesPage">
-    <property name="icon-name">system-users-symbolic</property>
-    <property name="title" translatable="yes">Members</property>
-    <property name="name">members</property>
+  <template class="ContentMemberPage" parent="AdwBin">
     <child>
-      <object class="AdwPreferencesGroup">
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkBox">
-            <property name="margin-bottom">12</property>
-            <child>
-              <object class="GtkLabel" id="member_count">
-                <property name="halign">start</property>
+          <object class="GtkHeaderBar">
+            <child type="start">
+              <object class="GtkButton">
+                <property name="icon-name">go-previous-symbolic</property>
+                <property name="action_name">members.previous</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkToggleButton" id="search_button">
+                <property name="icon-name">system-search-symbolic</property>
+                <accessibility>
+                  <property name="label" translatable="yes">Search for Room Members</property>
+                </accessibility>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkSearchBar">
+            <property name="search-mode-enabled" bind-source="search_button" bind-property="active"/>
+            <property name="child">
+              <object class="AdwClamp">
                 <property name="hexpand">True</property>
-                <style>
-                  <class name="heading"/>
-                  <class name="h4"/>
-                </style>
+                <property name="maximum-size">750</property>
+                <property name="tightening-threshold">550</property>
+                <child>
+                  <object class="GtkSearchEntry" id="members_search_entry">
+                    <property name="placeholder-text" translatable="yes">Search for room members</property>
+                  </object>
+                </child>
+                <accessibility>
+                  <property name="label" translatable="yes">Search for room members</property>
+                </accessibility>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkOverlay">
+            <child>
+              <object class="GtkStack" id="list_stack">
+                <property name="transition-type">slide-left</property>
               </object>
             </child>
-            <child>
+            <child type="overlay">
               <object class="GtkButton" id="invite_button">
-                <property name="label" translatable="yes">Invite new member</property>
-                <property name="halign">end</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkSearchEntry" id="members_search_entry">
-            <property name="margin-bottom">12</property>
-            <property name="placeholder-text" translatable="yes">Search for room members</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow" id="members_scroll">
-            <property name="propagate-natural-height">True</property>
-            <property name="max-content-height">300</property>
-            <child>
-              <object class="GtkListView" id="members_list_view">
-                <property name="show-separators">True</property>
-                <property name="factory">
-                  <object class="GtkBuilderListItemFactory">
-                    <property name="resource">/org/gnome/Fractal/content-member-item.ui</property>
+                <property name="valign">end</property>
+                <property name="halign">center</property>
+                <property name="margin-bottom">24</property>
+                <property name="action-name">details.next-page</property>
+                <property name="action-target">&apos;invite&apos;</property>
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">system-users-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Invite</property>
+                      </object>
+                    </child>
                   </object>
                 </property>
                 <style>
-                  <class name="content"/>
-                </style>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="AdwPreferencesGroup" id="invited_section">
-        <child>
-          <object class="GtkScrolledWindow" id="invited_scroll">
-            <property name="propagate-natural-height">True</property>
-            <property name="max-content-height">300</property>
-            <child>
-              <object class="GtkListView" id="invited_list_view">
-                <property name="show-separators">True</property>
-                <property name="factory">
-                  <object class="GtkBuilderListItemFactory">
-                    <property name="resource">/org/gnome/Fractal/content-member-item.ui</property>
-                  </object>
-                </property>
-                <style>
-                  <class name="content"/>
+                  <class name="pill"/>
+                  <class name="suggested-action"/>
                 </style>
               </object>
             </child>
@@ -79,3 +83,4 @@
     </child>
   </template>
 </interface>
+

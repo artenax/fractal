@@ -34,10 +34,10 @@
                 <property name="margin-end">30</property>
                 <property name="margin-start">30</property>
                 <property name="margin-top">6</property>
-                <property name="hexpand">true</property>
+                <property name="hexpand">True</property>
                 <child>
                   <object class="CustomEntry">
-                   <!-- FIXME: inserting a Pill makes the Entry grow, therefore we force more height so that it doesn't grow visually
+                    <!-- FIXME: inserting a Pill makes the Entry grow, therefore we force more height so that it doesn't grow visually
                         Would be nice to fix it properly. Including the vertical alignment of Pills in the textview
                     -->
                     <property name="height-request">74</property>
@@ -53,7 +53,7 @@
                           <object class="GtkScrolledWindow">
                             <child>
                               <object class="GtkTextView" id="text_view">
-                                <property name="hexpand">true</property>
+                                <property name="hexpand">True</property>
                                 <property name="justification">left</property>
                                 <property name="wrap-mode">word-char</property>
                                 <property name="accepts-tab">False</property>
@@ -80,8 +80,6 @@
           <object class="GtkStack" id="stack">
             <child>
               <object class="AdwStatusPage" id="no_search_page">
-                <property name="visible">True</property>
-                <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="icon-name">system-search-symbolic</property>
                 <property name="description" translatable="yes">Search for users to invite them to this room.</property>
@@ -89,16 +87,12 @@
             </child>
             <child>
               <object class="GtkScrolledWindow" id="matching_page">
-                <property name="propagate-natural-height">True</property>
                 <property name="child">
                   <object class="AdwClampScrollable">
                     <property name="child">
                       <object class="GtkListView" id="list_view">
-                        <property name="margin-bottom">24</property>
                         <property name="margin-end">12</property>
                         <property name="margin-start">12</property>
-                        <property name="margin-top">24</property>
-                        <property name="show-separators">True</property>
                         <property name="single-click-activate">True</property>
                         <property name="factory">
                           <object class="GtkBuilderListItemFactory">
@@ -106,7 +100,7 @@
                           </object>
                         </property>
                         <style>
-                          <class name="content"/>
+                          <class name="invite-search-results"/>
                         </style>
                       </object>
                     </property>
@@ -116,18 +110,12 @@
             </child>
             <child>
               <object class="AdwStatusPage" id="no_matching_page">
-                <property name="visible">True</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
                 <property name="icon-name">system-search-symbolic</property>
                 <property name="description" translatable="yes">No users matching the search were found.</property>
               </object>
             </child>
             <child>
               <object class="AdwStatusPage" id="error_page">
-                <property name="visible">True</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
                 <property name="icon-name">dialog-error-symbolic</property>
                 <property name="description" translatable="yes">An error occurred while searching for matches</property>
               </object>
@@ -137,7 +125,6 @@
                 <property name="spinning">True</property>
                 <property name="valign">center</property>
                 <property name="halign">center</property>
-                <property name="vexpand">True</property>
                 <style>
                   <class name="session-loading-spinner"/>
                 </style>

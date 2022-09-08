@@ -4,8 +4,8 @@
     <property name="activatable">False</property>
     <property name="selectable">False</property>
     <property name="child">
-      <object class="ContentMemberRow">
-        <binding name="member">
+      <object class="ContentMemberItemRow">
+        <binding name="item">
           <lookup name="item">GtkListItem</lookup>
         </binding>
       </object>

@@ -11,7 +11,7 @@ use self::{
 };
 use crate::{
     components::{Pill, SpinnerButton},
-    session::{content::RoomDetails, Room, User},
+    session::{Room, User},
     spawn,
 };
 
@@ -246,8 +246,7 @@ impl InviteSubpage {
     }
 
     fn close(&self) {
-        let window = self.root().unwrap().downcast::<RoomDetails>().unwrap();
-        window.close_invite_subpage();
+        self.activate_action("details.previous-page", None).unwrap();
     }
 
     fn add_user_pill(&self, user: &Invitee) {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ContentMemberPageMembershipSubpageRow" parent="AdwActionRow">
+    <property name="title" bind-source="ContentMemberPageMembershipSubpageRow" bind-property="label" bind-flags="sync-create"/>
+    <property name="icon-name">system-users-symbolic</property>
+    <property name="activatable">True</property>
+    <property name="margin-top">6</property>
+    <property name="margin-bottom">6</property>
+    <child type="suffix">
+      <object class="GtkLabel" id="members_count">
+        <property name="valign">center</property>
+        <property name="halign">center</property>
+      </object>
+    </child>
+    <child type="suffix">
+      <object class="GtkImage">
+        <property name="valign">center</property>
+        <property name="halign">center</property>
+        <property name="icon-name">go-next-symbolic</property>
+      </object>
+    </child>
+    <style>
+      <class name="round-corners"/>
+    </style>
+  </template>
+</interface>
+

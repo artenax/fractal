@@ -1,7 +1,10 @@
 use adw::subclass::prelude::BinImpl;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 
-use crate::session::{content::RoomDetails, room::Member};
+use crate::session::{
+    content::room_details::{member_page::MemberMenu, MemberPage},
+    room::Member,
+};
 
 mod imp {
     use std::cell::RefCell;
@@ -76,10 +79,8 @@ mod imp {
 
             self.menu_btn
                 .connect_toggled(clone!(@weak obj => move |btn| {
-                    if let Some(details) = obj.details() {
-                        let page = details.member_page();
-                        let menu = page.member_menu();
-                        if btn.is_active() {
+                    if btn.is_active() {
+                        if let Some(menu) = obj.member_menu() {
                             menu.present_popover(btn, obj.member());
                         }
                     }
@@ -96,8 +97,8 @@ glib::wrapper! {
 }
 
 impl MemberRow {
-    pub fn new(member: &Member) -> Self {
-        glib::Object::new(&[("member", member)]).expect("Failed to create MemberRow")
+    pub fn new() -> Self {
+        glib::Object::new(&[]).expect("Failed to create MemberRow")
     }
 
     pub fn member(&self) -> Option<Member> {
@@ -113,10 +114,7 @@ impl MemberRow {
 
         // We need to update the member of the menu if it's shown for this row
         if priv_.menu_btn.is_active() {
-            if let Some(details) = self.details() {
-                let page = details.member_page();
-                let menu = page.member_menu();
-
+            if let Some(menu) = self.member_menu() {
                 menu.set_member(member.clone());
             }
         }
@@ -125,7 +123,17 @@ impl MemberRow {
         self.notify("member");
     }
 
-    fn details(&self) -> Option<RoomDetails> {
-        Some(self.root()?.downcast::<RoomDetails>().unwrap())
+    fn member_menu(&self) -> Option<MemberMenu> {
+        let member_page = self
+            .ancestor(MemberPage::static_type())?
+            .downcast::<MemberPage>()
+            .unwrap();
+        Some(member_page.member_menu().clone())
+    }
+}
+
+impl Default for MemberRow {
+    fn default() -> Self {
+        Self::new()
     }
 }
