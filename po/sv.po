@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-08-16 10:54+0000\n"
-"PO-Revision-Date: 2022-08-16 13:14+0200\n"
+"POT-Creation-Date: 2022-09-03 20:55+0000\n"
+"PO-Revision-Date: 2022-09-05 01:47+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Generator: Poedit 3.1.1\n"
 
 #: data/org.gnome.Fractal.desktop.in.in:3
-#: data/org.gnome.Fractal.metainfo.xml.in.in:9
+#: data/org.gnome.Fractal.metainfo.xml.in.in:7
 msgid "Fractal"
 msgstr "Fractal"
 
@@ -62,14 +62,10 @@ msgid "Whether messages should be processed as markdown when sending them"
 msgstr "Huruvida meddelanden ska behandlas som markdown då de skickas"
 
 #: data/org.gnome.Fractal.metainfo.xml.in.in:8
-msgid "Julian Sparber"
-msgstr "Julian Sparber"
-
-#: data/org.gnome.Fractal.metainfo.xml.in.in:10
 msgid "Matrix group messaging app"
 msgstr "Matrix-gruppmeddelandeprogram"
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:12
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
 msgid ""
 "Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
 "is optimized for collaboration in large groups, such as free software "
@@ -78,6 +74,10 @@ msgstr ""
 "Fractal är ett Matrix-meddelandeprogram för GNOME skrivet i Rust. Dess "
 "gränssnitt är optimerat för samarbete i stora grupper, såsom projekt inom "
 "fri programvara."
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:181
+msgid "The Fractal Team"
+msgstr "Fractal-gruppen"
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:9
 #: data/resources/ui/account-settings-user-page.ui:54
@@ -190,7 +190,7 @@ msgstr "Autentisera via webbläsare"
 #: data/resources/ui/identity-verification-widget.ui:452
 #: src/components/editable_avatar.rs:343
 #: src/session/content/room_history/verification_info_bar.rs:182
-#: src/session/room/event_actions.rs:237
+#: src/session/room/event_actions.rs:270
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -207,7 +207,7 @@ msgstr "Försök igen"
 msgid "No rooms matching the search were found"
 msgstr "Inga rum som matchade sökningen hittades"
 
-#: data/resources/ui/content-explore.ui:96
+#: data/resources/ui/content-explore.ui:90
 msgid "Room List"
 msgstr "Rumslista"
 
@@ -277,7 +277,7 @@ msgid "Open"
 msgstr "Öppna"
 
 #: data/resources/ui/content-message-file.ui:28
-#: src/session/room/event_actions.rs:236
+#: src/session/room/event_actions.rs:269
 msgid "Save"
 msgstr "Spara"
 
@@ -298,75 +298,79 @@ msgstr "Rums_detaljer"
 msgid "_Invite New Member"
 msgstr "Bjud _in ny medlem"
 
-#: data/resources/ui/content-room-history.ui:18 data/resources/ui/sidebar.ui:58
+#: data/resources/ui/content-room-history.ui:16
+msgid "Room _Permalink"
+msgstr "_Permanent länk för rum"
+
+#: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:58
 msgid "_Leave Room"
 msgstr "_Lämna rum"
 
-#: data/resources/ui/content-room-history.ui:27
+#: data/resources/ui/content-room-history.ui:31
 msgid "_Location"
 msgstr "_Plats"
 
-#: data/resources/ui/content-room-history.ui:32
+#: data/resources/ui/content-room-history.ui:36
 msgid "_Attachment"
 msgstr "_Bilaga"
 
-#: data/resources/ui/content-room-history.ui:56
+#: data/resources/ui/content-room-history.ui:60
 msgid "Back"
 msgstr "Bakåt"
 
-#: data/resources/ui/content-room-history.ui:81
+#: data/resources/ui/content-room-history.ui:85
 msgid "Room Settings"
 msgstr "Rumsinställningar"
 
-#: data/resources/ui/content-room-history.ui:89
+#: data/resources/ui/content-room-history.ui:93
 msgid "Toggle Room History Search"
 msgstr "Växla sökning av rumshistorik"
 
-#: data/resources/ui/content-room-history.ui:107
+#: data/resources/ui/content-room-history.ui:111
 msgid "Room History Search"
 msgstr "Sök rumshistorik"
 
-#: data/resources/ui/content-room-history.ui:142
+#: data/resources/ui/content-room-history.ui:146
 msgid "Unable to load room"
 msgstr "Kunde inte läsa in rum"
 
-#: data/resources/ui/content-room-history.ui:143
+#: data/resources/ui/content-room-history.ui:147
 msgid "Check your network connection."
 msgstr "Kontrollera din nätverksanslutning."
 
-#: data/resources/ui/content-room-history.ui:146
+#: data/resources/ui/content-room-history.ui:150
 msgid "Try Again"
 msgstr "Försök igen"
 
-#: data/resources/ui/content-room-history.ui:171
+#: data/resources/ui/content-room-history.ui:175
 msgid "Scroll to bottom"
 msgstr "Rulla längst ner"
 
-#: data/resources/ui/content-room-history.ui:183
+#: data/resources/ui/content-room-history.ui:187
 msgid "Drop Here to Send"
 msgstr "Släpp här för att skicka"
 
-#: data/resources/ui/content-room-history.ui:204
+#: data/resources/ui/content-room-history.ui:208
 msgid "Room History"
 msgstr "Rumshistorik"
 
-#: data/resources/ui/content-room-history.ui:242
+#: data/resources/ui/content-room-history.ui:246
 msgid "Enable Markdown Formatting"
 msgstr "Aktivera markdown-formatering"
 
-#: data/resources/ui/content-room-history.ui:263
+#: data/resources/ui/content-room-history.ui:267
 msgid "Message Entry"
 msgstr "Meddelandefält"
 
-#: data/resources/ui/content-room-history.ui:277
+#: data/resources/ui/content-room-history.ui:281
 msgid "Open Emoji Picker"
 msgstr "Öppna emoji-väljare"
 
-#: data/resources/ui/content-room-history.ui:288
+#: data/resources/ui/content-room-history.ui:292
 msgid "Open Message Menu"
 msgstr "Öppna meddelandemeny"
 
-#: data/resources/ui/content-room-history.ui:303
+#: data/resources/ui/content-room-history.ui:307
 msgid "Send Message"
 msgstr "Skicka meddelande"
 
@@ -460,15 +464,15 @@ msgstr "Sva_ra"
 msgid "_Edit"
 msgstr "R_edigera"
 
-#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:106
+#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:111
 msgid "_Forward"
 msgstr "Vidare_befordra"
 
-#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:113
+#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:118
 msgid "_Select"
 msgstr "Vä_lj"
 
-#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:120
+#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:125
 msgid "_Copy Text"
 msgstr "_Kopiera text"
 
@@ -488,15 +492,16 @@ msgstr "_Spara video"
 msgid "S_ave Audio"
 msgstr "_Spara ljud"
 
-#: data/resources/ui/event-menu.ui:61 data/resources/ui/event-menu.ui:126
+#: data/resources/ui/event-menu.ui:61 data/resources/ui/event-menu.ui:102
+#: data/resources/ui/event-menu.ui:131
 msgid "_Permalink"
 msgstr "_Permanent länk"
 
-#: data/resources/ui/event-menu.ui:66 data/resources/ui/event-menu.ui:131
+#: data/resources/ui/event-menu.ui:66 data/resources/ui/event-menu.ui:136
 msgid "_View Source"
 msgstr "_Visa källa"
 
-#: data/resources/ui/event-menu.ui:73 data/resources/ui/event-menu.ui:138
+#: data/resources/ui/event-menu.ui:73 data/resources/ui/event-menu.ui:143
 msgid "Re_move"
 msgstr "_Ta bort"
 
@@ -859,10 +864,6 @@ msgstr "Tillåter navigering mellan rum"
 msgid "Unable to connect to Camera"
 msgstr "Kunde inte ansluta till kamera"
 
-#: src/application.rs:181
-msgid "The Fractal Team"
-msgstr "Fractal-gruppen"
-
 #: src/application.rs:189
 msgid "© 2017-2022 The Fractal Team"
 msgstr "© 2017-2022 Fractal-gruppen"
@@ -905,19 +906,19 @@ msgstr "Ingen fil valdes"
 msgid "Location at latitude {latitude} and longitude {longitude}"
 msgstr "Plats: latitud {latitude} och longitud {longitude}"
 
-#: src/components/media_content_viewer.rs:161
+#: src/components/media_content_viewer.rs:176
 msgid "Image not Viewable"
 msgstr "Bilden kan inte visas"
 
-#: src/components/media_content_viewer.rs:162
+#: src/components/media_content_viewer.rs:177
 msgid "Audio Clip not Playable"
 msgstr "Ljudklippet kan inte spelas upp"
 
-#: src/components/media_content_viewer.rs:163
+#: src/components/media_content_viewer.rs:178
 msgid "Video not Playable"
 msgstr "Videon kan inte spelas upp"
 
-#: src/components/media_content_viewer.rs:164
+#: src/components/media_content_viewer.rs:179
 msgid "File not Viewable"
 msgstr "Filen kan inte visas"
 
@@ -1053,14 +1054,14 @@ msgstr "Senast sedd %l:%M %p"
 #: src/session/account_settings/devices_page/device_row.rs:298
 #, no-c-format
 msgid "Last seen Yesterday at %H:%M"
-msgstr "Senast sedd igår %H:%M"
+msgstr "Senast sedd i går %H:%M"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
 #: src/session/account_settings/devices_page/device_row.rs:303
 #, no-c-format
 msgid "Last seen Yesterday at %l:%M %p"
-msgstr "Senast sedd igår %l:%M %p"
+msgstr "Senast sedd i går %l:%M %p"
 
 #. Translators: this is the name of the week day followed by
 #. a time in 24h format. i.e. "Last seen Monday at 23:04"
@@ -1233,7 +1234,7 @@ msgstr "Välj profilbild"
 msgid "Invite new Members"
 msgstr "Bjud in nya medlemmar"
 
-#: src/session/content/room_history/item_row.rs:255
+#: src/session/content/room_history/item_row.rs:257
 msgid "New Messages"
 msgstr "Nya meddelanden"
 
@@ -1255,16 +1256,16 @@ msgstr "Bildfilen stöds inte"
 msgid "Could not retrieve media"
 msgstr "Kunde inte erhålla media"
 
-#: src/session/content/room_history/message_row/mod.rs:376
+#: src/session/content/room_history/message_row/mod.rs:382
 msgid "Identity verification was started"
 msgstr "Identitetsverifiering startades"
 
-#: src/session/content/room_history/message_row/mod.rs:389
-#: src/session/content/room_history/message_row/mod.rs:436
+#: src/session/content/room_history/message_row/mod.rs:395
+#: src/session/content/room_history/message_row/mod.rs:441
 msgid "Unsupported event"
 msgstr "Händelsen stöds inte"
 
-#: src/session/content/room_history/message_row/mod.rs:414
+#: src/session/content/room_history/message_row/mod.rs:419
 msgid ""
 "Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
@@ -1272,35 +1273,45 @@ msgstr ""
 "Kunde inte dekryptera detta meddelande, försöker dekryptera igen när "
 "nycklarna är tillgängliga."
 
-#: src/session/content/room_history/message_row/mod.rs:425
+#: src/session/content/room_history/message_row/mod.rs:430
 msgid "This message was removed."
 msgstr "Det här meddelandet togs bort."
 
-#: src/session/content/room_history/mod.rs:154
+#: src/session/content/room_history/mod.rs:160
 msgid "The location request has been cancelled."
 msgstr "Platsförfrågan har avbrutits."
 
-#: src/session/content/room_history/mod.rs:158
+#: src/session/content/room_history/mod.rs:164
 msgid "Failed to retrieve current location."
 msgstr "Misslyckades med att erhålla aktuell plats."
 
-#: src/session/content/room_history/mod.rs:734
+#: src/session/content/room_history/mod.rs:574
+#: src/session/room/event_actions.rs:108
+msgid "Permalink copied to clipboard"
+msgstr "Permanent länk kopierad till urklipp"
+
+#: src/session/content/room_history/mod.rs:578
+#: src/session/room/event_actions.rs:112
+msgid "Failed to copy the permalink"
+msgstr "Misslyckades med att kopiera den permanenta länken"
+
+#: src/session/content/room_history/mod.rs:757
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Användarplats {geo_uri}, tid {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:838
+#: src/session/content/room_history/mod.rs:861
 msgid "Error reading file"
 msgstr "Fel vid läsning av fil"
 
-#: src/session/content/room_history/mod.rs:864
+#: src/session/content/room_history/mod.rs:887
 msgid "Error getting file from drop"
 msgstr "Fel då släppt fil skulle erhållas"
 
-#: src/session/content/room_history/mod.rs:896
+#: src/session/content/room_history/mod.rs:919
 msgid "Error getting image from clipboard"
 msgstr "Fel då bilden skulle erhållas från urklipp"
 
-#: src/session/content/room_history/mod.rs:913
+#: src/session/content/room_history/mod.rs:936
 msgid "Error getting file from clipboard"
 msgstr "Fel då filen skulle erhållas från urklipp"
 
@@ -1601,7 +1612,11 @@ msgstr "Kunde inte lagra session"
 msgid "Failed to logout the session."
 msgstr "Misslyckades med att logga ut sessionen."
 
-#: src/session/room/event_actions.rs:232
+#: src/session/room/event_actions.rs:174 src/session/room/event_actions.rs:205
+msgid "Message copied to clipboard"
+msgstr "Meddelande kopierat till urklipp"
+
+#: src/session/room/event_actions.rs:265
 msgid "Save File"
 msgstr "Spara fil"
 
@@ -1618,54 +1633,54 @@ msgid "Normal user"
 msgstr "Vanlig användare"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:465
+#: src/session/room/mod.rs:462
 msgid "Failed to forget {room}."
 msgstr "Misslyckades med att glömma {room}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:703
+#: src/session/room/mod.rs:700
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr ""
 "Misslyckades med att flytta {room} från {previous_category} till "
 "{new_category}."
 
-#: src/session/room/mod.rs:999
+#: src/session/room/mod.rs:995
 msgid "Unknown"
 msgstr "Okänt"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:1026
+#: src/session/room/mod.rs:1022
 msgid "Empty Room (was {user})"
 msgstr "Tomt rum (var {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:1028
+#: src/session/room/mod.rs:1024
 msgid "Empty Room"
 msgstr "Tomt rum"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1432
+#: src/session/room/mod.rs:1428
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 "Misslyckades med att acceptera inbjudan för {room}. Försök igen senare."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1461
+#: src/session/room/mod.rs:1457
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr "Misslyckades med att avvisa inbjudan för {room}. Försök igen senare."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1627
+#: src/session/room/mod.rs:1623
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "Misslyckades med att bjuda in {user} till {room}. Försök igen senare."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1639
+#: src/session/room/mod.rs:1635
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1893,28 +1908,31 @@ msgstr ""
 "fullständig URL manuellt."
 
 #. Translators: Default name for image files.
-#: src/utils.rs:301
+#: src/utils.rs:302
 msgid "image"
 msgstr "bild"
 
 #. Translators: Default name for video files.
-#: src/utils.rs:303
+#: src/utils.rs:304
 msgid "video"
 msgstr "video"
 
 #. Translators: Default name for audio files.
-#: src/utils.rs:305
+#: src/utils.rs:306
 msgid "audio"
 msgstr "ljud"
 
 #. Translators: Default name for files.
-#: src/utils.rs:307
+#: src/utils.rs:308
 msgid "file"
 msgstr "fil"
 
 #: src/window.rs:246
 msgid "Failed to restore previous sessions"
 msgstr "Misslyckades med att återställa tidigare sessioner"
+
+#~ msgid "Julian Sparber"
+#~ msgstr "Julian Sparber"
 
 #~ msgid "Learn more about Fractal"
 #~ msgstr "Lär dig mer om Fractal"
