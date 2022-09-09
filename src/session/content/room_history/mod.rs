@@ -38,7 +38,7 @@ use crate::{
     i18n::gettext_f,
     session::{
         content::{room_details, MarkdownPopover, RoomDetails},
-        room::{Room, RoomType, SupportedEvent, Timeline, TimelineItem, TimelineState},
+        room::{Room, RoomAction, RoomType, SupportedEvent, Timeline, TimelineItem, TimelineState},
         user::UserExt,
     },
     spawn, spawn_tokio, toast,
@@ -97,6 +97,7 @@ mod imp {
         pub is_loading: Cell<bool>,
         #[template_child]
         pub drag_overlay: TemplateChild<DragOverlay>,
+        pub invite_action_watch: RefCell<Option<gtk::ExpressionWatch>>,
     }
 
     #[glib::object_subclass]
@@ -391,6 +392,10 @@ mod imp {
 
         fn dispose(&self, _obj: &Self::Type) {
             self.completion.unparent();
+
+            if let Some(invite_action) = self.invite_action_watch.take() {
+                invite_action.unwatch();
+            }
         }
     }
 
@@ -427,6 +432,10 @@ impl RoomHistory {
             if let Some(state_timeline_handler) = priv_.state_timeline_handler.take() {
                 room.timeline().disconnect(state_timeline_handler);
             }
+
+            if let Some(invite_action) = priv_.invite_action_watch.take() {
+                invite_action.unwatch();
+            }
         }
 
         if let Some(ref room) = room {
@@ -458,6 +467,7 @@ impl RoomHistory {
             priv_.state_timeline_handler.replace(Some(handler_id));
 
             room.load_members();
+            self.init_invite_action(room);
         }
 
         // TODO: use gtk::MultiSelection to allow selection
@@ -571,6 +581,29 @@ impl RoomHistory {
                 }
             }
         }
+    }
+
+    fn init_invite_action(&self, room: &Room) {
+        let invite_possible = room.new_allowed_expr(RoomAction::Invite);
+
+        let watch = invite_possible.watch(
+            glib::Object::NONE,
+            clone!(@weak self as obj => move || {
+                obj.update_invite_action();
+            }),
+        );
+
+        self.imp().invite_action_watch.replace(Some(watch));
+        self.update_invite_action();
+    }
+
+    fn update_invite_action(&self) {
+        if let Some(invite_action) = &*self.imp().invite_action_watch.borrow() {
+            let allow_invite = invite_action
+                .evaluate_as::<bool>()
+                .expect("Created expression needs to be valid and a boolean");
+            self.action_set_enabled("room-history.invite-members", allow_invite);
+        };
     }
 
     /// Opens the room details on the page with the given name.
