@@ -16,7 +16,7 @@ use crate::{
 };
 
 mod imp {
-    use std::cell::RefCell;
+    use std::{cell::RefCell, rc::Rc};
 
     use glib::{signal::SignalHandlerId, WeakRef};
     use once_cell::unsync::OnceCell;
@@ -113,6 +113,24 @@ mod imp {
             if let Some(event) = obj.item().and_then(|item| item.downcast::<Event>().ok()) {
                 let room_history = obj.room_history();
                 let popover = room_history.item_context_menu().to_owned();
+
+                if let Some(list_item) = obj.parent() {
+                    list_item.add_css_class("has-open-popup");
+
+                    let cell: Rc<RefCell<Option<glib::signal::SignalHandlerId>>> =
+                        Rc::new(RefCell::new(None));
+                    let signal_id = popover.connect_closed(
+                        clone!(@weak list_item, @strong cell => move |popover| {
+                            list_item.remove_css_class("has-open-popup");
+
+                            if let Some(signal_id) = cell.take() {
+                                popover.disconnect(signal_id);
+                            }
+                        }),
+                    );
+
+                    cell.replace(Some(signal_id));
+                }
 
                 if let Some(event) = event
                     .downcast_ref::<SupportedEvent>()

@@ -392,6 +392,11 @@ login {
   padding-bottom: 6px;
 }
 
+.room-history row.has-open-popup  {
+  background-color: alpha(currentColor, 0.07);
+  border-radius: 6px;
+}
+
 .room-history row.has-header {
   margin-top: 6px;
 }
