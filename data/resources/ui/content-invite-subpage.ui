@@ -82,6 +82,7 @@
               <object class="AdwStatusPage" id="no_search_page">
                 <property name="vexpand">True</property>
                 <property name="icon-name">system-search-symbolic</property>
+                <property name="title" translatable="yes">Search</property>
                 <property name="description" translatable="yes">Search for users to invite them to this room.</property>
               </object>
             </child>
@@ -111,13 +112,15 @@
             <child>
               <object class="AdwStatusPage" id="no_matching_page">
                 <property name="icon-name">system-search-symbolic</property>
+                <property name="title" translatable="yes">No Users Found</property>
                 <property name="description" translatable="yes">No users matching the search were found.</property>
               </object>
             </child>
             <child>
               <object class="AdwStatusPage" id="error_page">
                 <property name="icon-name">dialog-error-symbolic</property>
-                <property name="description" translatable="yes">An error occurred while searching for matches</property>
+                <property name="title" translatable="yes">Error</property>
+                <property name="description" translatable="yes">An error occurred while searching for matches.</property>
               </object>
             </child>
             <child>
