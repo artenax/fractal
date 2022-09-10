@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="MediaViewer" parent="AdwBin">
+  <template class="MediaViewer" parent="GtkWidget">
     <child>
       <object class="AdwFlap" id="flap">
         <property name="orientation">vertical</property>
         <property name="locked" bind-source="MediaViewer" bind-property="fullscreened" bind-flags="sync-create|invert-boolean"/>
         <property name="reveal-flap" bind-source="MediaViewer" bind-property="fullscreened" bind-flags="sync-create|invert-boolean"/>
+        <property name="overflow">visible</property>
         <child type="flap">
           <object class="GtkHeaderBar" id="header_bar">
             <style>

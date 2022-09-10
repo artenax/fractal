@@ -13,6 +13,7 @@ use crate::{
 };
 
 const ANIMATION_DURATION: u32 = 250;
+const CANCEL_SWIPE_ANIMATION_DURATION: u32 = 400;
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -29,6 +30,8 @@ mod imp {
         pub event: WeakRef<Event>,
         pub body: RefCell<Option<String>>,
         pub animation: OnceCell<adw::TimedAnimation>,
+        pub swipe_tracker: OnceCell<adw::SwipeTracker>,
+        pub swipe_progress: Cell<f64>,
         #[template_child]
         pub flap: TemplateChild<adw::Flap>,
         #[template_child]
@@ -45,7 +48,8 @@ mod imp {
     impl ObjectSubclass for MediaViewer {
         const NAME: &'static str = "MediaViewer";
         type Type = super::MediaViewer;
-        type ParentType = adw::Bin;
+        type ParentType = gtk::Widget;
+        type Interfaces = (adw::Swipeable,);
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -53,18 +57,7 @@ mod imp {
 
             klass.set_css_name("media-viewer");
             klass.install_action("media-viewer.close", None, move |obj, _, _| {
-                if obj.fullscreened() {
-                    obj.activate_action("win.toggle-fullscreen", None).unwrap();
-                }
-
-                obj.imp().media.stop_playback();
-                obj.imp().revealer.set_reveal_child(false);
-
-                let animation = obj.imp().animation.get().unwrap();
-
-                animation.set_value_from(animation.value());
-                animation.set_value_to(0.0);
-                animation.play();
+                obj.close();
             });
             klass.add_binding_action(
                 gdk::Key::Escape,
@@ -130,6 +123,41 @@ mod imp {
             let animation = adw::TimedAnimation::new(&*obj, 0.0, 1.0, ANIMATION_DURATION, &target);
             self.animation.set(animation).unwrap();
 
+            let swipe_tracker = adw::SwipeTracker::new(&*obj);
+            swipe_tracker.set_orientation(gtk::Orientation::Vertical);
+            swipe_tracker.connect_update_swipe(clone!(@weak obj => move |_, progress| {
+                obj.imp().header_bar.set_opacity(0.0);
+                obj.imp().swipe_progress.set(progress);
+                obj.queue_allocate();
+                obj.queue_draw();
+            }));
+            swipe_tracker.connect_end_swipe(clone!(@weak obj => move |_, _, to| {
+                if to == 0.0 {
+                    let target = adw::CallbackAnimationTarget::new(clone!(@weak obj => move |value| {
+                        obj.imp().swipe_progress.set(value);
+                        obj.queue_allocate();
+                        obj.queue_draw();
+                    }));
+                    let swipe_progress = obj.imp().swipe_progress.get();
+                    let animation = adw::TimedAnimation::new(
+                        &obj,
+                        swipe_progress,
+                        0.0,
+                        CANCEL_SWIPE_ANIMATION_DURATION,
+                        &target,
+                    );
+                    animation.set_easing(adw::Easing::EaseOutCubic);
+                    animation.connect_done(clone!(@weak obj => move |_| {
+                        obj.imp().header_bar.set_opacity(1.0);
+                    }));
+                    animation.play();
+                } else {
+                    obj.close();
+                    obj.imp().header_bar.set_opacity(1.0);
+                }
+            }));
+            self.swipe_tracker.set(swipe_tracker).unwrap();
+
             self.menu
                 .set_menu_model(Some(Self::Type::event_media_menu_model()));
 
@@ -150,15 +178,29 @@ mod imp {
                     }
                 }));
         }
+
+        fn dispose(&self) {
+            self.flap.unparent();
+        }
     }
 
     impl WidgetImpl for MediaViewer {
+        fn size_allocate(&self, width: i32, height: i32, baseline: i32) {
+            let swipe_y_offset = -height as f64 * self.swipe_progress.get();
+            let allocation = gtk::Allocation::new(0, swipe_y_offset as i32, width, height);
+            self.flap.size_allocate(&allocation, baseline);
+        }
+
         fn snapshot(&self, snapshot: &gtk::Snapshot) {
             let obj = self.obj();
-            let progress = self.animation.get().unwrap().value() as f32;
+            let progress = {
+                let swipe_progress = 1.0 - self.swipe_progress.get().abs();
+                let animation_progress = self.animation.get().unwrap().value();
+                swipe_progress.min(animation_progress)
+            };
 
             if progress > 0.0 {
-                let background_color = gdk::RGBA::new(0.0, 0.0, 0.0, 1.0 * progress);
+                let background_color = gdk::RGBA::new(0.0, 0.0, 0.0, 1.0 * progress as f32);
                 let bounds = graphene::Rect::new(0.0, 0.0, obj.width() as f32, obj.height() as f32);
                 snapshot.append_color(&background_color, &bounds);
             }
@@ -167,12 +209,32 @@ mod imp {
         }
     }
 
-    impl BinImpl for MediaViewer {}
+    impl SwipeableImpl for MediaViewer {
+        fn cancel_progress(&self) -> f64 {
+            0.0
+        }
+
+        fn distance(&self) -> f64 {
+            self.obj().height() as f64
+        }
+
+        fn progress(&self) -> f64 {
+            self.swipe_progress.get()
+        }
+
+        fn snap_points(&self) -> &[f64] {
+            &[-1.0, 0.0, 1.0]
+        }
+
+        fn swipe_area(&self, _: adw::NavigationDirection, _: bool) -> gdk::Rectangle {
+            gdk::Rectangle::new(0, 0, self.obj().width(), self.obj().height())
+        }
+    }
 }
 
 glib::wrapper! {
     pub struct MediaViewer(ObjectSubclass<imp::MediaViewer>)
-        @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
+        @extends gtk::Widget, @implements gtk::Accessible, adw::Swipeable;
 }
 
 #[gtk::template_callbacks]
@@ -187,6 +249,7 @@ impl MediaViewer {
 
         self.set_visible(true);
 
+        imp.swipe_progress.set(0.0);
         imp.revealer.set_source_widget(Some(source_widget));
         imp.revealer.set_reveal_child(true);
 
@@ -326,6 +389,21 @@ impl MediaViewer {
                 }
             }
         }
+    }
+
+    fn close(&self) {
+        if self.fullscreened() {
+            self.activate_action("win.toggle-fullscreen", None).unwrap();
+        }
+
+        self.imp().media.stop_playback();
+        self.imp().revealer.set_reveal_child(false);
+
+        let animation = self.imp().animation.get().unwrap();
+
+        animation.set_value_from(animation.value());
+        animation.set_value_to(0.0);
+        animation.play();
     }
 
     fn reveal_headerbar(&self, reveal: bool) {
