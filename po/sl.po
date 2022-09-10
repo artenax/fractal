@@ -810,7 +810,7 @@ msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
 msgstr[0] "<b>{}</b> in <b>{}</b> vpisujejo besedilo …"
 msgstr[1] "<b>{}</b> vpisuje besedilo …"
 msgstr[2] "<b>{}</b> in <b>{}</b> vpisujeta besedilo …"
-msgstr[3] "<<b>{}</b> in <b>{}</b> vpisujejo besedilo …"
+msgstr[3] "<b>{}</b> in <b>{}</b> vpisujejo besedilo …"
 
 #: fractal-gtk/src/appop/sync.rs:24
 msgid "Syncing, this could take a while"
