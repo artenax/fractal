@@ -67,6 +67,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="content-message-reply.ui">ui/content-message-reply.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-message-row.ui">ui/content-message-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-public-room-row.ui">ui/content-public-room-row.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="content-room-details-general-page.ui">ui/content-room-details-general-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-room-details.ui">ui/content-room-details.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-room-history.ui">ui/content-room-history.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-state-creation.ui">ui/content-state-creation.ui</file>
