@@ -3,8 +3,8 @@ use log::{debug, warn};
 use matrix_sdk::ruma::{
     api::client::sync::sync_events::v3::ToDevice,
     events::{
-        room::message::MessageType, AnySyncMessageLikeEvent, AnySyncRoomEvent, AnyToDeviceEvent,
-        SyncMessageLikeEvent,
+        room::message::MessageType, AnySyncMessageLikeEvent, AnySyncTimelineEvent,
+        AnyToDeviceEvent, SyncMessageLikeEvent,
     },
     MilliSecondsSinceUnixEpoch, OwnedUserId, UserId,
 };
@@ -204,10 +204,10 @@ impl VerificationList {
     pub fn handle_response_room<'a>(
         &self,
         room: &Room,
-        events: impl Iterator<Item = &'a AnySyncRoomEvent>,
+        events: impl Iterator<Item = &'a AnySyncTimelineEvent>,
     ) {
         for message_event in events.filter_map(|event| {
-            if let AnySyncRoomEvent::MessageLike(message_event) = event {
+            if let AnySyncTimelineEvent::MessageLike(message_event) = event {
                 Some(message_event)
             } else {
                 None

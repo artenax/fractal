@@ -1,7 +1,7 @@
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::debug;
 use matrix_sdk::{
-    deserialized_responses::SyncRoomEvent,
+    deserialized_responses::SyncTimelineEvent,
     media::MediaEventContent,
     ruma::{
         events::{
@@ -10,8 +10,8 @@ use matrix_sdk::{
                 message::{MessageType, Relation},
                 redaction::SyncRoomRedactionEvent,
             },
-            AnyMessageLikeEventContent, AnySyncMessageLikeEvent, AnySyncRoomEvent,
-            AnySyncStateEvent, SyncMessageLikeEvent, SyncStateEvent,
+            AnyMessageLikeEventContent, AnySyncMessageLikeEvent, AnySyncStateEvent,
+            AnySyncTimelineEvent, SyncMessageLikeEvent, SyncStateEvent,
         },
         serde::Raw,
         MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedTransactionId, OwnedUserId,
@@ -20,7 +20,7 @@ use matrix_sdk::{
 };
 use serde_json::Error as JsonError;
 
-use super::{BoxedSyncRoomEvent, Event, EventImpl};
+use super::{BoxedSyncTimelineEvent, Event, EventImpl};
 use crate::{
     prelude::*,
     session::room::{
@@ -32,8 +32,8 @@ use crate::{
 };
 
 #[derive(Clone, Debug, glib::Boxed)]
-#[boxed_type(name = "BoxedAnySyncRoomEvent")]
-pub struct BoxedAnySyncRoomEvent(AnySyncRoomEvent);
+#[boxed_type(name = "BoxedAnySyncTimelineEvent")]
+pub struct BoxedAnySyncTimelineEvent(AnySyncTimelineEvent);
 
 mod imp {
     use std::cell::RefCell;
@@ -46,7 +46,7 @@ mod imp {
     #[derive(Debug, Default)]
     pub struct SupportedEvent {
         /// The deserialized Matrix event.
-        pub matrix_event: RefCell<Option<AnySyncRoomEvent>>,
+        pub matrix_event: RefCell<Option<AnySyncTimelineEvent>>,
         /// Events that replace this one, in the order they arrive.
         pub replacing_events: RefCell<Vec<super::SupportedEvent>>,
         pub reactions: ReactionList,
@@ -69,7 +69,7 @@ mod imp {
                         "matrix-event",
                         "Matrix Event",
                         "The deserialized Matrix event of this Event",
-                        BoxedAnySyncRoomEvent::static_type(),
+                        BoxedAnySyncTimelineEvent::static_type(),
                         glib::ParamFlags::WRITABLE,
                     ),
                     glib::ParamSpecObject::new(
@@ -94,7 +94,7 @@ mod imp {
         ) {
             match pspec.name() {
                 "matrix-event" => {
-                    let matrix_event = value.get::<BoxedAnySyncRoomEvent>().unwrap();
+                    let matrix_event = value.get::<BoxedAnySyncTimelineEvent>().unwrap();
                     obj.set_matrix_event(matrix_event.0);
                 }
                 _ => unimplemented!(),
@@ -179,9 +179,9 @@ impl SupportedEvent {
     /// room.
     ///
     /// Returns an error if the pure event fails to deserialize.
-    pub fn try_from_event(pure_event: SyncRoomEvent, room: &Room) -> Result<Self, JsonError> {
-        let matrix_event = BoxedAnySyncRoomEvent(pure_event.event.deserialize()?);
-        let pure_event = BoxedSyncRoomEvent(pure_event);
+    pub fn try_from_event(pure_event: SyncTimelineEvent, room: &Room) -> Result<Self, JsonError> {
+        let matrix_event = BoxedAnySyncTimelineEvent(pure_event.event.deserialize()?);
+        let pure_event = BoxedSyncTimelineEvent(pure_event);
         Ok(glib::Object::new(&[
             ("pure-event", &pure_event),
             ("matrix-event", &matrix_event),
@@ -191,8 +191,8 @@ impl SupportedEvent {
     }
 
     /// Set the deserialized Matrix event of this `SupportedEvent`.
-    fn set_matrix_event(&self, matrix_event: AnySyncRoomEvent) {
-        if let AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomEncrypted(
+    fn set_matrix_event(&self, matrix_event: AnySyncTimelineEvent) {
+        if let AnySyncTimelineEvent::MessageLike(AnySyncMessageLikeEvent::RoomEncrypted(
             SyncMessageLikeEvent::Original(_),
         )) = matrix_event
         {
@@ -206,7 +206,7 @@ impl SupportedEvent {
     }
 
     /// The deserialized Matrix event of this `SupportedEvent`.
-    pub fn matrix_event(&self) -> AnySyncRoomEvent {
+    pub fn matrix_event(&self) -> AnySyncTimelineEvent {
         self.imp().matrix_event.borrow().clone().unwrap()
     }
 
@@ -226,7 +226,7 @@ impl SupportedEvent {
                 if let Some(keys_handle) = priv_.keys_handle.take() {
                     self.room().disconnect(keys_handle);
                 }
-                let pure_event = SyncRoomEvent::from(decrypted);
+                let pure_event = SyncTimelineEvent::from(decrypted);
                 let matrix_event = pure_event.event.deserialize().unwrap();
                 self.set_pure_event(pure_event);
                 self.set_matrix_event(matrix_event);
@@ -295,7 +295,7 @@ impl SupportedEvent {
     /// The ID of the event this `SupportedEvent` relates to, if any.
     pub fn related_event_id(&self) -> Option<OwnedEventId> {
         match self.imp().matrix_event.borrow().as_ref()? {
-            AnySyncRoomEvent::MessageLike(ref message) => match message {
+            AnySyncTimelineEvent::MessageLike(ref message) => match message {
                 AnySyncMessageLikeEvent::RoomRedaction(SyncRoomRedactionEvent::Original(event)) => {
                     Some(event.redacts.clone())
                 }
@@ -329,12 +329,12 @@ impl SupportedEvent {
     /// - `RoomMessage` with `Relation::Replacement`
     pub fn is_replacing_event(&self) -> bool {
         match self.imp().matrix_event.borrow().as_ref().unwrap() {
-            AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
+            AnySyncTimelineEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
                 SyncMessageLikeEvent::Original(message),
             )) => {
                 matches!(message.content.relates_to, Some(Relation::Replacement(_)))
             }
-            AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomRedaction(_)) => true,
+            AnySyncTimelineEvent::MessageLike(AnySyncMessageLikeEvent::RoomRedaction(_)) => true,
             _ => false,
         }
     }
@@ -404,7 +404,7 @@ impl SupportedEvent {
             .filter(|event| {
                 matches!(
                     event.matrix_event(),
-                    AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomRedaction(_))
+                    AnySyncTimelineEvent::MessageLike(AnySyncMessageLikeEvent::RoomRedaction(_))
                 )
             })
             .is_some()
@@ -433,7 +433,7 @@ impl SupportedEvent {
     /// The content of this `SupportedEvent`, if this is a message-like event.
     pub fn original_content(&self) -> Option<AnyMessageLikeEventContent> {
         match self.matrix_event() {
-            AnySyncRoomEvent::MessageLike(message) => message.original_content(),
+            AnySyncTimelineEvent::MessageLike(message) => message.original_content(),
             _ => None,
         }
     }
@@ -465,7 +465,7 @@ impl SupportedEvent {
     /// an incompatible event.
     pub async fn get_media_content(&self) -> Result<(String, String, Vec<u8>), matrix_sdk::Error> {
         if let AnyMessageLikeEventContent::RoomMessage(content) = self.original_content().unwrap() {
-            let client = self.room().session().client();
+            let media = self.room().session().client().media();
             match content.msgtype {
                 MessageType::File(content) => {
                     let uid = media_type_uid(content.source());
@@ -485,7 +485,7 @@ impl SupportedEvent {
                                 None,
                             )
                         });
-                    let handle = spawn_tokio!(async move { client.get_file(content, true).await });
+                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
                     let data = handle.await.unwrap()?.unwrap();
                     return Ok((uid, filename, data));
                 }
@@ -502,7 +502,7 @@ impl SupportedEvent {
                     } else {
                         content.body.clone()
                     };
-                    let handle = spawn_tokio!(async move { client.get_file(content, true).await });
+                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
                     let data = handle.await.unwrap()?.unwrap();
                     return Ok((uid, filename, data));
                 }
@@ -519,7 +519,7 @@ impl SupportedEvent {
                     } else {
                         content.body.clone()
                     };
-                    let handle = spawn_tokio!(async move { client.get_file(content, true).await });
+                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
                     let data = handle.await.unwrap()?.unwrap();
                     return Ok((uid, filename, data));
                 }
@@ -536,7 +536,7 @@ impl SupportedEvent {
                     } else {
                         content.body.clone()
                     };
-                    let handle = spawn_tokio!(async move { client.get_file(content, true).await });
+                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
                     let data = handle.await.unwrap()?.unwrap();
                     return Ok((uid, filename, data));
                 }
@@ -590,7 +590,7 @@ impl SupportedEvent {
         let priv_ = self.imp();
 
         if self.related_event_id().is_some() {
-            if let Some(AnySyncRoomEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
+            if let Some(AnySyncTimelineEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
                 SyncMessageLikeEvent::Original(message),
             ))) = priv_.matrix_event.borrow().as_ref()
             {
@@ -603,13 +603,13 @@ impl SupportedEvent {
 
         // List of all events to be shown.
         match priv_.matrix_event.borrow().as_ref() {
-            Some(AnySyncRoomEvent::MessageLike(message)) => !matches!(
+            Some(AnySyncTimelineEvent::MessageLike(message)) => !matches!(
                 message,
                 AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(_))
                     | AnySyncMessageLikeEvent::RoomEncrypted(SyncMessageLikeEvent::Original(_))
                     | AnySyncMessageLikeEvent::Sticker(SyncMessageLikeEvent::Original(_))
             ),
-            Some(AnySyncRoomEvent::State(state)) => !matches!(
+            Some(AnySyncTimelineEvent::State(state)) => !matches!(
                 state,
                 AnySyncStateEvent::RoomCreate(SyncStateEvent::Original(_))
                     | AnySyncStateEvent::RoomMember(SyncStateEvent::Original(_))

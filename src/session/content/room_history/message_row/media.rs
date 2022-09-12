@@ -379,11 +379,11 @@ impl MessageMedia {
     {
         self.set_state(MediaState::Loading);
 
-        let client = session.client();
+        let media = session.client().media();
         let handle = spawn_tokio!(async move {
             let thumbnail =
                 if media_type != MediaType::Video && content.thumbnail_source().is_some() {
-                    client
+                    media
                         .get_thumbnail(
                             content.clone(),
                             MediaThumbnailSize {
@@ -405,7 +405,7 @@ impl MessageMedia {
                 Ok((Some(data), id))
             } else {
                 let id = media_type_uid(content.source());
-                client.get_file(content, true).await.map(|data| (data, id))
+                media.get_file(content, true).await.map(|data| (data, id))
             }
         });
 

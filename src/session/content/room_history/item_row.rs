@@ -1,7 +1,7 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{gio, glib, glib::clone};
-use matrix_sdk::ruma::events::AnySyncRoomEvent;
+use matrix_sdk::ruma::events::AnySyncTimelineEvent;
 
 use crate::{
     components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl, ReactionChooser},
@@ -287,7 +287,7 @@ impl ItemRow {
 
     fn set_event_widget(&self, event: &SupportedEvent) {
         match event.matrix_event() {
-            AnySyncRoomEvent::State(state) => {
+            AnySyncTimelineEvent::State(state) => {
                 let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<StateRow>())
                 {
                     child

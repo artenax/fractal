@@ -17,7 +17,7 @@ use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, info, warn};
 use matrix_sdk::{
     attachment::AttachmentConfig,
-    deserialized_responses::{JoinedRoom, LeftRoom, SyncRoomEvent},
+    deserialized_responses::{JoinedRoom, LeftRoom, SyncTimelineEvent},
     room::Room as MatrixRoom,
     ruma::{
         api::client::sync::sync_events::v3::InvitedRoom,
@@ -34,14 +34,14 @@ use matrix_sdk::{
             room_key::ToDeviceRoomKeyEventContent,
             tag::{TagInfo, TagName},
             AnyRoomAccountDataEvent, AnyStrippedStateEvent, AnySyncMessageLikeEvent,
-            AnySyncRoomEvent, AnySyncStateEvent, EventContent, MessageLikeEventType,
+            AnySyncStateEvent, AnySyncTimelineEvent, EventContent, MessageLikeEventType,
             MessageLikeUnsigned, OriginalSyncMessageLikeEvent, StateEventType,
             SyncMessageLikeEvent, SyncStateEvent, ToDeviceEvent,
         },
         serde::Raw,
         EventId, MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
     },
-    DisplayName, Result as MatrixResult, RoomMember,
+    DisplayName, Result as MatrixResult,
 };
 use ruma::events::SyncEphemeralRoomEvent;
 
@@ -559,7 +559,9 @@ impl Room {
                         }
                         room.accept_invitation().await?;
                     }
-                    RoomType::Left => room.reject_invitation().await?,
+                    RoomType::Left => {
+                        room.reject_invitation().await?;
+                    }
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
                     RoomType::Direct => {
@@ -607,7 +609,9 @@ impl Room {
                             room.remove_tag(TagName::Favorite).await?;
                         }
                     }
-                    RoomType::Left => room.leave().await?,
+                    RoomType::Left => {
+                        room.leave().await?;
+                    }
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
                     RoomType::Direct => {
@@ -782,8 +786,7 @@ impl Room {
 
                 // Listen to changes in the read receipts.
                 let room_weak = glib::SendWeakRef::from(obj.downgrade());
-                obj.session().client().add_room_event_handler(
-                    obj.room_id(),
+                obj.matrix_room().add_event_handler(
                     move |event: SyncEphemeralRoomEvent<ReceiptEventContent>| {
                         let room_weak = room_weak.clone();
                         async move {
@@ -797,8 +800,7 @@ impl Room {
                             });
                         }
                     },
-                )
-                .await;
+                );
             })
         );
     }
@@ -1057,8 +1059,7 @@ impl Room {
 
         let name_content = RoomNameEventContent::new(Some(room_name));
 
-        let handle =
-            spawn_tokio!(async move { joined_room.send_state_event(name_content, "").await });
+        let handle = spawn_tokio!(async move { joined_room.send_state_event(name_content).await });
 
         spawn!(
             glib::PRIORITY_DEFAULT_IDLE,
@@ -1097,7 +1098,7 @@ impl Room {
 
         let handle = spawn_tokio!(async move {
             joined_room
-                .send_state_event(RoomTopicEventContent::new(topic), "")
+                .send_state_event(RoomTopicEventContent::new(topic))
                 .await
         });
 
@@ -1157,7 +1158,7 @@ impl Room {
 
     /// Update the room state based on the new sync response
     /// FIXME: We should use the sdk's event handler to get updates
-    pub fn update_for_events(&self, batch: Vec<SyncRoomEvent>) {
+    pub fn update_for_events(&self, batch: Vec<SyncTimelineEvent>) {
         // FIXME: notify only when the count has changed
         self.notify_notification_count();
 
@@ -1167,7 +1168,7 @@ impl Room {
             .collect();
 
         for event in events.iter() {
-            if let AnySyncRoomEvent::State(state_event) = event {
+            if let AnySyncTimelineEvent::State(state_event) = event {
                 match state_event {
                     AnySyncStateEvent::RoomMember(SyncStateEvent::Original(event)) => {
                         self.members().update_member_for_member_event(event)
@@ -1237,7 +1238,7 @@ impl Room {
                 match handle.await.unwrap() {
                     Ok(members) => {
                         // Add all members needed to display room events.
-                        let members: Vec<RoomMember> = members.into_iter().filter(|member| {
+                        let members: Vec<_> = members.into_iter().filter(|member| {
                             &MembershipState::Leave != member.membership()
                         }).collect();
                         obj.members().update_from_room_members(&members);
@@ -1301,7 +1302,7 @@ impl Room {
                 unsigned: MessageLikeUnsigned::default(),
             };
 
-            let raw_event: Raw<AnySyncRoomEvent> = Raw::new(&matrix_event).unwrap().cast();
+            let raw_event: Raw<AnySyncTimelineEvent> = Raw::new(&matrix_event).unwrap().cast();
             let event = SupportedEvent::try_from_event(raw_event.into(), self).unwrap();
             self.imp()
                 .timeline
@@ -1352,7 +1353,7 @@ impl Room {
         };
 
         if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
-            let raw_event: Raw<AnySyncRoomEvent> = Raw::new(&event).unwrap().cast();
+            let raw_event: Raw<AnySyncTimelineEvent> = Raw::new(&event).unwrap().cast();
             let event = SupportedEvent::try_from_event(raw_event.into(), self).unwrap();
             self.imp()
                 .timeline
@@ -1416,7 +1417,7 @@ impl Room {
         if let MatrixRoom::Invited(matrix_room) = matrix_room {
             let handle = spawn_tokio!(async move { matrix_room.accept_invitation().await });
             match handle.await.unwrap() {
-                Ok(result) => Ok(result),
+                Ok(_) => Ok(()),
                 Err(error) => {
                     error!("Accepting invitation failed: {}", error);
 
@@ -1445,7 +1446,7 @@ impl Room {
         if let MatrixRoom::Invited(matrix_room) = matrix_room {
             let handle = spawn_tokio!(async move { matrix_room.reject_invitation().await });
             match handle.await.unwrap() {
-                Ok(result) => Ok(result),
+                Ok(_) => Ok(()),
                 Err(error) => {
                     error!("Rejecting invitation failed: {}", error);
 
@@ -1571,11 +1572,10 @@ impl Room {
             let body = body.to_string();
             spawn_tokio!(async move {
                 let config = AttachmentConfig::default();
-                let mut cursor = std::io::Cursor::new(&bytes);
                 matrix_room
                     // TODO This should be added to pending messages instead of
                     // sending it directly.
-                    .send_attachment(&body, &mime, &mut cursor, config)
+                    .send_attachment(&body, &mime, &bytes, config)
                     .await
                     .unwrap();
             });
@@ -1660,7 +1660,7 @@ impl Room {
     /// events.
     ///
     /// The events must be in reverse chronological order.
-    pub fn update_latest_unread<'a>(&self, events: impl Iterator<Item = &'a AnySyncRoomEvent>) {
+    pub fn update_latest_unread<'a>(&self, events: impl Iterator<Item = &'a AnySyncTimelineEvent>) {
         let mut latest_unread = self.latest_unread();
 
         for event in events {
@@ -1709,21 +1709,19 @@ impl Room {
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 let obj_weak = glib::SendWeakRef::from(obj.downgrade());
-                    obj.session().client().add_room_event_handler(
-                        obj.room_id(),
-                        move |_: ToDeviceEvent<ToDeviceRoomKeyEventContent>| {
-                            let obj_weak = obj_weak.clone();
-                            async move {
-                                let ctx = glib::MainContext::default();
-                                ctx.spawn(async move {
-                                    if let Some(room) = obj_weak.upgrade() {
-                                        room.emit_by_name::<()>("new-encryption-keys", &[]);
-                                    }
-                                });
-                            }
-                        },
-                    )
-                    .await;
+                obj.matrix_room().add_event_handler(
+                    move |_: ToDeviceEvent<ToDeviceRoomKeyEventContent>| {
+                        let obj_weak = obj_weak.clone();
+                        async move {
+                            let ctx = glib::MainContext::default();
+                            ctx.spawn(async move {
+                                if let Some(room) = obj_weak.upgrade() {
+                                    room.emit_by_name::<()>("new-encryption-keys", &[]);
+                                }
+                            });
+                        }
+                    },
+                );
             })
         );
     }
@@ -1753,9 +1751,9 @@ impl Room {
 /// show in the timeline.
 ///
 /// [MSC2654]: https://github.com/matrix-org/matrix-spec-proposals/pull/2654
-fn count_as_unread(event: &AnySyncRoomEvent) -> bool {
+fn count_as_unread(event: &AnySyncTimelineEvent) -> bool {
     match event {
-        AnySyncRoomEvent::MessageLike(message_event) => match message_event {
+        AnySyncTimelineEvent::MessageLike(message_event) => match message_event {
             AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(message)) => {
                 if matches!(message.content.msgtype, MessageType::Notice(_)) {
                     return false;
@@ -1770,9 +1768,9 @@ fn count_as_unread(event: &AnySyncRoomEvent) -> bool {
             AnySyncMessageLikeEvent::Sticker(SyncMessageLikeEvent::Original(_)) => true,
             _ => false,
         },
-        AnySyncRoomEvent::State(AnySyncStateEvent::RoomTombstone(SyncStateEvent::Original(_))) => {
-            true
-        }
+        AnySyncTimelineEvent::State(AnySyncStateEvent::RoomTombstone(
+            SyncStateEvent::Original(_),
+        )) => true,
         _ => false,
     }
 }

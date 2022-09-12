@@ -170,7 +170,7 @@ impl Avatar {
                 }),
             };
             let handle =
-                spawn_tokio!(async move { client.get_media_content(&request, true).await });
+                spawn_tokio!(async move { client.media().get_media_content(&request, true).await });
 
             spawn!(
                 glib::PRIORITY_LOW,
@@ -267,7 +267,7 @@ where
     };
     content.url = uri.clone();
 
-    joined_room.send_state_event(content, "").await?;
+    joined_room.send_state_event(content).await?;
     Ok(uri)
 }
 
@@ -285,7 +285,8 @@ where
     info!("Uploading avatar from file {:?}", filename);
     // TODO: Use blurhash
     let response = matrix_client
-        .upload(&content_type.parse()?, &mut image.as_slice())
+        .media()
+        .upload(&content_type.parse()?, &image)
         .await?;
     Ok(response.content_uri)
 }

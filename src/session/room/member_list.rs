@@ -105,7 +105,7 @@ impl MemberList {
     ///
     /// If some of the values do not correspond to existing members, new members
     /// are created.
-    pub fn update_from_room_members(&self, new_members: &[matrix_sdk::RoomMember]) {
+    pub fn update_from_room_members(&self, new_members: &[matrix_sdk::room::RoomMember]) {
         let mut members = self.imp().members.borrow_mut();
         let prev_len = members.len();
         for member in new_members {

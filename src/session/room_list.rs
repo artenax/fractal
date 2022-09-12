@@ -155,12 +155,13 @@ impl RoomList {
     }
 
     /// Waits till the Room becomes available
-    pub async fn get_wait(&self, room_id: OwnedRoomId) -> Option<Room> {
-        if let Some(room) = self.get(&room_id) {
+    pub async fn get_wait(&self, room_id: &RoomId) -> Option<Room> {
+        if let Some(room) = self.get(room_id) {
             Some(room)
         } else {
             let (sender, receiver) = futures::channel::oneshot::channel();
 
+            let room_id = room_id.to_owned();
             let sender = Cell::new(Some(sender));
             // FIXME: add a timeout
             let handler_id = self.connect_items_changed(move |obj, _, _, _| {
@@ -316,7 +317,7 @@ impl RoomList {
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
-                    Ok(response) => obj.pending_rooms_replace_or_remove(&identifier, response.room_id.as_ref()),
+                    Ok(response) => obj.pending_rooms_replace_or_remove(&identifier, response.room_id()),
                     Err(error) => {
                         obj.pending_rooms_remove(&identifier);
                         error!("Joining room {} failed: {}", identifier, error);

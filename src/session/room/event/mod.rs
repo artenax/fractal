@@ -1,7 +1,7 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use log::warn;
 use matrix_sdk::{
-    deserialized_responses::SyncRoomEvent,
+    deserialized_responses::SyncTimelineEvent,
     ruma::{MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedUserId},
 };
 
@@ -17,8 +17,8 @@ pub use supported_event::SupportedEvent;
 pub use unsupported_event::UnsupportedEvent;
 
 #[derive(Clone, Debug, glib::Boxed)]
-#[boxed_type(name = "BoxedSyncRoomEvent")]
-pub struct BoxedSyncRoomEvent(SyncRoomEvent);
+#[boxed_type(name = "BoxedSyncTimelineEvent")]
+pub struct BoxedSyncTimelineEvent(SyncTimelineEvent);
 
 mod imp {
     use std::cell::RefCell;
@@ -67,7 +67,7 @@ mod imp {
     pub struct Event {
         /// The SDK event containing encryption information and the serialized
         /// event as `Raw`.
-        pub pure_event: RefCell<Option<SyncRoomEvent>>,
+        pub pure_event: RefCell<Option<SyncTimelineEvent>>,
 
         /// The room containing this `Event`.
         pub room: OnceCell<WeakRef<Room>>,
@@ -90,7 +90,7 @@ mod imp {
                         "pure-event",
                         "Pure Event",
                         "The pure Matrix event of this Event",
-                        BoxedSyncRoomEvent::static_type(),
+                        BoxedSyncTimelineEvent::static_type(),
                         glib::ParamFlags::WRITABLE,
                     ),
                     glib::ParamSpecString::new(
@@ -129,7 +129,7 @@ mod imp {
         ) {
             match pspec.name() {
                 "pure-event" => {
-                    let event = value.get::<BoxedSyncRoomEvent>().unwrap();
+                    let event = value.get::<BoxedSyncTimelineEvent>().unwrap();
                     obj.set_pure_event(event.0);
                 }
                 "room" => {
@@ -171,7 +171,7 @@ impl Event {
     /// Create an `Event` with the given pure SDK event and room.
     ///
     /// Constructs the proper subtype according to the event.
-    pub fn new(pure_event: SyncRoomEvent, room: &Room) -> Self {
+    pub fn new(pure_event: SyncTimelineEvent, room: &Room) -> Self {
         SupportedEvent::try_from_event(pure_event.clone(), room)
             .map(|event| event.upcast())
             .unwrap_or_else(|error| {
@@ -191,10 +191,10 @@ pub trait EventExt: 'static {
     fn room(&self) -> Room;
 
     /// The pure SDK event of this `Event`.
-    fn pure_event(&self) -> SyncRoomEvent;
+    fn pure_event(&self) -> SyncTimelineEvent;
 
     /// Set the pure SDK event of this `Event`.
-    fn set_pure_event(&self, pure_event: SyncRoomEvent);
+    fn set_pure_event(&self, pure_event: SyncTimelineEvent);
 
     /// The source JSON of this `Event`.
     fn original_source(&self) -> String;
@@ -257,11 +257,11 @@ impl<O: IsA<Event>> EventExt for O {
             .unwrap()
     }
 
-    fn pure_event(&self) -> SyncRoomEvent {
+    fn pure_event(&self) -> SyncTimelineEvent {
         self.upcast_ref().imp().pure_event.borrow().clone().unwrap()
     }
 
-    fn set_pure_event(&self, pure_event: SyncRoomEvent) {
+    fn set_pure_event(&self, pure_event: SyncTimelineEvent) {
         let priv_ = self.upcast_ref().imp();
         priv_.pure_event.replace(Some(pure_event));
 

@@ -1,5 +1,6 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use matrix_sdk::{
+    room::RoomMember,
     ruma::{
         events::{
             room::member::{MembershipState, RoomMemberEventContent},
@@ -7,7 +8,6 @@ use matrix_sdk::{
         },
         OwnedMxcUri, UserId,
     },
-    RoomMember,
 };
 
 use crate::{

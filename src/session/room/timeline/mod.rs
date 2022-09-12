@@ -13,7 +13,7 @@ use futures::{lock::Mutex, pin_mut, Stream, StreamExt};
 use gtk::{gio, glib, prelude::*, subclass::prelude::*};
 use log::{error, warn};
 use matrix_sdk::{
-    deserialized_responses::SyncRoomEvent,
+    deserialized_responses::SyncTimelineEvent,
     ruma::{EventId, OwnedEventId, OwnedTransactionId, TransactionId},
     Error as MatrixError,
 };
@@ -45,7 +45,7 @@ impl Default for TimelineState {
 
 const MAX_BATCH_SIZE: usize = 20;
 type BackwardStream =
-    Pin<Box<dyn Stream<Item = Vec<matrix_sdk::Result<SyncRoomEvent>>> + 'static + Send>>;
+    Pin<Box<dyn Stream<Item = Vec<matrix_sdk::Result<SyncTimelineEvent>>> + 'static + Send>>;
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -851,7 +851,7 @@ impl Timeline {
 
 async fn handle_forward_stream(
     timeline: glib::SendWeakRef<Timeline>,
-    stream: impl Stream<Item = SyncRoomEvent>,
+    stream: impl Stream<Item = SyncTimelineEvent>,
 ) {
     let stream = stream.ready_chunks(MAX_BATCH_SIZE);
     pin_mut!(stream);

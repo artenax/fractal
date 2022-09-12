@@ -45,7 +45,7 @@ use matrix_sdk::{
         },
         RoomId,
     },
-    store::{MigrationConflictStrategy, OpenStoreError, StateStore},
+    store::{MigrationConflictStrategy, OpenStoreError, SledStateStore},
     Client, ClientBuildError, Error, HttpError, RumaApiError, StoreError,
 };
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
@@ -462,6 +462,7 @@ impl Session {
                     user_id: session.user_id.clone(),
                     device_id: session.device_id.clone(),
                     access_token: session.secret.access_token.clone(),
+                    refresh_token: None,
                 })
                 .await
                 .map(|_| (client, session))
@@ -923,30 +924,29 @@ impl Session {
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 let obj_weak = glib::SendWeakRef::from(obj.downgrade());
-                    obj.client().add_event_handler(
-                        move |event: GlobalAccountDataEvent<DirectEventContent>| {
-                            let obj_weak = obj_weak.clone();
-                            async move {
-                                let ctx = glib::MainContext::default();
-                                ctx.spawn(async move {
-                                    spawn!(async move {
-                                        if let Some(session) = obj_weak.upgrade() {
-                                            let room_ids = event.content.iter().fold(HashSet::new(), |mut acc, (_, rooms)| {
-                                                acc.extend(rooms);
-                                                acc
-                                            });
-                                            for room_id in room_ids {
-                                                if let Some(room) = session.room_list().get(room_id) {
-                                                    room.load_category();
-                                                }
+                obj.client().add_event_handler(
+                    move |event: GlobalAccountDataEvent<DirectEventContent>| {
+                        let obj_weak = obj_weak.clone();
+                        async move {
+                            let ctx = glib::MainContext::default();
+                            ctx.spawn(async move {
+                                spawn!(async move {
+                                    if let Some(session) = obj_weak.upgrade() {
+                                        let room_ids = event.content.iter().fold(HashSet::new(), |mut acc, (_, rooms)| {
+                                            acc.extend(rooms);
+                                            acc
+                                        });
+                                        for room_id in room_ids {
+                                            if let Some(room) = session.room_list().get(room_id) {
+                                                room.load_category();
                                             }
                                         }
-                                    });
+                                    }
                                 });
-                            }
-                        },
-                    )
-                    .await;
+                            });
+                        }
+                    },
+                );
             })
         );
     }
@@ -955,21 +955,19 @@ impl Session {
         let session_weak = glib::SendWeakRef::from(self.downgrade());
         let client = self.client();
         spawn_tokio!(async move {
-            client
-                .add_event_handler(move |_: SyncRoomEncryptionEvent, matrix_room: MatrixRoom| {
-                    let session_weak = session_weak.clone();
-                    async move {
-                        let ctx = glib::MainContext::default();
-                        ctx.spawn(async move {
-                            if let Some(session) = session_weak.upgrade() {
-                                if let Some(room) = session.room_list().get(matrix_room.room_id()) {
-                                    room.set_is_encrypted(true);
-                                }
+            client.add_event_handler(move |_: SyncRoomEncryptionEvent, matrix_room: MatrixRoom| {
+                let session_weak = session_weak.clone();
+                async move {
+                    let ctx = glib::MainContext::default();
+                    ctx.spawn(async move {
+                        if let Some(session) = session_weak.upgrade() {
+                            if let Some(room) = session.room_list().get(matrix_room.room_id()) {
+                                room.set_is_encrypted(true);
                             }
-                        });
-                    }
-                })
-                .await;
+                        }
+                    });
+                }
+            });
         });
     }
 }
@@ -986,7 +984,7 @@ async fn create_client(
     passphrase: String,
     use_discovery: bool,
 ) -> Result<Client, ClientSetupError> {
-    let state_store = StateStore::builder()
+    let state_store = SledStateStore::builder()
         .path(path)
         .passphrase(passphrase)
         .migration_conflict_strategy(MigrationConflictStrategy::Drop)

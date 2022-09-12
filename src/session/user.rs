@@ -199,7 +199,7 @@ impl User {
 
     fn init_is_verified(&self) {
         spawn!(clone!(@weak self as obj => async move {
-            let is_verified = obj.crypto_identity().await.map_or(false, |i| i.verified());
+            let is_verified = obj.crypto_identity().await.map_or(false, |i| i.is_verified());
 
             if is_verified == obj.is_verified() {
                 return;

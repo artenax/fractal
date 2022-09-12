@@ -1,7 +1,7 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
-use matrix_sdk::{deserialized_responses::SyncRoomEvent, ruma::events::RoomEventType};
+use matrix_sdk::{deserialized_responses::SyncTimelineEvent, ruma::events::RoomEventType};
 
-use super::{BoxedSyncRoomEvent, Event, EventImpl};
+use super::{BoxedSyncTimelineEvent, Event, EventImpl};
 use crate::session::room::{
     timeline::{TimelineItem, TimelineItemImpl},
     Room,
@@ -34,8 +34,8 @@ glib::wrapper! {
 
 impl UnsupportedEvent {
     /// Construct an `UnsupportedEvent` from the given pure event and room.
-    pub fn new(pure_event: SyncRoomEvent, room: &Room) -> Self {
-        let pure_event = BoxedSyncRoomEvent(pure_event);
+    pub fn new(pure_event: SyncTimelineEvent, room: &Room) -> Self {
+        let pure_event = BoxedSyncTimelineEvent(pure_event);
         glib::Object::new(&[("pure-event", &pure_event), ("room", room)])
             .expect("Failed to create UnsupportedEvent")
     }

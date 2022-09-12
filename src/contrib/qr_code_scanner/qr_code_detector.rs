@@ -2,11 +2,15 @@ use std::convert::AsRef;
 
 use glib::Sender;
 use gst_video::{video_frame::VideoFrameRef, VideoInfo};
+use image::{GenericImage, GenericImageView, Luma};
 use log::debug;
-use matrix_sdk::encryption::verification::QrVerificationData;
+use matrix_sdk::encryption::verification::{DecodingError, QrVerificationData};
+use thiserror::Error;
 
 use super::*;
 use crate::contrib::qr_code_scanner::camera_paintable::Action;
+
+const HEADER: &[u8] = b"MATRIX";
 
 mod imp {
     use std::sync::Mutex;
@@ -104,7 +108,7 @@ mod imp {
 
                 let image = samples.as_view_mut::<image::Luma<u8>>().unwrap();
 
-                if let Ok(code) = QrVerificationData::from_luma(image) {
+                if let Ok(code) = decode_qr(image) {
                     let mut previous_code = self.code.lock().unwrap();
                     if previous_code.as_ref() != Some(&code) {
                         previous_code.replace(code.clone());
@@ -137,4 +141,44 @@ impl QrCodeDetector {
         sink.imp().sender.lock().unwrap().replace(sender);
         sink
     }
+}
+
+// From https://github.com/matrix-org/matrix-rust-sdk/blob/79d13148fbba58db0ff5f62b27e7856cbbbe13c2/crates/matrix-sdk-qrcode/src/utils.rs#L81-L104
+pub(crate) fn decode_qr<I>(image: I) -> Result<QrVerificationData, QrDecodingError>
+where
+    I: GenericImage<Pixel = Luma<u8>> + GenericImageView<Pixel = Luma<u8>>,
+{
+    let mut image = rqrr::PreparedImage::prepare(image);
+    let grids = image.detect_grids();
+
+    let mut error = None;
+
+    for grid in grids {
+        let mut decoded = Vec::new();
+
+        match grid.decode_to(&mut decoded) {
+            Ok(_) => {
+                if decoded.starts_with(HEADER) {
+                    return QrVerificationData::from_bytes(decoded).map_err(Into::into);
+                }
+            }
+            Err(e) => error = Some(e),
+        }
+    }
+
+    Err(error
+        .map(|e| e.into())
+        .unwrap_or_else(|| DecodingError::Header.into()))
+}
+
+/// All possible errors when decoding a QR Code.
+#[derive(Debug, Error)]
+pub enum QrDecodingError {
+    /// An error occurred when decoding the QR data.
+    #[error(transparent)]
+    Matrix(#[from] DecodingError),
+
+    /// An error occurred when decoding the QR image.
+    #[error(transparent)]
+    Rqrr(#[from] rqrr::DeQRError),
 }

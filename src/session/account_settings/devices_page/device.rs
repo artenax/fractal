@@ -208,6 +208,6 @@ impl Device {
         self.imp()
             .crypto_device
             .get()
-            .map_or(false, |device| device.verified())
+            .map_or(false, |device| device.is_verified())
     }
 }

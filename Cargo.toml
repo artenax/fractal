@@ -49,6 +49,7 @@ regex = "1.5.4"
 mime_guess = "2.0.3"
 num_enum = "0.5.6"
 thiserror = "1.0.25"
+rqrr = "0.4.0"
 
 [dependencies.sourceview]
 package = "sourceview5"
@@ -74,5 +75,5 @@ features = ["socks", "sso-login", "markdown", "qrcode", "experimental-timeline"]
 
 [dependencies.ruma]
 git = "https://github.com/ruma/ruma"
-rev = "ca8c66c885241a7ba3805399604eda4a38979f6b"
+rev = "c745d3baf720b38a254e640a526717864e87a065"
 features = ["unstable-pre-spec", "client-api-c"]

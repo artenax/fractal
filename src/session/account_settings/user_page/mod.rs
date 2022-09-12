@@ -1,4 +1,4 @@
-use std::{fs::File, time::Duration};
+use std::time::Duration;
 
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
@@ -267,13 +267,15 @@ impl UserPage {
             .and_then(|info| info.content_type())
             .and_then(|content_type| gio::content_type_get_mime_type(&content_type))
             .unwrap();
-        let mut file = File::open(file.path().unwrap()).unwrap();
+        let (data, _) = file.load_contents_future().await.unwrap();
 
         let client_clone = client.clone();
-        let handle =
-            spawn_tokio!(
-                async move { client_clone.upload(&mime.parse().unwrap(), &mut file).await }
-            );
+        let handle = spawn_tokio!(async move {
+            client_clone
+                .media()
+                .upload(&mime.parse().unwrap(), &data)
+                .await
+        });
 
         let uri = match handle.await.unwrap() {
             Ok(res) => res.content_uri,
