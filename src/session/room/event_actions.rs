@@ -10,9 +10,7 @@ use crate::{
         event_source_dialog::EventSourceDialog,
         room::{Event, RoomAction, SupportedEvent},
     },
-    spawn, spawn_tokio, toast,
-    utils::cache_dir,
-    UserFacingError, Window,
+    spawn, spawn_tokio, toast, UserFacingError, Window,
 };
 
 // This is only save because the trait `EventActions` can
@@ -184,15 +182,6 @@ where
                             widget.save_event_file(event);
                             })
                         );
-
-                        // Open message's file
-                        gtk_macros::action!(
-                            &action_group,
-                            "file-open",
-                            clone!(@weak self as widget, @weak event => move |_, _| {
-                            widget.open_event_file(event);
-                            })
-                        );
                     }
                     MessageType::Emote(message) => {
                         gtk_macros::action!(
@@ -287,56 +276,6 @@ where
                 }
 
                 dialog.close();
-            })
-        );
-    }
-
-    /// Open the file in `event`.
-    ///
-    /// See [`SupportedEvent::get_media_content()`] for compatible events.
-    /// Panics on an incompatible event.
-    fn open_event_file(&self, event: SupportedEvent) {
-        spawn!(
-            glib::PRIORITY_LOW,
-            clone!(@weak self as obj => async move {
-                let (uid, filename, data) = match event.get_media_content().await {
-                    Ok(res) => res,
-                    Err(err) => {
-                        error!("Could not get file: {}", err);
-                        toast!(obj, err.to_user_facing());
-
-                        return;
-                    }
-                };
-
-                let mut path = cache_dir();
-                path.push(uid);
-                if !path.exists() {
-                    let dir = gio::File::for_path(path.clone());
-                    dir.make_directory_with_parents(gio::Cancellable::NONE)
-                        .unwrap();
-                }
-
-                path.push(filename);
-                let file = gio::File::for_path(path);
-
-                file.replace_contents(
-                    &data,
-                    None,
-                    false,
-                    gio::FileCreateFlags::REPLACE_DESTINATION,
-                    gio::Cancellable::NONE,
-                )
-                .unwrap();
-
-                if let Err(error) = gio::AppInfo::launch_default_for_uri_future(
-                    &file.uri(),
-                    gio::AppLaunchContext::NONE,
-                )
-                .await
-                {
-                    error!("Error opening file '{}': {}", file.uri(), error);
-                }
             })
         );
     }

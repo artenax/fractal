@@ -13,28 +13,15 @@
           </object>
         </child>
         <child>
-          <object class="GtkBox">
-              <property name="visible" bind-source="ContentMessageFile" bind-property="compact" bind-flags="sync-create | invert-boolean"/>
-              <child>
-                <object class="GtkButton" id="open">
-                  <property name="icon-name">document-open-symbolic</property>
-                  <property name="tooltip-text" translatable="yes">Open</property>
-                  <property name="action-name">event.file-open</property>
-                </object>
-              </child>
-              <child>
-                <object class="GtkButton" id="save">
-                  <property name="icon-name">document-save-symbolic</property>
-                  <property name="tooltip-text" translatable="yes">Save</property>
-                  <property name="action-name">event.file-save</property>
-                </object>
-              </child>
-              <style>
-                <class name="linked"/>
-              </style>
+          <object class="GtkButton" id="save">
+            <property name="visible" bind-source="ContentMessageFile" bind-property="compact" bind-flags="sync-create | invert-boolean"/>
+            <property name="icon-name">document-save-symbolic</property>
+            <property name="tooltip-text" translatable="yes">Save</property>
+            <property name="action-name">event.file-save</property>
           </object>
         </child>
       </object>
     </child>
   </template>
 </interface>
+
