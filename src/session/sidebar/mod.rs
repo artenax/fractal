@@ -60,6 +60,8 @@ mod imp {
         #[template_child]
         pub headerbar: TemplateChild<adw::HeaderBar>,
         #[template_child]
+        pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
+        #[template_child]
         pub listview: TemplateChild<gtk::ListView>,
         #[template_child]
         pub room_search_entry: TemplateChild<gtk::SearchEntry>,
@@ -259,6 +261,13 @@ mod imp {
                     btn.set_popover(Some(account_switcher));
                 }
             }));
+
+            // FIXME: Remove this hack once https://gitlab.gnome.org/GNOME/gtk/-/issues/4938 is resolved
+            self.scrolled_window
+                .vscrollbar()
+                .first_child()
+                .unwrap()
+                .set_overflow(gtk::Overflow::Hidden);
         }
     }
 
