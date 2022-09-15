@@ -222,15 +222,15 @@ impl ItemRow {
 
         if let Some(ref item) = item {
             if let Some(event) = item.downcast_ref::<SupportedEvent>() {
-                self.set_action_group(self.set_event_actions(Some(event.upcast_ref())));
-
                 let notify_handler =
-                    event.connect_pure_event_notify(clone!(@weak self as obj => move |event| {
+                    event.connect_source_notify(clone!(@weak self as obj => move |event| {
                         obj.set_event_widget(event);
+                        obj.set_action_group(obj.set_event_actions(Some(event.upcast_ref())));
                     }));
                 priv_.notify_handler.replace(Some(notify_handler));
 
                 self.set_event_widget(event);
+                self.set_action_group(self.set_event_actions(Some(event.upcast_ref())));
             } else if let Some(divider) = item.downcast_ref::<TimelineDayDivider>() {
                 self.set_popover(None);
                 self.set_action_group(None);

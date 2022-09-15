@@ -98,7 +98,7 @@ mod imp {
                         "Source",
                         "The JSON source of this Event",
                         None,
-                        glib::ParamFlags::READABLE | glib::ParamFlags::EXPLICIT_NOTIFY,
+                        glib::ParamFlags::READABLE,
                     ),
                     glib::ParamSpecObject::new(
                         "room",
@@ -243,7 +243,7 @@ pub trait EventExt: 'static {
         Some(time)
     }
 
-    fn connect_pure_event_notify<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId;
+    fn connect_source_notify<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId;
 }
 
 impl<O: IsA<Event>> EventExt for O {
@@ -298,8 +298,8 @@ impl<O: IsA<Event>> EventExt for O {
         imp::event_origin_server_ts(self.upcast_ref())
     }
 
-    fn connect_pure_event_notify<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId {
-        self.connect_notify_local(Some("pure-event"), move |this, _| {
+    fn connect_source_notify<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId {
+        self.connect_notify_local(Some("source"), move |this, _| {
             f(this);
         })
     }
