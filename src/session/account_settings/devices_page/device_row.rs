@@ -225,7 +225,7 @@ impl DeviceRow {
         self.imp().delete_logout_button.set_loading(true);
 
         let window: Option<gtk::Window> = self.root().and_then(|root| root.downcast().ok());
-        let dialog = gtk::MessageDialog::new(window.as_ref(), gtk::DialogFlags::MODAL, gtk::MessageType::Info, gtk::ButtonsType::OkCancel, &gettext("Fractal’s support for encryption is unstable so you might lose access to your encrypted message history. It is recommended to backup your encryption keys from another Matrix client before proceeding."));
+        let dialog = gtk::MessageDialog::new(window.as_ref(), gtk::DialogFlags::MODAL, gtk::MessageType::Info, gtk::ButtonsType::OkCancel, &gettext("Fractal doesn't support online backup of room encryption keys so you might lose access to your encrypted message history. It is recommended to backup your encryption keys before proceeding."));
         dialog.show();
         dialog.connect_response(
             clone!(@weak self as obj, @weak dialog => move |_, response| {

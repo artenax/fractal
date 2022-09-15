@@ -6,8 +6,10 @@ use gtk::{
 };
 
 mod devices_page;
+mod security_page;
 mod user_page;
 use devices_page::DevicesPage;
+use security_page::SecurityPage;
 use user_page::UserPage;
 
 use super::Session;
@@ -35,6 +37,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             DevicesPage::static_type();
             UserPage::static_type();
+            SecurityPage::static_type();
             Self::bind_template(klass);
 
             klass.install_action("account-settings.close", None, |obj, _, _| {

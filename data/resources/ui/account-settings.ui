@@ -18,5 +18,10 @@
         </binding>
       </object>
     </child>
+    <child>
+      <object class="SecurityPage">
+        <property name="session" bind-source="AccountSettings" bind-property="session" bind-flags="sync-create"/>
+      </object>
+    </child>
   </template>
 </interface>

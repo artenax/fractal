@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="SecurityPage" parent="AdwPreferencesPage">
+    <property name="icon-name">channel-secure-symbolic</property>
+    <property name="title" translatable="yes">Security</property>
+    <property name="name">security</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Room Encryption Keys</property>
+        <child>
+          <object class="ComponentsButtonRow">
+            <property name="title" translatable="yes">Export Room Encryption Keys</property>
+            <property name="to-subpage">true</property>
+            <signal name="activated" handler="handle_export_keys" swapped="yes"/>
+          </object>
+        </child>
+        <child>
+          <object class="ComponentsButtonRow">
+            <property name="title" translatable="yes">Import Room Encryption Keys</property>
+            <property name="to-subpage">true</property>
+            <signal name="activated" handler="handle_import_keys" swapped="yes"/>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+  <object class="ImportExportKeysSubpage" id="import_export_keys_subpage">
+    <property name="session" bind-source="SecurityPage" bind-property="session" bind-flags="sync-create"/>
+  </object>
+</interface>

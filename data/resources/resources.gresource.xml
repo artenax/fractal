@@ -26,6 +26,8 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-deactivate-account-subpage.ui">ui/account-settings-deactivate-account-subpage.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-device-row.ui">ui/account-settings-device-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-devices-page.ui">ui/account-settings-devices-page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-import-export-keys-subpage.ui">ui/account-settings-import-export-keys-subpage.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-security-page.ui">ui/account-settings-security-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-user-page.ui">ui/account-settings-user-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings.ui">ui/account-settings.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="attachment-dialog.ui">ui/attachment-dialog.ui</file>

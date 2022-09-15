@@ -9,7 +9,9 @@ data/resources/ui/account-settings-change-password-subpage.ui
 data/resources/ui/account-settings-deactivate-account-subpage.ui
 data/resources/ui/account-settings-device-row.ui
 data/resources/ui/account-settings-devices-page.ui
+data/resources/ui/account-settings-import-export-keys-subpage.ui
 data/resources/ui/account-settings-user-page.ui
+data/resources/ui/account-settings-security-page.ui
 data/resources/ui/account-settings.ui
 data/resources/ui/attachment-dialog.ui
 data/resources/ui/components-auth-dialog.ui
@@ -51,6 +53,7 @@ src/login/mod.rs
 src/secret.rs
 src/session/account_settings/devices_page/device_list.rs
 src/session/account_settings/devices_page/device_row.rs
+src/session/account_settings/security_page/import_export_keys_subpage.rs
 src/session/account_settings/user_page/change_password_subpage.rs
 src/session/account_settings/user_page/deactivate_account_subpage.rs
 src/session/account_settings/user_page/mod.rs
