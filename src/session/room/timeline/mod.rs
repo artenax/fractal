@@ -746,6 +746,21 @@ impl Timeline {
         self.imp().event_map.borrow().get(event_id).cloned()
     }
 
+    /// Get the position of the event with the given id in this `Timeline`.
+    pub fn find_event_position(&self, event_id: &EventId) -> Option<usize> {
+        self.imp()
+            .list
+            .borrow()
+            .iter()
+            .enumerate()
+            .find_map(|(pos, item)| {
+                item.downcast_ref::<Event>()
+                    .and_then(|event| event.event_id())
+                    .filter(|item_event_id| item_event_id == event_id)
+                    .map(|_| pos)
+            })
+    }
+
     /// Fetch the event with the given id.
     ///
     /// If the event can't be found locally, a request will be made to the
@@ -864,6 +879,32 @@ impl Timeline {
     fn remove_loading_spinner(&self) {
         self.imp().list.borrow_mut().pop_front();
         self.upcast_ref::<gio::ListModel>().items_changed(0, 1, 0);
+    }
+
+    /// Remove the given event from the timeline.
+    ///
+    /// This should be used when the source of an `Event` changes and it should
+    /// be hidden now.
+    pub fn remove_event(&self, event_id: &EventId) {
+        if let Some(index) = self.find_event_position(event_id) {
+            self.imp().list.borrow_mut().remove(index);
+
+            self.items_changed(index as u32, 1, 0);
+        }
+    }
+
+    /// Replace the supported event with the given ID with the given unsupported
+    /// event in this timeline.
+    ///
+    /// This should be used when the source of a `SupportedEvent` changes, and
+    /// the new source fails to deserialize.
+    pub fn replace_supported_event(&self, event_id: OwnedEventId, event: UnsupportedEvent) {
+        self.remove_event(&event_id);
+
+        self.imp()
+            .event_map
+            .borrow_mut()
+            .insert(event_id, event.upcast());
     }
 }
 

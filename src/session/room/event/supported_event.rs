@@ -1,5 +1,5 @@
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::debug;
+use log::{debug, error};
 use matrix_sdk::{
     deserialized_responses::SyncTimelineEvent,
     media::MediaEventContent,
@@ -25,7 +25,7 @@ use crate::{
     prelude::*,
     session::room::{
         timeline::{TimelineItem, TimelineItemImpl},
-        Member, ReactionList, Room,
+        Member, ReactionList, Room, UnsupportedEvent,
     },
     spawn, spawn_tokio,
     utils::{filename_for_mime, media_type_uid},
@@ -192,6 +192,9 @@ impl SupportedEvent {
 
     /// Set the deserialized Matrix event of this `SupportedEvent`.
     fn set_matrix_event(&self, matrix_event: AnySyncTimelineEvent) {
+        let was_hidden = self.is_hidden_event();
+        let event_id = matrix_event.event_id().to_owned();
+
         if let AnySyncTimelineEvent::MessageLike(AnySyncMessageLikeEvent::RoomEncrypted(
             SyncMessageLikeEvent::Original(_),
         )) = matrix_event
@@ -202,6 +205,13 @@ impl SupportedEvent {
         }
 
         self.imp().matrix_event.replace(Some(matrix_event));
+
+        // Remove the event from the timeline if is should now be hidden.
+        let is_hidden = self.is_hidden_event();
+        if !was_hidden && is_hidden {
+            self.room().timeline().remove_event(&event_id);
+        }
+
         self.notify("activatable");
     }
 
@@ -227,9 +237,18 @@ impl SupportedEvent {
                     self.room().disconnect(keys_handle);
                 }
                 let pure_event = SyncTimelineEvent::from(decrypted);
-                let matrix_event = pure_event.event.deserialize().unwrap();
-                self.set_pure_event(pure_event);
-                self.set_matrix_event(matrix_event);
+                if let Ok(matrix_event) = pure_event.event.deserialize() {
+                    self.set_pure_event(pure_event);
+                    self.set_matrix_event(matrix_event);
+                } else {
+                    error!("Couldn’t deserialize event: {:?}", pure_event.event);
+
+                    // Remove this event from the timeline.
+                    let room = self.room();
+                    let new_event = UnsupportedEvent::new(pure_event, &room);
+                    room.timeline()
+                        .replace_supported_event(self.event_id(), new_event);
+                }
             }
             Err(error) => {
                 let room_name = room.display_name();
