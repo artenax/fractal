@@ -33,15 +33,15 @@ use matrix_sdk::{
             room_key::ToDeviceRoomKeyEventContent,
             tag::{TagInfo, TagName},
             AnyRoomAccountDataEvent, AnyStrippedStateEvent, AnySyncStateEvent,
-            AnySyncTimelineEvent, EventContent, MessageLikeEventType, MessageLikeUnsigned,
-            OriginalSyncMessageLikeEvent, StateEventType, SyncStateEvent, ToDeviceEvent,
+            AnySyncTimelineEvent, MessageLikeUnsigned, OriginalSyncMessageLikeEvent,
+            StateEventType, SyncStateEvent, ToDeviceEvent,
         },
         serde::Raw,
         EventId, MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
     },
     DisplayName, Result as MatrixResult,
 };
-use ruma::events::SyncEphemeralRoomEvent;
+use ruma::events::{MessageLikeEventContent, SyncEphemeralRoomEvent};
 
 pub use self::{
     event::*,
@@ -1286,10 +1286,7 @@ impl Room {
     }
 
     /// Send a message with the given `content` in this room.
-    pub fn send_room_message_event(
-        &self,
-        content: impl EventContent<EventType = MessageLikeEventType> + Send + 'static,
-    ) {
+    pub fn send_room_message_event(&self, content: impl MessageLikeEventContent + Send + 'static) {
         if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
             let (txn_id, event_id) = pending_event_ids();
             let matrix_event = OriginalSyncMessageLikeEvent {
