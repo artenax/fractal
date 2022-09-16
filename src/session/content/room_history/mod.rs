@@ -14,6 +14,7 @@ use ashpd::{
     WindowIdentifier,
 };
 use futures::TryFutureExt;
+use geo_uri::GeoUri;
 use gettextrs::gettext;
 use gtk::{
     gdk, gio, glib,
@@ -922,7 +923,12 @@ impl RoomHistory {
                 proxy.receive_location_updated().into_future()
             )?;
 
-            let geo_uri = format!("geo:{},{}", location.latitude(), location.longitude());
+            let geo_uri = GeoUri::builder()
+                .latitude(location.latitude())
+                .longitude(location.longitude())
+                .build()
+                .expect("Got invalid coordinates from ashpd")
+                .to_string();
 
             let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
             let dialog =

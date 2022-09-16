@@ -1,4 +1,5 @@
 use adw::{prelude::*, subclass::prelude::*};
+use geo_uri::GeoUri;
 use gtk::{glib, CompositeTemplate};
 use shumate::prelude::*;
 
@@ -134,15 +135,11 @@ impl LocationViewer {
     pub fn set_geo_uri(&self, uri: &str) {
         let imp = self.imp();
 
-        let mut uri = uri.trim_start_matches("geo:").split(',');
-        let latitude = uri
-            .next()
-            .and_then(|lat_s| lat_s.parse::<f64>().ok())
-            .unwrap_or_default();
-        let longitude = uri
-            .next()
-            .and_then(|lon_s| lon_s.parse::<f64>().ok())
-            .unwrap_or_default();
+        let (latitude, longitude) = match GeoUri::parse(uri) {
+            Ok(geo_uri) => (geo_uri.latitude(), geo_uri.longitude()),
+            // FIXME: Actually handle the error by showing it instead of the map.
+            Err(_) => return,
+        };
 
         imp.map
             .viewport()
