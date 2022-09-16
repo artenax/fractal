@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-09-15 12:27+0000\n"
-"PO-Revision-Date: 2022-09-15 17:02+0300\n"
+"POT-Creation-Date: 2022-09-15 16:56+0000\n"
+"PO-Revision-Date: 2022-09-16 21:56+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -195,7 +195,7 @@ msgstr "Розпізнавання за допомогою браузера"
 #: data/resources/ui/identity-verification-widget.ui:452
 #: src/components/editable_avatar.rs:343
 #: src/session/content/room_history/verification_info_bar.rs:182
-#: src/session/room/event_actions.rs:259
+#: src/session/room/event_actions.rs:275
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -221,7 +221,6 @@ msgid "I_nvite"
 msgstr "Запр_осити"
 
 #: data/resources/ui/content-invite-subpage.ui:85
-#| msgid "Room Search"
 msgid "Search"
 msgstr "Шукати"
 
@@ -242,7 +241,6 @@ msgid "Error"
 msgstr "Помилка"
 
 #: data/resources/ui/content-invite-subpage.ui:123
-#| msgid "An error occurred while searching for matches"
 msgid "An error occurred while searching for matches."
 msgstr "Під час пошуку відповідників сталася помилка."
 
@@ -281,7 +279,6 @@ msgid "*italic*"
 msgstr "*курсив*"
 
 #: data/resources/ui/content-member-page.ui:19
-#| msgid "Search for room members"
 msgid "Search for Room Members"
 msgstr "Пошук учасників кімнати"
 
@@ -291,7 +288,7 @@ msgid "Search for room members"
 msgstr "Пошук учасників в кімнаті"
 
 #: data/resources/ui/content-message-file.ui:19
-#: src/session/room/event_actions.rs:258
+#: src/session/room/event_actions.rs:274
 msgid "Save"
 msgstr "Зберегти"
 
@@ -372,23 +369,23 @@ msgstr "Скиньте сюди, щоб надіслати"
 msgid "Room History"
 msgstr "Журнал кімнати"
 
-#: data/resources/ui/content-room-history.ui:246
+#: data/resources/ui/content-room-history.ui:304
 msgid "Enable Markdown Formatting"
 msgstr "Увімкнути форматування Markdown"
 
-#: data/resources/ui/content-room-history.ui:267
+#: data/resources/ui/content-room-history.ui:325
 msgid "Message Entry"
 msgstr "Введення повідомлення"
 
-#: data/resources/ui/content-room-history.ui:281
+#: data/resources/ui/content-room-history.ui:339
 msgid "Open Emoji Picker"
 msgstr "Відкрити вибір емодзі"
 
-#: data/resources/ui/content-room-history.ui:292
+#: data/resources/ui/content-room-history.ui:350
 msgid "Open Message Menu"
 msgstr "Відкрити меню повідомлення"
 
-#: data/resources/ui/content-room-history.ui:307
+#: data/resources/ui/content-room-history.ui:365
 msgid "Send Message"
 msgstr "Надіслати повідомлення"
 
@@ -478,52 +475,55 @@ msgstr ""
 "Ознайомтеся із журналом програми та документацією до вашого дистрибутива, "
 "щоб дізнатися більше."
 
-#: data/resources/ui/event-menu.ui:11
+#. Translators: In this string, 'Reply' is a verb.
+#: data/resources/ui/event-menu.ui:12
 msgid "_Reply"
 msgstr "_Відповісти"
 
-#: data/resources/ui/event-menu.ui:16
+#. Translators: In this string, 'Edit' is a verb.
+#: data/resources/ui/event-menu.ui:18
 msgid "_Edit"
 msgstr "З_мінити"
 
-#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:111
+#. Translators: In this string, 'Forward' is a verb.
+#: data/resources/ui/event-menu.ui:24 data/resources/ui/event-menu.ui:115
 msgid "_Forward"
 msgstr "П_ереспрямувати"
 
-#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:118
+#: data/resources/ui/event-menu.ui:31 data/resources/ui/event-menu.ui:122
 msgid "_Select"
 msgstr "_Вибрати"
 
-#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:125
+#: data/resources/ui/event-menu.ui:38 data/resources/ui/event-menu.ui:129
 msgid "_Copy Text"
 msgstr "_Копіювати текст"
 
-#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:82
+#: data/resources/ui/event-menu.ui:44 data/resources/ui/event-menu.ui:85
 msgid "_Copy Image"
 msgstr "_Копіювати зображення"
 
-#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:87
+#: data/resources/ui/event-menu.ui:49 data/resources/ui/event-menu.ui:90
 msgid "S_ave Image"
 msgstr "З_берегти зображення"
 
-#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:92
+#: data/resources/ui/event-menu.ui:54 data/resources/ui/event-menu.ui:95
 msgid "S_ave Video"
 msgstr "З_берегти відео"
 
-#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:97
+#: data/resources/ui/event-menu.ui:59 data/resources/ui/event-menu.ui:100
 msgid "S_ave Audio"
 msgstr "З_берегти звук"
 
-#: data/resources/ui/event-menu.ui:61 data/resources/ui/event-menu.ui:102
-#: data/resources/ui/event-menu.ui:131
+#: data/resources/ui/event-menu.ui:64 data/resources/ui/event-menu.ui:105
+#: data/resources/ui/event-menu.ui:135
 msgid "_Permalink"
 msgstr "С_тале посилання"
 
-#: data/resources/ui/event-menu.ui:66 data/resources/ui/event-menu.ui:136
+#: data/resources/ui/event-menu.ui:69 data/resources/ui/event-menu.ui:140
 msgid "_View Source"
 msgstr "П_ереглянути код"
 
-#: data/resources/ui/event-menu.ui:73 data/resources/ui/event-menu.ui:143
+#: data/resources/ui/event-menu.ui:76 data/resources/ui/event-menu.ui:147
 msgid "Re_move"
 msgstr "В_илучити"
 
@@ -921,7 +921,7 @@ msgstr "Не вдалося визначити тип вибраного фай�
 msgid "No file was chosen"
 msgstr "Не вибрано жодного файла"
 
-#: src/components/location_viewer.rs:95
+#: src/components/location_viewer.rs:154
 msgid "Location at latitude {latitude} and longitude {longitude}"
 msgstr "Розташування за широтою {latitude} і довготою {longitude}"
 
@@ -1242,7 +1242,6 @@ msgid "Invited"
 msgstr "Запрошено"
 
 #: src/session/content/room_details/member_page/mod.rs:305
-#| msgid "Invite new Members"
 msgid "Invited Room Members"
 msgstr "Запрошені учасники кімнати"
 
@@ -1252,7 +1251,6 @@ msgstr "Заблоковані учасники кімнати"
 
 #: src/session/content/room_details/member_page/mod.rs:307
 #: src/session/content/room_details/mod.rs:228
-#| msgid "Members"
 msgid "Room Members"
 msgstr "Учасники кімнати"
 
@@ -1264,34 +1262,25 @@ msgstr "Запросити нових учасників"
 msgid "New Messages"
 msgstr "Нові повідомлення"
 
-#: src/session/content/room_history/message_row/audio.rs:244
-#: src/session/content/room_history/message_row/audio.rs:248
+#: src/session/content/room_history/message_row/audio.rs:245
+#: src/session/content/room_history/message_row/audio.rs:249
 msgid "Could not retrieve audio file"
 msgstr "Не вдалося отримати звуковий файл"
 
-#: src/session/content/room_history/message_row/audio.rs:261
+#: src/session/content/room_history/message_row/audio.rs:262
 msgid "Error reading audio file"
 msgstr "Помилка під час читання звукового файла"
 
-#: src/session/content/room_history/message_row/media.rs:444
-msgid "Image file not supported"
-msgstr "Підтримки файла зображення не передбачено"
-
-#: src/session/content/room_history/message_row/media.rs:483
-#: src/session/content/room_history/message_row/media.rs:488
-msgid "Could not retrieve media"
-msgstr "Не вдалося отримати мультимедійні дані"
-
-#: src/session/content/room_history/message_row/mod.rs:382
+#: src/session/content/room_history/message_row/content.rs:307
 msgid "Identity verification was started"
 msgstr "Розпочато перевірку профілю"
 
-#: src/session/content/room_history/message_row/mod.rs:395
-#: src/session/content/room_history/message_row/mod.rs:441
+#: src/session/content/room_history/message_row/content.rs:320
+#: src/session/content/room_history/message_row/content.rs:367
 msgid "Unsupported event"
 msgstr "Непідтримувана подія"
 
-#: src/session/content/room_history/message_row/mod.rs:419
+#: src/session/content/room_history/message_row/content.rs:344
 msgid ""
 "Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
@@ -1299,45 +1288,60 @@ msgstr ""
 "Не вдалося розшифрувати це повідомлення, але програма повторить спробу, "
 "щойно стануть доступними ключі."
 
-#: src/session/content/room_history/message_row/mod.rs:430
+#: src/session/content/room_history/message_row/content.rs:355
 msgid "This message was removed."
 msgstr "Це повідомлення було вилучено."
 
-#: src/session/content/room_history/mod.rs:163
+#: src/session/content/room_history/message_row/media.rs:448
+msgid "Image file not supported"
+msgstr "Підтримки файла зображення не передбачено"
+
+#: src/session/content/room_history/message_row/media.rs:487
+#: src/session/content/room_history/message_row/media.rs:492
+msgid "Could not retrieve media"
+msgstr "Не вдалося отримати мультимедійні дані"
+
+#: src/session/content/room_history/mod.rs:194
 msgid "The location request has been cancelled."
 msgstr "Запит щодо визначення розташування було скасовано."
 
-#: src/session/content/room_history/mod.rs:167
+#: src/session/content/room_history/mod.rs:198
 msgid "Failed to retrieve current location."
 msgstr "Не вдалося отримати дані щодо поточного розташування."
 
-#: src/session/content/room_history/mod.rs:576
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name. In this string, 'Reply' is a noun.
+#: src/session/content/room_history/mod.rs:624
+msgid "Reply to {user}"
+msgstr "Відповідь {user}"
+
+#: src/session/content/room_history/mod.rs:740
 #: src/session/room/event_actions.rs:106
 msgid "Permalink copied to clipboard"
 msgstr "Стале посилання скопійовано до буфера обміну"
 
-#: src/session/content/room_history/mod.rs:580
+#: src/session/content/room_history/mod.rs:744
 #: src/session/room/event_actions.rs:110
 msgid "Failed to copy the permalink"
 msgstr "Не вдалося скопіювати стале посилання"
 
-#: src/session/content/room_history/mod.rs:773
+#: src/session/content/room_history/mod.rs:937
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Розташування користувача {geo_uri} {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:877
+#: src/session/content/room_history/mod.rs:1041
 msgid "Error reading file"
 msgstr "Помилка при зчитуванні файла"
 
-#: src/session/content/room_history/mod.rs:903
+#: src/session/content/room_history/mod.rs:1067
 msgid "Error getting file from drop"
 msgstr "Помилка під час отримання файла зі скидання"
 
-#: src/session/content/room_history/mod.rs:935
+#: src/session/content/room_history/mod.rs:1099
 msgid "Error getting image from clipboard"
 msgstr "Помилка під час отримання зображення з буфера обміну"
 
-#: src/session/content/room_history/mod.rs:952
+#: src/session/content/room_history/mod.rs:1116
 msgid "Error getting file from clipboard"
 msgstr "Помилка під час отримання файла з буфера обміну"
 
@@ -1643,11 +1647,11 @@ msgstr "Не вдалося зберегти сеанс"
 msgid "Failed to logout the session."
 msgstr "Не вдалося вийти з сеансу."
 
-#: src/session/room/event_actions.rs:172 src/session/room/event_actions.rs:194
+#: src/session/room/event_actions.rs:188 src/session/room/event_actions.rs:210
 msgid "Message copied to clipboard"
 msgstr "Повідомлення скопійовано до буфера обміну"
 
-#: src/session/room/event_actions.rs:254
+#: src/session/room/event_actions.rs:270
 msgid "Save File"
 msgstr "Зберегти файл"
 
@@ -1656,7 +1660,6 @@ msgid "Left"
 msgstr "Полишено"
 
 #: src/session/room/member.rs:48
-#| msgid "Join"
 msgid "Joined"
 msgstr "Приєднано"
 
