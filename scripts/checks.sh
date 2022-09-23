@@ -311,7 +311,7 @@ check_potfiles() {
 
     local ret=0
 
-    # Check that files in POTFILES exist.
+    # Check that files in POTFILES.in exist.
     while read -r line; do
         if [[ -n $line &&  ${line::1} != '#' ]]; then
             if [[ ! -f $line ]]; then
@@ -332,22 +332,55 @@ check_potfiles() {
         exit 1
     fi
 
+    # Check that files in POTFILES.skip exist.
+    while read -r line; do
+        if [[ -n $line &&  ${line::1} != '#' ]]; then
+            if [[ ! -f $line ]]; then
+                echo -e "$error File '$line' in POTFILES.skip does not exist"
+                ret=1
+            fi
+            if [[ ${line:(-3):3} == '.ui' ]]; then
+                ui_skip+=($line)
+            elif [[ ${line:(-3):3} == '.rs' ]]; then
+                rs_skip+=($line)
+            fi
+        fi
+    done < po/POTFILES.skip
+
+    if [[ ret -eq 1 ]]; then
+        echo -e "  Checking po/POTFILES.skip result: $fail"
+        echo "Please fix the above issues"
+        exit 1
+    fi
+
     # Get UI files with 'translatable="yes"'.
     ui_files=(`grep -lIr 'translatable="yes"' data/resources/ui/*`)
 
-    # Get Rust files with regex 'gettext(_f)?\(', except `src/i18n.rs`.
-    rs_files=(`grep -lIrE 'gettext(_f)?\(' --exclude=i18n.rs src/*`)
+    # Get Rust files with regex 'gettext(_f)?\('.
+    rs_files=(`grep -lIrE 'gettext(_f)?\(' src/*`)
     
     # Get Rust files with macros, regex 'gettext!\('.
     rs_macro_files=(`grep -lIrE 'gettext!\(' src/*`)
 
     # Remove common files
+    to_diff1=("${ui_skip[@]}")
+    to_diff2=("${ui_files[@]}")
+    diff
+    ui_skip=("${to_diff1[@]}")
+    ui_files=("${to_diff2[@]}")
+
     to_diff1=("${ui_potfiles[@]}")
     to_diff2=("${ui_files[@]}")
     diff
     ui_potfiles=("${to_diff1[@]}")
     ui_files=("${to_diff2[@]}")
     
+    to_diff1=("${rs_skip[@]}")
+    to_diff2=("${rs_files[@]}")
+    diff
+    rs_skip=("${to_diff1[@]}")
+    rs_files=("${to_diff2[@]}")
+
     to_diff1=("${rs_potfiles[@]}")
     to_diff2=("${rs_files[@]}")
     diff
