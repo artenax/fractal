@@ -332,6 +332,7 @@ fn create_widget_for_html_block(
             w.set_ellipsize(ellipsize);
             w.upcast::<gtk::Widget>()
         }
+        HtmlBlock::Separator => gtk::Separator::new(gtk::Orientation::Horizontal).upcast(),
     }
 }
 

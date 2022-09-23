@@ -29,7 +29,7 @@ serde_json = "1.0"
 tokio = { version = "1.15", features = ["rt", "rt-multi-thread", "sync"] }
 url = "2.2"
 libsecret = { version = "0.1.4", features = ["v0_19"] }
-html2pango = "0.4"
+html2pango = "0.5.0"
 futures = "0.3"
 rand = "0.8"
 indexmap = "1.6.2"
