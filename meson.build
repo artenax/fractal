@@ -1,6 +1,6 @@
 project('fractal',
         'rust',
-        version: '5.alpha',
+        version: '5-alpha1',
         license: 'GPL-3.0-or-later',
         meson_version: '>= 0.59')
 

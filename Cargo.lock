@@ -1103,7 +1103,7 @@ dependencies = [
 
 [[package]]
 name = "fractal"
-version = "5.0.0-alpha"
+version = "5.0.0-alpha1"
 dependencies = [
  "ashpd",
  "async-stream",

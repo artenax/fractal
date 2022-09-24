@@ -51,9 +51,48 @@
   </content_rating>
 
   <releases>
-    <release version="5.alpha" type="development" date="2022-03-30" urgency="high">
+    <release version="5~alpha1" type="development" date="2022-09-25" urgency="high">
       <description>
-        <p>Nightly preview of Fractal.</p>
+        <p>Fractal 5.alpha1 is the first release since Fractal has been
+          rewritten to take advantage of GTK 4 and the Matrix Rust SDK.
+          It is the result of eighteen months of work.</p>
+
+        <p>Currently supported features are:</p>
+        <ul>
+          <li> Sending and receiving messages and files </li>
+          <li> Sending files via Drag-n-Drop and pasting in the message entry</li>
+          <li>Rendering of rich formatted (HTML) messages, as well as media</li>
+          <li>Displaying edited messages, redacting messages</li>
+          <li>Showing and adding reactions</li>
+          <li>Tab completion of user names</li>
+          <li>Sending and displaying replies</li>
+          <li>Sharing the current location</li>
+          <li>Exploring the room directory</li>
+          <li>Sorting the rooms by category</li>
+          <li>Joining rooms</li>
+          <li>Sending and accepting invitations</li>
+          <li>Logging into multiple accounts at once</li>
+          <li>Logging in with Single-Sign On</li>
+          <li>Sending and reading encrypted messages</li>
+          <li>Verifying user sessions using cross-signing</li>
+          <li>Exporting and importing encryption keys</li>
+          <li>Managing the connected devices</li>
+          <li>Changing the user profile details</li>
+          <li>Deactivating the account</li>
+        </ul>
+        <p>Major missing features are:</p>
+        <ul>
+          <li>Notifications</li>
+          <li>Read markers</li>
+        </ul>
+
+        <p>As the name implies, this is still considered alpha stage and is not
+          ready for general use just yet. If you want to give this development
+          version a try, you can get it from the GNOME Apps Nightly flatpak
+          repository (See wiki.gnome.org/Apps/Nightly).</p>
+
+        <p>A list of known issues and missing features for a 5.0 release can be
+          found in the Fractal v5 milestone on Gitlab.</p>
       </description>
     </release>
     <release version="4.4" type="stable" date="2020-08-07" urgency="high">
