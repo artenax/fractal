@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-09-15 16:56+0000\n"
-"PO-Revision-Date: 2022-09-16 21:56+0300\n"
+"POT-Creation-Date: 2022-09-24 10:30+0000\n"
+"PO-Revision-Date: 2022-09-24 14:49+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -137,6 +137,21 @@ msgstr "Поточний сеанс"
 msgid "Other Active Sessions"
 msgstr "Інші активні сеанси"
 
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:62
+#: data/resources/ui/session-verification.ui:280
+msgid "Passphrase"
+msgstr "Пароль"
+
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:68
+#| msgid "Passphrase"
+msgid "Confirm Passphrase"
+msgstr "Підтвердьте пароль"
+
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:82
+#| msgid "Choose"
+msgid "Choose…"
+msgstr "Вибрати…"
+
 #: data/resources/ui/account-settings-user-page.ui:5
 msgid "General"
 msgstr "Загальні"
@@ -156,6 +171,25 @@ msgstr "Домашній сервер"
 #: data/resources/ui/account-settings-user-page.ui:94
 msgid "Session ID"
 msgstr "Ідентифікатор сеансу"
+
+#: data/resources/ui/account-settings-security-page.ui:5
+msgid "Security"
+msgstr "Безпека"
+
+#: data/resources/ui/account-settings-security-page.ui:9
+#| msgid "Setup Encryption Identity"
+msgid "Room Encryption Keys"
+msgstr "Ключі шифрування кімнати"
+
+#: data/resources/ui/account-settings-security-page.ui:12
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:240
+msgid "Export Room Encryption Keys"
+msgstr "Експортувати ключі шифрування кімнати"
+
+#: data/resources/ui/account-settings-security-page.ui:19
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:252
+msgid "Import Room Encryption Keys"
+msgstr "Імпортувати ключі шифрування кімнати"
 
 #: data/resources/ui/account-settings.ui:4
 msgid "Account Settings"
@@ -194,6 +228,7 @@ msgstr "Розпізнавання за допомогою браузера"
 #: data/resources/ui/components-auth-dialog.ui:113
 #: data/resources/ui/identity-verification-widget.ui:452
 #: src/components/editable_avatar.rs:343
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:298
 #: src/session/content/room_history/verification_info_bar.rs:182
 #: src/session/room/event_actions.rs:275
 msgid "Cancel"
@@ -768,10 +803,6 @@ msgstr ""
 "Якщо ви хочете вибрати ключ відновлення, поверніться і виберіть відповідний "
 "пункт."
 
-#: data/resources/ui/session-verification.ui:280
-msgid "Passphrase"
-msgstr "Пароль"
-
 #: data/resources/ui/session-verification.ui:285
 #: data/resources/ui/session-verification.ui:350
 msgid "Next"
@@ -918,6 +949,7 @@ msgid "Could not determine the type of the chosen file"
 msgstr "Не вдалося визначити тип вибраного файла"
 
 #: src/components/editable_avatar.rs:374
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:314
 msgid "No file was chosen"
 msgstr "Не вибрано жодного файла"
 
@@ -1051,15 +1083,19 @@ msgid "Failed to disconnect device “{device_name}”"
 msgstr "Не вдалося від'єднати пристрій «{device_name}»."
 
 #: src/session/account_settings/devices_page/device_row.rs:228
+#| msgid ""
+#| "Fractal’s support for encryption is unstable so you might lose access to "
+#| "your encrypted message history. It is recommended to backup your "
+#| "encryption keys from another Matrix client before proceeding."
 msgid ""
-"Fractal’s support for encryption is unstable so you might lose access to "
-"your encrypted message history. It is recommended to backup your encryption "
-"keys from another Matrix client before proceeding."
+"Fractal doesn't support online backup of room encryption keys so you might "
+"lose access to your encrypted message history. It is recommended to backup "
+"your encryption keys before proceeding."
 msgstr ""
-"Підтримка шифрування у «Фракталі» не є стабільною, тому ви можете втратити "
-"доступ до вашого зашифрованого журналу повідомлень. Перш ніж продовжувати, "
-"рекомендуємо створити резервну копію ваших ключів шифрування з іншого "
-"клієнта Matrix."
+"У «Фракталі» не передбачено підтримки інтерактивного резервного копіювання"
+" ключів шифрування кімнати, тому ви можете втратити доступ до журналу ваших"
+" шифрованих повідомлень. Рекомендуємо створити резервну копію ключів"
+" шифрування, перш ніж продовжувати виконання дії."
 
 #. Translators: Time in 24h format
 #: src/session/account_settings/devices_page/device_row.rs:286
@@ -1130,6 +1166,100 @@ msgstr "Востаннє бачили %-e %B %Y о %H:%M"
 #, no-c-format
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "Востаннє бачили %-e %B %Y о %l:%M %p"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:242
+msgid ""
+"Exporting your room encryption keys allows you to make a backup to be able "
+"to decrypt your messages in end-to-end encrypted rooms on another device or "
+"with another Matrix client."
+msgstr ""
+"За допомогою експортування ваших ключів шифрування кімнат ви можете створити"
+" їхню резервну копію, щоб мати змогу розшифровувати ваші повідомлення у"
+" кімнатах із наскрізним шифруванням на іншому пристрої або за допомогою"
+" іншого клієнта Matrix."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:245
+msgid ""
+"The backup must be stored in a safe place and must be protected with a "
+"strong passphrase that will be used to encrypt the data."
+msgstr ""
+"Резервну копію слід зберігати у безпечному місці і захищати складним"
+" паролем, який буде використано для шифрування даних."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:248
+msgid "Export Keys"
+msgstr "Експортувати ключі"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:254
+msgid ""
+"Importing your room encryption keys allows you to decrypt your messages in "
+"end-to-end encrypted rooms with a previous backup from a Matrix client."
+msgstr ""
+"За допомогою імпортування ваших ключів шифрування кімнат ви можете"
+" розшифровувати ваші повідомлення у кімнатах із наскрізним шифруванням за"
+" допомогою раніше створеної резервної копії з клієнта Matrix."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:257
+msgid "Enter the passphrase provided when the backup file was created."
+msgstr ""
+"Введіть пароль, який було встановлено при створенні файла резервної копії."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:260
+msgid "Import Keys"
+msgstr "Імпортувати ключі"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:277
+#| msgid "Setup Encryption Identity"
+msgid "Save Encryption Keys To…"
+msgstr "Зберегти ключі шифрування до…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:282
+msgid "Import Encryption Keys From…"
+msgstr "Імпортувати ключі шифрування з…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:297
+#| msgid "_Select"
+msgid "Select"
+msgstr "Вибрати"
+
+#. Translators: Do no translate "fractal" as it is the application
+#. name.
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:306
+msgid "fractal-encryption-keys"
+msgstr "ключі-шифрування-fractal"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:339
+#| msgid "Passwords do not match"
+msgid "Passphrases do not match"
+msgstr "Паролі не збігаються"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:410
+#| msgid "Session removed successfully."
+msgid "Room encryption keys exported successfully"
+msgstr "Ключі шифрування кімнати успішно експортовано"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:415
+msgid "Imported 1 room encryption key"
+msgid_plural "Imported {n} room encryption keys"
+msgstr[0] "Імпортовано {n} ключ шифрування кімнат"
+msgstr[1] "Імпортовано {n} ключі шифрування кімнат"
+msgstr[2] "Імпортовано {n} ключів шифрування кімнат"
+msgstr[3] "Імпортовано {n} ключ шифрування кімнат"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:428
+#| msgid "Could not decrypt the event"
+msgid "Could not export the keys"
+msgstr "Не вдалося експортувати ключі"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:438
+msgid "The passphrase doesn't match the one used to export the keys."
+msgstr ""
+"Пароль не збігається із тим, який було використано при експортуванні ключів."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:442
+#| msgid "Could not decrypt the event"
+msgid "Could not import the keys"
+msgstr "Не вдалося імпортувати ключі"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:216
 msgid "Password must be at least 8 characters long"
@@ -1710,26 +1840,26 @@ msgstr "Порожня кімната"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1427
+#: src/session/room/mod.rs:1424
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "Не вдалося прийняти запрошення до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1456
+#: src/session/room/mod.rs:1453
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 "Не вдалося відмовити у запрошенні до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1621
+#: src/session/room/mod.rs:1618
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "Не вдалося запросити {user} до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1633
+#: src/session/room/mod.rs:1630
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
