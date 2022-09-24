@@ -100,6 +100,9 @@ Fractal is translated by the GNOME translation team on [Damned lies](https://l10
 
 Find your language in the list on [the Fractal module page on Damned lies](https://l10n.gnome.org/module/fractal/).
 
+The names of the emoji displayed during verification come from [the Matrix specification repository](https://github.com/matrix-org/matrix-spec/tree/main/data-definitions).
+They are translated on [Element’s translation platform](https://translate.element.io/projects/matrix-doc/sas-emoji-v1).
+
 ## Frequently Asked Questions
 
 * Does Fractal have encryption support? Will it ever?

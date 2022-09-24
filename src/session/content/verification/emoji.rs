@@ -1,6 +1,6 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, prelude::*, CompositeTemplate};
-use matrix_sdk::encryption::verification::Emoji as MatrixEmoji;
+
 mod imp {
     use glib::subclass::InitializingObject;
 
@@ -42,17 +42,17 @@ glib::wrapper! {
 }
 
 impl Emoji {
-    pub fn new(emoji: &MatrixEmoji) -> Self {
+    pub fn new(symbol: &str, name: &str) -> Self {
         let obj: Self = glib::Object::new(&[]).expect("Failed to create Emoji");
 
-        obj.set_emoji(emoji);
+        obj.set_emoji(symbol, name);
         obj
     }
 
-    pub fn set_emoji(&self, emoji: &MatrixEmoji) {
+    pub fn set_emoji(&self, symbol: &str, name: &str) {
         let priv_ = self.imp();
 
-        priv_.emoji.set_text(emoji.symbol);
-        priv_.emoji_name.set_text(emoji.description);
+        priv_.emoji.set_text(symbol);
+        priv_.emoji_name.set_text(name);
     }
 }

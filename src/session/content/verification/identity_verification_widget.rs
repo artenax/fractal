@@ -1,6 +1,8 @@
+use std::collections::HashMap;
+
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
-use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
+use gtk::{gio, glib, glib::clone, prelude::*, CompositeTemplate};
 use log::warn;
 use matrix_sdk::encryption::verification::QrVerificationData;
 
@@ -417,11 +419,20 @@ impl IdentityVerificationWidget {
                     self.clean_emoji();
                     match request.sas_data().unwrap() {
                         SasData::Emoji(emoji) => {
+                            let emoji_i18n = sas_emoji_i18n();
                             for (index, emoji) in emoji.iter().enumerate() {
+                                let emoji_name = emoji_i18n
+                                    .get(emoji.description)
+                                    .map(String::as_str)
+                                    .unwrap_or(emoji.description);
                                 if index < 4 {
-                                    priv_.emoji_row_1.append(&Emoji::new(emoji));
+                                    priv_
+                                        .emoji_row_1
+                                        .append(&Emoji::new(emoji.symbol, emoji_name));
                                 } else {
-                                    priv_.emoji_row_2.append(&Emoji::new(emoji));
+                                    priv_
+                                        .emoji_row_2
+                                        .append(&Emoji::new(emoji.symbol, emoji_name));
                                 }
                             }
                         }
@@ -600,4 +611,26 @@ impl IdentityVerificationWidget {
             }
         }
     }
+}
+
+/// Get the SAS emoji translations for the current locale.
+///
+/// Returns a map of emoji name to its translation.
+fn sas_emoji_i18n() -> HashMap<String, String> {
+    for lang in glib::language_names()
+        .into_iter()
+        .flat_map(|locale| glib::locale_variants(&locale))
+    {
+        if let Some(emoji_i18n) = gio::resources_lookup_data(
+            &format!("/org/gnome/Fractal/sas-emoji/{lang}.json"),
+            gio::ResourceLookupFlags::NONE,
+        )
+        .ok()
+        .and_then(|data| serde_json::from_slice(&data).ok())
+        {
+            return emoji_i18n;
+        }
+    }
+
+    HashMap::new()
 }

@@ -21,6 +21,34 @@
     <file preprocess="xml-stripblanks">icons/scalable/status/empty-page.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/status/explore-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/status/verified-symbolic.svg</file>
+    <file compressed="true">sas-emoji/ar.json</file>
+    <file compressed="true">sas-emoji/bg.json</file>
+    <file compressed="true">sas-emoji/ca.json</file>
+    <file compressed="true">sas-emoji/cs.json</file>
+    <file compressed="true">sas-emoji/de.json</file>
+    <file compressed="true">sas-emoji/eo.json</file>
+    <file compressed="true">sas-emoji/es.json</file>
+    <file compressed="true">sas-emoji/et.json</file>
+    <file compressed="true">sas-emoji/fi.json</file>
+    <file compressed="true">sas-emoji/fr.json</file>
+    <file compressed="true">sas-emoji/hr.json</file>
+    <file compressed="true">sas-emoji/hu.json</file>
+    <file compressed="true">sas-emoji/id.json</file>
+    <file compressed="true">sas-emoji/it.json</file>
+    <file compressed="true">sas-emoji/ja.json</file>
+    <file compressed="true">sas-emoji/nb_NO.json</file>
+    <file compressed="true">sas-emoji/nl.json</file>
+    <file compressed="true">sas-emoji/pt_BR.json</file>
+    <file compressed="true">sas-emoji/ru.json</file>
+    <file compressed="true">sas-emoji/si.json</file>
+    <file compressed="true">sas-emoji/sk.json</file>
+    <file compressed="true">sas-emoji/sq.json</file>
+    <file compressed="true">sas-emoji/sr.json</file>
+    <file compressed="true">sas-emoji/sv.json</file>
+    <file compressed="true">sas-emoji/tzm.json</file>
+    <file compressed="true">sas-emoji/uk.json</file>
+    <file compressed="true">sas-emoji/vi.json</file>
+    <file compressed="true">sas-emoji/zh_Hans.json</file>
     <file compressed="true">style.css</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-change-password-subpage.ui">ui/account-settings-change-password-subpage.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="account-settings-deactivate-account-subpage.ui">ui/account-settings-deactivate-account-subpage.ui</file>
