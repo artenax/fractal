@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-09-15 16:56+0000\n"
-"PO-Revision-Date: 2022-09-18 16:40+0200\n"
+"POT-Creation-Date: 2022-09-24 10:30+0000\n"
+"PO-Revision-Date: 2022-09-25 15:45+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -135,6 +135,19 @@ msgstr "Obecna sesja"
 msgid "Other Active Sessions"
 msgstr "Pozostałe aktywne sesje"
 
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:62
+#: data/resources/ui/session-verification.ui:280
+msgid "Passphrase"
+msgstr "Hasło"
+
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:68
+msgid "Confirm Passphrase"
+msgstr "Potwierdzenie hasła"
+
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:82
+msgid "Choose…"
+msgstr "Wybierz…"
+
 #: data/resources/ui/account-settings-user-page.ui:5
 msgid "General"
 msgstr "Ogólne"
@@ -154,6 +167,24 @@ msgstr "Serwer domowy"
 #: data/resources/ui/account-settings-user-page.ui:94
 msgid "Session ID"
 msgstr "Identyfikator sesji"
+
+#: data/resources/ui/account-settings-security-page.ui:5
+msgid "Security"
+msgstr "Zabezpieczenia"
+
+#: data/resources/ui/account-settings-security-page.ui:9
+msgid "Room Encryption Keys"
+msgstr "Klucze szyfrowania pokoju"
+
+#: data/resources/ui/account-settings-security-page.ui:12
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:240
+msgid "Export Room Encryption Keys"
+msgstr "Eksport kluczy szyfrowania pokoju"
+
+#: data/resources/ui/account-settings-security-page.ui:19
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:252
+msgid "Import Room Encryption Keys"
+msgstr "Import kluczy szyfrowania pokoju"
 
 #: data/resources/ui/account-settings.ui:4
 msgid "Account Settings"
@@ -192,6 +223,7 @@ msgstr "Uwierzytelnij przez przeglądarkę"
 #: data/resources/ui/components-auth-dialog.ui:113
 #: data/resources/ui/identity-verification-widget.ui:452
 #: src/components/editable_avatar.rs:343
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:298
 #: src/session/content/room_history/verification_info_bar.rs:182
 #: src/session/room/event_actions.rs:275
 msgid "Cancel"
@@ -761,10 +793,6 @@ msgstr ""
 "Jeśli zdecydowano się na klucz odzyskiwania zamiast hasła, należy wrócić "
 "i wybrać tę opcję."
 
-#: data/resources/ui/session-verification.ui:280
-msgid "Passphrase"
-msgstr "Hasło"
-
 #: data/resources/ui/session-verification.ui:285
 #: data/resources/ui/session-verification.ui:350
 msgid "Next"
@@ -912,6 +940,7 @@ msgid "Could not determine the type of the chosen file"
 msgstr "Nie można ustalić typu wybranego pliku"
 
 #: src/components/editable_avatar.rs:374
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:314
 msgid "No file was chosen"
 msgstr "Nie wybrano pliku"
 
@@ -1044,14 +1073,14 @@ msgstr "Rozłączenie urządzenia „{device_name}” się nie powiodło"
 
 #: src/session/account_settings/devices_page/device_row.rs:228
 msgid ""
-"Fractal’s support for encryption is unstable so you might lose access to "
-"your encrypted message history. It is recommended to backup your encryption "
-"keys from another Matrix client before proceeding."
+"Fractal doesn't support online backup of room encryption keys so you might "
+"lose access to your encrypted message history. It is recommended to backup "
+"your encryption keys before proceeding."
 msgstr ""
-"Obsługa szyfrowania w programie Fractal jest niestabilna, więc można utracić "
-"dostęp do historii zaszyfrowanych wiadomości. Przed kontynuowaniem zalecane "
-"jest wykonanie kopii zapasowej kluczy szyfrowania z innego klienta sieci "
-"Matrix."
+"Fractal nie obsługuje przechowywania kopii zapasowej kluczy szyfrowania "
+"pokojów w Internecie, więc można utracić dostęp do historii zaszyfrowanych "
+"wiadomości. Przed kontynuowaniem zalecane jest wykonanie kopii zapasowej "
+"kluczy szyfrowania."
 
 #. Translators: Time in 24h format
 #: src/session/account_settings/devices_page/device_row.rs:286
@@ -1122,6 +1151,90 @@ msgstr "Ostatnio widziano %-d %B %Y o %H∶%M"
 #, no-c-format
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "Ostatnio widziano %-d %B %Y o %l∶%M %p"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:242
+msgid ""
+"Exporting your room encryption keys allows you to make a backup to be able "
+"to decrypt your messages in end-to-end encrypted rooms on another device or "
+"with another Matrix client."
+msgstr ""
+"Wyeksportowanie kluczy szyfrowania pokoju umożliwia wykonanie kopii "
+"zapasowej, aby można było odszyfrowywać swoje wiadomości w zaszyfrowanych "
+"pokojach na innym urządzeniu lub za pomocą innego klienta sieci Matrix."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:245
+msgid ""
+"The backup must be stored in a safe place and must be protected with a "
+"strong passphrase that will be used to encrypt the data."
+msgstr ""
+"Kopia zapasowa musi być przechowywana w bezpiecznym miejscu i musi być "
+"chroniona silnym hasłem, które będzie używane do odszyfrowania danych."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:248
+msgid "Export Keys"
+msgstr "Wyeksportuj klucze"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:254
+msgid ""
+"Importing your room encryption keys allows you to decrypt your messages in "
+"end-to-end encrypted rooms with a previous backup from a Matrix client."
+msgstr ""
+"Zaimportowanie kluczy szyfrowania pokoju umożliwia odszyfrowywanie swoich "
+"wiadomości w zaszyfrowanych pokojach za pomocą wcześniej wykonanej kopii "
+"zapasowej z klienta sieci Matrix."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:257
+msgid "Enter the passphrase provided when the backup file was created."
+msgstr "Proszę wpisać hasło podane podczas tworzenia pliku kopii zapasowej."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:260
+msgid "Import Keys"
+msgstr "Zaimportuj klucze"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:277
+msgid "Save Encryption Keys To…"
+msgstr "Zapis kluczy szyfrowania w…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:282
+msgid "Import Encryption Keys From…"
+msgstr "Import kluczy szyfrowania z…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:297
+msgid "Select"
+msgstr "Wybierz"
+
+#. Translators: Do no translate "fractal" as it is the application
+#. name.
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:306
+msgid "fractal-encryption-keys"
+msgstr "klucze-szyfrowania-fractal"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:339
+msgid "Passphrases do not match"
+msgstr "Hasła się nie zgadzają"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:410
+msgid "Room encryption keys exported successfully"
+msgstr "Pomyślnie wyeksportowano klucze szyfrowania pokoju"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:415
+msgid "Imported 1 room encryption key"
+msgid_plural "Imported {n} room encryption keys"
+msgstr[0] "Zaimportowano 1 klucz szyfrowania pokoju"
+msgstr[1] "Zaimportowano {n} klucze szyfrowania pokojów"
+msgstr[2] "Zaimportowano {n} kluczy szyfrowania pokojów"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:428
+msgid "Could not export the keys"
+msgstr "Nie można wyeksportować kluczy"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:438
+msgid "The passphrase doesn't match the one used to export the keys."
+msgstr "Hasło nie zgadza się z hasłem użytym do wyeksportowania kluczy."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:442
+msgid "Could not import the keys"
+msgstr "Nie można zaimportować kluczy"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:216
 msgid "Password must be at least 8 characters long"
@@ -1706,7 +1819,7 @@ msgstr "Pusty pokój"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1427
+#: src/session/room/mod.rs:1424
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 "Przyjęcie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -1714,7 +1827,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1456
+#: src/session/room/mod.rs:1453
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 "Odrzucenie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -1722,7 +1835,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1621
+#: src/session/room/mod.rs:1618
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr ""
 "Zaproszenie użytkownika {user} do pokoju {room} się nie powiodło. Proszę "
@@ -1730,7 +1843,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1633
+#: src/session/room/mod.rs:1630
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
