@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ContentExploreServersPopover" parent="GtkPopover">
+    <property name="has-arrow">false</property>
+    <property name="position">bottom</property>
+    <property name="width-request">260</property>
+    <property name="child">
+      <object class="GtkScrolledWindow" id="scrolled_window">
+        <property name="propagate-natural-height">true</property>
+        <property name="hscrollbar-policy">never</property>
+        <property name="max-content-height">280</property>
+        <property name="child">
+          <object class="GtkBox">
+            <style>
+              <class name="explore-servers-popover"/>
+            </style>
+            <property name="orientation">vertical</property>
+            <property name="spacing">8</property>
+            <child>
+              <object class="GtkListBox" id="listbox">
+                <property name="selection-mode">browse</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparator"/>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <style>
+                  <class name="linked"/>
+                </style>
+                <child>
+                  <object class="GtkEntry" id="server_entry">
+                    <property name="hexpand">true</property>
+                    <property name="placeholder-text" translatable="yes">Add server…</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="icon-name">list-add-symbolic</property>
+                    <property name="action-name">explore-servers-popover.add-server</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+</interface>

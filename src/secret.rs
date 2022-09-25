@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fmt, path::PathBuf, string::FromUtf8Error};
+use std::{collections::HashMap, ffi::OsStr, fmt, path::PathBuf, string::FromUtf8Error};
 
 use gettextrs::gettext;
 use gtk::{gio, glib};
@@ -185,6 +185,17 @@ impl StoredSession {
         let secret = Value::new(&self.secret.to_string(), "application/json");
 
         (attributes, secret)
+    }
+
+    /// Get the unique ID for this `StoredSession`.
+    ///
+    /// This is the name of the folder where the DB is stored.
+    pub fn id(&self) -> &str {
+        self.path
+            .iter()
+            .next_back()
+            .and_then(OsStr::to_str)
+            .unwrap()
     }
 }
 

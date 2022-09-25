@@ -18,5 +18,10 @@
       <summary>Enable markdown formatting</summary>
       <description>Whether messages should be processed as markdown when sending them</description>
     </key>
+    <key name="sessions" type="s">
+      <default>'[]'</default>
+      <summary>Session settings</summary>
+      <description>Serialized list of settings per session</description>
+    </key>
   </schema>
 </schemalist>

@@ -16,6 +16,7 @@ data/resources/ui/account-settings.ui
 data/resources/ui/attachment-dialog.ui
 data/resources/ui/components-auth-dialog.ui
 data/resources/ui/components-loading-listbox-row.ui
+data/resources/ui/content-explore-servers-popover.ui
 data/resources/ui/content-explore.ui
 data/resources/ui/content-invite-subpage.ui
 data/resources/ui/content-invite.ui

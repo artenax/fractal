@@ -6,6 +6,7 @@ mod media_viewer;
 pub mod room;
 mod room_creation;
 mod room_list;
+mod settings;
 mod sidebar;
 mod user;
 pub mod verification;
@@ -65,6 +66,7 @@ pub use self::{
     avatar::Avatar,
     room::{Room, SupportedEvent},
     room_creation::RoomCreation,
+    settings::SessionSettings,
     user::{User, UserActions, UserExt},
 };
 use crate::{
@@ -127,6 +129,7 @@ mod imp {
         pub sync_tokio_handle: RefCell<Option<JoinHandle<()>>>,
         pub offline_handler_id: RefCell<Option<SignalHandlerId>>,
         pub offline: Cell<bool>,
+        pub settings: OnceCell<SessionSettings>,
     }
 
     #[glib::object_subclass]
@@ -312,6 +315,10 @@ glib::wrapper! {
 impl Session {
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create Session")
+    }
+
+    pub fn session_id(&self) -> &str {
+        self.imp().info.get().unwrap().id()
     }
 
     pub fn select_room(&self, room: Option<Room>) {
@@ -502,6 +509,11 @@ impl Session {
                     }
                 };
 
+                priv_
+                    .settings
+                    .set(SessionSettings::new(session.id()))
+                    .unwrap();
+
                 priv_.info.set(session).unwrap();
                 self.update_offline().await;
 
@@ -639,6 +651,11 @@ impl Session {
 
     fn is_prepared(&self) -> bool {
         self.imp().prepared.get()
+    }
+
+    /// The current settings for this session.
+    pub fn settings(&self) -> &SessionSettings {
+        self.imp().settings.get().unwrap()
     }
 
     pub fn room_list(&self) -> &RoomList {
@@ -860,6 +877,10 @@ impl Session {
 
         if let Some(handle) = priv_.sync_tokio_handle.take() {
             handle.abort();
+        }
+
+        if let Some(settings) = priv_.settings.get() {
+            settings.delete_settings();
         }
 
         if let Err(error) = secret::remove_session(info).await {

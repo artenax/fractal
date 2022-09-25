@@ -1,16 +1,19 @@
 mod public_room;
 mod public_room_list;
 mod public_room_row;
+mod server;
+mod server_list;
+mod server_row;
+mod servers_popover;
 
 use adw::subclass::prelude::*;
 use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
-use log::error;
-use ruma::api::client::thirdparty::get_protocols;
 
 pub use self::{
     public_room::PublicRoom, public_room_list::PublicRoomList, public_room_row::PublicRoomRow,
+    servers_popover::ExploreServersPopover,
 };
-use crate::{session::Session, spawn, spawn_tokio};
+use crate::session::Session;
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -34,7 +37,9 @@ mod imp {
         #[template_child]
         pub search_entry: TemplateChild<gtk::SearchEntry>,
         #[template_child]
-        pub network_menu: TemplateChild<gtk::ComboBoxText>,
+        pub servers_button: TemplateChild<gtk::MenuButton>,
+        #[template_child]
+        pub servers_popover: TemplateChild<ExploreServersPopover>,
         #[template_child]
         pub listview: TemplateChild<gtk::ListView>,
         #[template_child]
@@ -121,13 +126,17 @@ mod imp {
 
             self.search_entry
                 .connect_search_changed(clone!(@weak obj => move |_| {
-                    let priv_ = obj.imp();
-                    if let Some(public_room_list) = &*priv_.public_room_list.borrow() {
-                        let text = priv_.search_entry.text().as_str().to_string();
-                        let network = priv_.network_menu.active_id().map(|id| id.as_str().to_owned());
-                        public_room_list.search(Some(text), None, network);
-                    };
+                    obj.trigger_search();
                 }));
+
+            self.servers_popover.connect_selected_server_changed(
+                clone!(@weak obj => move |_, server| {
+                    if let Some(server) = server {
+                        obj.imp().servers_button.set_label(server.name());
+                        obj.trigger_search();
+                    }
+                }),
+            );
         }
     }
 
@@ -150,8 +159,14 @@ impl Explore {
     }
 
     pub fn init(&self) {
-        self.load_protocols();
-        if let Some(public_room_list) = &*self.imp().public_room_list.borrow() {
+        let priv_ = self.imp();
+
+        priv_.servers_popover.init();
+        priv_
+            .servers_button
+            .set_label(priv_.servers_popover.selected_server().unwrap().name());
+
+        if let Some(public_room_list) = &*priv_.public_room_list.borrow() {
             public_room_list.load_public_rooms(true);
         }
 
@@ -205,38 +220,12 @@ impl Explore {
         }
     }
 
-    fn set_protocols(&self, protocols: get_protocols::v3::Response) {
-        for protocol in protocols
-            .protocols
-            .into_iter()
-            .flat_map(|(_, protocol)| protocol.instances)
-        {
-            self.imp()
-                .network_menu
-                .append(Some(&protocol.instance_id), &protocol.desc);
-        }
-    }
-
-    fn load_protocols(&self) {
-        let network_menu = &self.imp().network_menu;
-        let client = self.session().unwrap().client();
-
-        network_menu.remove_all();
-        network_menu.append(Some("matrix"), "Matrix");
-        network_menu.append(Some("all"), "All rooms");
-        network_menu.set_active(Some(0));
-
-        let handle =
-            spawn_tokio!(async move { client.send(get_protocols::v3::Request::new(), None).await });
-
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                match handle.await.unwrap() {
-                 Ok(response) => obj.set_protocols(response),
-                 Err(error) => error!("Error loading supported protocols: {}", error),
-                }
-            })
-        );
+    fn trigger_search(&self) {
+        let priv_ = self.imp();
+        if let Some(public_room_list) = &*priv_.public_room_list.borrow() {
+            let text = priv_.search_entry.text().as_str().to_string();
+            let server = priv_.servers_popover.selected_server().unwrap();
+            public_room_list.search(Some(text), server);
+        };
     }
 }

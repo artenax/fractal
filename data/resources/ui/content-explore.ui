@@ -32,8 +32,15 @@
               </object>
             </child>
             <child type="end">
-              <object class="GtkComboBoxText" id="network_menu">
-                <property name="active-id">matrix</property>
+              <object class="GtkMenuButton" id="servers_button">
+                <property name="valign">center</property>
+                <property name="direction">down</property>
+                <property name="icon-name">format-justify-left-symbolic</property>
+                <property name="popover">
+                  <object class="ContentExploreServersPopover" id="servers_popover">
+                    <property name="session" bind-source="ContentExplore" bind-property="session" bind-flags="sync-create"/>
+                  </object>
+                </property>
               </object>
             </child>
           </object>
@@ -101,4 +108,3 @@
     </child>
   </template>
 </interface>
-

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ExploreServerRow" parent="GtkListBoxRow">
+    <property name="child">
+      <object class="GtkBox">
+        <property name="spacing">10</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="xalign">0.0</property>
+            <property name="hexpand">True</property>
+            <binding name="label">
+              <lookup name="name" type="Server">
+                <lookup name="server">ExploreServerRow</lookup>
+              </lookup>
+            </binding>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="remove_button">
+            <binding name="visible">
+              <lookup name="deletable" type="Server">
+                <lookup name="server">ExploreServerRow</lookup>
+              </lookup>
+            </binding>
+            <property name="icon-name">window-close-symbolic</property>
+            <property name="valign">center</property>
+            <property name="halign">center</property>
+            <style>
+              <class name="circular"/>
+              <class name="flat"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

@@ -9,6 +9,7 @@ use matrix_sdk::ruma::{
     uint, ServerName,
 };
 
+use super::server::Server;
 use crate::{
     session::{content::explore::PublicRoom, Session},
     spawn, spawn_tokio,
@@ -168,24 +169,21 @@ impl PublicRoomList {
         self.notify("complete");
     }
 
-    pub fn search(
-        &self,
-        search_term: Option<String>,
-        server: Option<String>,
-        network: Option<String>,
-    ) {
+    pub fn search(&self, search_term: Option<String>, server: Server) {
         let priv_ = self.imp();
+        let network = Some(server.network());
+        let server = server.server();
 
         if priv_.search_term.borrow().as_ref() == search_term.as_ref()
-            && priv_.server.borrow().as_ref() == server.as_ref()
-            && priv_.network.borrow().as_ref() == network.as_ref()
+            && priv_.server.borrow().as_deref() == server
+            && priv_.network.borrow().as_deref() == network
         {
             return;
         }
 
         priv_.search_term.replace(search_term);
-        priv_.server.replace(server);
-        priv_.network.replace(network);
+        priv_.server.replace(server.map(ToOwned::to_owned));
+        priv_.network.replace(network.map(ToOwned::to_owned));
         self.load_public_rooms(true);
     }
 

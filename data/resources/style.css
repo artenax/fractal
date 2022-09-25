@@ -549,6 +549,7 @@ message-reactions .reaction-count {
 
 
 /* Explore */
+
 .explore listview {
 	background: transparent;
 }
@@ -556,6 +557,24 @@ message-reactions .reaction-count {
 .explore .padded-button {
   min-width: 64px;
 }
+
+.explore-servers-popover list {
+  background-color: transparent;
+  color: inherit;
+}
+
+.explore-servers-popover list row {
+  min-height: 36px;
+  padding: 0 8px;
+  border-radius: 6px;
+  margin: 0 0 2px;
+}
+
+.explore-servers-popover list row button {
+  min-height: 24px;
+  min-width: 24px;
+}
+
 
 /* Invite */
 
