@@ -84,9 +84,18 @@ flatpak install --user gnome-nightly org.gnome.Fractal.Devel
 ### Runtime Dependencies
 
 Fractal doesn't store your **password** but uses [Secret Service](https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/)
-to store your other **credentials** so you should have something providing that service on your
-system. If you're using GNOME or KDE this should work for you out of the box with gnome-keyring or
-ksecretservice.
+to store your **access token** and **passphrase** used to encrypt the local cache.
+Therefore, you need to have software providing that service on your system.
+If you're using GNOME this should work for you out of the box and gnome-keyring or ksecretservice
+should already be installed and setup.
+
+## Security Best Practices
+
+Additionally to setting up the [Secret Service](https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/),
+make sure to use a strong **password** for the keyring, or for the user session if used to unlock the keyring
+(normally it's the case), since it will be used to encrypt secrets in **Secret Service**.
+Furthermore, make sure to lock your system when stepping away from the computer since an unlocked computer
+gives other people access to your private communications and stored secrets.
 
 ## Contributing
 
