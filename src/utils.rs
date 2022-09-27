@@ -166,7 +166,7 @@ macro_rules! _add_toast {
     }};
 }
 
-use std::{path::PathBuf, str::FromStr};
+use std::{collections::HashMap, convert::TryInto, path::PathBuf, str::FromStr};
 
 use gettextrs::gettext;
 use gtk::{
@@ -174,7 +174,10 @@ use gtk::{
     glib::{self, closure, Object},
 };
 use matrix_sdk::ruma::{
-    events::room::MediaSource, EventId, OwnedEventId, OwnedTransactionId, TransactionId, UInt,
+    events::room::MediaSource, exports::percent_encoding::percent_decode_str, matrix_uri::MatrixId,
+    serde::urlencoded, EventId, IdParseError, MatrixIdError, MatrixToError, OwnedEventId,
+    OwnedServerName, OwnedTransactionId, RoomAliasId, RoomId, ServerName, TransactionId, UInt,
+    UserId,
 };
 use mime::Mime;
 use once_cell::sync::Lazy;
@@ -478,3 +481,74 @@ pub static EMOJI_REGEX: Lazy<Regex> = Lazy::new(|| {
     )
     .unwrap()
 });
+
+const MATRIX_TO_BASE_URL: &str = "https://matrix.to/#/";
+
+/// Parse a matrix.to URI.
+///
+/// Ruma's parsing fails with non-percent-encoded identifiers, which is the
+/// format of permalinks provided by Element Web.
+pub fn parse_matrix_to_uri(uri: &str) -> Result<(MatrixId, Vec<OwnedServerName>), IdParseError> {
+    let s = uri
+        .strip_prefix(MATRIX_TO_BASE_URL)
+        .ok_or(MatrixToError::WrongBaseUrl)?;
+    let s = s.strip_suffix('/').unwrap_or(s);
+
+    let mut parts = s.split('?');
+    let ids_part = parts.next().ok_or(MatrixIdError::NoIdentifier)?;
+    let mut ids = ids_part.split('/');
+
+    let first = ids.next().ok_or(MatrixIdError::NoIdentifier)?;
+    let first_id = percent_decode_str(first).decode_utf8()?;
+
+    let id: MatrixId = match first_id.as_bytes()[0] {
+        b'!' => {
+            let room_id = RoomId::parse(&first_id)?;
+
+            if let Some(second) = ids.next() {
+                let second_id = percent_decode_str(second).decode_utf8()?;
+                let event_id = EventId::parse(&second_id)?;
+                (room_id, event_id).into()
+            } else {
+                room_id.into()
+            }
+        }
+        b'#' => {
+            let room_id = RoomAliasId::parse(&first_id)?;
+
+            if let Some(second) = ids.next() {
+                let second_id = percent_decode_str(second).decode_utf8()?;
+                let event_id = EventId::parse(&second_id)?;
+                (room_id, event_id).into()
+            } else {
+                room_id.into()
+            }
+        }
+        b'@' => UserId::parse(&first_id)?.into(),
+        b'$' => return Err(MatrixIdError::MissingRoom.into()),
+        _ => return Err(MatrixIdError::UnknownIdentifier.into()),
+    };
+
+    if ids.next().is_some() {
+        return Err(MatrixIdError::TooManyIdentifiers.into());
+    }
+
+    let via = parts
+        .next()
+        .map(|query| {
+            let query_parts = urlencoded::from_str::<HashMap<String, String>>(query)
+                .or(Err(MatrixToError::InvalidUrl))?;
+            query_parts
+                .into_iter()
+                .filter_map(|(key, value)| (key == "via").then(|| ServerName::parse(&value)))
+                .collect::<Result<Vec<_>, _>>()
+        })
+        .transpose()?
+        .unwrap_or_default();
+
+    if parts.next().is_some() {
+        return Err(MatrixToError::InvalidUrl.into());
+    }
+
+    Ok((id, via))
+}
