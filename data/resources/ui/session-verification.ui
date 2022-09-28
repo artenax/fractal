@@ -273,7 +273,7 @@
                           </object>
                         </child>
                         <child>
-                          <object class="ComponentsPasswordEntryRow">
+                          <object class="AdwPasswordEntryRow">
                             <style>
                               <class name="card"/>
                             </style>
