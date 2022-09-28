@@ -64,7 +64,7 @@ features = ["v4_6"]
 
 [dependencies.adw]
 package = "libadwaita"
-version = "0.2.0-alpha.2"
+version = "0.2.0-alpha.3"
 features = ["v1_2"]
 
 [dependencies.shumate]
