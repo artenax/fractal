@@ -395,10 +395,10 @@ impl IdentityVerification {
         .expect("Failed to create IdentityVerification")
     }
 
-    /// Creates and send a new verification request
+    /// Creates and send a new verification request.
     ///
     /// If `User` is `None` a new session verification is started for our own
-    /// user and send to other devices
+    /// user and send to other devices.
     pub async fn create(session: &Session, user: Option<&User>) -> Self {
         let user = if let Some(user) = user {
             user
@@ -509,8 +509,9 @@ impl IdentityVerification {
     }
 
     /// Force that this `IdentityVerification` is considered a
-    /// `Mode::CurrentSession`. This is usfull that incoming requests during
-    /// setup are accepted directly.
+    /// `Mode::CurrentSession`.
+    ///
+    /// This is used during setup to accept incoming requests automatically.
     pub fn set_force_current_session(&self, force: bool) {
         if self.force_current_session() == force {
             return;

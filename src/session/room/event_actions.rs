@@ -13,7 +13,7 @@ use crate::{
     spawn, spawn_tokio, toast, UserFacingError, Window,
 };
 
-// This is only save because the trait `EventActions` can
+// This is only safe because the trait `EventActions` can
 // only be implemented on `gtk::Widgets` that run only on the main thread
 struct MenuModelSendSync(gio::MenuModel);
 #[allow(clippy::non_send_fields_in_send_ty)]
