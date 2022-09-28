@@ -75,7 +75,7 @@
                             <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
-                              <object class="ComponentsEntryRow" id="homeserver_entry">
+                              <object class="AdwEntryRow" id="homeserver_entry">
                                 <style>
                                   <class name="card"/>
                                 </style>
@@ -164,7 +164,7 @@
                           </object>
                         </child>
                         <child>
-                          <object class="ComponentsEntryRow" id="username_entry">
+                          <object class="AdwEntryRow" id="username_entry">
                             <style>
                               <class name="card"/>
                             </style>
@@ -176,7 +176,7 @@
                             <property name="orientation">vertical</property>
                             <property name="spacing">12</property>
                             <child>
-                              <object class="ComponentsPasswordEntryRow" id="password_entry">
+                              <object class="AdwPasswordEntryRow" id="password_entry">
                                 <style>
                                   <class name="card"/>
                                 </style>
@@ -247,4 +247,3 @@
     </child>
   </template>
 </interface>
-

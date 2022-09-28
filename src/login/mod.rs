@@ -22,10 +22,8 @@ use idp_button::IdpButton;
 use login_advanced_dialog::LoginAdvancedDialog;
 
 use crate::{
-    components::{EntryRow, PasswordEntryRow, SpinnerButton},
-    gettext_f, spawn, spawn_tokio, toast,
-    user_facing_error::UserFacingError,
-    Session,
+    components::SpinnerButton, gettext_f, spawn, spawn_tokio, toast,
+    user_facing_error::UserFacingError, Session,
 };
 
 mod imp {
@@ -50,15 +48,15 @@ mod imp {
         #[template_child]
         pub main_stack: TemplateChild<gtk::Stack>,
         #[template_child]
-        pub homeserver_entry: TemplateChild<EntryRow>,
+        pub homeserver_entry: TemplateChild<adw::EntryRow>,
         #[template_child]
         pub homeserver_help: TemplateChild<gtk::Label>,
         #[template_child]
         pub password_title: TemplateChild<gtk::Label>,
         #[template_child]
-        pub username_entry: TemplateChild<EntryRow>,
+        pub username_entry: TemplateChild<adw::EntryRow>,
         #[template_child]
-        pub password_entry: TemplateChild<PasswordEntryRow>,
+        pub password_entry: TemplateChild<adw::PasswordEntryRow>,
         #[template_child]
         pub sso_box: TemplateChild<gtk::Box>,
         #[template_child]
@@ -178,19 +176,19 @@ mod imp {
             obj.update_next_action();
 
             self.homeserver_entry
-                .connect_activated(clone!(@weak obj => move|_| {
+                .connect_entry_activated(clone!(@weak obj => move|_| {
                     obj.default_widget().activate();
                 }));
             self.homeserver_entry
                 .connect_changed(clone!(@weak obj => move |_| obj.update_next_action()));
             self.username_entry
-                .connect_activated(clone!(@weak obj => move|_| {
+                .connect_entry_activated(clone!(@weak obj => move|_| {
                     obj.default_widget().activate();
                 }));
             self.username_entry
                 .connect_changed(clone!(@weak obj => move |_| obj.update_next_action()));
             self.password_entry
-                .connect_activated(clone!(@weak obj => move|_| {
+                .connect_entry_activated(clone!(@weak obj => move|_| {
                     obj.default_widget().activate();
                 }));
             self.password_entry
