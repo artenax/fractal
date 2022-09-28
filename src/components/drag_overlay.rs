@@ -79,7 +79,7 @@ mod imp {
                 "child" => self
                     .overlay
                     .set_child(value.get::<gtk::Widget>().ok().as_ref()),
-                "drop-target" => obj.set_drop_target(&value.get::<gtk::DropTarget>().unwrap()),
+                "drop-target" => obj.set_drop_target(&value.get().unwrap()),
                 _ => unimplemented!(),
             };
         }

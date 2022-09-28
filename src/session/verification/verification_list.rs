@@ -114,7 +114,7 @@ mod imp {
             self.list
                 .borrow()
                 .get_index(position as usize)
-                .map(|(_, item)| item.clone().upcast::<glib::Object>())
+                .map(|(_, item)| item.clone().upcast())
         }
     }
 }

@@ -124,9 +124,7 @@ mod imp {
                 "icon-name" => obj.set_icon_name(value.get().unwrap()),
                 "state" => obj.set_state(value.get().unwrap()),
                 "action-name" => obj.set_action_name(value.get().unwrap()),
-                "action-target" => obj.set_action_target_value(
-                    value.get::<Option<glib::Variant>>().unwrap().as_ref(),
-                ),
+                "action-target" => obj.set_action_target_value(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }

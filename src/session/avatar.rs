@@ -94,8 +94,8 @@ mod imp {
         ) {
             match pspec.name() {
                 "needed-size" => obj.set_needed_size(value.get().unwrap()),
-                "url" => obj.set_url(value.get::<Option<&str>>().unwrap().map(Into::into)),
-                "session" => self.session.set(value.get::<Session>().ok().as_ref()),
+                "url" => obj.set_url(value.get::<&str>().ok().map(Into::into)),
+                "session" => self.session.set(value.get().ok().as_ref()),
                 "display-name" => obj.set_display_name(value.get().unwrap()),
                 _ => unimplemented!(),
             }

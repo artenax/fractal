@@ -118,17 +118,17 @@ impl DevicesPage {
                 Some(&device_list),
                 clone!(@weak device_list => @default-panic, move |item| {
                     match item.downcast_ref::<DeviceItem>().unwrap().type_() {
-                        device_item::ItemType::Device(device) => DeviceRow::new(device, false).upcast::<gtk::Widget>(),
+                        device_item::ItemType::Device(device) => DeviceRow::new(device, false).upcast(),
                         device_item::ItemType::Error(error) => {
                             let row = LoadingListBoxRow::new();
                             row.set_error(Some(error));
                             row.connect_retry(clone!(@weak device_list => move|_| {
                                 device_list.load_devices()
                             }));
-                            row.upcast::<gtk::Widget>()
+                            row.upcast()
                         }
                         device_item::ItemType::LoadingSpinner => {
-                            LoadingListBoxRow::new().upcast::<gtk::Widget>()
+                            LoadingListBoxRow::new().upcast()
                         }
                     }
                 }),
@@ -171,21 +171,17 @@ impl DevicesPage {
         if let Some(child) = priv_.current_session.first_child() {
             priv_.current_session.remove(&child);
         }
-        let row = match device_list.current_device().type_() {
-            device_item::ItemType::Device(device) => {
-                DeviceRow::new(device, true).upcast::<gtk::Widget>()
-            }
+        let row: gtk::Widget = match device_list.current_device().type_() {
+            device_item::ItemType::Device(device) => DeviceRow::new(device, true).upcast(),
             device_item::ItemType::Error(error) => {
                 let row = LoadingListBoxRow::new();
                 row.set_error(Some(error));
                 row.connect_retry(clone!(@weak device_list => move|_| {
                     device_list.load_devices()
                 }));
-                row.upcast::<gtk::Widget>()
+                row.upcast()
             }
-            device_item::ItemType::LoadingSpinner => {
-                LoadingListBoxRow::new().upcast::<gtk::Widget>()
-            }
+            device_item::ItemType::LoadingSpinner => LoadingListBoxRow::new().upcast(),
         };
         priv_.current_session.append(&row);
     }

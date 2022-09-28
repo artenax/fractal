@@ -73,7 +73,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "model" => obj.set_model(value.get::<Option<&gio::ListModel>>().unwrap()),
+                "model" => obj.set_model(value.get::<&gio::ListModel>().ok()),
                 _ => unimplemented!(),
             }
         }

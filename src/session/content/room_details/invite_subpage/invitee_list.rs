@@ -128,7 +128,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "room" => self.room.set(value.get::<Room>().unwrap()).unwrap(),
+                "room" => self.room.set(value.get().unwrap()).unwrap(),
                 "search-term" => obj.set_search_term(value.get().unwrap()),
                 _ => unimplemented!(),
             }

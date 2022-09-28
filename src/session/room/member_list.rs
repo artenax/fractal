@@ -76,7 +76,7 @@ mod imp {
 
             members
                 .get_index(position as usize)
-                .map(|(_user_id, member)| member.clone().upcast::<glib::Object>())
+                .map(|(_user_id, member)| member.clone().upcast())
         }
     }
 }

@@ -139,7 +139,7 @@ glib::wrapper! {
 
 impl Selection {
     pub fn new<P: IsA<gio::ListModel>>(model: Option<&P>) -> Selection {
-        let model = model.map(|m| m.clone().upcast::<gio::ListModel>());
+        let model = model.map(|m| m.clone().upcast());
         glib::Object::new(&[("model", &model)]).expect("Failed to create Selection")
     }
 
@@ -160,7 +160,7 @@ impl Selection {
 
         let _guard = self.freeze_notify();
 
-        let model = model.map(|m| m.clone().upcast::<gio::ListModel>());
+        let model = model.map(|m| m.clone().upcast());
 
         let old_model = self.model();
         if old_model == model {

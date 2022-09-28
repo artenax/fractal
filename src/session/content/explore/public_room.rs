@@ -73,10 +73,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "room-list" => self
-                    .room_list
-                    .set(value.get::<RoomList>().unwrap())
-                    .unwrap(),
+                "room-list" => self.room_list.set(value.get().unwrap()).unwrap(),
                 _ => unimplemented!(),
             }
         }

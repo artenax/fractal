@@ -116,7 +116,7 @@ mod imp {
                         .unwrap();
                 }
                 "display-name" => {
-                    obj.set_display_name(value.get::<Option<String>>().unwrap());
+                    obj.set_display_name(value.get().unwrap());
                 }
                 "session" => self.session.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),

@@ -210,7 +210,7 @@ fn create_widget_for_html_block(
             w.set_use_markup(true);
             w.add_css_class(&format!("h{}", n));
             w.set_ellipsize(ellipsize);
-            w.upcast::<gtk::Widget>()
+            w.upcast()
         }
         HtmlBlock::UList(elements) => {
             let bx = gtk::Box::new(gtk::Orientation::Vertical, 6);
@@ -242,7 +242,7 @@ fn create_widget_for_html_block(
                 }
             }
 
-            bx.upcast::<gtk::Widget>()
+            bx.upcast()
         }
         HtmlBlock::OList(elements) => {
             let bx = gtk::Box::new(gtk::Orientation::Vertical, 6);
@@ -274,7 +274,7 @@ fn create_widget_for_html_block(
                 }
             }
 
-            bx.upcast::<gtk::Widget>()
+            bx.upcast()
         }
         HtmlBlock::Code(s) => {
             if ellipsize {
@@ -288,7 +288,7 @@ fn create_widget_for_html_block(
                 let w = LabelWithWidgets::with_label_and_widgets(&label, Vec::<gtk::Widget>::new());
                 w.set_use_markup(true);
                 w.set_ellipsize(ellipsize);
-                w.upcast::<gtk::Widget>()
+                w.upcast()
             } else {
                 let scrolled = gtk::ScrolledWindow::new();
                 scrolled.set_policy(gtk::PolicyType::Automatic, gtk::PolicyType::Never);
@@ -300,7 +300,7 @@ fn create_widget_for_html_block(
                 view.set_editable(false);
                 view.add_css_class("codeview");
                 scrolled.set_child(Some(&view));
-                scrolled.upcast::<gtk::Widget>()
+                scrolled.upcast()
             }
         }
         HtmlBlock::Quote(blocks) => {
@@ -319,7 +319,7 @@ fn create_widget_for_html_block(
                     break;
                 }
             }
-            bx.upcast::<gtk::Widget>()
+            bx.upcast()
         }
         HtmlBlock::Text(s) => {
             let (label, widgets) = extract_mentions(s, room);
@@ -330,7 +330,7 @@ fn create_widget_for_html_block(
             let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
             w.set_use_markup(true);
             w.set_ellipsize(ellipsize);
-            w.upcast::<gtk::Widget>()
+            w.upcast()
         }
         HtmlBlock::Separator => gtk::Separator::new(gtk::Orientation::Horizontal).upcast(),
     }

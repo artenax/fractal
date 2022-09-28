@@ -155,7 +155,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "session" => self.session.set(value.get::<Session>().ok().as_ref()),
+                "session" => self.session.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }

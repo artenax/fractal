@@ -113,8 +113,7 @@ macro_rules! toast {
                 let widget = $crate::components::LabelWithWidgets::with_label_and_widgets(
                     &swapped_label,
                     widgets,
-                )
-                .upcast::<gtk::Widget>();
+                );
 
                 adw::Toast::builder()
                     .custom_title(&widget)

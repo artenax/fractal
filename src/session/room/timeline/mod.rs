@@ -148,8 +148,7 @@ mod imp {
         fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
             let list = self.list.borrow();
 
-            list.get(position as usize)
-                .map(|o| o.clone().upcast::<glib::Object>())
+            list.get(position as usize).map(|o| o.clone().upcast())
         }
     }
 }

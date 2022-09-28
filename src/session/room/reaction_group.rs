@@ -67,7 +67,7 @@ mod imp {
         ) {
             match pspec.name() {
                 "key" => {
-                    self.key.set(value.get::<String>().unwrap()).unwrap();
+                    self.key.set(value.get().unwrap()).unwrap();
                 }
                 _ => unimplemented!(),
             }

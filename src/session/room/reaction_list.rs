@@ -39,7 +39,7 @@ mod imp {
 
             reactions
                 .get_index(position as usize)
-                .map(|(_key, reaction_group)| reaction_group.clone().upcast::<glib::Object>())
+                .map(|(_key, reaction_group)| reaction_group.clone().upcast())
         }
     }
 }
