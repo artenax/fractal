@@ -8,11 +8,11 @@
         <style>
           <class name="thumbnail"/>
         </style>
-        <property name="overflow">GTK_OVERFLOW_HIDDEN</property>
+        <property name="overflow">hidden</property>
         <child type="overlay">
           <object class="GtkSpinner" id="overlay_spinner">
-            <property name="halign">GTK_ALIGN_CENTER</property>
-            <property name="valign">GTK_ALIGN_CENTER</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
             <layout>
               <property name="measure">true</property>
             </layout>
@@ -24,10 +24,10 @@
               <class name="osd"/>
               <class name="circular"/>
             </style>
-            <property name="halign">GTK_ALIGN_CENTER</property>
-            <property name="valign">GTK_ALIGN_CENTER</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
             <property name="icon-name">dialog-error-symbolic</property>
-            <property name="icon-size">GTK_ICON_SIZE_LARGE</property>
+            <property name="icon-size">large</property>
             <layout>
               <property name="measure">true</property>
             </layout>

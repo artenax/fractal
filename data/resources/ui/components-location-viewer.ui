@@ -10,7 +10,7 @@
   <template class="ComponentsLocationViewer" parent="AdwBin">
     <property name="child">
       <object class="ShumateSimpleMap" id="map">
-        <property name="overflow">GTK_OVERFLOW_HIDDEN</property>
+        <property name="overflow">hidden</property>
         <style>
           <class name="map"/>
         </style>

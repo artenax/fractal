@@ -24,8 +24,8 @@
               <class name="timestamp"/>
             </style>
             <property name="visible" bind-source="ComponentsVideoPlayer" bind-property="compact" bind-flags="sync-create | invert-boolean"/>
-            <property name="halign">GTK_ALIGN_START</property>
-            <property name="valign">GTK_ALIGN_START</property>
+            <property name="halign">start</property>
+            <property name="valign">start</property>
             <property name="margin-start">5</property>
             <property name="margin-top">5</property>
             <layout>
