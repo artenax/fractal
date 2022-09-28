@@ -55,7 +55,6 @@ mod imp {
         type ParentType = adw::Bin;
 
         fn class_init(klass: &mut Self::Class) {
-            CustomEntry::static_type();
             Self::bind_template(klass);
 
             klass.install_action("details.choose-avatar", None, move |widget, _, _| {

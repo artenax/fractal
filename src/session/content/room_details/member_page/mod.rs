@@ -60,7 +60,6 @@ mod imp {
         type ParentType = adw::Bin;
 
         fn class_init(klass: &mut Self::Class) {
-            MembersListView::static_type();
             Self::bind_template(klass);
 
             klass.install_action("member.verify", None, move |widget, _, _| {

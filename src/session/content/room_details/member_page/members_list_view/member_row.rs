@@ -1,9 +1,12 @@
 use adw::subclass::prelude::BinImpl;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 
-use crate::session::{
-    content::room_details::{member_page::MemberMenu, MemberPage},
-    room::Member,
+use crate::{
+    components::{Avatar, Badge},
+    session::{
+        content::room_details::{member_page::MemberMenu, MemberPage},
+        room::Member,
+    },
 };
 
 mod imp {
@@ -29,6 +32,8 @@ mod imp {
         type ParentType = adw::Bin;
 
         fn class_init(klass: &mut Self::Class) {
+            Avatar::static_type();
+            Badge::static_type();
             Self::bind_template(klass);
         }
 

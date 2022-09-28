@@ -47,8 +47,6 @@ mod imp {
         type ParentType = gtk::Box;
 
         fn class_init(klass: &mut Self::Class) {
-            PasswordEntryRow::static_type();
-            SpinnerButton::static_type();
             Self::bind_template(klass);
         }
 

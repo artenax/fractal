@@ -69,7 +69,6 @@ mod imp {
         type ParentType = adw::Window;
 
         fn class_init(klass: &mut Self::Class) {
-            SpinnerButton::static_type();
             Self::bind_template(klass);
 
             klass.add_binding(

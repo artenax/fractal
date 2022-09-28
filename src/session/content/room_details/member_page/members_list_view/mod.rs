@@ -4,8 +4,6 @@ use adw::{
 };
 use gtk::{gio, glib, CompositeTemplate};
 
-use crate::components::{Avatar, Badge};
-
 pub mod extra_lists;
 mod item_row;
 mod member_row;
@@ -38,9 +36,6 @@ mod imp {
         type ParentType = adw::Bin;
 
         fn class_init(klass: &mut Self::Class) {
-            Avatar::static_type();
-            Badge::static_type();
-            MemberRow::static_type();
             ItemRow::static_type();
             Self::bind_template(klass);
         }

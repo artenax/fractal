@@ -64,10 +64,7 @@ mod imp {
         type ParentType = adw::PreferencesPage;
 
         fn class_init(klass: &mut Self::Class) {
-            EditableAvatar::static_type();
             ButtonRow::static_type();
-            ChangePasswordSubpage::static_type();
-            DeactivateAccountSubpage::static_type();
             Self::bind_template(klass);
             Self::Type::bind_template_callbacks(klass);
             TemplateCallbacks::bind_template_callbacks(klass);

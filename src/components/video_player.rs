@@ -35,7 +35,6 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             VideoPlayerRenderer::static_type();
-            Player::static_type();
             PlayerGMainContextSignalDispatcher::static_type();
             Self::bind_template(klass);
             Self::Type::bind_template_callbacks(klass);

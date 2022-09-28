@@ -46,8 +46,6 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Pill::static_type();
-            SpinnerButton::static_type();
-            LabelWithWidgets::static_type();
             Avatar::static_type();
             Self::bind_template(klass);
             klass.set_accessible_role(gtk::AccessibleRole::Group);

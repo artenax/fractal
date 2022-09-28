@@ -40,7 +40,6 @@ mod imp {
         type ParentType = adw::Bin;
 
         fn class_init(klass: &mut Self::Class) {
-            SpinnerButton::static_type();
             Self::bind_template(klass);
 
             klass.install_action("session-verification.previous", None, move |obj, _, _| {

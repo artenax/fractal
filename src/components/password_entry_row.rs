@@ -37,7 +37,6 @@ mod imp {
         type ParentType = adw::PreferencesRow;
 
         fn class_init(klass: &mut Self::Class) {
-            ActionButton::static_type();
             Self::bind_template(klass);
             TemplateCallbacks::bind_template_callbacks(klass);
 

@@ -29,7 +29,6 @@ mod imp {
         type ParentType = gtk::ListBoxRow;
 
         fn class_init(klass: &mut Self::Class) {
-            AvatarWithSelection::static_type();
             Self::bind_template(klass);
             Self::Type::bind_template_callbacks(klass);
         }

@@ -102,11 +102,6 @@ mod imp {
         type ParentType = adw::Bin;
 
         fn class_init(klass: &mut Self::Class) {
-            SpinnerButton::static_type();
-            QRCode::static_type();
-            Emoji::static_type();
-            QrCodeScanner::static_type();
-
             klass.install_action("verification.decline", None, move |obj, _, _| {
                 obj.decline();
             });
