@@ -75,9 +75,7 @@
         <child>
           <object class="AdwPreferencesGroup">
             <child>
-              <object class="ComponentsEntryRow" id="confirmation">
-                <property name="title" translatable="yes">Matrix User ID</property>
-              </object>
+              <object class="AdwEntryRow" id="confirmation"/>
             </child>
           </object>
         </child>

@@ -8,7 +8,7 @@ use log::error;
 use matrix_sdk::ruma::{api::client::account::deactivate, assign};
 
 use crate::{
-    components::{AuthDialog, EntryRow, SpinnerButton},
+    components::{AuthDialog, SpinnerButton},
     session::{Session, UserExt},
     spawn, toast,
 };
@@ -24,7 +24,7 @@ mod imp {
     pub struct DeactivateAccountSubpage {
         pub session: OnceCell<WeakRef<Session>>,
         #[template_child]
-        pub confirmation: TemplateChild<EntryRow>,
+        pub confirmation: TemplateChild<adw::EntryRow>,
         #[template_child]
         pub button: TemplateChild<SpinnerButton>,
     }
@@ -36,7 +36,6 @@ mod imp {
         type ParentType = gtk::Box;
 
         fn class_init(klass: &mut Self::Class) {
-            EntryRow::static_type();
             Self::bind_template(klass);
         }
 
@@ -85,7 +84,7 @@ mod imp {
             self.parent_constructed(obj);
 
             self.confirmation
-                .connect_activated(clone!(@weak obj => move|_| {
+                .connect_entry_activated(clone!(@weak obj => move|_| {
                     spawn!(
                         clone!(@weak obj => async move {
                             obj.deactivate_account().await;
@@ -134,9 +133,7 @@ impl DeactivateAccountSubpage {
         if let Some(session) = session {
             let priv_ = self.imp();
             priv_.session.set(session.downgrade()).unwrap();
-            priv_
-                .confirmation
-                .set_placeholder_text(Some(&self.user_id()));
+            priv_.confirmation.set_title(&self.user_id());
         }
     }
 

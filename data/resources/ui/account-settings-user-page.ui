@@ -34,7 +34,7 @@
     <child>
       <object class="AdwPreferencesGroup">
         <child>
-          <object class="ComponentsEntryRow" id="display_name">
+          <object class="AdwEntryRow" id="display_name">
             <property name="title" translatable="yes">Name</property>
             <binding name="text">
               <lookup name="display-name">
@@ -43,6 +43,14 @@
                 </lookup>
               </lookup>
             </binding>
+            <signal name="entry-activated" handler="handle_change_display_name" swapped="yes"/>
+            <child type="suffix">
+              <object class="ComponentsActionButton" id="display_name_button">
+                <property name="visible">False</property>
+                <property name="state">confirm</property>
+                <signal name="clicked" handler="handle_change_display_name" swapped="yes"/>
+              </object>
+            </child>
           </object>
         </child>
       </object>

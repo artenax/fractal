@@ -17,7 +17,7 @@ use change_password_subpage::ChangePasswordSubpage;
 use deactivate_account_subpage::DeactivateAccountSubpage;
 
 use crate::{
-    components::{ActionState, ButtonRow, EditableAvatar, EntryRow},
+    components::{ActionButton, ActionState, ButtonRow, EditableAvatar},
     session::{Session, User, UserExt},
     spawn, spawn_tokio, toast,
     utils::TemplateCallbacks,
@@ -37,7 +37,9 @@ mod imp {
         #[template_child]
         pub avatar: TemplateChild<EditableAvatar>,
         #[template_child]
-        pub display_name: TemplateChild<EntryRow>,
+        pub display_name: TemplateChild<adw::EntryRow>,
+        #[template_child]
+        pub display_name_button: TemplateChild<ActionButton>,
         #[template_child]
         pub change_password_group: TemplateChild<adw::PreferencesGroup>,
         #[template_child]
@@ -63,7 +65,6 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             EditableAvatar::static_type();
-            EntryRow::static_type();
             ButtonRow::static_type();
             ChangePasswordSubpage::static_type();
             DeactivateAccountSubpage::static_type();
@@ -342,31 +343,17 @@ impl UserPage {
     }
 
     fn init_display_name(&self) {
-        let entry = &*self.imp().display_name;
-        entry.connect_focused(clone!(@weak self as obj => move|entry, focused| {
-            if entry.entry_sensitive() {
-                if focused {
-                    entry.set_action_state(ActionState::Confirm);
-                } else if entry.text() == obj.user().display_name() {
-                    entry.set_action_state(ActionState::Default);
-                }
-            }
-        }));
-        entry.connect_activated(clone!(@weak self as obj => move|_| {
-            spawn!(
-                clone!(@weak obj => async move {
-                    obj.change_display_name().await;
-                })
-            );
-        }));
-        entry.connect_cancel(clone!(@weak self as obj => move|entry| {
-            entry.set_text(&obj.user().display_name());
+        let priv_ = self.imp();
+        let entry = &priv_.display_name;
+        entry.connect_changed(clone!(@weak self as obj => move|entry| {
+            obj.imp().display_name_button.set_visible(entry.text() != obj.user().display_name());
         }));
     }
 
     fn display_name_changed(&self, name: &str) {
         let priv_ = self.imp();
-        let entry = &*priv_.display_name;
+        let entry = &priv_.display_name;
+        let button = &priv_.display_name_button;
 
         let to_display_name = priv_
             .changing_display_name_to
@@ -376,23 +363,20 @@ impl UserPage {
         if to_display_name == name {
             priv_.changing_display_name_to.take();
             entry.remove_css_class("error");
-            entry.set_action_state(ActionState::Success);
-            entry.set_entry_sensitive(true);
+            entry.set_sensitive(true);
+            button.hide();
+            button.set_state(ActionState::Confirm);
             toast!(self, gettext("Name changed successfully"));
-            glib::timeout_add_local_once(
-                Duration::from_secs(2),
-                clone!(@weak entry => move || {
-                    entry.set_action_state(ActionState::Default);
-                }),
-            );
         }
     }
 
     async fn change_display_name(&self) {
         let priv_ = self.imp();
-        let entry = &*priv_.display_name;
-        entry.set_action_state(ActionState::Loading);
-        entry.set_entry_sensitive(false);
+        let entry = &priv_.display_name;
+        let button = &priv_.display_name_button;
+
+        entry.set_sensitive(false);
+        button.set_state(ActionState::Loading);
 
         let display_name = entry.text();
         priv_
@@ -415,9 +399,9 @@ impl UserPage {
             Err(err) => {
                 error!("Couldn’t change user display name: {}", err);
                 toast!(self, gettext("Could not change display name"));
-                entry.set_action_state(ActionState::Retry);
+                button.set_state(ActionState::Retry);
                 entry.add_css_class("error");
-                entry.set_entry_sensitive(true);
+                entry.set_sensitive(true);
             }
         }
     }
@@ -440,6 +424,13 @@ impl UserPage {
                 }
             })
         );
+    }
+
+    #[template_callback]
+    fn handle_change_display_name(&self) {
+        spawn!(clone!(@weak self as obj => async move {
+            obj.change_display_name().await;
+        }));
     }
 
     #[template_callback]
