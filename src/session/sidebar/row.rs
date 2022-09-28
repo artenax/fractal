@@ -16,13 +16,13 @@ mod imp {
     use std::cell::RefCell;
 
     use glib::WeakRef;
-    use once_cell::{sync::Lazy, unsync::OnceCell};
+    use once_cell::sync::Lazy;
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct Row {
-        pub sidebar: OnceCell<WeakRef<Sidebar>>,
+        pub sidebar: WeakRef<Sidebar>,
         pub list_row: RefCell<Option<gtk::TreeListRow>>,
         pub bindings: RefCell<Vec<glib::Binding>>,
     }
@@ -78,10 +78,7 @@ mod imp {
         ) {
             match pspec.name() {
                 "list-row" => obj.set_list_row(value.get().unwrap()),
-                "sidebar" => self
-                    .sidebar
-                    .set(value.get::<Sidebar>().unwrap().downgrade())
-                    .unwrap(),
+                "sidebar" => self.sidebar.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
@@ -133,7 +130,7 @@ impl Row {
     }
 
     pub fn sidebar(&self) -> Sidebar {
-        self.imp().sidebar.get().unwrap().upgrade().unwrap()
+        self.imp().sidebar.upgrade().unwrap()
     }
 
     pub fn item(&self) -> Option<SidebarItem> {

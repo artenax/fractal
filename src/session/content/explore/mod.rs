@@ -24,7 +24,7 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/content-explore.ui")]
     pub struct Explore {
         pub compact: Cell<bool>,
-        pub session: RefCell<Option<WeakRef<Session>>>,
+        pub session: WeakRef<Session>,
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
@@ -146,11 +146,7 @@ impl Explore {
     }
 
     pub fn session(&self) -> Option<Session> {
-        self.imp()
-            .session
-            .borrow()
-            .as_ref()
-            .and_then(|session| session.upgrade())
+        self.imp().session.upgrade()
     }
 
     pub fn init(&self) {
@@ -192,9 +188,7 @@ impl Explore {
             priv_.public_room_list.replace(Some(public_room_list));
         }
 
-        priv_
-            .session
-            .replace(session.map(|session| session.downgrade()));
+        priv_.session.set(session.as_ref());
         self.notify("session");
     }
 

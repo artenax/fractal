@@ -9,13 +9,12 @@ use crate::{config, Window};
 
 mod imp {
     use adw::subclass::prelude::AdwApplicationImpl;
-    use once_cell::unsync::OnceCell;
 
     use super::*;
 
     #[derive(Debug)]
     pub struct Application {
-        pub window: OnceCell<WeakRef<Window>>,
+        pub window: WeakRef<Window>,
         pub settings: Settings,
     }
 
@@ -41,17 +40,14 @@ mod imp {
         fn activate(&self, app: &Self::Type) {
             debug!("GtkApplication<Application>::activate");
 
-            if let Some(window) = self.window.get() {
-                let window = window.upgrade().unwrap();
+            if let Some(window) = self.window.upgrade() {
                 window.show();
                 window.present();
                 return;
             }
 
             let window = Window::new(app);
-            self.window
-                .set(window.downgrade())
-                .expect("Window already set.");
+            self.window.set(Some(&window));
 
             app.setup_gactions();
             app.setup_accels();
@@ -100,7 +96,7 @@ impl Application {
     }
 
     fn get_main_window(&self) -> Window {
-        self.imp().window.get().unwrap().upgrade().unwrap()
+        self.imp().window.upgrade().unwrap()
     }
 
     pub fn settings(&self) -> Settings {

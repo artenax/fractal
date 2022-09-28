@@ -51,13 +51,13 @@ mod imp {
     use std::cell::{Cell, RefCell};
 
     use glib::object::WeakRef;
-    use once_cell::{sync::Lazy, unsync::OnceCell};
+    use once_cell::sync::Lazy;
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct Timeline {
-        pub room: OnceCell<WeakRef<Room>>,
+        pub room: WeakRef<Room>,
         /// A store to keep track of related events that aren't known
         pub relates_to_events: RefCell<HashMap<OwnedEventId, Vec<OwnedEventId>>>,
         /// All events shown in the room history
@@ -121,10 +121,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "room" => {
-                    let room = value.get::<Room>().unwrap();
-                    obj.set_room(room);
-                }
+                "room" => obj.set_room(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -837,12 +834,12 @@ impl Timeline {
         self.items_changed(0, 0, added as u32);
     }
 
-    fn set_room(&self, room: Room) {
-        self.imp().room.set(room.downgrade()).unwrap();
+    fn set_room(&self, room: Option<Room>) {
+        self.imp().room.set(room.as_ref());
     }
 
     pub fn room(&self) -> Room {
-        self.imp().room.get().unwrap().upgrade().unwrap()
+        self.imp().room.upgrade().unwrap()
     }
 
     fn set_state(&self, state: TimelineState) {

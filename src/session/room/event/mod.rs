@@ -24,7 +24,7 @@ mod imp {
     use std::cell::RefCell;
 
     use glib::{object::WeakRef, Class};
-    use once_cell::{sync::Lazy, unsync::OnceCell};
+    use once_cell::sync::Lazy;
 
     use super::*;
 
@@ -70,7 +70,7 @@ mod imp {
         pub pure_event: RefCell<Option<SyncTimelineEvent>>,
 
         /// The room containing this `Event`.
-        pub room: OnceCell<WeakRef<Room>>,
+        pub room: WeakRef<Room>,
     }
 
     #[glib::object_subclass]
@@ -133,9 +133,7 @@ mod imp {
                     obj.set_pure_event(event.0);
                 }
                 "room" => {
-                    self.room
-                        .set(value.get::<Room>().unwrap().downgrade())
-                        .unwrap();
+                    self.room.set(value.get().ok().as_ref());
                 }
                 _ => unimplemented!(),
             }
@@ -248,13 +246,7 @@ pub trait EventExt: 'static {
 
 impl<O: IsA<Event>> EventExt for O {
     fn room(&self) -> Room {
-        self.upcast_ref()
-            .imp()
-            .room
-            .get()
-            .unwrap()
-            .upgrade()
-            .unwrap()
+        self.upcast_ref().imp().room.upgrade().unwrap()
     }
 
     fn pure_event(&self) -> SyncTimelineEvent {

@@ -25,14 +25,13 @@ use crate::{
 
 mod imp {
     use glib::{subclass::InitializingObject, WeakRef};
-    use once_cell::unsync::OnceCell;
 
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/account-settings-change-password-subpage.ui")]
     pub struct ChangePasswordSubpage {
-        pub session: OnceCell<WeakRef<Session>>,
+        pub session: WeakRef<Session>,
         #[template_child]
         pub password: TemplateChild<PasswordEntryRow>,
         #[template_child]
@@ -177,16 +176,11 @@ impl ChangePasswordSubpage {
     }
 
     pub fn session(&self) -> Option<Session> {
-        self.imp()
-            .session
-            .get()
-            .and_then(|session| session.upgrade())
+        self.imp().session.upgrade()
     }
 
     pub fn set_session(&self, session: Option<Session>) {
-        if let Some(session) = session {
-            self.imp().session.set(session.downgrade()).unwrap();
-        }
+        self.imp().session.set(session.as_ref());
     }
 
     fn validate_password(&self) {

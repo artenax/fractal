@@ -50,14 +50,14 @@ mod imp {
 
     use glib::object::WeakRef;
     use indexmap::IndexMap;
-    use once_cell::{sync::Lazy, unsync::OnceCell};
+    use once_cell::sync::Lazy;
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct VerificationList {
         pub list: RefCell<IndexMap<FlowId, IdentityVerification>>,
-        pub session: OnceCell<WeakRef<Session>>,
+        pub session: WeakRef<Session>,
     }
 
     #[glib::object_subclass]
@@ -90,10 +90,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "session" => self
-                    .session
-                    .set(value.get::<Session>().unwrap().downgrade())
-                    .unwrap(),
+                "session" => self.session.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
@@ -133,7 +130,7 @@ impl VerificationList {
     }
 
     pub fn session(&self) -> Session {
-        self.imp().session.get().unwrap().upgrade().unwrap()
+        self.imp().session.upgrade().unwrap()
     }
 
     pub fn handle_response_to_device(&self, to_device: ToDevice) {

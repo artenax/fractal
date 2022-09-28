@@ -31,7 +31,7 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/content.ui")]
     pub struct Content {
         pub compact: Cell<bool>,
-        pub session: RefCell<Option<WeakRef<Session>>>,
+        pub session: WeakRef<Session>,
         pub item: RefCell<Option<glib::Object>>,
         pub signal_handler: RefCell<Option<SignalHandlerId>>,
         #[template_child]
@@ -171,11 +171,7 @@ impl Content {
     }
 
     pub fn session(&self) -> Option<Session> {
-        self.imp()
-            .session
-            .borrow()
-            .as_ref()
-            .and_then(|session| session.upgrade())
+        self.imp().session.upgrade()
     }
 
     pub fn set_session(&self, session: Option<Session>) {
@@ -183,9 +179,7 @@ impl Content {
             return;
         }
 
-        self.imp()
-            .session
-            .replace(session.map(|session| session.downgrade()));
+        self.imp().session.set(session.as_ref());
         self.notify("session");
     }
 

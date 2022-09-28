@@ -15,14 +15,13 @@ use crate::{
 
 mod imp {
     use glib::{subclass::InitializingObject, WeakRef};
-    use once_cell::unsync::OnceCell;
 
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/account-settings-deactivate-account-subpage.ui")]
     pub struct DeactivateAccountSubpage {
-        pub session: OnceCell<WeakRef<Session>>,
+        pub session: WeakRef<Session>,
         #[template_child]
         pub confirmation: TemplateChild<adw::EntryRow>,
         #[template_child]
@@ -123,16 +122,13 @@ impl DeactivateAccountSubpage {
     }
 
     pub fn session(&self) -> Option<Session> {
-        self.imp()
-            .session
-            .get()
-            .and_then(|session| session.upgrade())
+        self.imp().session.upgrade()
     }
 
     pub fn set_session(&self, session: Option<Session>) {
         if let Some(session) = session {
             let priv_ = self.imp();
-            priv_.session.set(session.downgrade()).unwrap();
+            priv_.session.set(Some(&session));
             priv_.confirmation.set_title(&self.user_id());
         }
     }

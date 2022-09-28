@@ -34,7 +34,7 @@ mod imp {
         pub loading: Cell<bool>,
         pub request_sent: Cell<bool>,
         pub total_room_count_estimate: Cell<Option<u64>>,
-        pub session: RefCell<Option<WeakRef<Session>>>,
+        pub session: WeakRef<Session>,
     }
 
     #[glib::object_subclass]
@@ -134,11 +134,7 @@ impl PublicRoomList {
     }
 
     pub fn session(&self) -> Option<Session> {
-        self.imp()
-            .session
-            .borrow()
-            .as_ref()
-            .and_then(|session| session.upgrade())
+        self.imp().session.upgrade()
     }
 
     pub fn set_session(&self, session: Option<Session>) {
@@ -146,9 +142,7 @@ impl PublicRoomList {
             return;
         }
 
-        self.imp()
-            .session
-            .replace(session.map(|session| session.downgrade()));
+        self.imp().session.set(session.as_ref());
         self.notify("session");
     }
 

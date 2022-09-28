@@ -85,14 +85,14 @@ mod imp {
         subclass::{InitializingObject, Signal},
         SignalHandlerId,
     };
-    use once_cell::{sync::Lazy, unsync::OnceCell};
+    use once_cell::sync::Lazy;
 
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/components-auth-dialog.ui")]
     pub struct AuthDialog {
-        pub session: OnceCell<WeakRef<Session>>,
+        pub session: WeakRef<Session>,
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
@@ -155,10 +155,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "session" => self
-                    .session
-                    .set(value.get::<Session>().unwrap().downgrade())
-                    .unwrap(),
+                "session" => self.session.set(value.get::<Session>().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
@@ -222,7 +219,7 @@ impl AuthDialog {
     }
 
     pub fn session(&self) -> Session {
-        self.imp().session.get().unwrap().upgrade().unwrap()
+        self.imp().session.upgrade().unwrap()
     }
 
     /// Authenticates the user to the server via an authentication flow.

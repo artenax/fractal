@@ -26,8 +26,6 @@ use crate::{
 const MAX_BYTES: usize = 255;
 
 mod imp {
-    use std::cell::RefCell;
-
     use glib::{object::WeakRef, subclass::InitializingObject};
 
     use super::*;
@@ -35,7 +33,7 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/room-creation.ui")]
     pub struct RoomCreation {
-        pub session: RefCell<Option<WeakRef<Session>>>,
+        pub session: WeakRef<Session>,
         #[template_child]
         pub content: TemplateChild<gtk::ListBox>,
         #[template_child]
@@ -164,11 +162,7 @@ impl RoomCreation {
     }
 
     pub fn session(&self) -> Option<Session> {
-        self.imp()
-            .session
-            .borrow()
-            .as_ref()
-            .and_then(|session| session.upgrade())
+        self.imp().session.upgrade()
     }
 
     fn set_session(&self, session: Option<Session>) {
@@ -184,9 +178,7 @@ impl RoomCreation {
                 .set_label(&[":", user.user_id().server_name().as_str()].concat());
         }
 
-        priv_
-            .session
-            .replace(session.map(|session| session.downgrade()));
+        priv_.session.set(session.as_ref());
         self.notify("session");
     }
 

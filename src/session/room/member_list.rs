@@ -11,14 +11,14 @@ mod imp {
     use std::cell::RefCell;
 
     use glib::object::WeakRef;
-    use once_cell::{sync::Lazy, unsync::OnceCell};
+    use once_cell::sync::Lazy;
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct MemberList {
         pub members: RefCell<IndexMap<OwnedUserId, Member>>,
-        pub room: OnceCell<WeakRef<Room>>,
+        pub room: WeakRef<Room>,
     }
 
     #[glib::object_subclass]
@@ -51,10 +51,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "room" => self
-                    .room
-                    .set(value.get::<Room>().unwrap().downgrade())
-                    .unwrap(),
+                "room" => self.room.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
@@ -98,7 +95,7 @@ impl MemberList {
     }
 
     pub fn room(&self) -> Room {
-        self.imp().room.get().unwrap().upgrade().unwrap()
+        self.imp().room.upgrade().unwrap()
     }
 
     /// Updates members with the given RoomMember values.

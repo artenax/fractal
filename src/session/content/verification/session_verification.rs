@@ -14,7 +14,6 @@ mod imp {
     use std::cell::RefCell;
 
     use glib::{subclass::InitializingObject, SignalHandlerId, WeakRef};
-    use once_cell::unsync::OnceCell;
 
     use super::*;
 
@@ -22,7 +21,7 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/session-verification.ui")]
     pub struct SessionVerification {
         pub request: RefCell<Option<IdentityVerification>>,
-        pub session: OnceCell<WeakRef<Session>>,
+        pub session: WeakRef<Session>,
         #[template_child]
         pub bootstrap_button: TemplateChild<SpinnerButton>,
         #[template_child]
@@ -143,11 +142,11 @@ impl SessionVerification {
 
     /// The current `Session`.
     pub fn session(&self) -> Session {
-        self.imp().session.get().unwrap().upgrade().unwrap()
+        self.imp().session.upgrade().unwrap()
     }
 
-    fn set_session(&self, session: Session) {
-        self.imp().session.set(session.downgrade()).unwrap()
+    fn set_session(&self, session: Option<Session>) {
+        self.imp().session.set(session.as_ref())
     }
 
     fn request(&self) -> Option<IdentityVerification> {

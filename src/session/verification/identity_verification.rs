@@ -171,7 +171,7 @@ mod imp {
     #[derive(Default)]
     pub struct IdentityVerification {
         pub user: OnceCell<User>,
-        pub session: OnceCell<WeakRef<Session>>,
+        pub session: WeakRef<Session>,
         pub state: Cell<State>,
         pub mode: OnceCell<Mode>,
         pub supported_methods: Cell<SupportedMethods>,
@@ -524,11 +524,11 @@ impl IdentityVerification {
 
     /// The current `Session`.
     pub fn session(&self) -> Session {
-        self.imp().session.get().unwrap().upgrade().unwrap()
+        self.imp().session.upgrade().unwrap()
     }
 
-    fn set_session(&self, session: Session) {
-        self.imp().session.set(session.downgrade()).unwrap()
+    fn set_session(&self, session: Option<Session>) {
+        self.imp().session.set(session.as_ref())
     }
 
     fn setup_timeout(&self) {

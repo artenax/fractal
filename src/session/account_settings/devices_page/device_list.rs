@@ -13,14 +13,14 @@ mod imp {
     use std::cell::{Cell, RefCell};
 
     use glib::object::WeakRef;
-    use once_cell::{sync::Lazy, unsync::OnceCell};
+    use once_cell::sync::Lazy;
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct DeviceList {
         pub list: RefCell<Vec<DeviceItem>>,
-        pub session: OnceCell<WeakRef<Session>>,
+        pub session: WeakRef<Session>,
         pub current_device: RefCell<Option<DeviceItem>>,
         pub loading: Cell<bool>,
     }
@@ -64,10 +64,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "session" => self
-                    .session
-                    .set(value.get::<Session>().unwrap().downgrade())
-                    .unwrap(),
+                "session" => self.session.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
@@ -115,7 +112,7 @@ impl DeviceList {
     }
 
     pub fn session(&self) -> Session {
-        self.imp().session.get().unwrap().upgrade().unwrap()
+        self.imp().session.upgrade().unwrap()
     }
 
     fn set_loading(&self, loading: bool) {

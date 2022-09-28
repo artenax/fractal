@@ -7,8 +7,6 @@ mod import_export_keys_subpage;
 use import_export_keys_subpage::{ImportExportKeysSubpage, KeysSubpageMode};
 
 mod imp {
-    use std::cell::RefCell;
-
     use glib::{subclass::InitializingObject, WeakRef};
 
     use super::*;
@@ -16,7 +14,7 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/account-settings-security-page.ui")]
     pub struct SecurityPage {
-        pub session: RefCell<Option<WeakRef<Session>>>,
+        pub session: WeakRef<Session>,
         #[template_child]
         pub import_export_keys_subpage: TemplateChild<ImportExportKeysSubpage>,
     }
@@ -93,11 +91,7 @@ impl SecurityPage {
     }
 
     pub fn session(&self) -> Option<Session> {
-        self.imp()
-            .session
-            .borrow()
-            .clone()
-            .and_then(|session| session.upgrade())
+        self.imp().session.upgrade()
     }
 
     pub fn set_session(&self, session: Option<Session>) {
@@ -105,9 +99,7 @@ impl SecurityPage {
             return;
         }
 
-        self.imp()
-            .session
-            .replace(session.map(|session| session.downgrade()));
+        self.imp().session.set(session.as_ref());
         self.notify("session");
     }
 

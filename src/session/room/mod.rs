@@ -82,7 +82,7 @@ mod imp {
     pub struct Room {
         pub room_id: OnceCell<OwnedRoomId>,
         pub matrix_room: RefCell<Option<MatrixRoom>>,
-        pub session: OnceCell<WeakRef<Session>>,
+        pub session: WeakRef<Session>,
         pub name: RefCell<Option<String>>,
         pub avatar: OnceCell<Avatar>,
         pub category: Cell<RoomType>,
@@ -259,10 +259,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "session" => self
-                    .session
-                    .set(value.get::<Session>().unwrap().downgrade())
-                    .unwrap(),
+                "session" => self.session.set(value.get().ok().as_ref()),
                 "display-name" => {
                     let room_name = value.get().unwrap();
                     obj.store_room_name(room_name)
@@ -380,7 +377,7 @@ impl Room {
     }
 
     pub fn session(&self) -> Session {
-        self.imp().session.get().unwrap().upgrade().unwrap()
+        self.imp().session.upgrade().unwrap()
     }
 
     pub fn room_id(&self) -> &RoomId {

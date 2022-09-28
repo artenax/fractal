@@ -24,7 +24,7 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/media-viewer.ui")]
     pub struct MediaViewer {
         pub fullscreened: Cell<bool>,
-        pub event: RefCell<Option<WeakRef<SupportedEvent>>>,
+        pub event: WeakRef<SupportedEvent>,
         pub body: RefCell<Option<String>>,
         #[template_child]
         pub flap: TemplateChild<adw::Flap>,
@@ -154,11 +154,7 @@ impl MediaViewer {
     }
 
     pub fn event(&self) -> Option<SupportedEvent> {
-        self.imp()
-            .event
-            .borrow()
-            .as_ref()
-            .and_then(|event| event.upgrade())
+        self.imp().event.upgrade()
     }
 
     pub fn set_event(&self, event: Option<SupportedEvent>) {
@@ -166,9 +162,7 @@ impl MediaViewer {
             return;
         }
 
-        self.imp()
-            .event
-            .replace(event.map(|event| event.downgrade()));
+        self.imp().event.set(event.as_ref());
         self.build();
         self.notify("event");
     }

@@ -33,14 +33,13 @@ mod imp {
     use std::cell::{Cell, RefCell};
 
     use glib::{subclass::InitializingObject, WeakRef};
-    use once_cell::unsync::OnceCell;
 
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/account-settings-import-export-keys-subpage.ui")]
     pub struct ImportExportKeysSubpage {
-        pub session: OnceCell<WeakRef<Session>>,
+        pub session: WeakRef<Session>,
         #[template_child]
         pub title: TemplateChild<gtk::Label>,
         #[template_child]
@@ -181,16 +180,11 @@ impl ImportExportKeysSubpage {
     }
 
     pub fn session(&self) -> Option<Session> {
-        self.imp()
-            .session
-            .get()
-            .and_then(|session| session.upgrade())
+        self.imp().session.upgrade()
     }
 
     pub fn set_session(&self, session: Option<Session>) {
-        if let Some(session) = session {
-            self.imp().session.set(session.downgrade()).unwrap();
-        }
+        self.imp().session.set(session.as_ref());
     }
 
     pub fn file_path(&self) -> Option<gio::File> {

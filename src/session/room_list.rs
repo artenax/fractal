@@ -18,7 +18,7 @@ mod imp {
     use std::cell::RefCell;
 
     use glib::{object::WeakRef, subclass::Signal};
-    use once_cell::{sync::Lazy, unsync::OnceCell};
+    use once_cell::sync::Lazy;
 
     use super::*;
 
@@ -26,7 +26,7 @@ mod imp {
     pub struct RoomList {
         pub list: RefCell<IndexMap<OwnedRoomId, Room>>,
         pub pending_rooms: RefCell<HashSet<OwnedRoomOrAliasId>>,
-        pub session: OnceCell<WeakRef<Session>>,
+        pub session: WeakRef<Session>,
     }
 
     #[glib::object_subclass]
@@ -59,10 +59,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "session" => self
-                    .session
-                    .set(value.get::<Session>().unwrap().downgrade())
-                    .unwrap(),
+                "session" => self.session.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
@@ -122,7 +119,7 @@ impl RoomList {
     }
 
     pub fn session(&self) -> Session {
-        self.imp().session.get().unwrap().upgrade().unwrap()
+        self.imp().session.upgrade().unwrap()
     }
 
     pub fn is_pending_room(&self, identifier: &RoomOrAliasId) -> bool {

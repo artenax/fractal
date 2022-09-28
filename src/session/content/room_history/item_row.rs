@@ -19,13 +19,12 @@ mod imp {
     use std::{cell::RefCell, rc::Rc};
 
     use glib::{signal::SignalHandlerId, WeakRef};
-    use once_cell::unsync::OnceCell;
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct ItemRow {
-        pub room_history: OnceCell<WeakRef<RoomHistory>>,
+        pub room_history: WeakRef<RoomHistory>,
         pub item: RefCell<Option<TimelineItem>>,
         pub action_group: RefCell<Option<gio::SimpleActionGroup>>,
         pub notify_handler: RefCell<Option<SignalHandlerId>>,
@@ -75,10 +74,7 @@ mod imp {
         ) {
             match pspec.name() {
                 "item" => obj.set_item(value.get().unwrap()),
-                "room-history" => self
-                    .room_history
-                    .set(value.get::<RoomHistory>().unwrap().downgrade())
-                    .unwrap(),
+                "room-history" => self.room_history.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
@@ -179,7 +175,7 @@ impl ItemRow {
     }
 
     pub fn room_history(&self) -> RoomHistory {
-        self.imp().room_history.get().unwrap().upgrade().unwrap()
+        self.imp().room_history.upgrade().unwrap()
     }
 
     pub fn action_group(&self) -> Option<gio::SimpleActionGroup> {

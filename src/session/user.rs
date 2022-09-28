@@ -38,7 +38,7 @@ mod imp {
     pub struct User {
         pub user_id: OnceCell<OwnedUserId>,
         pub display_name: RefCell<Option<String>>,
-        pub session: OnceCell<WeakRef<Session>>,
+        pub session: WeakRef<Session>,
         pub avatar: OnceCell<Avatar>,
         pub is_verified: Cell<bool>,
     }
@@ -118,10 +118,7 @@ mod imp {
                 "display-name" => {
                     obj.set_display_name(value.get::<Option<String>>().unwrap());
                 }
-                "session" => self
-                    .session
-                    .set(value.get::<Session>().unwrap().downgrade())
-                    .unwrap(),
+                "session" => self.session.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
@@ -214,13 +211,7 @@ impl User {
 
 pub trait UserExt: IsA<User> {
     fn session(&self) -> Session {
-        self.upcast_ref()
-            .imp()
-            .session
-            .get()
-            .unwrap()
-            .upgrade()
-            .unwrap()
+        self.upcast_ref().imp().session.upgrade().unwrap()
     }
 
     fn user_id(&self) -> OwnedUserId {

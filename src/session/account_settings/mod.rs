@@ -24,7 +24,7 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/account-settings.ui")]
     pub struct AccountSettings {
-        pub session: RefCell<Option<WeakRef<Session>>>,
+        pub session: WeakRef<Session>,
         pub session_handler: RefCell<Option<glib::SignalHandlerId>>,
     }
 
@@ -98,7 +98,7 @@ mod imp {
         }
 
         fn dispose(&self, _obj: &Self::Type) {
-            if let Some(session) = self.session.take().and_then(|session| session.upgrade()) {
+            if let Some(session) = self.session.upgrade() {
                 if let Some(handler) = self.session_handler.take() {
                     session.disconnect(handler);
                 }
@@ -125,11 +125,7 @@ impl AccountSettings {
     }
 
     pub fn session(&self) -> Option<Session> {
-        self.imp()
-            .session
-            .borrow()
-            .clone()
-            .and_then(|session| session.upgrade())
+        self.imp().session.upgrade()
     }
 
     pub fn set_session(&self, session: Option<Session>) {
@@ -155,9 +151,7 @@ impl AccountSettings {
                 )));
         }
 
-        self.imp()
-            .session
-            .replace(session.map(|session| session.downgrade()));
+        self.imp().session.set(session.as_ref());
         self.notify("session");
     }
 }
