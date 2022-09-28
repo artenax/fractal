@@ -103,6 +103,7 @@
                               <class name="pill"/>
                             </style>
                             <property name="halign">center</property>
+                            <!-- Translators: As in 'Advanced Settings'. -->
                             <property name="label" translatable="yes">Advanced…</property>
                             <property name="action-name">login.open-advanced</property>
                           </object>
