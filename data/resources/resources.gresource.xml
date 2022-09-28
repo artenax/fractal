@@ -66,7 +66,6 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="components-avatar.ui">ui/components-avatar.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-button-row.ui">ui/components-button-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-editable-avatar.ui">ui/components-editable-avatar.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks" alias="components-entry-row.ui">ui/components-entry-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-loading-listbox-row.ui">ui/components-loading-listbox-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-location-viewer.ui">ui/components-location-viewer.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-media-content-viewer.ui">ui/components-media-content-viewer.ui</file>

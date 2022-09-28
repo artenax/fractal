@@ -8,7 +8,6 @@ mod context_menu_bin;
 mod custom_entry;
 mod drag_overlay;
 mod editable_avatar;
-mod entry_row;
 mod label_with_widgets;
 mod loading_listbox_row;
 mod location_viewer;
@@ -32,7 +31,6 @@ pub use self::{
     custom_entry::CustomEntry,
     drag_overlay::DragOverlay,
     editable_avatar::EditableAvatar,
-    entry_row::EntryRow,
     label_with_widgets::{LabelWithWidgets, DEFAULT_PLACEHOLDER},
     loading_listbox_row::LoadingListBoxRow,
     location_viewer::LocationViewer,
