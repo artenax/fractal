@@ -49,7 +49,7 @@
                 <style>
                   <class name="body"/>
                 </style>
-                <property name="label">Deactivating your account means you will lose access to all your messages, contacts, files, and more, forever.</property>
+                <property name="label" translatable="yes">Deactivating your account means you will lose access to all your messages, contacts, files, and more, forever.</property>
                 <property name="wrap">True</property>
                 <property name="wrap-mode">word-char</property>
                 <property name="xalign">0.0</property>
@@ -64,7 +64,7 @@
                 <style>
                   <class name="body"/>
                 </style>
-                <property name="label">To confirm that you really want to deactivate this account, type in your Matrix user ID:</property>
+                <property name="label" translatable="yes">To confirm that you really want to deactivate this account, type in your Matrix user ID:</property>
                 <property name="wrap">True</property>
                 <property name="wrap-mode">word-char</property>
                 <property name="xalign">0.0</property>
