@@ -103,7 +103,7 @@
                               <class name="pill"/>
                             </style>
                             <property name="halign">center</property>
-                            <property name="label">Advanced…</property>
+                            <property name="label" translatable="yes">Advanced…</property>
                             <property name="action-name">login.open-advanced</property>
                           </object>
                         </child>
@@ -208,7 +208,7 @@
                               <class name="pill"/>
                             </style>
                             <property name="halign">center</property>
-                            <property name="label">More SSO Providers</property>
+                            <property name="label" translatable="yes">More SSO Providers</property>
                           </object>
                         </child>
                       </object>
