@@ -6,7 +6,27 @@
     </style>
     <property name="overflow">hidden</property>
     <child>
-      <object class="ComponentsLocationViewer" id="location"/>
+      <object class="GtkOverlay" id="overlay">
+        <property name="valign">center</property>
+        <child>
+          <object class="ComponentsLocationViewer" id="location"/>
+        </child>
+        <child type="overlay">
+          <object class="GtkImage" id="overlay_error">
+            <style>
+              <class name="osd"/>
+              <class name="circular"/>
+            </style>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="icon-name">dialog-error-symbolic</property>
+            <property name="icon-size">large</property>
+            <layout>
+              <property name="measure">true</property>
+            </layout>
+          </object>
+        </child>
+      </object>
     </child>
   </template>
 </interface>

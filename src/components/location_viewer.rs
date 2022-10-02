@@ -132,14 +132,11 @@ impl LocationViewer {
         self.notify("compact");
     }
 
-    pub fn set_geo_uri(&self, uri: &str) {
+    // Move the map viewport to the provided coordinates and draw a marker.
+    pub fn set_location(&self, geo_uri: &GeoUri) {
         let imp = self.imp();
-
-        let (latitude, longitude) = match GeoUri::parse(uri) {
-            Ok(geo_uri) => (geo_uri.latitude(), geo_uri.longitude()),
-            // FIXME: Actually handle the error by showing it instead of the map.
-            Err(_) => return,
-        };
+        let latitude = geo_uri.latitude();
+        let longitude = geo_uri.longitude();
 
         imp.map
             .viewport()

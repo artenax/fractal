@@ -927,8 +927,7 @@ impl RoomHistory {
                 .latitude(location.latitude())
                 .longitude(location.longitude())
                 .build()
-                .expect("Got invalid coordinates from ashpd")
-                .to_string();
+                .expect("Got invalid coordinates from ashpd");
 
             let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
             let dialog =
@@ -937,13 +936,14 @@ impl RoomHistory {
                 return Ok(());
             }
 
+            let geo_uri_string = geo_uri.to_string();
             let iso8601_datetime =
                 glib::DateTime::from_unix_local(location.timestamp().as_secs() as i64)
                     .expect("Valid location timestamp");
             let location_body = gettext_f(
                 "User Location {geo_uri} at {iso8601_datetime}",
                 &[
-                    ("geo_uri", &geo_uri),
+                    ("geo_uri", &geo_uri_string),
                     (
                         "iso8601_datetime",
                         iso8601_datetime.format_iso8601().unwrap().as_str(),
@@ -952,7 +952,7 @@ impl RoomHistory {
             );
             room.send_room_message_event(AnyMessageLikeEventContent::RoomMessage(
                 RoomMessageEventContent::new(MessageType::Location(
-                    LocationMessageEventContent::new(location_body, geo_uri),
+                    LocationMessageEventContent::new(location_body, geo_uri_string),
                 )),
             ));
         }

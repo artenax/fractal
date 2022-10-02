@@ -77,7 +77,11 @@ impl AttachmentDialog {
         obj
     }
 
-    pub fn for_location(transient_for: &gtk::Window, title: &str, geo_uri: &str) -> Self {
+    pub fn for_location(
+        transient_for: &gtk::Window,
+        title: &str,
+        geo_uri: &geo_uri::GeoUri,
+    ) -> Self {
         let obj: Self = glib::Object::new(&[("transient-for", transient_for), ("title", &title)])
             .expect("Failed to create AttachmentDialog");
         obj.imp().media.view_location(geo_uri);

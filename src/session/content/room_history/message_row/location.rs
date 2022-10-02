@@ -1,5 +1,8 @@
 use adw::{prelude::*, subclass::prelude::*};
+use geo_uri::GeoUri;
+use gettextrs::gettext;
 use gtk::{glib, CompositeTemplate};
+use log::warn;
 
 use super::ContentFormat;
 use crate::components::LocationViewer;
@@ -13,7 +16,11 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/content-message-location.ui")]
     pub struct MessageLocation {
         #[template_child]
+        pub overlay: TemplateChild<gtk::Overlay>,
+        #[template_child]
         pub location: TemplateChild<LocationViewer>,
+        #[template_child]
+        pub overlay_error: TemplateChild<gtk::Image>,
     }
 
     #[glib::object_subclass]
@@ -33,7 +40,7 @@ mod imp {
 
     impl ObjectImpl for MessageLocation {
         fn dispose(&self, _obj: &Self::Type) {
-            self.location.unparent();
+            self.overlay.unparent();
         }
     }
 
@@ -61,7 +68,7 @@ mod imp {
             } else {
                 width
             };
-            self.location
+            self.overlay
                 .size_allocate(&gtk::Allocation::new(0, 0, width, height), baseline)
         }
     }
@@ -81,11 +88,25 @@ impl MessageLocation {
     }
 
     pub fn set_geo_uri(&self, uri: &str, format: ContentFormat) {
-        let location = &self.imp().location;
-        location.set_geo_uri(uri);
-        location.set_compact(matches!(
-            format,
-            ContentFormat::Compact | ContentFormat::Ellipsized
-        ))
+        let priv_ = self.imp();
+
+        match GeoUri::parse(uri) {
+            Ok(geo_uri) => {
+                priv_.location.set_compact(matches!(
+                    format,
+                    ContentFormat::Compact | ContentFormat::Ellipsized
+                ));
+                priv_.location.set_location(&geo_uri);
+                priv_.overlay_error.hide();
+            }
+            Err(error) => {
+                warn!("Encountered invalid geo URI: {}", error);
+                priv_.location.hide();
+                priv_.overlay_error.set_tooltip_text(Some(&gettext(
+                    "Location is invalid and cannot be displayed",
+                )));
+                priv_.overlay_error.show();
+            }
+        };
     }
 }

@@ -1,4 +1,5 @@
 use adw::{prelude::*, subclass::prelude::*};
+use geo_uri::GeoUri;
 use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, CompositeTemplate};
 use log::warn;
@@ -292,7 +293,7 @@ impl MediaContentViewer {
     }
 
     /// View the given location as a geo URI.
-    pub fn view_location(&self, geo_uri: &str) {
+    pub fn view_location(&self, geo_uri: &GeoUri) {
         self.show_loading();
 
         let priv_ = self.imp();
@@ -309,7 +310,7 @@ impl MediaContentViewer {
             location
         };
 
-        location.set_geo_uri(geo_uri);
+        location.set_location(geo_uri);
         self.show_viewer();
     }
 }
