@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="ContentMessageLocation" parent="GtkWidget">
+    <style>
+      <class name="thumbnail"/>
+    </style>
+    <property name="overflow">hidden</property>
     <child>
       <object class="ComponentsLocationViewer" id="location"/>
     </child>

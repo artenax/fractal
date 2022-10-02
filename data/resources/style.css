@@ -184,11 +184,6 @@ media-content-viewer controls {
   min-width: 300px;
 }
 
-location-viewer .map {
-  border-radius: 6px;
-  background-color: @borders;
-}
-
 location-viewer .map-marker {
   color: @accent_color;
 }
