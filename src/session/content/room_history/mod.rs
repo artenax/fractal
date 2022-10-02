@@ -925,7 +925,8 @@ impl RoomHistory {
             let geo_uri = format!("geo:{},{}", location.latitude(), location.longitude());
 
             let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
-            let dialog = AttachmentDialog::for_location(&window, "Your Location", &geo_uri);
+            let dialog =
+                AttachmentDialog::for_location(&window, &gettext("Your Location"), &geo_uri);
             if dialog.run_future().await != gtk::ResponseType::Ok {
                 return Ok(());
             }
