@@ -3,7 +3,7 @@
 use std::{cell::Cell, sync::Mutex};
 
 use gettextrs::gettext;
-use gtk::{gdk_pixbuf, gio, prelude::*};
+use gtk::{gio, prelude::*};
 use matrix_sdk::attachment::{BaseAudioInfo, BaseImageInfo, BaseVideoInfo};
 use ruma::events::room::MediaSource;
 
@@ -74,9 +74,12 @@ pub async fn get_image_info(file: &gio::File) -> BaseImageInfo {
         None => return info,
     };
 
-    if let Ok(Some((_format, w, h))) = gdk_pixbuf::Pixbuf::file_info_future(path).await {
-        info.width = Some((w as u32).into());
-        info.height = Some((h as u32).into());
+    if let Some((w, h)) = image::io::Reader::open(path)
+        .ok()
+        .and_then(|reader| reader.into_dimensions().ok())
+    {
+        info.width = Some(w.into());
+        info.height = Some(h.into());
     }
 
     info
