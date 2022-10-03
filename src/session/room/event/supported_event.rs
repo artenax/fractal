@@ -28,7 +28,7 @@ use crate::{
         Member, ReactionList, Room, UnsupportedEvent,
     },
     spawn, spawn_tokio,
-    utils::{filename_for_mime, media_type_uid},
+    utils::media::{filename_for_mime, media_type_uid},
 };
 
 #[derive(Clone, Debug, glib::Boxed)]

@@ -89,5 +89,5 @@ src/session/sidebar/category_type.rs
 src/session/sidebar/entry_type.rs
 src/session/verification/identity_verification.rs
 src/user_facing_error.rs
-src/utils.rs
+src/utils/media.rs
 src/window.rs

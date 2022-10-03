@@ -9,7 +9,9 @@ use log::warn;
 use matrix_sdk::{media::MediaEventContent, ruma::events::room::message::AudioMessageEventContent};
 
 use super::{media::MediaState, ContentFormat};
-use crate::{components::AudioPlayer, session::Session, spawn, spawn_tokio, utils::media_type_uid};
+use crate::{
+    components::AudioPlayer, session::Session, spawn, spawn_tokio, utils::media::media_type_uid,
+};
 
 mod imp {
     use std::cell::{Cell, RefCell};

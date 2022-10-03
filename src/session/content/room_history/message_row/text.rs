@@ -295,7 +295,7 @@ fn create_widget_for_html_block(
                 let buffer = sourceview::Buffer::new(None);
                 buffer.set_highlight_matching_brackets(false);
                 buffer.set_text(s);
-                crate::utils::setup_style_scheme(&buffer);
+                crate::utils::sourceview::setup_style_scheme(&buffer);
                 let view = sourceview::View::with_buffer(&buffer);
                 view.set_editable(false);
                 view.add_css_class("codeview");

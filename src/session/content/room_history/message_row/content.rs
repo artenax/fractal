@@ -11,7 +11,7 @@ use super::{
     audio::MessageAudio, file::MessageFile, location::MessageLocation, media::MessageMedia,
     reply::MessageReply, text::MessageText,
 };
-use crate::{prelude::*, session::room::SupportedEvent, spawn, utils::filename_for_mime};
+use crate::{prelude::*, session::room::SupportedEvent, spawn, utils::media::filename_for_mime};
 
 #[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(i32)]

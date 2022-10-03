@@ -23,7 +23,7 @@ use crate::{
     components::VideoPlayer,
     session::Session,
     spawn, spawn_tokio,
-    utils::{cache_dir, media_type_uid, uint_to_i32},
+    utils::{cache_dir, media::media_type_uid, uint_to_i32},
 };
 
 const MAX_THUMBNAIL_WIDTH: i32 = 600;

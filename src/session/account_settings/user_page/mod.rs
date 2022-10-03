@@ -20,7 +20,7 @@ use crate::{
     components::{ActionButton, ActionState, ButtonRow, EditableAvatar},
     session::{Session, User, UserExt},
     spawn, spawn_tokio, toast,
-    utils::TemplateCallbacks,
+    utils::template_callbacks::TemplateCallbacks,
 };
 
 mod imp {

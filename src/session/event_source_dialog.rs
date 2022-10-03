@@ -84,7 +84,7 @@ mod imp {
 
             let json_lang = sourceview::LanguageManager::default().language("json");
             buffer.set_language(json_lang.as_ref());
-            crate::utils::setup_style_scheme(&buffer);
+            crate::utils::sourceview::setup_style_scheme(&buffer);
 
             self.parent_constructed(obj);
         }

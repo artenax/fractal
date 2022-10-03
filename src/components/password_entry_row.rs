@@ -7,7 +7,7 @@ use gtk::{
 };
 
 use super::{ActionButton, ActionState};
-use crate::utils::TemplateCallbacks;
+use crate::utils::template_callbacks::TemplateCallbacks;
 
 mod imp {
     use std::cell::RefCell;

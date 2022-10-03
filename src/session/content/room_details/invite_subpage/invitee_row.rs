@@ -10,7 +10,7 @@ mod imp {
     use once_cell::sync::Lazy;
 
     use super::*;
-    use crate::utils::TemplateCallbacks;
+    use crate::utils::template_callbacks::TemplateCallbacks;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/content-invitee-row.ui")]
