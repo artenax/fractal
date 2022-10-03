@@ -5,7 +5,7 @@ use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventCo
 
 use super::room::EventActions;
 use crate::{
-    components::{ContentType, MediaContentViewer},
+    components::{ContentType, ImagePaintable, MediaContentViewer},
     session::room::SupportedEvent,
     spawn,
     utils::cache_dir,
@@ -222,7 +222,7 @@ impl MediaViewer {
 
                                 match event.get_media_content().await {
                                     Ok((_, _, data)) => {
-                                        match gdk::Texture::from_bytes(&glib::Bytes::from(&data)) {
+                                        match ImagePaintable::from_bytes(&glib::Bytes::from(&data), image.info.and_then(|info| info.mimetype).as_deref()) {
                                             Ok(texture) => {
                                                 priv_.media.view_image(&texture);
                                                 return;

@@ -13,7 +13,7 @@ use matrix_sdk::{
     Client,
 };
 
-use crate::{session::Session, spawn, spawn_tokio};
+use crate::{components::ImagePaintable, session::Session, spawn, spawn_tokio};
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -143,7 +143,7 @@ impl Avatar {
 
     fn set_image_data(&self, data: Option<Vec<u8>>) {
         let image = data
-            .and_then(|data| gdk::Texture::from_bytes(&glib::Bytes::from(&data)).ok())
+            .and_then(|data| ImagePaintable::from_bytes(&glib::Bytes::from(&data), None).ok())
             .map(|texture| texture.upcast());
         self.imp().image.replace(image);
         self.notify("image");

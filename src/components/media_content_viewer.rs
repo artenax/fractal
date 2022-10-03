@@ -4,7 +4,7 @@ use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, CompositeTemplate};
 use log::warn;
 
-use super::{AudioPlayer, LocationViewer};
+use super::{AudioPlayer, ImagePaintable, LocationViewer};
 use crate::spawn;
 
 pub enum ContentType {
@@ -189,7 +189,7 @@ impl MediaContentViewer {
     ///
     /// If you have an image file, you can also use
     /// [`MediaContentViewer::view_file()`].
-    pub fn view_image(&self, image: &gdk::Texture) {
+    pub fn view_image(&self, image: &impl IsA<gdk::Paintable>) {
         self.show_loading();
 
         let priv_ = self.imp();
@@ -239,7 +239,7 @@ impl MediaContentViewer {
             .unwrap_or_default();
 
         match content_type {
-            ContentType::Image => match gdk::Texture::from_file(&file) {
+            ContentType::Image => match ImagePaintable::from_file(&file) {
                 Ok(texture) => {
                     self.view_image(&texture);
                     return;

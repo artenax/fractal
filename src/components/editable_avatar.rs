@@ -8,7 +8,7 @@ use gtk::{
 };
 use log::error;
 
-use super::{ActionButton, ActionState};
+use super::{ActionButton, ActionState, ImagePaintable};
 use crate::{session::Avatar, spawn, toast};
 
 mod imp {
@@ -308,7 +308,7 @@ impl EditableAvatar {
 
     pub fn set_temp_image_from_file(&self, file: Option<&gio::File>) {
         self.imp().temp_image.replace(
-            file.and_then(|file| gdk::Texture::from_file(file).ok())
+            file.and_then(|file| ImagePaintable::from_file(file).ok())
                 .map(|texture| texture.upcast()),
         );
         self.notify("temp-image");

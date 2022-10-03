@@ -1,7 +1,7 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{
-    gdk, gio,
+    gio,
     glib::{self, clone},
     CompositeTemplate,
 };
@@ -19,7 +19,7 @@ use matrix_sdk::{
 
 use super::ContentFormat;
 use crate::{
-    components::VideoPlayer,
+    components::{ImagePaintable, VideoPlayer},
     session::Session,
     spawn, spawn_tokio,
     utils::{cache_dir, media::media_type_uid, uint_to_i32},
@@ -422,7 +422,7 @@ impl MessageMedia {
                     Ok((Some(data), id)) => {
                         match media_type {
                             MediaType::Image | MediaType::Sticker => {
-                                match gdk::Texture::from_bytes(&glib::Bytes::from(&data))
+                                match ImagePaintable::from_bytes(&glib::Bytes::from(&data), None)
                                     {
                                         Ok(texture) => {
                                             let child = if let Some(Ok(child)) =
