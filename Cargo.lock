@@ -2337,10 +2337,11 @@ dependencies = [
 
 [[package]]
 name = "libshumate"
-version = "0.1.0-alpha.4"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d5c0b7cb25a837204c7eda0879877e0716924c2f970c08e60228bd8410ddc372"
+checksum = "98d639cc071d690528a31b989faf3dce5f283914fab6c63c73d374e25ebd3a70"
 dependencies = [
+ "gdk-pixbuf",
  "gdk4",
  "gio",
  "glib",
@@ -2352,10 +2353,11 @@ dependencies = [
 
 [[package]]
 name = "libshumate-sys"
-version = "0.1.0-alpha.4"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9380bffe8a69af1cd5c6ae0b6dfd2942017d89d9565f64d0e3579629e3921f07"
+checksum = "0a96fd7b69b23af97452a1b09ecc3eb012e6585f3ce18dc774a8a20b95ae9e57"
 dependencies = [
+ "gdk-pixbuf-sys",
  "gdk4-sys",
  "gio-sys",
  "glib-sys",
