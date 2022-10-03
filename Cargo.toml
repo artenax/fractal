@@ -44,6 +44,7 @@ gst_base = { version = "0.18", package = "gstreamer-base" }
 gst_video = { version = "0.18", package = "gstreamer-video" }
 gst_player = { version = "0.18", package = "gstreamer-player" }
 gst_gtk = { version = "0.1.0", package = "gst-plugin-gtk4" }
+gst_pbutils = { version = "0.18", package = "gstreamer-pbutils" }
 image = { version = "0.23", default-features = false, features = ["png"] }
 regex = "1.5.4"
 mime_guess = "2.0.3"
@@ -74,7 +75,14 @@ version = "0.1.1"
 
 [dependencies.matrix-sdk]
 version = "0.6.0"
-features = ["socks", "sso-login", "markdown", "qrcode", "experimental-timeline"]
+features = [
+    "socks",
+    "sso-login",
+    "markdown",
+    "qrcode",
+    "experimental-timeline",
+    "image-rayon",
+]
 
 [dependencies.ruma]
 version = "0.7.4"

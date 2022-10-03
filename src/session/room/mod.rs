@@ -10,13 +10,13 @@ mod reaction_list;
 mod room_type;
 mod timeline;
 
-use std::{cell::RefCell, path::PathBuf};
+use std::{cell::RefCell, io::Cursor, path::PathBuf};
 
 use gettextrs::{gettext, ngettext};
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, info, warn};
 use matrix_sdk::{
-    attachment::AttachmentConfig,
+    attachment::{generate_image_thumbnail, AttachmentConfig, AttachmentInfo, Thumbnail},
     deserialized_responses::{JoinedRoom, LeftRoom, SyncTimelineEvent},
     room::Room as MatrixRoom,
     ruma::{
@@ -1569,13 +1569,42 @@ impl Room {
         Some(())
     }
 
-    pub fn send_attachment(&self, bytes: Vec<u8>, mime: mime::Mime, body: &str) {
+    pub fn send_attachment(
+        &self,
+        bytes: Vec<u8>,
+        mime: mime::Mime,
+        body: &str,
+        info: AttachmentInfo,
+    ) {
         let matrix_room = self.matrix_room();
 
         if let MatrixRoom::Joined(matrix_room) = matrix_room {
             let body = body.to_string();
             spawn_tokio!(async move {
-                let config = AttachmentConfig::default();
+                // Needed to hold the thumbnail data until it is sent.
+                let data_slot;
+
+                // The method will filter compatible mime types so we don't need to
+                // since we ignore errors.
+                let thumbnail = match generate_image_thumbnail(&mime, Cursor::new(&bytes), None) {
+                    Ok((data, info)) => {
+                        data_slot = data;
+                        Some(Thumbnail {
+                            data: &data_slot,
+                            content_type: &mime::IMAGE_JPEG,
+                            info: Some(info),
+                        })
+                    }
+                    _ => None,
+                };
+
+                let config = if let Some(thumbnail) = thumbnail {
+                    AttachmentConfig::with_thumbnail(thumbnail)
+                } else {
+                    AttachmentConfig::new()
+                }
+                .info(info);
+
                 matrix_room
                     // TODO This should be added to pending messages instead of
                     // sending it directly.

@@ -23,14 +23,17 @@ use gtk::{
     CompositeTemplate,
 };
 use log::{error, warn};
-use matrix_sdk::ruma::{
-    events::{
-        room::message::{
-            EmoteMessageEventContent, FormattedBody, MessageType, TextMessageEventContent,
+use matrix_sdk::{
+    attachment::{AttachmentInfo, BaseFileInfo, BaseImageInfo},
+    ruma::{
+        events::{
+            room::message::{
+                EmoteMessageEventContent, FormattedBody, MessageType, TextMessageEventContent,
+            },
+            AnySyncMessageLikeEvent, AnySyncTimelineEvent, SyncMessageLikeEvent,
         },
-        AnySyncMessageLikeEvent, AnySyncTimelineEvent, SyncMessageLikeEvent,
+        EventId,
     },
-    EventId,
 };
 use ruma::events::{
     room::message::{ForwardThread, LocationMessageEventContent, RoomMessageEventContent},
@@ -52,7 +55,10 @@ use crate::{
         user::UserExt,
     },
     spawn, spawn_tokio, toast,
-    utils::{media::filename_for_mime, template_callbacks::TemplateCallbacks},
+    utils::{
+        media::{filename_for_mime, get_audio_info, get_image_info, get_video_info},
+        template_callbacks::TemplateCallbacks,
+    },
 };
 
 #[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
@@ -969,11 +975,15 @@ impl RoomHistory {
         }
 
         if let Some(room) = self.room() {
-            room.send_attachment(
-                image.save_to_png_bytes().to_vec(),
-                mime::IMAGE_PNG,
-                &filename,
-            );
+            let bytes = image.save_to_png_bytes();
+            let info = AttachmentInfo::Image(BaseImageInfo {
+                width: Some((image.width() as u32).into()),
+                height: Some((image.height() as u32).into()),
+                size: Some((bytes.len() as u32).into()),
+                blurhash: None,
+            });
+
+            room.send_attachment(bytes.to_vec(), mime::IMAGE_PNG, &filename, info);
         }
     }
 
@@ -1008,6 +1018,7 @@ impl RoomHistory {
         let attributes: &[&str] = &[
             *gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
             *gio::FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
+            *gio::FILE_ATTRIBUTE_STANDARD_SIZE,
         ];
 
         // Read mime type.
@@ -1025,10 +1036,15 @@ impl RoomHistory {
             .and_then(|info| info.content_type())
             .and_then(|content_type| mime::Mime::from_str(&content_type).ok())
             .unwrap_or(mime::APPLICATION_OCTET_STREAM);
-        let filename = info.map(|info| info.display_name()).map_or_else(
+        let filename = info.as_ref().map(|info| info.display_name()).map_or_else(
             || filename_for_mime(Some(mime.as_ref()), None),
             |name| name.to_string(),
         );
+        let size = info
+            .as_ref()
+            .map(|info| info.size())
+            .filter(|size| *size > 0)
+            .map(|size| (size as u32).into());
 
         match file.load_contents_future().await {
             Ok((bytes, _tag)) => {
@@ -1040,7 +1056,26 @@ impl RoomHistory {
                 }
 
                 if let Some(room) = self.room() {
-                    room.send_attachment(bytes.clone(), mime.clone(), &filename);
+                    let info = match mime.type_() {
+                        mime::IMAGE => {
+                            let mut info = get_image_info(&file).await;
+                            info.size = size;
+                            AttachmentInfo::Image(info)
+                        }
+                        mime::VIDEO => {
+                            let mut info = get_video_info(&file).await;
+                            info.size = size;
+                            AttachmentInfo::Video(info)
+                        }
+                        mime::AUDIO => {
+                            let mut info = get_audio_info(&file).await;
+                            info.size = size;
+                            AttachmentInfo::Audio(info)
+                        }
+                        _ => AttachmentInfo::File(BaseFileInfo { size }),
+                    };
+
+                    room.send_attachment(bytes.clone(), mime.clone(), &filename, info);
                 }
             }
             Err(err) => {
