@@ -314,7 +314,7 @@ impl RoomList {
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
-                    Ok(response) => obj.pending_rooms_replace_or_remove(&identifier, response.room_id()),
+                    Ok(response) => obj.pending_rooms_replace_or_remove(&identifier, &response.room_id),
                     Err(error) => {
                         obj.pending_rooms_remove(&identifier);
                         error!("Joining room {} failed: {}", identifier, error);

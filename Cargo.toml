@@ -73,11 +73,11 @@ package = "libshumate"
 version = "0.1.1"
 
 [dependencies.matrix-sdk]
-git = "https://github.com/matrix-org/matrix-rust-sdk.git"
+version = "0.6.0"
 features = ["socks", "sso-login", "markdown", "qrcode", "experimental-timeline"]
 
 [dependencies.ruma]
-version = "0.7.1"
+version = "0.7.4"
 features = [
     "unstable-pre-spec",
     "client-api-c",

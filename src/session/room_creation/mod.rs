@@ -13,7 +13,7 @@ use matrix_sdk::{
         },
         assign,
     },
-    Error, HttpError, RumaApiError,
+    HttpError, RumaApiError,
 };
 
 use crate::{
@@ -221,7 +221,7 @@ impl RoomCreation {
                 match handle.await.unwrap() {
                         Ok(response) => {
                             if let Some(session) = obj.session() {
-                                let room = session.room_list().get_wait(response.room_id()).await;
+                                let room = session.room_list().get_wait(&response.room_id).await;
                                 session.select_room(room);
                             }
                             obj.close();
@@ -238,7 +238,7 @@ impl RoomCreation {
     }
 
     /// Display the error that occurred during creation
-    fn handle_error(&self, error: Error) {
+    fn handle_error(&self, error: HttpError) {
         let priv_ = self.imp();
 
         priv_.create_button.set_loading(false);
@@ -246,9 +246,9 @@ impl RoomCreation {
         priv_.cancel_button.set_sensitive(true);
 
         // Treat the room address already taken error special
-        if let Error::Http(HttpError::Api(FromHttpResponseError::Server(ServerError::Known(
+        if let HttpError::Api(FromHttpResponseError::Server(ServerError::Known(
             RumaApiError::ClientApi(ref client_error),
-        )))) = error
+        ))) = error
         {
             if client_error.kind == RumaClientErrorKind::RoomInUse {
                 priv_.room_address.add_css_class("error");

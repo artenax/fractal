@@ -385,13 +385,13 @@ impl ImportExportKeysSubpage {
         let handle = spawn_tokio!(async move {
             if is_export {
                 encryption
-                    .export_keys(file_path, passphrase.as_str(), |_| true)
+                    .export_room_keys(file_path, passphrase.as_str(), |_| true)
                     .await
                     .map(|_| 0usize)
                     .map_err::<Box<dyn std::error::Error + Send>, _>(|error| Box::new(error))
             } else {
                 encryption
-                    .import_keys(file_path, passphrase.as_str())
+                    .import_room_keys(file_path, passphrase.as_str())
                     .await
                     .map(|res| res.imported_count)
                     .map_err::<Box<dyn std::error::Error + Send>, _>(|error| Box::new(error))
