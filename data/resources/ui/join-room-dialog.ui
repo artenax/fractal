@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="AdwMessageDialog" id="dialog">
+    <property name="heading" translatable="yes">Join a Room</property>
+    <property name="body" translatable="yes">Enter a room ID, room alias, or permalink.</property>
+    <property name="default-response">join</property>
+    <property name="close-response">cancel</property>
+    <responses>
+      <response id="cancel" translatable="yes">_Cancel</response>
+      <response id="join" translatable="yes" appearance="suggested" enabled="false">_Join</response>
+    </responses>
+    <property name="extra-child">
+      <object class="GtkEntry" id="entry">
+        <property name="activates-default">True</property>
+      </object>
+    </property>
+  </object>
+</interface>

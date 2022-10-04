@@ -6,6 +6,10 @@
         <attribute name="label" translatable="yes">_New Room</attribute>
         <attribute name="action">session.room-creation</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">_Join Room</attribute>
+        <attribute name="action">session.show-join-room</attribute>
+      </item>
     </section>
     <section>
       <item>
@@ -170,4 +174,3 @@
     </child>
   </template>
 </interface>
-

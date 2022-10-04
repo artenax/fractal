@@ -5,7 +5,7 @@ use indexmap::map::IndexMap;
 use log::error;
 use matrix_sdk::{
     deserialized_responses::Rooms as ResponseRooms,
-    ruma::{OwnedRoomId, OwnedRoomOrAliasId, RoomId, RoomOrAliasId},
+    ruma::{OwnedRoomId, OwnedRoomOrAliasId, OwnedServerName, RoomId, RoomOrAliasId},
 };
 
 use crate::{
@@ -298,7 +298,7 @@ impl RoomList {
         }
     }
 
-    pub fn join_by_id_or_alias(&self, identifier: OwnedRoomOrAliasId) {
+    pub fn join_by_id_or_alias(&self, identifier: OwnedRoomOrAliasId, via: Vec<OwnedServerName>) {
         let client = self.session().client();
         let identifier_clone = identifier.clone();
 
@@ -306,7 +306,7 @@ impl RoomList {
 
         let handle = spawn_tokio!(async move {
             client
-                .join_room_by_id_or_alias(&identifier_clone, &[])
+                .join_room_by_id_or_alias(&identifier_clone, &via)
                 .await
         });
 
@@ -343,5 +343,23 @@ impl RoomList {
 
             None
         })
+    }
+
+    pub fn find_joined_room(&self, room_id: &RoomOrAliasId) -> Option<Room> {
+        let room_id = room_id.as_str();
+        self.imp()
+            .list
+            .borrow()
+            .values()
+            .find(|room| {
+                (room.room_id() == room_id
+                    || room
+                        .matrix_room()
+                        .canonical_alias()
+                        .filter(|id| id == room_id)
+                        .is_some())
+                    && room.is_joined()
+            })
+            .cloned()
     }
 }

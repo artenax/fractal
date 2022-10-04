@@ -193,7 +193,7 @@ impl PublicRoom {
         } else if let Some(matrix_public_room) = self.matrix_public_room() {
             let room_id: &RoomId = matrix_public_room.room_id.as_ref();
             self.room_list()
-                .join_by_id_or_alias(<&RoomOrAliasId>::from(room_id).to_owned());
+                .join_by_id_or_alias(<&RoomOrAliasId>::from(room_id).to_owned(), vec![]);
         }
     }
 }

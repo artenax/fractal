@@ -466,6 +466,18 @@ impl Room {
         );
     }
 
+    pub fn is_joined(&self) -> bool {
+        matches!(
+            self.category(),
+            RoomType::Favorite
+                | RoomType::Normal
+                | RoomType::LowPriority
+                | RoomType::Outdated
+                | RoomType::Space
+                | RoomType::Direct
+        )
+    }
+
     pub fn category(&self) -> RoomType {
         self.imp().category.get()
     }

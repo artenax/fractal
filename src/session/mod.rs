@@ -13,16 +13,12 @@ pub mod verification;
 
 use std::{collections::HashSet, fs, path::PathBuf, time::Duration};
 
-use adw::subclass::prelude::BinImpl;
+use adw::{prelude::*, subclass::prelude::*};
 use futures::StreamExt;
 use gettextrs::gettext;
 use gtk::{
-    self, gdk, gio,
-    gio::prelude::*,
-    glib,
+    self, gdk, gio, glib,
     glib::{clone, signal::SignalHandlerId},
-    prelude::*,
-    subclass::prelude::*,
     CompositeTemplate,
 };
 use log::{debug, error, warn};
@@ -44,7 +40,8 @@ use matrix_sdk::{
             direct::DirectEventContent, room::encryption::SyncRoomEncryptionEvent,
             GlobalAccountDataEvent,
         },
-        RoomId,
+        matrix_uri::MatrixId,
+        MatrixUri, OwnedRoomOrAliasId, OwnedServerName, RoomId, RoomOrAliasId,
     },
     store::{MigrationConflictStrategy, OpenStoreError, SledStateStore},
     Client, ClientBuildError, Error, HttpError, RumaApiError, StoreError,
@@ -74,7 +71,7 @@ use crate::{
     secret::{Secret, StoredSession},
     session::sidebar::ItemList,
     spawn, spawn_tokio, toast,
-    utils::check_if_reachable,
+    utils::{check_if_reachable, parse_matrix_to_uri},
     UserFacingError, Window,
 };
 
@@ -172,6 +169,12 @@ mod imp {
 
             klass.install_action("session.room-creation", None, move |session, _, _| {
                 session.show_room_creation_dialog();
+            });
+
+            klass.install_action("session.show-join-room", None, move |widget, _, _| {
+                spawn!(clone!(@weak widget => async move {
+                    widget.show_join_room_dialog().await;
+                }));
             });
 
             klass.add_binding_action(
@@ -821,6 +824,40 @@ impl Session {
         window.show();
     }
 
+    async fn show_join_room_dialog(&self) {
+        let builder = gtk::Builder::from_resource("/org/gnome/Fractal/join-room-dialog.ui");
+        let dialog = builder.object::<adw::MessageDialog>("dialog").unwrap();
+        let entry = builder.object::<gtk::Entry>("entry").unwrap();
+
+        entry.connect_changed(clone!(@weak self as obj, @weak dialog => move |entry| {
+            let room = parse_room(&entry.text());
+            dialog.set_response_enabled("join", room.is_some());
+
+            if room
+                .and_then(|(room_id, _)| obj.room_list().find_joined_room(&room_id))
+                .is_some()
+            {
+                dialog.set_response_label("join", &gettext("_View"));
+            } else {
+                dialog.set_response_label("join", &gettext("_Join"));
+            }
+        }));
+
+        dialog.set_transient_for(self.parent_window().as_ref());
+        if dialog.run_future().await == "join" {
+            let (room_id, via) = match parse_room(&entry.text()) {
+                Some(room) => room,
+                None => return,
+            };
+
+            if let Some(room) = self.room_list().find_joined_room(&room_id) {
+                self.select_room(Some(room));
+            } else {
+                self.room_list().join_by_id_or_alias(room_id, via)
+            }
+        }
+    }
+
     pub async fn logout(&self, cleanup: bool) {
         let stack = &self.imp().stack;
         self.emit_by_name::<()>("logged-out", &[]);
@@ -1026,4 +1063,30 @@ async fn create_client(
         .build()
         .await
         .map_err(Into::into)
+}
+
+fn parse_room(room: &str) -> Option<(OwnedRoomOrAliasId, Vec<OwnedServerName>)> {
+    MatrixUri::parse(room)
+        .ok()
+        .and_then(|uri| match uri.id() {
+            MatrixId::Room(room_id) => Some((room_id.clone().into(), uri.via().to_owned())),
+            MatrixId::RoomAlias(room_alias) => {
+                Some((room_alias.clone().into(), uri.via().to_owned()))
+            }
+            _ => None,
+        })
+        .or_else(|| {
+            parse_matrix_to_uri(room)
+                .ok()
+                .and_then(|(id, via)| match id {
+                    MatrixId::Room(room_id) => Some((room_id.into(), via)),
+                    MatrixId::RoomAlias(room_alias) => Some((room_alias.into(), via)),
+                    _ => None,
+                })
+        })
+        .or_else(|| {
+            RoomOrAliasId::parse(room)
+                .ok()
+                .map(|room_id| (room_id, vec![]))
+        })
 }
