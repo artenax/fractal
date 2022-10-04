@@ -166,7 +166,7 @@ macro_rules! _add_toast {
     }};
 }
 
-use std::{convert::TryInto, path::PathBuf, str::FromStr};
+use std::{path::PathBuf, str::FromStr};
 
 use gettextrs::gettext;
 use gtk::{

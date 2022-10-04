@@ -1,5 +1,3 @@
-use std::convert::TryFrom;
-
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{gdk, glib, glib::clone};
 

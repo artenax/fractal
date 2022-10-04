@@ -42,10 +42,7 @@ use crate::{
 };
 
 mod imp {
-    use std::{
-        cell::{Cell, RefCell},
-        convert::TryFrom,
-    };
+    use std::cell::{Cell, RefCell};
 
     use glib::{signal::SignalHandlerId, subclass::InitializingObject};
     use once_cell::{sync::Lazy, unsync::OnceCell};

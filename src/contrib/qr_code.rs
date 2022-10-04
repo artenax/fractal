@@ -1,6 +1,5 @@
 // Taken from https://gitlab.gnome.org/msandova/trinket/-/blob/master/src/qr_code.rs
 // All credit goes to Maximiliano
-use std::convert::TryFrom;
 
 use gtk::{glib, prelude::*, subclass::prelude::*};
 

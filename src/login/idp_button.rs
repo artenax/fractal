@@ -1,5 +1,3 @@
-use std::convert::{TryFrom, TryInto};
-
 use gtk::{self, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 use matrix_sdk::ruma::api::client::session::get_login_types::v3::{
     IdentityProvider, IdentityProviderBrand,

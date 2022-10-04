@@ -10,7 +10,7 @@ mod sidebar;
 mod user;
 pub mod verification;
 
-use std::{collections::HashSet, convert::TryFrom, fs, path::PathBuf, time::Duration};
+use std::{collections::HashSet, fs, path::PathBuf, time::Duration};
 
 use adw::subclass::prelude::BinImpl;
 use futures::StreamExt;

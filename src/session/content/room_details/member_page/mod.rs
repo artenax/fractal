@@ -71,8 +71,6 @@ mod imp {
             });
 
             klass.install_action("members.subpage", Some("u"), move |widget, _, param| {
-                use std::convert::TryFrom;
-
                 let state = param
                     .and_then(|variant| variant.get::<u32>())
                     .and_then(|u| Membership::try_from(u).ok());

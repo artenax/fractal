@@ -1,4 +1,4 @@
-use std::{convert::TryFrom, fmt};
+use std::fmt;
 
 use gtk::glib;
 use num_enum::{IntoPrimitive, TryFromPrimitive};

@@ -7,7 +7,7 @@ use crate::session::{
 };
 
 mod imp {
-    use std::{cell::Cell, convert::TryFrom};
+    use std::cell::Cell;
 
     use once_cell::unsync::OnceCell;
 
