@@ -5,6 +5,6 @@
       <class name="card"/>
       <class name="sso-button"/>
     </style>
+    <property name="action-name">login.sso</property>
   </template>
 </interface>
-

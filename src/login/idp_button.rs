@@ -2,7 +2,6 @@ use gtk::{self, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTe
 use matrix_sdk::ruma::api::client::session::get_login_types::v3::{
     IdentityProvider, IdentityProviderBrand,
 };
-use url::Url;
 
 #[derive(Hash, Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(i32)]
@@ -104,7 +103,6 @@ mod imp {
     pub struct IdpButton {
         pub brand: Cell<IdpBrand>,
         pub id: RefCell<Option<String>>,
-        pub homeserver: RefCell<Option<String>>,
     }
 
     #[glib::object_subclass]
@@ -142,13 +140,6 @@ mod imp {
                         None,
                         glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
                     ),
-                    glib::ParamSpecString::new(
-                        "homeserver",
-                        "homeserver",
-                        "The homeserver url",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
                 ]
             });
 
@@ -159,7 +150,6 @@ mod imp {
             match pspec.name() {
                 "id" => obj.id().unwrap().to_value(),
                 "brand" => obj.brand().to_value(),
-                "homeserver" => obj.homeserver().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -178,9 +168,6 @@ mod imp {
                 "id" => {
                     obj.set_id(value.get().unwrap());
                 }
-                "homeserver" => {
-                    obj.set_homeserver(value.get().unwrap());
-                }
                 _ => unimplemented!(),
             };
         }
@@ -194,13 +181,13 @@ mod imp {
     }
 
     impl WidgetImpl for IdpButton {}
-
     impl ButtonImpl for IdpButton {}
 }
 
 glib::wrapper! {
     pub struct IdpButton(ObjectSubclass<imp::IdpButton>)
-        @extends gtk::Widget, gtk::Button, @implements gtk::Accessible;
+        @extends gtk::Widget, gtk::Button,
+        @implements gtk::Accessible, gtk::Actionable;
 }
 
 impl IdpButton {
@@ -209,11 +196,8 @@ impl IdpButton {
     }
 
     pub fn set_id(&self, id: String) {
+        self.set_action_target_value(Some(&Some(&id).to_variant()));
         self.imp().id.replace(Some(id));
-    }
-
-    pub fn set_homeserver(&self, url: String) {
-        self.imp().homeserver.replace(Some(url));
     }
 
     pub fn set_brand(&self, brand: IdpBrand) {
@@ -224,22 +208,16 @@ impl IdpButton {
         self.imp().id.borrow().clone()
     }
 
-    pub fn homeserver(&self) -> Option<String> {
-        self.imp().homeserver.borrow().clone()
-    }
-
     pub fn brand(&self) -> IdpBrand {
         self.imp().brand.get()
     }
 
-    pub fn new_from_identity_provider(homeserver: Url, idp: &IdentityProvider) -> Option<Self> {
+    pub fn new_from_identity_provider(idp: &IdentityProvider) -> Option<Self> {
         let gidp: IdpBrand = idp.brand.as_ref()?.try_into().ok()?;
-        let ret: IdpButton = glib::Object::new(&[
-            ("brand", &gidp),
-            ("id", &idp.id),
-            ("homeserver", &homeserver.as_str()),
-        ])
-        .expect("Failed to create IdpButton");
-        Some(ret)
+
+        Some(
+            glib::Object::new(&[("brand", &gidp), ("id", &idp.id)])
+                .expect("Failed to create IdpButton"),
+        )
     }
 }

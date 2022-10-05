@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="LoginSsoPage" parent="AdwBin">
+    <property name="child">
+      <object class="GtkScrolledWindow" id="scrolled_window">
+        <property name="hscrollbar-policy">never</property>
+        <property name="propagate-natural-height">True</property>
+        <property name="child">
+          <object class="AdwClamp">
+            <property name="maximum-size">360</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <property name="child">
+              <object class="GtkLabel">
+                <property name="valign">center</property>
+                <property name="wrap">True</property>
+                <property name="wrap-mode">word-char</property>
+                <property name="justify">center</property>
+                <property name="label" translatable="yes">Please follow the steps in the browser.</property>
+                <style>
+                  <class name="title-2"/>
+                </style>
+              </object>
+            </property>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+</interface>

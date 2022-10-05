@@ -113,7 +113,10 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="identity-verification-widget.ui">ui/identity-verification-widget.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="join-room-dialog.ui">ui/join-room-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="login-advanced-dialog.ui">ui/login-advanced-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="login-homeserver-page.ui">ui/login-homeserver-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="login-idp-button.ui">ui/login-idp-button.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="login-method-page.ui">ui/login-method-page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="login-sso-page.ui">ui/login-sso-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="login.ui">ui/login.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="media-viewer.ui">ui/media-viewer.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="member-menu.ui">ui/member-menu.ui</file>

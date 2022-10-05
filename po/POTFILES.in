@@ -36,6 +36,9 @@ data/resources/ui/greeter.ui
 data/resources/ui/identity-verification-widget.ui
 data/resources/ui/join-room-dialog.ui
 data/resources/ui/login-advanced-dialog.ui
+data/resources/ui/login-homeserver-page.ui
+data/resources/ui/login-method-page.ui
+data/resources/ui/login-sso-page.ui
 data/resources/ui/login.ui
 data/resources/ui/member-menu.ui
 data/resources/ui/room-creation.ui
@@ -51,6 +54,8 @@ src/components/location_viewer.rs
 src/components/media_content_viewer.rs
 src/error_page.rs
 src/greeter.rs
+src/login/homeserver_page.rs
+src/login/method_page.rs
 src/login/mod.rs
 src/secret.rs
 src/session/account_settings/devices_page/device_list.rs

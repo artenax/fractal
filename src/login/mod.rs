@@ -3,27 +3,23 @@ use gettextrs::gettext;
 use gtk::{self, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::{debug, warn};
 use matrix_sdk::{
-    config::RequestConfig,
-    ruma::{
-        api::client::session::get_login_types::v3::{
-            LoginType::{Password, Sso},
-            SsoLoginType,
-        },
-        IdParseError, OwnedServerName, ServerName,
-    },
-    Client,
+    config::RequestConfig, ruma::api::client::session::get_login_types::v3::LoginType, Client,
 };
-use url::{ParseError, Url};
+use url::Url;
 
+mod advanced_dialog;
+mod homeserver_page;
 mod idp_button;
-mod login_advanced_dialog;
+mod method_page;
+mod sso_page;
 
-use idp_button::IdpButton;
-use login_advanced_dialog::LoginAdvancedDialog;
-
+use self::{
+    advanced_dialog::LoginAdvancedDialog, homeserver_page::LoginHomeserverPage,
+    method_page::LoginMethodPage, sso_page::LoginSsoPage,
+};
 use crate::{
-    components::SpinnerButton, gettext_f, spawn, spawn_tokio, toast,
-    user_facing_error::UserFacingError, Session,
+    components::SpinnerButton, spawn, spawn_tokio, toast, user_facing_error::UserFacingError,
+    Session,
 };
 
 mod imp {
@@ -48,19 +44,11 @@ mod imp {
         #[template_child]
         pub main_stack: TemplateChild<gtk::Stack>,
         #[template_child]
-        pub homeserver_entry: TemplateChild<adw::EntryRow>,
+        pub homeserver_page: TemplateChild<LoginHomeserverPage>,
         #[template_child]
-        pub homeserver_help: TemplateChild<gtk::Label>,
+        pub method_page: TemplateChild<LoginMethodPage>,
         #[template_child]
-        pub password_title: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub username_entry: TemplateChild<adw::EntryRow>,
-        #[template_child]
-        pub password_entry: TemplateChild<adw::PasswordEntryRow>,
-        #[template_child]
-        pub sso_box: TemplateChild<gtk::Box>,
-        #[template_child]
-        pub more_sso_option: TemplateChild<gtk::Button>,
+        pub sso_page: TemplateChild<LoginSsoPage>,
         #[template_child]
         pub offline_info_bar: TemplateChild<gtk::InfoBar>,
         #[template_child]
@@ -85,8 +73,16 @@ mod imp {
             Self::bind_template(klass);
             klass.set_css_name("login");
             klass.set_accessible_role(gtk::AccessibleRole::Group);
-            klass.install_action("login.next", None, move |widget, _, _| widget.forward());
-            klass.install_action("login.prev", None, move |widget, _, _| widget.backward());
+
+            klass.install_action("login.update-next", None, move |widget, _, _| {
+                widget.update_next_state()
+            });
+            klass.install_action("login.next", None, move |widget, _, _| widget.go_next());
+            klass.install_action("login.prev", None, move |widget, _, _| widget.go_previous());
+            klass.install_action("login.sso", Some("ms"), move |widget, _, variant| {
+                let idp_id = variant.and_then(|v| v.get::<Option<String>>()).flatten();
+                widget.login_with_sso(idp_id);
+            });
             klass.install_action("login.open-advanced", None, move |widget, _, _| {
                 spawn!(clone!(@weak widget => async move {
                     widget.open_advanced_dialog().await;
@@ -127,7 +123,9 @@ mod imp {
                         "Auto-discovery",
                         "Whether auto-discovery is enabled",
                         true,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                        glib::ParamFlags::READWRITE
+                            | glib::ParamFlags::CONSTRUCT
+                            | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
                 ]
             });
@@ -166,35 +164,13 @@ mod imp {
                 obj.update_network_state();
             }));
 
-            obj.update_network_state();
-
             self.main_stack
                 .connect_visible_child_notify(clone!(@weak obj => move |_|
-                    obj.update_next_action();
+                    obj.update_next_state();
                     obj.focus_default();
                 ));
-            obj.update_next_action();
 
-            self.homeserver_entry
-                .connect_entry_activated(clone!(@weak obj => move|_| {
-                    obj.default_widget().activate();
-                }));
-            self.homeserver_entry
-                .connect_changed(clone!(@weak obj => move |_| obj.update_next_action()));
-            self.username_entry
-                .connect_entry_activated(clone!(@weak obj => move|_| {
-                    obj.default_widget().activate();
-                }));
-            self.username_entry
-                .connect_changed(clone!(@weak obj => move |_| obj.update_next_action()));
-            self.password_entry
-                .connect_entry_activated(clone!(@weak obj => move|_| {
-                    obj.default_widget().activate();
-                }));
-            self.password_entry
-                .connect_changed(clone!(@weak obj => move |_| obj.update_next_action()));
-            self.more_sso_option
-                .connect_clicked(clone!(@weak obj => move |_| obj.login_with_sso(None)));
+            obj.update_network_state();
         }
     }
 
@@ -218,37 +194,6 @@ impl Login {
         self.imp().homeserver.borrow().clone()
     }
 
-    fn reload_sso_panel(&self, login_types: &SsoLoginType) {
-        let priv_ = &mut imp::Login::from_instance(self);
-        let mut child = priv_.sso_box.first_child();
-        while child.is_some() {
-            priv_.sso_box.remove(&child.unwrap());
-            child = priv_.sso_box.first_child();
-        }
-        let mut has_unknown_methods = false;
-        let mut has_known_methods = false;
-        let homeserver: Url = self.homeserver().unwrap();
-        for provider in login_types.identity_providers.iter() {
-            let opt_brand = provider.brand.as_ref();
-            if opt_brand.is_none() {
-                has_unknown_methods = true;
-                continue;
-            }
-            let btn = IdpButton::new_from_identity_provider(homeserver.clone(), provider);
-            if let Some(real) = btn {
-                self.imp().sso_box.append(&real);
-                real.connect_clicked(
-                    clone!(@weak self as obj => move |btn| obj.login_with_sso(btn.id())),
-                );
-                has_known_methods = true;
-            } else {
-                has_unknown_methods = true;
-            }
-        }
-        priv_.sso_box.set_visible(has_known_methods);
-        priv_.more_sso_option.set_visible(has_unknown_methods);
-    }
-
     pub fn homeserver_pretty(&self) -> Option<String> {
         let homeserver = self.homeserver();
         homeserver
@@ -268,6 +213,20 @@ impl Login {
         self.notify("homeserver");
     }
 
+    pub fn autodiscovery(&self) -> bool {
+        self.imp().autodiscovery.get()
+    }
+
+    pub fn set_autodiscovery(&self, autodiscovery: bool) {
+        if self.autodiscovery() == autodiscovery {
+            return;
+        }
+
+        self.imp().autodiscovery.set(autodiscovery);
+        self.notify("autodiscovery");
+        self.update_next_state();
+    }
+
     fn visible_child(&self) -> String {
         let priv_ = imp::Login::from_instance(self);
         priv_.main_stack.visible_child_name().unwrap().into()
@@ -278,31 +237,15 @@ impl Login {
         priv_.main_stack.set_visible_child_name(visible_child);
     }
 
-    fn update_next_action(&self) {
+    fn update_next_state(&self) {
         let priv_ = imp::Login::from_instance(self);
         match self.visible_child().as_ref() {
             "homeserver" => {
-                let homeserver = priv_.homeserver_entry.text();
-                let enabled = if self.autodiscovery() {
-                    build_server_name(homeserver.as_str()).is_ok()
-                } else {
-                    build_homeserver_url(homeserver.as_str()).is_ok()
-                };
-                self.action_set_enabled(
-                    "login.next",
-                    enabled && gio::NetworkMonitor::default().is_network_available(),
-                );
+                self.enable_next_action(priv_.homeserver_page.can_go_next());
                 priv_.next_button.set_visible(true);
             }
-            "password" => {
-                let username_length = priv_.username_entry.text().len();
-                let password_length = priv_.password_entry.text().len();
-                self.action_set_enabled(
-                    "login.next",
-                    username_length != 0
-                        && password_length != 0
-                        && gio::NetworkMonitor::default().is_network_available(),
-                );
+            "method" => {
+                self.enable_next_action(priv_.method_page.can_go_next());
                 priv_.next_button.set_visible(true);
             }
             _ => {
@@ -311,7 +254,14 @@ impl Login {
         }
     }
 
-    fn forward(&self) {
+    fn enable_next_action(&self, enabled: bool) {
+        self.action_set_enabled(
+            "login.next",
+            enabled && gio::NetworkMonitor::default().is_network_available(),
+        );
+    }
+
+    fn go_next(&self) {
         match self.visible_child().as_ref() {
             "homeserver" => {
                 if self.autodiscovery() {
@@ -320,17 +270,17 @@ impl Login {
                     self.check_homeserver();
                 }
             }
-            "password" => self.login_with_password(),
+            "method" => self.login_with_password(),
             _ => {}
         }
     }
 
-    fn backward(&self) {
+    fn go_previous(&self) {
         match self.visible_child().as_ref() {
-            "password" => self.set_visible_child("homeserver"),
-            "sso_message_page" => {
+            "method" => self.set_visible_child("homeserver"),
+            "sso" => {
                 self.set_visible_child(if self.imp().supports_password.get() {
-                    "password"
+                    "method"
                 } else {
                     "homeserver"
                 });
@@ -339,34 +289,6 @@ impl Login {
                 self.activate_action("app.show-greeter", None).unwrap();
             }
         }
-    }
-
-    pub fn autodiscovery(&self) -> bool {
-        self.imp().autodiscovery.get()
-    }
-
-    fn set_autodiscovery(&self, autodiscovery: bool) {
-        let priv_ = self.imp();
-
-        priv_.autodiscovery.set(autodiscovery);
-        if autodiscovery {
-            priv_.homeserver_entry.set_title(&gettext("Domain Name"));
-            priv_.homeserver_help.set_markup(&gettext(
-                "The domain of your Matrix homeserver, for example gnome.org",
-            ));
-        } else {
-            priv_.homeserver_entry.set_title(&gettext("Homeserver URL"));
-            priv_.homeserver_help.set_markup(&gettext_f(
-                // Translators: Do NOT translate the content between '{' and '}', this is a
-                // variable name.
-                "The URL of your Matrix homeserver, for example {address}",
-                &[(
-                    "address",
-                    "<span segment=\"word\">https://gnome.modular.im</span>",
-                )],
-            ));
-        }
-        self.update_next_action();
     }
 
     async fn open_advanced_dialog(&self) {
@@ -379,7 +301,7 @@ impl Login {
     }
 
     fn try_autodiscovery(&self) {
-        let server = build_server_name(self.imp().homeserver_entry.text().as_str()).unwrap();
+        let server = self.imp().homeserver_page.server_name().unwrap();
 
         self.freeze();
 
@@ -405,44 +327,8 @@ impl Login {
         );
     }
 
-    fn switch_off_sso(&self) {
-        let priv_ = self.imp();
-        priv_.sso_box.set_visible(false);
-        priv_.more_sso_option.set_visible(false);
-    }
-
-    async fn check_login_types(&self, client: Client) {
-        let login_types = spawn_tokio!(async move { client.get_login_types().await })
-            .await
-            .unwrap()
-            .unwrap();
-        let sso = login_types
-            .flows
-            .iter()
-            .find(|flow| matches!(flow, Sso(_sso_providers)));
-        let password = login_types
-            .flows
-            .iter()
-            .find(|flow| matches!(flow, Password(_)));
-        let has_sso = sso.is_some();
-        let has_password = password.is_some();
-        self.imp().supports_password.replace(has_password);
-        if has_sso && has_password {
-            if let Sso(login_type) = sso.unwrap() {
-                self.reload_sso_panel(login_type);
-            }
-        } else if !has_sso {
-            self.switch_off_sso();
-        }
-        if has_password {
-            self.show_password_page();
-        } else {
-            self.login_with_sso(None);
-        }
-    }
-
     fn check_homeserver(&self) {
-        let homeserver = build_homeserver_url(self.imp().homeserver_entry.text().as_str()).unwrap();
+        let homeserver = self.imp().homeserver_page.homeserver_url().unwrap();
         let homeserver_clone = homeserver.clone();
 
         self.freeze();
@@ -473,33 +359,59 @@ impl Login {
         );
     }
 
-    fn show_password_page(&self) {
+    async fn check_login_types(&self, client: Client) {
+        let handle = spawn_tokio!(async move { client.get_login_types().await });
+
+        let login_types = match handle.await.unwrap() {
+            Ok(res) => res,
+            Err(error) => {
+                warn!("Failed to get available login types: {error}");
+                toast!(self, "Failed to get available login types.");
+                return;
+            }
+        };
+
+        let sso = login_types.flows.iter().find_map(|flow| {
+            if let LoginType::Sso(sso) = flow {
+                Some(sso)
+            } else {
+                None
+            }
+        });
+
+        let has_password = login_types
+            .flows
+            .iter()
+            .any(|flow| matches!(flow, LoginType::Password(_)));
+
+        self.imp().supports_password.replace(has_password);
+
+        if has_password {
+            self.imp().method_page.update_sso(sso);
+            self.show_login_methods();
+        } else {
+            self.login_with_sso(None);
+        }
+    }
+
+    fn show_login_methods(&self) {
         let priv_ = self.imp();
 
         let domain_name = if self.autodiscovery() {
-            priv_.homeserver_entry.text().to_string()
+            priv_.homeserver_page.server_name().unwrap().to_string()
         } else {
             self.homeserver_pretty().unwrap()
         };
+        priv_.method_page.set_domain_name(&domain_name);
 
-        priv_.password_title.set_markup(&gettext_f(
-            // Translators: Do NOT translate the content between '{' and '}', this is a variable
-            // name.
-            "Connecting to {domain_name}",
-            &[(
-                "domain_name",
-                &format!("<span segment=\"word\">{}</span>", domain_name),
-            )],
-        ));
-
-        self.set_visible_child("password");
+        self.set_visible_child("method");
     }
 
     fn login_with_password(&self) {
         let priv_ = self.imp();
         let homeserver = self.homeserver().unwrap();
-        let username = priv_.username_entry.text().to_string();
-        let password = priv_.password_entry.text().to_string();
+        let username = priv_.method_page.username();
+        let password = priv_.method_page.password();
         let autodiscovery = self.autodiscovery();
 
         self.freeze();
@@ -519,7 +431,7 @@ impl Login {
     fn login_with_sso(&self, idp_id: Option<String>) {
         let priv_ = imp::Login::from_instance(self);
         let homeserver = self.homeserver().unwrap();
-        self.set_visible_child("sso_message_page");
+        self.set_visible_child("sso");
 
         let session = Session::new();
         self.set_handler_for_prepared_session(&session);
@@ -535,10 +447,9 @@ impl Login {
 
     pub fn clean(&self) {
         let priv_ = self.imp();
-        priv_.homeserver_entry.set_text("");
-        priv_.username_entry.set_text("");
-        priv_.password_entry.set_text("");
-        priv_.autodiscovery.set(true);
+        priv_.homeserver_page.clean();
+        priv_.method_page.clean();
+        self.set_autodiscovery(true);
         priv_.homeserver.take();
         priv_.main_stack.set_visible_child_name("homeserver");
         self.unfreeze();
@@ -558,7 +469,7 @@ impl Login {
 
         priv_.next_button.set_loading(false);
         priv_.main_stack.set_sensitive(true);
-        self.update_next_action();
+        self.update_next_state();
     }
 
     pub fn connect_new_session<F: Fn(&Self, Session) + 'static>(
@@ -600,10 +511,10 @@ impl Login {
         let priv_ = self.imp();
         match self.visible_child().as_ref() {
             "homeserver" => {
-                priv_.homeserver_entry.grab_focus();
+                priv_.homeserver_page.focus_default();
             }
-            "password" => {
-                priv_.username_entry.grab_focus();
+            "method" => {
+                priv_.method_page.focus_default();
             }
             _ => {}
         }
@@ -660,44 +571,24 @@ impl Login {
                 .offline_info_bar_label
                 .set_label(&gettext("No network connection"));
             priv_.offline_info_bar.set_revealed(true);
-            self.update_next_action();
-            priv_.sso_box.set_sensitive(false);
-            priv_.more_sso_option.set_sensitive(false);
+            self.action_set_enabled("login.sso", false);
         } else if monitor.connectivity() < gio::NetworkConnectivity::Full {
             priv_
                 .offline_info_bar_label
                 .set_label(&gettext("No Internet connection"));
             priv_.offline_info_bar.set_revealed(true);
-            self.update_next_action();
-            priv_.sso_box.set_sensitive(true);
-            priv_.more_sso_option.set_sensitive(true);
+            self.action_set_enabled("login.sso", true);
         } else {
             priv_.offline_info_bar.set_revealed(false);
-            self.update_next_action();
-            priv_.sso_box.set_sensitive(true);
-            priv_.more_sso_option.set_sensitive(true);
+            self.action_set_enabled("login.sso", true);
         }
+
+        self.update_next_state();
     }
 }
 
 impl Default for Login {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-fn build_server_name(server: &str) -> Result<OwnedServerName, IdParseError> {
-    let server = server
-        .strip_prefix("http://")
-        .or_else(|| server.strip_prefix("https://"))
-        .unwrap_or(server);
-    ServerName::parse(server)
-}
-
-fn build_homeserver_url(server: &str) -> Result<Url, ParseError> {
-    if server.starts_with("http://") || server.starts_with("https://") {
-        Url::parse(server)
-    } else {
-        Url::parse(&format!("https://{}", server))
     }
 }

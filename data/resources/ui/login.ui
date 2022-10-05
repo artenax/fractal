@@ -54,191 +54,28 @@
               <object class="GtkStackPage">
                 <property name="name">homeserver</property>
                 <property name="child">
-                  <object class="AdwClamp">
-                    <property name="maximum-size">360</property>
-                    <property name="margin-top">24</property>
-                    <property name="margin-bottom">24</property>
-                    <property name="margin-start">12</property>
-                    <property name="margin-end">12</property>
-                    <property name="child">
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="valign">center</property>
-                        <property name="spacing">24</property>
-                        <child>
-                          <object class="GtkPicture">
-                            <property name="file">resource:///org/gnome/Fractal/assets/homeserver.svg</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkBox">
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">6</property>
-                            <child>
-                              <object class="AdwEntryRow" id="homeserver_entry">
-                                <style>
-                                  <class name="card"/>
-                                </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="homeserver_help">
-                                <style>
-                                  <class name="caption"/>
-                                  <class name="dim-label"/>
-                                </style>
-                                <property name="justify">left</property>
-                                <property name="xalign">0.0</property>
-                                <property name="margin-start">6</property>
-                                <property name="margin-end">6</property>
-                                <property name="wrap">true</property>
-                                <property name="use-markup">true</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton">
-                            <style>
-                              <class name="pill"/>
-                            </style>
-                            <property name="halign">center</property>
-                            <!-- Translators: As in 'Advanced Settings'. -->
-                            <property name="label" translatable="yes">Advanced…</property>
-                            <property name="action-name">login.open-advanced</property>
-                          </object>
-                        </child>
-                      </object>
-                    </property>
+                  <object class="LoginHomeserverPage" id="homeserver_page">
+                    <property name="autodiscovery" bind-source="Login" bind-property="autodiscovery" bind-flags="sync-create"/>
                   </object>
                 </property>
               </object>
             </child>
             <child>
               <object class="GtkStackPage">
-                <property name="name">password</property>
+                <property name="name">method</property>
                 <property name="child">
-                  <object class="AdwClamp">
-                    <property name="maximum-size">360</property>
-                    <property name="margin-top">24</property>
-                    <property name="margin-bottom">24</property>
-                    <property name="margin-start">12</property>
-                    <property name="margin-end">12</property>
-                    <property name="valign">center</property>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">30</property>
-                        <child>
-                          <object class="GtkBox">
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">6</property>
-                            <property name="halign">center</property>
-                            <child>
-                              <object class="GtkLabel" id="password_title">
-                                <style>
-                                  <class name="title-4"/>
-                                </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkBox">
-                                <property name="spacing">6</property>
-                                <property name="halign">center</property>
-                                <property name="visible" bind-source="Login" bind-property="autodiscovery" bind-flags="sync-create"/>
-                                <property name="tooltip-text" translatable="yes">Homeserver URL</property>
-                                <child>
-                                  <object class="GtkImage">
-                                    <property name="icon-name">user-home-symbolic</property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel">
-                                    <style>
-                                      <class name="body"/>
-                                    </style>
-                                    <property name="label" bind-source="Login" bind-property="homeserver" bind-flags="sync-create"/>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="AdwEntryRow" id="username_entry">
-                            <style>
-                              <class name="card"/>
-                            </style>
-                            <property name="title" translatable="true">Matrix Username</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkBox">
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">12</property>
-                            <child>
-                              <object class="AdwPasswordEntryRow" id="password_entry">
-                                <style>
-                                  <class name="card"/>
-                                </style>
-                                <property name="title" translatable="true">Password</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkLinkButton" id="forgot_password">
-                                <property name="use_underline">True</property>
-                                <property name="label" translatable="yes">_Forgot Password?</property>
-                                <property name="uri">https://app.element.io/#/forgot_password</property>
-                                <property name="halign">center</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="sso_box">
-                            <property name="visible">false</property>
-                            <property name="spacing">12</property>
-                            <property name="homogeneous">true</property>
-                            <property name="hexpand">true</property>
-                            <property name="vexpand">true</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="more_sso_option">
-                            <style>
-                              <class name="pill"/>
-                            </style>
-                            <property name="halign">center</property>
-                            <property name="label" translatable="yes">More SSO Providers</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
+                  <object class="LoginMethodPage" id="method_page">
+                    <property name="homeserver" bind-source="Login" bind-property="homeserver" bind-flags="sync-create"/>
+                    <property name="autodiscovery" bind-source="Login" bind-property="autodiscovery" bind-flags="sync-create"/>
                   </object>
                 </property>
               </object>
             </child>
             <child>
               <object class="GtkStackPage">
-                <property name="name">sso_message_page</property>
+                <property name="name">sso</property>
                 <property name="child">
-                  <object class="AdwClamp">
-                    <property name="maximum-size">360</property>
-                    <property name="tightening-threshold">360</property>
-                    <property name="valign">center</property>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="valign">center</property>
-                        <property name="wrap">True</property>
-                        <property name="wrap-mode">word-char</property>
-                        <property name="justify">center</property>
-                        <property name="label" translatable="yes">Please follow the steps in the browser.</property>
-                        <style>
-                          <class name="title-2"/>
-                        </style>
-                      </object>
-                    </child>
-                  </object>
+                  <object class="LoginSsoPage" id="sso_page"/>
                 </property>
               </object>
             </child>
