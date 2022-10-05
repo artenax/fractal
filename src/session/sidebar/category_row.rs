@@ -1,6 +1,6 @@
 use adw::subclass::prelude::BinImpl;
 use gettextrs::gettext;
-use gtk::{self, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+use gtk::{self, accessible, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
 use crate::session::sidebar::{Category, CategoryType};
 
@@ -148,8 +148,17 @@ impl CategoryRow {
             self.unset_state_flags(gtk::StateFlags::CHECKED);
         }
 
+        self.set_expanded_accessibility_state(expanded);
         self.imp().expanded.set(expanded);
         self.notify("expanded");
+    }
+
+    fn set_expanded_accessibility_state(&self, expanded: bool) {
+        if let Some(p) = self.parent() {
+            if let Some(p) = p.parent() {
+                p.update_state(&[accessible::State::Expanded(Some(expanded))])
+            }
+        }
     }
 
     pub fn label(&self) -> Option<String> {
