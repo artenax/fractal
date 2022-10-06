@@ -1,10 +1,18 @@
+use std::{fs, path::PathBuf};
+
 use adw::{prelude::*, subclass::prelude::BinImpl};
 use gettextrs::gettext;
-use gtk::{self, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
-use log::{debug, warn};
+use gtk::{self, gdk, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
+use log::{error, warn};
 use matrix_sdk::{
-    config::RequestConfig, ruma::api::client::session::get_login_types::v3::LoginType, Client,
+    config::{RequestConfig, StoreConfig},
+    ruma::api::client::session::get_login_types::v3::LoginType,
+    store::{MigrationConflictStrategy, OpenStoreError, SledStateStore},
+    Client, ClientBuildError, StoreError,
 };
+use rand::{distributions::Alphanumeric, thread_rng, Rng};
+use ruma::OwnedServerName;
+use thiserror::Error;
 use url::Url;
 
 mod advanced_dialog;
@@ -18,8 +26,11 @@ use self::{
     method_page::LoginMethodPage, sso_page::LoginSsoPage,
 };
 use crate::{
-    components::SpinnerButton, spawn, spawn_tokio, toast, user_facing_error::UserFacingError,
-    Session,
+    components::SpinnerButton,
+    secret::{self, Secret, StoredSession},
+    spawn, spawn_tokio, toast,
+    user_facing_error::UserFacingError,
+    Session, Window,
 };
 
 mod imp {
@@ -36,7 +47,8 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/login.ui")]
     pub struct Login {
-        pub current_session: RefCell<Option<Session>>,
+        /// The current created Matrix client and its configuration.
+        pub created_client: RefCell<Option<CreatedClient>>,
         #[template_child]
         pub back_button: TemplateChild<gtk::Button>,
         #[template_child]
@@ -81,7 +93,9 @@ mod imp {
             klass.install_action("login.prev", None, move |widget, _, _| widget.go_previous());
             klass.install_action("login.sso", Some("ms"), move |widget, _, variant| {
                 let idp_id = variant.and_then(|v| v.get::<Option<String>>()).flatten();
-                widget.login_with_sso(idp_id);
+                spawn!(clone!(@weak widget => async move {
+                    widget.login_with_sso(idp_id).await;
+                }));
             });
             klass.install_action("login.open-advanced", None, move |widget, _, _| {
                 spawn!(clone!(@weak widget => async move {
@@ -172,6 +186,10 @@ mod imp {
 
             obj.update_network_state();
         }
+
+        fn dispose(&self, obj: &Self::Type) {
+            obj.prune_created_client(true);
+        }
     }
 
     impl WidgetImpl for Login {}
@@ -190,6 +208,45 @@ impl Login {
         glib::Object::new(&[]).expect("Failed to create Login")
     }
 
+    fn parent_window(&self) -> Window {
+        self.root()
+            .and_then(|root| root.downcast().ok())
+            .expect("Login needs to have a parent window")
+    }
+
+    pub fn created_client(&self) -> Option<CreatedClient> {
+        self.imp().created_client.borrow().clone()
+    }
+
+    pub fn client(&self) -> Option<Client> {
+        self.imp()
+            .created_client
+            .borrow()
+            .as_ref()
+            .map(|c| c.client.clone())
+    }
+
+    pub fn prune_created_client(&self, clean: bool) {
+        if let Some(created_client) = self.imp().created_client.take() {
+            if clean {
+                if let Err(error) = fs::remove_dir_all(created_client.path) {
+                    error!("Failed to remove newly-created database: {}", error);
+                }
+            }
+        }
+    }
+
+    async fn set_created_client(&self, created_client: Option<CreatedClient>) {
+        let homeserver = if let Some(c) = &created_client {
+            Some(c.client.homeserver().await)
+        } else {
+            None
+        };
+
+        self.set_homeserver(homeserver);
+        self.imp().created_client.replace(created_client);
+    }
+
     pub fn homeserver(&self) -> Option<Url> {
         self.imp().homeserver.borrow().clone()
     }
@@ -203,7 +260,7 @@ impl Login {
     }
 
     pub fn set_homeserver(&self, homeserver: Option<Url>) {
-        let priv_ = imp::Login::from_instance(self);
+        let priv_ = self.imp();
 
         if self.homeserver() == homeserver {
             return;
@@ -228,17 +285,20 @@ impl Login {
     }
 
     fn visible_child(&self) -> String {
-        let priv_ = imp::Login::from_instance(self);
-        priv_.main_stack.visible_child_name().unwrap().into()
+        self.imp().main_stack.visible_child_name().unwrap().into()
     }
 
     fn set_visible_child(&self, visible_child: &str) {
-        let priv_ = imp::Login::from_instance(self);
-        priv_.main_stack.set_visible_child_name(visible_child);
+        // Clean up the created client when we come back to the homeserver selection.
+        if visible_child == "homeserver" {
+            self.prune_created_client(true);
+        }
+
+        self.imp().main_stack.set_visible_child_name(visible_child);
     }
 
     fn update_next_state(&self) {
-        let priv_ = imp::Login::from_instance(self);
+        let priv_ = self.imp();
         match self.visible_child().as_ref() {
             "homeserver" => {
                 self.enable_next_action(priv_.homeserver_page.can_go_next());
@@ -262,22 +322,28 @@ impl Login {
     }
 
     fn go_next(&self) {
-        match self.visible_child().as_ref() {
-            "homeserver" => {
-                if self.autodiscovery() {
-                    self.try_autodiscovery();
-                } else {
-                    self.check_homeserver();
+        self.freeze();
+
+        spawn!(
+            glib::PRIORITY_DEFAULT_IDLE,
+            clone!(@weak self as obj => async move {
+                match obj.visible_child().as_ref() {
+                    "homeserver" => obj.get_homeserver().await,
+                    "method" => obj.login_with_password().await,
+                    _ => {}
                 }
-            }
-            "method" => self.login_with_password(),
-            _ => {}
-        }
+
+                obj.unfreeze();
+            })
+        );
     }
 
     fn go_previous(&self) {
         match self.visible_child().as_ref() {
-            "method" => self.set_visible_child("homeserver"),
+            "method" => {
+                self.set_visible_child("homeserver");
+                self.imp().method_page.clean();
+            }
             "sso" => {
                 self.set_visible_child(if self.imp().supports_password.get() {
                     "method"
@@ -292,74 +358,48 @@ impl Login {
     }
 
     async fn open_advanced_dialog(&self) {
-        let dialog =
-            LoginAdvancedDialog::new(self.root().unwrap().downcast_ref::<gtk::Window>().unwrap());
+        let dialog = LoginAdvancedDialog::new(self.parent_window().upcast_ref());
         self.bind_property("autodiscovery", &dialog, "autodiscovery")
             .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::BIDIRECTIONAL)
             .build();
         dialog.run_future().await;
     }
 
-    fn try_autodiscovery(&self) {
-        let server = self.imp().homeserver_page.server_name().unwrap();
+    async fn get_homeserver(&self) {
+        let autodiscovery = self.autodiscovery();
+        let homeserver_page = &self.imp().homeserver_page;
 
-        self.freeze();
-
-        let handle =
-            spawn_tokio!(async move { Client::builder().server_name(&server).build().await });
-
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                match handle.await.unwrap() {
-                    Ok(client) => {
-                        let homeserver = client.homeserver().await;
-                        obj.set_homeserver(Some(homeserver));
-                        obj.check_login_types(client).await;
-                    }
-                    Err(error) => {
-                        warn!("Failed to discover homeserver: {}", error);
-                        toast!(obj, error.to_user_facing());
-                    }
-                };
-                obj.unfreeze();
-            })
-        );
-    }
-
-    fn check_homeserver(&self) {
-        let homeserver = self.imp().homeserver_page.homeserver_url().unwrap();
-        let homeserver_clone = homeserver.clone();
-
-        self.freeze();
+        let homeserver = if autodiscovery {
+            HomeserverOrServerName::ServerName(homeserver_page.server_name().unwrap())
+        } else {
+            HomeserverOrServerName::Homeserver(homeserver_page.homeserver_url().unwrap())
+        };
 
         let handle = spawn_tokio!(async move {
-            Client::builder()
-                .homeserver_url(homeserver_clone)
-                .request_config(RequestConfig::new().disable_retry())
-                .build()
-                .await
+            CreatedClient::new(&homeserver, autodiscovery, None, None).await
         });
 
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                match handle.await.unwrap() {
-                    Ok(client) => {
-                        obj.set_homeserver(Some(homeserver));
-                        obj.check_login_types(client).await;
-                    }
-                    Err(error) => {
-                        warn!("Failed to check homeserver: {}", error);
-                        toast!(obj, error.to_user_facing());
-                    }
-                };
-                obj.unfreeze();
-            })
-        );
+        match handle.await.unwrap() {
+            Ok(created_client) => {
+                self.set_created_client(Some(created_client)).await;
+                self.check_login_types().await;
+            }
+            Err(error) => {
+                if autodiscovery {
+                    warn!("Failed to discover homeserver: {}", error);
+                } else {
+                    warn!("Failed to check homeserver: {}", error);
+                }
+                toast!(self, error.to_user_facing());
+
+                // Clean up the created client because it's bound to the homeserver.
+                self.prune_created_client(true);
+            }
+        };
     }
 
-    async fn check_login_types(&self, client: Client) {
+    async fn check_login_types(&self) {
+        let client = self.client().unwrap();
         let handle = spawn_tokio!(async move { client.get_login_types().await });
 
         let login_types = match handle.await.unwrap() {
@@ -384,13 +424,14 @@ impl Login {
             .iter()
             .any(|flow| matches!(flow, LoginType::Password(_)));
 
-        self.imp().supports_password.replace(has_password);
+        let priv_ = self.imp();
+        priv_.supports_password.replace(has_password);
 
         if has_password {
-            self.imp().method_page.update_sso(sso);
+            priv_.method_page.update_sso(sso);
             self.show_login_methods();
         } else {
-            self.login_with_sso(None);
+            self.login_with_sso(None).await;
         }
     }
 
@@ -407,53 +448,163 @@ impl Login {
         self.set_visible_child("method");
     }
 
-    fn login_with_password(&self) {
+    async fn login_with_password(&self) {
         let priv_ = self.imp();
-        let homeserver = self.homeserver().unwrap();
         let username = priv_.method_page.username();
         let password = priv_.method_page.password();
-        let autodiscovery = self.autodiscovery();
+        let CreatedClient {
+            client,
+            path,
+            passphrase,
+        } = self.created_client().unwrap();
 
-        self.freeze();
+        let handle = spawn_tokio!(async move {
+            client
+                .login_username(&username, &password)
+                .initial_device_display_name("Fractal")
+                .send()
+                .await
+        });
 
-        let session = Session::new();
-        self.set_handler_for_prepared_session(&session);
-
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak session => async move {
-                session.login_with_password(homeserver, username, password, autodiscovery).await;
-            })
-        );
-        priv_.current_session.replace(Some(session));
+        match handle.await.unwrap() {
+            Ok(response) => {
+                let session_info = StoredSession {
+                    homeserver: self.homeserver().unwrap(),
+                    user_id: response.user_id,
+                    device_id: response.device_id,
+                    path,
+                    secret: Secret {
+                        access_token: response.access_token,
+                        passphrase,
+                    },
+                };
+                self.create_session(session_info, true).await;
+            }
+            Err(error) => {
+                warn!("Failed to log in: {error}");
+                toast!(self, error.to_user_facing());
+            }
+        }
     }
 
-    fn login_with_sso(&self, idp_id: Option<String>) {
-        let priv_ = imp::Login::from_instance(self);
-        let homeserver = self.homeserver().unwrap();
+    async fn login_with_sso(&self, idp_id: Option<String>) {
+        let CreatedClient {
+            client,
+            path,
+            passphrase,
+        } = self.created_client().unwrap();
+
         self.set_visible_child("sso");
 
+        let handle = spawn_tokio!(async move {
+            let mut login = client
+                .login_sso(|sso_url| async move {
+                    let ctx = glib::MainContext::default();
+                    ctx.spawn(async move {
+                        gtk::show_uri(gtk::Window::NONE, &sso_url, gdk::CURRENT_TIME);
+                    });
+                    Ok(())
+                })
+                .initial_device_display_name("Fractal");
+
+            if let Some(idp_id) = idp_id.as_deref() {
+                login = login.identity_provider_id(idp_id);
+            }
+
+            login.send().await
+        });
+
+        match handle.await.unwrap() {
+            Ok(response) => {
+                let session_info = StoredSession {
+                    homeserver: self.homeserver().unwrap(),
+                    user_id: response.user_id,
+                    device_id: response.device_id,
+                    path,
+                    secret: Secret {
+                        access_token: response.access_token,
+                        passphrase,
+                    },
+                };
+                self.create_session(session_info, true).await;
+            }
+            Err(error) => {
+                warn!("Failed to log in: {error}");
+                toast!(self, error.to_user_facing());
+                self.go_previous();
+            }
+        }
+    }
+
+    pub async fn restore_previous_session(&self, session: StoredSession) {
+        let handle = spawn_tokio!(async move {
+            let created_client = CreatedClient::new(
+                &HomeserverOrServerName::Homeserver(session.homeserver.clone()),
+                false,
+                Some(session.path.clone()),
+                Some(session.secret.passphrase.clone()),
+            )
+            .await?;
+
+            created_client
+                .client
+                .restore_login(matrix_sdk::Session {
+                    user_id: session.user_id.clone(),
+                    device_id: session.device_id.clone(),
+                    access_token: session.secret.access_token.clone(),
+                    refresh_token: None,
+                })
+                .await
+                .map(|_| (created_client, session))
+                .map_err(ClientSetupError::from)
+        });
+
+        match handle.await.unwrap() {
+            Ok((created_client, session_info)) => {
+                self.set_created_client(Some(created_client)).await;
+                self.create_session(session_info, false).await;
+            }
+            Err(error) => {
+                warn!("Failed to restore previous login: {error}");
+                toast!(self, error.to_user_facing());
+            }
+        }
+    }
+
+    pub async fn create_session(&self, session_info: StoredSession, is_new: bool) {
+        let client = self.client().unwrap();
         let session = Session::new();
-        self.set_handler_for_prepared_session(&session);
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak session, @weak self as s => async move {
-                session.login_with_sso(homeserver, idp_id).await;
-                s.set_visible_child("homeserver");
-            })
-        );
-        priv_.current_session.replace(Some(session));
+
+        if is_new {
+            if let Err(error) = secret::store_session(&session_info).await {
+                error!("Couldn't store session: {:?}", error);
+
+                self.parent_window().switch_to_error_page(
+                    &format!("{}\n\n{}", gettext("Unable to store session"), error),
+                    error,
+                );
+                return;
+            }
+        };
+
+        session.prepare(client, session_info).await;
+        self.emit_by_name::<()>("new-session", &[&session]);
     }
 
     pub fn clean(&self) {
         let priv_ = self.imp();
+
+        // Clean pages.
         priv_.homeserver_page.clean();
         priv_.method_page.clean();
+
+        // Clean data.
+        self.prune_created_client(false);
         self.set_autodiscovery(true);
-        priv_.homeserver.take();
+
+        // Reinitialize UI.
         priv_.main_stack.set_visible_child_name("homeserver");
         self.unfreeze();
-        self.drop_session_reference();
     }
 
     fn freeze(&self) {
@@ -486,22 +637,6 @@ impl Login {
         })
     }
 
-    fn drop_session_reference(&self) {
-        let priv_ = self.imp();
-
-        if let Some(session) = priv_.current_session.take() {
-            if let Some(id) = priv_.prepared_source_id.take() {
-                session.disconnect(id);
-            }
-            if let Some(id) = priv_.logged_out_source_id.take() {
-                session.disconnect(id);
-            }
-            if let Some(id) = priv_.ready_source_id.take() {
-                session.disconnect(id);
-            }
-        }
-    }
-
     pub fn default_widget(&self) -> gtk::Widget {
         self.imp().next_button.get().upcast()
     }
@@ -518,48 +653,6 @@ impl Login {
             }
             _ => {}
         }
-    }
-
-    fn set_handler_for_prepared_session(&self, session: &Session) {
-        let priv_ = self.imp();
-        priv_
-            .prepared_source_id
-            .replace(Some(session.connect_prepared(
-                clone!(@weak self as login => move |session, error| {
-                    match error {
-                        Some(e) => {
-                            toast!(login, e);
-                            login.unfreeze();
-                        },
-                        None => {
-                            debug!("A new session was prepared");
-                            login.emit_by_name::<()>("new-session", &[&session]);
-                        }
-                    }
-                }),
-            )));
-
-        priv_.ready_source_id.replace(Some(session.connect_ready(
-            clone!(@weak self as login => move |_| {
-                login.clean();
-            }),
-        )));
-
-        priv_
-            .logged_out_source_id
-            .replace(Some(session.connect_logged_out(
-                clone!(@weak self as login => move |_| {
-                    login.parent_window().switch_to_login_page();
-                    login.drop_session_reference();
-                    login.unfreeze();
-                }),
-            )));
-    }
-
-    fn parent_window(&self) -> crate::Window {
-        self.root()
-            .and_then(|root| root.downcast().ok())
-            .expect("Login needs to have a parent window")
     }
 
     fn update_network_state(&self) {
@@ -590,5 +683,106 @@ impl Login {
 impl Default for Login {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+/// A homeserver URL or a server name.
+pub enum HomeserverOrServerName {
+    /// A homeserver URL.
+    Homeserver(Url),
+
+    /// A server name.
+    ServerName(OwnedServerName),
+}
+
+/// All errors that can occur when setting up the Matrix client.
+#[derive(Error, Debug)]
+pub enum ClientSetupError {
+    #[error(transparent)]
+    Store(#[from] OpenStoreError),
+    #[error(transparent)]
+    Client(#[from] ClientBuildError),
+    #[error(transparent)]
+    Sdk(#[from] matrix_sdk::Error),
+}
+
+impl UserFacingError for ClientSetupError {
+    fn to_user_facing(self) -> String {
+        match self {
+            ClientSetupError::Store(err) => err.to_user_facing(),
+            ClientSetupError::Client(err) => err.to_user_facing(),
+            ClientSetupError::Sdk(err) => err.to_user_facing(),
+        }
+    }
+}
+
+/// A newly created Matrix client and its configuration.
+#[derive(Debug, Clone)]
+pub struct CreatedClient {
+    /// The Matrix client.
+    pub client: Client,
+
+    /// The path where the store is located.
+    pub path: PathBuf,
+
+    /// The passphrase to decrypt the store.
+    pub passphrase: String,
+}
+
+impl CreatedClient {
+    /// Create a Matrix `Client` for the given homeserver.
+    async fn new(
+        homeserver: &HomeserverOrServerName,
+        use_discovery: bool,
+        path: Option<PathBuf>,
+        passphrase: Option<String>,
+    ) -> Result<CreatedClient, ClientSetupError> {
+        let path = path.unwrap_or_else(|| {
+            let mut path = glib::user_data_dir();
+            path.push(glib::uuid_string_random().as_str());
+            path
+        });
+
+        let passphrase = passphrase.unwrap_or_else(|| {
+            thread_rng()
+                .sample_iter(Alphanumeric)
+                .take(30)
+                .map(char::from)
+                .collect()
+        });
+
+        let state_store = SledStateStore::builder()
+            .path(path.clone())
+            .passphrase(passphrase.clone())
+            .migration_conflict_strategy(MigrationConflictStrategy::Drop)
+            .build()
+            .map_err(|err| OpenStoreError::from(StoreError::backend(err)))?;
+        let crypto_store = state_store.open_crypto_store()?;
+        let store_config = StoreConfig::new()
+            .state_store(state_store)
+            .crypto_store(crypto_store);
+
+        let builder = match homeserver {
+            HomeserverOrServerName::Homeserver(url) => Client::builder().homeserver_url(url),
+            HomeserverOrServerName::ServerName(server_name) => {
+                Client::builder().server_name(server_name)
+            }
+        };
+
+        let client = builder
+            .store_config(store_config)
+            // force_auth option to solve an issue with some servers configuration to require
+            // auth for profiles:
+            // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
+            .request_config(RequestConfig::new().retry_limit(2).force_auth())
+            .respect_login_well_known(use_discovery)
+            .build()
+            .await?;
+
+        Ok(Self {
+            client,
+            path,
+            passphrase,
+        })
     }
 }

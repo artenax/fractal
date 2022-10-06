@@ -11,7 +11,7 @@ mod sidebar;
 mod user;
 pub mod verification;
 
-use std::{collections::HashSet, fs, path::PathBuf, time::Duration};
+use std::{collections::HashSet, fs, time::Duration};
 
 use adw::{prelude::*, subclass::prelude::*};
 use futures::StreamExt;
@@ -23,7 +23,7 @@ use gtk::{
 };
 use log::{debug, error, warn};
 use matrix_sdk::{
-    config::{RequestConfig, StoreConfig, SyncSettings},
+    config::SyncSettings,
     deserialized_responses::SyncResponse,
     room::Room as MatrixRoom,
     ruma::{
@@ -43,13 +43,9 @@ use matrix_sdk::{
         matrix_uri::MatrixId,
         MatrixUri, OwnedRoomOrAliasId, OwnedServerName, RoomId, RoomOrAliasId,
     },
-    store::{MigrationConflictStrategy, OpenStoreError, SledStateStore},
-    Client, ClientBuildError, Error, HttpError, RumaApiError, StoreError,
+    Client, HttpError, RumaApiError,
 };
-use rand::{distributions::Alphanumeric, thread_rng, Rng};
-use thiserror::Error;
 use tokio::task::JoinHandle;
-use url::Url;
 
 use self::{
     account_settings::AccountSettings,
@@ -67,33 +63,12 @@ pub use self::{
     user::{User, UserActions, UserExt},
 };
 use crate::{
-    secret,
-    secret::{Secret, StoredSession},
+    secret::{self, StoredSession},
     session::sidebar::ItemList,
     spawn, spawn_tokio, toast,
     utils::{check_if_reachable, parse_matrix_to_uri},
-    UserFacingError, Window,
+    Window,
 };
-
-#[derive(Error, Debug)]
-pub enum ClientSetupError {
-    #[error(transparent)]
-    Store(#[from] OpenStoreError),
-    #[error(transparent)]
-    Client(#[from] ClientBuildError),
-    #[error(transparent)]
-    Sdk(#[from] Error),
-}
-
-impl UserFacingError for ClientSetupError {
-    fn to_user_facing(self) -> String {
-        match self {
-            ClientSetupError::Store(err) => err.to_user_facing(),
-            ClientSetupError::Client(err) => err.to_user_facing(),
-            ClientSetupError::Sdk(err) => err.to_user_facing(),
-        }
-    }
-}
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -116,7 +91,7 @@ mod imp {
         pub content: TemplateChild<Content>,
         #[template_child]
         pub media_viewer: TemplateChild<MediaViewer>,
-        pub client: RefCell<Option<Client>>,
+        pub client: OnceCell<Client>,
         pub item_list: OnceCell<ItemList>,
         pub user: OnceCell<User>,
         pub is_ready: Cell<bool>,
@@ -252,12 +227,6 @@ mod imp {
         fn signals() -> &'static [Signal] {
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                 vec![
-                    Signal::builder(
-                        "prepared",
-                        &[Option::<String>::static_type().into()],
-                        <()>::static_type().into(),
-                    )
-                    .build(),
                     Signal::builder("ready", &[], <()>::static_type().into()).build(),
                     Signal::builder("logged-out", &[], <()>::static_type().into()).build(),
                 ]
@@ -347,198 +316,33 @@ impl Session {
         room_search.set_search_mode(!room_search.is_search_mode());
     }
 
-    pub async fn login_with_password(
-        &self,
-        homeserver: Url,
-        username: String,
-        password: String,
-        use_discovery: bool,
-    ) {
-        self.imp().logout_on_dispose.set(true);
-
-        let mut path = glib::user_data_dir();
-        path.push(glib::uuid_string_random().as_str());
-
-        let passphrase: String = {
-            let mut rng = thread_rng();
-            (&mut rng)
-                .sample_iter(Alphanumeric)
-                .take(30)
-                .map(char::from)
-                .collect()
-        };
-
-        let handle = spawn_tokio!(async move {
-            let client =
-                create_client(&homeserver, path.clone(), passphrase.clone(), use_discovery).await?;
-
-            let response = client
-                .login_username(&username, &password)
-                .initial_device_display_name("Fractal")
-                .send()
-                .await;
-            match response {
-                Ok(response) => Ok((
-                    client,
-                    StoredSession {
-                        homeserver,
-                        path,
-                        user_id: response.user_id,
-                        device_id: response.device_id,
-                        secret: Secret {
-                            passphrase,
-                            access_token: response.access_token,
-                        },
-                    },
-                )),
-                Err(error) => {
-                    // Remove the store created by Client::new()
-                    fs::remove_dir_all(path).unwrap();
-                    Err(error.into())
-                }
-            }
-        });
-
-        self.handle_login_result(handle.await.unwrap(), true).await;
-    }
-
-    pub async fn login_with_sso(&self, homeserver: Url, idp_id: Option<String>) {
-        self.imp().logout_on_dispose.set(true);
-        let mut path = glib::user_data_dir();
-        path.push(glib::uuid_string_random().as_str());
-        let passphrase: String = {
-            let mut rng = thread_rng();
-            (&mut rng)
-                .sample_iter(Alphanumeric)
-                .take(30)
-                .map(char::from)
-                .collect()
-        };
-        let handle = spawn_tokio!(async move {
-            let client = create_client(&homeserver, path.clone(), passphrase.clone(), true).await?;
-
-            let mut login = client
-                .login_sso(|sso_url| async move {
-                    let ctx = glib::MainContext::default();
-                    ctx.spawn(async move {
-                        gtk::show_uri(gtk::Window::NONE, &sso_url, gdk::CURRENT_TIME);
-                    });
-                    Ok(())
-                })
-                .initial_device_display_name("Fractal");
-
-            if let Some(idp_id) = idp_id.as_deref() {
-                login = login.identity_provider_id(idp_id);
-            }
-
-            let response = login.send().await;
-            match response {
-                Ok(response) => Ok((
-                    client,
-                    StoredSession {
-                        homeserver,
-                        path,
-                        user_id: response.user_id,
-                        device_id: response.device_id,
-                        secret: Secret {
-                            passphrase,
-                            access_token: response.access_token,
-                        },
-                    },
-                )),
-                Err(error) => {
-                    // Remove the store created by Client::new()
-                    fs::remove_dir_all(path).unwrap();
-                    Err(error.into())
-                }
-            }
-        });
-
-        self.handle_login_result(handle.await.unwrap(), true).await;
-    }
-
-    pub async fn login_with_previous_session(&self, session: StoredSession) {
-        let handle = spawn_tokio!(async move {
-            let client = create_client(
-                &session.homeserver,
-                session.path.clone(),
-                session.secret.passphrase.clone(),
-                false,
-            )
-            .await?;
-
-            client
-                .restore_login(matrix_sdk::Session {
-                    user_id: session.user_id.clone(),
-                    device_id: session.device_id.clone(),
-                    access_token: session.secret.access_token.clone(),
-                    refresh_token: None,
-                })
-                .await
-                .map(|_| (client, session))
-                .map_err(Into::into)
-        });
-
-        self.handle_login_result(handle.await.unwrap(), false).await;
-    }
-
-    async fn handle_login_result(
-        &self,
-        result: Result<(Client, StoredSession), ClientSetupError>,
-        store_session: bool,
-    ) {
+    pub async fn prepare(&self, client: Client, session: StoredSession) {
         let priv_ = self.imp();
-        let error = match result {
-            Ok((client, session)) => {
-                priv_.client.replace(Some(client));
-                let user = User::new(self, &session.user_id);
-                priv_.user.set(user).unwrap();
-                self.notify("user");
 
-                self.update_user_profile();
+        priv_.client.set(client).unwrap();
 
-                if store_session {
-                    if let Err(error) = secret::store_session(&session).await {
-                        warn!("Couldn't store session: {:?}", error);
-                        if let Some(window) = self.parent_window() {
-                            window.switch_to_error_page(
-                                &format!("{}\n\n{}", gettext("Unable to store session"), error),
-                                error,
-                            );
-                        }
-                        self.logout(false).await;
-                        fs::remove_dir_all(session.path).unwrap();
-                        return;
-                    }
-                };
+        let user = User::new(self, &session.user_id);
+        priv_.user.set(user).unwrap();
+        self.notify("user");
 
-                priv_
-                    .settings
-                    .set(SessionSettings::new(session.id()))
-                    .unwrap();
+        self.update_user_profile();
 
-                priv_.info.set(session).unwrap();
-                self.update_offline().await;
+        priv_
+            .settings
+            .set(SessionSettings::new(session.id()))
+            .unwrap();
 
-                self.room_list().load();
-                self.setup_direct_room_handler();
-                self.setup_room_encrypted_changes();
+        priv_.info.set(session).unwrap();
+        self.update_offline().await;
 
-                self.set_is_prepared(true);
-                self.sync();
+        self.room_list().load();
+        self.setup_direct_room_handler();
+        self.setup_room_encrypted_changes();
 
-                None
-            }
-            Err(error) => {
-                error!("Failed to prepare the session: {:?}", error);
+        self.set_is_prepared(true);
+        self.sync();
 
-                priv_.logout_on_dispose.set(false);
-
-                Some(error.to_user_facing())
-            }
-        };
-
-        self.emit_by_name::<()>("prepared", &[&error]);
+        debug!("A new session was prepared");
     }
 
     fn sync(&self) {
@@ -703,9 +507,9 @@ impl Session {
     pub fn client(&self) -> Client {
         self.imp()
             .client
-            .borrow()
+            .get()
+            .expect("The session wasn't prepared")
             .clone()
-            .expect("The session isn't ready")
     }
 
     pub fn is_offline(&self) -> bool {
@@ -746,21 +550,6 @@ impl Session {
         self.sync();
 
         self.notify("offline");
-    }
-
-    /// Connects the prepared signals to the function f given in input
-    pub fn connect_prepared<F: Fn(&Self, Option<String>) + 'static>(
-        &self,
-        f: F,
-    ) -> glib::SignalHandlerId {
-        self.connect_local("prepared", true, move |values| {
-            let obj = values[0].get::<Self>().unwrap();
-            let err = values[1].get::<Option<String>>().unwrap();
-
-            f(&obj, err);
-
-            None
-        })
     }
 
     pub fn connect_logged_out<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId {
@@ -1034,35 +823,6 @@ impl Default for Session {
     fn default() -> Self {
         Self::new()
     }
-}
-
-async fn create_client(
-    homeserver: &Url,
-    path: PathBuf,
-    passphrase: String,
-    use_discovery: bool,
-) -> Result<Client, ClientSetupError> {
-    let state_store = SledStateStore::builder()
-        .path(path)
-        .passphrase(passphrase)
-        .migration_conflict_strategy(MigrationConflictStrategy::Drop)
-        .build()
-        .map_err(|err| OpenStoreError::from(StoreError::backend(err)))?;
-    let crypto_store = state_store.open_crypto_store()?;
-    let store_config = StoreConfig::new()
-        .state_store(state_store)
-        .crypto_store(crypto_store);
-    Client::builder()
-        .homeserver_url(homeserver)
-        .store_config(store_config)
-        // force_auth option to solve an issue with some servers configuration to require
-        // auth for profiles:
-        // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
-        .request_config(RequestConfig::new().retry_limit(2).force_auth())
-        .respect_login_well_known(use_discovery)
-        .build()
-        .await
-        .map_err(Into::into)
 }
 
 fn parse_room(room: &str) -> Option<(OwnedRoomOrAliasId, Vec<OwnedServerName>)> {

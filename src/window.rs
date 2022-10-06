@@ -126,6 +126,18 @@ mod imp {
             }));
             obj.add_action(&fullscreen);
 
+            self.login
+                .connect_new_session(clone!(@weak obj => move |_login, session| {
+                    obj.add_session(&session);
+                    obj.switch_to_loading_page();
+                }));
+
+            self.main_stack.connect_visible_child_notify(
+                clone!(@weak obj => move |_| obj.set_default_by_child()),
+            );
+
+            obj.set_default_by_child();
+
             spawn!(clone!(@weak obj => async move {
                 obj.restore_sessions().await;
             }));
@@ -176,6 +188,9 @@ impl Window {
         // We need to grab the focus so that keyboard shortcuts work
         session.grab_focus();
 
+        session.connect_ready(clone!(@weak self as obj => move |_| {
+            obj.imp().login.clean();
+        }));
         session.connect_logged_out(clone!(@weak self as obj => move |session| {
             obj.remove_session(session)
         }));
@@ -213,30 +228,14 @@ impl Window {
                             info!("Database path: {path}");
                         }
 
-                        let session = Session::new();
                         spawn!(
                             glib::PRIORITY_DEFAULT_IDLE,
-                            clone!(@weak session => async move {
-                                session.login_with_previous_session(stored_session).await;
+                            clone!(@weak self as obj => async move {
+                                obj.imp().login.restore_previous_session(stored_session).await;
                             })
                         );
-                        self.add_session(&session);
                     }
                 }
-
-                let priv_ = self.imp();
-                priv_.login.connect_new_session(
-                    clone!(@weak self as obj => move |_login, session| {
-                        obj.add_session(&session);
-                        obj.switch_to_loading_page();
-                    }),
-                );
-
-                priv_.main_stack.connect_visible_child_notify(
-                    clone!(@weak self as obj => move |_| obj.set_default_by_child()),
-                );
-
-                self.set_default_by_child();
             }
             Err(error) => {
                 warn!("Failed to restore previous sessions: {:?}", error);
