@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-10-05 15:53+0000\n"
-"PO-Revision-Date: 2022-10-05 22:57+0300\n"
+"POT-Creation-Date: 2022-10-07 18:41+0000\n"
+"PO-Revision-Date: 2022-10-07 23:23+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -67,7 +67,6 @@ msgstr ""
 "надсиланні"
 
 #: data/org.gnome.Fractal.gschema.xml.in:23
-#| msgid "Sessions"
 msgid "Session settings"
 msgstr "Параметри сеансу"
 
@@ -232,6 +231,7 @@ msgstr "Налаштування облікового запису"
 
 #: data/resources/ui/attachment-dialog.ui:14
 #: data/resources/ui/content-invite-subpage.ui:12
+#: data/resources/ui/join-room-dialog.ui:9
 #: data/resources/ui/room-creation.ui:16
 msgid "_Cancel"
 msgstr "_Скасувати"
@@ -324,11 +324,11 @@ msgstr "Під час пошуку відповідників сталася п�
 msgid "Invite"
 msgstr "Запросити"
 
-#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:29
+#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:33
 msgid "_Reject"
 msgstr "Від_хилити"
 
-#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:24
+#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:28
 msgid "_Accept"
 msgstr "При_йняти"
 
@@ -391,7 +391,7 @@ msgstr "З_апросити нового учасника"
 msgid "Room _Permalink"
 msgstr "С_тале посилання кімнати"
 
-#: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:58
+#: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:62
 msgid "_Leave Room"
 msgstr "По_лишити кімнату"
 
@@ -670,6 +670,22 @@ msgstr "Виконано"
 msgid "Confirm Scan"
 msgstr "Підтвердити сканування"
 
+#: data/resources/ui/join-room-dialog.ui:4
+#| msgid "Join Room"
+msgid "Join a Room"
+msgstr "Увійти до кімнати"
+
+#: data/resources/ui/join-room-dialog.ui:5
+msgid "Enter a room ID, room alias, or permalink."
+msgstr ""
+"Введіть ідентифікатор кімнати, альтернативну назву кімнати або постійне"
+" посилання."
+
+#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:842
+#| msgid "Join"
+msgid "_Join"
+msgstr "_Увійти"
+
 #: data/resources/ui/login-advanced-dialog.ui:5
 msgid "Homeserver Discovery"
 msgstr "Виявлення домашнього сервера"
@@ -899,67 +915,72 @@ msgstr "Закрити кімнату"
 msgid "_New Room"
 msgstr "_Нова кімната"
 
-#: data/resources/ui/sidebar.ui:12
+#: data/resources/ui/sidebar.ui:10
+#| msgid "Join Room"
+msgid "_Join Room"
+msgstr "_Увійти до кімнати"
+
+#: data/resources/ui/sidebar.ui:16
 msgid "_Keyboard Shortcuts"
 msgstr "_Клавіатурні скорочення"
 
-#: data/resources/ui/sidebar.ui:16
+#: data/resources/ui/sidebar.ui:20
 msgid "_About Fractal"
 msgstr "_Про «Фрактал»"
 
-#: data/resources/ui/sidebar.ui:36
+#: data/resources/ui/sidebar.ui:40
 msgid "Move to _Favorites"
 msgstr "Пересунути до «_Улюблених»"
 
-#: data/resources/ui/sidebar.ui:41
+#: data/resources/ui/sidebar.ui:45
 msgid "Move to _Rooms"
 msgstr "Пересунути до «_Кімнат»"
 
-#: data/resources/ui/sidebar.ui:46
+#: data/resources/ui/sidebar.ui:50
 msgid "Move to _People"
 msgstr "Пересунути до «_Людей»"
 
-#: data/resources/ui/sidebar.ui:51
+#: data/resources/ui/sidebar.ui:55
 msgid "Move to Low _Priority"
 msgstr "Пересунути до «_Низький пріоритет»"
 
-#: data/resources/ui/sidebar.ui:63
+#: data/resources/ui/sidebar.ui:67
 msgid "Re_join Room"
 msgstr "Увійти до кімнати"
 
-#: data/resources/ui/sidebar.ui:68
+#: data/resources/ui/sidebar.ui:72
 msgid "_Forget Room"
 msgstr "За_бути про кімнату"
 
-#: data/resources/ui/sidebar.ui:87
+#: data/resources/ui/sidebar.ui:91
 msgid "Switch Accounts"
 msgstr "Перемкнути обліковий запис"
 
-#: data/resources/ui/sidebar.ui:109
+#: data/resources/ui/sidebar.ui:113
 msgid "App Settings Menu"
 msgstr "Меню параметрів програми"
 
-#: data/resources/ui/sidebar.ui:119
+#: data/resources/ui/sidebar.ui:123
 msgid "Toggle Room Search"
 msgstr "Увімкнути або вимкнути пошук кімнати"
 
-#: data/resources/ui/sidebar.ui:131
+#: data/resources/ui/sidebar.ui:135
 msgid "Room Search"
 msgstr "Пошук кімнати"
 
-#: data/resources/ui/sidebar.ui:132
+#: data/resources/ui/sidebar.ui:136
 msgid "Search for a room"
 msgstr "Пошук кімнати"
 
-#: data/resources/ui/sidebar.ui:142
+#: data/resources/ui/sidebar.ui:146
 msgid "Offline"
 msgstr "Поза мережею"
 
-#: data/resources/ui/sidebar.ui:162
+#: data/resources/ui/sidebar.ui:166
 msgid "Sidebar"
 msgstr "Бічна панель"
 
-#: data/resources/ui/sidebar.ui:163
+#: data/resources/ui/sidebar.ui:167
 msgid "Allows to navigate between rooms"
 msgstr "Дозволяє навігацію між кімнатами"
 
@@ -1815,11 +1836,16 @@ msgstr ""
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Під час створення ключів шифрування сталася помилка."
 
-#: src/session/mod.rs:502
+#: src/session/mod.rs:505
 msgid "Unable to store session"
 msgstr "Не вдалося зберегти сеанс"
 
-#: src/session/mod.rs:849
+#: src/session/mod.rs:840
+#| msgid "View"
+msgid "_View"
+msgstr "П_ерегляд"
+
+#: src/session/mod.rs:886
 msgid "Failed to logout the session."
 msgstr "Не вдалося вийти з сеансу."
 
@@ -1865,47 +1891,47 @@ msgid "Failed to forget {room}."
 msgstr "Не вдалося забути про {room}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:699
+#: src/session/room/mod.rs:711
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "Не вдалося пересунути {room} з {previous_category} до {new_category}."
 
-#: src/session/room/mod.rs:992
+#: src/session/room/mod.rs:1004
 msgid "Unknown"
 msgstr "Невідомий"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:1019
+#: src/session/room/mod.rs:1031
 msgid "Empty Room (was {user})"
 msgstr "Порожня кімната (був {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:1021
+#: src/session/room/mod.rs:1033
 msgid "Empty Room"
 msgstr "Порожня кімната"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1421
+#: src/session/room/mod.rs:1433
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "Не вдалося прийняти запрошення до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1450
+#: src/session/room/mod.rs:1462
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 "Не вдалося відмовити у запрошенні до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1615
+#: src/session/room/mod.rs:1627
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "Не вдалося запросити {user} до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1627
+#: src/session/room/mod.rs:1639
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -2152,22 +2178,22 @@ msgstr ""
 "адресу вручну."
 
 #. Translators: Default name for image files.
-#: src/utils.rs:301
+#: src/utils.rs:304
 msgid "image"
 msgstr "зображення"
 
 #. Translators: Default name for video files.
-#: src/utils.rs:303
+#: src/utils.rs:306
 msgid "video"
 msgstr "відео"
 
 #. Translators: Default name for audio files.
-#: src/utils.rs:305
+#: src/utils.rs:308
 msgid "audio"
 msgstr "звук"
 
 #. Translators: Default name for files.
-#: src/utils.rs:307
+#: src/utils.rs:310
 msgid "file"
 msgstr "файл"
 
