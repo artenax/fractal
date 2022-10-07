@@ -9,10 +9,7 @@ use log::error;
 use matrix_sdk::encryption::{KeyExportError, RoomKeyImportError};
 
 use crate::{
-    components::{PasswordEntryRow, SpinnerButton},
-    i18n::ngettext_f,
-    session::Session,
-    spawn, spawn_tokio, toast,
+    components::SpinnerButton, i18n::ngettext_f, session::Session, spawn, spawn_tokio, toast,
 };
 
 #[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
@@ -47,9 +44,15 @@ mod imp {
         #[template_child]
         pub instructions: TemplateChild<gtk::Label>,
         #[template_child]
-        pub passphrase: TemplateChild<PasswordEntryRow>,
+        pub passphrase: TemplateChild<adw::PasswordEntryRow>,
         #[template_child]
-        pub confirm_passphrase: TemplateChild<PasswordEntryRow>,
+        pub confirm_passphrase_box: TemplateChild<gtk::Box>,
+        #[template_child]
+        pub confirm_passphrase: TemplateChild<adw::PasswordEntryRow>,
+        #[template_child]
+        pub confirm_passphrase_error_revealer: TemplateChild<gtk::Revealer>,
+        #[template_child]
+        pub confirm_passphrase_error: TemplateChild<gtk::Label>,
         #[template_child]
         pub file_row: TemplateChild<adw::ActionRow>,
         #[template_child]
@@ -141,18 +144,9 @@ mod imp {
 
             self.passphrase
                 .connect_changed(clone!(@weak obj => move|_| {
-                    obj.update_button();
+                    obj.validate_passphrase_confirmation();
                 }));
 
-            self.confirm_passphrase
-                .connect_focused(clone!(@weak obj => move |entry, focused| {
-                    if focused {
-                        obj.validate_passphrase_confirmation();
-                    } else {
-                        entry.remove_css_class("warning");
-                        entry.remove_css_class("success");
-                    }
-                }));
             self.confirm_passphrase
                 .connect_changed(clone!(@weak obj => move|_| {
                     obj.validate_passphrase_confirmation();
@@ -238,7 +232,7 @@ impl ImportExportKeysSubpage {
             priv_.instructions.set_label(&gettext(
                 "The backup must be stored in a safe place and must be protected with a strong passphrase that will be used to encrypt the data.",
             ));
-            priv_.confirm_passphrase.show();
+            priv_.confirm_passphrase_box.show();
             priv_.proceed_button.set_label(&gettext("Export Keys"));
         } else {
             priv_
@@ -250,7 +244,7 @@ impl ImportExportKeysSubpage {
             priv_.instructions.set_label(&gettext(
                 "Enter the passphrase provided when the backup file was created.",
             ));
-            priv_.confirm_passphrase.hide();
+            priv_.confirm_passphrase_box.hide();
             priv_.proceed_button.set_label(&gettext("Import Keys"));
         }
 
@@ -313,24 +307,27 @@ impl ImportExportKeysSubpage {
     fn validate_passphrase_confirmation(&self) {
         let priv_ = self.imp();
         let entry = &priv_.confirm_passphrase;
+        let revealer = &priv_.confirm_passphrase_error_revealer;
+        let label = &priv_.confirm_passphrase_error;
         let passphrase = priv_.passphrase.text();
         let confirmation = entry.text();
 
         if confirmation.is_empty() {
-            entry.set_hint("");
+            revealer.set_reveal_child(false);
             entry.remove_css_class("success");
             entry.remove_css_class("warning");
             return;
         }
 
         if passphrase == confirmation {
-            entry.set_hint("");
+            revealer.set_reveal_child(false);
             entry.add_css_class("success");
             entry.remove_css_class("warning");
         } else {
+            label.set_label(&gettext("Passphrases do not match"));
+            revealer.set_reveal_child(true);
             entry.remove_css_class("success");
             entry.add_css_class("warning");
-            entry.set_hint(&gettext("Passphrases do not match"));
         }
         self.update_button();
     }
@@ -377,8 +374,8 @@ impl ImportExportKeysSubpage {
 
         priv_.proceed_button.set_loading(true);
         priv_.file_button.set_sensitive(false);
-        priv_.passphrase.set_entry_sensitive(false);
-        priv_.confirm_passphrase.set_entry_sensitive(false);
+        priv_.passphrase.set_sensitive(false);
+        priv_.confirm_passphrase.set_sensitive(false);
 
         let encryption = self.session().unwrap().client().encryption();
 
@@ -439,7 +436,7 @@ impl ImportExportKeysSubpage {
         }
         priv_.proceed_button.set_loading(false);
         priv_.file_button.set_sensitive(true);
-        priv_.passphrase.set_entry_sensitive(true);
-        priv_.confirm_passphrase.set_entry_sensitive(true);
+        priv_.passphrase.set_sensitive(true);
+        priv_.confirm_passphrase.set_sensitive(true);
     }
 }

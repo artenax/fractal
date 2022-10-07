@@ -67,9 +67,34 @@ button.row {
   border-spacing: 24px;
 }
 
+.form-page .card {
+  padding: 2px;
+}
+
+.form-page levelbar.discrete block {
+  min-height: 5px;
+}
+
 box.paragraphs {
   border-spacing: 12px;
 }
+
+levelbar.discrete.accent block.filled {
+  background-color: @accent_color;
+}
+
+levelbar.discrete.success block.filled {
+  background-color: @success_color;
+}
+
+levelbar.discrete.warning block.filled {
+  background-color: @warning_color;
+}
+
+levelbar.discrete.error block.filled {
+  background-color: @error_color;
+}
+
 
 /* Components */
 
@@ -115,74 +140,6 @@ box.paragraphs {
 
 .badge.mod {
   background-color: @yellow_5;
-}
-
-row.entry {
-  transition-property: outline, outline-width, outline-offset, outline-color;
-  transition-duration: 300ms;
-  animation-timing-function: ease-in-out;
-  outline: 0 solid transparent;
-  outline-offset: 2px;
-}
-
-row.entry:focus-within {
-  outline-color: alpha(@accent_color, 0.5);
-  outline-width: 2px;
-  outline-offset: -2px;
-}
-
-row.entry.success:focus-within {
-  outline-color: @success_color;
-}
-
-row.entry.warning:focus-within {
-  outline-color: @warning_color;
-}
-
-row.entry.error:focus-within {
-  outline-color: @error_color;
-}
-
-row.entry .hint {
-  font-size: 0.8em;
-}
-
-row.entry .header {
-  margin-top: 6px;
-  margin-bottom: 6px;
-}
-
-row.entry text:disabled,
-row.entry text placeholder {
-  opacity: 0.5;
-}
-
-row.entry levelbar.discrete block {
-  min-height: 5px;
-}
-
-row.entry levelbar.discrete block.filled {
-  background-color: alpha(currentColor, 0.5);
-}
-
-row.entry.accent levelbar.discrete block.filled {
-  background-color: @accent_color;
-}
-
-row.entry.success levelbar.discrete block.filled {
-  background-color: @success_color;
-}
-
-row.entry.warning levelbar.discrete block.filled {
-  background-color: @warning_color;
-}
-
-row.entry.error levelbar.discrete block.filled {
-  background-color: @error_color;
-}
-
-row .heading {
-  font-weight: 600;
 }
 
 media-content-viewer controls {

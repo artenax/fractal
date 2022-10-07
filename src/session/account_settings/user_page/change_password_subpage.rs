@@ -17,7 +17,7 @@ use matrix_sdk::{
 };
 
 use crate::{
-    components::{AuthDialog, AuthError, PasswordEntryRow, SpinnerButton},
+    components::{AuthDialog, AuthError, SpinnerButton},
     session::Session,
     spawn, toast,
     utils::validate_password,
@@ -33,9 +33,19 @@ mod imp {
     pub struct ChangePasswordSubpage {
         pub session: WeakRef<Session>,
         #[template_child]
-        pub password: TemplateChild<PasswordEntryRow>,
+        pub password: TemplateChild<adw::PasswordEntryRow>,
         #[template_child]
-        pub confirm_password: TemplateChild<PasswordEntryRow>,
+        pub password_progress: TemplateChild<gtk::LevelBar>,
+        #[template_child]
+        pub password_error_revealer: TemplateChild<gtk::Revealer>,
+        #[template_child]
+        pub password_error: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub confirm_password: TemplateChild<adw::PasswordEntryRow>,
+        #[template_child]
+        pub confirm_password_error_revealer: TemplateChild<gtk::Revealer>,
+        #[template_child]
+        pub confirm_password_error: TemplateChild<gtk::Label>,
         #[template_child]
         pub button: TemplateChild<SpinnerButton>,
     }
@@ -48,6 +58,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -94,67 +105,25 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            self.password.define_progress_steps(&[
-                &gtk::LEVEL_BAR_OFFSET_LOW,
-                "step2",
-                "step3",
-                &gtk::LEVEL_BAR_OFFSET_HIGH,
-                &gtk::LEVEL_BAR_OFFSET_FULL,
-            ]);
-            self.password
-                .connect_focused(clone!(@weak obj => move |entry, focused| {
-                    if focused {
-                        entry.set_progress_visible(true);
-                        obj.validate_password();
-                    } else {
-                        entry.remove_css_class("warning");
-                        entry.remove_css_class("success");
-                        if entry.text().is_empty() {
-                            entry.set_progress_visible(false);
-                        }
-                    }
-                }));
-            self.password
-                .connect_activated(clone!(@weak obj => move|_| {
-                    spawn!(
-                        clone!(@weak obj => async move {
-                            obj.change_password().await;
-                        })
-                    );
-                }));
+            self.password_progress.set_min_value(0.0);
+            self.password_progress.set_max_value(5.0);
+            self.password_progress
+                .add_offset_value(&gtk::LEVEL_BAR_OFFSET_LOW, 1.0);
+            self.password_progress.add_offset_value("step2", 2.0);
+            self.password_progress.add_offset_value("step3", 3.0);
+            self.password_progress
+                .add_offset_value(&gtk::LEVEL_BAR_OFFSET_HIGH, 4.0);
+            self.password_progress
+                .add_offset_value(&gtk::LEVEL_BAR_OFFSET_FULL, 5.0);
+
             self.password.connect_changed(clone!(@weak obj => move|_| {
                 obj.validate_password();
             }));
 
             self.confirm_password
-                .connect_focused(clone!(@weak obj => move |entry, focused| {
-                    if focused {
-                        obj.validate_password_confirmation();
-                    } else {
-                        entry.remove_css_class("warning");
-                        entry.remove_css_class("success");
-                    }
-                }));
-            self.confirm_password
-                .connect_activated(clone!(@weak obj => move|_| {
-                    spawn!(
-                        clone!(@weak obj => async move {
-                            obj.change_password().await;
-                        })
-                    );
-                }));
-            self.confirm_password
                 .connect_changed(clone!(@weak obj => move|_| {
                     obj.validate_password_confirmation();
                 }));
-
-            self.button.connect_clicked(clone!(@weak obj => move|_| {
-                spawn!(
-                    clone!(@weak obj => async move {
-                        obj.change_password().await;
-                    })
-                );
-            }));
         }
     }
 
@@ -168,6 +137,7 @@ glib::wrapper! {
         @extends gtk::Widget, gtk::Box, @implements gtk::Accessible;
 }
 
+#[gtk::template_callbacks]
 impl ChangePasswordSubpage {
     pub fn new(session: &Session) -> Self {
         glib::Object::new(&[("session", session)]).expect("Failed to create ChangePasswordSubpage")
@@ -182,68 +152,83 @@ impl ChangePasswordSubpage {
     }
 
     fn validate_password(&self) {
-        let entry = &self.imp().password;
+        let priv_ = self.imp();
+        let entry = &priv_.password;
+        let progress = &priv_.password_progress;
+        let revealer = &priv_.password_error_revealer;
+        let label = &priv_.password_error;
         let password = entry.text();
 
         if password.is_empty() {
-            entry.set_hint("");
+            revealer.set_reveal_child(false);
             entry.remove_css_class("success");
             entry.remove_css_class("warning");
-            entry.set_progress_value(0.0);
+            progress.set_value(0.0);
+            progress.remove_css_class("success");
+            progress.remove_css_class("warning");
             self.update_button();
             return;
         }
 
         let validity = validate_password(&password);
 
-        entry.set_progress_value(validity.progress as f64 / 20.0);
+        progress.set_value(validity.progress as f64 / 20.0);
         if validity.progress == 100 {
-            entry.set_hint("");
+            revealer.set_reveal_child(false);
             entry.add_css_class("success");
             entry.remove_css_class("warning");
+            progress.add_css_class("success");
+            progress.remove_css_class("warning");
         } else {
             entry.remove_css_class("success");
             entry.add_css_class("warning");
+            progress.remove_css_class("success");
+            progress.add_css_class("warning");
             if !validity.has_length {
-                entry.set_hint(&gettext("Password must be at least 8 characters long"));
+                label.set_label(&gettext("Password must be at least 8 characters long"));
             } else if !validity.has_lowercase {
-                entry.set_hint(&gettext(
+                label.set_label(&gettext(
                     "Password must have at least one lower-case letter",
                 ));
             } else if !validity.has_uppercase {
-                entry.set_hint(&gettext(
+                label.set_label(&gettext(
                     "Password must have at least one upper-case letter",
                 ));
             } else if !validity.has_number {
-                entry.set_hint(&gettext("Password must have at least one digit"));
+                label.set_label(&gettext("Password must have at least one digit"));
             } else if !validity.has_symbol {
-                entry.set_hint(&gettext("Password must have at least one symbol"));
+                label.set_label(&gettext("Password must have at least one symbol"));
             }
+            revealer.set_reveal_child(true);
         }
+
         self.update_button();
     }
 
     fn validate_password_confirmation(&self) {
         let priv_ = self.imp();
         let entry = &priv_.confirm_password;
+        let revealer = &priv_.confirm_password_error_revealer;
+        let label = &priv_.confirm_password_error;
         let password = priv_.password.text();
         let confirmation = entry.text();
 
         if confirmation.is_empty() {
-            entry.set_hint("");
+            revealer.set_reveal_child(false);
             entry.remove_css_class("success");
             entry.remove_css_class("warning");
             return;
         }
 
         if password == confirmation {
-            entry.set_hint("");
+            revealer.set_reveal_child(false);
             entry.add_css_class("success");
             entry.remove_css_class("warning");
         } else {
             entry.remove_css_class("success");
             entry.add_css_class("warning");
-            entry.set_hint(&gettext("Passwords do not match"));
+            label.set_label(&gettext("Passwords do not match"));
+            revealer.set_reveal_child(true);
         }
         self.update_button();
     }
@@ -260,6 +245,13 @@ impl ChangePasswordSubpage {
         validate_password(&password).progress == 100 && password == confirmation
     }
 
+    #[template_callback]
+    fn handle_proceed(&self) {
+        spawn!(clone!(@weak self as obj => async move {
+            obj.change_password().await;
+        }));
+    }
+
     async fn change_password(&self) {
         if !self.can_change_password() {
             return;
@@ -269,8 +261,8 @@ impl ChangePasswordSubpage {
         let password = priv_.password.text();
 
         priv_.button.set_loading(true);
-        priv_.password.set_entry_sensitive(false);
-        priv_.confirm_password.set_entry_sensitive(false);
+        priv_.password.set_sensitive(false);
+        priv_.confirm_password.set_sensitive(false);
 
         let session = self.session().unwrap();
         let dialog = AuthDialog::new(
@@ -323,7 +315,7 @@ impl ChangePasswordSubpage {
             },
         }
         priv_.button.set_loading(false);
-        priv_.password.set_entry_sensitive(true);
-        priv_.confirm_password.set_entry_sensitive(true);
+        priv_.password.set_sensitive(true);
+        priv_.confirm_password.set_sensitive(true);
     }
 }

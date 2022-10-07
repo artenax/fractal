@@ -12,7 +12,6 @@ mod label_with_widgets;
 mod loading_listbox_row;
 mod location_viewer;
 mod media_content_viewer;
-mod password_entry_row;
 mod pill;
 mod reaction_chooser;
 mod room_title;
@@ -35,7 +34,6 @@ pub use self::{
     loading_listbox_row::LoadingListBoxRow,
     location_viewer::LocationViewer,
     media_content_viewer::{ContentType, MediaContentViewer},
-    password_entry_row::PasswordEntryRow,
     pill::Pill,
     reaction_chooser::ReactionChooser,
     room_title::RoomTitle,
