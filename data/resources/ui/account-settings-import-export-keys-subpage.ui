@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="ImportExportKeysSubpage" parent="GtkBox">
+    <style>
+      <class name="form-page"/>
+    </style>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkHeaderBar">
@@ -23,85 +26,98 @@
       </object>
     </child>
     <child>
-      <object class="AdwPreferencesPage">
-        <style>
-          <class name="status-page"/>
-        </style>
-        <property name="vexpand">true</property>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <child>
-              <object class="GtkLabel" id="description">
-                <style>
-                  <class name="body"/>
-                </style>
-                <property name="label"></property>
-                <property name="wrap">True</property>
-                <property name="wrap-mode">word-char</property>
-                <property name="xalign">0.0</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="instructions">
-                <style>
-                  <class name="body"/>
-                </style>
-                <property name="label"></property>
-                <property name="wrap">True</property>
-                <property name="wrap-mode">word-char</property>
-                <property name="xalign">0.0</property>
-                <property name="margin-top">12</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <child>
-              <object class="ComponentsPasswordEntryRow" id="passphrase">
-                <property name="title" translatable="yes">Passphrase</property>
-                <signal name="activated" handler="handle_proceed" swapped="yes"/>
-              </object>
-            </child>
-            <child>
-              <object class="ComponentsPasswordEntryRow" id="confirm_passphrase">
-                <property name="title" translatable="yes">Confirm Passphrase</property>
-                <signal name="activated" handler="handle_proceed" swapped="yes"/>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <child>
-              <object class="AdwActionRow" id="file_row">
-                <property name="title">File</property>
-                <property name="subtitle" bind-source="ImportExportKeysSubpage" bind-property="file-path" bind-flags="sync-create"/>
+      <object class="GtkScrolledWindow" id="scrolled_window">
+        <property name="hscrollbar-policy">never</property>
+        <property name="propagate-natural-height">True</property>
+        <property name="vexpand">True</property>
+        <property name="child">
+          <object class="AdwClamp">
+            <property name="child">
+              <object class="GtkBox" id="box">
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkButton" id="file_button">
-                    <property name="label" translatable="yes">Choose…</property>
-                    <property name="valign">center</property>
-                    <signal name="clicked" handler="handle_choose_file" swapped="yes"/>
+                  <object class="GtkBox">
+                    <style>
+                      <class name="paragraphs"/>
+                    </style>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel" id="description">
+                        <style>
+                          <class name="large-line-height"/>
+                        </style>
+                        <property name="label"></property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="xalign">0.0</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="instructions">
+                        <style>
+                          <class name="large-line-height"/>
+                        </style>
+                        <property name="label"></property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="xalign">0.0</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkListBox">
+                    <style>
+                      <class name="boxed-list"/>
+                    </style>
+                    <child>
+                      <object class="ComponentsPasswordEntryRow" id="passphrase">
+                        <property name="title" translatable="yes">Passphrase</property>
+                        <signal name="activated" handler="handle_proceed" swapped="yes"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="ComponentsPasswordEntryRow" id="confirm_passphrase">
+                        <property name="title" translatable="yes">Confirm Passphrase</property>
+                        <signal name="activated" handler="handle_proceed" swapped="yes"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkListBox">
+                    <style>
+                      <class name="boxed-list"/>
+                    </style>
+                    <child>
+                      <object class="AdwActionRow" id="file_row">
+                        <property name="title">File</property>
+                        <property name="subtitle" bind-source="ImportExportKeysSubpage" bind-property="file-path" bind-flags="sync-create"/>
+                        <child>
+                          <object class="GtkButton" id="file_button">
+                            <property name="label" translatable="yes">Choose…</property>
+                            <property name="valign">center</property>
+                            <signal name="clicked" handler="handle_choose_file" swapped="yes"/>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="SpinnerButton" id="proceed_button">
+                    <style>
+                      <class name="row"/>
+                      <class name="suggested-action"/>
+                    </style>
+                    <property name="sensitive">false</property>
+                    <signal name="clicked" handler="handle_proceed" swapped="yes"/>
                   </object>
                 </child>
               </object>
-            </child>
+            </property>
           </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <child>
-              <object class="SpinnerButton" id="proceed_button">
-                <style>
-                  <class name="row"/>
-                  <class name="suggested-action"/>
-                </style>
-                <property name="sensitive">false</property>
-                <signal name="clicked" handler="handle_proceed" swapped="yes"/>
-              </object>
-            </child>
-          </object>
-        </child>
+        </property>
       </object>
     </child>
   </template>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="DeactivateAccountSubpage" parent="GtkBox">
+    <style>
+      <class name="form-page"/>
+    </style>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkHeaderBar">
@@ -24,75 +27,75 @@
       </object>
     </child>
     <child>
-      <object class="AdwPreferencesPage">
-        <style>
-          <class name="status-page"/>
-        </style>
-        <property name="vexpand">true</property>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <child>
-              <object class="GtkImage">
-                <style>
-                  <class name="extra-large-icon"/>
-                  <class name="error"/>
-                </style>
-                <property name="icon-name">dialog-warning-symbolic</property>
+      <object class="GtkScrolledWindow" id="scrolled_window">
+        <property name="hscrollbar-policy">never</property>
+        <property name="propagate-natural-height">True</property>
+        <property name="vexpand">True</property>
+        <property name="child">
+          <object class="AdwClamp">
+            <property name="child">
+              <object class="GtkBox" id="box">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkImage">
+                    <style>
+                      <class name="extra-large-icon"/>
+                      <class name="error"/>
+                    </style>
+                    <property name="icon-name">dialog-warning-symbolic</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <style>
+                      <class name="paragraphs"/>
+                    </style>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <style>
+                          <class name="large-line-height"/>
+                        </style>
+                        <property name="label" translatable="yes">Deactivating your account means you will lose access to all your messages, contacts, files, and more, forever.</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="xalign">0.0</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <style>
+                          <class name="large-line-height"/>
+                        </style>
+                        <property name="label" translatable="yes">To confirm that you really want to deactivate this account, type in your Matrix user ID:</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="xalign">0.0</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwEntryRow" id="confirmation">
+                    <style>
+                      <class name="card"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="SpinnerButton" id="button">
+                    <style>
+                      <class name="row"/>
+                      <class name="destructive-action"/>
+                    </style>
+                    <property name="label" translatable="yes">Continue</property>
+                    <property name="sensitive">false</property>
+                  </object>
+                </child>
               </object>
-            </child>
+            </property>
           </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <child>
-              <object class="GtkLabel">
-                <style>
-                  <class name="body"/>
-                </style>
-                <property name="label" translatable="yes">Deactivating your account means you will lose access to all your messages, contacts, files, and more, forever.</property>
-                <property name="wrap">True</property>
-                <property name="wrap-mode">word-char</property>
-                <property name="xalign">0.0</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <child>
-              <object class="GtkLabel">
-                <style>
-                  <class name="body"/>
-                </style>
-                <property name="label" translatable="yes">To confirm that you really want to deactivate this account, type in your Matrix user ID:</property>
-                <property name="wrap">True</property>
-                <property name="wrap-mode">word-char</property>
-                <property name="xalign">0.0</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <child>
-              <object class="AdwEntryRow" id="confirmation"/>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <child>
-              <object class="SpinnerButton" id="button">
-                <style>
-                  <class name="row"/>
-                  <class name="destructive-action"/>
-                </style>
-                <property name="label" translatable="yes">Continue</property>
-                <property name="sensitive">false</property>
-              </object>
-            </child>
-          </object>
-        </child>
+        </property>
       </object>
     </child>
   </template>

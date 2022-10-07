@@ -53,10 +53,6 @@ preferencesgroup .body,
   line-height: 140%;
 }
 
-preferencespage.status-page clamp > box  {
-  margin: 42px 12px;
-}
-
 button.row {
   min-height: 50px;
   border-radius: 12px;
@@ -64,6 +60,15 @@ button.row {
 
 .round-corners {
   border-radius: 6px;
+}
+
+.form-page scrolledwindow > viewport > clamp > box {
+  margin: 42px 12px;
+  border-spacing: 24px;
+}
+
+box.paragraphs {
+  border-spacing: 12px;
 }
 
 /* Components */
