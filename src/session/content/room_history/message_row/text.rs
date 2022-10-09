@@ -357,13 +357,13 @@ fn strip_reply(text: &str) -> &str {
 fn extract_mentions(s: &str, room: &Room) -> (String, Vec<Pill>) {
     let session = room.session();
     let mut label = s.to_owned();
-    let mut widgets = vec![];
+    let mut widgets: Vec<(usize, usize, Pill)> = vec![];
 
     // The markup has been normalized by html2pango so we are sure of the format of
     // links.
     for (start, _) in s.rmatch_indices("<a href=") {
         let uri_start = start + 9;
-        let link = &s[uri_start..];
+        let link = &label[uri_start..];
 
         let uri_end = if let Some(end) = link.find('"') {
             end
@@ -415,9 +415,17 @@ fn extract_mentions(s: &str, room: &Room) -> (String, Vec<Pill>) {
             continue;
         };
 
+        // Remove nested Pills. Only occurs with nested links in invalid HTML.
+        widgets = widgets
+            .into_iter()
+            .filter(|(w_start, ..)| end < *w_start)
+            .collect();
+
+        widgets.insert(0, (start, end, pill));
         label.replace_range(start..end, DEFAULT_PLACEHOLDER);
-        widgets.insert(0, pill);
     }
+
+    let widgets = widgets.into_iter().map(|(_, _, widget)| widget).collect();
 
     (label, widgets)
 }
