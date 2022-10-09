@@ -166,7 +166,7 @@ impl MessageText {
 
 /// Transform URLs into links.
 fn linkify(text: &str) -> String {
-    markup_links(&html_escape(text))
+    hoverify_links(&markup_links(&html_escape(text)))
 }
 
 /// Make links show up on hover.
