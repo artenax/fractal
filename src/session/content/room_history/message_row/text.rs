@@ -175,10 +175,14 @@ fn hoverify_links(text: &str) -> String {
 
     for (i, chunk) in text.split_inclusive("<a href=\"").enumerate() {
         if i > 0 {
-            if let Some((url, _)) = chunk.split_once('"') {
-                write!(&mut res, "{url}\" title=\"").unwrap();
+            if let Some((url, end)) = chunk.split_once('"') {
+                let escaped_url = html_escape(url);
+                write!(&mut res, "{url}\" title=\"{escaped_url}\"{end}").unwrap();
+
+                continue;
             }
         }
+
         res.push_str(chunk);
     }
 
