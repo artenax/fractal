@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ContentTypingRow" parent="AdwBin">
+    <child>
+      <object class="GtkRevealer">
+        <property name="transition-type">slide-up</property>
+        <property name="reveal-child" bind-source="ContentTypingRow" bind-property="is-empty" bind-flags="sync-create | invert-boolean"/>
+        <property name="child">
+          <object class="GtkBox">
+            <property name="spacing">6</property>
+            <child>
+              <object class="OverlappingBox" id="avatar_box">
+                <property name="overlap">16</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label">
+                <property name="use-markup">True</property>
+                <property name="ellipsize">end</property>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </child>
+  </template>
+</interface>

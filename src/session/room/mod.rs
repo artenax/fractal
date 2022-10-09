@@ -9,6 +9,7 @@ mod reaction_group;
 mod reaction_list;
 mod room_type;
 mod timeline;
+mod typing_list;
 
 use std::{cell::RefCell, io::Cursor, path::PathBuf};
 
@@ -41,7 +42,7 @@ use matrix_sdk::{
     },
     DisplayName, Result as MatrixResult,
 };
-use ruma::events::{MessageLikeEventContent, SyncEphemeralRoomEvent};
+use ruma::events::{typing::TypingEventContent, MessageLikeEventContent, SyncEphemeralRoomEvent};
 
 pub use self::{
     event::*,
@@ -55,6 +56,7 @@ pub use self::{
     reaction_list::ReactionList,
     room_type::RoomType,
     timeline::*,
+    typing_list::TypingList,
 };
 use super::verification::IdentityVerification;
 use crate::{
@@ -107,6 +109,8 @@ mod imp {
         pub verification: RefCell<Option<IdentityVerification>>,
         /// Whether this room is encrypted
         pub is_encrypted: Cell<bool>,
+        /// The list of members currently typing in this room.
+        pub typing_list: TypingList,
     }
 
     #[glib::object_subclass]
@@ -245,6 +249,13 @@ mod imp {
                         false,
                         glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
                     ),
+                    glib::ParamSpecObject::new(
+                        "typing-list",
+                        "Typing List",
+                        "The list of members currently typing in this room",
+                        TypingList::static_type(),
+                        glib::ParamFlags::READABLE,
+                    ),
                 ]
             });
 
@@ -313,6 +324,7 @@ mod imp {
                 ),
                 "verification" => obj.verification().to_value(),
                 "encrypted" => obj.is_encrypted().to_value(),
+                "typing-list" => obj.typing_list().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -423,6 +435,7 @@ impl Room {
         self.load_successor();
         self.load_category();
         self.setup_receipts();
+        self.setup_typing();
     }
 
     /// Forget a room that is left.
@@ -768,6 +781,31 @@ impl Room {
         };
     }
 
+    pub fn typing_list(&self) -> &TypingList {
+        &self.imp().typing_list
+    }
+
+    fn setup_typing(&self) {
+        if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
+            let room_weak = glib::SendWeakRef::from(self.downgrade());
+            matrix_room.add_event_handler(
+                move |event: SyncEphemeralRoomEvent<TypingEventContent>| {
+                    let room_weak = room_weak.clone();
+                    async move {
+                        let ctx = glib::MainContext::default();
+                        ctx.spawn(async move {
+                            spawn!(async move {
+                                if let Some(obj) = room_weak.upgrade() {
+                                    obj.handle_typing_event(event.content).await
+                                }
+                            });
+                        });
+                    }
+                },
+            );
+        }
+    }
+
     fn setup_receipts(&self) {
         spawn!(
             glib::PRIORITY_DEFAULT_IDLE,
@@ -920,6 +958,20 @@ impl Room {
         self.imp().latest_read.replace(latest_read);
         self.notify("latest-read");
         self.update_highlight();
+    }
+
+    async fn handle_typing_event(&self, content: TypingEventContent) {
+        let own_user_id = self.session().user().unwrap().user_id();
+
+        let members = content
+            .user_ids
+            .into_iter()
+            .filter_map(|user_id| {
+                (user_id != own_user_id).then(|| self.members().member_by_id(user_id))
+            })
+            .collect();
+
+        self.imp().typing_list.update(members);
     }
 
     pub fn timeline(&self) -> &Timeline {
@@ -1378,6 +1430,22 @@ impl Room {
                     match handle.await.unwrap() {
                             Ok(_) => {},
                             Err(error) => error!("Couldn’t redact event: {}", error),
+                    };
+                })
+            );
+        }
+    }
+
+    pub fn send_typing_notification(&self, is_typing: bool) {
+        if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
+            let handle = spawn_tokio!(async move { matrix_room.typing_notice(is_typing).await });
+
+            spawn!(
+                glib::PRIORITY_DEFAULT_IDLE,
+                clone!(@weak self as obj => async move {
+                    match handle.await.unwrap() {
+                        Ok(_) => {},
+                        Err(error) => error!("Couldn’t send typing notification: {error}"),
                     };
                 })
             );

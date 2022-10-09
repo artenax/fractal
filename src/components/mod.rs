@@ -13,6 +13,7 @@ mod label_with_widgets;
 mod loading_listbox_row;
 mod location_viewer;
 mod media_content_viewer;
+mod overlapping_box;
 mod pill;
 mod reaction_chooser;
 mod room_title;
@@ -36,6 +37,7 @@ pub use self::{
     loading_listbox_row::LoadingListBoxRow,
     location_viewer::LocationViewer,
     media_content_viewer::{ContentType, MediaContentViewer},
+    overlapping_box::OverlappingBox,
     pill::Pill,
     reaction_chooser::ReactionChooser,
     room_title::RoomTitle,

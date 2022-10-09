@@ -103,6 +103,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="content-state-creation.ui">ui/content-state-creation.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-state-row.ui">ui/content-state-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-state-tombstone.ui">ui/content-state-tombstone.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="content-typing-row.ui">ui/content-typing-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-verification-info-bar.ui">ui/content-verification-info-bar.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content.ui">ui/content.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="context-menu-bin.ui">ui/context-menu-bin.ui</file>

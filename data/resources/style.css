@@ -350,6 +350,10 @@ login {
   background: @view_bg_color;
 }
 
+.room-history listview {
+  padding-bottom: 0;
+}
+
 .room-history row {
   min-height: 0;
   padding-top: 6px;
@@ -500,6 +504,17 @@ message-reactions .reaction-count {
 .related-event-content {
   padding-top: 2px;
   padding-bottom: 2px;
+}
+
+typing-bar {
+  padding: 0 6px;
+  min-height: 30px;
+  font-style: italic;
+}
+
+typing-bar avatar {
+  border: 2px solid @view_bg_color;
+  border-radius: 999px;
 }
 
 

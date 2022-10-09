@@ -7,10 +7,12 @@ use crate::{
     components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl, ReactionChooser},
     prelude::*,
     session::{
-        content::room_history::{message_row::MessageRow, DividerRow, RoomHistory, StateRow},
+        content::room_history::{
+            message_row::MessageRow, DividerRow, RoomHistory, StateRow, TypingRow,
+        },
         room::{
-            Event, EventActions, SupportedEvent, TimelineDayDivider, TimelineItem,
-            TimelineNewMessagesDivider, TimelineSpinner,
+            Event, EventActions, PlaceholderKind, SupportedEvent, TimelineDayDivider, TimelineItem,
+            TimelineNewMessagesDivider, TimelinePlaceholder,
         },
     },
 };
@@ -247,22 +249,46 @@ impl ItemRow {
                     .flags(glib::BindingFlags::SYNC_CREATE)
                     .build();
                 priv_.binding.replace(Some(binding));
-            } else if item.downcast_ref::<TimelineSpinner>().is_some()
-                && self
-                    .child()
-                    .filter(|widget| widget.is::<gtk::Spinner>())
-                    .is_none()
-            {
-                self.set_popover(None);
-                self.set_action_group(None);
-                self.set_event_actions(None);
+            } else if let Some(item) = item.downcast_ref::<TimelinePlaceholder>() {
+                let kind = item.kind();
 
-                let spinner = gtk::Spinner::builder()
-                    .spinning(true)
-                    .margin_top(12)
-                    .margin_bottom(12)
-                    .build();
-                self.set_child(Some(&spinner));
+                if kind == PlaceholderKind::Spinner
+                    && self
+                        .child()
+                        .filter(|widget| widget.is::<gtk::Spinner>())
+                        .is_none()
+                {
+                    self.set_popover(None);
+                    self.set_action_group(None);
+                    self.set_event_actions(None);
+
+                    let spinner = gtk::Spinner::builder()
+                        .spinning(true)
+                        .margin_top(12)
+                        .margin_bottom(12)
+                        .build();
+                    self.set_child(Some(&spinner));
+                } else if kind == PlaceholderKind::Typing {
+                    self.set_popover(None);
+                    self.set_action_group(None);
+                    self.set_event_actions(None);
+
+                    let child = if let Some(child) =
+                        self.child().and_then(|w| w.downcast::<TypingRow>().ok())
+                    {
+                        child
+                    } else {
+                        let child = TypingRow::new();
+                        self.set_child(Some(&child));
+                        child
+                    };
+
+                    child.set_list(
+                        self.room_history()
+                            .room()
+                            .map(|room| room.typing_list().clone()),
+                    );
+                }
             } else if item.downcast_ref::<TimelineNewMessagesDivider>().is_some() {
                 self.set_popover(None);
                 self.set_action_group(None);

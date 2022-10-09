@@ -1,7 +1,7 @@
 mod timeline_day_divider;
 mod timeline_item;
 mod timeline_new_messages_divider;
-mod timeline_spinner;
+mod timeline_placeholder;
 
 use std::{
     collections::{HashMap, HashSet, VecDeque},
@@ -10,7 +10,7 @@ use std::{
 };
 
 use futures::{lock::Mutex, pin_mut, Stream, StreamExt};
-use gtk::{gio, glib, prelude::*, subclass::prelude::*};
+use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{error, warn};
 use matrix_sdk::{
     deserialized_responses::SyncTimelineEvent,
@@ -20,7 +20,7 @@ use matrix_sdk::{
 pub use timeline_day_divider::TimelineDayDivider;
 pub use timeline_item::{TimelineItem, TimelineItemExt, TimelineItemImpl};
 pub use timeline_new_messages_divider::TimelineNewMessagesDivider;
-pub use timeline_spinner::TimelineSpinner;
+pub use timeline_placeholder::{PlaceholderKind, TimelinePlaceholder};
 use tokio::task::JoinHandle;
 
 use super::{Event, Room, SupportedEvent, UnsupportedEvent};
@@ -72,6 +72,8 @@ mod imp {
         pub state: Cell<TimelineState>,
         pub backward_stream: Arc<Mutex<Option<BackwardStream>>>,
         pub forward_handle: Arc<Mutex<Option<JoinHandle<()>>>>,
+        /// Whether this timeline has a typing row.
+        pub has_typing: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -142,13 +144,24 @@ mod imp {
         }
 
         fn n_items(&self, _list_model: &Self::Type) -> u32 {
-            self.list.borrow().len() as u32
+            let mut len = self.list.borrow().len() as u32;
+
+            if self.has_typing.get() {
+                len += 1;
+            }
+
+            len
         }
 
         fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+            let position = position as usize;
             let list = self.list.borrow();
 
-            list.get(position as usize).map(|o| o.clone().upcast())
+            if self.has_typing.get() && position == list.len() {
+                return Some(TimelinePlaceholder::typing().upcast());
+            }
+
+            list.get(position).map(|o| o.clone().upcast())
         }
     }
 }
@@ -837,6 +850,16 @@ impl Timeline {
 
     fn set_room(&self, room: Option<Room>) {
         self.imp().room.set(room.as_ref());
+
+        if let Some(room) = room {
+            room.typing_list().connect_items_changed(
+                clone!(@weak self as obj => move |list, _, _, _| {
+                    if !list.is_empty() {
+                        obj.add_typing_row();
+                    }
+                }),
+            );
+        }
     }
 
     pub fn room(&self) -> Room {
@@ -870,13 +893,37 @@ impl Timeline {
         self.imp()
             .list
             .borrow_mut()
-            .push_front(TimelineSpinner::new().upcast());
+            .push_front(TimelinePlaceholder::spinner().upcast());
         self.upcast_ref::<gio::ListModel>().items_changed(0, 0, 1);
     }
 
     fn remove_loading_spinner(&self) {
         self.imp().list.borrow_mut().pop_front();
         self.upcast_ref::<gio::ListModel>().items_changed(0, 1, 0);
+    }
+
+    fn has_typing_row(&self) -> bool {
+        self.imp().has_typing.get()
+    }
+
+    fn add_typing_row(&self) {
+        if self.has_typing_row() {
+            return;
+        }
+
+        let pos = self.n_items();
+        self.imp().has_typing.set(true);
+        self.upcast_ref::<gio::ListModel>().items_changed(pos, 0, 1);
+    }
+
+    pub fn remove_empty_typing_row(&self) {
+        if !self.has_typing_row() || !self.room().typing_list().is_empty() {
+            return;
+        }
+
+        let pos = self.n_items() - 1;
+        self.imp().has_typing.set(false);
+        self.upcast_ref::<gio::ListModel>().items_changed(pos, 1, 0);
     }
 
     /// Remove the given event from the timeline.

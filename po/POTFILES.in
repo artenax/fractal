@@ -78,6 +78,7 @@ src/session/content/room_history/message_row/media.rs
 src/session/content/room_history/mod.rs
 src/session/content/room_history/state_row/creation.rs
 src/session/content/room_history/state_row/mod.rs
+src/session/content/room_history/typing_row.rs
 src/session/content/room_history/verification_info_bar.rs
 src/session/content/verification/identity_verification_widget.rs
 src/session/content/verification/session_verification.rs

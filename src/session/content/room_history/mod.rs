@@ -4,6 +4,7 @@ mod divider_row;
 mod item_row;
 mod message_row;
 mod state_row;
+mod typing_row;
 mod verification_info_bar;
 
 use std::str::FromStr;
@@ -44,7 +45,7 @@ use sourceview::prelude::*;
 use self::{
     attachment_dialog::AttachmentDialog, completion::CompletionPopover, divider_row::DividerRow,
     item_row::ItemRow, message_row::content::MessageContent, state_row::StateRow,
-    verification_info_bar::VerificationInfoBar,
+    typing_row::TypingRow, verification_info_bar::VerificationInfoBar,
 };
 use crate::{
     components::{CustomEntry, DragOverlay, LabelWithWidgets, Pill, ReactionChooser, RoomTitle},
@@ -379,14 +380,23 @@ mod imp {
             adj.connect_value_changed(clone!(@weak obj => move |adj| {
                 let priv_ = obj.imp();
 
+                let is_at_bottom = adj.value() + adj.page_size() == adj.upper();
                 if priv_.is_auto_scrolling.get() {
-                    if adj.value() + adj.page_size() == adj.upper() {
+                    if is_at_bottom {
                         priv_.is_auto_scrolling.set(false);
                         obj.set_sticky(true);
                     }
                 } else {
-                    obj.set_sticky(adj.value() + adj.page_size() == adj.upper());
+                    obj.set_sticky(is_at_bottom);
                 }
+
+                // Remove the typing row if we scroll up.
+                if !is_at_bottom {
+                    if let Some(room) = obj.room() {
+                        room.timeline().remove_empty_typing_row();
+                    }
+                }
+
                 obj.start_loading();
             }));
             adj.connect_upper_notify(clone!(@weak obj => move |_| {
@@ -450,7 +460,9 @@ mod imp {
 
             buffer.connect_text_notify(clone!(@weak obj => move |buffer| {
                let (start_iter, end_iter) = buffer.bounds();
-               obj.action_set_enabled("room-history.send-text-message", start_iter != end_iter);
+               let is_empty = start_iter == end_iter;
+               obj.action_set_enabled("room-history.send-text-message", !is_empty);
+               obj.send_typing_notification(!is_empty);
             }));
             crate::utils::sourceview::setup_style_scheme(&buffer);
 
@@ -527,33 +539,33 @@ impl RoomHistory {
         }
 
         if let Some(ref room) = room {
+            let timeline = room.timeline();
+
             let handler_id = room.connect_notify_local(
                 Some("category"),
                 clone!(@weak self as obj => move |_, _| {
                         obj.update_room_state();
                 }),
             );
-
             priv_.category_handler.replace(Some(handler_id));
 
-            let handler_id = room.timeline().connect_notify_local(
+            let handler_id = timeline.connect_notify_local(
                 Some("empty"),
                 clone!(@weak self as obj => move |_, _| {
                         obj.update_view();
                 }),
             );
-
             priv_.empty_timeline_handler.replace(Some(handler_id));
 
-            let handler_id = room.timeline().connect_notify_local(
+            let handler_id = timeline.connect_notify_local(
                 Some("state"),
                 clone!(@weak self as obj => move |_, _| {
                         obj.update_view();
                 }),
             );
-
             priv_.state_timeline_handler.replace(Some(handler_id));
 
+            timeline.remove_empty_typing_row();
             room.load_members();
             self.init_invite_action(room);
             self.scroll_down();
@@ -1229,6 +1241,12 @@ impl RoomHistory {
                 break;
             }
             child = widget.next_sibling();
+        }
+    }
+
+    fn send_typing_notification(&self, typing: bool) {
+        if let Some(room) = self.room() {
+            room.send_typing_notification(typing);
         }
     }
 }
