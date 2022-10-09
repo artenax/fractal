@@ -5,7 +5,7 @@ pub mod media;
 pub mod sourceview;
 pub mod template_callbacks;
 
-use std::{collections::HashMap, path::PathBuf};
+use std::path::PathBuf;
 
 use futures::{
     future::{self, Either, Future},
@@ -19,10 +19,10 @@ use matrix_sdk::ruma::{EventId, OwnedEventId, OwnedTransactionId, TransactionId,
 use once_cell::sync::Lazy;
 use regex::Regex;
 use ruma::{
-    exports::percent_encoding::percent_decode_str, matrix_uri::MatrixId, serde::urlencoded,
-    IdParseError, MatrixIdError, MatrixToError, OwnedServerName, RoomAliasId, RoomId, ServerName,
-    UserId,
+    exports::percent_encoding::percent_decode_str, matrix_uri::MatrixId, IdParseError,
+    MatrixIdError, MatrixToError, OwnedServerName, RoomAliasId, RoomId, ServerName, UserId,
 };
+use url::form_urlencoded;
 
 /// Returns an expression that is the and’ed result of the given boolean
 /// expressions.
@@ -285,10 +285,9 @@ pub fn parse_matrix_to_uri(uri: &str) -> Result<(MatrixId, Vec<OwnedServerName>)
     let via = parts
         .next()
         .map(|query| {
-            let query_parts = urlencoded::from_str::<HashMap<String, String>>(query)
-                .or(Err(MatrixToError::InvalidUrl))?;
+            let query = html_escape::decode_html_entities(query);
+            let query_parts = form_urlencoded::parse(query.as_bytes());
             query_parts
-                .into_iter()
                 .filter_map(|(key, value)| (key == "via").then(|| ServerName::parse(&value)))
                 .collect::<Result<Vec<_>, _>>()
         })
