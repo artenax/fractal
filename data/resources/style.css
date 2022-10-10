@@ -383,18 +383,18 @@ login {
   font-size: 3em;
 }
 
-.room-history .event-content .thumbnail {
+.content-thumbnail {
   border-radius: 6px;
   background-color: @borders;
 }
 
-.room-history .event-content .thumbnail .osd.circular {
+.content-thumbnail .osd.circular {
   min-width: 64px;
   min-height: 64px;
   border-radius: 32px;
 }
 
-.room-history .event-content .thumbnail .timestamp {
+.content-thumbnail .timestamp {
   border-radius: 4px;
   padding: 2px 5px;
 }

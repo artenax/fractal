@@ -6,7 +6,7 @@
     <child>
       <object class="GtkOverlay" id="media">
         <style>
-          <class name="thumbnail"/>
+          <class name="content-thumbnail"/>
         </style>
         <property name="overflow">hidden</property>
         <child type="overlay">

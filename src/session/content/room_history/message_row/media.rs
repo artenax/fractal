@@ -437,10 +437,12 @@ impl MessageMedia {
                                             child.set_paintable(Some(&texture));
 
                                             child.set_tooltip_text(body.as_deref());
-                                            if media_type == MediaType::Sticker && priv_.media.has_css_class("thumbnail") {
-                                                priv_.media.remove_css_class("thumbnail");
-                                            } else if !priv_.media.has_css_class("thumbnail") {
-                                                priv_.media.add_css_class("thumbnail");
+                                            if media_type == MediaType::Sticker {
+                                                if priv_.media.has_css_class("content-thumbnail") {
+                                                    priv_.media.remove_css_class("content-thumbnail");
+                                                }
+                                            } else if !priv_.media.has_css_class("content-thumbnail") {
+                                                priv_.media.add_css_class("content-thumbnail");
                                             }
                                         }
                                         Err(error) => {
