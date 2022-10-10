@@ -14,7 +14,6 @@ use matrix_sdk::{
             room::message::{ImageMessageEventContent, VideoMessageEventContent},
             sticker::StickerEventContent,
         },
-        uint,
     },
 };
 
@@ -382,6 +381,7 @@ impl MessageMedia {
         C: MediaEventContent + Send + Sync + Clone + 'static,
     {
         self.set_state(MediaState::Loading);
+        let scale_factor = self.scale_factor();
 
         let media = session.client().media();
         let handle = spawn_tokio!(async move {
@@ -392,8 +392,8 @@ impl MessageMedia {
                             content.clone(),
                             MediaThumbnailSize {
                                 method: Method::Scale,
-                                width: uint!(320),
-                                height: uint!(240),
+                                width: ((MAX_THUMBNAIL_WIDTH * scale_factor) as u32).into(),
+                                height: ((MAX_THUMBNAIL_HEIGHT * scale_factor) as u32).into(),
                             },
                             true,
                         )
