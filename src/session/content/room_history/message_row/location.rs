@@ -89,13 +89,11 @@ impl MessageLocation {
 
     pub fn set_geo_uri(&self, uri: &str, format: ContentFormat) {
         let priv_ = self.imp();
+        let compact = matches!(format, ContentFormat::Compact | ContentFormat::Ellipsized);
+        priv_.location.set_compact(compact);
 
         match GeoUri::parse(uri) {
             Ok(geo_uri) => {
-                priv_.location.set_compact(matches!(
-                    format,
-                    ContentFormat::Compact | ContentFormat::Ellipsized
-                ));
                 priv_.location.set_location(&geo_uri);
                 priv_.overlay_error.hide();
             }
@@ -108,5 +106,11 @@ impl MessageLocation {
                 priv_.overlay_error.show();
             }
         };
+
+        if compact {
+            self.set_halign(gtk::Align::Start);
+        } else {
+            self.set_halign(gtk::Align::Fill);
+        }
     }
 }
