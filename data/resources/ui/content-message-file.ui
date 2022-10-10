@@ -7,6 +7,12 @@
       <object class="GtkBox">
         <property name="spacing">6</property>
         <child>
+          <object class="GtkImage">
+            <property name="visible" bind-source="ContentMessageFile" bind-property="compact" bind-flags="sync-create"/>
+            <property name="icon-name">folder-documents-symbolic</property>
+          </object>
+        </child>
+        <child>
           <object class="GtkLabel">
             <property name="ellipsize">end</property>
             <property name="label" bind-source="ContentMessageFile" bind-property="filename" bind-flags="sync-create"/>
@@ -24,4 +30,3 @@
     </child>
   </template>
 </interface>
-
