@@ -507,9 +507,9 @@ impl Timeline {
         }
     }
 
-    /// Load the timeline
-    /// This function should also be called to load more events
-    /// Returns `true` when messages where successfully added
+    /// Load events at the start of the timeline.
+    ///
+    /// Returns `true` when no messages were added, but more can be loaded.
     pub async fn load(&self) -> bool {
         let priv_ = self.imp();
 
@@ -584,8 +584,7 @@ impl Timeline {
                 }
 
                 self.set_state(TimelineState::Ready);
-                self.prepend(events);
-                true
+                !self.prepend(events)
             }
             Ok(None) => {
                 self.remove_loading_spinner();
@@ -784,8 +783,10 @@ impl Timeline {
         }
     }
 
-    /// Prepends a batch of events
-    pub fn prepend(&self, batch: Vec<Event>) {
+    /// Prepends a batch of events.
+    ///
+    /// Returns `true` if new shown events where added to the timeline.
+    pub fn prepend(&self, batch: Vec<Event>) -> bool {
         let priv_ = self.imp();
         let mut added = batch.len();
 
@@ -831,6 +832,7 @@ impl Timeline {
         }
 
         self.items_changed(0, 0, added as u32);
+        added > 0
     }
 
     fn set_room(&self, room: Option<Room>) {

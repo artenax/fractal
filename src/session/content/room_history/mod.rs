@@ -842,22 +842,7 @@ impl RoomHistory {
             let obj_weak = self.downgrade();
             spawn!(async move {
                 loop {
-                    // We don't want to hold a strong ref to `obj` on `await`
-                    let need = if let Some(obj) = obj_weak.upgrade() {
-                        if obj.room().as_ref() == Some(&room) {
-                            obj.need_messages() || room.timeline().is_empty()
-                        } else {
-                            return;
-                        }
-                    } else {
-                        return;
-                    };
-
-                    if need {
-                        if !room.timeline().load().await {
-                            break;
-                        }
-                    } else {
+                    if !room.timeline().load().await {
                         break;
                     }
                 }
