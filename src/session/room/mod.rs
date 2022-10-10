@@ -1377,7 +1377,7 @@ impl Room {
                     // FIXME: We should retry the request if it fails
                     match handle.await.unwrap() {
                             Ok(_) => {},
-                            Err(error) => error!("Couldn’t redadct event: {}", error),
+                            Err(error) => error!("Couldn’t redact event: {}", error),
                     };
                 })
             );

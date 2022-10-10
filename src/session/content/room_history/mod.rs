@@ -819,8 +819,8 @@ impl RoomHistory {
     fn need_messages(&self) -> bool {
         let adj = self.imp().listview.vadjustment().unwrap();
         // Load more messages when the user gets close to the end of the known room
-        // history Use the page size twice to detect if the user gets close to
-        // the endload_timeline
+        // history. Use the page size twice to detect if the user gets close to
+        // the end.
         adj.value() < adj.page_size() * 2.0 || adj.upper() <= adj.page_size() / 2.0
     }
 
