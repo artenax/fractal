@@ -556,6 +556,7 @@ impl RoomHistory {
 
             room.load_members();
             self.init_invite_action(room);
+            self.scroll_down();
         }
 
         // TODO: use gtk::MultiSelection to allow selection
