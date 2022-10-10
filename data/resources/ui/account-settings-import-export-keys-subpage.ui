@@ -32,6 +32,7 @@
         <property name="vexpand">True</property>
         <property name="child">
           <object class="AdwClamp">
+            <property name="maximum-size">444</property>
             <property name="child">
               <object class="GtkBox" id="box">
                 <property name="orientation">vertical</property>
