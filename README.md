@@ -83,11 +83,15 @@ flatpak install --user gnome-nightly org.gnome.Fractal.Devel
 
 ### Runtime Dependencies
 
-Fractal doesn't store your **password** but uses [Secret Service](https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/)
+Fractal doesn't store your **password** but uses 
+[Secret Service](https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/)
 to store your **access token** and **passphrase** used to encrypt the local cache.
 Therefore, you need to have software providing that service on your system.
-If you're using GNOME this should work for you out of the box and gnome-keyring or ksecretservice
-should already be installed and setup.
+If you're using GNOME this should just work. 
+If you are using a different desktop environment or are facing issues, 
+make sure you have `xdg-desktop-portal` installed and a 
+[Secret Service](https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/) provider,
+for example `gnome-keyring` or KeepassXC ([setup guide](https://avaldes.co/2020/01/28/secret-service-keepassxc.html)).
 
 ## Security Best Practices
 
