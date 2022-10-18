@@ -10,7 +10,7 @@ use log::warn;
 use matrix_sdk::ruma::{
     events::room::message::{FormattedBody, MessageFormat},
     matrix_uri::MatrixId,
-    MatrixUri,
+    MatrixToUri, MatrixUri,
 };
 use sourceview::prelude::*;
 
@@ -18,7 +18,7 @@ use super::ContentFormat;
 use crate::{
     components::{LabelWithWidgets, Pill, DEFAULT_PLACEHOLDER},
     session::{room::Member, Room, UserExt},
-    utils::{parse_matrix_to_uri, EMOJI_REGEX},
+    utils::EMOJI_REGEX,
 };
 
 enum WithMentions<'a> {
@@ -376,11 +376,12 @@ fn extract_mentions(s: &str, room: &Room) -> (String, Vec<Pill>) {
         };
 
         let uri = &link[..uri_end];
+        let uri = html_escape::decode_html_entities(uri);
 
-        let id = if let Ok(mx_uri) = MatrixUri::parse(uri) {
+        let id = if let Ok(mx_uri) = MatrixUri::parse(&uri) {
             mx_uri.id().to_owned()
-        } else if let Ok((id, _)) = parse_matrix_to_uri(uri) {
-            id
+        } else if let Ok(mx_to_uri) = MatrixToUri::parse(&uri) {
+            mx_to_uri.id().to_owned()
         } else {
             continue;
         };

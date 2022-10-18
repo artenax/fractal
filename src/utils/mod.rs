@@ -18,11 +18,6 @@ use gtk::{
 use matrix_sdk::ruma::{EventId, OwnedEventId, OwnedTransactionId, TransactionId, UInt};
 use once_cell::sync::Lazy;
 use regex::Regex;
-use ruma::{
-    exports::percent_encoding::percent_decode_str, matrix_uri::MatrixId, IdParseError,
-    MatrixIdError, MatrixToError, OwnedServerName, RoomAliasId, RoomId, ServerName, UserId,
-};
-use url::form_urlencoded;
 
 /// Returns an expression that is the and’ed result of the given boolean
 /// expressions.
@@ -230,73 +225,3 @@ pub static EMOJI_REGEX: Lazy<Regex> = Lazy::new(|| {
     )
     .unwrap()
 });
-
-const MATRIX_TO_BASE_URL: &str = "https://matrix.to/#/";
-
-/// Parse a matrix.to URI.
-///
-/// Ruma's parsing fails with non-percent-encoded identifiers, which is the
-/// format of permalinks provided by Element Web.
-pub fn parse_matrix_to_uri(uri: &str) -> Result<(MatrixId, Vec<OwnedServerName>), IdParseError> {
-    let s = uri
-        .strip_prefix(MATRIX_TO_BASE_URL)
-        .ok_or(MatrixToError::WrongBaseUrl)?;
-    let s = s.strip_suffix('/').unwrap_or(s);
-
-    let mut parts = s.split('?');
-    let ids_part = parts.next().ok_or(MatrixIdError::NoIdentifier)?;
-    let mut ids = ids_part.split('/');
-
-    let first = ids.next().ok_or(MatrixIdError::NoIdentifier)?;
-    let first_id = percent_decode_str(first).decode_utf8()?;
-
-    let id: MatrixId = match first_id.as_bytes()[0] {
-        b'!' => {
-            let room_id = RoomId::parse(&first_id)?;
-
-            if let Some(second) = ids.next() {
-                let second_id = percent_decode_str(second).decode_utf8()?;
-                let event_id = EventId::parse(&second_id)?;
-                (room_id, event_id).into()
-            } else {
-                room_id.into()
-            }
-        }
-        b'#' => {
-            let room_id = RoomAliasId::parse(&first_id)?;
-
-            if let Some(second) = ids.next() {
-                let second_id = percent_decode_str(second).decode_utf8()?;
-                let event_id = EventId::parse(&second_id)?;
-                (room_id, event_id).into()
-            } else {
-                room_id.into()
-            }
-        }
-        b'@' => UserId::parse(&first_id)?.into(),
-        b'$' => return Err(MatrixIdError::MissingRoom.into()),
-        _ => return Err(MatrixIdError::UnknownIdentifier.into()),
-    };
-
-    if ids.next().is_some() {
-        return Err(MatrixIdError::TooManyIdentifiers.into());
-    }
-
-    let via = parts
-        .next()
-        .map(|query| {
-            let query = html_escape::decode_html_entities(query);
-            let query_parts = form_urlencoded::parse(query.as_bytes());
-            query_parts
-                .filter_map(|(key, value)| (key == "via").then(|| ServerName::parse(&value)))
-                .collect::<Result<Vec<_>, _>>()
-        })
-        .transpose()?
-        .unwrap_or_default();
-
-    if parts.next().is_some() {
-        return Err(MatrixToError::InvalidUrl.into());
-    }
-
-    Ok((id, via))
-}

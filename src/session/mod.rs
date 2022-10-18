@@ -41,7 +41,7 @@ use matrix_sdk::{
             GlobalAccountDataEvent,
         },
         matrix_uri::MatrixId,
-        MatrixUri, OwnedRoomOrAliasId, OwnedServerName, RoomId, RoomOrAliasId,
+        MatrixToUri, MatrixUri, OwnedRoomOrAliasId, OwnedServerName, RoomId, RoomOrAliasId,
     },
     Client, HttpError, RumaApiError,
 };
@@ -66,7 +66,7 @@ use crate::{
     secret::{self, StoredSession},
     session::sidebar::ItemList,
     spawn, spawn_tokio, toast,
-    utils::{check_if_reachable, parse_matrix_to_uri},
+    utils::check_if_reachable,
     Window,
 };
 
@@ -836,11 +836,13 @@ fn parse_room(room: &str) -> Option<(OwnedRoomOrAliasId, Vec<OwnedServerName>)> 
             _ => None,
         })
         .or_else(|| {
-            parse_matrix_to_uri(room)
+            MatrixToUri::parse(room)
                 .ok()
-                .and_then(|(id, via)| match id {
-                    MatrixId::Room(room_id) => Some((room_id.into(), via)),
-                    MatrixId::RoomAlias(room_alias) => Some((room_alias.into(), via)),
+                .and_then(|uri| match uri.id() {
+                    MatrixId::Room(room_id) => Some((room_id.clone().into(), uri.via().to_owned())),
+                    MatrixId::RoomAlias(room_alias) => {
+                        Some((room_alias.clone().into(), uri.via().to_owned()))
+                    }
                     _ => None,
                 })
         })
