@@ -124,7 +124,7 @@ impl MessageContent {
                         .and_then(|event| event.downcast::<SupportedEvent>().ok())
                     {
                         let reply = MessageReply::new();
-                        reply.set_related_content_sender(related_event.sender().upcast());
+                        reply.set_related_content_sender(&related_event.sender().upcast());
                         build_content(reply.related_content(), &related_event, ContentFormat::Compact);
                         build_content(reply.content(), &event, ContentFormat::Natural);
                         obj.set_child(Some(&reply));

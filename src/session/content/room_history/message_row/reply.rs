@@ -1,7 +1,7 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{glib, CompositeTemplate};
 
-use crate::{components::Pill, session::User};
+use crate::session::User;
 
 mod imp {
     use glib::subclass::InitializingObject;
@@ -12,7 +12,7 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/content-message-reply.ui")]
     pub struct MessageReply {
         #[template_child]
-        pub pill: TemplateChild<Pill>,
+        pub related_content_sender: TemplateChild<gtk::Label>,
         #[template_child]
         pub related_content: TemplateChild<adw::Bin>,
         #[template_child]
@@ -51,8 +51,10 @@ impl MessageReply {
         glib::Object::new(&[])
     }
 
-    pub fn set_related_content_sender(&self, user: User) {
-        self.imp().pill.set_user(Some(user));
+    pub fn set_related_content_sender(&self, user: &User) {
+        user.bind_property("display-name", &*self.imp().related_content_sender, "label")
+            .sync_create()
+            .build();
     }
 
     pub fn related_content(&self) -> &adw::Bin {

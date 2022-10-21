@@ -11,8 +11,15 @@
         <property name="orientation">vertical</property>
         <property name="spacing">3</property>
         <child>
-          <object class="Pill" id="pill">
+          <object class="GtkLabel" id="related_content_sender">
+            <property name="hexpand">true</property>
             <property name="halign">start</property>
+            <property name="ellipsize">end</property>
+            <property name="selectable">True</property>
+            <style>
+              <class name="heading"/>
+              <class name="accent"/>
+            </style>
           </object>
         </child>
         <child>
