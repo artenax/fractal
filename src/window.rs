@@ -126,12 +126,6 @@ mod imp {
             }));
             obj.add_action(&fullscreen);
 
-            self.login
-                .connect_new_session(clone!(@weak obj => move |_login, session| {
-                    obj.add_session(&session);
-                    obj.switch_to_loading_page();
-                }));
-
             self.main_stack.connect_visible_child_notify(
                 clone!(@weak obj => move |_| obj.set_default_by_child()),
             );
@@ -179,7 +173,7 @@ impl Window {
             .expect("Failed to create Window")
     }
 
-    fn add_session(&self, session: &Session) {
+    pub fn add_session(&self, session: &Session) {
         let priv_ = &self.imp();
         let prev_has_sessions = self.has_sessions();
 
@@ -198,6 +192,8 @@ impl Window {
         if !prev_has_sessions {
             self.notify("has-sessions");
         }
+
+        self.switch_to_loading_page();
     }
 
     fn remove_session(&self, session: &Session) {

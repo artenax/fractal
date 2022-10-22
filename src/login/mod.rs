@@ -36,10 +36,7 @@ use crate::{
 mod imp {
     use std::cell::{Cell, RefCell};
 
-    use glib::{
-        subclass::{InitializingObject, Signal},
-        SignalHandlerId,
-    };
+    use glib::{subclass::InitializingObject, SignalHandlerId};
     use once_cell::sync::Lazy;
 
     use super::*;
@@ -110,18 +107,6 @@ mod imp {
     }
 
     impl ObjectImpl for Login {
-        fn signals() -> &'static [Signal] {
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder(
-                    "new-session",
-                    &[Session::static_type().into()],
-                    <()>::static_type().into(),
-                )
-                .build()]
-            });
-            SIGNALS.as_ref()
-        }
-
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
@@ -588,7 +573,7 @@ impl Login {
         };
 
         session.prepare(client, session_info).await;
-        self.emit_by_name::<()>("new-session", &[&session]);
+        self.parent_window().add_session(&session);
     }
 
     pub fn clean(&self) {
@@ -621,20 +606,6 @@ impl Login {
         priv_.next_button.set_loading(false);
         priv_.main_stack.set_sensitive(true);
         self.update_next_state();
-    }
-
-    pub fn connect_new_session<F: Fn(&Self, Session) + 'static>(
-        &self,
-        f: F,
-    ) -> glib::SignalHandlerId {
-        self.connect_local("new-session", true, move |values| {
-            let obj = values[0].get::<Self>().unwrap();
-            let session = values[1].get::<Session>().unwrap();
-
-            f(&obj, session);
-
-            None
-        })
     }
 
     pub fn default_widget(&self) -> gtk::Widget {
