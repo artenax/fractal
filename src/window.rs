@@ -3,6 +3,7 @@ use gettextrs::gettext;
 use glib::signal::Inhibit;
 use gtk::{self, gdk, gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 use log::{info, warn};
+use ruma::RoomId;
 
 use crate::{
     account_switcher::AccountSwitcher,
@@ -274,6 +275,12 @@ impl Window {
         priv_.sessions.visible_child_name().map(Into::into)
     }
 
+    /// Set the current session by its ID.
+    pub fn set_current_session_by_id(&self, session_id: &str) {
+        self.imp().sessions.set_visible_child_name(session_id);
+        self.switch_to_sessions_page();
+    }
+
     pub fn save_window_size(&self) -> Result<(), glib::BoolError> {
         let settings = Application::default().settings();
 
@@ -368,5 +375,14 @@ impl Window {
         } else {
             priv_.offline_info_bar.set_revealed(false);
         }
+    }
+
+    pub fn show_room(&self, session_id: &str, room_id: &RoomId) {
+        if let Some(session) = self.session_by_id(session_id) {
+            session.select_room_by_id(room_id);
+            self.set_current_session_by_id(session_id);
+        }
+
+        self.present();
     }
 }

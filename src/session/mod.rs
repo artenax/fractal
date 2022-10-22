@@ -41,10 +41,12 @@ use matrix_sdk::{
             GlobalAccountDataEvent,
         },
         matrix_uri::MatrixId,
-        MatrixToUri, MatrixUri, OwnedRoomOrAliasId, OwnedServerName, RoomId, RoomOrAliasId,
+        MatrixToUri, MatrixUri, OwnedEventId, OwnedRoomId, OwnedRoomOrAliasId, OwnedServerName,
+        RoomId, RoomOrAliasId,
     },
     Client, HttpError, RumaApiError,
 };
+use ruma::{api::client::push::get_notifications::v3::Notification, EventId};
 use tokio::task::JoinHandle;
 
 use self::{
@@ -63,15 +65,19 @@ pub use self::{
     user::{User, UserActions, UserExt},
 };
 use crate::{
+    application::AppShowRoomPayload,
     secret::{self, StoredSession},
     session::sidebar::ItemList,
     spawn, spawn_tokio, toast,
-    utils::check_if_reachable,
-    Window,
+    utils::{check_if_reachable, matrix::get_event_body},
+    Application, Window,
 };
 
 mod imp {
-    use std::cell::{Cell, RefCell};
+    use std::{
+        cell::{Cell, RefCell},
+        collections::HashMap,
+    };
 
     use glib::subclass::{InitializingObject, Signal};
     use once_cell::{sync::Lazy, unsync::OnceCell};
@@ -102,6 +108,10 @@ mod imp {
         pub offline_handler_id: RefCell<Option<SignalHandlerId>>,
         pub offline: Cell<bool>,
         pub settings: OnceCell<SessionSettings>,
+        /// A map of room ID to list of event IDs for which a notification was
+        /// sent to the system.
+        pub notifications: RefCell<HashMap<OwnedRoomId, Vec<OwnedEventId>>>,
+        pub window_active_handler_id: RefCell<Option<SignalHandlerId>>,
     }
 
     #[glib::object_subclass]
@@ -179,7 +189,9 @@ mod imp {
             );
 
             klass.install_action("session.mark-ready", None, move |session, _, _| {
-                session.mark_ready();
+                spawn!(clone!(@weak session => async move {
+                    session.mark_ready().await;
+                }));
             });
         }
 
@@ -270,6 +282,30 @@ mod imp {
             }));
 
             self.offline_handler_id.replace(Some(handler_id));
+
+            self.content.connect_notify_local(
+                Some("item"),
+                clone!(@weak obj => move |_, _| {
+                    // When switching to a room, withdraw its notifications.
+                    obj.withdraw_notifications_for_selected_room();
+                }),
+            );
+
+            obj.connect_parent_notify(|obj| {
+                if let Some(window) = obj.root().and_then(|root| root.downcast::<Window>().ok()) {
+                    let handler_id =
+                        window.connect_is_active_notify(clone!(@weak obj => move |window| {
+                            // When the window becomes active, withdraw the notifications
+                            // of the room that is displayed.
+                            if window.is_active()
+                                && window.current_session_id().as_deref() == obj.session_id()
+                            {
+                                obj.withdraw_notifications_for_selected_room();
+                            }
+                        }));
+                    obj.imp().window_active_handler_id.replace(Some(handler_id));
+                }
+            });
         }
 
         fn dispose(&self, obj: &Self::Type) {
@@ -284,6 +320,12 @@ mod imp {
 
             if self.logout_on_dispose.get() {
                 glib::MainContext::default().block_on(obj.logout(true));
+            }
+
+            if let Some(handler_id) = self.window_active_handler_id.take() {
+                if let Some(window) = obj.root().and_then(|root| root.downcast::<Window>().ok()) {
+                    window.disconnect(handler_id);
+                }
             }
         }
     }
@@ -303,6 +345,14 @@ impl Session {
 
     pub fn session_id(&self) -> Option<&str> {
         self.imp().info.get().map(|info| info.id())
+    }
+
+    /// The currently selected room, if any.
+    pub fn selected_room(&self) -> Option<Room> {
+        self.imp()
+            .content
+            .item()
+            .and_then(|item| item.downcast().ok())
     }
 
     pub fn select_room(&self, room: Option<Room>) {
@@ -452,11 +502,11 @@ impl Session {
                 return;
             }
 
-            obj.mark_ready();
+            obj.mark_ready().await;
         }));
     }
 
-    pub fn mark_ready(&self) {
+    pub async fn mark_ready(&self) {
         let priv_ = self.imp();
 
         // FIXME: we should actually check if we have now the keys
@@ -471,6 +521,23 @@ impl Session {
         if let Some(session_verification) = priv_.stack.child_by_name("session-verification") {
             priv_.stack.remove(&session_verification);
         }
+
+        let obj_weak = glib::SendWeakRef::from(self.downgrade());
+        self.client()
+            .register_notification_handler(move |notification, _, _| {
+                let obj_weak = obj_weak.clone();
+                async move {
+                    let ctx = glib::MainContext::default();
+                    ctx.spawn(async move {
+                        spawn!(async move {
+                            if let Some(obj) = obj_weak.upgrade() {
+                                obj.show_notification(notification);
+                            }
+                        });
+                    });
+                }
+            })
+            .await;
 
         self.emit_by_name::<()>("ready", &[]);
     }
@@ -753,6 +820,8 @@ impl Session {
             error!("Failed to remove database after logout: {}", error);
         }
 
+        self.clear_notifications();
+
         debug!("The logged out session was cleaned up");
     }
 
@@ -841,6 +910,119 @@ impl Session {
             });
         });
     }
+
+    /// Ask the system to show the given notification, if applicable.
+    ///
+    /// The notification won't be shown if the application is active and this
+    /// session is displayed.
+    fn show_notification(&self, matrix_notification: Notification) {
+        let window = self.parent_window().unwrap();
+
+        // Don't show notifications for the current session if the window is active.
+        if window.is_active() && window.current_session_id().as_deref() == self.session_id() {
+            return;
+        }
+
+        let room = match self.room_list().get(&matrix_notification.room_id) {
+            Some(room) => room,
+            None => {
+                warn!(
+                    "Could not display notification for missing room {}",
+                    matrix_notification.room_id
+                );
+                return;
+            }
+        };
+
+        let event = match matrix_notification.event.deserialize() {
+            Ok(event) => event,
+            Err(error) => {
+                warn!(
+                    "Could not display notification for unrecognized event in room {}: {error}",
+                    matrix_notification.room_id
+                );
+                return;
+            }
+        };
+
+        let sender_name = room
+            .members()
+            .member_by_id(event.sender().to_owned())
+            .display_name();
+
+        let body = match get_event_body(&event, &sender_name) {
+            Some(body) => body,
+            None => {
+                debug!("Received notification for event of unexpected type {event:?}",);
+                return;
+            }
+        };
+
+        let session_id = self.session_id().unwrap();
+        let room_id = room.room_id();
+        let event_id = event.event_id();
+
+        let notification = gio::Notification::new(&room.display_name());
+        notification.set_priority(gio::NotificationPriority::High);
+
+        let payload = AppShowRoomPayload {
+            session_id: session_id.to_owned(),
+            room_id: room_id.to_owned(),
+        };
+
+        notification
+            .set_default_action_and_target_value("app.show-room", Some(&payload.to_variant()));
+        notification.set_body(Some(&body));
+
+        let id = notification_id(session_id, room_id, event_id);
+        Application::default().send_notification(Some(&id), &notification);
+
+        self.imp()
+            .notifications
+            .borrow_mut()
+            .entry(room_id.to_owned())
+            .or_default()
+            .push(event_id.to_owned());
+    }
+
+    /// Ask the system to remove the known notifications for the currently
+    /// selected room.
+    ///
+    /// Only the notifications that were shown since the application's startup
+    /// are known, older ones might still be present.
+    fn withdraw_notifications_for_selected_room(&self) {
+        let room = match self.selected_room() {
+            Some(room) => room,
+            None => return,
+        };
+
+        let room_id = room.room_id();
+        if let Some(notifications) = self.imp().notifications.borrow_mut().remove(room_id) {
+            let session_id = self.session_id().unwrap();
+            let app = Application::default();
+
+            for event_id in notifications {
+                let id = notification_id(session_id, room_id, &event_id);
+                app.withdraw_notification(&id);
+            }
+        }
+    }
+
+    /// Ask the system to remove all the known notifications for this session.
+    ///
+    /// Only the notifications that were shown since the application's startup
+    /// are known, older ones might still be present.
+    fn clear_notifications(&self) {
+        let session_id = self.session_id().unwrap();
+        let app = Application::default();
+
+        for (room_id, notifications) in self.imp().notifications.take() {
+            for event_id in notifications {
+                let id = notification_id(session_id, &room_id, &event_id);
+                app.withdraw_notification(&id);
+            }
+        }
+    }
 }
 
 impl Default for Session {
@@ -875,4 +1057,8 @@ fn parse_room(room: &str) -> Option<(OwnedRoomOrAliasId, Vec<OwnedServerName>)> 
                 .ok()
                 .map(|room_id| (room_id, vec![]))
         })
+}
+
+fn notification_id(session_id: &str, room_id: &RoomId, event_id: &EventId) -> String {
+    format!("{session_id}:{room_id}:{event_id}")
 }

@@ -96,4 +96,5 @@ src/session/sidebar/entry_type.rs
 src/session/verification/identity_verification.rs
 src/user_facing_error.rs
 src/utils/media.rs
+src/utils/matrix.rs
 src/window.rs

@@ -1,9 +1,12 @@
+use std::borrow::Cow;
+
 use gettextrs::gettext;
 use gio::{ApplicationFlags, Settings};
 use glib::{clone, WeakRef};
 use gtk::{gio, glib, prelude::*, subclass::prelude::*};
 use gtk_macros::action;
 use log::{debug, info};
+use ruma::{OwnedRoomId, RoomId};
 
 use crate::{config, Window};
 
@@ -154,6 +157,17 @@ impl Application {
             }),
         );
         show_sessions_action.set_enabled(win.has_sessions());
+
+        action!(
+            self,
+            "show-room",
+            Some(&AppShowRoomPayload::static_variant_type()),
+            clone!(@weak self as app => move |_, v| {
+                if let Some(payload) = v.and_then(|v| v.get::<AppShowRoomPayload>()) {
+                    app.get_main_window().show_room(&payload.session_id, &payload.room_id);
+                }
+            })
+        );
     }
 
     /// Sets up keyboard shortcuts for application and window actions.
@@ -212,5 +226,34 @@ impl Default for Application {
             .unwrap()
             .downcast::<Application>()
             .unwrap()
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct AppShowRoomPayload {
+    pub session_id: String,
+    pub room_id: OwnedRoomId,
+}
+
+impl glib::StaticVariantType for AppShowRoomPayload {
+    fn static_variant_type() -> Cow<'static, glib::VariantTy> {
+        <(String, String)>::static_variant_type()
+    }
+}
+
+impl glib::ToVariant for AppShowRoomPayload {
+    fn to_variant(&self) -> glib::Variant {
+        (&self.session_id, self.room_id.as_str()).to_variant()
+    }
+}
+
+impl glib::FromVariant for AppShowRoomPayload {
+    fn from_variant(variant: &glib::Variant) -> Option<Self> {
+        let (session_id, room_id) = variant.get::<(String, String)>()?;
+        let room_id = RoomId::parse(room_id).ok()?;
+        Some(Self {
+            session_id,
+            room_id,
+        })
     }
 }
