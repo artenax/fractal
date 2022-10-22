@@ -571,6 +571,10 @@ impl Login {
                 );
                 return;
             }
+
+            session.connect_ready(clone!(@weak self as obj => move |_| {
+                obj.clean();
+            }));
         };
 
         session.prepare(client, session_info).await;

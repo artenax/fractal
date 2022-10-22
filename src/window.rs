@@ -182,9 +182,6 @@ impl Window {
         // We need to grab the focus so that keyboard shortcuts work
         session.grab_focus();
 
-        session.connect_ready(clone!(@weak self as obj => move |_| {
-            obj.imp().login.clean();
-        }));
         session.connect_logged_out(clone!(@weak self as obj => move |session| {
             obj.remove_session(session)
         }));
