@@ -69,7 +69,7 @@ use crate::{
         Avatar, Session, User,
     },
     spawn, spawn_tokio, toast,
-    utils::pending_event_ids,
+    utils::matrix::pending_event_ids,
 };
 
 mod imp {

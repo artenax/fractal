@@ -20,7 +20,7 @@ use crate::{
     components::{AuthDialog, AuthError, SpinnerButton},
     session::Session,
     spawn, toast,
-    utils::validate_password,
+    utils::matrix::validate_password,
 };
 
 mod imp {
