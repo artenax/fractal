@@ -188,6 +188,13 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
+                    glib::ParamSpecString::new(
+                        "session-id",
+                        "Session ID",
+                        "The unique ID of this session",
+                        None,
+                        glib::ParamFlags::READABLE,
+                    ),
                     glib::ParamSpecObject::new(
                         "item-list",
                         "Item List",
@@ -217,6 +224,7 @@ mod imp {
 
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
+                "session-id" => obj.session_id().to_value(),
                 "item-list" => obj.item_list().to_value(),
                 "user" => obj.user().to_value(),
                 "offline" => obj.is_offline().to_value(),
@@ -289,8 +297,8 @@ impl Session {
         glib::Object::new(&[]).expect("Failed to create Session")
     }
 
-    pub fn session_id(&self) -> &str {
-        self.imp().info.get().unwrap().id()
+    pub fn session_id(&self) -> Option<&str> {
+        self.imp().info.get().map(|info| info.id())
     }
 
     pub fn select_room(&self, room: Option<Room>) {

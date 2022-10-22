@@ -176,7 +176,7 @@ impl Window {
         let priv_ = &self.imp();
         let prev_has_sessions = self.has_sessions();
 
-        priv_.sessions.add_child(session);
+        priv_.sessions.add_named(session, session.session_id());
         priv_.sessions.set_visible_child(session);
         // We need to grab the focus so that keyboard shortcuts work
         session.grab_focus();
@@ -199,7 +199,7 @@ impl Window {
 
         // If the session was a new login that was logged out before being ready, go
         // back to the login screen.
-        if priv_.login.current_session_id().as_deref() == Some(session.session_id()) {
+        if priv_.login.current_session_id().as_deref() == session.session_id() {
             priv_.login.restore_client();
             self.switch_to_login_page();
         } else if let Some(child) = priv_.sessions.first_child() {
@@ -254,6 +254,24 @@ impl Window {
     /// Whether this window has sessions.
     pub fn has_sessions(&self) -> bool {
         self.imp().sessions.pages().n_items() > 0
+    }
+
+    /// Get the session with the given ID.
+    pub fn session_by_id(&self, session_id: &str) -> Option<Session> {
+        self.imp()
+            .sessions
+            .child_by_name(session_id)
+            .and_then(|w| w.downcast().ok())
+    }
+
+    /// The ID of the currently visible session, if any.
+    pub fn current_session_id(&self) -> Option<String> {
+        let priv_ = self.imp();
+        priv_
+            .main_stack
+            .visible_child()
+            .filter(|child| child == priv_.sessions.upcast_ref::<gtk::Widget>())?;
+        priv_.sessions.visible_child_name().map(Into::into)
     }
 
     pub fn save_window_size(&self) -> Result<(), glib::BoolError> {
