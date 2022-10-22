@@ -736,8 +736,8 @@ impl Session {
             window.switch_to_sessions_page();
         }
 
-        if let Some(session_verificiation) = priv_.stack.child_by_name("session-verification") {
-            priv_.stack.remove(&session_verificiation);
+        if let Some(session_verification) = priv_.stack.child_by_name("session-verification") {
+            priv_.stack.remove(&session_verification);
         }
 
         self.emit_by_name::<()>("ready", &[]);
