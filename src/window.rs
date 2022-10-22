@@ -205,7 +205,7 @@ impl Window {
             priv_.sessions.set_visible_child(&child);
         } else {
             self.notify("has-sessions");
-            self.switch_to_greeter_page(false);
+            self.switch_to_greeter_page();
         }
     }
 
@@ -213,7 +213,7 @@ impl Window {
         match secret::restore_sessions().await {
             Ok(sessions) => {
                 if sessions.is_empty() {
-                    self.switch_to_greeter_page(false);
+                    self.switch_to_greeter_page();
                 } else {
                     for stored_session in sessions {
                         info!(
@@ -309,11 +309,8 @@ impl Window {
         priv_.login.focus_default();
     }
 
-    pub fn switch_to_greeter_page(&self, clean: bool) {
+    pub fn switch_to_greeter_page(&self) {
         let priv_ = self.imp();
-        if clean {
-            priv_.login.clean();
-        }
         priv_.main_stack.set_visible_child(&*priv_.greeter);
     }
 

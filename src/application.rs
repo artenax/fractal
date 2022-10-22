@@ -129,15 +129,7 @@ impl Application {
             self,
             "new-session",
             clone!(@weak self as app => move |_, _| {
-                app.get_main_window().switch_to_greeter_page(true);
-            })
-        );
-
-        action!(
-            self,
-            "show-greeter",
-            clone!(@weak self as app => move |_, _| {
-                app.get_main_window().switch_to_greeter_page(false);
+                app.get_main_window().switch_to_greeter_page();
             })
         );
 

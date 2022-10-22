@@ -337,7 +337,8 @@ impl Login {
                 });
             }
             _ => {
-                self.activate_action("app.show-greeter", None).unwrap();
+                self.parent_window().switch_to_greeter_page();
+                self.clean();
             }
         }
     }
