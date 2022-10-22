@@ -327,7 +327,7 @@ impl SessionVerification {
                 toast!(obj, error_message);
             } else {
                 // TODO tell user that the a crypto identity was created
-                obj.activate_action("session.show-content", None).unwrap();
+                obj.activate_action("session.mark-ready", None).unwrap();
             }
         }));
     }

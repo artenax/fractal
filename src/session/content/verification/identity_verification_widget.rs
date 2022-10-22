@@ -204,7 +204,7 @@ mod imp {
             self.done_btn.connect_clicked(clone!(@weak obj => move |_| {
                 if let Some(request) = obj.request() {
                     if request.mode() == VerificationMode::CurrentSession {
-                        obj.activate_action("session.show-content", None).unwrap();
+                        obj.activate_action("session.mark-ready", None).unwrap();
                     }
                 }
             }));

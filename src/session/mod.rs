@@ -94,7 +94,7 @@ mod imp {
         pub client: OnceCell<Client>,
         pub item_list: OnceCell<ItemList>,
         pub user: OnceCell<User>,
-        pub is_ready: Cell<bool>,
+        pub is_loaded: Cell<bool>,
         pub prepared: Cell<bool>,
         pub logout_on_dispose: Cell<bool>,
         pub info: OnceCell<StoredSession>,
@@ -177,6 +177,10 @@ mod imp {
                     widget.open_account_settings();
                 },
             );
+
+            klass.install_action("session.mark-ready", None, move |session, _, _| {
+                session.mark_ready();
+            });
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -408,11 +412,11 @@ impl Session {
         }
     }
 
-    fn mark_ready(&self) {
+    fn mark_loaded(&self) {
         let client = self.client();
         let user_id = self.user().unwrap().user_id();
 
-        self.imp().is_ready.set(true);
+        self.imp().is_loaded.set(true);
 
         let encryption = client.encryption();
         let need_new_identity = spawn_tokio!(async move {
@@ -448,12 +452,31 @@ impl Session {
                 return;
             }
 
-            obj.show_content();
+            obj.mark_ready();
         }));
     }
 
-    fn is_ready(&self) -> bool {
-        self.imp().is_ready.get()
+    pub fn mark_ready(&self) {
+        let priv_ = self.imp();
+
+        // FIXME: we should actually check if we have now the keys
+        spawn!(clone!(@weak self as obj => async move {
+            obj.has_cross_signing_keys().await;
+        }));
+
+        priv_.logout_on_dispose.set(false);
+
+        self.show_content();
+
+        if let Some(session_verification) = priv_.stack.child_by_name("session-verification") {
+            priv_.stack.remove(&session_verification);
+        }
+
+        self.emit_by_name::<()>("ready", &[]);
+    }
+
+    fn is_loaded(&self) -> bool {
+        self.imp().is_loaded.get()
     }
 
     fn set_is_prepared(&self, prepared: bool) {
@@ -588,8 +611,8 @@ impl Session {
                 self.verification_list()
                     .handle_response_to_device(response.to_device);
 
-                if !self.is_ready() {
-                    self.mark_ready();
+                if !self.is_loaded() {
+                    self.mark_loaded();
                 }
             }
             Err(error) => {
@@ -707,7 +730,7 @@ impl Session {
         let priv_ = self.imp();
         let info = priv_.info.get().unwrap();
 
-        priv_.is_ready.set(false);
+        priv_.is_loaded.set(false);
 
         if let Some(handle) = priv_.sync_tokio_handle.take() {
             handle.abort();
@@ -736,21 +759,12 @@ impl Session {
     /// Show the content of the session
     pub fn show_content(&self) {
         let priv_ = self.imp();
-        // FIXME: we should actually check if we have now the keys
-        spawn!(clone!(@weak self as obj => async move {
-            obj.has_cross_signing_keys().await;
-        }));
+
         priv_.stack.set_visible_child(&*priv_.leaflet);
-        priv_.logout_on_dispose.set(false);
+
         if let Some(window) = self.parent_window() {
             window.switch_to_sessions_page();
         }
-
-        if let Some(session_verification) = priv_.stack.child_by_name("session-verification") {
-            priv_.stack.remove(&session_verification);
-        }
-
-        self.emit_by_name::<()>("ready", &[]);
     }
 
     /// Show a media event
