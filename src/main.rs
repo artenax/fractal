@@ -27,14 +27,8 @@ use gtk::{gdk::Display, gio, IconTheme};
 use once_cell::sync::Lazy;
 
 use self::{
-    application::Application,
-    error_page::{ErrorPage, ErrorSubpage},
-    greeter::Greeter,
-    i18n::*,
-    login::Login,
-    session::Session,
-    user_facing_error::UserFacingError,
-    window::Window,
+    application::Application, error_page::ErrorPage, greeter::Greeter, i18n::*, login::Login,
+    session::Session, user_facing_error::UserFacingError, window::Window,
 };
 
 /// The default tokio runtime to be used for async tasks

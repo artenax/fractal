@@ -1,68 +1,104 @@
 use std::{collections::HashMap, ffi::OsStr, fmt, path::PathBuf, string::FromUtf8Error};
 
 use gettextrs::gettext;
-use gtk::{gio, glib};
-use libsecret::{
-    password_clear_future, password_search_sync, password_store_binary_future, prelude::*,
-    Retrievable, Schema, SchemaAttributeType, SchemaFlags, SearchFlags, Value, COLLECTION_DEFAULT,
-};
 use log::error;
 use matrix_sdk::ruma::{DeviceId, OwnedDeviceId, OwnedUserId, UserId};
+use oo7::{is_sandboxed, Item, Keyring};
 use serde::{Deserialize, Serialize};
 use serde_json::error::Error as JsonError;
+use thiserror::Error;
 use url::Url;
 
-use crate::{config::APP_ID, gettext_f, ErrorSubpage};
+use crate::{config::APP_ID, gettext_f, user_facing_error::UserFacingError};
+
+const SCHEMA_ATTRIBUTE: &str = "xdg:schema";
 
 /// Any error that can happen when interacting with the secret service.
-#[derive(Debug, Clone)]
+#[derive(Debug, Error)]
 pub enum SecretError {
-    CorruptSession((String, Retrievable)),
-    Libsecret(glib::Error),
-    Unknown,
+    /// A corrupted session was found.
+    #[error("{0}")]
+    CorruptSession(String, Item),
+
+    /// An error occurred interacting with the secret service.
+    #[error(transparent)]
+    Oo7(#[from] oo7::Error),
 }
 
 impl SecretError {
-    /// Get the error subpage that matches `self`.
-    pub fn error_subpage(&self) -> ErrorSubpage {
+    /// Split `self` between its message and its optional `Item`.
+    pub fn into_parts(self) -> (String, Option<Item>) {
         match self {
-            Self::CorruptSession(_) => ErrorSubpage::SecretErrorSession,
-            _ => ErrorSubpage::SecretErrorOther,
+            SecretError::CorruptSession(message, item) => (message, Some(item)),
+            SecretError::Oo7(error) => (error.to_user_facing(), None),
         }
     }
 }
 
-impl From<glib::Error> for SecretError {
-    fn from(error: glib::Error) -> Self {
-        Self::Libsecret(error)
+impl UserFacingError for oo7::Error {
+    fn to_user_facing(self) -> String {
+        match self {
+            oo7::Error::Portal(error) => error.to_user_facing(),
+            oo7::Error::DBus(error) => error.to_user_facing(),
+        }
     }
 }
 
-impl fmt::Display for SecretError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "{}",
-            match self {
-                Self::CorruptSession((message, _)) => message.to_owned(),
-                Self::Libsecret(error) if error.is::<libsecret::Error>() => {
-                    match error.kind::<libsecret::Error>() {
-                        Some(libsecret::Error::Protocol) => error.message().to_owned(),
-                        Some(libsecret::Error::IsLocked) => {
-                            gettext("Could not unlock the secret storage")
-                        }
-                        _ => gettext(
-                            "An unknown error occurred when interacting with the secret storage",
-                        ),
-                    }
-                }
-                _ => gettext("An unknown error occurred when interacting with the secret storage"),
-            }
-        )
+impl UserFacingError for oo7::portal::Error {
+    fn to_user_facing(self) -> String {
+        match self {
+            oo7::portal::Error::FileHeaderMismatch(_) |
+            oo7::portal::Error::VersionMismatch(_) |
+            oo7::portal::Error::NoData |
+            oo7::portal::Error::MacError |
+            oo7::portal::Error::HashedAttributeMac(_) |
+            oo7::portal::Error::GVariantDeserialization(_) => gettext(
+                "The secret storage file is corrupted.",
+            ),
+            oo7::portal::Error::NoParentDir(_) |
+            oo7::portal::Error::NoDataDir => gettext(
+                "Could not access the secret storage file location.",
+            ),
+            oo7::portal::Error::Io(_) => gettext(
+                "An unknown error occurred when accessing the secret storage file.",
+            ),
+            oo7::portal::Error::TargetFileChanged(_) => gettext(
+                "The secret storage file has been changed by another process.",
+            ),
+            oo7::portal::Error::PortalBus(_) => gettext(
+                "An unknown error occurred when interacting with the D-Bus Secret Service.",
+            ),
+            oo7::portal::Error::CancelledPortalRequest => gettext(
+                "The request to the Flatpak Secret Portal was cancelled. Make sure to accept any prompt asking to access it.",
+            ),
+            oo7::portal::Error::PortalNotAvailable => gettext(
+                "The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is installed, and it is at least at version 1.5.0.",
+            ),
+        }
     }
 }
 
-#[derive(Debug, Clone)]
+impl UserFacingError for oo7::dbus::Error {
+    fn to_user_facing(self) -> String {
+        match self {
+            oo7::dbus::Error::Deleted => gettext(
+                "The item was deleted.",
+            ),
+            oo7::dbus::Error::Dismissed => gettext(
+                "The request to the D-Bus Secret Service was cancelled. Make sure to accept any prompt asking to access it.",
+            ),
+            oo7::dbus::Error::NotFound(_) => gettext(
+                "Could not access the default collection. Make sure a keyring was created and set as default.",
+            ),
+            oo7::dbus::Error::Zbus(_) |
+            oo7::dbus::Error::IO(_) => gettext(
+                "An unknown error occurred when interacting with the D-Bus Secret Service.",
+            ),
+        }
+    }
+}
+
+#[derive(Clone)]
 pub struct StoredSession {
     pub homeserver: Url,
     pub user_id: OwnedUserId,
@@ -71,10 +107,21 @@ pub struct StoredSession {
     pub secret: Secret,
 }
 
+impl fmt::Debug for StoredSession {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("StoredSession")
+            .field("homeserver", &self.homeserver)
+            .field("user_id", &self.user_id)
+            .field("device_id", &self.device_id)
+            .field("path", &self.path)
+            .finish()
+    }
+}
+
 impl StoredSession {
     /// Build self from a secret.
-    pub async fn try_from_secret_item(item: Retrievable) -> Result<Self, SecretError> {
-        let attr = item.attributes();
+    pub async fn try_from_secret_item(item: Item) -> Result<Self, SecretError> {
+        let attr = item.attributes().await?;
 
         let homeserver = match attr.get("homeserver") {
             Some(string) => match Url::parse(string) {
@@ -84,17 +131,17 @@ impl StoredSession {
                         "Could not parse 'homeserver' attribute in stored session: {:?}",
                         err
                     );
-                    return Err(SecretError::CorruptSession((
+                    return Err(SecretError::CorruptSession(
                         gettext("Malformed homeserver in stored session"),
                         item,
-                    )));
+                    ));
                 }
             },
             None => {
-                return Err(SecretError::CorruptSession((
+                return Err(SecretError::CorruptSession(
                     gettext("Could not find homeserver in stored session"),
                     item,
-                )));
+                ));
             }
         };
         let user_id = match attr.get("user") {
@@ -105,60 +152,54 @@ impl StoredSession {
                         "Could not parse 'user' attribute in stored session: {:?}",
                         err
                     );
-                    return Err(SecretError::CorruptSession((
+                    return Err(SecretError::CorruptSession(
                         gettext("Malformed user ID in stored session"),
                         item,
-                    )));
+                    ));
                 }
             },
             None => {
-                return Err(SecretError::CorruptSession((
+                return Err(SecretError::CorruptSession(
                     gettext("Could not find user ID in stored session"),
                     item,
-                )));
+                ));
             }
         };
         let device_id = match attr.get("device-id") {
             Some(string) => <&DeviceId>::from(string.as_str()).to_owned(),
             None => {
-                return Err(SecretError::CorruptSession((
+                return Err(SecretError::CorruptSession(
                     gettext("Could not find device ID in stored session"),
                     item,
-                )));
+                ));
             }
         };
         let path = match attr.get("db-path") {
             Some(string) => PathBuf::from(string),
             None => {
-                return Err(SecretError::CorruptSession((
+                return Err(SecretError::CorruptSession(
                     gettext("Could not find database path in stored session"),
                     item,
-                )));
+                ));
             }
         };
-        let secret = match item.retrieve_secret_future().await {
-            Ok(Some(value)) => match Secret::from_utf8(value.get()) {
+        let secret = match item.secret().await {
+            Ok(secret) => match Secret::from_utf8(&secret) {
                 Ok(secret) => secret,
                 Err(err) => {
                     error!("Could not parse secret in stored session: {:?}", err);
-                    return Err(SecretError::CorruptSession((
+                    return Err(SecretError::CorruptSession(
                         gettext("Malformed secret in stored session"),
                         item,
-                    )));
+                    ));
                 }
             },
-            Ok(None) => {
-                return Err(SecretError::CorruptSession((
-                    gettext("No secret in stored session"),
-                    item,
-                )));
-            }
             Err(err) => {
                 error!("Could not get secret in stored session: {:?}", err);
-                return Err(SecretError::CorruptSession((
+                return Err(SecretError::CorruptSession(
                     gettext("Could not get secret in stored session"),
                     item,
-                )));
+                ));
             }
         };
 
@@ -171,20 +212,14 @@ impl StoredSession {
         })
     }
 
-    /// Build a secret from `self`.
-    ///
-    /// Returns an (attributes, secret) tuple.
-    pub fn to_secret_item(&self) -> (HashMap<&str, &str>, Value) {
-        let attributes = HashMap::from([
+    /// Get the attributes from `self`.
+    pub fn attributes(&self) -> HashMap<&str, &str> {
+        HashMap::from([
             ("homeserver", self.homeserver.as_str()),
             ("user", self.user_id.as_str()),
             ("device-id", self.device_id.as_str()),
             ("db-path", self.path.to_str().unwrap()),
-        ]);
-
-        let secret = Value::new(&self.secret.to_string(), "application/json");
-
-        (attributes, secret)
+        ])
     }
 
     /// Get the unique ID for this `StoredSession`.
@@ -219,7 +254,7 @@ impl From<JsonError> for FromUtf8SecretError {
 }
 
 /// A `Secret` that can be stored in the `SecretService`.
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Secret {
     pub access_token: String,
     pub passphrase: String,
@@ -227,38 +262,24 @@ pub struct Secret {
 
 impl Secret {
     /// Converts a vector of bytes to a `Secret`.
-    pub fn from_utf8(vec: Vec<u8>) -> Result<Self, FromUtf8SecretError> {
-        let s = String::from_utf8(vec)?;
+    pub fn from_utf8(slice: &[u8]) -> Result<Self, FromUtf8SecretError> {
+        let s = String::from_utf8(slice.to_owned())?;
         Ok(serde_json::from_str(&s)?)
     }
 }
 
-impl fmt::Display for Secret {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", serde_json::to_string(self).unwrap())
-    }
-}
-
-/// The `Schema` of the items in the `SecretService`.
-fn schema() -> Schema {
-    let attributes = HashMap::from([
-        ("homeserver", SchemaAttributeType::String),
-        ("user", SchemaAttributeType::String),
-        ("device-id", SchemaAttributeType::String),
-        ("db-path", SchemaAttributeType::String),
-    ]);
-
-    Schema::new(APP_ID, SchemaFlags::NONE, attributes)
-}
-
 /// Retrieves all sessions stored to the `SecretService`
 pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
-    let items = password_search_sync(
-        Some(&schema()),
-        HashMap::new(),
-        SearchFlags::ALL | SearchFlags::UNLOCK | SearchFlags::LOAD_SECRETS,
-        gio::Cancellable::NONE,
-    )?;
+    let keyring = Keyring::new().await?;
+
+    let items = if is_sandboxed() {
+        keyring.items().await?
+    } else {
+        keyring
+            .search_items(HashMap::from([(SCHEMA_ATTRIBUTE, APP_ID)]))
+            .await?
+    };
+
     let mut sessions = Vec::with_capacity(items.len());
 
     for item in items {
@@ -271,43 +292,40 @@ pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
 /// Writes a session to the `SecretService`, overwriting any previously stored
 /// session with the same `homeserver`, `username` and `device-id`.
 pub async fn store_session(session: &StoredSession) -> Result<(), SecretError> {
-    let (attributes, secret) = session.to_secret_item();
+    let keyring = Keyring::new().await?;
 
-    password_store_binary_future(
-        Some(&schema()),
-        attributes,
-        Some(&COLLECTION_DEFAULT),
-        &gettext_f(
-            // Translators: Do NOT translate the content between '{' and '}', this is a variable
-            // name.
-            "Fractal: Matrix credentials for {user_id}",
-            &[("user_id", session.user_id.as_str())],
-        ),
-        &secret,
-    )
-    .await?;
+    let mut attributes = session.attributes();
+
+    if !is_sandboxed() {
+        attributes.insert(SCHEMA_ATTRIBUTE, APP_ID);
+    }
+
+    let secret = serde_json::to_string(&session.secret).unwrap();
+
+    keyring
+        .create_item(
+            &gettext_f(
+                // Translators: Do NOT translate the content between '{' and '}', this is a
+                // variable name.
+                "Fractal: Matrix credentials for {user_id}",
+                &[("user_id", session.user_id.as_str())],
+            ),
+            attributes,
+            secret,
+            true,
+        )
+        .await?;
 
     Ok(())
 }
 
 /// Removes a session from the `SecretService`
 pub async fn remove_session(session: &StoredSession) -> Result<(), SecretError> {
-    let (attributes, _) = session.to_secret_item();
+    let keyring = Keyring::new().await?;
 
-    password_clear_future(Some(&schema()), attributes).await?;
+    let attributes = session.attributes();
 
-    Ok(())
-}
-
-/// Removes an item from the `SecretService`
-pub async fn remove_item(item: &Retrievable) -> Result<(), SecretError> {
-    let attributes = item.attributes();
-    let mut attr = HashMap::with_capacity(attributes.len());
-
-    for (key, value) in attributes.iter() {
-        attr.insert(key.as_str(), value.as_str());
-    }
-    password_clear_future(Some(&schema()), attr).await?;
+    keyring.delete(attributes).await?;
 
     Ok(())
 }

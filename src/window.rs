@@ -7,8 +7,7 @@ use log::{info, warn};
 use crate::{
     account_switcher::AccountSwitcher,
     config::{APP_ID, PROFILE},
-    secret::{self, SecretError},
-    spawn, Application, ErrorPage, Greeter, Login, Session,
+    secret, spawn, spawn_tokio, Application, ErrorPage, Greeter, Login, Session,
 };
 
 mod imp {
@@ -212,7 +211,8 @@ impl Window {
     }
 
     pub async fn restore_sessions(&self) {
-        match secret::restore_sessions().await {
+        let handle = spawn_tokio!(secret::restore_sessions());
+        match handle.await.unwrap() {
             Ok(sessions) => {
                 if sessions.is_empty() {
                     self.switch_to_greeter_page();
@@ -237,13 +237,15 @@ impl Window {
             }
             Err(error) => {
                 warn!("Failed to restore previous sessions: {:?}", error);
+
+                let (message, item) = error.into_parts();
                 self.switch_to_error_page(
                     &format!(
                         "{}\n\n{}",
                         gettext("Failed to restore previous sessions"),
-                        error,
+                        message,
                     ),
-                    error,
+                    item,
                 );
             }
         }
@@ -316,9 +318,9 @@ impl Window {
         priv_.main_stack.set_visible_child(&*priv_.greeter);
     }
 
-    pub fn switch_to_error_page(&self, message: &str, error: SecretError) {
+    pub fn switch_to_error_page(&self, message: &str, item: Option<oo7::Item>) {
         let priv_ = self.imp();
-        priv_.error_page.display_secret_error(message, error);
+        priv_.error_page.display_secret_error(message, item);
         priv_.main_stack.set_visible_child(&*priv_.error_page);
     }
 

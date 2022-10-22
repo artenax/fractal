@@ -709,7 +709,9 @@ impl Session {
             settings.delete_settings();
         }
 
-        if let Err(error) = secret::remove_session(info).await {
+        let session_info = info.clone();
+        let handle = spawn_tokio!(async move { secret::remove_session(&session_info).await });
+        if let Err(error) = handle.await.unwrap() {
             error!(
                 "Failed to remove credentials from SecretService after logout: {}",
                 error

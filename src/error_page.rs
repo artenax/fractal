@@ -3,7 +3,7 @@ use gettextrs::gettext;
 use gtk::{self, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 use log::error;
 
-use crate::{secret, secret::SecretError, spawn, toast, window::Window};
+use crate::{spawn, toast, window::Window};
 
 pub enum ErrorSubpage {
     SecretErrorSession,
@@ -33,7 +33,7 @@ mod imp {
         pub page: TemplateChild<adw::StatusPage>,
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
-        pub secret_error: RefCell<Option<SecretError>>,
+        pub secret_item: RefCell<Option<oo7::Item>>,
     }
 
     #[glib::object_subclass]
@@ -82,22 +82,24 @@ impl ErrorPage {
         glib::Object::new(&[]).expect("Failed to create ErrorPage")
     }
 
-    pub fn display_secret_error(&self, message: &str, error: SecretError) {
+    pub fn display_secret_error(&self, message: &str, item: Option<oo7::Item>) {
         let priv_ = self.imp();
-        self.action_set_enabled(
-            "error-page.remove-secret-error-session",
-            matches!(error, SecretError::CorruptSession(_)),
-        );
+        self.action_set_enabled("error-page.remove-secret-error-session", item.is_some());
         priv_.page.set_description(Some(message));
-        priv_
-            .stack
-            .set_visible_child_name(error.error_subpage().as_ref());
-        priv_.secret_error.replace(Some(error));
+
+        let error_subpage = if item.is_some() {
+            ErrorSubpage::SecretErrorSession
+        } else {
+            ErrorSubpage::SecretErrorOther
+        };
+
+        priv_.stack.set_visible_child_name(error_subpage.as_ref());
+        priv_.secret_item.replace(item);
     }
 
     async fn remove_secret_error_session(&self) {
-        if let Some(SecretError::CorruptSession((_, item))) = self.imp().secret_error.take() {
-            match secret::remove_item(&item).await {
+        if let Some(item) = self.imp().secret_item.take() {
+            match item.delete().await {
                 Ok(_) => {
                     self.action_set_enabled("error-page.remove-secret-error-session", false);
                     if let Some(window) = self

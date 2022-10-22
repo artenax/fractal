@@ -595,12 +595,16 @@ impl Login {
         let session = Session::new();
 
         if is_new {
-            if let Err(error) = secret::store_session(&session_info).await {
+            let session_info = session_info.clone();
+            let handle = spawn_tokio!(async move { secret::store_session(&session_info).await });
+
+            if let Err(error) = handle.await.unwrap() {
                 error!("Couldn't store session: {:?}", error);
 
+                let (message, item) = error.into_parts();
                 self.parent_window().switch_to_error_page(
-                    &format!("{}\n\n{}", gettext("Unable to store session"), error),
-                    error,
+                    &format!("{}\n\n{}", gettext("Unable to store session"), message),
+                    item,
                 );
                 return;
             }
