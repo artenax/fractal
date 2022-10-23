@@ -13,7 +13,12 @@ use matrix_sdk::{
     Client,
 };
 
-use crate::{components::ImagePaintable, session::Session, spawn, spawn_tokio};
+use crate::{
+    components::ImagePaintable,
+    session::Session,
+    spawn, spawn_tokio,
+    utils::notifications::{paintable_as_notification_icon, string_as_notification_icon},
+};
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -235,6 +240,25 @@ impl Avatar {
 
     pub fn url(&self) -> Option<OwnedMxcUri> {
         self.imp().url.borrow().to_owned()
+    }
+
+    /// Get this avatar as a notification icon.
+    ///
+    /// Returns `None` if an error occurred while generating the icon.
+    pub fn as_notification_icon(&self, helper_widget: &gtk::Widget) -> Option<gdk::Texture> {
+        let icon = if let Some(paintable) = self.image() {
+            paintable_as_notification_icon(paintable.upcast_ref(), helper_widget)
+        } else {
+            string_as_notification_icon(&self.display_name().unwrap_or_default(), helper_widget)
+        };
+
+        match icon {
+            Ok(icon) => Some(icon),
+            Err(error) => {
+                log::warn!("Failed to generate icon for notification: {error}");
+                None
+            }
+        }
     }
 }
 

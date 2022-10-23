@@ -3,6 +3,7 @@
 pub mod macros;
 pub mod matrix;
 pub mod media;
+pub mod notifications;
 pub mod sourceview;
 pub mod template_callbacks;
 

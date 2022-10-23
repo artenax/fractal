@@ -877,6 +877,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "djb_hash"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e8cf7d61e627a3b49af8f24f47e57f3788cdd7a0e4f17cd79fda5ada87f08578"
+
+[[package]]
 name = "ed25519"
 version = "1.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1070,6 +1076,7 @@ version = "5.0.0-alpha1"
 dependencies = [
  "ashpd",
  "async-stream",
+ "djb_hash",
  "futures",
  "geo-uri",
  "gettext-rs",

@@ -974,6 +974,10 @@ impl Session {
             .set_default_action_and_target_value("app.show-room", Some(&payload.to_variant()));
         notification.set_body(Some(&body));
 
+        if let Some(icon) = room.avatar().as_notification_icon(self.upcast_ref()) {
+            notification.set_icon(&icon);
+        }
+
         let id = notification_id(session_id, room_id, event_id);
         Application::default().send_notification(Some(&id), &notification);
 
