@@ -45,23 +45,14 @@ pub mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "markdown-enabled" => {
-                    let markdown_enabled = value.get().unwrap();
-                    self.markdown_enabled.set(markdown_enabled);
-                }
+                "markdown-enabled" => self.markdown_enabled.set(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, _: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "markdown-enabled" => self.markdown_enabled.get().to_value(),
                 _ => unimplemented!(),
@@ -80,7 +71,7 @@ glib::wrapper! {
 
 impl MarkdownPopover {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create MarkdownPopover")
+        glib::Object::new(&[])
     }
 }
 

@@ -85,20 +85,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "state" => obj.set_state(value.get().unwrap()),
+                "state" => self.obj().set_state(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "body" => obj.body().to_value(),
                 "state" => obj.state().to_value(),
@@ -122,7 +118,7 @@ glib::wrapper! {
 impl MessageAudio {
     /// Create a new audio message.
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create MessageAudio")
+        glib::Object::new(&[])
     }
 
     /// The body of the audio message.

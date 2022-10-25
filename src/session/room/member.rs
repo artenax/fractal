@@ -132,20 +132,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "latest-activity" => obj.set_latest_activity(value.get().unwrap()),
+                "latest-activity" => self.obj().set_latest_activity(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "power-level" => obj.power_level().to_value(),
                 "membership" => obj.membership().to_value(),
@@ -164,8 +160,10 @@ glib::wrapper! {
 impl Member {
     pub fn new(room: &Room, user_id: &UserId) -> Self {
         let session = room.session();
-        glib::Object::new(&[("session", &session), ("user-id", &user_id.as_str())])
-            .expect("Failed to create Member")
+        glib::Object::builder()
+            .property("session", &session)
+            .property("user-id", &user_id.as_str())
+            .build()
     }
 
     pub fn power_level(&self) -> PowerLevel {

@@ -85,31 +85,25 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "matrix-event" => {
                     let matrix_event = value.get::<BoxedAnySyncTimelineEvent>().unwrap();
-                    obj.set_matrix_event(matrix_event.0);
+                    self.obj().set_matrix_event(matrix_event.0);
                 }
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "reactions" => obj.reactions().to_value(),
+                "reactions" => self.obj().reactions().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            obj.connect_notify_local(Some("source"), |obj, _| {
+        fn constructed(&self) {
+            self.obj().connect_notify_local(Some("source"), |obj, _| {
                 if let Ok(matrix_event) = obj.pure_event().event.deserialize() {
                     obj.set_matrix_event(matrix_event);
                 }
@@ -118,8 +112,8 @@ mod imp {
     }
 
     impl TimelineItemImpl for SupportedEvent {
-        fn activatable(&self, obj: &Self::Type) -> bool {
-            match obj.original_content() {
+        fn activatable(&self) -> bool {
+            match self.obj().original_content() {
                 // The event can be activated to open the media viewer if it's an image or a video.
                 Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
                     matches!(
@@ -131,8 +125,8 @@ mod imp {
             }
         }
 
-        fn can_hide_header(&self, obj: &Self::Type) -> bool {
-            match obj.original_content() {
+        fn can_hide_header(&self) -> bool {
+            match self.obj().original_content() {
                 Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
                     matches!(
                         message.msgtype,
@@ -150,19 +144,21 @@ mod imp {
             }
         }
 
-        fn event_sender(&self, obj: &Self::Type) -> Option<Member> {
-            Some(obj.sender())
+        fn event_sender(&self) -> Option<Member> {
+            Some(self.obj().sender())
         }
     }
 
     impl EventImpl for SupportedEvent {
-        fn source(&self, obj: &Self::Type) -> String {
+        fn source(&self) -> String {
+            let obj = self.obj();
+
             obj.replacement()
                 .map(|replacement| replacement.source())
                 .unwrap_or_else(|| obj.original_source())
         }
 
-        fn origin_server_ts(&self, _obj: &Self::Type) -> Option<MilliSecondsSinceUnixEpoch> {
+        fn origin_server_ts(&self) -> Option<MilliSecondsSinceUnixEpoch> {
             Some(
                 self.matrix_event
                     .borrow()
@@ -190,12 +186,12 @@ impl SupportedEvent {
     pub fn try_from_event(pure_event: SyncTimelineEvent, room: &Room) -> Result<Self, JsonError> {
         let matrix_event = BoxedAnySyncTimelineEvent(pure_event.event.deserialize()?);
         let pure_event = BoxedSyncTimelineEvent(pure_event);
-        Ok(glib::Object::new(&[
-            ("pure-event", &pure_event),
-            ("matrix-event", &matrix_event),
-            ("room", room),
-        ])
-        .expect("Failed to create SupportedEvent"))
+
+        Ok(glib::Object::builder()
+            .property("pure-event", &pure_event)
+            .property("matrix-event", &matrix_event)
+            .property("room", room)
+            .build())
     }
 
     /// Set the deserialized Matrix event of this `SupportedEvent`.

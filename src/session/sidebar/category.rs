@@ -68,27 +68,17 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "type" => {
-                    let type_ = value.get().unwrap();
-                    self.type_.set(type_);
-                }
-                "model" => {
-                    let model = value.get().unwrap();
-                    obj.set_model(model);
-                }
+                "type" => self.type_.set(value.get().unwrap()),
+                "model" => self.obj().set_model(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "type" => obj.type_().to_value(),
                 "display-name" => obj.type_().to_string().to_value(),
@@ -100,21 +90,23 @@ mod imp {
     }
 
     impl ListModelImpl for Category {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             SidebarItem::static_type()
         }
 
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.model.get().unwrap().n_items()
         }
 
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             self.model.get().unwrap().item(position)
         }
     }
 
     impl SidebarItemImpl for Category {
-        fn update_visibility(&self, obj: &Self::Type, for_category: CategoryType) {
+        fn update_visibility(&self, for_category: CategoryType) {
+            let obj = self.obj();
+
             obj.set_visible(
                 !obj.is_empty()
                     || RoomType::try_from(for_category)
@@ -141,7 +133,10 @@ glib::wrapper! {
 
 impl Category {
     pub fn new(type_: CategoryType, model: &impl IsA<gio::ListModel>) -> Self {
-        glib::Object::new(&[("type", &type_), ("model", model)]).expect("Failed to create Category")
+        glib::Object::builder()
+            .property("type", &type_)
+            .property("model", model)
+            .build()
     }
 
     pub fn type_(&self) -> CategoryType {

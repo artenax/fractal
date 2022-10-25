@@ -96,13 +96,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "fullscreened" => obj.set_fullscreened(value.get().unwrap()),
                 "event" => obj.set_event(value.get().unwrap()),
@@ -110,7 +106,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "fullscreened" => obj.fullscreened().to_value(),
                 "event" => obj.event().to_value(),
@@ -119,14 +117,14 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
             self.menu
                 .set_menu_model(Some(Self::Type::event_media_menu_model()));
 
             // Bind `fullscreened` to the window property of the same name.
-            obj.connect_notify_local(Some("root"), |obj, _| {
+            self.obj().connect_notify_local(Some("root"), |obj, _| {
                 if let Some(window) = obj.root().and_then(|root| root.downcast::<Window>().ok()) {
                     window
                         .bind_property("fullscreened", obj, "fullscreened")
@@ -150,7 +148,7 @@ glib::wrapper! {
 impl MediaViewer {
     #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create MediaViewer")
+        glib::Object::new(&[])
     }
 
     pub fn event(&self) -> Option<SupportedEvent> {

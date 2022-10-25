@@ -50,9 +50,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "power-levels" => obj.power_levels().to_value(),
+                "power-levels" => self.obj().power_levels().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -65,7 +65,7 @@ glib::wrapper! {
 
 impl PowerLevels {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create PowerLevels")
+        glib::Object::new(&[])
     }
 
     pub fn power_levels(&self) -> BoxedPowerLevelsEventContent {
@@ -85,7 +85,7 @@ impl PowerLevels {
         member: &Member,
         room_action: RoomAction,
     ) -> gtk::ClosureExpression {
-        gtk::ClosureExpression::new::<bool, _, _>(
+        gtk::ClosureExpression::new::<bool>(
             &[
                 member.property_expression("power-level"),
                 self.property_expression("power-levels"),

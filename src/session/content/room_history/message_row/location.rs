@@ -39,18 +39,13 @@ mod imp {
     }
 
     impl ObjectImpl for MessageLocation {
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             self.overlay.unparent();
         }
     }
 
     impl WidgetImpl for MessageLocation {
-        fn measure(
-            &self,
-            _widget: &Self::Type,
-            orientation: gtk::Orientation,
-            _for_size: i32,
-        ) -> (i32, i32, i32, i32) {
+        fn measure(&self, orientation: gtk::Orientation, _for_size: i32) -> (i32, i32, i32, i32) {
             if self.location.compact() {
                 if orientation == gtk::Orientation::Horizontal {
                     (75, 75, -1, -1)
@@ -62,7 +57,7 @@ mod imp {
             }
         }
 
-        fn size_allocate(&self, _widget: &Self::Type, width: i32, height: i32, baseline: i32) {
+        fn size_allocate(&self, width: i32, height: i32, baseline: i32) {
             let width = if self.location.compact() {
                 width.min(75)
             } else {
@@ -84,7 +79,7 @@ impl MessageLocation {
     /// Create a new location message.
     #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create MessageLocation")
+        glib::Object::new(&[])
     }
 
     pub fn set_geo_uri(&self, uri: &str, format: ContentFormat) {

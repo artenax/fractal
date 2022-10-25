@@ -52,20 +52,14 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "kind" => self.kind.set(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "kind" => self.kind.get().to_value(),
                 _ => unimplemented!(),
@@ -83,12 +77,13 @@ glib::wrapper! {
 
 impl TimelinePlaceholder {
     pub fn spinner() -> Self {
-        glib::Object::new(&[]).expect("Failed to create TimelinePlaceholder")
+        glib::Object::new(&[])
     }
 
     pub fn typing() -> Self {
-        glib::Object::new(&[("kind", &PlaceholderKind::Typing)])
-            .expect("Failed to create TimelinePlaceholder")
+        glib::Object::builder()
+            .property("kind", &PlaceholderKind::Typing)
+            .build()
     }
 
     pub fn kind(&self) -> PlaceholderKind {

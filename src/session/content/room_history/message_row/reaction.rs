@@ -52,22 +52,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "group" => {
-                    obj.set_group(value.get().unwrap());
+                    self.obj().set_group(value.get().unwrap());
                 }
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "group" => self.group.get().to_value(),
                 _ => unimplemented!(),
@@ -88,7 +82,9 @@ glib::wrapper! {
 
 impl MessageReaction {
     pub fn new(reaction_group: ReactionGroup) -> Self {
-        glib::Object::new(&[("group", &reaction_group)]).expect("Failed to create MessageReaction")
+        glib::Object::builder()
+            .property("group", &reaction_group)
+            .build()
     }
 
     fn set_group(&self, group: ReactionGroup) {

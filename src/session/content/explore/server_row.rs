@@ -47,30 +47,24 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "server" => self.server.set(value.get().unwrap()).unwrap(),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "server" => obj.server().to_value(),
+                "server" => self.obj().server().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
-            if let Some(server) = obj.server().and_then(|s| s.server()) {
+            if let Some(server) = self.obj().server().and_then(|s| s.server()) {
                 self.remove_button.set_action_target(Some(&server));
                 self.remove_button
                     .set_action_name(Some("explore-servers-popover.remove-server"));
@@ -89,7 +83,7 @@ glib::wrapper! {
 
 impl ExploreServerRow {
     pub fn new(server: &Server) -> Self {
-        glib::Object::new(&[("server", server)]).expect("Failed to create ExploreServerRow")
+        glib::Object::builder().property("server", server).build()
     }
 
     pub fn server(&self) -> Option<&Server> {

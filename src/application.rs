@@ -40,8 +40,9 @@ mod imp {
     impl ObjectImpl for Application {}
 
     impl ApplicationImpl for Application {
-        fn activate(&self, app: &Self::Type) {
+        fn activate(&self) {
             debug!("GtkApplication<Application>::activate");
+            let app = self.obj();
 
             if let Some(window) = self.window.upgrade() {
                 window.show();
@@ -49,7 +50,7 @@ mod imp {
                 return;
             }
 
-            let window = Window::new(app);
+            let window = Window::new(&app);
             self.window.set(Some(&window));
 
             app.setup_gactions();
@@ -73,9 +74,9 @@ mod imp {
             app.get_main_window().present();
         }
 
-        fn startup(&self, app: &Self::Type) {
+        fn startup(&self) {
             debug!("GtkApplication<Application>::startup");
-            self.parent_startup(app);
+            self.parent_startup();
         }
     }
 
@@ -90,12 +91,11 @@ glib::wrapper! {
 
 impl Application {
     pub fn new() -> Self {
-        glib::Object::new(&[
-            ("application-id", &Some(config::APP_ID)),
-            ("flags", &ApplicationFlags::default()),
-            ("resource-base-path", &Some("/org/gnome/Fractal/")),
-        ])
-        .expect("Application initialization failed")
+        glib::Object::builder()
+            .property("application-id", &Some(config::APP_ID))
+            .property("flags", &ApplicationFlags::default())
+            .property("resource-base-path", &Some("/org/gnome/Fractal/"))
+            .build()
     }
 
     fn get_main_window(&self) -> Window {

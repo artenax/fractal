@@ -65,20 +65,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "room-list" => self.room_list.set(value.get().unwrap()).unwrap(),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "room-list" => obj.room_list().to_value(),
                 "avatar" => obj.avatar().to_value(),
@@ -88,8 +84,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             self.avatar
                 .set(Avatar::new(&obj.room_list().session(), None))
@@ -105,9 +102,9 @@ mod imp {
                 }));
         }
 
-        fn dispose(&self, obj: &Self::Type) {
+        fn dispose(&self) {
             if let Some(handler_id) = self.room_handler.take() {
-                obj.room_list().disconnect(handler_id);
+                self.obj().room_list().disconnect(handler_id);
             }
         }
     }
@@ -119,7 +116,9 @@ glib::wrapper! {
 
 impl PublicRoom {
     pub fn new(room_list: &RoomList) -> Self {
-        glib::Object::new(&[("room-list", room_list)]).expect("Failed to create Room")
+        glib::Object::builder()
+            .property("room-list", room_list)
+            .build()
     }
 
     pub fn room_list(&self) -> &RoomList {

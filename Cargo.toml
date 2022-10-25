@@ -3,7 +3,7 @@ name = "fractal"
 version = "5.0.0-alpha1"
 authors = ["Julian Sparber <julian@sparber.net>"]
 edition = "2021"
-rust-version = "1.60"
+rust-version = "1.63"
 
 [profile.release]
 debug = true
@@ -36,17 +36,17 @@ futures = "0.3"
 rand = "0.8"
 indexmap = "1.6.2"
 qrcode = "0.12.0"
-ashpd = { version = "0.3", features = [
-    "feature_gtk4",
-    "feature_pipewire",
-    "log",
+ashpd = { version = "0.4.0-alpha.1", features = [
+    "gtk4",
+    "pipewire",
+    "tracing",
 ] }
-gst = { version = "0.18", package = "gstreamer" }
-gst_base = { version = "0.18", package = "gstreamer-base" }
-gst_video = { version = "0.18", package = "gstreamer-video" }
-gst_player = { version = "0.18", package = "gstreamer-player" }
-gst_gtk = { version = "0.1.0", package = "gst-plugin-gtk4" }
-gst_pbutils = { version = "0.18", package = "gstreamer-pbutils" }
+gst = { version = "0.19.1", package = "gstreamer" }
+gst_base = { version = "0.19.1", package = "gstreamer-base" }
+gst_video = { version = "0.19.0", package = "gstreamer-video" }
+gst_player = { version = "0.19.0", package = "gstreamer-player" }
+gst_gtk = { version = "0.9.0", package = "gst-plugin-gtk4" }
+gst_pbutils = { version = "0.19.0", package = "gstreamer-pbutils" }
 image = "0.24"
 regex = "1.5.4"
 mime_guess = "2.0.3"
@@ -61,21 +61,21 @@ djb_hash = "0.1.3"
 
 [dependencies.sourceview]
 package = "sourceview5"
-version = "0.4.1"
+version = "0.5.0"
 
 [dependencies.gtk]
 package = "gtk4"
-version = "0.4.6"
+version = "0.5.0"
 features = ["v4_6"]
 
 [dependencies.adw]
 package = "libadwaita"
-version = "0.2.0-alpha.3"
+version = "0.2.0"
 features = ["v1_2"]
 
 [dependencies.shumate]
 package = "libshumate"
-version = "0.1.1"
+version = "0.2.0"
 
 [dependencies.matrix-sdk]
 version = "0.6.0"

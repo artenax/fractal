@@ -52,24 +52,18 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "user" => {
-                    obj.set_user(value.get().unwrap());
+                    self.obj().set_user(value.get().unwrap());
                 }
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "user" => obj.user().to_value(),
+                "user" => self.obj().user().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -85,7 +79,7 @@ glib::wrapper! {
 
 impl InviteeRow {
     pub fn new(user: &Invitee) -> Self {
-        glib::Object::new(&[("user", user)]).expect("Failed to create InviteeRow")
+        glib::Object::builder().property("user", user).build()
     }
 
     pub fn user(&self) -> Option<Invitee> {

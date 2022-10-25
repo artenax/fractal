@@ -51,7 +51,7 @@ glib::wrapper! {
 
 impl StateRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create StateRow")
+        glib::Object::new(&[])
     }
 
     pub fn update(&self, state: &AnySyncStateEvent) {

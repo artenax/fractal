@@ -142,13 +142,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "width" => {
                     obj.set_width(value.get().unwrap());
@@ -163,7 +159,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "width" => obj.width().to_value(),
                 "height" => obj.height().to_value(),
@@ -173,22 +171,17 @@ mod imp {
             }
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             self.media.unparent();
         }
     }
 
     impl WidgetImpl for MessageMedia {
-        fn measure(
-            &self,
-            obj: &Self::Type,
-            orientation: gtk::Orientation,
-            for_size: i32,
-        ) -> (i32, i32, i32, i32) {
+        fn measure(&self, orientation: gtk::Orientation, for_size: i32) -> (i32, i32, i32, i32) {
             let original_width = self.width.get();
             let original_height = self.height.get();
 
-            let compact = obj.compact();
+            let compact = self.obj().compact();
             let (max_width, max_height) = if compact {
                 (MAX_COMPACT_THUMBNAIL_WIDTH, MAX_COMPACT_THUMBNAIL_HEIGHT)
             } else {
@@ -233,11 +226,11 @@ mod imp {
             (0, size, -1, -1)
         }
 
-        fn request_mode(&self, _obj: &Self::Type) -> gtk::SizeRequestMode {
+        fn request_mode(&self) -> gtk::SizeRequestMode {
             gtk::SizeRequestMode::HeightForWidth
         }
 
-        fn size_allocate(&self, _obj: &Self::Type, width: i32, height: i32, baseline: i32) {
+        fn size_allocate(&self, width: i32, height: i32, baseline: i32) {
             if let Some(child) = self.media.child() {
                 // We need to allocate just enough width to the child so it doesn't expand.
                 let original_width = self.width.get();
@@ -267,7 +260,7 @@ impl MessageMedia {
     /// Create a new media message.
     #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create MessageMedia")
+        glib::Object::new(&[])
     }
 
     pub fn width(&self) -> i32 {

@@ -68,13 +68,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "user" => obj.set_user(value.get().unwrap()),
                 "room" => obj.set_room(value.get().unwrap()),
@@ -82,7 +78,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "user" => obj.user().to_value(),
                 "room" => obj.room().to_value(),
@@ -104,11 +102,11 @@ glib::wrapper! {
 
 impl Pill {
     pub fn for_user(user: &User) -> Self {
-        glib::Object::new(&[("user", user)]).expect("Failed to create Pill")
+        glib::Object::builder().property("user", user).build()
     }
 
     pub fn for_room(room: &Room) -> Self {
-        glib::Object::new(&[("room", room)]).expect("Failed to create Pill")
+        glib::Object::builder().property("room", room).build()
     }
 
     pub fn set_user(&self, user: Option<User>) {

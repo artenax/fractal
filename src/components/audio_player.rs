@@ -58,13 +58,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "media-file" => {
                     obj.set_media_file(value.get().unwrap());
@@ -74,7 +70,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "media-file" => obj.media_file().to_value(),
                 "autoplay" => obj.autoplay().to_value(),
@@ -97,7 +95,7 @@ glib::wrapper! {
 impl AudioPlayer {
     /// Create a new audio player.
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create AudioPlayer")
+        glib::Object::new(&[])
     }
 
     /// The media file that is playing.

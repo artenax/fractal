@@ -43,7 +43,7 @@ glib::wrapper! {
 
 impl Emoji {
     pub fn new(symbol: &str, name: &str) -> Self {
-        let obj: Self = glib::Object::new(&[]).expect("Failed to create Emoji");
+        let obj: Self = glib::Object::new(&[]);
 
         obj.set_emoji(symbol, name);
         obj

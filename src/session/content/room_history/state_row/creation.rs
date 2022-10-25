@@ -44,7 +44,7 @@ glib::wrapper! {
 
 impl StateCreation {
     pub fn new(event: &RoomCreateEventContent) -> Self {
-        let obj: Self = glib::Object::new(&[]).expect("Failed to create StateCreation");
+        let obj: Self = glib::Object::new(&[]);
         obj.set_event(event);
         obj
     }

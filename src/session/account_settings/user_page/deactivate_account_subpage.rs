@@ -59,28 +59,23 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "session" => obj.set_session(value.get().unwrap()),
+                "session" => self.obj().set_session(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "session" => obj.session().to_value(),
+                "session" => self.obj().session().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             self.confirmation
                 .connect_entry_activated(clone!(@weak obj => move|_| {
@@ -117,8 +112,7 @@ glib::wrapper! {
 
 impl DeactivateAccountSubpage {
     pub fn new(session: &Session) -> Self {
-        glib::Object::new(&[("session", session)])
-            .expect("Failed to create DeactivateAccountSubpage")
+        glib::Object::builder().property("session", session).build()
     }
 
     pub fn session(&self) -> Option<Session> {

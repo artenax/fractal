@@ -55,27 +55,21 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "compact" => obj.set_compact(value.get().unwrap()),
+                "compact" => self.obj().set_compact(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "compact" => obj.compact().to_value(),
+                "compact" => self.obj().compact().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
+        fn constructed(&self) {
             self.marker.set_child(Some(&*self.marker_img));
 
             let registry = shumate::MapSourceRegistry::with_defaults();
@@ -90,7 +84,7 @@ mod imp {
 
             // Hide the scale
             self.map.scale().unwrap().hide();
-            self.parent_constructed(obj);
+            self.parent_constructed();
         }
     }
 
@@ -108,7 +102,7 @@ impl LocationViewer {
     /// Create a new location message.
     #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create LocationViewer")
+        glib::Object::new(&[])
     }
 
     /// Whether to display this location in a compact format.

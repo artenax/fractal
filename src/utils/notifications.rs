@@ -78,7 +78,7 @@ pub fn paintable_as_notification_icon(
     );
     snapshot.push_rounded_clip(&bounds);
 
-    paintable.snapshot(snapshot.upcast_ref(), snap_width, snap_height);
+    paintable.snapshot(&snapshot, snap_width, snap_height);
 
     snapshot.pop();
 
@@ -139,11 +139,10 @@ pub fn string_as_notification_icon(
     let layout = helper_widget.create_pango_layout(Some(&initials));
 
     // Set the proper weight and size.
-    if let Some(mut font_description) = layout.font_description().or_else(|| {
-        layout
-            .context()
-            .and_then(|context| context.font_description())
-    }) {
+    if let Some(mut font_description) = layout
+        .font_description()
+        .or_else(|| layout.context().font_description())
+    {
         font_description.set_weight(pango::Weight::Bold);
         font_description.set_size(18 * scale_factor * pango::SCALE);
         layout.set_font_description(Some(&font_description));

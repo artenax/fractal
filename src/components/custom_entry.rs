@@ -34,7 +34,7 @@ glib::wrapper! {
 
 impl CustomEntry {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create CustomEntry")
+        glib::Object::new(&[])
     }
 }
 

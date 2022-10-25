@@ -55,13 +55,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "invited" => obj.set_invited(value.get().unwrap()),
                 "anchor" => obj.set_anchor(value.get().unwrap()),
@@ -70,7 +66,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "invited" => obj.is_invited().to_value(),
                 "anchor" => obj.anchor().to_value(),
@@ -93,12 +91,11 @@ impl Invitee {
         display_name: Option<&str>,
         avatar_url: Option<&MxcUri>,
     ) -> Self {
-        let obj: Self = glib::Object::new(&[
-            ("session", session),
-            ("user-id", &user_id.as_str()),
-            ("display-name", &display_name),
-        ])
-        .expect("Failed to create Invitee");
+        let obj: Self = glib::Object::builder()
+            .property("session", session)
+            .property("user-id", &user_id.as_str())
+            .property("display-name", &display_name)
+            .build();
         // FIXME: we should make the avatar_url settable as property
         obj.set_avatar_url(avatar_url.map(std::borrow::ToOwned::to_owned));
         obj

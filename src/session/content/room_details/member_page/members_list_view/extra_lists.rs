@@ -56,13 +56,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "joined" => obj.set_joined(value.get().unwrap()),
                 "invited" => obj.set_invited(value.get().unwrap()),
@@ -71,7 +67,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "joined" => obj.joined().to_value(),
                 "invited" => obj.invited().to_value(),
@@ -80,8 +78,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             let joined_members = obj.joined();
             let invited_members = obj.invited().model();
@@ -107,15 +106,18 @@ mod imp {
     }
 
     impl ListModelImpl for ExtraLists {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             glib::Object::static_type()
         }
 
-        fn n_items(&self, list_model: &Self::Type) -> u32 {
-            list_model.joined().n_items() + list_model.n_visible_extras()
+        fn n_items(&self) -> u32 {
+            let obj = self.obj();
+            obj.joined().n_items() + obj.n_visible_extras()
         }
 
-        fn item(&self, list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
+            let obj = self.obj();
+
             if position == 0 && !self.invited_is_empty.get() {
                 let invited = self.invited.get().unwrap();
                 return Some(invited.clone().upcast());
@@ -128,9 +130,7 @@ mod imp {
                 return Some(banned.clone().upcast());
             }
 
-            list_model
-                .joined()
-                .item(position - list_model.n_visible_extras())
+            obj.joined().item(position - obj.n_visible_extras())
         }
     }
 }
@@ -146,8 +146,11 @@ impl ExtraLists {
         invited: &MembershipSubpageItem,
         banned: &MembershipSubpageItem,
     ) -> Self {
-        glib::Object::new(&[("joined", joined), ("invited", invited), ("banned", banned)])
-            .expect("Failed to create ExtraLists")
+        glib::Object::builder()
+            .property("joined", joined)
+            .property("invited", invited)
+            .property("banned", banned)
+            .build()
     }
 
     pub fn joined(&self) -> &gio::ListModel {

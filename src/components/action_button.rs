@@ -81,9 +81,8 @@ mod imp {
 
     impl ObjectImpl for ActionButton {
         fn signals() -> &'static [Signal] {
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("clicked", &[], <()>::static_type().into()).build()]
-            });
+            static SIGNALS: Lazy<Vec<Signal>> =
+                Lazy::new(|| vec![Signal::builder("clicked").build()]);
             SIGNALS.as_ref()
         }
 
@@ -113,13 +112,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "icon-name" => obj.set_icon_name(value.get().unwrap()),
                 "state" => obj.set_state(value.get().unwrap()),
@@ -129,7 +124,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "icon-name" => obj.icon_name().to_value(),
                 "state" => obj.state().to_value(),
@@ -144,19 +141,19 @@ mod imp {
     impl BinImpl for ActionButton {}
 
     impl ActionableImpl for ActionButton {
-        fn action_name(&self, _obj: &Self::Type) -> Option<glib::GString> {
+        fn action_name(&self) -> Option<glib::GString> {
             self.action_name.borrow().clone()
         }
 
-        fn action_target_value(&self, _obj: &Self::Type) -> Option<glib::Variant> {
+        fn action_target_value(&self) -> Option<glib::Variant> {
             self.action_target_value.borrow().clone()
         }
 
-        fn set_action_name(&self, _obj: &Self::Type, name: Option<&str>) {
+        fn set_action_name(&self, name: Option<&str>) {
             self.action_name.replace(name.map(Into::into));
         }
 
-        fn set_action_target_value(&self, _obj: &Self::Type, value: Option<&glib::Variant>) {
+        fn set_action_target_value(&self, value: Option<&glib::Variant>) {
             self.action_target_value
                 .replace(value.map(ToOwned::to_owned));
         }
@@ -172,7 +169,7 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl ActionButton {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ActionButton")
+        glib::Object::new(&[])
     }
 
     pub fn icon_name(&self) -> String {

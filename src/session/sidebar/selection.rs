@@ -62,28 +62,23 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "model" => {
                     let model: Option<gio::ListModel> = value.get().unwrap();
                     obj.set_model(model.as_ref());
                 }
-                "selected" => {
-                    let selected = value.get().unwrap();
-                    obj.set_selected(selected);
-                }
+                "selected" => obj.set_selected(value.get().unwrap()),
                 "selected-item" => obj.set_selected_item(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "model" => obj.model().to_value(),
                 "selected" => obj.selected().to_value(),
@@ -94,28 +89,23 @@ mod imp {
     }
 
     impl ListModelImpl for Selection {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             gtk::TreeListRow::static_type()
         }
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.model
                 .borrow()
                 .as_ref()
                 .map(|m| m.n_items())
                 .unwrap_or(0)
         }
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             self.model.borrow().as_ref().and_then(|m| m.item(position))
         }
     }
 
     impl SelectionModelImpl for Selection {
-        fn selection_in_range(
-            &self,
-            _model: &Self::Type,
-            _position: u32,
-            _n_items: u32,
-        ) -> gtk::Bitset {
+        fn selection_in_range(&self, _position: u32, _n_items: u32) -> gtk::Bitset {
             let bitset = gtk::Bitset::new_empty();
             let selected = self.selected.get();
 
@@ -126,7 +116,7 @@ mod imp {
             bitset
         }
 
-        fn is_selected(&self, _model: &Self::Type, position: u32) -> bool {
+        fn is_selected(&self, position: u32) -> bool {
             self.selected.get() == position
         }
     }
@@ -140,7 +130,7 @@ glib::wrapper! {
 impl Selection {
     pub fn new<P: IsA<gio::ListModel>>(model: Option<&P>) -> Selection {
         let model = model.map(|m| m.clone().upcast());
-        glib::Object::new(&[("model", &model)]).expect("Failed to create Selection")
+        glib::Object::builder().property("model", &model).build()
     }
 
     pub fn model(&self) -> Option<gio::ListModel> {

@@ -89,28 +89,23 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "room" => obj.set_room(value.get().unwrap()),
+                "room" => self.obj().set_room(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "room" => obj.room().to_value(),
+                "room" => self.obj().room().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             // Allow to drag rooms
             let drag = gtk::DragSource::builder()
@@ -130,7 +125,7 @@ mod imp {
             obj.add_controller(&drag);
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             if let Some(room) = self.room.take() {
                 if let Some(id) = self.signal_handler.take() {
                     room.disconnect(id);
@@ -143,7 +138,9 @@ mod imp {
     impl BinImpl for RoomRow {}
 
     impl ContextMenuBinImpl for RoomRow {
-        fn menu_opened(&self, obj: &Self::Type) {
+        fn menu_opened(&self) {
+            let obj = self.obj();
+
             if let Some(sidebar) = obj
                 .parent()
                 .as_ref()
@@ -164,7 +161,7 @@ glib::wrapper! {
 
 impl RoomRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create RoomRow")
+        glib::Object::new(&[])
     }
 
     pub fn room(&self) -> Option<Room> {
@@ -196,7 +193,7 @@ impl RoomRow {
                     "visible",
                 )
                 .flags(glib::BindingFlags::SYNC_CREATE)
-                .transform_from(|_, value| Some((value.get::<u64>().unwrap() > 0).to_value()))
+                .transform_from(|_, count: u64| Some(count > 0))
                 .build(),
             ));
 

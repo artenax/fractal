@@ -79,31 +79,25 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "show-header" => obj.set_show_header(value.get().unwrap()),
+                "show-header" => self.obj().set_show_header(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "show-header" => obj.show_header().to_value(),
+                "show-header" => self.obj().show_header().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
+        fn constructed(&self) {
             self.content.connect_notify_local(
                 Some("format"),
-                clone!(@weak obj => move |content, _|
-                    obj.imp().reactions.set_visible(!matches!(
+                clone!(@weak self as imp => move |content, _|
+                    imp.reactions.set_visible(!matches!(
                         content.format(),
                         ContentFormat::Compact | ContentFormat::Ellipsized
                     ));
@@ -123,7 +117,7 @@ glib::wrapper! {
 
 impl MessageRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create MessageRow")
+        glib::Object::new(&[])
     }
 
     pub fn show_header(&self) -> bool {

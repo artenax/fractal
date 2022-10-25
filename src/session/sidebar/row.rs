@@ -67,13 +67,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "list-row" => obj.set_list_row(value.get().unwrap()),
                 "sidebar" => self.sidebar.set(value.get().ok().as_ref()),
@@ -81,7 +77,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "item" => obj.item().to_value(),
                 "list-row" => obj.list_row().to_value(),
@@ -90,8 +88,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             // Set up drop controller
             let drop = gtk::DropTarget::builder()
@@ -124,7 +123,7 @@ glib::wrapper! {
 
 impl Row {
     pub fn new(sidebar: &Sidebar) -> Self {
-        glib::Object::new(&[("sidebar", sidebar)]).expect("Failed to create Row")
+        glib::Object::builder().property("sidebar", sidebar).build()
     }
 
     pub fn sidebar(&self) -> Sidebar {

@@ -88,37 +88,24 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "compact" => {
-                    let compact = value.get().unwrap();
-                    self.compact.set(compact);
-                }
-                "room" => {
-                    let room = value.get().unwrap();
-                    obj.set_room(room);
-                }
-
+                "compact" => self.compact.set(value.get().unwrap()),
+                "room" => self.obj().set_room(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "compact" => self.compact.get().to_value(),
-                "room" => obj.room().to_value(),
+                "room" => self.obj().room().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
             self.room_topic
                 .connect_notify_local(Some("label"), |room_topic, _| {
@@ -146,7 +133,7 @@ glib::wrapper! {
 
 impl Invite {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create Invite")
+        glib::Object::new(&[])
     }
 
     pub fn set_room(&self, room: Option<Room>) {

@@ -238,7 +238,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "session-id" => obj.session_id().to_value(),
                 "item-list" => obj.item_list().to_value(),
@@ -251,25 +253,24 @@ mod imp {
         fn signals() -> &'static [Signal] {
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                 vec![
-                    Signal::builder("ready", &[], <()>::static_type().into()).build(),
-                    Signal::builder("logged-out", &[], <()>::static_type().into()).build(),
+                    Signal::builder("ready").build(),
+                    Signal::builder("logged-out").build(),
                 ]
             });
             SIGNALS.as_ref()
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             self.sidebar.connect_notify_local(
                 Some("selected-item"),
-                clone!(@weak obj => move |_, _| {
-                    let priv_ = obj.imp();
-
-                    if priv_.sidebar.selected_item().is_none() {
-                        priv_.leaflet.navigate(adw::NavigationDirection::Back);
+                clone!(@weak self as imp => move |_, _| {
+                    if imp.sidebar.selected_item().is_none() {
+                        imp.leaflet.navigate(adw::NavigationDirection::Back);
                     } else {
-                        priv_.leaflet.navigate(adw::NavigationDirection::Forward);
+                        imp.leaflet.navigate(adw::NavigationDirection::Forward);
                     }
                 }),
             );
@@ -308,7 +309,9 @@ mod imp {
             });
         }
 
-        fn dispose(&self, obj: &Self::Type) {
+        fn dispose(&self) {
+            let obj = self.obj();
+
             // Needs to be disconnected or else it may restart the sync
             if let Some(handler_id) = self.offline_handler_id.take() {
                 gio::NetworkMonitor::default().disconnect(handler_id);
@@ -340,7 +343,7 @@ glib::wrapper! {
 
 impl Session {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create Session")
+        glib::Object::new(&[])
     }
 
     pub fn session_id(&self) -> Option<&str> {

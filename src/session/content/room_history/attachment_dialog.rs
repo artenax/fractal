@@ -41,13 +41,8 @@ mod imp {
 
     impl ObjectImpl for AttachmentDialog {
         fn signals() -> &'static [glib::subclass::Signal] {
-            static SIGNALS: Lazy<Vec<glib::subclass::Signal>> = Lazy::new(|| {
-                vec![
-                    glib::subclass::Signal::builder("send", &[], glib::Type::UNIT.into())
-                        .flags(glib::SignalFlags::RUN_FIRST)
-                        .build(),
-                ]
-            });
+            static SIGNALS: Lazy<Vec<glib::subclass::Signal>> =
+                Lazy::new(|| vec![glib::subclass::Signal::builder("send").run_first().build()]);
             SIGNALS.as_ref()
         }
     }
@@ -62,16 +57,20 @@ glib::wrapper! {
 
 impl AttachmentDialog {
     pub fn for_image(transient_for: &gtk::Window, title: &str, image: &gdk::Texture) -> Self {
-        let obj: Self = glib::Object::new(&[("transient-for", transient_for), ("title", &title)])
-            .expect("Failed to create AttachmentDialog");
+        let obj: Self = glib::Object::builder()
+            .property("transient-for", transient_for)
+            .property("title", &title)
+            .build();
         obj.imp().media.view_image(image);
         obj.imp().send_button.grab_focus();
         obj
     }
 
     pub fn for_file(transient_for: &gtk::Window, title: &str, file: &gio::File) -> Self {
-        let obj: Self = glib::Object::new(&[("transient-for", transient_for), ("title", &title)])
-            .expect("Failed to create AttachmentDialog");
+        let obj: Self = glib::Object::builder()
+            .property("transient-for", transient_for)
+            .property("title", &title)
+            .build();
         obj.imp().media.view_file(file.to_owned());
         obj.imp().send_button.grab_focus();
         obj
@@ -82,8 +81,10 @@ impl AttachmentDialog {
         title: &str,
         geo_uri: &geo_uri::GeoUri,
     ) -> Self {
-        let obj: Self = glib::Object::new(&[("transient-for", transient_for), ("title", &title)])
-            .expect("Failed to create AttachmentDialog");
+        let obj: Self = glib::Object::builder()
+            .property("transient-for", transient_for)
+            .property("title", &title)
+            .build();
         obj.imp().media.view_location(geo_uri);
         obj.imp().send_button.grab_focus();
         obj

@@ -70,11 +70,7 @@ mod imp {
         }
     }
     impl BaseSinkImpl for QrCodeDetector {
-        fn set_caps(
-            &self,
-            _element: &Self::Type,
-            caps: &gst::Caps,
-        ) -> Result<(), gst::LoggableError> {
+        fn set_caps(&self, caps: &gst::Caps) -> Result<(), gst::LoggableError> {
             let video_info = gst_video::VideoInfo::from_caps(caps).unwrap();
             let mut info = self.info.lock().unwrap();
             info.replace(video_info);
@@ -83,11 +79,7 @@ mod imp {
         }
     }
     impl VideoSinkImpl for QrCodeDetector {
-        fn show_frame(
-            &self,
-            _element: &Self::Type,
-            buffer: &gst::Buffer,
-        ) -> Result<gst::FlowSuccess, gst::FlowError> {
+        fn show_frame(&self, buffer: &gst::Buffer) -> Result<gst::FlowSuccess, gst::FlowError> {
             let now = std::time::Instant::now();
 
             if let Some(info) = &*self.info.lock().unwrap() {
@@ -137,7 +129,7 @@ unsafe impl Sync for QrCodeDetector {}
 
 impl QrCodeDetector {
     pub fn new(sender: Sender<Action>) -> Self {
-        let sink = glib::Object::new::<Self>(&[]).expect("Failed to create a QrCodeDetector");
+        let sink = glib::Object::new::<Self>(&[]);
         sink.imp().sender.lock().unwrap().replace(sender);
         sink
     }

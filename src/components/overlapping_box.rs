@@ -60,13 +60,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "overlap" => obj.set_overlap(value.get().unwrap()),
                 "orientation" => obj.set_orientation(value.get().unwrap()),
@@ -74,7 +70,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "overlap" => obj.overlap().to_value(),
                 "orientation" => obj.orientation().to_value(),
@@ -82,7 +80,7 @@ mod imp {
             }
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             for widget in self.widgets.borrow().iter() {
                 widget.unparent();
             }
@@ -90,15 +88,10 @@ mod imp {
     }
 
     impl WidgetImpl for OverlappingBox {
-        fn measure(
-            &self,
-            widget: &Self::Type,
-            orientation: gtk::Orientation,
-            _for_size: i32,
-        ) -> (i32, i32, i32, i32) {
+        fn measure(&self, orientation: gtk::Orientation, _for_size: i32) -> (i32, i32, i32, i32) {
             let mut size = 0;
             let overlap = self.overlap.get() as i32;
-            let self_orientation = widget.orientation();
+            let self_orientation = self.obj().orientation();
 
             for child in self.widgets.borrow().iter() {
                 if !child.should_layout() {
@@ -124,9 +117,9 @@ mod imp {
             (size, size, -1, -1)
         }
 
-        fn size_allocate(&self, widget: &Self::Type, width: i32, height: i32, _baseline: i32) {
+        fn size_allocate(&self, width: i32, height: i32, _baseline: i32) {
             let overlap = self.overlap.get() as i32;
-            let self_orientation = widget.orientation();
+            let self_orientation = self.obj().orientation();
             let mut pos = 0;
 
             for child in self.widgets.borrow().iter() {
@@ -162,17 +155,11 @@ mod imp {
     }
 
     impl BuildableImpl for OverlappingBox {
-        fn add_child(
-            &self,
-            buildable: &Self::Type,
-            builder: &gtk::Builder,
-            child: &glib::Object,
-            type_: Option<&str>,
-        ) {
+        fn add_child(&self, builder: &gtk::Builder, child: &glib::Object, type_: Option<&str>) {
             if let Some(child) = child.downcast_ref::<gtk::Widget>() {
-                buildable.append(child);
+                self.obj().append(child);
             } else {
-                self.parent_add_child(buildable, builder, child, type_)
+                self.parent_add_child(builder, child, type_)
             }
         }
     }
@@ -192,7 +179,7 @@ glib::wrapper! {
 impl OverlappingBox {
     /// Create an empty `OverlappingBox`.
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create OverlappingBox")
+        glib::Object::new(&[])
     }
 
     /// The size by which the widgets overlap.

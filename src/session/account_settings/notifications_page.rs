@@ -91,13 +91,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "session" => obj.set_session(value.get().unwrap()),
                 "account-enabled" => obj.sync_account_enabled(value.get().unwrap()),
@@ -106,7 +102,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "session" => obj.session().to_value(),
                 "account-enabled" => obj.account_enabled().to_value(),
@@ -129,7 +127,7 @@ glib::wrapper! {
 
 impl NotificationsPage {
     pub fn new(session: &Session) -> Self {
-        glib::Object::new(&[("session", session)]).expect("Failed to create NotificationsPage")
+        glib::Object::builder().property("session", session).build()
     }
 
     /// The current session.

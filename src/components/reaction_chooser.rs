@@ -82,8 +82,8 @@ mod imp {
     }
 
     impl ObjectImpl for ReactionChooser {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
             let grid = &self.reaction_grid;
             for reaction_item in QUICK_REACTIONS {
@@ -114,7 +114,7 @@ glib::wrapper! {
 
 impl ReactionChooser {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ReactionChooser")
+        glib::Object::new(&[])
     }
 
     pub fn reactions(&self) -> Option<ReactionList> {

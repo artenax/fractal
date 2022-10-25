@@ -302,22 +302,12 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
-                "compact" => {
-                    let compact = value.get().unwrap();
-                    self.compact.set(compact);
-                }
-                "room" => {
-                    let room = value.get().unwrap();
-                    obj.set_room(room);
-                }
+                "compact" => self.compact.set(value.get().unwrap()),
+                "room" => obj.set_room(value.get().unwrap()),
                 "markdown-enabled" => {
                     let md_enabled = value.get().unwrap();
                     self.md_enabled.set(md_enabled);
@@ -332,7 +322,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "compact" => self.compact.get().to_value(),
                 "room" => obj.room().to_value(),
@@ -345,7 +337,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
+        fn constructed(&self) {
+            let obj = self.obj();
+
             let factory = gtk::SignalListItemFactory::new();
             factory.connect_setup(clone!(@weak obj => move |_, item| {
                 let row = ItemRow::new(&obj);
@@ -477,17 +471,17 @@ mod imp {
 
             let settings = Application::default().settings();
             settings
-                .bind("markdown-enabled", obj, "markdown-enabled")
+                .bind("markdown-enabled", &*obj, "markdown-enabled")
                 .build();
 
             self.completion.set_parent(&*self.message_entry);
 
             obj.setup_drop_target();
 
-            self.parent_constructed(obj);
+            self.parent_constructed();
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             self.completion.unparent();
 
             if let Some(invite_action) = self.invite_action_watch.take() {
@@ -508,7 +502,7 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl RoomHistory {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create RoomHistory")
+        glib::Object::new(&[])
     }
 
     pub fn set_room(&self, room: Option<Room>) {
@@ -911,8 +905,7 @@ impl RoomHistory {
 
     async fn send_location(&self) -> ashpd::Result<()> {
         if let Some(room) = self.room() {
-            let connection = ashpd::zbus::Connection::session().await?;
-            let proxy = LocationProxy::new(&connection).await?;
+            let proxy = LocationProxy::new().await?;
             let identifier = WindowIdentifier::default();
 
             let session = proxy

@@ -60,22 +60,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "model" => obj.set_model(value.get::<&gio::ListModel>().ok()),
+                "model" => self.obj().set_model(value.get::<&gio::ListModel>().ok()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "model" => obj.model().to_value(),
+                "model" => self.obj().model().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -91,7 +85,7 @@ glib::wrapper! {
 
 impl MembersListView {
     pub fn new(model: &impl IsA<gio::ListModel>) -> Self {
-        glib::Object::new(&[("model", model)]).expect("Failed to create MembersListView")
+        glib::Object::builder().property("model", model).build()
     }
 
     pub fn model(&self) -> Option<gio::ListModel> {

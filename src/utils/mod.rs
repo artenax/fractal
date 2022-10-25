@@ -25,7 +25,7 @@ use regex::Regex;
 /// expressions.
 #[allow(dead_code)]
 pub fn and_expr<E: AsRef<gtk::Expression>>(a_expr: E, b_expr: E) -> gtk::ClosureExpression {
-    gtk::ClosureExpression::new::<bool, _, _>(
+    gtk::ClosureExpression::new::<bool>(
         &[a_expr, b_expr],
         closure!(|_: Option<Object>, a: bool, b: bool| { a && b }),
     )
@@ -34,7 +34,7 @@ pub fn and_expr<E: AsRef<gtk::Expression>>(a_expr: E, b_expr: E) -> gtk::Closure
 /// Returns an expression that is the or’ed result of the given boolean
 /// expressions.
 pub fn or_expr<E: AsRef<gtk::Expression>>(a_expr: E, b_expr: E) -> gtk::ClosureExpression {
-    gtk::ClosureExpression::new::<bool, _, _>(
+    gtk::ClosureExpression::new::<bool>(
         &[a_expr, b_expr],
         closure!(|_: Option<Object>, a: bool, b: bool| { a || b }),
     )
@@ -44,10 +44,7 @@ pub fn or_expr<E: AsRef<gtk::Expression>>(a_expr: E, b_expr: E) -> gtk::ClosureE
 /// expressions.
 #[allow(dead_code)]
 pub fn not_expr<E: AsRef<gtk::Expression>>(a_expr: E) -> gtk::ClosureExpression {
-    gtk::ClosureExpression::new::<bool, _, _>(
-        &[a_expr],
-        closure!(|_: Option<Object>, a: bool| { !a }),
-    )
+    gtk::ClosureExpression::new::<bool>(&[a_expr], closure!(|_: Option<Object>, a: bool| { !a }))
 }
 
 /// Get the cache directory.

@@ -43,35 +43,29 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "room" => self.room.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "room" => obj.room().to_value(),
+                "room" => self.obj().room().to_value(),
                 _ => unimplemented!(),
             }
         }
     }
 
     impl ListModelImpl for MemberList {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             Member::static_type()
         }
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.members.borrow().len() as u32
         }
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             let members = self.members.borrow();
 
             members
@@ -91,7 +85,7 @@ glib::wrapper! {
 
 impl MemberList {
     pub fn new(room: &Room) -> Self {
-        glib::Object::new(&[("room", room)]).expect("Failed to create MemberList")
+        glib::Object::builder().property("room", room).build()
     }
 
     pub fn room(&self) -> Room {

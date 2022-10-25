@@ -147,28 +147,23 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "session" => self.session.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "session" => obj.session().to_value(),
+                "session" => self.obj().session().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             self.button_cancel
                 .connect_clicked(clone!(@weak obj => move |_| {
@@ -190,13 +185,10 @@ mod imp {
 
         fn signals() -> &'static [Signal] {
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder(
-                    "response",
-                    &[bool::static_type().into()],
-                    <()>::static_type().into(),
-                )
-                .action()
-                .build()]
+                vec![Signal::builder("response")
+                    .param_types([bool::static_type()])
+                    .action()
+                    .build()]
             });
             SIGNALS.as_ref()
         }
@@ -214,8 +206,10 @@ glib::wrapper! {
 
 impl AuthDialog {
     pub fn new(transient_for: Option<&impl IsA<gtk::Window>>, session: &Session) -> Self {
-        glib::Object::new(&[("transient-for", &transient_for), ("session", session)])
-            .expect("Failed to create AuthDialog")
+        glib::Object::builder()
+            .property("transient-for", &transient_for)
+            .property("session", session)
+            .build()
     }
 
     pub fn session(&self) -> Session {
@@ -353,7 +347,7 @@ impl AuthDialog {
         self.disconnect(handler_id);
         self.close();
 
-        result.then(|| ()).ok_or(AuthError::UserCancelled)
+        result.then_some(()).ok_or(AuthError::UserCancelled)
     }
 
     fn show_auth_error(&self, auth_error: &Option<ErrorBody>) {

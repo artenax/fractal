@@ -38,9 +38,8 @@ mod imp {
 
     impl ObjectImpl for ButtonRow {
         fn signals() -> &'static [Signal] {
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("activated", &[], <()>::static_type().into()).build()]
-            });
+            static SIGNALS: Lazy<Vec<Signal>> =
+                Lazy::new(|| vec![Signal::builder("activated").build()]);
             SIGNALS.as_ref()
         }
 
@@ -58,30 +57,24 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "to-subpage" => obj.set_to_subpage(value.get().unwrap()),
+                "to-subpage" => self.obj().set_to_subpage(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "to-subpage" => obj.to_subpage().to_value(),
+                "to-subpage" => self.obj().to_subpage().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
-            obj.connect_parent_notify(|obj| {
+            self.obj().connect_parent_notify(|obj| {
                 if let Some(listbox) = obj
                     .parent()
                     .as_ref()
@@ -109,7 +102,7 @@ glib::wrapper! {
 
 impl ButtonRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ButtonRow")
+        glib::Object::new(&[])
     }
 
     pub fn to_subpage(&self) -> bool {

@@ -101,25 +101,20 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
-                "compact" => {
-                    let compact = value.get().unwrap();
-                    self.compact.set(compact);
-                }
+                "compact" => self.compact.set(value.get().unwrap()),
                 "session" => obj.set_session(value.get().unwrap()),
                 "item" => obj.set_item(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "compact" => self.compact.get().to_value(),
                 "session" => obj.session().to_value(),
@@ -128,13 +123,13 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+
             self.stack
-                .connect_visible_child_notify(clone!(@weak obj => move |stack| {
-                    let priv_ = obj.imp();
-                    if stack.visible_child().as_ref() != Some(priv_.verification_page.upcast_ref::<gtk::Widget>()) {
-                        priv_.identity_verification_widget.set_request(None);
+                .connect_visible_child_notify(clone!(@weak self as imp => move |stack| {
+                    if stack.visible_child().as_ref() != Some(imp.verification_page.upcast_ref::<gtk::Widget>()) {
+                        imp.identity_verification_widget.set_request(None);
                     }
                 }));
         }
@@ -151,7 +146,7 @@ glib::wrapper! {
 
 impl Content {
     pub fn new(session: &Session) -> Self {
-        glib::Object::new(&[("session", session)]).expect("Failed to create Content")
+        glib::Object::builder().property("session", session).build()
     }
 
     pub fn handle_paste_action(&self) {

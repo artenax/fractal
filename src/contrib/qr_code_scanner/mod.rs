@@ -44,21 +44,18 @@ mod imp {
     impl ObjectImpl for QrCodeScanner {
         fn signals() -> &'static [subclass::Signal] {
             static SIGNALS: Lazy<Vec<subclass::Signal>> = Lazy::new(|| {
-                vec![subclass::Signal::builder(
-                    "code-detected",
-                    &[QrVerificationDataBoxed::static_type().into()],
-                    glib::Type::UNIT.into(),
-                )
-                .flags(glib::SignalFlags::RUN_FIRST)
-                .build()]
+                vec![subclass::Signal::builder("code-detected")
+                    .param_types([QrVerificationDataBoxed::static_type()])
+                    .run_first()
+                    .build()]
             });
             SIGNALS.as_ref()
         }
     }
     impl WidgetImpl for QrCodeScanner {
-        fn unmap(&self, widget: &Self::Type) {
-            self.parent_unmap(widget);
-            widget.stop();
+        fn unmap(&self) {
+            self.parent_unmap();
+            self.obj().stop();
         }
     }
     impl BinImpl for QrCodeScanner {}
@@ -71,7 +68,7 @@ glib::wrapper! {
 impl QrCodeScanner {
     #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create a QrCodeScanner")
+        glib::Object::new(&[])
     }
 
     pub fn stop(&self) {

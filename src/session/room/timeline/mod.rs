@@ -115,20 +115,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "room" => obj.set_room(value.get().unwrap()),
+                "room" => self.obj().set_room(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "room" => obj.room().to_value(),
                 "empty" => obj.is_empty().to_value(),
@@ -139,11 +135,11 @@ mod imp {
     }
 
     impl ListModelImpl for Timeline {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             TimelineItem::static_type()
         }
 
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             let mut len = self.list.borrow().len() as u32;
 
             if self.has_typing.get() {
@@ -153,7 +149,7 @@ mod imp {
             len
         }
 
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             let position = position as usize;
             let list = self.list.borrow();
 
@@ -184,7 +180,7 @@ glib::wrapper! {
 // - [ ] Add new message divider
 impl Timeline {
     pub fn new(room: &Room) -> Self {
-        glib::Object::new(&[("room", &room)]).expect("Failed to create Timeline")
+        glib::Object::builder().property("room", &room).build()
     }
 
     fn items_changed(&self, position: u32, removed: u32, added: u32) {

@@ -120,17 +120,11 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "pure-event" => {
                     let event = value.get::<BoxedSyncTimelineEvent>().unwrap();
-                    obj.set_pure_event(event.0);
+                    self.obj().set_pure_event(event.0);
                 }
                 "room" => {
                     self.room.set(value.get().ok().as_ref());
@@ -139,7 +133,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "source" => obj.source().to_value(),
                 "room" => obj.room().to_value(),
@@ -150,11 +146,16 @@ mod imp {
     }
 
     impl TimelineItemImpl for Event {
-        fn event_sender(&self, obj: &Self::Type) -> Option<Member> {
-            Some(obj.room().members().member_by_id(obj.sender_id()?))
+        fn event_sender(&self) -> Option<Member> {
+            Some(
+                self.obj()
+                    .room()
+                    .members()
+                    .member_by_id(self.obj().sender_id()?),
+            )
         }
 
-        fn selectable(&self, _obj: &Self::Type) -> bool {
+        fn selectable(&self) -> bool {
             true
         }
     }
@@ -302,14 +303,15 @@ impl<O: IsA<Event>> EventExt for O {
 /// Overriding a method from this trait overrides also its behavior in
 /// `EventExt`.
 pub trait EventImpl: ObjectImpl {
-    fn source(&self, obj: &Self::Type) -> String {
-        obj.dynamic_cast_ref::<Event>()
+    fn source(&self) -> String {
+        self.obj()
+            .dynamic_cast_ref::<Event>()
             .map(|event| event.original_source())
             .unwrap_or_default()
     }
 
-    fn event_id(&self, obj: &Self::Type) -> Option<OwnedEventId> {
-        obj.dynamic_cast_ref::<Event>().and_then(|event| {
+    fn event_id(&self) -> Option<OwnedEventId> {
+        self.obj().dynamic_cast_ref::<Event>().and_then(|event| {
             event
                 .imp()
                 .pure_event
@@ -323,8 +325,8 @@ pub trait EventImpl: ObjectImpl {
         })
     }
 
-    fn sender_id(&self, obj: &Self::Type) -> Option<OwnedUserId> {
-        obj.dynamic_cast_ref::<Event>().and_then(|event| {
+    fn sender_id(&self) -> Option<OwnedUserId> {
+        self.obj().dynamic_cast_ref::<Event>().and_then(|event| {
             event
                 .imp()
                 .pure_event
@@ -338,8 +340,8 @@ pub trait EventImpl: ObjectImpl {
         })
     }
 
-    fn origin_server_ts(&self, obj: &Self::Type) -> Option<MilliSecondsSinceUnixEpoch> {
-        obj.dynamic_cast_ref::<Event>().and_then(|event| {
+    fn origin_server_ts(&self) -> Option<MilliSecondsSinceUnixEpoch> {
+        self.obj().dynamic_cast_ref::<Event>().and_then(|event| {
             event
                 .imp()
                 .pure_event
@@ -379,7 +381,7 @@ where
     T::Type: IsA<Event>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().source(this)
+    this.imp().source()
 }
 
 fn event_id_trampoline<T>(this: &Event) -> Option<OwnedEventId>
@@ -388,7 +390,7 @@ where
     T::Type: IsA<Event>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().event_id(this)
+    this.imp().event_id()
 }
 
 fn sender_id_trampoline<T>(this: &Event) -> Option<OwnedUserId>
@@ -397,7 +399,7 @@ where
     T::Type: IsA<Event>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().sender_id(this)
+    this.imp().sender_id()
 }
 
 fn origin_server_ts_trampoline<T>(this: &Event) -> Option<MilliSecondsSinceUnixEpoch>
@@ -406,5 +408,5 @@ where
     T::Type: IsA<Event>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().origin_server_ts(this)
+    this.imp().origin_server_ts()
 }

@@ -277,13 +277,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "user" => obj.set_user(value.get().unwrap()),
                 "session" => obj.set_session(value.get().unwrap()),
@@ -296,7 +292,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "user" => obj.user().to_value(),
                 "session" => obj.session().to_value(),
@@ -312,8 +310,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             let (main_sender, main_receiver) =
                 glib::MainContext::sync_channel::<MainMessage>(Default::default(), 100);
@@ -354,8 +353,8 @@ mod imp {
             obj.start_handler();
         }
 
-        fn dispose(&self, obj: &Self::Type) {
-            obj.cancel(true);
+        fn dispose(&self) {
+            self.obj().cancel(true);
         }
     }
 
@@ -369,13 +368,12 @@ glib::wrapper! {
 
 impl IdentityVerification {
     fn for_error(session: &Session, user: &User, start_time: &glib::DateTime) -> Self {
-        glib::Object::new(&[
-            ("state", &State::Error),
-            ("session", session),
-            ("user", user),
-            ("start-time", start_time),
-        ])
-        .expect("Failed to create IdentityVerification")
+        glib::Object::builder()
+            .property("state", &State::Error)
+            .property("session", session)
+            .property("user", user)
+            .property("start-time", start_time)
+            .build()
     }
 
     /// Create a new object tracking an already existing verification request
@@ -385,14 +383,13 @@ impl IdentityVerification {
         user: &User,
         start_time: &glib::DateTime,
     ) -> Self {
-        glib::Object::new(&[
-            ("flow-id", &flow_id),
-            ("session", session),
-            ("user", user),
-            ("supported-methods", &SupportedMethods::with_camera(true)),
-            ("start-time", start_time),
-        ])
-        .expect("Failed to create IdentityVerification")
+        glib::Object::builder()
+            .property("flow-id", &flow_id)
+            .property("session", session)
+            .property("user", user)
+            .property("supported-methods", &SupportedMethods::with_camera(true))
+            .property("start-time", start_time)
+            .build()
     }
 
     /// Creates and send a new verification request.
@@ -418,15 +415,14 @@ impl IdentityVerification {
 
             match handle.await.unwrap() {
                 Ok(request) => {
-                    let obj = glib::Object::new(&[
-                        ("state", &State::RequestSend),
-                        ("supported-methods", &supported_methods),
-                        ("flow-id", &request.flow_id()),
-                        ("session", session),
-                        ("user", user),
-                        ("start-time", &glib::DateTime::now_local().unwrap()),
-                    ])
-                    .expect("Failed to create IdentityVerification");
+                    let obj = glib::Object::builder()
+                        .property("state", &State::RequestSend)
+                        .property("supported-methods", &supported_methods)
+                        .property("flow-id", &request.flow_id())
+                        .property("session", session)
+                        .property("user", user)
+                        .property("start-time", &glib::DateTime::now_local().unwrap())
+                        .build();
 
                     return obj;
                 }

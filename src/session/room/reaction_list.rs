@@ -28,13 +28,13 @@ mod imp {
     impl ObjectImpl for ReactionList {}
 
     impl ListModelImpl for ReactionList {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             ReactionGroup::static_type()
         }
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.reactions.borrow().len() as u32
         }
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             let reactions = self.reactions.borrow();
 
             reactions
@@ -54,7 +54,7 @@ glib::wrapper! {
 
 impl ReactionList {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ReactionList")
+        glib::Object::new(&[])
     }
 
     /// Add reactions with the given reaction `SupportedEvent`s.

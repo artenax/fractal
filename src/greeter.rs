@@ -40,8 +40,9 @@ mod imp {
     }
 
     impl ObjectImpl for Greeter {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             let monitor = gio::NetworkMonitor::default();
             monitor.connect_network_changed(clone!(@weak obj => move |_, _| {
@@ -64,7 +65,7 @@ glib::wrapper! {
 
 impl Greeter {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create Greeter")
+        glib::Object::new(&[])
     }
 
     pub fn default_widget(&self) -> gtk::Widget {

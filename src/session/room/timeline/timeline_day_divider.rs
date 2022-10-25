@@ -47,20 +47,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "date" => obj.set_date(value.get().unwrap()),
+                "date" => self.obj().set_date(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "date" => obj.date().to_value(),
                 "formatted-date" => obj.formatted_date().to_value(),
@@ -79,7 +75,7 @@ glib::wrapper! {
 
 impl TimelineDayDivider {
     pub fn new(date: glib::DateTime) -> Self {
-        glib::Object::new::<Self>(&[("date", &date)]).expect("Failed to create TimelineDayDivider")
+        glib::Object::builder().property("date", &date).build()
     }
 
     pub fn date(&self) -> Option<glib::DateTime> {

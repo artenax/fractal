@@ -61,13 +61,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "item" => obj.set_item(value.get().unwrap()),
                 "size" => obj.set_size(value.get().unwrap()),
@@ -75,7 +71,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "item" => obj.item().to_value(),
                 "size" => obj.size().to_value(),
@@ -83,9 +81,10 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-            obj.connect_map(|avatar| {
+        fn constructed(&self) {
+            self.parent_constructed();
+
+            self.obj().connect_map(|avatar| {
                 avatar.request_custom_avatar();
             });
         }
@@ -104,7 +103,7 @@ glib::wrapper! {
 
 impl Avatar {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create Avatar")
+        glib::Object::new(&[])
     }
 
     pub fn set_size(&self, size: i32) {

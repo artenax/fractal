@@ -90,13 +90,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "needed-size" => obj.set_needed_size(value.get().unwrap()),
                 "url" => obj.set_url(value.get::<&str>().ok().map(Into::into)),
@@ -106,7 +102,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "image" => obj.image().to_value(),
                 "needed-size" => obj.needed_size().to_value(),
@@ -131,11 +129,10 @@ glib::wrapper! {
 
 impl Avatar {
     pub fn new(session: &Session, url: Option<&MxcUri>) -> Self {
-        glib::Object::new(&[
-            ("session", session),
-            ("url", &url.map(|url| url.to_string())),
-        ])
-        .expect("Failed to create Avatar")
+        glib::Object::builder()
+            .property("session", session)
+            .property("url", &url.map(|url| url.to_string()))
+            .build()
     }
 
     fn session(&self) -> Session {

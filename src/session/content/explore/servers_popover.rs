@@ -85,20 +85,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "session" => obj.set_session(value.get().unwrap()),
+                "session" => self.obj().set_session(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "session" => obj.session().to_value(),
                 "server-list" => obj.server_list().to_value(),
@@ -106,8 +102,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             self.server_entry
                 .connect_changed(clone!(@weak obj => move |_| {
@@ -133,7 +130,7 @@ glib::wrapper! {
 
 impl ExploreServersPopover {
     pub fn new(session: &Session) -> Self {
-        glib::Object::new(&[("session", session)]).expect("Failed to create ExploreServersPopover")
+        glib::Object::builder().property("session", session).build()
     }
 
     pub fn session(&self) -> Option<Session> {

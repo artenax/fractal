@@ -49,13 +49,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "state" => obj.set_state(value.get().unwrap()),
                 "model" => obj.set_model(value.get().unwrap()),
@@ -63,7 +59,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "state" => obj.state().to_value(),
                 "model" => obj.model().to_value(),
@@ -79,8 +77,10 @@ glib::wrapper! {
 
 impl MembershipSubpageItem {
     pub fn new(state: Membership, model: &impl IsA<gio::ListModel>) -> Self {
-        glib::Object::new(&[("state", &state), ("model", model)])
-            .expect("Failed to create MembershipSubpageItem")
+        glib::Object::builder()
+            .property("state", &state)
+            .property("model", model)
+            .build()
     }
 
     pub fn state(&self) -> Membership {

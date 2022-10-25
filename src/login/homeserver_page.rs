@@ -55,28 +55,23 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "autodiscovery" => obj.autodiscovery().to_value(),
+                "autodiscovery" => self.obj().autodiscovery().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "autodiscovery" => obj.set_autodiscovery(value.get().unwrap()),
+                "autodiscovery" => self.obj().set_autodiscovery(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             self.homeserver_entry
                 .connect_entry_activated(clone!(@weak obj => move|_| {
@@ -101,7 +96,7 @@ glib::wrapper! {
 
 impl LoginHomeserverPage {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create LoginHomeserverPage")
+        glib::Object::new(&[])
     }
 
     pub fn autodiscovery(&self) -> bool {

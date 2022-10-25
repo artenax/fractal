@@ -47,22 +47,18 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "identity-verification" => obj.set_identity_verification(value.get().unwrap()),
+                "identity-verification" => {
+                    self.obj().set_identity_verification(value.get().unwrap())
+                }
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "identity-verification" => obj.identity_verification().to_value(),
+                "identity-verification" => self.obj().identity_verification().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -79,7 +75,7 @@ glib::wrapper! {
 
 impl VerificationRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create VerificationRow")
+        glib::Object::new(&[])
     }
 
     pub fn identity_verification(&self) -> Option<IdentityVerification> {

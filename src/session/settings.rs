@@ -80,13 +80,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "session-id" => obj.set_session_id(value.get().ok()),
                 "notifications-enabled" => obj.set_notifications_enabled(value.get().unwrap()),
@@ -94,7 +90,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "session-id" => obj.session_id().to_value(),
                 "notifications-enabled" => obj.notifications_enabled().to_value(),
@@ -111,7 +109,9 @@ glib::wrapper! {
 
 impl SessionSettings {
     pub fn new(session_id: &str) -> Self {
-        glib::Object::new(&[("session-id", &session_id)]).expect("Failed to create SessionSettings")
+        glib::Object::builder()
+            .property("session-id", &session_id)
+            .build()
     }
 
     pub fn session_id(&self) -> &str {
@@ -134,7 +134,7 @@ impl SessionSettings {
         let index = sessions
             .iter()
             .enumerate()
-            .find_map(|(idx, settings)| (settings.session_id == session_id).then(|| idx));
+            .find_map(|(idx, settings)| (settings.session_id == session_id).then_some(idx));
 
         priv_.session_id.set(session_id).unwrap();
 
@@ -174,7 +174,7 @@ impl SessionSettings {
                 .unwrap_or_default();
 
         let index = sessions.iter().enumerate().find_map(|(idx, settings)| {
-            (settings.session_id == new_settings.session_id).then(|| idx)
+            (settings.session_id == new_settings.session_id).then_some(idx)
         });
         if let Some(index) = index {
             sessions[index] = new_settings;

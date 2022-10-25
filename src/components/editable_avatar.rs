@@ -72,13 +72,10 @@ mod imp {
         fn signals() -> &'static [Signal] {
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                 vec![
-                    Signal::builder(
-                        "edit-avatar",
-                        &[gio::File::static_type().into()],
-                        <()>::static_type().into(),
-                    )
-                    .build(),
-                    Signal::builder("remove-avatar", &[], <()>::static_type().into()).build(),
+                    Signal::builder("edit-avatar")
+                        .param_types([gio::File::static_type()])
+                        .build(),
+                    Signal::builder("remove-avatar").build(),
                 ]
             });
             SIGNALS.as_ref()
@@ -155,13 +152,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "avatar" => obj.set_avatar(value.get().unwrap()),
                 "editable" => obj.set_editable(value.get().unwrap()),
@@ -174,7 +167,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "avatar" => obj.avatar().to_value(),
                 "editable" => obj.editable().to_value(),
@@ -188,8 +183,8 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
             self.button_remove.set_extra_classes(&["error"]);
         }
@@ -208,7 +203,7 @@ glib::wrapper! {
 
 impl EditableAvatar {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create EditableAvatar")
+        glib::Object::new(&[])
     }
 
     pub fn avatar(&self) -> Option<Avatar> {

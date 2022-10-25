@@ -64,22 +64,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "user" => obj.set_user(value.get().unwrap()),
+                "user" => self.obj().set_user(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "user" => obj.user().to_value(),
+                "user" => self.obj().user().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -97,8 +91,10 @@ glib::wrapper! {
 
 impl DevicesPage {
     pub fn new(parent_window: &Option<gtk::Window>, user: &User) -> Self {
-        glib::Object::new(&[("transient-for", parent_window), ("user", user)])
-            .expect("Failed to create DevicesPage")
+        glib::Object::builder()
+            .property("transient-for", parent_window)
+            .property("user", user)
+            .build()
     }
 
     pub fn user(&self) -> Option<User> {

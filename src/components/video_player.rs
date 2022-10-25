@@ -69,20 +69,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "compact" => obj.set_compact(value.get().unwrap()),
+                "compact" => self.obj().set_compact(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "compact" => obj.compact().to_value(),
                 "player" => obj.player().to_value(),
@@ -107,7 +103,7 @@ impl VideoPlayer {
     /// Create a new video player.
     #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create VideoPlayer")
+        glib::Object::new(&[])
     }
 
     pub fn player(&self) -> &Player {

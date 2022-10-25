@@ -103,38 +103,28 @@ mod imp {
         fn signals() -> &'static [Signal] {
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                 vec![
-                    Signal::builder(
-                        "invitee-added",
-                        &[Invitee::static_type().into()],
-                        <()>::static_type().into(),
-                    )
-                    .build(),
-                    Signal::builder(
-                        "invitee-removed",
-                        &[Invitee::static_type().into()],
-                        <()>::static_type().into(),
-                    )
-                    .build(),
+                    Signal::builder("invitee-added")
+                        .param_types([Invitee::static_type()])
+                        .build(),
+                    Signal::builder("invitee-removed")
+                        .param_types([Invitee::static_type()])
+                        .build(),
                 ]
             });
             SIGNALS.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "room" => self.room.set(value.get().unwrap()).unwrap(),
-                "search-term" => obj.set_search_term(value.get().unwrap()),
+                "search-term" => self.obj().set_search_term(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "room" => obj.room().to_value(),
                 "search-term" => obj.search_term().to_value(),
@@ -146,13 +136,13 @@ mod imp {
     }
 
     impl ListModelImpl for InviteeList {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             Invitee::static_type()
         }
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.list.borrow().len() as u32
         }
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             self.list
                 .borrow()
                 .get(position as usize)
@@ -170,7 +160,7 @@ glib::wrapper! {
 
 impl InviteeList {
     pub fn new(room: &Room) -> Self {
-        glib::Object::new(&[("room", room)]).expect("Failed to create InviteeList")
+        glib::Object::builder().property("room", room).build()
     }
 
     pub fn room(&self) -> &Room {

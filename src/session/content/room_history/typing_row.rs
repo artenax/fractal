@@ -71,20 +71,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "list" => obj.set_list(value.get().unwrap()),
+                "list" => self.obj().set_list(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "list" => obj.list().to_value(),
                 "is-empty" => obj.is_empty().to_value(),
@@ -92,7 +88,7 @@ mod imp {
             }
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             if let Some((list, handler_id)) = self.list.take() {
                 list.disconnect(handler_id);
             }
@@ -111,7 +107,7 @@ glib::wrapper! {
 
 impl TypingRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create RoomHistoryTypingRow")
+        glib::Object::new(&[])
     }
 
     pub fn list(&self) -> Option<TypingList> {

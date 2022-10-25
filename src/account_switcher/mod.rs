@@ -64,28 +64,22 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "pages" => obj.set_pages(value.get().unwrap()),
+                "pages" => self.obj().set_pages(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "pages" => obj.pages().to_value(),
+                "pages" => self.obj().pages().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
             self.entries.connect_row_activated(move |_, row| {
                 row.activate_action("account-switcher.close", None).unwrap();
@@ -116,7 +110,7 @@ glib::wrapper! {
 
 impl AccountSwitcher {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create UserEntryRow")
+        glib::Object::new(&[])
     }
 
     pub fn set_pages(&self, pages: Option<gtk::SelectionModel>) {

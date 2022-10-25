@@ -100,20 +100,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "show-header" => obj.set_show_header(value.get().unwrap()),
+                "show-header" => self.obj().set_show_header(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "selectable" => obj.selectable().to_value(),
                 "activatable" => obj.activatable().to_value(),
@@ -205,19 +201,19 @@ impl<O: IsA<TimelineItem>> TimelineItemExt for O {
 /// Overriding a method from this Trait overrides also its behavior in
 /// `TimelineItemExt`.
 pub trait TimelineItemImpl: ObjectImpl {
-    fn selectable(&self, _obj: &Self::Type) -> bool {
+    fn selectable(&self) -> bool {
         false
     }
 
-    fn activatable(&self, _obj: &Self::Type) -> bool {
+    fn activatable(&self) -> bool {
         false
     }
 
-    fn can_hide_header(&self, _obj: &Self::Type) -> bool {
+    fn can_hide_header(&self) -> bool {
         false
     }
 
-    fn event_sender(&self, _obj: &Self::Type) -> Option<Member> {
+    fn event_sender(&self) -> Option<Member> {
         None
     }
 }
@@ -247,7 +243,7 @@ where
     T::Type: IsA<TimelineItem>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().selectable(this)
+    this.imp().selectable()
 }
 
 fn activatable_trampoline<T>(this: &TimelineItem) -> bool
@@ -256,7 +252,7 @@ where
     T::Type: IsA<TimelineItem>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().activatable(this)
+    this.imp().activatable()
 }
 
 fn can_hide_header_trampoline<T>(this: &TimelineItem) -> bool
@@ -265,7 +261,7 @@ where
     T::Type: IsA<TimelineItem>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().can_hide_header(this)
+    this.imp().can_hide_header()
 }
 
 fn event_sender_trampoline<T>(this: &TimelineItem) -> Option<Member>
@@ -274,5 +270,5 @@ where
     T::Type: IsA<TimelineItem>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().event_sender(this)
+    this.imp().event_sender()
 }

@@ -84,28 +84,23 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "session" => obj.set_session(value.get().unwrap()),
+                "session" => self.obj().set_session(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "session" => obj.session().to_value(),
+                "session" => self.obj().session().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             obj.action_set_enabled("session-verification.show-recovery", false);
 
@@ -118,8 +113,8 @@ mod imp {
             obj.start_request();
         }
 
-        fn dispose(&self, obj: &Self::Type) {
-            if let Some(request) = obj.request() {
+        fn dispose(&self) {
+            if let Some(request) = self.obj().request() {
                 request.cancel(true);
             }
         }
@@ -136,7 +131,7 @@ glib::wrapper! {
 
 impl SessionVerification {
     pub fn new(session: &Session) -> Self {
-        glib::Object::new(&[("session", session)]).expect("Failed to create SessionVerification")
+        glib::Object::builder().property("session", session).build()
     }
 
     /// The current `Session`.

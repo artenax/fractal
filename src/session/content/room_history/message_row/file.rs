@@ -59,13 +59,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "filename" => obj.set_filename(value.get().unwrap()),
                 "compact" => obj.set_compact(value.get().unwrap()),
@@ -73,7 +69,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "filename" => obj.filename().to_value(),
                 "compact" => obj.compact().to_value(),
@@ -95,7 +93,7 @@ glib::wrapper! {
 
 impl MessageFile {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create MessageFile")
+        glib::Object::new(&[])
     }
 
     pub fn set_filename(&self, filename: Option<String>) {

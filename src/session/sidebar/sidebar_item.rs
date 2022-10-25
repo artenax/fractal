@@ -64,22 +64,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "visible" => obj.set_visible(value.get().unwrap()),
+                "visible" => self.obj().set_visible(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "visible" => obj.visible().to_value(),
+                "visible" => self.obj().visible().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -134,7 +128,7 @@ impl<O: IsA<SidebarItem>> SidebarItemExt for O {
 /// Overriding a method from this Trait overrides also its behavior in
 /// `SidebarItemExt`.
 pub trait SidebarItemImpl: ObjectImpl {
-    fn update_visibility(&self, _obj: &Self::Type, _for_category: CategoryType) {}
+    fn update_visibility(&self, _for_category: CategoryType) {}
 }
 
 // Make `SidebarItem` subclassable.
@@ -159,5 +153,5 @@ where
     T::Type: IsA<SidebarItem>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().update_visibility(this, for_category)
+    this.imp().update_visibility(for_category)
 }

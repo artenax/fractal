@@ -51,45 +51,35 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "session" => self.session.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "session" => obj.session().to_value(),
+                "session" => self.obj().session().to_value(),
                 _ => unimplemented!(),
             }
         }
 
         fn signals() -> &'static [Signal] {
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![
-                    Signal::builder("pending-rooms-changed", &[], <()>::static_type().into())
-                        .build(),
-                ]
-            });
+            static SIGNALS: Lazy<Vec<Signal>> =
+                Lazy::new(|| vec![Signal::builder("pending-rooms-changed").build()]);
             SIGNALS.as_ref()
         }
     }
 
     impl ListModelImpl for RoomList {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             Room::static_type()
         }
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.list.borrow().len() as u32
         }
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             self.list
                 .borrow()
                 .get_index(position as usize)
@@ -115,7 +105,7 @@ glib::wrapper! {
 
 impl RoomList {
     pub fn new(session: &Session) -> Self {
-        glib::Object::new(&[("session", session)]).expect("Failed to create RoomList")
+        glib::Object::builder().property("session", session).build()
     }
 
     pub fn session(&self) -> Session {

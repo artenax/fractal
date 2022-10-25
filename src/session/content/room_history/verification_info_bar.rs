@@ -77,22 +77,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "request" => obj.set_request(value.get().unwrap()),
+                "request" => self.obj().set_request(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "request" => obj.request().to_value(),
+                "request" => self.obj().request().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -108,7 +102,7 @@ glib::wrapper! {
 
 impl VerificationInfoBar {
     pub fn new(label: String) -> Self {
-        glib::Object::new(&[("label", &label)]).expect("Failed to create VerificationInfoBar")
+        glib::Object::builder().property("label", &label).build()
     }
 
     pub fn request(&self) -> Option<IdentityVerification> {

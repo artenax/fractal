@@ -36,8 +36,10 @@ impl UnsupportedEvent {
     /// Construct an `UnsupportedEvent` from the given pure event and room.
     pub fn new(pure_event: SyncTimelineEvent, room: &Room) -> Self {
         let pure_event = BoxedSyncTimelineEvent(pure_event);
-        glib::Object::new(&[("pure-event", &pure_event), ("room", room)])
-            .expect("Failed to create UnsupportedEvent")
+        glib::Object::builder()
+            .property("pure-event", &pure_event)
+            .property("room", room)
+            .build()
     }
 
     /// The type of this `UnsupportedEvent`, if the field is found.

@@ -171,33 +171,21 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
-                "compact" => {
-                    let compact = value.get().unwrap();
-                    self.compact.set(compact);
-                }
-                "user" => {
-                    obj.set_user(value.get().unwrap());
-                }
-                "item-list" => {
-                    obj.set_item_list(value.get().unwrap());
-                }
-                "selected-item" => {
-                    let selected_item = value.get().unwrap();
-                    obj.set_selected_item(selected_item);
-                }
+                "compact" => self.compact.set(value.get().unwrap()),
+                "user" => obj.set_user(value.get().unwrap()),
+                "item-list" => obj.set_item_list(value.get().unwrap()),
+                "selected-item" => obj.set_selected_item(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "compact" => self.compact.get().to_value(),
                 "user" => obj.user().to_value(),
@@ -211,8 +199,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             let factory = gtk::SignalListItemFactory::new();
             factory.connect_setup(clone!(@weak obj => move |_, item| {
@@ -269,10 +258,11 @@ mod imp {
     }
 
     impl WidgetImpl for Sidebar {
-        fn focus(&self, widget: &Self::Type, direction_type: gtk::DirectionType) -> bool {
+        fn focus(&self, direction_type: gtk::DirectionType) -> bool {
             // WORKAROUND: This works around the tab behavior `gtk::ListViews have`
             // See: https://gitlab.gnome.org/GNOME/gtk/-/issues/4840
-            let focus_child = widget
+            let focus_child = self
+                .obj()
                 .focus_child()
                 .and_then(|w| w.focus_child())
                 .and_then(|w| w.focus_child());
@@ -284,7 +274,7 @@ mod imp {
             {
                 false
             } else {
-                self.parent_focus(widget, direction_type)
+                self.parent_focus(direction_type)
             }
         }
     }
@@ -298,7 +288,7 @@ glib::wrapper! {
 
 impl Sidebar {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create Sidebar")
+        glib::Object::new(&[])
     }
 
     pub fn selected_item(&self) -> Option<glib::Object> {
@@ -334,8 +324,8 @@ impl Sidebar {
             item.clone().downcast::<gio::ListModel>().ok()
         });
 
-        let room_expression = gtk::ClosureExpression::new::<String, &[gtk::Expression], _>(
-            &[],
+        let room_expression = gtk::ClosureExpression::new::<String>(
+            &[] as &[gtk::Expression],
             closure!(|row: gtk::TreeListRow| {
                 row.item()
                     .and_then(|o| o.downcast::<Room>().ok())

@@ -62,13 +62,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "session" => obj.set_session(value.get().unwrap()),
                 "selected" => obj.set_selected(value.get().unwrap()),
@@ -76,7 +72,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "session" => obj.session().to_value(),
                 "selected" => obj.is_selected().to_value(),
@@ -98,7 +96,7 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl UserEntryRow {
     pub fn new(session: &Session) -> Self {
-        glib::Object::new(&[("session", session)]).expect("Failed to create UserEntryRow")
+        glib::Object::builder().property("session", session).build()
     }
 
     pub fn set_selected(&self, selected: bool) {

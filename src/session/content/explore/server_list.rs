@@ -41,37 +41,31 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "session" => obj.set_session(value.get().unwrap()),
+                "session" => self.obj().set_session(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "session" => obj.session().to_value(),
+                "session" => self.obj().session().to_value(),
                 _ => unimplemented!(),
             }
         }
     }
 
     impl ListModelImpl for ServerList {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             Server::static_type()
         }
 
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.list.borrow().len() as u32
         }
 
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             self.list
                 .borrow()
                 .get(position as usize)
@@ -89,7 +83,7 @@ glib::wrapper! {
 
 impl ServerList {
     pub fn new(session: &Session) -> Self {
-        glib::Object::new(&[("session", session)]).expect("Failed to create ServerList")
+        glib::Object::builder().property("session", session).build()
     }
 
     fn set_session(&self, session: Session) {

@@ -102,7 +102,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "is-animation" => obj.is_animation().to_value(),
                 "width" => obj.intrinsic_width().to_value(),
@@ -113,7 +115,7 @@ mod imp {
     }
 
     impl PaintableImpl for ImagePaintable {
-        fn intrinsic_height(&self, _paintable: &Self::Type) -> i32 {
+        fn intrinsic_height(&self) -> i32 {
             self.frame
                 .borrow()
                 .as_ref()
@@ -121,7 +123,7 @@ mod imp {
                 .unwrap_or(-1)
         }
 
-        fn intrinsic_width(&self, _paintable: &Self::Type) -> i32 {
+        fn intrinsic_width(&self) -> i32 {
             self.frame
                 .borrow()
                 .as_ref()
@@ -129,13 +131,7 @@ mod imp {
                 .unwrap_or(-1)
         }
 
-        fn snapshot(
-            &self,
-            _paintable: &Self::Type,
-            snapshot: &gdk::Snapshot,
-            width: f64,
-            height: f64,
-        ) {
+        fn snapshot(&self, snapshot: &gdk::Snapshot, width: f64, height: f64) {
             if let Some(texture) = &*self.frame.borrow() {
                 texture.snapshot(snapshot, width, height);
             } else {
@@ -147,22 +143,22 @@ mod imp {
             }
         }
 
-        fn flags(&self, paintable: &Self::Type) -> gdk::PaintableFlags {
-            if paintable.is_animation() {
+        fn flags(&self) -> gdk::PaintableFlags {
+            if self.obj().is_animation() {
                 gdk::PaintableFlags::SIZE
             } else {
                 gdk::PaintableFlags::SIZE | gdk::PaintableFlags::CONTENTS
             }
         }
 
-        fn current_image(&self, paintable: &Self::Type) -> gdk::Paintable {
+        fn current_image(&self) -> gdk::Paintable {
             self.frame
                 .borrow()
                 .clone()
                 .map(|frame| frame.upcast())
                 .or_else(|| {
                     let snapshot = gtk::Snapshot::new();
-                    paintable.snapshot(snapshot.upcast_ref(), 1.0, 1.0);
+                    self.obj().snapshot(&snapshot, 1.0, 1.0);
 
                     snapshot.to_paintable(None)
                 })
@@ -188,8 +184,7 @@ impl ImagePaintable {
         reader: R,
         format: Option<ImageFormat>,
     ) -> Result<Self, Box<dyn std::error::Error>> {
-        let obj =
-            glib::Object::new::<Self>(&[]).expect("Failed to create object of type ImagePaintable");
+        let obj = glib::Object::new::<Self>(&[]);
 
         let mut reader = image::io::Reader::new(reader);
 

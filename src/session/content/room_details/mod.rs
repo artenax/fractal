@@ -133,13 +133,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "room" => obj.set_room(value.get().unwrap()),
                 "visible-page" => obj.set_visible_page(value.get().unwrap()),
@@ -147,10 +143,10 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "room" => self.room.get().to_value(),
-                "visible-page" => obj.visible_page().to_value(),
+                "visible-page" => self.obj().visible_page().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -169,8 +165,10 @@ glib::wrapper! {
 
 impl RoomDetails {
     pub fn new(parent_window: &Option<gtk::Window>, room: &Room) -> Self {
-        glib::Object::new(&[("transient-for", parent_window), ("room", room)])
-            .expect("Failed to create RoomDetails")
+        glib::Object::builder()
+            .property("transient-for", parent_window)
+            .property("room", room)
+            .build()
     }
 
     pub fn room(&self) -> &Room {

@@ -94,15 +94,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "has-sessions" => obj.has_sessions().to_value(),
+                "has-sessions" => self.obj().has_sessions().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             let builder = gtk::Builder::from_resource("/org/gnome/Fractal/shortcuts.ui");
             let shortcuts = builder.object("shortcuts").unwrap();
@@ -149,8 +150,8 @@ mod imp {
 
     impl WindowImpl for Window {
         // save window state on delete event
-        fn close_request(&self, obj: &Self::Type) -> Inhibit {
-            if let Err(err) = obj.save_window_size() {
+        fn close_request(&self) -> Inhibit {
+            if let Err(err) = self.obj().save_window_size() {
                 warn!("Failed to save window state, {}", &err);
             }
             Inhibit(false)
@@ -169,8 +170,10 @@ glib::wrapper! {
 
 impl Window {
     pub fn new(app: &Application) -> Self {
-        glib::Object::new(&[("application", &Some(app)), ("icon-name", &Some(APP_ID))])
-            .expect("Failed to create Window")
+        glib::Object::builder()
+            .property("application", &Some(app))
+            .property("icon-name", &Some(APP_ID))
+            .build()
     }
 
     pub fn add_session(&self, session: &Session) {

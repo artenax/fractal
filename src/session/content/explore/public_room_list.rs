@@ -81,20 +81,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "session" => obj.set_session(value.get().unwrap()),
+                "session" => self.obj().set_session(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "session" => obj.session().to_value(),
                 "loading" => obj.loading().to_value(),
@@ -106,13 +102,13 @@ mod imp {
     }
 
     impl ListModelImpl for PublicRoomList {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             PublicRoom::static_type()
         }
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.list.borrow().len() as u32
         }
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             self.list
                 .borrow()
                 .get(position as usize)
@@ -129,7 +125,7 @@ glib::wrapper! {
 
 impl PublicRoomList {
     pub fn new(session: &Session) -> Self {
-        glib::Object::new(&[("session", session)]).expect("Failed to create PublicRoomList")
+        glib::Object::builder().property("session", session).build()
     }
 
     pub fn session(&self) -> Option<Session> {

@@ -52,30 +52,23 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "event" => {
-                    let event = value.get().unwrap();
-                    let _ = self.event.set(event);
+                    let _ = self.event.set(value.get().unwrap());
                 }
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "event" => self.event.get().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
+        fn constructed(&self) {
             let buffer = self
                 .source_view
                 .buffer()
@@ -86,7 +79,7 @@ mod imp {
             buffer.set_language(json_lang.as_ref());
             crate::utils::sourceview::setup_style_scheme(&buffer);
 
-            self.parent_constructed(obj);
+            self.parent_constructed();
         }
     }
 
@@ -102,8 +95,10 @@ glib::wrapper! {
 
 impl EventSourceDialog {
     pub fn new(window: &gtk::Window, event: &Event) -> Self {
-        glib::Object::new(&[("transient-for", window), ("event", event)])
-            .expect("Failed to create EventSourceDialog")
+        glib::Object::builder()
+            .property("transient-for", window)
+            .property("event", event)
+            .build()
     }
 
     pub fn copy_to_clipboard(&self) {

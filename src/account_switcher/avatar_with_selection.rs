@@ -66,26 +66,20 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "item" => self.child_avatar.set_item(value.get().unwrap()),
                 "size" => self.child_avatar.set_size(value.get().unwrap()),
-                "selected" => obj.set_selected(value.get().unwrap()),
+                "selected" => self.obj().set_selected(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "item" => self.child_avatar.item().to_value(),
                 "size" => self.child_avatar.size().to_value(),
-                "selected" => obj.is_selected().to_value(),
+                "selected" => self.obj().is_selected().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -103,7 +97,7 @@ glib::wrapper! {
 
 impl AvatarWithSelection {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create AvatarWithSelection")
+        glib::Object::new(&[])
     }
 
     pub fn set_selected(&self, selected: bool) {

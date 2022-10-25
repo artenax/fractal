@@ -134,7 +134,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "homeserver" => obj.homeserver_pretty().to_value(),
                 "autodiscovery" => obj.autodiscovery().to_value(),
@@ -142,23 +144,18 @@ mod imp {
             }
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "autodiscovery" => obj.set_autodiscovery(value.get().unwrap()),
+                "autodiscovery" => self.obj().set_autodiscovery(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
+        fn constructed(&self) {
+            let obj = self.obj();
             obj.action_set_enabled("login.next", false);
 
-            self.parent_constructed(obj);
+            self.parent_constructed();
 
             let monitor = gio::NetworkMonitor::default();
             monitor.connect_network_changed(clone!(@weak obj => move |_, _| {
@@ -174,8 +171,8 @@ mod imp {
             obj.update_network_state();
         }
 
-        fn dispose(&self, obj: &Self::Type) {
-            obj.prune_created_client();
+        fn dispose(&self) {
+            self.obj().prune_created_client();
         }
     }
 
@@ -192,7 +189,7 @@ glib::wrapper! {
 
 impl Login {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create Login")
+        glib::Object::new(&[])
     }
 
     fn parent_window(&self) -> Window {

@@ -67,21 +67,17 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "item" => obj.set_item(value.get().unwrap()),
+                "item" => self.obj().set_item(value.get().unwrap()),
                 "room-history" => self.room_history.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "item" => obj.item().to_value(),
                 "room-history" => obj.room_history().to_value(),
@@ -89,7 +85,7 @@ mod imp {
             }
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             if let Some(event) = self
                 .item
                 .borrow()
@@ -107,7 +103,9 @@ mod imp {
     impl BinImpl for ItemRow {}
 
     impl ContextMenuBinImpl for ItemRow {
-        fn menu_opened(&self, obj: &Self::Type) {
+        fn menu_opened(&self) {
+            let obj = self.obj();
+
             if let Some(event) = obj.item().and_then(|item| item.downcast::<Event>().ok()) {
                 let room_history = obj.room_history();
                 let popover = room_history.item_context_menu().to_owned();
@@ -173,7 +171,9 @@ glib::wrapper! {
 
 impl ItemRow {
     pub fn new(room_history: &RoomHistory) -> Self {
-        glib::Object::new(&[("room-history", room_history)]).expect("Failed to create ItemRow")
+        glib::Object::builder()
+            .property("room-history", room_history)
+            .build()
     }
 
     pub fn room_history(&self) -> RoomHistory {

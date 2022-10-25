@@ -37,24 +37,24 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "is-empty" => obj.is_empty().to_value(),
+                "is-empty" => self.obj().is_empty().to_value(),
                 _ => unimplemented!(),
             }
         }
     }
 
     impl ListModelImpl for TypingList {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             Member::static_type()
         }
 
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.members.borrow().len() as u32
         }
 
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             self.members
                 .borrow()
                 .get(position as usize)
@@ -71,7 +71,7 @@ glib::wrapper! {
 
 impl TypingList {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create TypingList")
+        glib::Object::new(&[])
     }
 
     pub fn members(&self) -> Vec<Member> {

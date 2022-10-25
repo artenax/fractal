@@ -47,22 +47,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "entry" => obj.set_entry(value.get().unwrap()),
+                "entry" => self.obj().set_entry(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "entry" => obj.entry().to_value(),
+                "entry" => self.obj().entry().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -79,7 +73,7 @@ glib::wrapper! {
 
 impl EntryRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create EntryRow")
+        glib::Object::new(&[])
     }
 
     pub fn entry(&self) -> Option<Entry> {

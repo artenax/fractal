@@ -262,38 +262,27 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "session" => self.session.set(value.get().ok().as_ref()),
-                "display-name" => {
-                    let room_name = value.get().unwrap();
-                    obj.store_room_name(room_name)
-                }
-                "category" => {
-                    let category = value.get().unwrap();
-                    obj.set_category(category);
-                }
+                "display-name" => obj.store_room_name(value.get().unwrap()),
+                "category" => obj.set_category(value.get().unwrap()),
                 "room-id" => self
                     .room_id
                     .set(RoomId::parse(value.get::<&str>().unwrap()).unwrap())
                     .unwrap(),
-                "topic" => {
-                    let topic = value.get().unwrap();
-                    obj.store_topic(topic);
-                }
+                "topic" => obj.store_topic(value.get().unwrap()),
                 "verification" => obj.set_verification(value.get().unwrap()),
                 "encrypted" => obj.set_is_encrypted(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "room-id" => obj.room_id().as_str().to_value(),
                 "session" => obj.session().to_value(),
@@ -332,20 +321,21 @@ mod imp {
         fn signals() -> &'static [Signal] {
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                 vec![
-                    Signal::builder("order-changed", &[], <()>::static_type().into()).build(),
-                    Signal::builder("room-forgotten", &[], <()>::static_type().into()).build(),
-                    Signal::builder("new-encryption-keys", &[], <()>::static_type().into()).build(),
+                    Signal::builder("order-changed").build(),
+                    Signal::builder("room-forgotten").build(),
+                    Signal::builder("new-encryption-keys").build(),
                 ]
             });
             SIGNALS.as_ref()
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             obj.set_matrix_room(obj.session().client().get_room(obj.room_id()).unwrap());
-            self.timeline.set(Timeline::new(obj)).unwrap();
-            self.members.set(MemberList::new(obj)).unwrap();
+            self.timeline.set(Timeline::new(&obj)).unwrap();
+            self.members.set(MemberList::new(&obj)).unwrap();
             self.avatar
                 .set(Avatar::new(
                     &obj.session(),
@@ -384,8 +374,10 @@ glib::wrapper! {
 
 impl Room {
     pub fn new(session: &Session, room_id: &RoomId) -> Self {
-        glib::Object::new(&[("session", session), ("room-id", &room_id.to_string())])
-            .expect("Failed to create Room")
+        glib::Object::builder()
+            .property("session", session)
+            .property("room-id", &room_id.to_string())
+            .build()
     }
 
     pub fn session(&self) -> Session {

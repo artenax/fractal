@@ -58,7 +58,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "title" => self.status.title().to_value(),
                 "child" => self.overlay.child().to_value(),
@@ -67,25 +67,21 @@ mod imp {
             }
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "title" => self.status.set_title(value.get().unwrap()),
                 "child" => self
                     .overlay
                     .set_child(value.get::<gtk::Widget>().ok().as_ref()),
-                "drop-target" => obj.set_drop_target(&value.get().unwrap()),
+                "drop-target" => self.obj().set_drop_target(&value.get().unwrap()),
                 _ => unimplemented!(),
             };
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.overlay.set_parent(obj);
+        fn constructed(&self) {
+            let obj = self.obj();
+
+            self.overlay.set_parent(&*obj);
             self.overlay.add_overlay(&self.revealer);
 
             self.revealer.set_can_target(false);
@@ -98,7 +94,7 @@ mod imp {
             self.revealer.set_child(Some(&self.status));
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             self.overlay.unparent();
         }
     }
@@ -113,7 +109,7 @@ glib::wrapper! {
 
 impl Default for DragOverlay {
     fn default() -> Self {
-        glib::Object::new(&[]).unwrap()
+        glib::Object::new(&[])
     }
 }
 

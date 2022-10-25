@@ -53,13 +53,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "type" => {
                     self.type_.set(value.get().unwrap());
@@ -71,7 +65,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "type" => obj.type_().to_value(),
                 "display-name" => obj.type_().to_string().to_value(),
@@ -82,7 +78,9 @@ mod imp {
     }
 
     impl SidebarItemImpl for Entry {
-        fn update_visibility(&self, obj: &Self::Type, for_category: CategoryType) {
+        fn update_visibility(&self, for_category: CategoryType) {
+            let obj = self.obj();
+
             match obj.type_() {
                 EntryType::Explore => obj.set_visible(true),
                 EntryType::Forget => obj.set_visible(for_category == CategoryType::Left),
@@ -101,7 +99,7 @@ glib::wrapper! {
 
 impl Entry {
     pub fn new(type_: EntryType) -> Self {
-        glib::Object::new(&[("type", &type_)]).expect("Failed to create Entry")
+        glib::Object::builder().property("type", &type_).build()
     }
 
     pub fn type_(&self) -> EntryType {

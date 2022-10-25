@@ -83,20 +83,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "session" => self.session.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "session" => obj.session().to_value(),
                 "display-name" => obj.display_name().to_value(),
@@ -121,8 +117,7 @@ impl Device {
         device: MatrixDevice,
         crypto_device: Option<CryptoDevice>,
     ) -> Self {
-        let obj: Self =
-            glib::Object::new(&[("session", session)]).expect("Failed to create Device");
+        let obj: Self = glib::Object::builder().property("session", session).build();
 
         obj.set_matrix_device(device, crypto_device);
 

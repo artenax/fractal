@@ -40,7 +40,7 @@ glib::wrapper! {
 
 impl LoginSsoPage {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create LoginSsoPage")
+        glib::Object::new(&[])
     }
 }
 

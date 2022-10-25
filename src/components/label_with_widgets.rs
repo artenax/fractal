@@ -71,13 +71,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "label" => obj.set_label(value.get().unwrap()),
                 "placeholder" => obj.set_placeholder(value.get().unwrap()),
@@ -87,7 +83,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "label" => obj.label().to_value(),
                 "placeholder" => obj.placeholder().to_value(),
@@ -97,11 +95,12 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             let label = &self.label;
-            label.set_parent(obj);
+            label.set_parent(&*obj);
             label.set_wrap(true);
             label.set_wrap_mode(pango::WrapMode::WordChar);
             label.set_xalign(0.0);
@@ -115,7 +114,7 @@ mod imp {
             );
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             self.label.unparent();
             for widget in self.widgets.borrow().iter() {
                 widget.unparent();
@@ -124,12 +123,7 @@ mod imp {
     }
 
     impl WidgetImpl for LabelWithWidgets {
-        fn measure(
-            &self,
-            _widget: &Self::Type,
-            orientation: gtk::Orientation,
-            for_size: i32,
-        ) -> (i32, i32, i32, i32) {
+        fn measure(&self, orientation: gtk::Orientation, for_size: i32) -> (i32, i32, i32, i32) {
             let (mut minimum, mut natural, mut minimum_baseline, mut natural_baseline) =
                 if self.label.should_layout() {
                     self.label.measure(orientation, for_size)
@@ -156,30 +150,26 @@ mod imp {
             (minimum, natural, minimum_baseline, natural_baseline)
         }
 
-        fn size_allocate(&self, widget: &Self::Type, width: i32, height: i32, baseline: i32) {
+        fn size_allocate(&self, width: i32, height: i32, baseline: i32) {
+            let obj = self.obj();
+
             // The order of the widget allocation is important.
-            widget.allocate_shapes();
+            obj.allocate_shapes();
             self.label.allocate(width, height, baseline, None);
-            widget.allocate_children();
+            obj.allocate_children();
         }
 
-        fn request_mode(&self, _widget: &Self::Type) -> gtk::SizeRequestMode {
+        fn request_mode(&self) -> gtk::SizeRequestMode {
             self.label.request_mode()
         }
     }
 
     impl BuildableImpl for LabelWithWidgets {
-        fn add_child(
-            &self,
-            buildable: &Self::Type,
-            builder: &gtk::Builder,
-            child: &glib::Object,
-            type_: Option<&str>,
-        ) {
+        fn add_child(&self, builder: &gtk::Builder, child: &glib::Object, type_: Option<&str>) {
             if let Some(child) = child.downcast_ref::<gtk::Widget>() {
-                buildable.append_child(child);
+                self.obj().append_child(child);
             } else {
-                self.parent_add_child(buildable, builder, child, type_)
+                self.parent_add_child(builder, child, type_)
             }
         }
     }
@@ -197,13 +187,12 @@ glib::wrapper! {
 impl LabelWithWidgets {
     /// Create an empty `LabelWithWidget`.
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create LabelWithWidgets")
+        glib::Object::new(&[])
     }
 
     /// Create a `LabelWithWidget` with the given label and widgets.
     pub fn with_label_and_widgets<P: IsA<gtk::Widget>>(label: &str, widgets: Vec<P>) -> Self {
-        let obj: Self =
-            glib::Object::new(&[("label", &label)]).expect("Failed to create LabelWithWidgets");
+        let obj: Self = glib::Object::builder().property("label", &label).build();
         // FIXME: use a property for widgets
         obj.set_widgets(widgets);
         obj
@@ -330,7 +319,7 @@ impl LabelWithWidgets {
         let widgets = priv_.widgets.borrow();
         let widgets_sizes = priv_.widgets_sizes.borrow();
 
-        let mut run_iter = priv_.label.layout().iter().unwrap();
+        let mut run_iter = priv_.label.layout().iter();
         let mut i = 0;
         loop {
             if let Some(run) = run_iter.run_readonly() {

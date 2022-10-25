@@ -62,7 +62,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "title" => obj.title().to_value(),
                 "subtitle" => obj.subtitle().to_value(),
@@ -70,13 +72,9 @@ mod imp {
             }
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "title" => obj.set_title(value.get().unwrap()),
                 "subtitle" => obj.set_subtitle(value.get().unwrap()),
@@ -84,8 +82,8 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
         }
     }
 
@@ -100,7 +98,7 @@ glib::wrapper! {
 
 impl RoomTitle {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create RoomTitle")
+        glib::Object::new(&[])
     }
 
     pub fn set_title(&self, title: Option<String>) {

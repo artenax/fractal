@@ -47,20 +47,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "member" => obj.set_member(value.get().unwrap()),
+                "member" => self.obj().set_member(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "member" => obj.member().to_value(),
                 "allowed-actions" => obj.allowed_actions().to_value(),
@@ -68,8 +64,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             obj.popover_menu()
                 .connect_closed(clone!(@weak obj => move |_| {
@@ -85,7 +82,7 @@ glib::wrapper! {
 
 impl MemberMenu {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create MemberMenu")
+        glib::Object::new(&[])
     }
 
     pub fn member(&self) -> Option<Member> {

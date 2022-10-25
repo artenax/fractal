@@ -15,6 +15,7 @@ use std::{
     sync::{Arc, Mutex},
 };
 
+use ashpd::desktop::camera;
 use gst::prelude::*;
 use gtk::{
     gdk, glib,
@@ -53,26 +54,23 @@ mod imp {
     }
 
     impl ObjectImpl for CameraPaintable {
-        fn dispose(&self, paintable: &Self::Type) {
-            paintable.set_pipeline(None);
+        fn dispose(&self) {
+            self.obj().set_pipeline(None);
         }
 
         fn signals() -> &'static [subclass::Signal] {
             static SIGNALS: Lazy<Vec<subclass::Signal>> = Lazy::new(|| {
-                vec![subclass::Signal::builder(
-                    "code-detected",
-                    &[QrVerificationDataBoxed::static_type().into()],
-                    glib::Type::UNIT.into(),
-                )
-                .flags(glib::SignalFlags::RUN_FIRST)
-                .build()]
+                vec![subclass::Signal::builder("code-detected")
+                    .param_types([QrVerificationDataBoxed::static_type()])
+                    .run_first()
+                    .build()]
             });
             SIGNALS.as_ref()
         }
     }
 
     impl PaintableImpl for CameraPaintable {
-        fn intrinsic_height(&self, _paintable: &Self::Type) -> i32 {
+        fn intrinsic_height(&self) -> i32 {
             if let Some(paintable) = self.sink_paintable.borrow().as_ref() {
                 paintable.intrinsic_height()
             } else {
@@ -80,7 +78,7 @@ mod imp {
             }
         }
 
-        fn intrinsic_width(&self, _paintable: &Self::Type) -> i32 {
+        fn intrinsic_width(&self) -> i32 {
             if let Some(paintable) = self.sink_paintable.borrow().as_ref() {
                 paintable.intrinsic_width()
             } else {
@@ -88,13 +86,7 @@ mod imp {
             }
         }
 
-        fn snapshot(
-            &self,
-            _paintable: &Self::Type,
-            snapshot: &gdk::Snapshot,
-            width: f64,
-            height: f64,
-        ) {
+        fn snapshot(&self, snapshot: &gdk::Snapshot, width: f64, height: f64) {
             let snapshot = snapshot.downcast_ref::<gtk::Snapshot>().unwrap();
 
             if let Some(image) = self.sink_paintable.borrow().as_ref() {
@@ -104,7 +96,7 @@ mod imp {
                 let image_aspect = image.intrinsic_aspect_ratio();
 
                 if image_aspect == 0.0 {
-                    image.snapshot(snapshot.upcast_ref(), width, height);
+                    image.snapshot(snapshot, width, height);
                     return;
                 };
 
@@ -119,7 +111,7 @@ mod imp {
                 );
                 snapshot.translate(&p);
 
-                image.snapshot(snapshot.upcast_ref(), new_width, new_height);
+                image.snapshot(snapshot, new_width, new_height);
             }
         }
     }
@@ -130,31 +122,32 @@ glib::wrapper! {
 }
 
 impl CameraPaintable {
-    pub async fn new<F: AsRawFd>(fd: F, node_id: Option<u32>) -> Self {
-        let self_: Self = glib::Object::new(&[]).expect("Failed to create a CameraPaintable");
+    pub async fn new<F: AsRawFd>(fd: F, streams: Vec<camera::Stream>) -> Self {
+        let self_: Self = glib::Object::new(&[]);
 
-        self_.set_pipewire_fd(fd, node_id).await;
+        self_.set_pipewire_fd(fd, streams).await;
         self_
     }
 
-    async fn set_pipewire_fd<F: AsRawFd>(&self, fd: F, node_id: Option<u32>) {
+    async fn set_pipewire_fd<F: AsRawFd>(&self, fd: F, streams: Vec<camera::Stream>) {
         // Make sure that the previous pipeline is closed so that we can be sure that it
         // doesn't use the webcam
         self.set_pipeline(None);
 
-        let pipewire_src = gst::ElementFactory::make("pipewiresrc", None).unwrap();
-        pipewire_src.set_property("fd", &fd.as_raw_fd());
-        if let Some(node_id) = node_id {
-            pipewire_src.set_property("path", &node_id.to_string());
+        let mut src_builder =
+            gst::ElementFactory::make("pipewiresrc").property("fd", fd.as_raw_fd());
+        if let Some(node_id) = streams.get(0).map(|s| s.node_id()) {
+            src_builder = src_builder.property("path", node_id);
         }
+        let pipewire_src = src_builder.build().unwrap();
 
         let pipeline = gst::Pipeline::new(None);
         let detector = QrCodeDetector::new(self.create_sender()).upcast();
 
-        let tee = gst::ElementFactory::make("tee", None).unwrap();
-        let queue = gst::ElementFactory::make("queue", None).unwrap();
-        let videoconvert1 = gst::ElementFactory::make("videoconvert", None).unwrap();
-        let videoconvert2 = gst::ElementFactory::make("videoconvert", None).unwrap();
+        let tee = gst::ElementFactory::make("tee").build().unwrap();
+        let queue = gst::ElementFactory::make("queue").build().unwrap();
+        let videoconvert1 = gst::ElementFactory::make("videoconvert").build().unwrap();
+        let videoconvert2 = gst::ElementFactory::make("videoconvert").build().unwrap();
         let src_pad = queue.static_pad("src").unwrap();
 
         // Reduce the number of frames we use to get the qrcode from
@@ -169,8 +162,10 @@ impl CameraPaintable {
             }
         });
 
-        let queue2 = gst::ElementFactory::make("queue", None).unwrap();
-        let sink = gst::ElementFactory::make("gtk4paintablesink", None).unwrap();
+        let queue2 = gst::ElementFactory::make("queue").build().unwrap();
+        let sink = gst::ElementFactory::make("gtk4paintablesink")
+            .build()
+            .unwrap();
 
         pipeline
             .add_many(&[

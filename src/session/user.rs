@@ -102,13 +102,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "user-id" => {
                     self.user_id
@@ -116,14 +110,16 @@ mod imp {
                         .unwrap();
                 }
                 "display-name" => {
-                    obj.set_display_name(value.get().unwrap());
+                    self.obj().set_display_name(value.get().unwrap());
                 }
                 "session" => self.session.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "display-name" => obj.display_name().to_value(),
                 "user-id" => obj.user_id().as_str().to_value(),
@@ -135,8 +131,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             let avatar = Avatar::new(&obj.session(), None);
             self.avatar.set(avatar).unwrap();
@@ -157,8 +154,10 @@ glib::wrapper! {
 
 impl User {
     pub fn new(session: &Session, user_id: &UserId) -> Self {
-        glib::Object::new(&[("session", session), ("user-id", &user_id.as_str())])
-            .expect("Failed to create User")
+        glib::Object::builder()
+            .property("session", session)
+            .property("user-id", &user_id.as_str())
+            .build()
     }
 
     pub async fn crypto_identity(&self) -> Option<UserIdentity> {

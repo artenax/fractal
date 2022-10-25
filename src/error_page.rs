@@ -62,8 +62,9 @@ mod imp {
     }
 
     impl ObjectImpl for ErrorPage {
-        fn constructed(&self, obj: &Self::Type) {
-            obj.action_set_enabled("error-page.remove-secret-error-session", false);
+        fn constructed(&self) {
+            self.obj()
+                .action_set_enabled("error-page.remove-secret-error-session", false);
         }
     }
 
@@ -79,7 +80,7 @@ glib::wrapper! {
 
 impl ErrorPage {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ErrorPage")
+        glib::Object::new(&[])
     }
 
     pub fn display_secret_error(&self, message: &str, item: Option<oo7::Item>) {

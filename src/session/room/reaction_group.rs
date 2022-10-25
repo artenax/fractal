@@ -58,13 +58,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "key" => {
                     self.key.set(value.get().unwrap()).unwrap();
@@ -73,7 +67,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "key" => obj.key().to_value(),
                 "count" => obj.count().to_value(),
@@ -91,7 +87,7 @@ glib::wrapper! {
 
 impl ReactionGroup {
     pub fn new(key: &str) -> Self {
-        glib::Object::new(&[("key", &key)]).expect("Failed to create ReactionGroup")
+        glib::Object::builder().property("key", &key).build()
     }
 
     pub fn key(&self) -> &str {

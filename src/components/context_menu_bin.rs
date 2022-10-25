@@ -90,27 +90,23 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "popover" => obj.set_popover(value.get().unwrap()),
+                "popover" => self.obj().set_popover(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "popover" => obj.popover().to_value(),
+                "popover" => self.obj().popover().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
+        fn constructed(&self) {
+            let obj = self.obj();
+
             self.long_press_gesture
                 .connect_pressed(clone!(@weak obj => move |gesture, x, y| {
                     gesture.set_state(gtk::EventSequenceState::Claimed);
@@ -128,10 +124,10 @@ mod imp {
                     obj.open_menu_at(x as i32, y as i32);
                 }),
             );
-            self.parent_constructed(obj);
+            self.parent_constructed();
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             if let Some(popover) = self.popover.take() {
                 popover.unparent()
             }
@@ -224,7 +220,7 @@ pub trait ContextMenuBinImpl: BinImpl {
     /// Called when the menu was requested to open but before the menu is shown.
     ///
     /// This method should be used to set the popover dynamically.
-    fn menu_opened(&self, _obj: &Self::Type) {}
+    fn menu_opened(&self) {}
 }
 
 unsafe impl<T> IsSubclassable<T> for ContextMenuBin
@@ -248,5 +244,5 @@ where
     T::Type: IsA<ContextMenuBin>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().menu_opened(this)
+    this.imp().menu_opened()
 }

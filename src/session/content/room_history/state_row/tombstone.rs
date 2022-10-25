@@ -41,7 +41,7 @@ glib::wrapper! {
 
 impl StateTombstone {
     pub fn new(event: &RoomTombstoneEventContent) -> Self {
-        let obj: Self = glib::Object::new(&[]).expect("Failed to create StateTombstone");
+        let obj: Self = glib::Object::new(&[]);
         obj.set_event(event);
         obj
     }

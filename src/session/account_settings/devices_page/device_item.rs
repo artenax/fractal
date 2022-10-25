@@ -51,13 +51,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "type" => {
                     let type_ = value.get::<BoxedItemType>().unwrap();
@@ -77,17 +71,17 @@ glib::wrapper! {
 impl Item {
     pub fn for_device(device: Device) -> Self {
         let type_ = BoxedItemType(ItemType::Device(device));
-        glib::Object::new(&[("type", &type_)]).expect("Failed to create Item")
+        glib::Object::builder().property("type", &type_).build()
     }
 
     pub fn for_error(error: String) -> Self {
         let type_ = BoxedItemType(ItemType::Error(error));
-        glib::Object::new(&[("type", &type_)]).expect("Failed to create Item")
+        glib::Object::builder().property("type", &type_).build()
     }
 
     pub fn for_loading_spinner() -> Self {
         let type_ = BoxedItemType(ItemType::LoadingSpinner);
-        glib::Object::new(&[("type", &type_)]).expect("Failed to create Item")
+        glib::Object::builder().property("type", &type_).build()
     }
 
     pub fn type_(&self) -> &ItemType {

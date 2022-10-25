@@ -130,28 +130,24 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "request" => obj.set_request(value.get().unwrap()),
+                "request" => self.obj().set_request(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "request" => obj.request().to_value(),
+                "request" => self.obj().request().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
+
             self.accept_btn
                 .connect_clicked(clone!(@weak obj => move |button| {
                     button.set_loading(true);
@@ -233,8 +229,8 @@ mod imp {
                 }));
         }
 
-        fn dispose(&self, obj: &Self::Type) {
-            if let Some(request) = obj.request() {
+        fn dispose(&self) {
+            if let Some(request) = self.obj().request() {
                 if let Some(handler) = self.state_handler.take() {
                     request.disconnect(handler);
                 }
@@ -251,9 +247,9 @@ mod imp {
     }
 
     impl WidgetImpl for IdentityVerificationWidget {
-        fn map(&self, widget: &Self::Type) {
-            self.parent_map(widget);
-            widget.update_view();
+        fn map(&self) {
+            self.parent_map();
+            self.obj().update_view();
         }
     }
     impl BinImpl for IdentityVerificationWidget {}
@@ -266,8 +262,7 @@ glib::wrapper! {
 
 impl IdentityVerificationWidget {
     pub fn new(request: &IdentityVerification) -> Self {
-        glib::Object::new(&[("request", request)])
-            .expect("Failed to create IdentityVerificationWidget")
+        glib::Object::builder().property("request", request).build()
     }
 
     pub fn request(&self) -> Option<IdentityVerification> {

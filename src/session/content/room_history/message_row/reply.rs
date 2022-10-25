@@ -48,7 +48,7 @@ glib::wrapper! {
 
 impl MessageReply {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create MessageReply")
+        glib::Object::new(&[])
     }
 
     pub fn set_related_content_sender(&self, user: User) {

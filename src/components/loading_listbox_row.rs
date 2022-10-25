@@ -64,13 +64,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "loading" => {
                     obj.set_loading(value.get().unwrap());
@@ -82,7 +78,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "loading" => obj.is_loading().to_value(),
                 "error" => obj.error().to_value(),
@@ -91,14 +89,14 @@ mod imp {
         }
 
         fn signals() -> &'static [Signal] {
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("retry", &[], <()>::static_type().into()).build()]
-            });
+            static SIGNALS: Lazy<Vec<Signal>> =
+                Lazy::new(|| vec![Signal::builder("retry").build()]);
             SIGNALS.as_ref()
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             self.retry_button
                 .connect_clicked(clone!(@weak obj => move |_| {
@@ -126,7 +124,7 @@ impl Default for LoadingListBoxRow {
 
 impl LoadingListBoxRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create LoadingListBoxRow")
+        glib::Object::new(&[])
     }
 
     pub fn is_loading(&self) -> bool {

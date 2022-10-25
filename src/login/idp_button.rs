@@ -146,7 +146,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "id" => obj.id().unwrap().to_value(),
                 "brand" => obj.brand().to_value(),
@@ -154,13 +156,9 @@ mod imp {
             }
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "brand" => {
                     obj.set_brand(value.get().unwrap());
@@ -172,8 +170,10 @@ mod imp {
             };
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
+
             adw::StyleManager::default()
                 .connect_dark_notify(clone!(@weak obj => move |_| obj.update_icon()));
             obj.update_icon();
@@ -216,8 +216,10 @@ impl IdpButton {
         let gidp: IdpBrand = idp.brand.as_ref()?.try_into().ok()?;
 
         Some(
-            glib::Object::new(&[("brand", &gidp), ("id", &idp.id)])
-                .expect("Failed to create IdpButton"),
+            glib::Object::builder()
+                .property("brand", &gidp)
+                .property("id", &idp.id)
+                .build(),
         )
     }
 }

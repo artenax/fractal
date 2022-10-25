@@ -94,22 +94,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "autoplay" => obj.set_autoplay(value.get().unwrap()),
+                "autoplay" => self.obj().set_autoplay(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "autoplay" => obj.autoplay().to_value(),
+                "autoplay" => self.obj().autoplay().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -127,7 +121,9 @@ glib::wrapper! {
 
 impl MediaContentViewer {
     pub fn new(autoplay: bool) -> Self {
-        glib::Object::new(&[("autoplay", &autoplay)]).expect("Failed to create MediaContentViewer")
+        glib::Object::builder()
+            .property("autoplay", &autoplay)
+            .build()
     }
 
     pub fn stop_playback(&self) {

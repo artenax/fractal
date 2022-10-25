@@ -33,9 +33,9 @@ pub(crate) mod imp {
     }
 
     impl ObjectImpl for QRCode {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-            obj.add_css_class("qrcode");
+        fn constructed(&self) {
+            self.parent_constructed();
+            self.obj().add_css_class("qrcode");
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -53,30 +53,25 @@ pub(crate) mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "block-size" => obj.block_size().to_value(),
+                "block-size" => self.obj().block_size().to_value(),
                 _ => unreachable!(),
             }
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "block-size" => obj.set_block_size(value.get().unwrap()),
+                "block-size" => self.obj().set_block_size(value.get().unwrap()),
                 _ => unreachable!(),
             }
         }
     }
     impl WidgetImpl for QRCode {
-        fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
-            let square_width = widget.width() as f32 / self.data.borrow().width as f32;
-            let square_height = widget.height() as f32 / self.data.borrow().height as f32;
+        fn snapshot(&self, snapshot: &gtk::Snapshot) {
+            let obj = self.obj();
+            let square_width = obj.width() as f32 / self.data.borrow().width as f32;
+            let square_height = obj.height() as f32 / self.data.borrow().height as f32;
 
             self.data
                 .borrow()
@@ -86,10 +81,9 @@ pub(crate) mod imp {
                 .for_each(|(y, line)| {
                     line.iter().enumerate().for_each(|(x, is_dark)| {
                         let color = if *is_dark {
-                            widget.style_context().color()
+                            obj.style_context().color()
                         } else {
-                            widget
-                                .style_context()
+                            obj.style_context()
                                 .lookup_color("background")
                                 .unwrap_or_else(|| gdk::RGBA::new(0.0, 0.0, 0.0, 0.0))
                         };
@@ -105,13 +99,8 @@ pub(crate) mod imp {
                 });
         }
 
-        fn measure(
-            &self,
-            widget: &Self::Type,
-            orientation: gtk::Orientation,
-            for_size: i32,
-        ) -> (i32, i32, i32, i32) {
-            let stride = widget.block_size() as i32;
+        fn measure(&self, orientation: gtk::Orientation, for_size: i32) -> (i32, i32, i32, i32) {
+            let stride = self.obj().block_size() as i32;
 
             let minimum = match orientation {
                 gtk::Orientation::Horizontal => self.data.borrow().width * stride,
@@ -150,7 +139,7 @@ glib::wrapper! {
 
 impl Default for QRCode {
     fn default() -> Self {
-        glib::Object::new(&[]).unwrap()
+        glib::Object::new(&[])
     }
 }
 

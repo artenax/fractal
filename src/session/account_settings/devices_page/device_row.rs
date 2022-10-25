@@ -75,13 +75,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "device" => {
                     obj.set_device(value.get().unwrap());
@@ -93,7 +89,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "device" => obj.device().to_value(),
                 "is-current-device" => obj.is_current_device().to_value(),
@@ -101,8 +99,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             match &obj.is_current_device() {
                 false => self
@@ -140,11 +139,10 @@ glib::wrapper! {
 
 impl DeviceRow {
     pub fn new(device: &Device, is_current_device: bool) -> Self {
-        glib::Object::new(&[
-            ("device", device),
-            ("is-current-device", &is_current_device),
-        ])
-        .expect("Failed to create DeviceRow")
+        glib::Object::builder()
+            .property("device", device)
+            .property("is-current-device", &is_current_device)
+            .build()
     }
 
     pub fn device(&self) -> Option<Device> {

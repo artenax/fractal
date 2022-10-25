@@ -57,30 +57,25 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "member" => {
-                    obj.set_member(value.get().unwrap());
+                    self.obj().set_member(value.get().unwrap());
                 }
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "member" => obj.member().to_value(),
+                "member" => self.obj().member().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             self.menu_btn
                 .connect_toggled(clone!(@weak obj => move |btn| {
@@ -103,7 +98,7 @@ glib::wrapper! {
 
 impl MemberRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create MemberRow")
+        glib::Object::new(&[])
     }
 
     pub fn member(&self) -> Option<Member> {

@@ -128,13 +128,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "room" => obj.set_room(value.get().unwrap()),
                 "state" => obj.set_state(value.get().unwrap()),
@@ -143,7 +139,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "room" => obj.room().to_value(),
                 "member-menu" => obj.member_menu().to_value(),
@@ -152,7 +150,7 @@ mod imp {
             }
         }
 
-        fn dispose(&self, _: &Self::Type) {
+        fn dispose(&self) {
             if let Some(invite_action) = self.invite_action_watch.take() {
                 invite_action.unwatch();
             }
@@ -170,7 +168,7 @@ glib::wrapper! {
 
 impl MemberPage {
     pub fn new(room: &Room) -> Self {
-        glib::Object::new(&[("room", room)]).expect("Failed to create MemberPage")
+        glib::Object::builder().property("room", room).build()
     }
 
     pub fn room(&self) -> Option<Room> {
@@ -344,8 +342,8 @@ impl MemberPage {
             )
         }
 
-        let member_expr = gtk::ClosureExpression::new::<String, &[gtk::Expression], _>(
-            &[],
+        let member_expr = gtk::ClosureExpression::new::<String>(
+            &[] as &[gtk::Expression],
             closure!(|member: Option<Member>| { member.map(search_string).unwrap_or_default() }),
         );
         let search_filter = gtk::StringFilter::builder()

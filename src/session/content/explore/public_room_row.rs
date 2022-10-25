@@ -66,36 +66,31 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "public-room" => obj.set_public_room(value.get().unwrap()),
+                "public-room" => self.obj().set_public_room(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "public-room" => obj.public_room().to_value(),
+                "public-room" => self.obj().public_room().to_value(),
                 _ => unimplemented!(),
             }
         }
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-            self.button.connect_clicked(clone!(@weak obj => move |_| {
-                if let Some(public_room) = &*obj.imp().public_room.borrow() {
-                    public_room.join_or_view();
-                };
-            }));
+        fn constructed(&self) {
+            self.parent_constructed();
+            self.button
+                .connect_clicked(clone!(@weak self as imp => move |_| {
+                    if let Some(public_room) = &*imp.public_room.borrow() {
+                        public_room.join_or_view();
+                    };
+                }));
         }
 
-        fn dispose(&self, obj: &Self::Type) {
-            if let Some(ref old_public_room) = obj.public_room() {
+        fn dispose(&self) {
+            if let Some(ref old_public_room) = self.obj().public_room() {
                 if let Some(handler) = self.pending_handler.take() {
                     old_public_room.disconnect(handler);
                 }
@@ -117,7 +112,7 @@ glib::wrapper! {
 
 impl PublicRoomRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create PublicRoomRow")
+        glib::Object::new(&[])
     }
 
     pub fn public_room(&self) -> Option<PublicRoom> {

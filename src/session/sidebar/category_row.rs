@@ -78,13 +78,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "category" => obj.set_category(value.get().unwrap()),
                 "expanded" => obj.set_expanded(value.get().unwrap()),
@@ -93,7 +89,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "category" => obj.category().to_value(),
                 "expanded" => obj.expanded().to_value(),
@@ -115,8 +113,9 @@ glib::wrapper! {
 
 impl CategoryRow {
     pub fn new() -> Self {
-        glib::Object::new(&[("show-label-for-category", &CategoryType::None)])
-            .expect("Failed to create CategoryRow")
+        glib::Object::builder()
+            .property("show-label-for-category", &CategoryType::None)
+            .build()
     }
 
     pub fn category(&self) -> Option<Category> {

@@ -115,13 +115,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "user-id" => obj.set_user_id(value.get().unwrap()),
                 "members" => obj.set_members(value.get().unwrap()),
@@ -129,7 +125,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "view" => obj.view().to_value(),
                 "user-id" => obj.user_id().to_value(),
@@ -139,8 +137,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             // Filter the members that are joined and that are not our user.
             let joined =
@@ -152,7 +151,7 @@ mod imp {
                     ))
                     .build();
             let not_user = gtk::BoolFilter::builder()
-                .expression(gtk::ClosureExpression::new::<bool, _, _>(
+                .expression(gtk::ClosureExpression::new::<bool>(
                     &[
                         Member::this_expression("user-id"),
                         obj.property_expression("user-id"),
@@ -190,7 +189,7 @@ mod imp {
             let search = gtk::StringFilter::builder()
                 .ignore_case(true)
                 .match_mode(gtk::StringFilterMatchMode::Substring)
-                .expression(gtk::ClosureExpression::new::<String, _, _>(
+                .expression(gtk::ClosureExpression::new::<String>(
                     &[
                         Member::this_expression("user-id"),
                         Member::this_expression("display-name"),
@@ -298,7 +297,7 @@ glib::wrapper! {
 
 impl CompletionPopover {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create CompletionPopover")
+        glib::Object::new(&[])
     }
 
     pub fn view(&self) -> gtk::TextView {

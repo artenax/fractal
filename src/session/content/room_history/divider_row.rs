@@ -44,25 +44,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "label" => {
-                    let label = value.get().unwrap();
-                    obj.set_label(label);
-                }
+                "label" => self.obj().set_label(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "label" => obj.label().to_value(),
+                "label" => self.obj().label().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -78,11 +69,11 @@ glib::wrapper! {
 
 impl DividerRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create DividerRow")
+        glib::Object::new(&[])
     }
 
     pub fn with_label(label: String) -> Self {
-        glib::Object::new(&[("label", &label)]).expect("Failed to create DividerRow")
+        glib::Object::builder().property("label", &label).build()
     }
 
     pub fn set_label(&self, label: &str) {

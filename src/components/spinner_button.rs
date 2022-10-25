@@ -51,13 +51,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "label" => obj.set_label(value.get().unwrap()),
                 "loading" => obj.set_loading(value.get().unwrap()),
@@ -65,7 +61,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "label" => obj.label().to_value(),
                 "loading" => obj.loading().to_value(),
@@ -87,7 +85,7 @@ glib::wrapper! {
 
 impl SpinnerButton {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create SpinnerButton")
+        glib::Object::new(&[])
     }
 
     pub fn set_label(&self, label: &str) {

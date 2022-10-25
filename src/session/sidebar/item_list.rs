@@ -60,13 +60,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "room-list" => obj.set_room_list(value.get().unwrap()),
                 "verification-list" => obj.set_verification_list(value.get().unwrap()),
@@ -75,7 +71,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "room-list" => obj.room_list().to_value(),
                 "verification-list" => obj.verification_list().to_value(),
@@ -84,8 +82,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             let room_list = obj.room_list();
             let verification_list = obj.verification_list();
@@ -119,11 +118,11 @@ mod imp {
     }
 
     impl ListModelImpl for ItemList {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             SidebarItem::static_type()
         }
 
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.list
                 .get()
                 .unwrap()
@@ -132,7 +131,7 @@ mod imp {
                 .count() as u32
         }
 
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             self.list
                 .get()
                 .unwrap()
@@ -156,11 +155,10 @@ glib::wrapper! {
 
 impl ItemList {
     pub fn new(room_list: &RoomList, verification_list: &VerificationList) -> Self {
-        glib::Object::new(&[
-            ("room-list", room_list),
-            ("verification-list", verification_list),
-        ])
-        .expect("Failed to create ItemList")
+        glib::Object::builder()
+            .property("room-list", room_list)
+            .property("verification-list", verification_list)
+            .build()
     }
 
     pub fn show_all_for_category(&self) -> CategoryType {

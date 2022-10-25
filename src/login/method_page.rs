@@ -71,7 +71,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "homeserver" => self.homeserver.borrow().to_value(),
                 "autodiscovery" => self.autodiscovery.get().to_value(),
@@ -79,13 +79,7 @@ mod imp {
             }
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "homeserver" => {
                     self.homeserver.replace(value.get().ok());
@@ -95,8 +89,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             self.username_entry
                 .connect_entry_activated(clone!(@weak obj => move|_| {
@@ -131,7 +126,7 @@ glib::wrapper! {
 
 impl LoginMethodPage {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create LoginMethodPage")
+        glib::Object::new(&[])
     }
 
     /// The username entered by the user.

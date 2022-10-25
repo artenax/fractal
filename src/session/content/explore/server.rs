@@ -65,13 +65,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "name" => self.name.set(value.get().unwrap()).unwrap(),
                 "network" => self.network.set(value.get().unwrap()).unwrap(),
@@ -85,7 +79,9 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "name" => obj.name().to_value(),
                 "network" => obj.network().to_value(),
@@ -103,32 +99,29 @@ glib::wrapper! {
 
 impl Server {
     pub fn with_default_server(name: &str) -> Self {
-        glib::Object::new(&[
-            ("name", &name),
-            ("network", &"matrix"),
-            ("deletable", &false),
-        ])
-        .expect("Failed to create Server")
+        glib::Object::builder()
+            .property("name", &name)
+            .property("network", &"matrix")
+            .property("deletable", &false)
+            .build()
     }
 
     pub fn with_third_party_protocol(protocol_id: &str, instance: &ProtocolInstance) -> Self {
         let name = format!("{} ({protocol_id})", instance.desc);
-        glib::Object::new(&[
-            ("name", &name),
-            ("network", &instance.instance_id),
-            ("deletable", &false),
-        ])
-        .expect("Failed to create Server")
+        glib::Object::builder()
+            .property("name", &name)
+            .property("network", &instance.instance_id)
+            .property("deletable", &false)
+            .build()
     }
 
     pub fn with_custom_matrix_server(server: &str) -> Self {
-        glib::Object::new(&[
-            ("name", &server),
-            ("network", &"matrix"),
-            ("server", &server),
-            ("deletable", &true),
-        ])
-        .expect("Failed to create Server")
+        glib::Object::builder()
+            .property("name", &server)
+            .property("network", &"matrix")
+            .property("server", &server)
+            .property("deletable", &true)
+            .build()
     }
 
     pub fn name(&self) -> &str {
