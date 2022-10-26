@@ -50,9 +50,9 @@ impl Emoji {
     }
 
     pub fn set_emoji(&self, symbol: &str, name: &str) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.emoji.set_text(symbol);
-        priv_.emoji_name.set_text(name);
+        imp.emoji.set_text(symbol);
+        imp.emoji_name.set_text(name);
     }
 }

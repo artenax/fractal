@@ -183,8 +183,8 @@ impl Member {
 
     /// This member's membership state.
     pub fn membership(&self) -> Membership {
-        let priv_ = imp::Member::from_instance(self);
-        priv_.membership.get()
+        let imp = imp::Member::from_instance(self);
+        imp.membership.get()
     }
 
     /// Set this member's membership state.
@@ -192,8 +192,8 @@ impl Member {
         if self.membership() == membership {
             return;
         }
-        let priv_ = imp::Member::from_instance(self);
-        priv_.membership.replace(membership);
+        let imp = imp::Member::from_instance(self);
+        imp.membership.replace(membership);
         self.notify("membership");
     }
 

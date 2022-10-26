@@ -189,18 +189,17 @@ impl LabelWithWidgets {
     }
 
     pub fn set_widgets<P: IsA<gtk::Widget>>(&self, widgets: Vec<P>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        for widget in priv_.widgets.take() {
+        for widget in imp.widgets.take() {
             widget.unparent();
         }
 
-        priv_
-            .widgets
+        imp.widgets
             .borrow_mut()
             .append(&mut widgets.into_iter().map(|w| w.upcast()).collect());
 
-        for child in priv_.widgets.borrow().iter() {
+        for child in imp.widgets.borrow().iter() {
             child.set_parent(self);
         }
         self.invalidate_child_widgets();
@@ -212,13 +211,13 @@ impl LabelWithWidgets {
 
     /// Set the text of the label.
     pub fn set_label(&self, label: Option<String>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.text.borrow().as_ref() == label.as_ref() {
+        if imp.text.borrow().as_ref() == label.as_ref() {
             return;
         }
 
-        priv_.text.replace(label);
+        imp.text.replace(label);
         self.update_label();
         self.notify("label");
     }
@@ -230,13 +229,13 @@ impl LabelWithWidgets {
 
     /// Set the placeholder that is replaced with widgets.
     pub fn set_placeholder(&self, placeholder: Option<String>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.placeholder.borrow().as_ref() == placeholder.as_ref() {
+        if imp.placeholder.borrow().as_ref() == placeholder.as_ref() {
             return;
         }
 
-        priv_.placeholder.replace(placeholder);
+        imp.placeholder.replace(placeholder);
         self.update_label();
         self.notify("placeholder");
     }
@@ -254,11 +253,11 @@ impl LabelWithWidgets {
     }
 
     fn allocate_shapes(&self) {
-        let priv_ = self.imp();
-        let mut widgets_sizes = priv_.widgets_sizes.borrow_mut();
+        let imp = self.imp();
+        let mut widgets_sizes = imp.widgets_sizes.borrow_mut();
 
         let mut child_size_changed = false;
-        for (i, child) in priv_.widgets.borrow().iter().enumerate() {
+        for (i, child) in imp.widgets.borrow().iter().enumerate() {
             let (_, natural_size) = child.preferred_size();
             let width = natural_size.width();
             let height = natural_size.height();
@@ -278,7 +277,7 @@ impl LabelWithWidgets {
         }
 
         let attrs = pango::AttrList::new();
-        for (i, (start_index, _)) in priv_
+        for (i, (start_index, _)) in imp
             .label
             .text()
             .as_str()
@@ -301,15 +300,15 @@ impl LabelWithWidgets {
                 break;
             }
         }
-        priv_.label.set_attributes(Some(&attrs));
+        imp.label.set_attributes(Some(&attrs));
     }
 
     fn allocate_children(&self) {
-        let priv_ = self.imp();
-        let widgets = priv_.widgets.borrow();
-        let widgets_sizes = priv_.widgets_sizes.borrow();
+        let imp = self.imp();
+        let widgets = imp.widgets.borrow();
+        let widgets_sizes = imp.widgets_sizes.borrow();
 
-        let mut run_iter = priv_.label.layout().iter();
+        let mut run_iter = imp.label.layout().iter();
         let mut i = 0;
         loop {
             if let Some(run) = run_iter.run_readonly() {
@@ -324,7 +323,7 @@ impl LabelWithWidgets {
                         let (width, height) = widgets_sizes[i];
                         let (_, extents) = run_iter.run_extents();
 
-                        let (offset_x, offset_y) = priv_.label.layout_offsets();
+                        let (offset_x, offset_y) = imp.label.layout_offsets();
                         let allocation = gtk::Allocation::new(
                             pango_pixels(extents.x()) + offset_x,
                             pango_pixels(extents.y()) + offset_y,
@@ -371,15 +370,15 @@ impl LabelWithWidgets {
     }
 
     fn update_label(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         if self.ellipsize() {
             // Workaround: if both wrap and ellipsize are set, and there are
             // widgets inserted, GtkLabel reports an erroneous minimum width.
-            priv_.label.set_wrap(false);
-            priv_.label.set_ellipsize(pango::EllipsizeMode::End);
+            imp.label.set_wrap(false);
+            imp.label.set_ellipsize(pango::EllipsizeMode::End);
 
-            if let Some(label) = priv_.text.borrow().as_ref() {
-                let placeholder = priv_.placeholder.borrow();
+            if let Some(label) = imp.text.borrow().as_ref() {
+                let placeholder = imp.placeholder.borrow();
                 let placeholder = placeholder.as_deref().unwrap_or(DEFAULT_PLACEHOLDER);
                 let label = label.replace(placeholder, OBJECT_REPLACEMENT_CHARACTER);
                 let label = if let Some(pos) = label.find('\n') {
@@ -387,17 +386,17 @@ impl LabelWithWidgets {
                 } else {
                     label
                 };
-                priv_.label.set_label(&label);
+                imp.label.set_label(&label);
             }
         } else {
-            priv_.label.set_wrap(true);
-            priv_.label.set_ellipsize(pango::EllipsizeMode::None);
+            imp.label.set_wrap(true);
+            imp.label.set_ellipsize(pango::EllipsizeMode::None);
 
-            if let Some(label) = priv_.text.borrow().as_ref() {
-                let placeholder = priv_.placeholder.borrow();
+            if let Some(label) = imp.text.borrow().as_ref() {
+                let placeholder = imp.placeholder.borrow();
                 let placeholder = placeholder.as_deref().unwrap_or(DEFAULT_PLACEHOLDER);
                 let label = label.replace(placeholder, OBJECT_REPLACEMENT_CHARACTER);
-                priv_.label.set_label(&label);
+                imp.label.set_label(&label);
             }
         }
         self.invalidate_child_widgets();

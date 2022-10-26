@@ -194,18 +194,18 @@ impl ItemRow {
     /// possible, but it will create a new widget and drop the old one if it
     /// has to.
     fn set_item(&self, item: Option<TimelineItem>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if let Some(event) = priv_
+        if let Some(event) = imp
             .item
             .borrow()
             .as_ref()
             .and_then(|item| item.downcast_ref::<SupportedEvent>())
         {
-            if let Some(handler) = priv_.notify_handler.borrow_mut().take() {
+            if let Some(handler) = imp.notify_handler.borrow_mut().take() {
                 event.disconnect(handler);
             }
-        } else if let Some(binding) = priv_.binding.borrow_mut().take() {
+        } else if let Some(binding) = imp.binding.borrow_mut().take() {
             binding.unbind()
         }
 
@@ -216,7 +216,7 @@ impl ItemRow {
                         obj.set_event_widget(event);
                         obj.set_action_group(obj.set_event_actions(Some(event.upcast_ref())));
                     }));
-                priv_.notify_handler.replace(Some(notify_handler));
+                imp.notify_handler.replace(Some(notify_handler));
 
                 self.set_event_widget(event);
                 self.set_action_group(self.set_event_actions(Some(event.upcast_ref())));
@@ -239,7 +239,7 @@ impl ItemRow {
                     .bind_property("formatted-date", &child, "label")
                     .flags(glib::BindingFlags::SYNC_CREATE)
                     .build();
-                priv_.binding.replace(Some(binding));
+                imp.binding.replace(Some(binding));
             } else if let Some(item) = item.downcast_ref::<TimelinePlaceholder>() {
                 let kind = item.kind();
 
@@ -295,7 +295,7 @@ impl ItemRow {
                 };
             }
         }
-        priv_.item.replace(item);
+        imp.item.replace(item);
     }
 
     fn set_event_widget(&self, event: &SupportedEvent) {

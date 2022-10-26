@@ -169,7 +169,7 @@ impl Timeline {
     }
 
     fn items_changed(&self, position: u32, removed: u32, added: u32) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let last_new_message_date;
 
@@ -178,7 +178,7 @@ impl Timeline {
         let added = {
             let position = position as usize;
             let added = added as usize;
-            let mut list = priv_.list.borrow_mut();
+            let mut list = imp.list.borrow_mut();
 
             let mut previous_timestamp = if position > 0 {
                 list.get(position - 1)
@@ -214,7 +214,7 @@ impl Timeline {
 
         // Remove first day divider if a new one is added earlier with the same day
         let removed = {
-            let mut list = priv_.list.borrow_mut();
+            let mut list = imp.list.borrow_mut();
             if let Some(date) = list
                 .get(position as usize + added as usize)
                 .and_then(|item| item.downcast_ref::<TimelineDayDivider>())
@@ -235,7 +235,7 @@ impl Timeline {
         {
             let position = position as usize;
             let added = added as usize;
-            let list = priv_.list.borrow();
+            let list = imp.list.borrow();
 
             let mut previous_sender = if position > 0 {
                 list.get(position - 1)
@@ -282,9 +282,9 @@ impl Timeline {
 
         // Add relations to event
         {
-            let list = priv_.list.borrow();
-            let mut relates_to_events = priv_.relates_to_events.borrow_mut();
-            let mut redacted_events = priv_.redacted_events.borrow_mut();
+            let list = imp.list.borrow();
+            let mut relates_to_events = imp.relates_to_events.borrow_mut();
+            let mut redacted_events = imp.redacted_events.borrow_mut();
 
             for event in list
                 .range(position as usize..(position + added) as usize)
@@ -330,13 +330,13 @@ impl Timeline {
     }
 
     fn remove_redacted_events(&self) {
-        let priv_ = self.imp();
-        let mut redacted_events_pos = Vec::with_capacity(priv_.redacted_events.borrow().len());
+        let imp = self.imp();
+        let mut redacted_events_pos = Vec::with_capacity(imp.redacted_events.borrow().len());
 
         // Find redacted events in the list
         {
-            let mut redacted_events = priv_.redacted_events.borrow_mut();
-            let list = priv_.list.borrow();
+            let mut redacted_events = imp.redacted_events.borrow_mut();
+            let list = imp.list.borrow();
             let mut i = list.len();
             let mut list = list.iter();
 
@@ -362,7 +362,7 @@ impl Timeline {
             let mut removed = 1;
 
             {
-                let mut list = priv_.list.borrow_mut();
+                let mut list = imp.list.borrow_mut();
                 list.remove(pos);
 
                 // Remove all consecutive previous redacted events.
@@ -402,8 +402,8 @@ impl Timeline {
     }
 
     fn add_hidden_events(&self, events: Vec<SupportedEvent>, at_front: bool) {
-        let priv_ = self.imp();
-        let mut relates_to_events = priv_.relates_to_events.borrow_mut();
+        let imp = self.imp();
+        let mut relates_to_events = imp.relates_to_events.borrow_mut();
 
         // Group events by related event
         let mut new_relations: HashMap<_, Vec<_>> = HashMap::new();
@@ -440,7 +440,7 @@ impl Timeline {
         }
 
         // Handle new relations
-        let mut redacted_events = priv_.redacted_events.borrow_mut();
+        let mut redacted_events = imp.redacted_events.borrow_mut();
         for (relates_to_event_id, new_relations) in new_relations {
             if let Some(relates_to_event) = self.event_by_id(&relates_to_event_id) {
                 // Get the relations in relates_to_event otherwise they will be added in
@@ -505,7 +505,7 @@ impl Timeline {
     ///
     /// Returns `true` when no messages were added, but more can be loaded.
     pub async fn load(&self) -> bool {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if matches!(
             self.state(),
@@ -519,8 +519,8 @@ impl Timeline {
 
         let matrix_room = self.room().matrix_room();
         let timeline_weak = self.downgrade().into();
-        let backward_stream = priv_.backward_stream.clone();
-        let forward_handle = priv_.forward_handle.clone();
+        let backward_stream = imp.backward_stream.clone();
+        let forward_handle = imp.forward_handle.clone();
 
         let handle: tokio::task::JoinHandle<matrix_sdk::Result<_>> = spawn_tokio!(async move {
             let mut backward_stream_guard = backward_stream.lock().await;
@@ -595,22 +595,22 @@ impl Timeline {
     }
 
     async fn clear(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         // Remove backward stream so that we create new streams
-        let mut backward_stream = priv_.backward_stream.lock().await;
+        let mut backward_stream = imp.backward_stream.lock().await;
         backward_stream.take();
 
-        let mut forward_handle = priv_.forward_handle.lock().await;
+        let mut forward_handle = imp.forward_handle.lock().await;
         if let Some(forward_handle) = forward_handle.take() {
             forward_handle.abort();
         }
 
-        let length = priv_.list.borrow().len();
-        priv_.relates_to_events.replace(HashMap::new());
-        priv_.list.replace(VecDeque::new());
-        priv_.event_map.replace(HashMap::new());
-        priv_.pending_events.replace(HashMap::new());
-        priv_.redacted_events.replace(HashSet::new());
+        let length = imp.list.borrow().len();
+        imp.relates_to_events.replace(HashMap::new());
+        imp.list.replace(VecDeque::new());
+        imp.event_map.replace(HashMap::new());
+        imp.pending_events.replace(HashMap::new());
+        imp.redacted_events.replace(HashSet::new());
         self.set_state(TimelineState::Initial);
 
         self.notify("empty");
@@ -620,7 +620,7 @@ impl Timeline {
 
     /// Append the new events
     pub fn append(&self, batch: Vec<Event>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if batch.is_empty() {
             return;
@@ -629,7 +629,7 @@ impl Timeline {
 
         let index = {
             let index = {
-                let mut list = priv_.list.borrow_mut();
+                let mut list = imp.list.borrow_mut();
                 // Extend the size of the list so that rust doesn't need to reallocate memory
                 // multiple times
                 list.reserve(batch.len());
@@ -637,7 +637,7 @@ impl Timeline {
                 list.len()
             };
 
-            let mut pending_events = priv_.pending_events.borrow_mut();
+            let mut pending_events = imp.pending_events.borrow_mut();
             let mut hidden_events = vec![];
 
             for event in batch.into_iter() {
@@ -645,7 +645,7 @@ impl Timeline {
                     .downcast_ref::<UnsupportedEvent>()
                     .and_then(|event| event.event_id())
                 {
-                    priv_.event_map.borrow_mut().insert(event_id, event);
+                    imp.event_map.borrow_mut().insert(event_id, event);
                     added -= 1;
                 } else if let Ok(event) = event.downcast::<SupportedEvent>() {
                     let event_id = event.event_id();
@@ -663,7 +663,7 @@ impl Timeline {
                         .transaction_id()
                         .and_then(|txn_id| pending_events.remove(&txn_id))
                     {
-                        let mut event_map = priv_.event_map.borrow_mut();
+                        let mut event_map = imp.event_map.borrow_mut();
 
                         if let Some(pending_event) = event_map.remove(&pending_id) {
                             pending_event.set_pure_event(event.pure_event());
@@ -671,15 +671,14 @@ impl Timeline {
                         };
                         added -= 1;
                     } else {
-                        priv_
-                            .event_map
+                        imp.event_map
                             .borrow_mut()
                             .insert(event_id, event.clone().upcast());
                         if event.is_hidden_event() {
                             hidden_events.push(event);
                             added -= 1;
                         } else {
-                            priv_.list.borrow_mut().push_back(event.upcast());
+                            imp.list.borrow_mut().push_back(event.upcast());
                         }
                     }
                 } else {
@@ -697,20 +696,18 @@ impl Timeline {
 
     /// Append an event that wasn't yet fully sent and received via a sync
     pub fn append_pending(&self, txn_id: &TransactionId, event: SupportedEvent) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_
-            .event_map
+        imp.event_map
             .borrow_mut()
             .insert(event.event_id(), event.clone().upcast());
 
-        priv_
-            .pending_events
+        imp.pending_events
             .borrow_mut()
             .insert(txn_id.to_owned(), event.event_id());
 
         let index = {
-            let mut list = priv_.list.borrow_mut();
+            let mut list = imp.list.borrow_mut();
             let index = list.len();
 
             if event.is_hidden_event() {
@@ -781,21 +778,21 @@ impl Timeline {
     ///
     /// Returns `true` if new shown events where added to the timeline.
     pub fn prepend(&self, batch: Vec<Event>) -> bool {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let mut added = batch.len();
 
         {
             let mut hidden_events: Vec<_> = vec![];
             // Extend the size of the list so that rust doesn't need to reallocate memory
             // multiple times
-            priv_.list.borrow_mut().reserve(added);
+            imp.list.borrow_mut().reserve(added);
 
             for event in batch {
                 if let Some(event_id) = event
                     .downcast_ref::<UnsupportedEvent>()
                     .and_then(|event| event.event_id())
                 {
-                    priv_.event_map.borrow_mut().insert(event_id, event);
+                    imp.event_map.borrow_mut().insert(event_id, event);
                     added -= 1;
                 } else if let Ok(event) = event.downcast::<SupportedEvent>() {
                     if event.counts_as_unread() {
@@ -807,8 +804,7 @@ impl Timeline {
                         );
                     }
 
-                    priv_
-                        .event_map
+                    imp.event_map
                         .borrow_mut()
                         .insert(event.event_id(), event.clone().upcast());
 
@@ -816,7 +812,7 @@ impl Timeline {
                         hidden_events.push(event);
                         added -= 1;
                     } else {
-                        priv_.list.borrow_mut().push_front(event.upcast());
+                        imp.list.borrow_mut().push_front(event.upcast());
                     }
                 } else {
                     added -= 1;
@@ -850,13 +846,13 @@ impl Timeline {
     }
 
     fn set_state(&self, state: TimelineState) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if state == self.state() {
             return;
         }
 
-        priv_.state.set(state);
+        imp.state.set(state);
 
         self.notify("state");
     }
@@ -868,9 +864,9 @@ impl Timeline {
 
     /// Whether the timeline is empty.
     pub fn is_empty(&self) -> bool {
-        let priv_ = self.imp();
-        priv_.list.borrow().is_empty()
-            || (priv_.list.borrow().len() == 1 && self.state() == TimelineState::Loading)
+        let imp = self.imp();
+        imp.list.borrow().is_empty()
+            || (imp.list.borrow().len() == 1 && self.state() == TimelineState::Loading)
     }
 
     fn add_loading_spinner(&self) {

@@ -83,22 +83,22 @@ impl MessageLocation {
     }
 
     pub fn set_geo_uri(&self, uri: &str, format: ContentFormat) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let compact = matches!(format, ContentFormat::Compact | ContentFormat::Ellipsized);
-        priv_.location.set_compact(compact);
+        imp.location.set_compact(compact);
 
         match GeoUri::parse(uri) {
             Ok(geo_uri) => {
-                priv_.location.set_location(&geo_uri);
-                priv_.overlay_error.hide();
+                imp.location.set_location(&geo_uri);
+                imp.overlay_error.hide();
             }
             Err(error) => {
                 warn!("Encountered invalid geo URI: {}", error);
-                priv_.location.hide();
-                priv_.overlay_error.set_tooltip_text(Some(&gettext(
+                imp.location.hide();
+                imp.overlay_error.set_tooltip_text(Some(&gettext(
                     "Location is invalid and cannot be displayed",
                 )));
-                priv_.overlay_error.show();
+                imp.overlay_error.show();
             }
         };
 

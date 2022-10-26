@@ -159,14 +159,13 @@ impl Explore {
     }
 
     pub fn init(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.servers_popover.init();
-        priv_
-            .servers_button
-            .set_label(priv_.servers_popover.selected_server().unwrap().name());
+        imp.servers_popover.init();
+        imp.servers_button
+            .set_label(imp.servers_popover.selected_server().unwrap().name());
 
-        if let Some(public_room_list) = &*priv_.public_room_list.borrow() {
+        if let Some(public_room_list) = &*imp.public_room_list.borrow() {
             public_room_list.load_public_rooms(true);
         }
 
@@ -175,7 +174,7 @@ impl Explore {
 
     /// Set the current session.
     pub fn set_session(&self, session: Option<Session>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if session == self.session() {
             return;
@@ -183,8 +182,7 @@ impl Explore {
 
         if let Some(ref session) = session {
             let public_room_list = PublicRoomList::new(session);
-            priv_
-                .listview
+            imp.listview
                 .set_model(Some(&gtk::NoSelection::new(Some(&public_room_list))));
 
             public_room_list.connect_notify_local(
@@ -201,31 +199,31 @@ impl Explore {
                 }),
             );
 
-            priv_.public_room_list.replace(Some(public_room_list));
+            imp.public_room_list.replace(Some(public_room_list));
         }
 
-        priv_.session.set(session.as_ref());
+        imp.session.set(session.as_ref());
         self.notify("session");
     }
 
     fn set_visible_child(&self) {
-        let priv_ = self.imp();
-        if let Some(public_room_list) = &*priv_.public_room_list.borrow() {
+        let imp = self.imp();
+        if let Some(public_room_list) = &*imp.public_room_list.borrow() {
             if public_room_list.loading() {
-                priv_.stack.set_visible_child(&*priv_.spinner);
+                imp.stack.set_visible_child(&*imp.spinner);
             } else if public_room_list.empty() {
-                priv_.stack.set_visible_child(&*priv_.empty_label);
+                imp.stack.set_visible_child(&*imp.empty_label);
             } else {
-                priv_.stack.set_visible_child(&*priv_.scrolled_window);
+                imp.stack.set_visible_child(&*imp.scrolled_window);
             }
         }
     }
 
     fn trigger_search(&self) {
-        let priv_ = self.imp();
-        if let Some(public_room_list) = &*priv_.public_room_list.borrow() {
-            let text = priv_.search_entry.text().as_str().to_string();
-            let server = priv_.servers_popover.selected_server().unwrap();
+        let imp = self.imp();
+        if let Some(public_room_list) = &*imp.public_room_list.borrow() {
+            let text = imp.search_entry.text().as_str().to_string();
+            let server = imp.servers_popover.selected_server().unwrap();
             public_room_list.search(Some(text), server);
         };
     }

@@ -89,23 +89,23 @@ impl CompletionRow {
 
     /// Set the room member displayed by this row.
     pub fn set_member(&self, member: Option<Member>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.member.borrow().as_ref() == member.as_ref() {
+        if imp.member.borrow().as_ref() == member.as_ref() {
             return;
         }
 
         if let Some(member) = &member {
-            priv_.avatar.set_item(Some(member.avatar().to_owned()));
-            priv_.display_name.set_label(&member.display_name());
-            priv_.id.set_label(member.user_id().as_str());
+            imp.avatar.set_item(Some(member.avatar().to_owned()));
+            imp.display_name.set_label(&member.display_name());
+            imp.id.set_label(member.user_id().as_str());
         } else {
-            priv_.avatar.set_item(None);
-            priv_.display_name.set_label("");
-            priv_.id.set_label("");
+            imp.avatar.set_item(None);
+            imp.display_name.set_label("");
+            imp.id.set_label("");
         }
 
-        priv_.member.replace(member);
+        imp.member.replace(member);
         self.notify("member");
     }
 }

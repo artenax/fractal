@@ -283,7 +283,7 @@ impl MessageMedia {
 
     /// Set the state of the media.
     pub fn set_state(&self, state: MediaState) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.state() == state {
             return;
@@ -291,20 +291,20 @@ impl MessageMedia {
 
         match state {
             MediaState::Loading | MediaState::Initial => {
-                priv_.overlay_spinner.set_visible(true);
-                priv_.overlay_error.set_visible(false);
+                imp.overlay_spinner.set_visible(true);
+                imp.overlay_error.set_visible(false);
             }
             MediaState::Ready => {
-                priv_.overlay_spinner.set_visible(false);
-                priv_.overlay_error.set_visible(false);
+                imp.overlay_spinner.set_visible(false);
+                imp.overlay_error.set_visible(false);
             }
             MediaState::Error => {
-                priv_.overlay_spinner.set_visible(false);
-                priv_.overlay_error.set_visible(true);
+                imp.overlay_spinner.set_visible(false);
+                imp.overlay_error.set_visible(true);
             }
         }
 
-        priv_.state.set(state);
+        imp.state.set(state);
         self.notify("state");
     }
 
@@ -400,7 +400,7 @@ impl MessageMedia {
         spawn!(
             glib::PRIORITY_LOW,
             clone!(@weak self as obj => async move {
-                let priv_ = obj.imp();
+                let imp = obj.imp();
 
                 match handle.await.unwrap() {
                     Ok((Some(data), id)) => {
@@ -410,28 +410,28 @@ impl MessageMedia {
                                     {
                                         Ok(texture) => {
                                             let child = if let Some(Ok(child)) =
-                                                priv_.media.child().map(|w| w.downcast::<gtk::Picture>())
+                                                imp.media.child().map(|w| w.downcast::<gtk::Picture>())
                                             {
                                                 child
                                             } else {
                                                 let child = gtk::Picture::new();
-                                                priv_.media.set_child(Some(&child));
+                                                imp.media.set_child(Some(&child));
                                                 child
                                             };
                                             child.set_paintable(Some(&texture));
 
                                             child.set_tooltip_text(body.as_deref());
                                             if media_type == MediaType::Sticker {
-                                                if priv_.media.has_css_class("content-thumbnail") {
-                                                    priv_.media.remove_css_class("content-thumbnail");
+                                                if imp.media.has_css_class("content-thumbnail") {
+                                                    imp.media.remove_css_class("content-thumbnail");
                                                 }
-                                            } else if !priv_.media.has_css_class("content-thumbnail") {
-                                                priv_.media.add_css_class("content-thumbnail");
+                                            } else if !imp.media.has_css_class("content-thumbnail") {
+                                                imp.media.add_css_class("content-thumbnail");
                                             }
                                         }
                                         Err(error) => {
                                             warn!("Image file not supported: {}", error);
-                                            priv_.overlay_error.set_tooltip_text(Some(&gettext("Image file not supported")));
+                                            imp.overlay_error.set_tooltip_text(Some(&gettext("Image file not supported")));
                                             obj.set_state(MediaState::Error);
                                         }
                                     }
@@ -453,12 +453,12 @@ impl MessageMedia {
                                 .unwrap();
 
                                 let child = if let Some(Ok(child)) =
-                                    priv_.media.child().map(|w| w.downcast::<VideoPlayer>())
+                                    imp.media.child().map(|w| w.downcast::<VideoPlayer>())
                                 {
                                     child
                                 } else {
                                     let child = VideoPlayer::new();
-                                    priv_.media.set_child(Some(&child));
+                                    imp.media.set_child(Some(&child));
                                     child
                                 };
                                 child.set_compact(obj.compact());
@@ -470,12 +470,12 @@ impl MessageMedia {
                     }
                     Ok((None, _)) => {
                         warn!("Could not retrieve invalid media file");
-                        priv_.overlay_error.set_tooltip_text(Some(&gettext("Could not retrieve media")));
+                        imp.overlay_error.set_tooltip_text(Some(&gettext("Could not retrieve media")));
                         obj.set_state(MediaState::Error);
                     }
                     Err(error) => {
                         warn!("Could not retrieve media file: {}", error);
-                        priv_.overlay_error.set_tooltip_text(Some(&gettext("Could not retrieve media")));
+                        imp.overlay_error.set_tooltip_text(Some(&gettext("Could not retrieve media")));
                         obj.set_state(MediaState::Error);
                     }
                 }

@@ -185,10 +185,10 @@ impl Avatar {
     ///
     /// Only the biggest size will be stored.
     pub fn set_needed_size(&self, size: u32) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.needed_size.get() < size {
-            priv_.needed_size.set(size);
+        if imp.needed_size.get() < size {
+            imp.needed_size.set(size);
 
             self.load();
         }
@@ -205,14 +205,14 @@ impl Avatar {
 
     /// Set the url of the Avatar.
     pub fn set_url(&self, url: Option<OwnedMxcUri>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.url.borrow().as_ref() == url.as_ref() {
+        if imp.url.borrow().as_ref() == url.as_ref() {
             return;
         }
 
         let has_url = url.is_some();
-        priv_.url.replace(url);
+        imp.url.replace(url);
 
         if has_url {
             self.load();

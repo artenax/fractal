@@ -84,12 +84,12 @@ impl ServerList {
 
     /// Set the current session.
     fn set_session(&self, session: Session) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.session.set(Some(&session));
+        imp.session.set(Some(&session));
 
         let user_id = session.user().unwrap().user_id();
-        priv_.list.replace(vec![Server::with_default_server(
+        imp.list.replace(vec![Server::with_default_server(
             user_id.server_name().as_str(),
         )]);
         self.items_changed(0, 0, 1);

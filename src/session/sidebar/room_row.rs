@@ -167,27 +167,27 @@ impl RoomRow {
 
     /// Set the room represented by this row.
     pub fn set_room(&self, room: Option<Room>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.room() == room {
             return;
         }
 
-        if let Some(room) = priv_.room.take() {
-            if let Some(id) = priv_.signal_handler.take() {
+        if let Some(room) = imp.room.take() {
+            if let Some(id) = imp.signal_handler.take() {
                 room.disconnect(id);
             }
-            if let Some(binding) = priv_.binding.take() {
+            if let Some(binding) = imp.binding.take() {
                 binding.unbind();
             }
-            priv_.display_name.remove_css_class("dim-label");
+            imp.display_name.remove_css_class("dim-label");
         }
 
         if let Some(ref room) = room {
-            priv_.binding.replace(Some(
+            imp.binding.replace(Some(
                 room.bind_property(
                     "notification-count",
-                    &priv_.notification_count.get(),
+                    &imp.notification_count.get(),
                     "visible",
                 )
                 .flags(glib::BindingFlags::SYNC_CREATE)
@@ -195,7 +195,7 @@ impl RoomRow {
                 .build(),
             ));
 
-            priv_.signal_handler.replace(Some(room.connect_notify_local(
+            imp.signal_handler.replace(Some(room.connect_notify_local(
                 Some("highlight"),
                 clone!(@weak self as obj => move |_, _| {
                         obj.update_highlight();
@@ -203,10 +203,10 @@ impl RoomRow {
             )));
 
             if room.category() == RoomType::Left {
-                priv_.display_name.add_css_class("dim-label");
+                imp.display_name.add_css_class("dim-label");
             }
         }
-        priv_.room.replace(room);
+        imp.room.replace(room);
 
         self.update_highlight();
         self.update_actions();
@@ -214,24 +214,24 @@ impl RoomRow {
     }
 
     fn update_highlight(&self) {
-        let priv_ = self.imp();
-        if let Some(room) = &*priv_.room.borrow() {
+        let imp = self.imp();
+        if let Some(room) = &*imp.room.borrow() {
             let flags = room.highlight();
 
             if flags.contains(HighlightFlags::HIGHLIGHT) {
-                priv_.notification_count.add_css_class("highlight");
+                imp.notification_count.add_css_class("highlight");
             } else {
-                priv_.notification_count.remove_css_class("highlight");
+                imp.notification_count.remove_css_class("highlight");
             }
 
             if flags.contains(HighlightFlags::BOLD) {
-                priv_.display_name.add_css_class("bold");
+                imp.display_name.add_css_class("bold");
             } else {
-                priv_.display_name.remove_css_class("bold");
+                imp.display_name.remove_css_class("bold");
             }
         } else {
-            priv_.notification_count.remove_css_class("highlight");
-            priv_.display_name.remove_css_class("bold");
+            imp.notification_count.remove_css_class("highlight");
+            imp.display_name.remove_css_class("bold");
         }
     }
 

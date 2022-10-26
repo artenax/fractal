@@ -249,13 +249,13 @@ impl Login {
 
     /// Set the homeserver to log into.
     pub fn set_homeserver(&self, homeserver: Option<Url>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.homeserver() == homeserver {
             return;
         }
 
-        priv_.homeserver.replace(homeserver);
+        imp.homeserver.replace(homeserver);
         self.notify("homeserver");
     }
 
@@ -289,18 +289,18 @@ impl Login {
     }
 
     fn update_next_state(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         match self.visible_child().as_ref() {
             "homeserver" => {
-                self.enable_next_action(priv_.homeserver_page.can_go_next());
-                priv_.next_button.set_visible(true);
+                self.enable_next_action(imp.homeserver_page.can_go_next());
+                imp.next_button.set_visible(true);
             }
             "method" => {
-                self.enable_next_action(priv_.method_page.can_go_next());
-                priv_.next_button.set_visible(true);
+                self.enable_next_action(imp.method_page.can_go_next());
+                imp.next_button.set_visible(true);
             }
             _ => {
-                priv_.next_button.set_visible(false);
+                imp.next_button.set_visible(false);
             }
         }
     }
@@ -424,11 +424,11 @@ impl Login {
             .iter()
             .any(|flow| matches!(flow, LoginType::Password(_)));
 
-        let priv_ = self.imp();
-        priv_.supports_password.replace(has_password);
+        let imp = self.imp();
+        imp.supports_password.replace(has_password);
 
         if has_password {
-            priv_.method_page.update_sso(sso);
+            imp.method_page.update_sso(sso);
             self.show_login_methods();
         } else {
             self.login_with_sso(None).await;
@@ -436,22 +436,22 @@ impl Login {
     }
 
     fn show_login_methods(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let domain_name = if self.autodiscovery() {
-            priv_.homeserver_page.server_name().unwrap().to_string()
+            imp.homeserver_page.server_name().unwrap().to_string()
         } else {
             self.homeserver_pretty().unwrap()
         };
-        priv_.method_page.set_domain_name(&domain_name);
+        imp.method_page.set_domain_name(&domain_name);
 
         self.set_visible_child("method");
     }
 
     async fn login_with_password(&self) {
-        let priv_ = self.imp();
-        let username = priv_.method_page.username();
-        let password = priv_.method_page.password();
+        let imp = self.imp();
+        let username = imp.method_page.username();
+        let password = imp.method_page.password();
         let CreatedClient {
             client,
             path,
@@ -615,11 +615,11 @@ impl Login {
     }
 
     pub fn clean(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         // Clean pages.
-        priv_.homeserver_page.clean();
-        priv_.method_page.clean();
+        imp.homeserver_page.clean();
+        imp.method_page.clean();
 
         // Clean data.
         self.set_current_session_id(None);
@@ -627,23 +627,23 @@ impl Login {
         self.set_autodiscovery(true);
 
         // Reinitialize UI.
-        priv_.main_stack.set_visible_child_name("homeserver");
+        imp.main_stack.set_visible_child_name("homeserver");
         self.unfreeze();
     }
 
     fn freeze(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         self.action_set_enabled("login.next", false);
-        priv_.next_button.set_loading(true);
-        priv_.main_stack.set_sensitive(false);
+        imp.next_button.set_loading(true);
+        imp.main_stack.set_sensitive(false);
     }
 
     fn unfreeze(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.next_button.set_loading(false);
-        priv_.main_stack.set_sensitive(true);
+        imp.next_button.set_loading(false);
+        imp.main_stack.set_sensitive(true);
         self.update_next_state();
     }
 
@@ -653,36 +653,34 @@ impl Login {
 
     /// Set focus to the proper widget of the current page.
     pub fn focus_default(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         match self.visible_child().as_ref() {
             "homeserver" => {
-                priv_.homeserver_page.focus_default();
+                imp.homeserver_page.focus_default();
             }
             "method" => {
-                priv_.method_page.focus_default();
+                imp.method_page.focus_default();
             }
             _ => {}
         }
     }
 
     fn update_network_state(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let monitor = gio::NetworkMonitor::default();
 
         if !monitor.is_network_available() {
-            priv_
-                .offline_info_bar_label
+            imp.offline_info_bar_label
                 .set_label(&gettext("No network connection"));
-            priv_.offline_info_bar.set_revealed(true);
+            imp.offline_info_bar.set_revealed(true);
             self.action_set_enabled("login.sso", false);
         } else if monitor.connectivity() < gio::NetworkConnectivity::Full {
-            priv_
-                .offline_info_bar_label
+            imp.offline_info_bar_label
                 .set_label(&gettext("No Internet connection"));
-            priv_.offline_info_bar.set_revealed(true);
+            imp.offline_info_bar.set_revealed(true);
             self.action_set_enabled("login.sso", true);
         } else {
-            priv_.offline_info_bar.set_revealed(false);
+            imp.offline_info_bar.set_revealed(false);
             self.action_set_enabled("login.sso", true);
         }
 

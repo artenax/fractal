@@ -104,20 +104,20 @@ impl MemberRow {
 
     /// Set the member displayed by this row.
     pub fn set_member(&self, member: Option<Member>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.member() == member {
             return;
         }
 
         // We need to update the member of the menu if it's shown for this row
-        if priv_.menu_btn.is_active() {
+        if imp.menu_btn.is_active() {
             if let Some(menu) = self.member_menu() {
                 menu.set_member(member.clone());
             }
         }
 
-        priv_.member.replace(member);
+        imp.member.replace(member);
         self.notify("member");
     }
 

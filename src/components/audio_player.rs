@@ -101,18 +101,17 @@ impl AudioPlayer {
             return;
         }
 
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if let Some(media_file) = priv_.media_file.take() {
-            if let Some(handler_id) = priv_.autoplay_handler.take() {
+        if let Some(media_file) = imp.media_file.take() {
+            if let Some(handler_id) = imp.autoplay_handler.take() {
                 media_file.disconnect(handler_id);
             }
         }
 
         if self.autoplay() {
             if let Some(media_file) = &media_file {
-                priv_
-                    .autoplay_handler
+                imp.autoplay_handler
                     .replace(Some(media_file.connect_prepared_notify(|media_file| {
                         if media_file.is_prepared() {
                             media_file.play()
@@ -121,7 +120,7 @@ impl AudioPlayer {
             }
         }
 
-        priv_.media_file.replace(media_file);
+        imp.media_file.replace(media_file);
         self.notify("media-file");
     }
 

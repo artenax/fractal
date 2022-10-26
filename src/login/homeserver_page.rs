@@ -99,18 +99,18 @@ impl LoginHomeserverPage {
 
     /// Set whether homeserver auto-discovery is enabled.
     fn set_autodiscovery(&self, autodiscovery: bool) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.autodiscovery.set(autodiscovery);
+        imp.autodiscovery.set(autodiscovery);
 
         if autodiscovery {
-            priv_.homeserver_entry.set_title(&gettext("Domain Name"));
-            priv_.homeserver_help.set_markup(&gettext(
+            imp.homeserver_entry.set_title(&gettext("Domain Name"));
+            imp.homeserver_help.set_markup(&gettext(
                 "The domain of your Matrix homeserver, for example gnome.org",
             ));
         } else {
-            priv_.homeserver_entry.set_title(&gettext("Homeserver URL"));
-            priv_.homeserver_help.set_markup(&gettext_f(
+            imp.homeserver_entry.set_title(&gettext("Homeserver URL"));
+            imp.homeserver_help.set_markup(&gettext_f(
                 // Translators: Do NOT translate the content between '{' and '}', this is a
                 // variable name.
                 "The URL of your Matrix homeserver, for example {address}",

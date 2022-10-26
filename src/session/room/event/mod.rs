@@ -235,8 +235,8 @@ impl<O: IsA<Event>> EventExt for O {
     }
 
     fn set_pure_event(&self, pure_event: SyncTimelineEvent) {
-        let priv_ = self.upcast_ref().imp();
-        priv_.pure_event.replace(Some(pure_event));
+        let imp = self.upcast_ref().imp();
+        imp.pure_event.replace(Some(pure_event));
 
         self.notify("source");
     }

@@ -118,10 +118,10 @@ impl TypingRow {
             return;
         }
 
-        let priv_ = self.imp();
+        let imp = self.imp();
         let prev_is_empty = self.is_empty();
 
-        if let Some((list, handler_id)) = priv_.list.take() {
+        if let Some((list, handler_id)) = imp.list.take() {
             list.disconnect(handler_id);
         }
 
@@ -132,7 +132,7 @@ impl TypingRow {
                 }),
             );
 
-            priv_.list.replace(Some((list.clone(), handler_id)));
+            imp.list.replace(Some((list.clone(), handler_id)));
             self.update(&list, 1, 1);
         }
 
@@ -167,19 +167,19 @@ impl TypingRow {
         }
 
         // Update label and avatars
-        let priv_ = self.imp();
+        let imp = self.imp();
         let members = list.members();
 
         {
             // Show 10 avatars max.
             let len = len.min(10) as usize;
 
-            let mut avatars = priv_.avatars.borrow_mut();
+            let mut avatars = imp.avatars.borrow_mut();
             let avatars_len = avatars.len();
 
             match len.cmp(&avatars_len) {
                 Ordering::Less => {
-                    priv_.avatar_box.truncate_children(len);
+                    imp.avatar_box.truncate_children(len);
                 }
                 Ordering::Equal => {}
                 Ordering::Greater => {
@@ -196,7 +196,7 @@ impl TypingRow {
                     let avatar = Avatar::new();
                     avatar.set_item(Some(item));
                     avatar.set_size(30);
-                    priv_.avatar_box.append(&avatar);
+                    imp.avatar_box.append(&avatar);
                     avatars.push(avatar);
                 }
             }
@@ -230,7 +230,7 @@ impl TypingRow {
                 )
             }
         };
-        priv_.label.set_label(&label);
+        imp.label.set_label(&label);
 
         if removed == 0 && added == len {
             self.notify("is-empty");

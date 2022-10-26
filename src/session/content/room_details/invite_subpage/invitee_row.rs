@@ -85,27 +85,27 @@ impl InviteeRow {
 
     /// Set the user displayed by this row.
     pub fn set_user(&self, user: Option<Invitee>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.user() == user {
             return;
         }
 
-        if let Some(binding) = priv_.binding.take() {
+        if let Some(binding) = imp.binding.take() {
             binding.unbind();
         }
 
         if let Some(ref user) = user {
             // We can't use `gtk::Expression` because we need a bidirectional binding
             let binding = user
-                .bind_property("invited", &*priv_.check_button, "active")
+                .bind_property("invited", &*imp.check_button, "active")
                 .flags(glib::BindingFlags::BIDIRECTIONAL | glib::BindingFlags::SYNC_CREATE)
                 .build();
 
-            priv_.binding.replace(Some(binding));
+            imp.binding.replace(Some(binding));
         }
 
-        priv_.user.replace(user);
+        imp.user.replace(user);
         self.notify("user");
     }
 }

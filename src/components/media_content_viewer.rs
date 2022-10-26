@@ -164,8 +164,8 @@ impl MediaContentViewer {
 
     /// Show the fallback message for the given content type.
     pub fn show_fallback(&self, content_type: ContentType) {
-        let priv_ = self.imp();
-        let fallback = &priv_.fallback;
+        let imp = self.imp();
+        let fallback = &imp.fallback;
 
         let title = match content_type {
             ContentType::Image => gettext("Image not Viewable"),
@@ -176,7 +176,7 @@ impl MediaContentViewer {
         fallback.set_title(&title);
         fallback.set_icon_name(Some(content_type.icon_name()));
 
-        priv_.stack.set_visible_child_name("fallback");
+        imp.stack.set_visible_child_name("fallback");
     }
 
     /// View the given image as bytes.
@@ -186,9 +186,9 @@ impl MediaContentViewer {
     pub fn view_image(&self, image: &impl IsA<gdk::Paintable>) {
         self.show_loading();
 
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        let picture = if let Some(picture) = priv_
+        let picture = if let Some(picture) = imp
             .viewer
             .child()
             .and_then(|widget| widget.downcast::<gtk::Picture>().ok())
@@ -196,7 +196,7 @@ impl MediaContentViewer {
             picture
         } else {
             let picture = gtk::Picture::new();
-            priv_.viewer.set_child(Some(&picture));
+            imp.viewer.set_child(Some(&picture));
             picture
         };
 
@@ -214,7 +214,7 @@ impl MediaContentViewer {
     }
 
     async fn view_file_inner(&self, file: gio::File) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let file_info = file
             .query_info_future(
@@ -243,7 +243,7 @@ impl MediaContentViewer {
                 }
             },
             ContentType::Audio => {
-                let audio = if let Some(audio) = priv_
+                let audio = if let Some(audio) = imp
                     .viewer
                     .child()
                     .and_then(|widget| widget.downcast::<AudioPlayer>().ok())
@@ -254,7 +254,7 @@ impl MediaContentViewer {
                     audio.add_css_class("toolbar");
                     audio.add_css_class("osd");
                     audio.set_autoplay(self.autoplay());
-                    priv_.viewer.set_child(Some(&audio));
+                    imp.viewer.set_child(Some(&audio));
                     audio
                 };
 
@@ -263,7 +263,7 @@ impl MediaContentViewer {
                 return;
             }
             ContentType::Video => {
-                let video = if let Some(video) = priv_
+                let video = if let Some(video) = imp
                     .viewer
                     .child()
                     .and_then(|widget| widget.downcast::<gtk::Video>().ok())
@@ -272,7 +272,7 @@ impl MediaContentViewer {
                 } else {
                     let video = gtk::Video::new();
                     video.set_autoplay(self.autoplay());
-                    priv_.viewer.set_child(Some(&video));
+                    imp.viewer.set_child(Some(&video));
                     video
                 };
 
@@ -290,9 +290,9 @@ impl MediaContentViewer {
     pub fn view_location(&self, geo_uri: &GeoUri) {
         self.show_loading();
 
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        let location = if let Some(location) = priv_
+        let location = if let Some(location) = imp
             .viewer
             .child()
             .and_then(|widget| widget.downcast::<LocationViewer>().ok())
@@ -300,7 +300,7 @@ impl MediaContentViewer {
             location
         } else {
             let location = LocationViewer::new();
-            priv_.viewer.set_child(Some(&location));
+            imp.viewer.set_child(Some(&location));
             location
         };
 

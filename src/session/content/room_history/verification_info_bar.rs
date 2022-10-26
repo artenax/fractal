@@ -110,18 +110,18 @@ impl VerificationInfoBar {
 
     /// Set the verification request this InfoBar is showing.
     pub fn set_request(&self, request: Option<IdentityVerification>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if let Some(old_request) = &*priv_.request.borrow() {
+        if let Some(old_request) = &*imp.request.borrow() {
             if Some(old_request) == request.as_ref() {
                 return;
             }
 
-            if let Some(handler) = priv_.state_handler.take() {
+            if let Some(handler) = imp.state_handler.take() {
                 old_request.disconnect(handler);
             }
 
-            if let Some(handler) = priv_.user_handler.take() {
+            if let Some(handler) = imp.user_handler.take() {
                 old_request.user().disconnect(handler);
             }
         }
@@ -134,7 +134,7 @@ impl VerificationInfoBar {
                 }),
             );
 
-            priv_.state_handler.replace(Some(handler));
+            imp.state_handler.replace(Some(handler));
 
             let handler = request.user().connect_notify_local(
                 Some("display-name"),
@@ -143,22 +143,22 @@ impl VerificationInfoBar {
                 }),
             );
 
-            priv_.user_handler.replace(Some(handler));
+            imp.user_handler.replace(Some(handler));
         }
 
-        priv_.request.replace(request);
+        imp.request.replace(request);
 
         self.update_view();
         self.notify("request");
     }
 
     pub fn update_view(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let visible = if let Some(request) = self.request() {
             if request.is_finished() {
                 false
             } else if matches!(request.state(), VerificationState::Requested) {
-                priv_.label.set_markup(&gettext_f(
+                imp.label.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "{user_name} wants to be verified",
@@ -167,19 +167,19 @@ impl VerificationInfoBar {
                         &format!("<b>{}</b>", request.user().display_name()),
                     )],
                 ));
-                priv_.accept_btn.set_label(&gettext("Verify"));
-                priv_.cancel_btn.set_label(&gettext("Decline"));
+                imp.accept_btn.set_label(&gettext("Verify"));
+                imp.cancel_btn.set_label(&gettext("Decline"));
                 true
             } else {
-                priv_.label.set_label(&gettext("Verification in progress"));
-                priv_.accept_btn.set_label(&gettext("Continue"));
-                priv_.cancel_btn.set_label(&gettext("Cancel"));
+                imp.label.set_label(&gettext("Verification in progress"));
+                imp.accept_btn.set_label(&gettext("Continue"));
+                imp.cancel_btn.set_label(&gettext("Cancel"));
                 true
             }
         } else {
             false
         };
 
-        priv_.revealer.set_reveal_child(visible);
+        imp.revealer.set_reveal_child(visible);
     }
 }

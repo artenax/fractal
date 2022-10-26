@@ -366,22 +366,21 @@ impl Session {
     }
 
     pub async fn prepare(&self, client: Client, session: StoredSession) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.client.set(client).unwrap();
+        imp.client.set(client).unwrap();
 
         let user = User::new(self, &session.user_id);
-        priv_.user.set(user).unwrap();
+        imp.user.set(user).unwrap();
         self.notify("user");
 
         self.update_user_profile();
 
-        priv_
-            .settings
+        imp.settings
             .set(SessionSettings::new(session.id()))
             .unwrap();
 
-        priv_.info.set(session).unwrap();
+        imp.info.set(session).unwrap();
         self.update_offline().await;
 
         self.room_list().load();
@@ -466,7 +465,7 @@ impl Session {
         });
 
         spawn!(clone!(@weak self as obj => async move {
-            let priv_ = obj.imp();
+            let imp = obj.imp();
             if !obj.has_cross_signing_keys().await {
                 if need_new_identity.await.unwrap() {
                     debug!("No E2EE identity found for this user, we need to create a new one…");
@@ -474,7 +473,7 @@ impl Session {
 
                     let handle = spawn_tokio!(async move { encryption.bootstrap_cross_signing(None).await });
                     if handle.await.is_ok() {
-                        priv_.stack.set_visible_child(&*priv_.leaflet);
+                        imp.stack.set_visible_child(&*imp.leaflet);
                         if let Some(window) = obj.parent_window() {
                             window.switch_to_sessions_page();
                         }
@@ -483,7 +482,7 @@ impl Session {
                 }
 
                 debug!("The cross-signing keys were not found, we need to verify this session…");
-                priv_.logout_on_dispose.set(true);
+                imp.logout_on_dispose.set(true);
                 obj.create_session_verification().await;
 
                 return;
@@ -494,19 +493,19 @@ impl Session {
     }
 
     pub async fn mark_ready(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         // FIXME: we should actually check if we have now the keys
         spawn!(clone!(@weak self as obj => async move {
             obj.has_cross_signing_keys().await;
         }));
 
-        priv_.logout_on_dispose.set(false);
+        imp.logout_on_dispose.set(false);
 
         self.show_content();
 
-        if let Some(session_verification) = priv_.stack.child_by_name("session-verification") {
-            priv_.stack.remove(&session_verification);
+        if let Some(session_verification) = imp.stack.child_by_name("session-verification") {
+            imp.stack.remove(&session_verification);
         }
 
         let obj_weak = glib::SendWeakRef::from(self.downgrade());
@@ -604,11 +603,11 @@ impl Session {
     }
 
     async fn update_offline(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let monitor = gio::NetworkMonitor::default();
 
         let is_offline = if monitor.is_network_available() {
-            if let Some(info) = priv_.info.get() {
+            if let Some(info) = imp.info.get() {
                 !check_if_reachable(&info.homeserver).await
             } else {
                 false
@@ -627,9 +626,9 @@ impl Session {
             debug!("This session is now online");
         }
 
-        priv_.offline.set(is_offline);
+        imp.offline.set(is_offline);
 
-        if let Some(handle) = priv_.sync_tokio_handle.take() {
+        if let Some(handle) = imp.sync_tokio_handle.take() {
             handle.abort();
         }
 
@@ -783,16 +782,16 @@ impl Session {
     }
 
     async fn cleanup_session(&self) {
-        let priv_ = self.imp();
-        let info = priv_.info.get().unwrap();
+        let imp = self.imp();
+        let info = imp.info.get().unwrap();
 
-        priv_.is_loaded.set(false);
+        imp.is_loaded.set(false);
 
-        if let Some(handle) = priv_.sync_tokio_handle.take() {
+        if let Some(handle) = imp.sync_tokio_handle.take() {
             handle.abort();
         }
 
-        if let Some(settings) = priv_.settings.get() {
+        if let Some(settings) = imp.settings.get() {
             settings.delete_settings();
         }
 
@@ -816,9 +815,9 @@ impl Session {
 
     /// Show the content of the session
     pub fn show_content(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.stack.set_visible_child(&*priv_.leaflet);
+        imp.stack.set_visible_child(&*imp.leaflet);
 
         if let Some(window) = self.parent_window() {
             window.switch_to_sessions_page();
@@ -827,10 +826,10 @@ impl Session {
 
     /// Show a media event
     pub fn show_media(&self, event: &SupportedEvent) {
-        let priv_ = self.imp();
-        priv_.media_viewer.set_event(Some(event.clone()));
+        let imp = self.imp();
+        imp.media_viewer.set_event(Some(event.clone()));
 
-        priv_.stack.set_visible_child(&*priv_.media_viewer);
+        imp.stack.set_visible_child(&*imp.media_viewer);
     }
 
     async fn has_cross_signing_keys(&self) -> bool {

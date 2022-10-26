@@ -134,15 +134,15 @@ impl Content {
     }
 
     pub fn handle_paste_action(&self) {
-        let priv_ = self.imp();
-        if priv_
+        let imp = self.imp();
+        if imp
             .stack
             .visible_child()
             .as_ref()
-            .map(|c| c == priv_.room_history.upcast_ref::<gtk::Widget>())
+            .map(|c| c == imp.room_history.upcast_ref::<gtk::Widget>())
             .unwrap_or_default()
         {
-            priv_.room_history.handle_paste_action();
+            imp.room_history.handle_paste_action();
         }
     }
 
@@ -173,13 +173,13 @@ impl Content {
 
     /// Set the item currently displayed.
     pub fn set_item(&self, item: Option<glib::Object>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.item() == item {
             return;
         }
 
-        if let Some(signal_handler) = priv_.signal_handler.take() {
+        if let Some(signal_handler) = imp.signal_handler.take() {
             if let Some(item) = self.item() {
                 item.disconnect(signal_handler);
             }
@@ -194,7 +194,7 @@ impl Content {
                     }),
                 );
 
-                priv_.signal_handler.replace(Some(handler_id));
+                imp.signal_handler.replace(Some(handler_id));
             }
 
             if item.is::<IdentityVerification>() {
@@ -207,11 +207,11 @@ impl Content {
                         }
                     }),
                 );
-                priv_.signal_handler.replace(Some(handler_id));
+                imp.signal_handler.replace(Some(handler_id));
             }
         }
 
-        priv_.item.replace(item);
+        imp.item.replace(item);
         self.set_visible_child();
         self.notify("item");
     }
@@ -222,25 +222,25 @@ impl Content {
     }
 
     fn set_visible_child(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         match self.item() {
             None => {
-                priv_.stack.set_visible_child(&*priv_.empty_page);
+                imp.stack.set_visible_child(&*imp.empty_page);
             }
             Some(o) if o.is::<Room>() => {
-                if let Some(room) = priv_
+                if let Some(room) = imp
                     .item
                     .borrow()
                     .as_ref()
                     .and_then(|item| item.downcast_ref::<Room>())
                 {
                     if room.category() == RoomType::Invited {
-                        priv_.invite.set_room(Some(room.clone()));
-                        priv_.stack.set_visible_child(&*priv_.invite);
+                        imp.invite.set_room(Some(room.clone()));
+                        imp.stack.set_visible_child(&*imp.invite);
                     } else {
-                        priv_.room_history.set_room(Some(room.clone()));
-                        priv_.stack.set_visible_child(&*priv_.room_history);
+                        imp.room_history.set_room(Some(room.clone()));
+                        imp.stack.set_visible_child(&*imp.room_history);
                     }
                 }
             }
@@ -248,21 +248,20 @@ impl Content {
                 if o.is::<Entry>()
                     && o.downcast_ref::<Entry>().unwrap().type_() == EntryType::Explore =>
             {
-                priv_.explore.init();
-                priv_.stack.set_visible_child(&*priv_.explore);
+                imp.explore.init();
+                imp.stack.set_visible_child(&*imp.explore);
             }
             Some(o) if o.is::<IdentityVerification>() => {
-                if let Some(item) = priv_
+                if let Some(item) = imp
                     .item
                     .borrow()
                     .as_ref()
                     .and_then(|item| item.downcast_ref::<IdentityVerification>())
                 {
                     if item.mode() != VerificationMode::CurrentSession {
-                        priv_
-                            .identity_verification_widget
+                        imp.identity_verification_widget
                             .set_request(Some(item.clone()));
-                        priv_.stack.set_visible_child(&*priv_.verification_page);
+                        imp.stack.set_visible_child(&*imp.verification_page);
                     }
                 }
             }

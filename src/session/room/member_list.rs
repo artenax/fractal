@@ -94,8 +94,8 @@ impl MemberList {
     /// If some of the values do not correspond to existing members, new members
     /// are created.
     pub fn update_from_room_members(&self, new_members: &[matrix_sdk::room::RoomMember]) {
-        let priv_ = self.imp();
-        let mut members = priv_.members.borrow_mut();
+        let imp = self.imp();
+        let mut members = imp.members.borrow_mut();
         let prev_len = members.len();
         for member in new_members {
             if let Entry::Vacant(entry) = members.entry(member.user_id().into()) {
@@ -110,7 +110,7 @@ impl MemberList {
         std::mem::drop(members);
 
         {
-            let members = priv_.members.borrow();
+            let members = imp.members.borrow();
             for room_member in new_members {
                 if let Some(member) = members.get(room_member.user_id()) {
                     member.update_from_room_member(room_member);

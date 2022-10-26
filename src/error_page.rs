@@ -84,9 +84,9 @@ impl ErrorPage {
     }
 
     pub fn display_secret_error(&self, message: &str, item: Option<oo7::Item>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         self.action_set_enabled("error-page.remove-secret-error-session", item.is_some());
-        priv_.page.set_description(Some(message));
+        imp.page.set_description(Some(message));
 
         let error_subpage = if item.is_some() {
             ErrorSubpage::SecretErrorSession
@@ -94,8 +94,8 @@ impl ErrorPage {
             ErrorSubpage::SecretErrorOther
         };
 
-        priv_.stack.set_visible_child_name(error_subpage.as_ref());
-        priv_.secret_item.replace(item);
+        imp.stack.set_visible_child_name(error_subpage.as_ref());
+        imp.secret_item.replace(item);
     }
 
     async fn remove_secret_error_session(&self) {

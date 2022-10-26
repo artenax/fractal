@@ -197,12 +197,12 @@ pub trait UserExt: IsA<User> {
 
     /// The display name of this user.
     fn display_name(&self) -> String {
-        let priv_ = self.upcast_ref().imp();
+        let imp = self.upcast_ref().imp();
 
-        if let Some(display_name) = priv_.display_name.borrow().to_owned() {
+        if let Some(display_name) = imp.display_name.borrow().to_owned() {
             display_name
         } else {
-            priv_.user_id.get().unwrap().localpart().to_owned()
+            imp.user_id.get().unwrap().localpart().to_owned()
         }
     }
 

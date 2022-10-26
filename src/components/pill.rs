@@ -103,29 +103,28 @@ impl Pill {
 
     /// Set the user displayed by this widget.
     pub fn set_user(&self, user: Option<User>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if *priv_.user.borrow() == user {
+        if *imp.user.borrow() == user {
             return;
         }
 
-        while let Some(binding) = priv_.bindings.borrow_mut().pop() {
+        while let Some(binding) = imp.bindings.borrow_mut().pop() {
             binding.unbind();
         }
 
         if let Some(ref user) = user {
             let display_name_binding = user
-                .bind_property("display-name", &*priv_.display_name, "label")
+                .bind_property("display-name", &*imp.display_name, "label")
                 .flags(glib::BindingFlags::SYNC_CREATE)
                 .build();
 
-            priv_.bindings.borrow_mut().push(display_name_binding);
+            imp.bindings.borrow_mut().push(display_name_binding);
         }
 
-        priv_
-            .avatar
+        imp.avatar
             .set_item(user.clone().map(|user| user.avatar().clone()));
-        priv_.user.replace(user);
+        imp.user.replace(user);
 
         self.notify("user");
     }
@@ -137,29 +136,28 @@ impl Pill {
 
     /// Set the room displayed by this widget.
     pub fn set_room(&self, room: Option<Room>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if *priv_.room.borrow() == room {
+        if *imp.room.borrow() == room {
             return;
         }
 
-        while let Some(binding) = priv_.bindings.borrow_mut().pop() {
+        while let Some(binding) = imp.bindings.borrow_mut().pop() {
             binding.unbind();
         }
 
         if let Some(ref room) = room {
             let display_name_binding = room
-                .bind_property("display-name", &*priv_.display_name, "label")
+                .bind_property("display-name", &*imp.display_name, "label")
                 .flags(glib::BindingFlags::SYNC_CREATE)
                 .build();
 
-            priv_.bindings.borrow_mut().push(display_name_binding);
+            imp.bindings.borrow_mut().push(display_name_binding);
         }
 
-        priv_
-            .avatar
+        imp.avatar
             .set_item(room.clone().map(|room| room.avatar().clone()));
-        priv_.room.replace(room);
+        imp.room.replace(room);
 
         self.notify("room");
     }

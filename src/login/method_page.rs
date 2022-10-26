@@ -165,13 +165,13 @@ impl LoginMethodPage {
     }
 
     pub fn update_sso(&self, login_types: Option<&SsoLoginType>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let login_types = match login_types {
             Some(t) => t,
             None => {
-                priv_.sso_idp_box.hide();
-                priv_.more_sso_option.hide();
+                imp.sso_idp_box.hide();
+                imp.more_sso_option.hide();
                 return;
             }
         };
@@ -185,40 +185,40 @@ impl LoginMethodPage {
             let btn = IdpButton::new_from_identity_provider(provider);
 
             if let Some(btn) = btn {
-                priv_.sso_idp_box.append(&btn);
+                imp.sso_idp_box.append(&btn);
                 has_known_methods = true;
             } else {
                 has_unknown_methods = true;
             }
         }
 
-        priv_.sso_idp_box.set_visible(has_known_methods);
-        priv_.more_sso_option.set_visible(has_unknown_methods);
+        imp.sso_idp_box.set_visible(has_known_methods);
+        imp.more_sso_option.set_visible(has_unknown_methods);
     }
 
     pub fn can_go_next(&self) -> bool {
-        let priv_ = self.imp();
-        let username_length = priv_.username_entry.text().len();
-        let password_length = priv_.password_entry.text().len();
+        let imp = self.imp();
+        let username_length = imp.username_entry.text().len();
+        let password_length = imp.password_entry.text().len();
         username_length != 0 && password_length != 0
     }
 
     pub fn clean(&self) {
-        let priv_ = self.imp();
-        priv_.username_entry.set_text("");
-        priv_.password_entry.set_text("");
+        let imp = self.imp();
+        imp.username_entry.set_text("");
+        imp.password_entry.set_text("");
 
         self.clean_idp_box();
     }
 
     /// Empty the identity providers box.
     pub fn clean_idp_box(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        let mut child = priv_.sso_idp_box.first_child();
+        let mut child = imp.sso_idp_box.first_child();
         while child.is_some() {
-            priv_.sso_idp_box.remove(&child.unwrap());
-            child = priv_.sso_idp_box.first_child();
+            imp.sso_idp_box.remove(&child.unwrap());
+            child = imp.sso_idp_box.first_child();
         }
     }
 

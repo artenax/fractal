@@ -183,13 +183,13 @@ impl ActionButton {
     }
 
     pub fn set_extra_classes(&self, classes: &[&str]) {
-        let priv_ = self.imp();
-        for class in priv_.extra_classes.borrow_mut().drain(..) {
-            priv_.button_default.remove_css_class(&class);
+        let imp = self.imp();
+        for class in imp.extra_classes.borrow_mut().drain(..) {
+            imp.button_default.remove_css_class(&class);
         }
 
         for class in classes.iter() {
-            priv_.button_default.add_css_class(class);
+            imp.button_default.add_css_class(class);
         }
 
         self.imp()
@@ -208,9 +208,9 @@ impl ActionButton {
             return;
         }
 
-        let priv_ = self.imp();
-        priv_.stack.set_visible_child_name(state.as_ref());
-        priv_.state.replace(state);
+        let imp = self.imp();
+        imp.stack.set_visible_child_name(state.as_ref());
+        imp.state.replace(state);
         self.notify("state");
     }
 

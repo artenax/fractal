@@ -118,7 +118,7 @@ impl PublicRoomRow {
 
     /// Set the public room displayed by this row.
     pub fn set_public_room(&self, public_room: Option<PublicRoom>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let old_public_room = self.public_room();
 
         if old_public_room == public_room {
@@ -126,21 +126,20 @@ impl PublicRoomRow {
         }
 
         if let Some(ref old_public_room) = old_public_room {
-            if let Some(handler) = priv_.room_handler.take() {
+            if let Some(handler) = imp.room_handler.take() {
                 old_public_room.disconnect(handler);
             }
-            if let Some(handler) = priv_.pending_handler.take() {
+            if let Some(handler) = imp.pending_handler.take() {
                 old_public_room.disconnect(handler);
             }
         }
 
         if let Some(ref public_room) = public_room {
-            if let Some(child) = priv_.original_child.take() {
+            if let Some(child) = imp.original_child.take() {
                 self.set_child(Some(&child));
             }
             if let Some(matrix_public_room) = public_room.matrix_public_room() {
-                priv_
-                    .avatar
+                imp.avatar
                     .set_item(Some(public_room.avatar().clone().upcast()));
 
                 let display_name = matrix_public_room
@@ -149,27 +148,26 @@ impl PublicRoomRow {
                     .map(AsRef::as_ref)
                     // FIXME: display some other identification for this room
                     .unwrap_or("Room without name");
-                priv_.display_name.set_text(display_name);
+                imp.display_name.set_text(display_name);
 
                 let has_topic = if let Some(ref topic) = matrix_public_room.topic {
-                    priv_.description.set_text(topic);
+                    imp.description.set_text(topic);
                     true
                 } else {
                     false
                 };
 
-                priv_.description.set_visible(has_topic);
+                imp.description.set_visible(has_topic);
 
                 let has_alias = if let Some(ref alias) = matrix_public_room.canonical_alias {
-                    priv_.alias.set_text(alias.as_str());
+                    imp.alias.set_text(alias.as_str());
                     true
                 } else {
                     false
                 };
 
-                priv_.alias.set_visible(has_alias);
-                priv_
-                    .members_count
+                imp.alias.set_visible(has_alias);
+                imp.members_count
                     .set_text(&matrix_public_room.num_joined_members.to_string());
 
                 let pending_handler = public_room.connect_notify_local(
@@ -179,7 +177,7 @@ impl PublicRoomRow {
                     }),
                 );
 
-                priv_.pending_handler.replace(Some(pending_handler));
+                imp.pending_handler.replace(Some(pending_handler));
 
                 let room_handler = public_room.connect_notify_local(
                     Some("room"),
@@ -188,23 +186,22 @@ impl PublicRoomRow {
                     }),
                 );
 
-                priv_.room_handler.replace(Some(room_handler));
+                imp.room_handler.replace(Some(room_handler));
 
                 self.update_button(public_room);
-            } else if priv_.original_child.borrow().is_none() {
+            } else if imp.original_child.borrow().is_none() {
                 let spinner = gtk::Spinner::builder()
                     .spinning(true)
                     .margin_top(12)
                     .margin_bottom(12)
                     .build();
-                priv_.original_child.replace(self.child());
+                imp.original_child.replace(self.child());
                 self.set_child(Some(&spinner));
             }
         }
-        priv_
-            .avatar
+        imp.avatar
             .set_item(public_room.clone().map(|room| room.avatar().clone()));
-        priv_.public_room.replace(public_room);
+        imp.public_room.replace(public_room);
         self.notify("public-room");
     }
 

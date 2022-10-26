@@ -190,7 +190,7 @@ impl ImagePaintable {
         &self,
         reader: image::io::Reader<R>,
     ) -> Result<(), Box<dyn std::error::Error>> {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let format = reader.format().ok_or("Could not detect image format")?;
 
         let read = reader.into_inner();
@@ -209,10 +209,10 @@ impl ImagePaintable {
 
                 if frames.len() == 1 {
                     if let Some(frame) = frames.into_iter().next() {
-                        priv_.frame.replace(Some(frame.texture));
+                        imp.frame.replace(Some(frame.texture));
                     }
                 } else {
-                    priv_.frames.replace(Some(frames));
+                    imp.frames.replace(Some(frames));
                     self.update_frame();
                 }
             }
@@ -227,7 +227,7 @@ impl ImagePaintable {
                         .into_iter()
                         .map(Frame::from)
                         .collect::<Vec<_>>();
-                    priv_.frames.replace(Some(frames));
+                    imp.frames.replace(Some(frames));
                     self.update_frame();
                 } else {
                     let image = DynamicImage::from_decoder(decoder)?;
@@ -323,8 +323,8 @@ impl ImagePaintable {
 
     /// Update the current frame of the animation.
     fn update_frame(&self) {
-        let priv_ = self.imp();
-        let frames_ref = priv_.frames.borrow();
+        let imp = self.imp();
+        let frames_ref = imp.frames.borrow();
 
         // If it's not an animation, we return early.
         let frames = match &*frames_ref {
@@ -332,9 +332,9 @@ impl ImagePaintable {
             None => return,
         };
 
-        let idx = priv_.current_idx.get();
+        let idx = imp.current_idx.get();
         let next_frame = frames.get(idx).unwrap();
-        priv_.frame.replace(Some(next_frame.texture.clone()));
+        imp.frame.replace(Some(next_frame.texture.clone()));
 
         // Invalidate the contents so that the new frame will be rendered.
         self.invalidate_contents();
@@ -345,14 +345,14 @@ impl ImagePaintable {
             obj.update_frame();
         });
         let source_id = glib::timeout_add_local_once(next_frame.duration, update_frame_callback);
-        priv_.timeout_source_id.replace(Some(source_id));
+        imp.timeout_source_id.replace(Some(source_id));
 
         // Update the index for the next call.
         let mut new_idx = idx + 1;
         if new_idx >= frames.len() {
             new_idx = 0;
         }
-        priv_.current_idx.set(new_idx);
+        imp.current_idx.set(new_idx);
     }
 
     /// Whether this `ImagePaintable` displays an animation.

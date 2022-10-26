@@ -145,7 +145,7 @@ impl SessionVerification {
     }
 
     fn set_request(&self, request: Option<IdentityVerification>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let previous_request = self.request();
 
         if previous_request == request {
@@ -155,7 +155,7 @@ impl SessionVerification {
         self.reset();
 
         if let Some(previous_request) = previous_request {
-            if let Some(handler) = priv_.state_handler.take() {
+            if let Some(handler) = imp.state_handler.take() {
                 previous_request.disconnect(handler);
             }
 
@@ -170,12 +170,12 @@ impl SessionVerification {
                 }),
             );
 
-            priv_.state_handler.replace(Some(handler));
+            imp.state_handler.replace(Some(handler));
             self.update_view(request);
         }
 
-        priv_.verification_widget.set_request(request.clone());
-        priv_.request.replace(request);
+        imp.verification_widget.set_request(request.clone());
+        imp.request.replace(request);
     }
 
     /// Returns the parent GtkWindow containing this widget.
@@ -191,7 +191,7 @@ impl SessionVerification {
     }
 
     fn update_view(&self, request: &IdentityVerification) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if request.is_finished() && request.state() != VerificationState::Completed {
             self.start_request();
@@ -201,15 +201,13 @@ impl SessionVerification {
         match request.state() {
             // FIXME: we bootstrap on all errors
             VerificationState::Error => {
-                priv_.main_stack.set_visible_child_name("bootstrap");
+                imp.main_stack.set_visible_child_name("bootstrap");
             }
             VerificationState::RequestSend => {
-                priv_.main_stack.set_visible_child_name("wait-for-device");
+                imp.main_stack.set_visible_child_name("wait-for-device");
             }
             _ => {
-                priv_
-                    .main_stack
-                    .set_visible_child(&*priv_.verification_widget);
+                imp.main_stack.set_visible_child(&*imp.verification_widget);
             }
         }
     }
@@ -221,14 +219,14 @@ impl SessionVerification {
     }
 
     fn show_bootstrap(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         self.set_request(None);
-        priv_.bootstrap_label.set_label(&gettext("If you lost access to all other sessions you can create a new crypto identity. Be careful because this will reset all verified users and make previously encrypted conversations unreadable."));
-        priv_.bootstrap_button.remove_css_class("suggested-action");
-        priv_.bootstrap_button.add_css_class("destructive-action");
-        priv_.bootstrap_button.set_label(&gettext("Reset"));
-        priv_.main_stack.set_visible_child_name("bootstrap");
+        imp.bootstrap_label.set_label(&gettext("If you lost access to all other sessions you can create a new crypto identity. Be careful because this will reset all verified users and make previously encrypted conversations unreadable."));
+        imp.bootstrap_button.remove_css_class("suggested-action");
+        imp.bootstrap_button.add_css_class("destructive-action");
+        imp.bootstrap_button.set_label(&gettext("Reset"));
+        imp.main_stack.set_visible_child_name("bootstrap");
     }
 
     fn start_request(&self) {

@@ -90,28 +90,26 @@ impl MessageReaction {
 
     /// Set the reaction group to display.
     fn set_group(&self, group: ReactionGroup) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let key = group.key();
-        priv_.reaction_key.set_label(key);
+        imp.reaction_key.set_label(key);
 
         if EMOJI_REGEX.is_match(key) {
-            priv_.reaction_key.add_css_class("emoji");
+            imp.reaction_key.add_css_class("emoji");
         } else {
-            priv_.reaction_key.remove_css_class("emoji");
+            imp.reaction_key.remove_css_class("emoji");
         }
 
-        priv_
-            .button
-            .set_action_target_value(Some(&key.to_variant()));
+        imp.button.set_action_target_value(Some(&key.to_variant()));
         group
-            .bind_property("has-user", &*priv_.button, "active")
+            .bind_property("has-user", &*imp.button, "active")
             .flags(glib::BindingFlags::SYNC_CREATE)
             .build();
         group
-            .bind_property("count", &*priv_.reaction_count, "label")
+            .bind_property("count", &*imp.reaction_count, "label")
             .flags(glib::BindingFlags::SYNC_CREATE)
             .build();
 
-        priv_.group.set(group).unwrap();
+        imp.group.set(group).unwrap();
     }
 }

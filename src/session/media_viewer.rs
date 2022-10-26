@@ -175,21 +175,21 @@ impl MediaViewer {
 
     /// Set whether the viewer is fullscreened.
     pub fn set_fullscreened(&self, fullscreened: bool) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if fullscreened == self.fullscreened() {
             return;
         }
 
-        priv_.fullscreened.set(fullscreened);
+        imp.fullscreened.set(fullscreened);
 
         if fullscreened {
             // Upscale the media on fullscreen
-            priv_.media.set_halign(gtk::Align::Fill);
-            priv_.flap.set_fold_policy(adw::FlapFoldPolicy::Always);
+            imp.media.set_halign(gtk::Align::Fill);
+            imp.flap.set_fold_policy(adw::FlapFoldPolicy::Always);
         } else {
-            priv_.media.set_halign(gtk::Align::Center);
-            priv_.flap.set_fold_policy(adw::FlapFoldPolicy::Never);
+            imp.media.set_halign(gtk::Align::Center);
+            imp.flap.set_fold_policy(adw::FlapFoldPolicy::Never);
         }
 
         self.notify("fullscreened");
@@ -208,13 +208,13 @@ impl MediaViewer {
                         spawn!(
                             glib::PRIORITY_LOW,
                             clone!(@weak self as obj => async move {
-                                let priv_ = obj.imp();
+                                let imp = obj.imp();
 
                                 match event.get_media_content().await {
                                     Ok((_, _, data)) => {
                                         match ImagePaintable::from_bytes(&glib::Bytes::from(&data), image.info.and_then(|info| info.mimetype).as_deref()) {
                                             Ok(texture) => {
-                                                priv_.media.view_image(&texture);
+                                                imp.media.view_image(&texture);
                                                 return;
                                             }
                                             Err(error) => warn!("Could not load GdkTexture from file: {}", error),
@@ -223,7 +223,7 @@ impl MediaViewer {
                                     Err(error) => warn!("Could not retrieve image file: {}", error),
                                 }
 
-                                priv_.media.show_fallback(ContentType::Image);
+                                imp.media.show_fallback(ContentType::Image);
                             })
                         );
                     }
@@ -233,7 +233,7 @@ impl MediaViewer {
                         spawn!(
                             glib::PRIORITY_LOW,
                             clone!(@weak self as obj => async move {
-                                let priv_ = obj.imp();
+                                let imp = obj.imp();
 
                                 match event.get_media_content().await {
                                     Ok((uid, filename, data)) => {
@@ -252,11 +252,11 @@ impl MediaViewer {
                                         )
                                         .unwrap();
 
-                                        priv_.media.view_file(file);
+                                        imp.media.view_file(file);
                                     }
                                     Err(error) => {
                                         warn!("Could not retrieve video file: {}", error);
-                                        priv_.media.show_fallback(ContentType::Video);
+                                        imp.media.show_fallback(ContentType::Video);
                                     }
                                 }
                             })

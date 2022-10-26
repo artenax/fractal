@@ -348,21 +348,21 @@ impl AuthDialog {
     }
 
     fn show_auth_error(&self, auth_error: &Option<ErrorBody>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if let Some(auth_error) = auth_error {
-            priv_.error.set_label(&auth_error.message);
-            priv_.error.show();
+            imp.error.set_label(&auth_error.message);
+            imp.error.show();
         } else {
-            priv_.error.hide();
+            imp.error.hide();
         }
     }
 
     fn setup_fallback_page(&self, homeserver: &str, auth_type: &str, session: &str) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if let Some(handler) = priv_.open_browser_btn_handler.take() {
-            priv_.open_browser_btn.disconnect(handler);
+        if let Some(handler) = imp.open_browser_btn_handler.take() {
+            imp.open_browser_btn.disconnect(handler);
         }
 
         let uri = format!(
@@ -370,14 +370,13 @@ impl AuthDialog {
             homeserver, auth_type, session
         );
 
-        let handler =
-            priv_
-                .open_browser_btn
-                .connect_clicked(clone!(@weak self as obj => move |_| {
-                    gtk::show_uri(obj.transient_for().as_ref(), &uri, gdk::CURRENT_TIME);
-                }));
+        let handler = imp
+            .open_browser_btn
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                gtk::show_uri(obj.transient_for().as_ref(), &uri, gdk::CURRENT_TIME);
+            }));
 
-        priv_.open_browser_btn_handler.replace(Some(handler));
+        imp.open_browser_btn_handler.replace(Some(handler));
     }
 
     pub fn connect_response<F: Fn(&Self, bool) + 'static>(&self, f: F) -> glib::SignalHandlerId {

@@ -131,25 +131,25 @@ impl DragOverlay {
 
     /// Set the [`gtk::DropTarget`] of this `DragOverlay`.
     pub fn set_drop_target(&self, drop_target: &gtk::DropTarget) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if let Some(target) = priv_.drop_target.borrow_mut().take() {
+        if let Some(target) = imp.drop_target.borrow_mut().take() {
             self.remove_controller(&target);
 
-            if let Some(handler_id) = priv_.handler_id.borrow_mut().take() {
+            if let Some(handler_id) = imp.handler_id.borrow_mut().take() {
                 target.disconnect(handler_id);
             }
         }
 
         let handler_id = drop_target.connect_current_drop_notify(
-            glib::clone!(@weak priv_.revealer as revealer => move |target| {
+            glib::clone!(@weak imp.revealer as revealer => move |target| {
                 revealer.set_reveal_child(target.current_drop().is_some());
             }),
         );
-        priv_.handler_id.replace(Some(handler_id));
+        imp.handler_id.replace(Some(handler_id));
 
         self.add_controller(drop_target);
-        priv_.drop_target.replace(Some(drop_target.clone()));
+        imp.drop_target.replace(Some(drop_target.clone()));
         self.notify("drop-target");
     }
 }

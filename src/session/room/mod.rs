@@ -328,10 +328,10 @@ impl Room {
 
     /// Set the new sdk room struct represented by this `Room`
     fn set_matrix_room(&self, matrix_room: MatrixRoom) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         // Check if the previous type was different
-        if let Some(ref old_matrix_room) = *priv_.matrix_room.borrow() {
+        if let Some(ref old_matrix_room) = *imp.matrix_room.borrow() {
             let changed = match old_matrix_room {
                 MatrixRoom::Joined(_) => !matches!(matrix_room, MatrixRoom::Joined(_)),
                 MatrixRoom::Left(_) => !matches!(matrix_room, MatrixRoom::Left(_)),
@@ -344,7 +344,7 @@ impl Room {
             }
         }
 
-        priv_.matrix_room.replace(Some(matrix_room));
+        imp.matrix_room.replace(Some(matrix_room));
 
         self.load_display_name();
         self.load_predecessor();
@@ -1208,19 +1208,19 @@ impl Room {
     }
 
     pub fn load_members(&self) {
-        let priv_ = self.imp();
-        if priv_.members_loaded.get() {
+        let imp = self.imp();
+        if imp.members_loaded.get() {
             return;
         }
 
-        priv_.members_loaded.set(true);
+        imp.members_loaded.set(true);
         let matrix_room = self.matrix_room();
         let handle = spawn_tokio!(async move { matrix_room.members().await });
         spawn!(
             glib::PRIORITY_LOW,
             clone!(@weak self as obj => async move {
                 // FIXME: We should retry to load the room members if the request failed
-                let priv_ = obj.imp();
+                let imp = obj.imp();
                 match handle.await.unwrap() {
                     Ok(members) => {
                         // Add all members needed to display room events.
@@ -1230,7 +1230,7 @@ impl Room {
                         obj.members().update_from_room_members(&members);
                     },
                     Err(error) => {
-                        priv_.members_loaded.set(false);
+                        imp.members_loaded.set(false);
                         error!("Couldn’t load room members: {}", error)
                     },
                 };
@@ -1533,16 +1533,16 @@ impl Room {
 
     /// Load the predecessor of this room.
     fn load_predecessor(&self) -> Option<()> {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.predecessor.get().is_some() {
+        if imp.predecessor.get().is_some() {
             return None;
         }
 
         let event = self.matrix_room().create_content()?;
         let room_id = event.predecessor?.room_id;
 
-        priv_.predecessor.set(room_id).unwrap();
+        imp.predecessor.set(room_id).unwrap();
         self.notify("predecessor");
         Some(())
     }
@@ -1554,15 +1554,15 @@ impl Room {
 
     /// Load the successor of this room.
     pub fn load_successor(&self) -> Option<()> {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.successor.get().is_some() {
+        if imp.successor.get().is_some() {
             return None;
         }
 
         let room_id = self.matrix_room().tombstone()?.replacement_room;
 
-        priv_.successor.set(room_id).unwrap();
+        imp.successor.set(room_id).unwrap();
         self.set_category_internal(RoomType::Outdated);
         self.notify("successor");
 

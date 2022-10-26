@@ -148,7 +148,7 @@ impl MessageAudio {
 
     /// Set the state of the audio file.
     fn set_state(&self, state: MediaState) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.state() == state {
             return;
@@ -156,20 +156,20 @@ impl MessageAudio {
 
         match state {
             MediaState::Loading | MediaState::Initial => {
-                priv_.state_spinner.set_visible(true);
-                priv_.state_error.set_visible(false);
+                imp.state_spinner.set_visible(true);
+                imp.state_error.set_visible(false);
             }
             MediaState::Ready => {
-                priv_.state_spinner.set_visible(false);
-                priv_.state_error.set_visible(false);
+                imp.state_spinner.set_visible(false);
+                imp.state_error.set_visible(false);
             }
             MediaState::Error => {
-                priv_.state_spinner.set_visible(false);
-                priv_.state_error.set_visible(true);
+                imp.state_spinner.set_visible(false);
+                imp.state_error.set_visible(true);
             }
         }
 
-        priv_.state.set(state);
+        imp.state.set(state);
         self.notify("state");
     }
 

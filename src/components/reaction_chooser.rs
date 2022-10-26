@@ -122,7 +122,7 @@ impl ReactionChooser {
     }
 
     pub fn set_reactions(&self, reactions: Option<ReactionList>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let prev_reactions = self.reactions();
 
         if prev_reactions == reactions {
@@ -130,14 +130,14 @@ impl ReactionChooser {
         }
 
         if let Some(reactions) = prev_reactions.as_ref() {
-            if let Some(signal_handler) = priv_.reactions_handler.take() {
+            if let Some(signal_handler) = imp.reactions_handler.take() {
                 reactions.disconnect(signal_handler);
             }
 
-            let mut reaction_bindings = priv_.reaction_bindings.borrow_mut();
+            let mut reaction_bindings = imp.reaction_bindings.borrow_mut();
             for reaction_item in QUICK_REACTIONS {
                 if let Some(binding) = reaction_bindings.remove(reaction_item.key) {
-                    if let Some(button) = priv_
+                    if let Some(button) = imp
                         .reaction_grid
                         .child_at(reaction_item.column, reaction_item.row)
                         .and_then(|widget| widget.downcast::<gtk::ToggleButton>().ok())
@@ -155,15 +155,15 @@ impl ReactionChooser {
                 reactions.connect_items_changed(clone!(@weak self as obj => move |_, _, _, _| {
                     obj.update_reactions();
                 }));
-            priv_.reactions_handler.replace(Some(signal_handler));
+            imp.reactions_handler.replace(Some(signal_handler));
         }
-        priv_.reactions.replace(reactions);
+        imp.reactions.replace(reactions);
         self.update_reactions();
     }
 
     fn update_reactions(&self) {
-        let priv_ = self.imp();
-        let mut reaction_bindings = priv_.reaction_bindings.borrow_mut();
+        let imp = self.imp();
+        let mut reaction_bindings = imp.reaction_bindings.borrow_mut();
         let reactions = self.reactions();
 
         for reaction_item in QUICK_REACTIONS {
@@ -172,7 +172,7 @@ impl ReactionChooser {
                 .and_then(|reactions| reactions.reaction_group_by_key(reaction_item.key))
             {
                 if reaction_bindings.get(reaction_item.key).is_none() {
-                    let button = priv_
+                    let button = imp
                         .reaction_grid
                         .child_at(reaction_item.column, reaction_item.row)
                         .unwrap();
@@ -183,7 +183,7 @@ impl ReactionChooser {
                     reaction_bindings.insert(reaction_item.key.to_string(), binding);
                 }
             } else if let Some(binding) = reaction_bindings.remove(reaction_item.key) {
-                if let Some(button) = priv_
+                if let Some(button) = imp
                     .reaction_grid
                     .child_at(reaction_item.column, reaction_item.row)
                     .and_then(|widget| widget.downcast::<gtk::ToggleButton>().ok())

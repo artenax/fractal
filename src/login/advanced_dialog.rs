@@ -89,9 +89,9 @@ impl LoginAdvancedDialog {
 
     /// Set whether auto-discovery is enabled.
     pub fn set_autodiscovery(&self, autodiscovery: bool) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.autodiscovery.set(autodiscovery);
+        imp.autodiscovery.set(autodiscovery);
         self.notify("autodiscovery");
     }
 

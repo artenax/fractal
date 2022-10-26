@@ -107,10 +107,10 @@ impl Device {
 
     /// Set the Matrix device of this `Device`.
     fn set_matrix_device(&self, device: MatrixDevice, crypto_device: Option<CryptoDevice>) {
-        let priv_ = self.imp();
-        priv_.device.set(device).unwrap();
+        let imp = self.imp();
+        imp.device.set(device).unwrap();
         if let Some(crypto_device) = crypto_device {
-            priv_.crypto_device.set(crypto_device).unwrap();
+            imp.crypto_device.set(crypto_device).unwrap();
         }
     }
 

@@ -104,13 +104,13 @@ impl Avatar {
 
     /// Set the Avatar item displayed by this widget.
     pub fn set_item(&self, item: Option<AvatarItem>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if *priv_.item.borrow() == item {
+        if *imp.item.borrow() == item {
             return;
         }
 
-        priv_.item.replace(item);
+        imp.item.replace(item);
 
         if self.is_mapped() {
             self.request_custom_avatar();

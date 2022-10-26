@@ -159,17 +159,17 @@ impl UserPage {
         spawn!(
             glib::PRIORITY_LOW,
             clone!(@weak self as obj => async move {
-                let priv_ = obj.imp();
+                let imp = obj.imp();
                 let client = obj.session().unwrap().client();
 
                 let homeserver = client.homeserver().await;
-                priv_.homeserver.set_label(homeserver.as_ref());
+                imp.homeserver.set_label(homeserver.as_ref());
 
                 let user_id = client.user_id().unwrap();
-                priv_.user_id.set_label(user_id.as_ref());
+                imp.user_id.set_label(user_id.as_ref());
 
                 let session_id = client.device_id().unwrap();
-                priv_.session_id.set_label(session_id.as_ref());
+                imp.session_id.set_label(session_id.as_ref());
             })
         );
     }
@@ -201,10 +201,10 @@ impl UserPage {
     }
 
     fn avatar_changed(&self, uri: Option<&MxcUri>) {
-        let priv_ = self.imp();
-        let avatar = &*priv_.avatar;
-        if uri.is_none() && priv_.removing_avatar.get() {
-            priv_.removing_avatar.set(false);
+        let imp = self.imp();
+        let avatar = &*imp.avatar;
+        if uri.is_none() && imp.removing_avatar.get() {
+            imp.removing_avatar.set(false);
             avatar.show_temp_image(false);
             avatar.set_remove_state(ActionState::Success);
             avatar.set_edit_sensitive(true);
@@ -216,9 +216,9 @@ impl UserPage {
                 }),
             );
         } else if uri.is_some() {
-            let to_uri = priv_.changing_avatar_to.borrow().clone();
+            let to_uri = imp.changing_avatar_to.borrow().clone();
             if to_uri.as_deref() == uri {
-                priv_.changing_avatar_to.take();
+                imp.changing_avatar_to.take();
                 avatar.set_edit_state(ActionState::Success);
                 avatar.show_temp_image(false);
                 avatar.set_temp_image_from_file(None);
@@ -235,8 +235,8 @@ impl UserPage {
     }
 
     async fn change_avatar(&self, file: gio::File) {
-        let priv_ = self.imp();
-        let avatar = &priv_.avatar;
+        let imp = self.imp();
+        let avatar = &imp.avatar;
         avatar.set_temp_image_from_file(Some(&file));
         avatar.show_temp_image(true);
         avatar.set_edit_state(ActionState::Loading);
@@ -277,18 +277,18 @@ impl UserPage {
             }
         };
 
-        priv_.changing_avatar_to.replace(Some(uri.clone()));
+        imp.changing_avatar_to.replace(Some(uri.clone()));
         let handle = spawn_tokio!(async move { client.account().set_avatar_url(Some(&uri)).await });
 
         match handle.await.unwrap() {
             Ok(_) => {
-                let to_uri = priv_.changing_avatar_to.borrow().clone();
+                let to_uri = imp.changing_avatar_to.borrow().clone();
                 if let Some(avatar) = to_uri {
                     self.user().set_avatar_url(Some(avatar))
                 }
             }
             Err(error) => {
-                if priv_.changing_avatar_to.take().is_some() {
+                if imp.changing_avatar_to.take().is_some() {
                     error!("Could not change user avatar: {}", error);
                     toast!(self, gettext("Could not change avatar"));
                     avatar.show_temp_image(false);
@@ -301,23 +301,23 @@ impl UserPage {
     }
 
     async fn remove_avatar(&self) {
-        let priv_ = self.imp();
-        let avatar = &*priv_.avatar;
+        let imp = self.imp();
+        let avatar = &*imp.avatar;
         avatar.show_temp_image(true);
         avatar.set_remove_state(ActionState::Loading);
         avatar.set_edit_sensitive(false);
 
         let client = self.session().unwrap().client();
         let handle = spawn_tokio!(async move { client.account().set_avatar_url(None).await });
-        priv_.removing_avatar.set(true);
+        imp.removing_avatar.set(true);
 
         match handle.await.unwrap() {
             Ok(_) => {
                 self.user().set_avatar_url(None);
             }
             Err(error) => {
-                if priv_.removing_avatar.get() {
-                    priv_.removing_avatar.set(false);
+                if imp.removing_avatar.get() {
+                    imp.removing_avatar.set(false);
                     error!("Couldn’t remove user avatar: {}", error);
                     toast!(self, gettext("Could not remove avatar"));
                     avatar.show_temp_image(false);
@@ -329,25 +329,25 @@ impl UserPage {
     }
 
     fn init_display_name(&self) {
-        let priv_ = self.imp();
-        let entry = &priv_.display_name;
+        let imp = self.imp();
+        let entry = &imp.display_name;
         entry.connect_changed(clone!(@weak self as obj => move|entry| {
             obj.imp().display_name_button.set_visible(entry.text() != obj.user().display_name());
         }));
     }
 
     fn display_name_changed(&self, name: &str) {
-        let priv_ = self.imp();
-        let entry = &priv_.display_name;
-        let button = &priv_.display_name_button;
+        let imp = self.imp();
+        let entry = &imp.display_name;
+        let button = &imp.display_name_button;
 
-        let to_display_name = priv_
+        let to_display_name = imp
             .changing_display_name_to
             .borrow()
             .clone()
             .unwrap_or_default();
         if to_display_name == name {
-            priv_.changing_display_name_to.take();
+            imp.changing_display_name_to.take();
             entry.remove_css_class("error");
             entry.set_sensitive(true);
             button.hide();
@@ -357,16 +357,15 @@ impl UserPage {
     }
 
     async fn change_display_name(&self) {
-        let priv_ = self.imp();
-        let entry = &priv_.display_name;
-        let button = &priv_.display_name_button;
+        let imp = self.imp();
+        let entry = &imp.display_name;
+        let button = &imp.display_name_button;
 
         entry.set_sensitive(false);
         button.set_state(ActionState::Loading);
 
         let display_name = entry.text();
-        priv_
-            .changing_display_name_to
+        imp.changing_display_name_to
             .replace(Some(display_name.to_string()));
 
         let client = self.session().unwrap().client();
@@ -377,7 +376,7 @@ impl UserPage {
 
         match handle.await.unwrap() {
             Ok(_) => {
-                let to_display_name = priv_.changing_display_name_to.borrow().clone();
+                let to_display_name = imp.changing_display_name_to.borrow().clone();
                 if let Some(display_name) = to_display_name {
                     self.user().set_display_name(Some(display_name));
                 }

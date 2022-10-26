@@ -126,11 +126,11 @@ impl NotificationsPage {
             return;
         }
 
-        let priv_ = self.imp();
-        if let Some(binding) = priv_.settings_binding.take() {
+        let imp = self.imp();
+        if let Some(binding) = imp.settings_binding.take() {
             binding.unbind();
         }
-        priv_.event_handler_guard.take();
+        imp.event_handler_guard.take();
 
         if let Some(session) = &session {
             let binding = session
@@ -138,10 +138,10 @@ impl NotificationsPage {
                 .bind_property("notifications-enabled", self, "session-enabled")
                 .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::BIDIRECTIONAL)
                 .build();
-            priv_.settings_binding.replace(Some(binding));
+            imp.settings_binding.replace(Some(binding));
         }
 
-        priv_.session.set(session.as_ref());
+        imp.session.set(session.as_ref());
         self.notify("session");
 
         spawn!(

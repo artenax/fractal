@@ -144,47 +144,47 @@ impl DeviceRow {
 
     /// Set the device displayed by this row.
     pub fn set_device(&self, device: Option<Device>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.device() == device {
             return;
         }
 
         if let Some(ref device) = device {
-            priv_.display_name.set_label(device.display_name());
+            imp.display_name.set_label(device.display_name());
             self.set_tooltip_text(Some(device.device_id().as_str()));
 
-            priv_.verified_icon.set_visible(device.is_verified());
+            imp.verified_icon.set_visible(device.is_verified());
             // TODO: Implement verification
-            // priv_.verify_button.set_visible(!device.is_verified());
+            // imp.verify_button.set_visible(!device.is_verified());
 
             if let Some(last_seen_ip) = device.last_seen_ip() {
-                priv_.last_seen_ip.set_label(last_seen_ip);
-                priv_.last_seen_ip.show();
+                imp.last_seen_ip.set_label(last_seen_ip);
+                imp.last_seen_ip.show();
             } else {
-                priv_.last_seen_ip.hide();
+                imp.last_seen_ip.hide();
             }
 
             if let Some(last_seen_ts) = device.last_seen_ts() {
                 let last_seen_ts = format_date_time_as_string(last_seen_ts);
-                priv_.last_seen_ts.set_label(&last_seen_ts);
-                priv_.last_seen_ts.show();
+                imp.last_seen_ts.set_label(&last_seen_ts);
+                imp.last_seen_ts.show();
             } else {
-                priv_.last_seen_ts.hide();
+                imp.last_seen_ts.hide();
             }
         }
 
-        priv_.device.replace(device);
+        imp.device.replace(device);
         self.notify("device");
     }
 
     /// Set whether this is the device of the current session.
     fn set_current_device(&self, input_bool: bool) {
-        let priv_ = self.imp();
-        if priv_.is_current_device.get() == input_bool {
+        let imp = self.imp();
+        if imp.is_current_device.get() == input_bool {
             return;
         }
-        priv_.is_current_device.replace(input_bool);
+        imp.is_current_device.replace(input_bool);
         self.notify("is-current-device");
     }
 

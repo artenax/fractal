@@ -165,14 +165,14 @@ impl MemberPage {
 
     /// Set the room backing all the details of the member page.
     pub fn set_room(&self, room: Option<Room>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let prev_room = self.room();
 
         if prev_room == room {
             return;
         }
 
-        if let Some(invite_action) = priv_.invite_action_watch.take() {
+        if let Some(invite_action) = imp.invite_action_watch.take() {
             invite_action.unwatch();
         }
 
@@ -182,12 +182,12 @@ impl MemberPage {
             self.set_state(Membership::Join);
         }
 
-        priv_.room.replace(room);
+        imp.room.replace(room);
         self.notify("room");
     }
 
     fn init_members_list(&self, room: &Room) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         // Sort the members list by power level, then display name.
         let sorter = gtk::MultiSorter::new();
@@ -222,15 +222,15 @@ impl MemberPage {
             &MembershipSubpageItem::new(Membership::Ban, &banned_members),
         );
 
-        let mut list_stack_children = priv_.list_stack_children.borrow_mut();
+        let mut list_stack_children = imp.list_stack_children.borrow_mut();
         let joined_view = MembersListView::new(&main_list);
-        priv_.list_stack.add_child(&joined_view);
+        imp.list_stack.add_child(&joined_view);
         list_stack_children.insert(Membership::Join, joined_view.downgrade());
         let invited_view = MembersListView::new(&invited_members);
-        priv_.list_stack.add_child(&invited_view);
+        imp.list_stack.add_child(&invited_view);
         list_stack_children.insert(Membership::Invite, invited_view.downgrade());
         let banned_view = MembersListView::new(&banned_members);
-        priv_.list_stack.add_child(&banned_view);
+        imp.list_stack.add_child(&banned_view);
         list_stack_children.insert(Membership::Ban, banned_view.downgrade());
     }
 
@@ -271,19 +271,17 @@ impl MemberPage {
 
     /// Set the membership state of the displayed members.
     pub fn set_state(&self, state: Membership) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.state() == state {
             return;
         }
 
         if state == Membership::Join {
-            priv_
-                .list_stack
+            imp.list_stack
                 .set_transition_type(gtk::StackTransitionType::SlideRight)
         } else {
-            priv_
-                .list_stack
+            imp.list_stack
                 .set_transition_type(gtk::StackTransitionType::SlideLeft)
         }
 
@@ -295,13 +293,13 @@ impl MemberPage {
             }
         }
 
-        if let Some(view) = priv_
+        if let Some(view) = imp
             .list_stack_children
             .borrow()
             .get(&state)
             .and_then(glib::WeakRef::upgrade)
         {
-            priv_.list_stack.set_visible_child(&view);
+            imp.list_stack.set_visible_child(&view);
         }
 
         self.imp().state.set(state);

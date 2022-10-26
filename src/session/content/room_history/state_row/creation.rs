@@ -50,21 +50,19 @@ impl StateCreation {
     }
 
     fn set_event(&self, event: &RoomCreateEventContent) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         if let Some(predecessor) = &event.predecessor {
-            priv_.previous_room_btn.set_detailed_action_name(&format!(
+            imp.previous_room_btn.set_detailed_action_name(&format!(
                 "session.show-room::{}",
                 predecessor.room_id.as_str()
             ));
-            priv_.previous_room_btn.show();
-            priv_
-                .description
+            imp.previous_room_btn.show();
+            imp.description
                 .set_label(&gettext("This is the continuation of an upgraded room."));
         } else {
-            priv_.previous_room_btn.hide();
-            priv_.previous_room_btn.set_action_name(None);
-            priv_
-                .description
+            imp.previous_room_btn.hide();
+            imp.previous_room_btn.set_action_name(None);
+            imp.description
                 .set_label(&gettext("This is the beginning of this room."));
         }
     }

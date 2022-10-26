@@ -221,7 +221,7 @@ impl SupportedEvent {
     /// If decryption fails, it will be retried everytime we receive new room
     /// keys.
     pub async fn try_to_decrypt(&self, event: Raw<OriginalSyncRoomEncryptedEvent>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let room = self.room();
         let matrix_room = room.matrix_room();
         let event_id = self.event_id();
@@ -229,7 +229,7 @@ impl SupportedEvent {
 
         match handle.await.unwrap() {
             Ok(decrypted) => {
-                if let Some(keys_handle) = priv_.keys_handle.take() {
+                if let Some(keys_handle) = imp.keys_handle.take() {
                     self.room().disconnect(keys_handle);
                 }
                 let pure_event = SyncTimelineEvent::from(decrypted);
@@ -252,7 +252,7 @@ impl SupportedEvent {
                 debug!(
                     "Failed to decrypt event {event_id} in room {room_name} ({room_id}): {error:?}"
                 );
-                if priv_.keys_handle.borrow().is_none() {
+                if imp.keys_handle.borrow().is_none() {
                     let handle = self.room().connect_new_encryption_keys(
                         clone!(@weak self as obj => move |_| {
                             // Try to decrypt the event again
@@ -260,7 +260,7 @@ impl SupportedEvent {
                         }),
                     );
 
-                    priv_.keys_handle.replace(Some(handle));
+                    imp.keys_handle.replace(Some(handle));
                 }
             }
         }
@@ -356,34 +356,33 @@ impl SupportedEvent {
 
     /// Prepend the given events to the list of replacing events.
     pub fn prepend_replacing_events(&self, events: Vec<SupportedEvent>) {
-        let priv_ = self.imp();
-        priv_.replacing_events.borrow_mut().splice(..0, events);
+        let imp = self.imp();
+        imp.replacing_events.borrow_mut().splice(..0, events);
         if self.redacted() {
-            priv_.reactions.clear();
+            imp.reactions.clear();
         }
     }
 
     /// Append the given events to the list of replacing events.
     pub fn append_replacing_events(&self, events: Vec<SupportedEvent>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let old_replacement = self.replacement();
 
-        priv_.replacing_events.borrow_mut().extend(events);
+        imp.replacing_events.borrow_mut().extend(events);
 
         let new_replacement = self.replacement();
 
         // Update the signal handler to the new replacement
         if new_replacement != old_replacement {
             if let Some(replacement) = old_replacement {
-                if let Some(source_changed_handler) = priv_.source_changed_handler.take() {
+                if let Some(source_changed_handler) = imp.source_changed_handler.take() {
                     replacement.disconnect(source_changed_handler);
                 }
             }
 
             // If the replacing event's content changed, this content changed too.
             if let Some(replacement) = new_replacement {
-                priv_
-                    .source_changed_handler
+                imp.source_changed_handler
                     .replace(Some(replacement.connect_notify_local(
                         Some("source"),
                         clone!(@weak self as obj => move |_, _| {
@@ -392,7 +391,7 @@ impl SupportedEvent {
                     )));
             }
             if self.redacted() {
-                priv_.reactions.clear();
+                imp.reactions.clear();
             }
             self.notify("source");
         }
@@ -602,12 +601,12 @@ impl SupportedEvent {
     /// Whether this `SupportedEvent` is hidden from the user or displayed in
     /// the room history.
     pub fn is_hidden_event(&self) -> bool {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.related_event_id().is_some() {
             if let Some(AnySyncTimelineEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
                 SyncMessageLikeEvent::Original(message),
-            ))) = priv_.matrix_event.borrow().as_ref()
+            ))) = imp.matrix_event.borrow().as_ref()
             {
                 if let Some(Relation::Reply { in_reply_to: _ }) = message.content.relates_to {
                     return false;
@@ -617,7 +616,7 @@ impl SupportedEvent {
         }
 
         // List of all events to be shown.
-        match priv_.matrix_event.borrow().as_ref() {
+        match imp.matrix_event.borrow().as_ref() {
             Some(AnySyncTimelineEvent::MessageLike(message)) => !matches!(
                 message,
                 AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(_))

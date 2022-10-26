@@ -77,13 +77,13 @@ impl TimelineDayDivider {
 
     /// Set the date of this divider.
     pub fn set_date(&self, date: Option<glib::DateTime>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.date.borrow().as_ref() == date.as_ref() {
+        if imp.date.borrow().as_ref() == date.as_ref() {
             return;
         }
 
-        priv_.date.replace(date);
+        imp.date.replace(date);
         self.notify("date");
         self.notify("formatted-date");
     }

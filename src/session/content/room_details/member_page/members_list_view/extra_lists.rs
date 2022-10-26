@@ -172,10 +172,10 @@ impl ExtraLists {
     }
 
     fn update_items(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        let invited_was_empty = priv_.invited_is_empty.get();
-        let banned_was_empty = priv_.banned_is_empty.get();
+        let invited_was_empty = imp.invited_is_empty.get();
+        let banned_was_empty = imp.banned_is_empty.get();
 
         let invited_is_empty = self.invited().model().n_items() == 0;
         let banned_is_empty = self.banned().model().n_items() == 0;
@@ -210,19 +210,19 @@ impl ExtraLists {
             }
         }
 
-        priv_.invited_is_empty.set(invited_is_empty);
-        priv_.banned_is_empty.set(banned_is_empty);
+        imp.invited_is_empty.set(invited_is_empty);
+        imp.banned_is_empty.set(banned_is_empty);
 
         self.items_changed(position, removed, added);
     }
 
     fn n_visible_extras(&self) -> u32 {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let mut len = 0;
-        if !priv_.invited_is_empty.get() {
+        if !imp.invited_is_empty.get() {
             len += 1;
         }
-        if !priv_.banned_is_empty.get() {
+        if !imp.banned_is_empty.get() {
             len += 1;
         }
         len

@@ -105,15 +105,15 @@ impl DeviceList {
     }
 
     fn set_loading(&self, loading: bool) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if loading == priv_.loading.get() {
+        if loading == imp.loading.get() {
             return;
         }
         if loading {
             self.update_list(vec![DeviceItem::for_loading_spinner()]);
         }
-        priv_.loading.set(loading);
+        imp.loading.set(loading);
         self.notify("current-device");
     }
 

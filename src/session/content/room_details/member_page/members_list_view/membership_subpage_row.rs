@@ -115,14 +115,14 @@ impl MembershipSubpageRow {
 
     /// Set the item of this row.
     pub fn set_item(&self, item: Option<MembershipSubpageItem>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let prev_item = self.item();
 
         if prev_item == item {
             return;
         }
 
-        if let Some(signal_id) = priv_.members_count_handler_id.take() {
+        if let Some(signal_id) = imp.members_count_handler_id.take() {
             if let Some(prev_item) = prev_item {
                 prev_item.disconnect(signal_id);
             }

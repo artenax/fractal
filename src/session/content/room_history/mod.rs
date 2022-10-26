@@ -335,12 +335,12 @@ mod imp {
             let adj = self.listview.vadjustment().unwrap();
 
             adj.connect_value_changed(clone!(@weak obj => move |adj| {
-                let priv_ = obj.imp();
+                let imp = obj.imp();
 
                 let is_at_bottom = adj.value() + adj.page_size() == adj.upper();
-                if priv_.is_auto_scrolling.get() {
+                if imp.is_auto_scrolling.get() {
                     if is_at_bottom {
-                        priv_.is_auto_scrolling.set(false);
+                        imp.is_auto_scrolling.set(false);
                         obj.set_sticky(true);
                     }
                 } else {
@@ -481,26 +481,26 @@ impl RoomHistory {
 
     /// Set the room currently displayed.
     pub fn set_room(&self, room: Option<Room>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.room() == room {
             return;
         }
 
         if let Some(room) = self.room() {
-            if let Some(category_handler) = priv_.category_handler.take() {
+            if let Some(category_handler) = imp.category_handler.take() {
                 room.disconnect(category_handler);
             }
 
-            if let Some(empty_timeline_handler) = priv_.empty_timeline_handler.take() {
+            if let Some(empty_timeline_handler) = imp.empty_timeline_handler.take() {
                 room.timeline().disconnect(empty_timeline_handler);
             }
 
-            if let Some(state_timeline_handler) = priv_.state_timeline_handler.take() {
+            if let Some(state_timeline_handler) = imp.state_timeline_handler.take() {
                 room.timeline().disconnect(state_timeline_handler);
             }
 
-            if let Some(invite_action) = priv_.invite_action_watch.take() {
+            if let Some(invite_action) = imp.invite_action_watch.take() {
                 invite_action.unwatch();
             }
 
@@ -516,7 +516,7 @@ impl RoomHistory {
                         obj.update_room_state();
                 }),
             );
-            priv_.category_handler.replace(Some(handler_id));
+            imp.category_handler.replace(Some(handler_id));
 
             let handler_id = timeline.connect_notify_local(
                 Some("empty"),
@@ -524,7 +524,7 @@ impl RoomHistory {
                         obj.update_view();
                 }),
             );
-            priv_.empty_timeline_handler.replace(Some(handler_id));
+            imp.empty_timeline_handler.replace(Some(handler_id));
 
             let handler_id = timeline.connect_notify_local(
                 Some("state"),
@@ -532,7 +532,7 @@ impl RoomHistory {
                         obj.update_view();
                 }),
             );
-            priv_.state_timeline_handler.replace(Some(handler_id));
+            imp.state_timeline_handler.replace(Some(handler_id));
 
             timeline.remove_empty_typing_row();
             room.load_members();
@@ -545,10 +545,10 @@ impl RoomHistory {
             .as_ref()
             .map(|room| gtk::NoSelection::new(Some(room.timeline())));
 
-        priv_.listview.set_model(model.as_ref());
-        priv_.is_loading.set(false);
-        priv_.message_entry.grab_focus();
-        priv_.room.replace(room);
+        imp.listview.set_model(model.as_ref());
+        imp.is_loading.set(false);
+        imp.message_entry.grab_focus();
+        imp.room.replace(room);
         self.update_view();
         self.start_loading();
         self.update_room_state();
@@ -631,21 +631,19 @@ impl RoomHistory {
     }
 
     pub fn set_reply_to(&self, event: SupportedEvent) {
-        let priv_ = self.imp();
-        priv_
-            .related_event_header
+        let imp = self.imp();
+        imp.related_event_header
             .set_widgets(vec![Pill::for_user(event.sender().upcast_ref())]);
-        priv_
-            .related_event_header
+        imp.related_event_header
             // Translators: Do NOT translate the content between '{' and '}',
             // this is a variable name. In this string, 'Reply' is a noun.
             .set_label(Some(gettext_f("Reply to {user}", &[("user", "<widget>")])));
 
-        priv_.related_event_content.update_for_event(&event);
+        imp.related_event_content.update_for_event(&event);
 
         self.set_related_event_type(RelatedEventType::Reply);
         self.set_related_event(Some(event));
-        priv_.message_entry.grab_focus();
+        imp.message_entry.grab_focus();
     }
 
     /// Get an iterator over chunks of the message entry's text between the
@@ -655,12 +653,12 @@ impl RoomHistory {
     }
 
     pub fn send_text_message(&self) {
-        let priv_ = self.imp();
-        let buffer = priv_.message_entry.buffer();
+        let imp = self.imp();
+        let buffer = imp.message_entry.buffer();
         let (start_iter, end_iter) = buffer.bounds();
         let body_len = buffer.text(&start_iter, &end_iter, true).len();
 
-        let is_markdown = priv_.md_enabled.get();
+        let is_markdown = imp.md_enabled.get();
         let mut has_mentions = false;
         let mut plain_body = String::with_capacity(body_len);
         // formatted_body is Markdown if is_markdown is true, and HTML if false.
@@ -798,31 +796,31 @@ impl RoomHistory {
     }
 
     fn update_room_state(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if let Some(room) = &*priv_.room.borrow() {
+        if let Some(room) = &*imp.room.borrow() {
             if room.category() == RoomType::Left {
                 self.action_set_enabled("room-history.leave", false);
-                priv_.room_menu.hide();
+                imp.room_menu.hide();
             } else {
                 self.action_set_enabled("room-history.leave", true);
-                priv_.room_menu.show();
+                imp.room_menu.show();
             }
         }
     }
 
     fn update_view(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if let Some(room) = &*priv_.room.borrow() {
+        if let Some(room) = &*imp.room.borrow() {
             if room.timeline().is_empty() {
                 if room.timeline().state() == TimelineState::Error {
-                    priv_.stack.set_visible_child(&*priv_.error);
+                    imp.stack.set_visible_child(&*imp.error);
                 } else {
-                    priv_.stack.set_visible_child(&*priv_.loading);
+                    imp.stack.set_visible_child(&*imp.loading);
                 }
             } else {
-                priv_.stack.set_visible_child(&*priv_.content);
+                imp.stack.set_visible_child(&*imp.content);
             }
         }
     }
@@ -836,8 +834,8 @@ impl RoomHistory {
     }
 
     fn start_loading(&self) {
-        let priv_ = self.imp();
-        if !priv_.is_loading.get() {
+        let imp = self.imp();
+        if !imp.is_loading.get() {
             let room = if let Some(room) = self.room() {
                 room
             } else {
@@ -848,7 +846,7 @@ impl RoomHistory {
                 return;
             }
 
-            priv_.is_loading.set(true);
+            imp.is_loading.set(true);
 
             let obj_weak = self.downgrade();
             spawn!(async move {
@@ -880,26 +878,25 @@ impl RoomHistory {
     /// Set whether the room history should stick to the newest message in the
     /// timeline.
     pub fn set_sticky(&self, sticky: bool) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.sticky() == sticky {
             return;
         }
 
-        priv_.scroll_btn_revealer.set_reveal_child(!sticky);
+        imp.scroll_btn_revealer.set_reveal_child(!sticky);
 
-        priv_.sticky.set(sticky);
+        imp.sticky.set(sticky);
         self.notify("sticky");
     }
 
     /// Scroll to the newest message in the timeline
     pub fn scroll_down(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.is_auto_scrolling.set(true);
+        imp.is_auto_scrolling.set(true);
 
-        priv_
-            .scrolled_window
+        imp.scrolled_window
             .emit_by_name::<bool>("scroll-child", &[&gtk::ScrollType::End, &false]);
     }
 
@@ -1085,7 +1082,7 @@ impl RoomHistory {
     }
 
     fn setup_drop_target(&self) {
-        let priv_ = imp::RoomHistory::from_instance(self);
+        let imp = imp::RoomHistory::from_instance(self);
 
         let target = gtk::DropTarget::new(
             gio::File::static_type(),
@@ -1114,7 +1111,7 @@ impl RoomHistory {
             }),
         );
 
-        priv_.drag_overlay.set_drop_target(&target);
+        imp.drag_overlay.set_drop_target(&target);
     }
 
     async fn read_clipboard(&self) {

@@ -179,19 +179,18 @@ impl<O: IsA<ContextMenuBin>> ContextMenuBinExt for O {
             return;
         }
 
-        let priv_ = obj.imp();
+        let imp = obj.imp();
 
         if let Some(popover) = &popover {
             popover.unparent();
             popover.set_parent(obj);
-            priv_
-                .signal_handler
+            imp.signal_handler
                 .replace(Some(popover.connect_parent_notify(
                     clone!(@weak obj => move |popover| {
                         if popover.parent().as_ref() != Some(obj.upcast_ref()) {
-                            let priv_ = obj.imp();
-                            if let Some(popover) = priv_.popover.take() {
-                                if let Some(signal_handler) = priv_.signal_handler.take() {
+                            let imp = obj.imp();
+                            if let Some(popover) = imp.popover.take() {
+                                if let Some(signal_handler) = imp.signal_handler.take() {
                                     popover.disconnect(signal_handler)
                                 }
                             }

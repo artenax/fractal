@@ -173,12 +173,12 @@ impl ImportExportKeysSubpage {
 
     /// Set the path to export the keys to.
     fn set_file_path(&self, path: Option<gio::File>) {
-        let priv_ = self.imp();
-        if priv_.file_path.borrow().as_ref() == path.as_ref() {
+        let imp = self.imp();
+        if imp.file_path.borrow().as_ref() == path.as_ref() {
             return;
         }
 
-        priv_.file_path.replace(path);
+        imp.file_path.replace(path);
         self.update_button();
         self.notify("file-path");
     }
@@ -201,40 +201,36 @@ impl ImportExportKeysSubpage {
     }
 
     fn clear(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         self.set_file_path(None);
-        priv_.passphrase.set_text("");
-        priv_.confirm_passphrase.set_text("");
+        imp.passphrase.set_text("");
+        imp.confirm_passphrase.set_text("");
     }
 
     fn update_for_mode(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.mode() == KeysSubpageMode::Export {
-            priv_
-                .title
-                .set_label(&gettext("Export Room Encryption Keys"));
-            priv_.description.set_label(&gettext(
+            imp.title.set_label(&gettext("Export Room Encryption Keys"));
+            imp.description.set_label(&gettext(
                 "Exporting your room encryption keys allows you to make a backup to be able to decrypt your messages in end-to-end encrypted rooms on another device or with another Matrix client.",
             ));
-            priv_.instructions.set_label(&gettext(
+            imp.instructions.set_label(&gettext(
                 "The backup must be stored in a safe place and must be protected with a strong passphrase that will be used to encrypt the data.",
             ));
-            priv_.confirm_passphrase_box.show();
-            priv_.proceed_button.set_label(&gettext("Export Keys"));
+            imp.confirm_passphrase_box.show();
+            imp.proceed_button.set_label(&gettext("Export Keys"));
         } else {
-            priv_
-                .title
-                .set_label(&gettext("Import Room Encryption Keys"));
-            priv_.description.set_label(&gettext(
+            imp.title.set_label(&gettext("Import Room Encryption Keys"));
+            imp.description.set_label(&gettext(
                 "Importing your room encryption keys allows you to decrypt your messages in end-to-end encrypted rooms with a previous backup from a Matrix client.",
             ));
-            priv_.instructions.set_label(&gettext(
+            imp.instructions.set_label(&gettext(
                 "Enter the passphrase provided when the backup file was created.",
             ));
-            priv_.confirm_passphrase_box.hide();
-            priv_.proceed_button.set_label(&gettext("Import Keys"));
+            imp.confirm_passphrase_box.hide();
+            imp.proceed_button.set_label(&gettext("Import Keys"));
         }
 
         self.update_button();
@@ -294,11 +290,11 @@ impl ImportExportKeysSubpage {
     }
 
     fn validate_passphrase_confirmation(&self) {
-        let priv_ = self.imp();
-        let entry = &priv_.confirm_passphrase;
-        let revealer = &priv_.confirm_passphrase_error_revealer;
-        let label = &priv_.confirm_passphrase_error;
-        let passphrase = priv_.passphrase.text();
+        let imp = self.imp();
+        let entry = &imp.confirm_passphrase;
+        let revealer = &imp.confirm_passphrase_error_revealer;
+        let label = &imp.confirm_passphrase_error;
+        let passphrase = imp.passphrase.text();
         let confirmation = entry.text();
 
         if confirmation.is_empty() {
@@ -326,9 +322,9 @@ impl ImportExportKeysSubpage {
     }
 
     fn can_proceed(&self) -> bool {
-        let priv_ = self.imp();
-        let file_path = priv_.file_path.borrow();
-        let passphrase = priv_.passphrase.text();
+        let imp = self.imp();
+        let file_path = imp.file_path.borrow();
+        let passphrase = imp.passphrase.text();
 
         let mut res = file_path
             .as_ref()
@@ -337,7 +333,7 @@ impl ImportExportKeysSubpage {
             && !passphrase.is_empty();
 
         if self.mode() == KeysSubpageMode::Export {
-            let confirmation = priv_.confirm_passphrase.text();
+            let confirmation = imp.confirm_passphrase.text();
             res = res && passphrase == confirmation;
         }
 
@@ -356,15 +352,15 @@ impl ImportExportKeysSubpage {
             return;
         }
 
-        let priv_ = self.imp();
+        let imp = self.imp();
         let file_path = self.file_path().and_then(|file| file.path()).unwrap();
-        let passphrase = priv_.passphrase.text();
+        let passphrase = imp.passphrase.text();
         let is_export = self.mode() == KeysSubpageMode::Export;
 
-        priv_.proceed_button.set_loading(true);
-        priv_.file_button.set_sensitive(false);
-        priv_.passphrase.set_sensitive(false);
-        priv_.confirm_passphrase.set_sensitive(false);
+        imp.proceed_button.set_loading(true);
+        imp.file_button.set_sensitive(false);
+        imp.passphrase.set_sensitive(false);
+        imp.confirm_passphrase.set_sensitive(false);
 
         let encryption = self.session().unwrap().client().encryption();
 
@@ -423,9 +419,9 @@ impl ImportExportKeysSubpage {
                 }
             }
         }
-        priv_.proceed_button.set_loading(false);
-        priv_.file_button.set_sensitive(true);
-        priv_.passphrase.set_sensitive(true);
-        priv_.confirm_passphrase.set_sensitive(true);
+        imp.proceed_button.set_loading(false);
+        imp.file_button.set_sensitive(true);
+        imp.passphrase.set_sensitive(true);
+        imp.confirm_passphrase.set_sensitive(true);
     }
 }

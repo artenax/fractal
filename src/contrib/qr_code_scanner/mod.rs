@@ -72,24 +72,24 @@ impl QrCodeScanner {
     }
 
     pub fn stop(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if let Some(paintable) = priv_.picture.paintable() {
-            priv_.picture.set_paintable(gdk::Paintable::NONE);
-            if let Some(handler) = priv_.handler.take() {
+        if let Some(paintable) = imp.picture.paintable() {
+            imp.picture.set_paintable(gdk::Paintable::NONE);
+            if let Some(handler) = imp.handler.take() {
                 paintable.disconnect(handler);
             }
         }
     }
 
     pub async fn start(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let camera = camera::Camera::default();
 
         if let Some(paintable) = camera.paintable().await {
             self.stop();
 
-            priv_.picture.set_paintable(Some(&paintable));
+            imp.picture.set_paintable(Some(&paintable));
 
             let callback = glib::clone!(@weak self as obj => @default-return None, move |args: &[glib::Value]| {
                 let code = args.get(1).unwrap().get::<QrVerificationDataBoxed>().unwrap();
@@ -99,10 +99,10 @@ impl QrCodeScanner {
             });
             let handler = paintable.connect_local("code-detected", false, callback);
 
-            priv_.handler.replace(Some(handler));
-            priv_.stack.set_visible_child_name("camera");
+            imp.handler.replace(Some(handler));
+            imp.stack.set_visible_child_name("camera");
         } else {
-            priv_.stack.set_visible_child_name("no-camera");
+            imp.stack.set_visible_child_name("no-camera");
         }
     }
 

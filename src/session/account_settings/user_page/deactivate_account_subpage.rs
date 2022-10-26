@@ -116,9 +116,9 @@ impl DeactivateAccountSubpage {
     /// Set the current session.
     pub fn set_session(&self, session: Option<Session>) {
         if let Some(session) = session {
-            let priv_ = self.imp();
-            priv_.session.set(Some(&session));
-            priv_.confirmation.set_title(&self.user_id());
+            let imp = self.imp();
+            imp.session.set(Some(&session));
+            imp.confirmation.set_title(&self.user_id());
         }
     }
 
@@ -147,9 +147,9 @@ impl DeactivateAccountSubpage {
             return;
         }
 
-        let priv_ = self.imp();
-        priv_.button.set_loading(true);
-        priv_.confirmation.set_sensitive(false);
+        let imp = self.imp();
+        imp.button.set_loading(true);
+        imp.confirmation.set_sensitive(false);
 
         let session = self.session().unwrap();
         let dialog = AuthDialog::new(
@@ -186,7 +186,7 @@ impl DeactivateAccountSubpage {
                 toast!(self, gettext("Could not deactivate account"));
             }
         }
-        priv_.button.set_loading(false);
-        priv_.confirmation.set_sensitive(true);
+        imp.button.set_loading(false);
+        imp.confirmation.set_sensitive(true);
     }
 }

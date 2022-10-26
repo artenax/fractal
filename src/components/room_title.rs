@@ -95,16 +95,14 @@ impl RoomTitle {
 
     /// Set the title of the room.
     pub fn set_title(&self, title: Option<String>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         // Parse and escape markup in title
         let title = title.map(|s| markup(&s));
         // If there's an existing title, check that current title and new title aren't
         // equal
-        if priv_.title.borrow().as_deref() != title.as_deref() {
-            priv_.title.replace(title);
-            priv_
-                .title_label
-                .set_visible(priv_.title.borrow().is_some());
+        if imp.title.borrow().as_deref() != title.as_deref() {
+            imp.title.replace(title);
+            imp.title_label.set_visible(imp.title.borrow().is_some());
         }
 
         self.notify("title");
@@ -117,16 +115,15 @@ impl RoomTitle {
 
     /// Set the subtitle of the room.
     pub fn set_subtitle(&self, subtitle: Option<String>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         // Parse and escape markup in subtitle
         let subtitle = subtitle.map(|s| markup(&s));
         // If there's an existing subtitle, check that current subtitle and new subtitle
         // aren't equal
-        if priv_.subtitle.borrow().as_deref() != subtitle.as_deref() {
-            priv_.subtitle.replace(subtitle);
-            priv_
-                .subtitle_label
-                .set_visible(priv_.subtitle.borrow().is_some());
+        if imp.subtitle.borrow().as_deref() != subtitle.as_deref() {
+            imp.subtitle.replace(subtitle);
+            imp.subtitle_label
+                .set_visible(imp.subtitle.borrow().is_some());
         }
 
         self.notify("subtitle");

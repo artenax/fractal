@@ -142,11 +142,11 @@ impl ChangePasswordSubpage {
     }
 
     fn validate_password(&self) {
-        let priv_ = self.imp();
-        let entry = &priv_.password;
-        let progress = &priv_.password_progress;
-        let revealer = &priv_.password_error_revealer;
-        let label = &priv_.password_error;
+        let imp = self.imp();
+        let entry = &imp.password;
+        let progress = &imp.password_progress;
+        let revealer = &imp.password_error_revealer;
+        let label = &imp.password_error;
         let password = entry.text();
 
         if password.is_empty() {
@@ -196,11 +196,11 @@ impl ChangePasswordSubpage {
     }
 
     fn validate_password_confirmation(&self) {
-        let priv_ = self.imp();
-        let entry = &priv_.confirm_password;
-        let revealer = &priv_.confirm_password_error_revealer;
-        let label = &priv_.confirm_password_error;
-        let password = priv_.password.text();
+        let imp = self.imp();
+        let entry = &imp.confirm_password;
+        let revealer = &imp.confirm_password_error_revealer;
+        let label = &imp.confirm_password_error;
+        let password = imp.password.text();
         let confirmation = entry.text();
 
         if confirmation.is_empty() {
@@ -228,9 +228,9 @@ impl ChangePasswordSubpage {
     }
 
     fn can_change_password(&self) -> bool {
-        let priv_ = self.imp();
-        let password = priv_.password.text();
-        let confirmation = priv_.confirm_password.text();
+        let imp = self.imp();
+        let password = imp.password.text();
+        let confirmation = imp.confirm_password.text();
 
         validate_password(&password).progress == 100 && password == confirmation
     }
@@ -247,12 +247,12 @@ impl ChangePasswordSubpage {
             return;
         }
 
-        let priv_ = self.imp();
-        let password = priv_.password.text();
+        let imp = self.imp();
+        let password = imp.password.text();
 
-        priv_.button.set_loading(true);
-        priv_.password.set_sensitive(false);
-        priv_.confirm_password.set_sensitive(false);
+        imp.button.set_loading(true);
+        imp.password.set_sensitive(false);
+        imp.confirm_password.set_sensitive(false);
 
         let session = self.session().unwrap();
         let dialog = AuthDialog::new(
@@ -282,8 +282,8 @@ impl ChangePasswordSubpage {
         match result {
             Ok(_) => {
                 toast!(self, gettext("Password changed successfully"));
-                priv_.password.set_text("");
-                priv_.confirm_password.set_text("");
+                imp.password.set_text("");
+                imp.confirm_password.set_text("");
                 self.activate_action("win.close-subpage", None).unwrap();
             }
             Err(err) => match err {
@@ -304,8 +304,8 @@ impl ChangePasswordSubpage {
                 }
             },
         }
-        priv_.button.set_loading(false);
-        priv_.password.set_sensitive(true);
-        priv_.confirm_password.set_sensitive(true);
+        imp.button.set_loading(false);
+        imp.password.set_sensitive(true);
+        imp.confirm_password.set_sensitive(true);
     }
 }

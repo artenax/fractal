@@ -230,13 +230,13 @@ impl RoomList {
     }
 
     pub fn handle_response_rooms(&self, rooms: ResponseRooms) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let session = self.session();
 
         let mut added = 0;
 
         for (room_id, left_room) in rooms.leave {
-            let room = priv_
+            let room = imp
                 .list
                 .borrow_mut()
                 .entry(room_id.clone())
@@ -251,7 +251,7 @@ impl RoomList {
         }
 
         for (room_id, joined_room) in rooms.join {
-            let room = priv_
+            let room = imp
                 .list
                 .borrow_mut()
                 .entry(room_id.clone())
@@ -266,7 +266,7 @@ impl RoomList {
         }
 
         for (room_id, invited_room) in rooms.invite {
-            let room = priv_
+            let room = imp
                 .list
                 .borrow_mut()
                 .entry(room_id.clone())

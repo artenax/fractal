@@ -173,11 +173,11 @@ impl Window {
     }
 
     pub fn add_session(&self, session: &Session) {
-        let priv_ = &self.imp();
+        let imp = &self.imp();
         let prev_has_sessions = self.has_sessions();
 
-        priv_.sessions.add_named(session, session.session_id());
-        priv_.sessions.set_visible_child(session);
+        imp.sessions.add_named(session, session.session_id());
+        imp.sessions.set_visible_child(session);
         // We need to grab the focus so that keyboard shortcuts work
         session.grab_focus();
 
@@ -193,17 +193,17 @@ impl Window {
     }
 
     fn remove_session(&self, session: &Session) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.sessions.remove(session);
+        imp.sessions.remove(session);
 
         // If the session was a new login that was logged out before being ready, go
         // back to the login screen.
-        if priv_.login.current_session_id().as_deref() == session.session_id() {
-            priv_.login.restore_client();
+        if imp.login.current_session_id().as_deref() == session.session_id() {
+            imp.login.restore_client();
             self.switch_to_login_page();
-        } else if let Some(child) = priv_.sessions.first_child() {
-            priv_.sessions.set_visible_child(&child);
+        } else if let Some(child) = imp.sessions.first_child() {
+            imp.sessions.set_visible_child(&child);
         } else {
             self.notify("has-sessions");
             self.switch_to_greeter_page();
@@ -266,12 +266,11 @@ impl Window {
 
     /// The ID of the currently visible session, if any.
     pub fn current_session_id(&self) -> Option<String> {
-        let priv_ = self.imp();
-        priv_
-            .main_stack
+        let imp = self.imp();
+        imp.main_stack
             .visible_child()
-            .filter(|child| child == priv_.sessions.upcast_ref::<gtk::Widget>())?;
-        priv_.sessions.visible_child_name().map(Into::into)
+            .filter(|child| child == imp.sessions.upcast_ref::<gtk::Widget>())?;
+        imp.sessions.visible_child_name().map(Into::into)
     }
 
     /// Set the current session by its ID.
@@ -310,42 +309,42 @@ impl Window {
     /// - `Greeter` screen => `Login` button.
     /// - `Login screen` => `Next` button.
     fn set_default_by_child(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.main_stack.visible_child() == Some(priv_.greeter.get().upcast()) {
-            self.set_default_widget(Some(&priv_.greeter.default_widget()));
-        } else if priv_.main_stack.visible_child() == Some(priv_.login.get().upcast()) {
-            self.set_default_widget(Some(&priv_.login.default_widget()));
+        if imp.main_stack.visible_child() == Some(imp.greeter.get().upcast()) {
+            self.set_default_widget(Some(&imp.greeter.default_widget()));
+        } else if imp.main_stack.visible_child() == Some(imp.login.get().upcast()) {
+            self.set_default_widget(Some(&imp.login.default_widget()));
         } else {
             self.set_default_widget(gtk::Widget::NONE);
         }
     }
 
     pub fn switch_to_loading_page(&self) {
-        let priv_ = self.imp();
-        priv_.main_stack.set_visible_child(&*priv_.loading);
+        let imp = self.imp();
+        imp.main_stack.set_visible_child(&*imp.loading);
     }
 
     pub fn switch_to_sessions_page(&self) {
-        let priv_ = self.imp();
-        priv_.main_stack.set_visible_child(&priv_.sessions.get());
+        let imp = self.imp();
+        imp.main_stack.set_visible_child(&imp.sessions.get());
     }
 
     pub fn switch_to_login_page(&self) {
-        let priv_ = self.imp();
-        priv_.main_stack.set_visible_child(&*priv_.login);
-        priv_.login.focus_default();
+        let imp = self.imp();
+        imp.main_stack.set_visible_child(&*imp.login);
+        imp.login.focus_default();
     }
 
     pub fn switch_to_greeter_page(&self) {
-        let priv_ = self.imp();
-        priv_.main_stack.set_visible_child(&*priv_.greeter);
+        let imp = self.imp();
+        imp.main_stack.set_visible_child(&*imp.greeter);
     }
 
     pub fn switch_to_error_page(&self, message: &str, item: Option<oo7::Item>) {
-        let priv_ = self.imp();
-        priv_.error_page.display_secret_error(message, item);
-        priv_.main_stack.set_visible_child(&*priv_.error_page);
+        let imp = self.imp();
+        imp.error_page.display_secret_error(message, item);
+        imp.main_stack.set_visible_child(&*imp.error_page);
     }
 
     /// This appends a new toast to the list
@@ -358,21 +357,19 @@ impl Window {
     }
 
     fn update_network_state(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let monitor = gio::NetworkMonitor::default();
 
         if !monitor.is_network_available() {
-            priv_
-                .offline_info_bar_label
+            imp.offline_info_bar_label
                 .set_label(&gettext("No network connection"));
-            priv_.offline_info_bar.set_revealed(true);
+            imp.offline_info_bar.set_revealed(true);
         } else if monitor.connectivity() < gio::NetworkConnectivity::Full {
-            priv_
-                .offline_info_bar_label
+            imp.offline_info_bar_label
                 .set_label(&gettext("No Internet connection"));
-            priv_.offline_info_bar.set_revealed(true);
+            imp.offline_info_bar.set_revealed(true);
         } else {
-            priv_.offline_info_bar.set_revealed(false);
+            imp.offline_info_bar.set_revealed(false);
         }
     }
 

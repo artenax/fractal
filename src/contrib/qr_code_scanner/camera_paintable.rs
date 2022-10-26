@@ -220,7 +220,7 @@ impl CameraPaintable {
     }
 
     fn set_sink_paintable(&self, paintable: gdk::Paintable) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         paintable.connect_invalidate_contents(clone!(@weak self as obj => move |_| {
             obj.invalidate_contents();
@@ -230,16 +230,16 @@ impl CameraPaintable {
             obj.invalidate_size();
         }));
 
-        priv_.sink_paintable.replace(Some(paintable));
+        imp.sink_paintable.replace(Some(paintable));
 
         self.invalidate_contents();
         self.invalidate_size();
     }
 
     fn set_pipeline(&self, pipeline: Option<gst::Pipeline>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if let Some(pipeline) = priv_.pipeline.take() {
+        if let Some(pipeline) = imp.pipeline.take() {
             pipeline.set_state(gst::State::Null).unwrap();
         }
 
@@ -247,7 +247,7 @@ impl CameraPaintable {
             return;
         }
 
-        priv_.pipeline.replace(pipeline);
+        imp.pipeline.replace(pipeline);
     }
 
     fn create_sender(&self) -> glib::Sender<Action> {

@@ -90,15 +90,15 @@ impl MessageFile {
 
     /// Set the filename of the file.
     pub fn set_filename(&self, filename: Option<String>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let name = filename.filter(|name| !name.is_empty());
 
-        if name.as_ref() == priv_.filename.borrow().as_ref() {
+        if name.as_ref() == imp.filename.borrow().as_ref() {
             return;
         }
 
-        priv_.filename.replace(name);
+        imp.filename.replace(name);
         self.notify("filename");
     }
 

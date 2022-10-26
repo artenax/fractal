@@ -113,18 +113,18 @@ impl AccountSwitcher {
 
     /// Set the model containing the stack pages for each logged in account.
     pub fn set_pages(&self, pages: Option<gtk::SelectionModel>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let prev_pages = self.pages();
 
         if pages == prev_pages {
             return;
         }
         if let Some(prev_pages) = prev_pages {
-            if let Some(handler) = priv_.pages_handler.take() {
+            if let Some(handler) = imp.pages_handler.take() {
                 prev_pages.disconnect(handler);
             }
 
-            if let Some(handler) = priv_.selection_handler.take() {
+            if let Some(handler) = imp.selection_handler.take() {
                 prev_pages.disconnect(handler);
             }
         }
@@ -136,7 +136,7 @@ impl AccountSwitcher {
                 }),
             );
 
-            priv_.pages_handler.replace(Some(handler));
+            imp.pages_handler.replace(Some(handler));
 
             let handler = pages.connect_selection_changed(
                 clone!(@weak self as obj => move |_, position, n_items| {
@@ -144,7 +144,7 @@ impl AccountSwitcher {
                 }),
             );
 
-            priv_.selection_handler.replace(Some(handler));
+            imp.selection_handler.replace(Some(handler));
 
             self.update_rows(pages, 0, 0, pages.n_items());
         }
@@ -182,8 +182,8 @@ impl AccountSwitcher {
     }
 
     fn update_selection(&self, position: u32, n_items: u32) {
-        let priv_ = self.imp();
-        let pages = priv_.pages.borrow();
+        let imp = self.imp();
+        let pages = imp.pages.borrow();
         let pages = if let Some(pages) = &*pages {
             pages
         } else {
@@ -191,7 +191,7 @@ impl AccountSwitcher {
         };
 
         for i in position..(position + n_items) {
-            if let Some(row) = priv_
+            if let Some(row) = imp
                 .entries
                 .row_at_index(i as i32)
                 .and_then(|row| row.downcast::<UserEntryRow>().ok())

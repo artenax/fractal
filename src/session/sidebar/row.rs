@@ -133,18 +133,18 @@ impl Row {
 
     /// Set the list row to track for expander state.
     pub fn set_list_row(&self, list_row: Option<gtk::TreeListRow>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.list_row() == list_row {
             return;
         }
 
-        for binding in priv_.bindings.take() {
+        for binding in imp.bindings.take() {
             binding.unbind();
         }
 
         let row = if let Some(row) = list_row.clone() {
-            priv_.list_row.replace(list_row);
+            imp.list_row.replace(list_row);
             row
         } else {
             return;
@@ -236,7 +236,7 @@ impl Row {
                 .unwrap();
         }
 
-        priv_.bindings.replace(bindings);
+        imp.bindings.replace(bindings);
 
         self.notify("item");
         self.notify("list-row");

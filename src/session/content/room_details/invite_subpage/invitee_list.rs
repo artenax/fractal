@@ -153,16 +153,16 @@ impl InviteeList {
 
     /// Set the search term.
     pub fn set_search_term(&self, search_term: Option<String>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if search_term.as_ref() == priv_.search_term.borrow().as_ref() {
+        if search_term.as_ref() == imp.search_term.borrow().as_ref() {
             return;
         }
 
         if search_term.as_ref().map_or(false, |s| s.is_empty()) {
-            priv_.search_term.replace(None);
+            imp.search_term.replace(None);
         } else {
-            priv_.search_term.replace(search_term);
+            imp.search_term.replace(search_term);
         }
 
         self.search_users();
@@ -176,13 +176,13 @@ impl InviteeList {
 
     /// Set the state of the list.
     fn set_state(&self, state: InviteeListState) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if state == self.state() {
             return;
         }
 
-        priv_.state.set(state);
+        imp.state.set(state);
         self.notify("state");
     }
 

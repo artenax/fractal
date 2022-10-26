@@ -97,7 +97,7 @@ impl DevicesPage {
 
     /// Set the logged-in user.
     fn set_user(&self, user: Option<User>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.user() == user {
             return;
@@ -105,7 +105,7 @@ impl DevicesPage {
 
         if let Some(ref user) = user {
             let device_list = DeviceList::new(&user.session());
-            priv_.other_sessions.bind_model(
+            imp.other_sessions.bind_model(
                 Some(&device_list),
                 clone!(@weak device_list => @default-panic, move |item| {
                     match item.downcast_ref::<DeviceItem>().unwrap().type_() {
@@ -142,14 +142,14 @@ impl DevicesPage {
 
             self.set_current_device(&device_list);
         } else {
-            priv_.other_sessions.unbind_model();
+            imp.other_sessions.unbind_model();
 
-            if let Some(child) = priv_.current_session.first_child() {
-                priv_.current_session.remove(&child);
+            if let Some(child) = imp.current_session.first_child() {
+                imp.current_session.remove(&child);
             }
         }
 
-        priv_.user.replace(user);
+        imp.user.replace(user);
         self.notify("user");
     }
 
@@ -158,9 +158,9 @@ impl DevicesPage {
     }
 
     fn set_current_device(&self, device_list: &DeviceList) {
-        let priv_ = self.imp();
-        if let Some(child) = priv_.current_session.first_child() {
-            priv_.current_session.remove(&child);
+        let imp = self.imp();
+        if let Some(child) = imp.current_session.first_child() {
+            imp.current_session.remove(&child);
         }
         let row: gtk::Widget = match device_list.current_device().type_() {
             device_item::ItemType::Device(device) => DeviceRow::new(device, true).upcast(),
@@ -174,6 +174,6 @@ impl DevicesPage {
             }
             device_item::ItemType::LoadingSpinner => LoadingListBoxRow::new().upcast(),
         };
-        priv_.current_session.append(&row);
+        imp.current_session.append(&row);
     }
 }

@@ -180,9 +180,9 @@ impl RoomDetails {
 
     /// Set the page that is currently visible.
     pub fn set_visible_page(&self, name: PageName) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let prev_name = self.visible_page();
-        let mut list_stack_children = priv_.list_stack_children.borrow_mut();
+        let mut list_stack_children = imp.list_stack_children.borrow_mut();
 
         if prev_name == name {
             return;
@@ -203,7 +203,7 @@ impl RoomDetails {
                 };
 
                 self.set_title(Some(&gettext("Room Details")));
-                priv_.main_stack.set_visible_child(&general_page);
+                imp.main_stack.set_visible_child(&general_page);
             }
             PageName::Members => {
                 let members_page = if let Some(members_page) = list_stack_children
@@ -219,7 +219,7 @@ impl RoomDetails {
                 };
 
                 self.set_title(Some(&gettext("Room Members")));
-                priv_.main_stack.set_visible_child(&members_page);
+                imp.main_stack.set_visible_child(&members_page);
             }
             PageName::Invite => {
                 let invite_page = if let Some(invite_page) = list_stack_children
@@ -230,46 +230,44 @@ impl RoomDetails {
                 } else {
                     let invite_page = InviteSubpage::new(self.room()).upcast::<gtk::Widget>();
                     list_stack_children.insert(PageName::Invite, invite_page.downgrade());
-                    priv_.main_stack.add_child(&invite_page);
+                    imp.main_stack.add_child(&invite_page);
                     invite_page
                 };
 
                 self.set_title(Some(&gettext("Invite new Members")));
-                priv_.main_stack.set_visible_child(&invite_page);
+                imp.main_stack.set_visible_child(&invite_page);
             }
             PageName::None => {
                 warn!("Can't switch to PageName::None");
             }
         }
 
-        priv_.visible_page.set(name);
+        imp.visible_page.set(name);
         self.notify("visible-page");
     }
 
     fn next_page(&self, next_page: PageName) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let prev_page = self.visible_page();
 
         if prev_page == next_page {
             return;
         }
 
-        priv_
-            .main_stack
+        imp.main_stack
             .set_transition_type(gtk::StackTransitionType::SlideLeft);
 
-        priv_.previous_visible_page.borrow_mut().push(prev_page);
+        imp.previous_visible_page.borrow_mut().push(prev_page);
         self.set_visible_page(next_page);
     }
 
     fn previous_page(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_
-            .main_stack
+        imp.main_stack
             .set_transition_type(gtk::StackTransitionType::SlideRight);
 
-        if let Some(prev_page) = priv_.previous_visible_page.borrow_mut().pop() {
+        if let Some(prev_page) = imp.previous_visible_page.borrow_mut().pop() {
             self.set_visible_page(prev_page);
         } else {
             // If there isn't any previous page close the dialog since it was opened on a

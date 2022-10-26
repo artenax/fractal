@@ -86,13 +86,13 @@ impl SpinnerButton {
 
     /// Set the text of the button.
     pub fn set_label(&self, label: &str) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.label.label().as_str() == label {
+        if imp.label.label().as_str() == label {
             return;
         }
 
-        priv_.label.set_label(label);
+        imp.label.set_label(label);
 
         self.notify("label");
     }
@@ -104,7 +104,7 @@ impl SpinnerButton {
 
     /// Set whether to display the loading spinner.
     pub fn set_loading(&self, loading: bool) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.loading() == loading {
             return;
@@ -117,9 +117,9 @@ impl SpinnerButton {
         }
 
         if loading {
-            priv_.stack.set_visible_child(&*priv_.spinner);
+            imp.stack.set_visible_child(&*imp.spinner);
         } else {
-            priv_.stack.set_visible_child(&*priv_.label);
+            imp.stack.set_visible_child(&*imp.label);
         }
 
         self.notify("loading");
@@ -129,8 +129,8 @@ impl SpinnerButton {
     ///
     /// If this is `false`, the text will be displayed.
     pub fn loading(&self) -> bool {
-        let priv_ = self.imp();
-        priv_.stack.visible_child().as_ref() == Some(priv_.spinner.upcast_ref())
+        let imp = self.imp();
+        imp.stack.visible_child().as_ref() == Some(imp.spinner.upcast_ref())
     }
 }
 

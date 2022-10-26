@@ -145,7 +145,7 @@ impl PublicRoom {
     }
 
     pub fn set_matrix_public_room(&self, room: PublicRoomsChunk) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let display_name = room.name.clone().map(Into::into);
         self.avatar().set_display_name(display_name);
@@ -166,12 +166,12 @@ impl PublicRoom {
                 }),
             );
 
-            priv_.room_handler.replace(Some(handler_id));
+            imp.room_handler.replace(Some(handler_id));
         }
 
         self.set_pending(self.room_list().is_pending_room((*room.room_id).into()));
 
-        priv_.matrix_public_room.set(room).unwrap();
+        imp.matrix_public_room.set(room).unwrap();
     }
 
     pub fn matrix_public_room(&self) -> Option<&PublicRoomsChunk> {

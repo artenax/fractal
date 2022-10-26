@@ -73,24 +73,22 @@ impl Greeter {
     }
 
     fn update_network_state(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let monitor = gio::NetworkMonitor::default();
 
         if !monitor.is_network_available() {
-            priv_.development_info_bar.set_revealed(false);
-            priv_
-                .offline_info_bar_label
+            imp.development_info_bar.set_revealed(false);
+            imp.offline_info_bar_label
                 .set_label(&gettext("No network connection"));
-            priv_.offline_info_bar.set_revealed(true);
+            imp.offline_info_bar.set_revealed(true);
         } else if monitor.connectivity() < gio::NetworkConnectivity::Full {
-            priv_.development_info_bar.set_revealed(false);
-            priv_
-                .offline_info_bar_label
+            imp.development_info_bar.set_revealed(false);
+            imp.offline_info_bar_label
                 .set_label(&gettext("No Internet connection"));
-            priv_.offline_info_bar.set_revealed(true);
+            imp.offline_info_bar.set_revealed(true);
         } else {
-            priv_.development_info_bar.set_revealed(true);
-            priv_.offline_info_bar.set_revealed(false);
+            imp.development_info_bar.set_revealed(true);
+            imp.offline_info_bar.set_revealed(false);
         }
     }
 }

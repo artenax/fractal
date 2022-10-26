@@ -193,7 +193,7 @@ impl InviteSubpage {
 
     /// Set the room users will be invited to.
     fn set_room(&self, room: Option<Room>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.room() == room {
             return;
@@ -216,25 +216,23 @@ impl InviteSubpage {
                 }),
             );
 
-            priv_
-                .text_buffer
+            imp.text_buffer
                 .bind_property("text", &user_list, "search-term")
                 .flags(glib::BindingFlags::SYNC_CREATE)
                 .build();
 
             user_list
-                .bind_property("has-selected", &*priv_.invite_button, "sensitive")
+                .bind_property("has-selected", &*imp.invite_button, "sensitive")
                 .flags(glib::BindingFlags::SYNC_CREATE)
                 .build();
 
-            priv_
-                .list_view
+            imp.list_view
                 .set_model(Some(&gtk::NoSelection::new(Some(&user_list))));
         } else {
-            priv_.list_view.set_model(gtk::SelectionModel::NONE);
+            imp.list_view.set_model(gtk::SelectionModel::NONE);
         }
 
-        priv_.room.replace(room);
+        imp.room.replace(room);
         self.notify("room");
     }
 
@@ -243,13 +241,13 @@ impl InviteSubpage {
     }
 
     fn add_user_pill(&self, user: &Invitee) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let pill = Pill::for_user(user.upcast_ref());
         pill.set_margin_start(3);
         pill.set_margin_end(3);
 
-        let (mut start_iter, mut end_iter) = priv_.text_buffer.bounds();
+        let (mut start_iter, mut end_iter) = imp.text_buffer.bounds();
 
         // We don't allow adding chars before and between pills
         loop {
@@ -260,12 +258,12 @@ impl InviteSubpage {
             }
         }
 
-        priv_.text_buffer.delete(&mut start_iter, &mut end_iter);
-        let anchor = priv_.text_buffer.create_child_anchor(&mut start_iter);
-        priv_.text_view.add_child_at_anchor(&pill, &anchor);
+        imp.text_buffer.delete(&mut start_iter, &mut end_iter);
+        let anchor = imp.text_buffer.create_child_anchor(&mut start_iter);
+        imp.text_view.add_child_at_anchor(&pill, &anchor);
         user.set_anchor(Some(anchor));
 
-        priv_.text_view.grab_focus();
+        imp.text_view.grab_focus();
     }
 
     fn remove_user_pill(&self, user: &Invitee) {
@@ -311,17 +309,17 @@ impl InviteSubpage {
     }
 
     fn update_view(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         match self
             .invitee_list()
             .expect("Can't update view without an InviteeList")
             .state()
         {
-            InviteeListState::Initial => priv_.stack.set_visible_child(&*priv_.no_search_page),
-            InviteeListState::Loading => priv_.stack.set_visible_child(&*priv_.loading_page),
-            InviteeListState::NoMatching => priv_.stack.set_visible_child(&*priv_.no_matching_page),
-            InviteeListState::Matching => priv_.stack.set_visible_child(&*priv_.matching_page),
-            InviteeListState::Error => priv_.stack.set_visible_child(&*priv_.error_page),
+            InviteeListState::Initial => imp.stack.set_visible_child(&*imp.no_search_page),
+            InviteeListState::Loading => imp.stack.set_visible_child(&*imp.loading_page),
+            InviteeListState::NoMatching => imp.stack.set_visible_child(&*imp.no_matching_page),
+            InviteeListState::Matching => imp.stack.set_visible_child(&*imp.matching_page),
+            InviteeListState::Error => imp.stack.set_visible_child(&*imp.error_page),
         }
     }
 }

@@ -158,14 +158,14 @@ impl ItemList {
 
     /// Set the `CategoryType` to show all compatible categories for.
     pub fn set_show_all_for_category(&self, category: CategoryType) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if category == self.show_all_for_category() {
             return;
         }
 
-        priv_.show_all_for_category.set(category);
-        for item in priv_.list.get().unwrap().iter() {
+        imp.show_all_for_category.set(category);
+        for item in imp.list.get().unwrap().iter() {
             self.update_item(item)
         }
 
@@ -193,11 +193,11 @@ impl ItemList {
     }
 
     fn update_item(&self, item: &impl IsA<SidebarItem>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let item = item.upcast_ref::<SidebarItem>();
 
         let old_visible = item.visible();
-        let old_pos = priv_
+        let old_pos = imp
             .list
             .get()
             .unwrap()
@@ -210,7 +210,7 @@ impl ItemList {
         let visible = item.visible();
 
         if visible != old_visible {
-            let hidden_before_position = priv_
+            let hidden_before_position = imp
                 .list
                 .get()
                 .unwrap()

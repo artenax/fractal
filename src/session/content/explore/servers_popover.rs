@@ -142,19 +142,17 @@ impl ExploreServersPopover {
 
     pub fn init(&self) {
         if let Some(session) = &self.session() {
-            let priv_ = self.imp();
+            let imp = self.imp();
             let server_list = ServerList::new(session);
 
-            priv_.listbox.bind_model(Some(&server_list), |obj| {
+            imp.listbox.bind_model(Some(&server_list), |obj| {
                 ExploreServerRow::new(obj.downcast_ref::<Server>().unwrap()).upcast()
             });
 
             // Select the first server by default.
-            priv_
-                .listbox
-                .select_row(priv_.listbox.row_at_index(0).as_ref());
+            imp.listbox.select_row(imp.listbox.row_at_index(0).as_ref());
 
-            priv_.server_list.replace(Some(server_list));
+            imp.server_list.replace(Some(server_list));
             self.notify("server-list");
         }
     }
@@ -203,15 +201,14 @@ impl ExploreServersPopover {
         }
 
         if let Some(server_list) = self.server_list() {
-            let priv_ = self.imp();
+            let imp = self.imp();
 
-            let server = priv_.server_entry.text();
-            priv_.server_entry.set_text("");
+            let server = imp.server_entry.text();
+            imp.server_entry.set_text("");
 
             server_list.add_custom_matrix_server(server.into());
-            priv_.listbox.select_row(
-                priv_
-                    .listbox
+            imp.listbox.select_row(
+                imp.listbox
                     .row_at_index(server_list.n_items() as i32 - 1)
                     .as_ref(),
             );
@@ -220,13 +217,11 @@ impl ExploreServersPopover {
 
     fn remove_server(&self, server: &str) {
         if let Some(server_list) = self.server_list() {
-            let priv_ = self.imp();
+            let imp = self.imp();
 
             // If the selected server is gonna be removed, select the first one.
             if self.selected_server().unwrap().server() == Some(server) {
-                priv_
-                    .listbox
-                    .select_row(priv_.listbox.row_at_index(0).as_ref());
+                imp.listbox.select_row(imp.listbox.row_at_index(0).as_ref());
             }
 
             server_list.remove_custom_matrix_server(server);

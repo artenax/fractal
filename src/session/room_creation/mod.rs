@@ -160,42 +160,41 @@ impl RoomCreation {
 
     /// Set the current session.
     pub fn set_session(&self, session: Option<Session>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.session() == session {
             return;
         }
 
         if let Some(user) = session.as_ref().and_then(|session| session.user()) {
-            priv_
-                .server_name
+            imp.server_name
                 .set_label(&[":", user.user_id().server_name().as_str()].concat());
         }
 
-        priv_.session.set(session.as_ref());
+        imp.session.set(session.as_ref());
         self.notify("session");
     }
 
     fn create_room(&self) -> Option<()> {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.create_button.set_loading(true);
-        priv_.content.set_sensitive(false);
-        priv_.cancel_button.set_sensitive(false);
-        priv_.error_label_revealer.set_reveal_child(false);
+        imp.create_button.set_loading(true);
+        imp.content.set_sensitive(false);
+        imp.cancel_button.set_sensitive(false);
+        imp.error_label_revealer.set_reveal_child(false);
 
         let client = self.session()?.client();
 
-        let room_name = priv_.room_name.text().to_string();
+        let room_name = imp.room_name.text().to_string();
 
-        let visibility = if priv_.private_button.is_active() {
+        let visibility = if imp.private_button.is_active() {
             Visibility::Private
         } else {
             Visibility::Public
         };
 
-        let room_address = if !priv_.private_button.is_active() {
-            Some(format!("#{}", priv_.room_address.text().as_str()))
+        let room_address = if !imp.private_button.is_active() {
+            Some(format!("#{}", imp.room_address.text().as_str()))
         } else {
             None
         };
@@ -234,11 +233,11 @@ impl RoomCreation {
 
     /// Display the error that occurred during creation
     fn handle_error(&self, error: HttpError) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.create_button.set_loading(false);
-        priv_.content.set_sensitive(true);
-        priv_.cancel_button.set_sensitive(true);
+        imp.create_button.set_loading(false);
+        imp.content.set_sensitive(true);
+        imp.cancel_button.set_sensitive(true);
 
         // Treat the room address already taken error special
         if let HttpError::Api(FromHttpResponseError::Server(ServerError::Known(
@@ -246,48 +245,44 @@ impl RoomCreation {
         ))) = error
         {
             if client_error.kind == RumaClientErrorKind::RoomInUse {
-                priv_.room_address.add_css_class("error");
-                priv_
-                    .room_address_error
+                imp.room_address.add_css_class("error");
+                imp.room_address_error
                     .set_text(&gettext("The address is already taken."));
-                priv_.room_address_error_revealer.set_reveal_child(true);
+                imp.room_address_error_revealer.set_reveal_child(true);
 
                 return;
             }
         }
 
-        priv_.error_label.set_label(&error.to_user_facing());
+        imp.error_label.set_label(&error.to_user_facing());
 
-        priv_.error_label_revealer.set_reveal_child(true);
+        imp.error_label_revealer.set_reveal_child(true);
     }
 
     fn validate_input(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         // Validate room address
 
         // Only public rooms have a address
-        if priv_.private_button.is_active() {
-            priv_.create_button.set_sensitive(false);
+        if imp.private_button.is_active() {
+            imp.create_button.set_sensitive(false);
             return;
         }
 
-        let room_address = priv_.room_address.text();
+        let room_address = imp.room_address.text();
 
         // We don't allow #, : in the room address
         let (is_address_valid, has_error) = if room_address.find(':').is_some() {
-            priv_
-                .room_address_error
+            imp.room_address_error
                 .set_text(&gettext("Can’t contain “:”"));
             (false, true)
         } else if room_address.find('#').is_some() {
-            priv_
-                .room_address_error
+            imp.room_address_error
                 .set_text(&gettext("Can’t contain “#”"));
             (false, true)
         } else if room_address.len() > MAX_BYTES {
-            priv_
-                .room_address_error
+            imp.room_address_error
                 .set_text(&gettext("Too long. Use a shorter address."));
             (false, true)
         } else if room_address.is_empty() {
@@ -300,15 +295,13 @@ impl RoomCreation {
         // is doing?
 
         if has_error {
-            priv_.room_address.add_css_class("error");
+            imp.room_address.add_css_class("error");
         } else {
-            priv_.room_address.remove_css_class("error");
+            imp.room_address.remove_css_class("error");
         }
 
-        priv_
-            .room_address_error_revealer
-            .set_reveal_child(has_error);
-        priv_.create_button.set_sensitive(is_address_valid);
+        imp.room_address_error_revealer.set_reveal_child(has_error);
+        imp.create_button.set_sensitive(is_address_valid);
     }
 
     fn cancel(&self) {

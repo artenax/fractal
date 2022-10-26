@@ -137,7 +137,7 @@ impl Selection {
 
     /// Set the underlying model.
     pub fn set_model<P: IsA<gio::ListModel>>(&self, model: Option<&P>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let _guard = self.freeze_notify();
 
@@ -150,7 +150,7 @@ impl Selection {
 
         let n_items_before = old_model
             .map(|model| {
-                if let Some(id) = priv_.signal_handler.take() {
+                if let Some(id) = imp.signal_handler.take() {
                     model.disconnect(id);
                 }
                 model.n_items()
@@ -158,26 +158,24 @@ impl Selection {
             .unwrap_or(0);
 
         if let Some(model) = model {
-            priv_
-                .signal_handler
-                .replace(Some(model.connect_items_changed(
-                    clone!(@weak self as obj => move |m, p, r, a| {
-                            obj.items_changed_cb(m, p, r, a);
-                    }),
-                )));
+            imp.signal_handler.replace(Some(model.connect_items_changed(
+                clone!(@weak self as obj => move |m, p, r, a| {
+                        obj.items_changed_cb(m, p, r, a);
+                }),
+            )));
 
             self.items_changed_cb(&model, 0, n_items_before, model.n_items());
 
-            priv_.model.replace(Some(model));
+            imp.model.replace(Some(model));
         } else {
-            priv_.model.replace(None);
+            imp.model.replace(None);
 
             if self.selected() != gtk::INVALID_LIST_POSITION {
-                priv_.selected.replace(gtk::INVALID_LIST_POSITION);
+                imp.selected.replace(gtk::INVALID_LIST_POSITION);
                 self.notify("selected");
             }
             if self.selected_item().is_some() {
-                priv_.selected_item.replace(None);
+                imp.selected_item.replace(None);
                 self.notify("selected-item");
             }
 
@@ -189,7 +187,7 @@ impl Selection {
 
     /// Set the selected item by its position.
     pub fn set_selected(&self, position: u32) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let old_selected = self.selected();
         if old_selected == position {
@@ -212,8 +210,8 @@ impl Selection {
             return;
         }
 
-        priv_.selected.replace(selected);
-        priv_.selected_item.replace(selected_item);
+        imp.selected.replace(selected);
+        imp.selected_item.replace(selected_item);
 
         if old_selected == gtk::INVALID_LIST_POSITION {
             self.selection_changed(selected, 1);
@@ -231,7 +229,7 @@ impl Selection {
 
     /// Set the selected item.
     fn set_selected_item(&self, item: Option<glib::Object>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let selected_item = self.selected_item();
         if selected_item == item {
@@ -257,10 +255,10 @@ impl Selection {
             }
         }
 
-        priv_.selected_item.replace(item);
+        imp.selected_item.replace(item);
 
         if old_selected != selected {
-            priv_.selected.replace(selected);
+            imp.selected.replace(selected);
 
             if old_selected == gtk::INVALID_LIST_POSITION {
                 self.selection_changed(selected, 1);
@@ -278,7 +276,7 @@ impl Selection {
     }
 
     fn items_changed_cb(&self, model: &gio::ListModel, position: u32, removed: u32, added: u32) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let _guard = self.freeze_notify();
 
@@ -288,13 +286,13 @@ impl Selection {
         if selected_item.is_none() || selected < position {
             // unchanged
         } else if selected != gtk::INVALID_LIST_POSITION && selected >= position + removed {
-            priv_.selected.replace(selected + added - removed);
+            imp.selected.replace(selected + added - removed);
             self.notify("selected");
         } else {
             for i in 0..=added {
                 if i == added {
                     // the item really was deleted
-                    priv_.selected.replace(gtk::INVALID_LIST_POSITION);
+                    imp.selected.replace(gtk::INVALID_LIST_POSITION);
                     self.notify("selected");
                 } else {
                     let item = model
@@ -304,7 +302,7 @@ impl Selection {
                     if item == selected_item {
                         // the item moved
                         if selected != position + i {
-                            priv_.selected.replace(position + i);
+                            imp.selected.replace(position + i);
                             self.notify("selected");
                         }
                         break;

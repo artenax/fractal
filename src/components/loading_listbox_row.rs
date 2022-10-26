@@ -127,14 +127,14 @@ impl LoadingListBoxRow {
 
     /// Set whether to show the loading spinner.
     pub fn set_loading(&self, loading: bool) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.is_loading() == loading {
             return;
         }
 
-        priv_.stack.set_visible_child(&*priv_.spinner);
-        priv_.is_error.set(false);
+        imp.stack.set_visible_child(&*imp.spinner);
+        imp.is_error.set(false);
 
         self.notify("loading");
     }
@@ -154,15 +154,15 @@ impl LoadingListBoxRow {
     /// If this is `Some`, the error will be shown, otherwise the spinner will
     /// be shown.
     pub fn set_error(&self, message: Option<&str>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if let Some(message) = message {
-            priv_.is_error.set(true);
-            priv_.error_label.set_text(message);
-            priv_.stack.set_visible_child(&*priv_.error);
+            imp.is_error.set(true);
+            imp.error_label.set_text(message);
+            imp.stack.set_visible_child(&*imp.error);
         } else {
-            priv_.is_error.set(false);
-            priv_.stack.set_visible_child(&*priv_.spinner);
+            imp.is_error.set(false);
+            imp.stack.set_visible_child(&*imp.spinner);
         }
         self.notify("error");
     }

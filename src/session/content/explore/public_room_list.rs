@@ -153,35 +153,34 @@ impl PublicRoomList {
     }
 
     pub fn search(&self, search_term: Option<String>, server: Server) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let network = Some(server.network());
         let server = server.server();
 
-        if priv_.search_term.borrow().as_ref() == search_term.as_ref()
-            && priv_.server.borrow().as_deref() == server
-            && priv_.network.borrow().as_deref() == network
+        if imp.search_term.borrow().as_ref() == search_term.as_ref()
+            && imp.server.borrow().as_deref() == server
+            && imp.network.borrow().as_deref() == network
         {
             return;
         }
 
-        priv_.search_term.replace(search_term);
-        priv_.server.replace(server.map(ToOwned::to_owned));
-        priv_.network.replace(network.map(ToOwned::to_owned));
+        imp.search_term.replace(search_term);
+        imp.server.replace(server.map(ToOwned::to_owned));
+        imp.network.replace(network.map(ToOwned::to_owned));
         self.load_public_rooms(true);
     }
 
     fn handle_public_rooms_response(&self, response: PublicRoomsResponse) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let session = self.session().unwrap();
         let room_list = session.room_list();
 
-        priv_.next_batch.replace(response.next_batch.to_owned());
-        priv_
-            .total_room_count_estimate
+        imp.next_batch.replace(response.next_batch.to_owned());
+        imp.total_room_count_estimate
             .replace(response.total_room_count_estimate.map(Into::into));
 
         let (position, removed, added) = {
-            let mut list = priv_.list.borrow_mut();
+            let mut list = imp.list.borrow_mut();
             let position = list.len();
             let added = response.chunk.len();
             let mut new_rooms = response
@@ -223,14 +222,14 @@ impl PublicRoomList {
         server: Option<String>,
         network: Option<String>,
     ) -> bool {
-        let priv_ = self.imp();
-        priv_.search_term.borrow().as_ref() == search_term.as_ref()
-            && priv_.server.borrow().as_ref() == server.as_ref()
-            && priv_.network.borrow().as_ref() == network.as_ref()
+        let imp = self.imp();
+        imp.search_term.borrow().as_ref() == search_term.as_ref()
+            && imp.server.borrow().as_ref() == server.as_ref()
+            && imp.network.borrow().as_ref() == network.as_ref()
     }
 
     pub fn load_public_rooms(&self, clear: bool) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.request_sent() && !clear {
             return;
@@ -238,24 +237,24 @@ impl PublicRoomList {
 
         if clear {
             // Clear the previous list
-            let removed = priv_.list.borrow().len();
-            priv_.list.borrow_mut().clear();
-            let _ = priv_.next_batch.take();
+            let removed = imp.list.borrow().len();
+            imp.list.borrow_mut().clear();
+            let _ = imp.next_batch.take();
             self.items_changed(0, removed as u32, 0);
         }
 
         self.set_request_sent(true);
 
-        let next_batch = priv_.next_batch.borrow().clone();
+        let next_batch = imp.next_batch.borrow().clone();
 
         if next_batch.is_none() && !clear {
             return;
         }
 
         let client = self.session().unwrap().client();
-        let search_term = priv_.search_term.borrow().to_owned();
-        let server = priv_.server.borrow().to_owned();
-        let network = priv_.network.borrow().to_owned();
+        let search_term = imp.search_term.borrow().to_owned();
+        let server = imp.server.borrow().to_owned();
+        let network = imp.network.borrow().to_owned();
         let current_search_term = search_term.clone();
         let current_server = server.clone();
         let current_network = network.clone();

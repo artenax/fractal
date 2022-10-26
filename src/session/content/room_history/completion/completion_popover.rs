@@ -193,9 +193,9 @@ mod imp {
             }
 
             obj.connect_parent_notify(|obj| {
-                let priv_ = obj.imp();
+                let imp = obj.imp();
 
-                if let Some((buffer, handler_id)) = priv_.buffer_handler.take() {
+                if let Some((buffer, handler_id)) = imp.buffer_handler.take() {
                     buffer.disconnect(handler_id);
                 }
 
@@ -206,14 +206,14 @@ mod imp {
                         buffer.connect_cursor_position_notify(clone!(@weak obj => move |_| {
                             obj.update_completion(false);
                         }));
-                    priv_.buffer_handler.replace(Some((buffer, handler_id)));
+                    imp.buffer_handler.replace(Some((buffer, handler_id)));
 
                     let key_events = gtk::EventControllerKey::new();
                     view.add_controller(&key_events);
                     key_events.connect_key_pressed(clone!(@weak obj => @default-return glib::signal::Inhibit(false), move |_, key, _, modifier| {
                         if modifier.is_empty() {
                             if obj.is_visible() {
-                                let priv_ = obj.imp();
+                                let imp = obj.imp();
                                 if matches!(key, gdk::Key::Return | gdk::Key::KP_Enter | gdk::Key::Tab) {
                                     // Activate completion.
                                     obj.activate_selected_row();
@@ -232,7 +232,7 @@ mod imp {
                                     } else {
                                         0
                                     };
-                                    let n_members = priv_.filtered_members.n_items() as usize;
+                                    let n_members = imp.filtered_members.n_items() as usize;
                                     let max = MAX_MEMBERS.min(n_members);
                                     if new_idx < max {
                                         obj.select_row_at_index(Some(new_idx));
@@ -298,13 +298,13 @@ impl CompletionPopover {
 
     /// Set the ID of the logged-in user.
     pub fn set_user_id(&self, user_id: Option<String>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.user_id.borrow().as_ref() == user_id.as_ref() {
+        if imp.user_id.borrow().as_ref() == user_id.as_ref() {
             return;
         }
 
-        priv_.user_id.replace(user_id);
+        imp.user_id.replace(user_id);
         self.notify("user-id");
     }
 
@@ -327,15 +327,15 @@ impl CompletionPopover {
     /// Set the room members used for completion.
     pub fn set_members(&self, members: Option<&MemberList>) {
         if let Some(first_model) = self.first_model() {
-            let priv_ = self.imp();
+            let imp = self.imp();
 
             if let Some(old_members) = first_model.model() {
                 // Remove the old handlers.
-                if let Some(handler_id) = priv_.members_changed_handler.take() {
+                if let Some(handler_id) = imp.members_changed_handler.take() {
                     old_members.disconnect(handler_id);
                 }
 
-                let mut members_watch = priv_.members_watch.take();
+                let mut members_watch = imp.members_watch.take();
                 for member in old_members
                     .snapshot()
                     .into_iter()
@@ -354,8 +354,7 @@ impl CompletionPopover {
             if let Some(members) = members {
                 self.members_changed(members, 0, 0, members.n_items());
 
-                priv_
-                    .members_changed_handler
+                imp.members_changed_handler
                     .replace(Some(members.connect_items_changed(
                         clone!(@weak self as obj => move |members, pos, removed, added| {
                             obj.members_changed(members, pos, removed, added);
@@ -698,7 +697,7 @@ impl CompletionPopover {
     }
 
     fn search_members(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let filtered_members = self.filtered_members();
         let filter = filtered_members
             .filter()
@@ -714,7 +713,7 @@ impl CompletionPopover {
             self.hide();
             self.select_row_at_index(None);
         } else {
-            for (idx, row) in priv_.rows.iter().enumerate() {
+            for (idx, row) in imp.rows.iter().enumerate() {
                 if let Some(member) = filtered_members
                     .item(idx as u32)
                     .and_then(|obj| obj.downcast::<Member>().ok())
@@ -772,20 +771,20 @@ impl CompletionPopover {
             return;
         }
 
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if let Some(row) = idx.map(|idx| &priv_.rows[idx]) {
+        if let Some(row) = idx.map(|idx| &imp.rows[idx]) {
             // Make sure the row is visible.
-            let row_bounds = row.compute_bounds(&*priv_.list).unwrap();
+            let row_bounds = row.compute_bounds(&*imp.list).unwrap();
             let lower = row_bounds.top_left().y() as f64;
             let upper = row_bounds.bottom_left().y() as f64;
-            priv_.list.adjustment().unwrap().clamp_page(lower, upper);
+            imp.list.adjustment().unwrap().clamp_page(lower, upper);
 
-            priv_.list.select_row(Some(row));
+            imp.list.select_row(Some(row));
         } else {
-            priv_.list.select_row(gtk::ListBoxRow::NONE);
+            imp.list.select_row(gtk::ListBoxRow::NONE);
         }
-        priv_.selected.set(idx);
+        imp.selected.set(idx);
     }
 
     fn activate_selected_row(&self) {
@@ -798,9 +797,9 @@ impl CompletionPopover {
 
     fn row_activated(&self, row: &CompletionRow) {
         if let Some(member) = row.member() {
-            let priv_ = self.imp();
+            let imp = self.imp();
 
-            if let Some((mut start, mut end, _)) = priv_.current_word.take() {
+            if let Some((mut start, mut end, _)) = imp.current_word.take() {
                 let view = self.view();
                 let buffer = view.buffer();
 

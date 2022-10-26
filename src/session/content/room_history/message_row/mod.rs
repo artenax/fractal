@@ -118,15 +118,15 @@ impl MessageRow {
     ///
     /// This is ignored if this event doesn’t have a header.
     pub fn show_header(&self) -> bool {
-        let priv_ = self.imp();
-        priv_.avatar.is_visible() && priv_.header.is_visible()
+        let imp = self.imp();
+        imp.avatar.is_visible() && imp.header.is_visible()
     }
 
     /// Set whether this item should show its header.
     pub fn set_show_header(&self, visible: bool) {
-        let priv_ = self.imp();
-        priv_.avatar.set_visible(visible);
-        priv_.header.set_visible(visible);
+        let imp = self.imp();
+        imp.avatar.set_visible(visible);
+        imp.header.set_visible(visible);
 
         if let Some(list_item) = self.parent().and_then(|w| w.parent()) {
             if visible && !list_item.has_css_class("has-header") {
@@ -144,23 +144,23 @@ impl MessageRow {
     }
 
     pub fn set_event(&self, event: SupportedEvent) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         // Remove signals and bindings from the previous event
-        if let Some(event) = priv_.event.take() {
-            if let Some(source_changed_handler) = priv_.source_changed_handler.take() {
+        if let Some(event) = imp.event.take() {
+            if let Some(source_changed_handler) = imp.source_changed_handler.take() {
                 event.disconnect(source_changed_handler);
             }
 
-            while let Some(binding) = priv_.bindings.borrow_mut().pop() {
+            while let Some(binding) = imp.bindings.borrow_mut().pop() {
                 binding.unbind();
             }
         }
 
-        priv_.avatar.set_item(Some(event.sender().avatar().clone()));
+        imp.avatar.set_item(Some(event.sender().avatar().clone()));
 
         let display_name_binding = event
             .sender()
-            .bind_property("display-name", &priv_.display_name.get(), "label")
+            .bind_property("display-name", &imp.display_name.get(), "label")
             .flags(glib::BindingFlags::SYNC_CREATE)
             .build();
 
@@ -170,18 +170,17 @@ impl MessageRow {
             .build();
 
         let timestamp_binding = event
-            .bind_property("time", &*priv_.timestamp, "label")
+            .bind_property("time", &*imp.timestamp, "label")
             .flags(glib::BindingFlags::SYNC_CREATE)
             .build();
 
-        priv_.bindings.borrow_mut().append(&mut vec![
+        imp.bindings.borrow_mut().append(&mut vec![
             display_name_binding,
             show_header_binding,
             timestamp_binding,
         ]);
 
-        priv_
-            .source_changed_handler
+        imp.source_changed_handler
             .replace(Some(event.connect_notify_local(
                 Some("source"),
                 clone!(@weak self as obj => move |event, _| {
@@ -190,8 +189,8 @@ impl MessageRow {
             )));
         self.update_content(&event);
 
-        priv_.reactions.set_reaction_list(event.reactions());
-        priv_.event.replace(Some(event));
+        imp.reactions.set_reaction_list(event.reactions());
+        imp.event.replace(Some(event));
     }
 
     fn update_content(&self, event: &SupportedEvent) {

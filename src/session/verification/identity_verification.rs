@@ -277,11 +277,11 @@ mod imp {
             main_receiver.attach(
                 None,
                 clone!(@weak obj => @default-return glib::Continue(false), move |message| {
-                    let priv_ = obj.imp();
+                    let imp = obj.imp();
                     match message {
-                        MainMessage::QrCode(data) => { let _ = priv_.qr_code.set(data); },
-                        MainMessage::CancelInfo(data) => priv_.cancel_info.set(data).unwrap(),
-                        MainMessage::SasData(data) => priv_.sas_data.set(data).unwrap(),
+                        MainMessage::QrCode(data) => { let _ = imp.qr_code.set(data); },
+                        MainMessage::CancelInfo(data) => imp.cancel_info.set(data).unwrap(),
+                        MainMessage::SasData(data) => imp.sas_data.set(data).unwrap(),
                         MainMessage::SupportedMethods(flags) => obj.set_supported_methods(flags),
                         MainMessage::State(state) => obj.set_state(state),
                     }
@@ -395,9 +395,9 @@ impl IdentityVerification {
     }
 
     fn start_handler(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        let main_sender = if let Some(main_sender) = priv_.main_sender.take() {
+        let main_sender = if let Some(main_sender) = imp.main_sender.take() {
             main_sender
         } else {
             warn!("The verification request was already started");
@@ -409,7 +409,7 @@ impl IdentityVerification {
         let flow_id = self.flow_id().to_owned();
 
         let (sync_sender, sync_receiver) = mpsc::channel(100);
-        priv_.sync_sender.replace(Some(sync_sender));
+        imp.sync_sender.replace(Some(sync_sender));
 
         let supported_methods = self.supported_methods();
 
@@ -739,11 +739,11 @@ impl IdentityVerification {
     }
 
     pub fn cancel(&self, hide_error: bool) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        priv_.hide_error.set(hide_error);
+        imp.hide_error.set(hide_error);
 
-        if let Some(sync_sender) = &*priv_.sync_sender.borrow() {
+        if let Some(sync_sender) = &*imp.sync_sender.borrow() {
             let result = sync_sender.try_send(Message::UserAction(UserAction::Cancel));
             if let Err(error) = result {
                 error!("Failed to send message to tokio runtime: {}", error);

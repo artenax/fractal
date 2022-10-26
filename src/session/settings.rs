@@ -114,7 +114,7 @@ impl SessionSettings {
 
     /// Set the ID of the session these settings are for.
     fn set_session_id(&self, session_id: Option<String>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         let session_id = match session_id {
             Some(s) => s,
@@ -131,7 +131,7 @@ impl SessionSettings {
             .enumerate()
             .find_map(|(idx, settings)| (settings.session_id == session_id).then_some(idx));
 
-        priv_.session_id.set(session_id).unwrap();
+        imp.session_id.set(session_id).unwrap();
 
         if let Some(settings) = index.and_then(|idx| sessions.into_iter().nth(idx)) {
             self.update_from_stored_settings(settings);
@@ -141,15 +141,15 @@ impl SessionSettings {
     }
 
     fn update_from_stored_settings(&self, settings: StoredSessionSettings) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let StoredSessionSettings {
             session_id: _,
             explore_custom_servers,
             notifications_enabled,
         } = settings;
 
-        *priv_.explore_custom_servers.borrow_mut() = explore_custom_servers;
-        priv_.notifications_enabled.set(notifications_enabled);
+        *imp.explore_custom_servers.borrow_mut() = explore_custom_servers;
+        imp.notifications_enabled.set(notifications_enabled);
     }
 
     fn as_stored_settings(&self) -> StoredSessionSettings {

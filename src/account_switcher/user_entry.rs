@@ -93,18 +93,18 @@ impl UserEntryRow {
 
     /// Set whether this session is selected.
     pub fn set_selected(&self, selected: bool) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if priv_.account_avatar.is_selected() == selected {
+        if imp.account_avatar.is_selected() == selected {
             return;
         }
 
-        priv_.account_avatar.set_selected(selected);
+        imp.account_avatar.set_selected(selected);
 
         if selected {
-            priv_.display_name.add_css_class("bold");
+            imp.display_name.add_css_class("bold");
         } else {
-            priv_.display_name.remove_css_class("bold");
+            imp.display_name.remove_css_class("bold");
         }
 
         self.notify("selected");

@@ -84,7 +84,7 @@ impl MemberMenu {
 
     /// Set the member to apply actions to.
     pub fn set_member(&self, member: Option<Member>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let prev_member = self.member();
 
         if prev_member == member {
@@ -92,7 +92,7 @@ impl MemberMenu {
         }
 
         if let Some(member) = prev_member {
-            if let Some(handler) = priv_.actions_handler.take() {
+            if let Some(handler) = imp.actions_handler.take() {
                 member.disconnect(handler);
             }
         }
@@ -105,10 +105,10 @@ impl MemberMenu {
                 }),
             );
 
-            priv_.actions_handler.replace(Some(handler));
+            imp.actions_handler.replace(Some(handler));
         }
 
-        priv_.member.replace(member);
+        imp.member.replace(member);
         self.notify("member");
         self.notify("allowed-actions");
     }

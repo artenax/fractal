@@ -189,9 +189,9 @@ mod imp {
 
             self.scan_qr_code_btn
                 .connect_clicked(clone!(@weak obj => move |button| {
-                    let priv_ = obj.imp();
+                    let imp = obj.imp();
                     button.set_loading(true);
-                    priv_.start_emoji_btn.set_sensitive(false);
+                    imp.start_emoji_btn.set_sensitive(false);
                     obj.start_scanning();
                 }));
 
@@ -270,7 +270,7 @@ impl IdentityVerificationWidget {
 
     /// Set the object holding the data for the verification.
     pub fn set_request(&self, request: Option<IdentityVerification>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let previous_request = self.request();
 
         if previous_request == request {
@@ -280,15 +280,15 @@ impl IdentityVerificationWidget {
         self.reset();
 
         if let Some(previous_request) = previous_request {
-            if let Some(handler) = priv_.state_handler.take() {
+            if let Some(handler) = imp.state_handler.take() {
                 previous_request.disconnect(handler);
             }
 
-            if let Some(handler) = priv_.name_handler.take() {
+            if let Some(handler) = imp.name_handler.take() {
                 previous_request.user().disconnect(handler);
             }
 
-            if let Some(handler) = priv_.supported_methods_handler.take() {
+            if let Some(handler) = imp.supported_methods_handler.take() {
                 previous_request.disconnect(handler);
             }
         }
@@ -301,7 +301,7 @@ impl IdentityVerificationWidget {
                 }),
             );
 
-            priv_.state_handler.replace(Some(handler));
+            imp.state_handler.replace(Some(handler));
 
             let handler = request.user().connect_notify_local(
                 Some("display-name"),
@@ -310,7 +310,7 @@ impl IdentityVerificationWidget {
                 }),
             );
 
-            priv_.name_handler.replace(Some(handler));
+            imp.name_handler.replace(Some(handler));
 
             let handler = request.connect_notify_local(
                 Some("supported-methods"),
@@ -319,10 +319,10 @@ impl IdentityVerificationWidget {
                 }),
             );
 
-            priv_.supported_methods_handler.replace(Some(handler));
+            imp.supported_methods_handler.replace(Some(handler));
         }
 
-        priv_.request.replace(request);
+        imp.request.replace(request);
         self.init_mode();
         self.update_view();
         self.update_supported_methods();
@@ -330,37 +330,37 @@ impl IdentityVerificationWidget {
     }
 
     fn reset(&self) {
-        let priv_ = self.imp();
-        priv_.accept_btn.set_loading(false);
-        priv_.accept_btn.set_sensitive(true);
-        priv_.decline_btn.set_sensitive(true);
-        priv_.scan_qr_code_btn.set_loading(false);
-        priv_.scan_qr_code_btn.set_sensitive(true);
-        priv_.emoji_not_match_btn.set_loading(false);
-        priv_.emoji_not_match_btn.set_sensitive(true);
-        priv_.emoji_match_btn.set_loading(false);
-        priv_.emoji_match_btn.set_sensitive(true);
-        priv_.start_emoji_btn.set_loading(false);
-        priv_.start_emoji_btn.set_sensitive(true);
-        priv_.start_emoji_btn2.set_loading(false);
-        priv_.start_emoji_btn2.set_sensitive(true);
-        priv_.confirm_scanning_btn.set_loading(false);
-        priv_.confirm_scanning_btn.set_sensitive(true);
-        priv_.cancel_scanning_btn.set_loading(false);
-        priv_.cancel_scanning_btn.set_sensitive(true);
+        let imp = self.imp();
+        imp.accept_btn.set_loading(false);
+        imp.accept_btn.set_sensitive(true);
+        imp.decline_btn.set_sensitive(true);
+        imp.scan_qr_code_btn.set_loading(false);
+        imp.scan_qr_code_btn.set_sensitive(true);
+        imp.emoji_not_match_btn.set_loading(false);
+        imp.emoji_not_match_btn.set_sensitive(true);
+        imp.emoji_match_btn.set_loading(false);
+        imp.emoji_match_btn.set_sensitive(true);
+        imp.start_emoji_btn.set_loading(false);
+        imp.start_emoji_btn.set_sensitive(true);
+        imp.start_emoji_btn2.set_loading(false);
+        imp.start_emoji_btn2.set_sensitive(true);
+        imp.confirm_scanning_btn.set_loading(false);
+        imp.confirm_scanning_btn.set_sensitive(true);
+        imp.cancel_scanning_btn.set_loading(false);
+        imp.cancel_scanning_btn.set_sensitive(true);
 
         self.clean_emoji();
     }
 
     fn clean_emoji(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        while let Some(child) = priv_.emoji_row_1.first_child() {
-            priv_.emoji_row_1.remove(&child);
+        while let Some(child) = imp.emoji_row_1.first_child() {
+            imp.emoji_row_1.remove(&child);
         }
 
-        while let Some(child) = priv_.emoji_row_2.first_child() {
-            priv_.emoji_row_2.remove(&child);
+        while let Some(child) = imp.emoji_row_2.first_child() {
+            imp.emoji_row_2.remove(&child);
         }
     }
 
@@ -377,21 +377,20 @@ impl IdentityVerificationWidget {
     }
 
     fn update_view(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         if let Some(request) = self.request() {
             match request.state() {
                 VerificationState::Requested => {
-                    priv_.main_stack.set_visible_child_name("accept-request");
+                    imp.main_stack.set_visible_child_name("accept-request");
                 }
                 VerificationState::RequestSend => {
-                    priv_
-                        .main_stack
+                    imp.main_stack
                         .set_visible_child_name("wait-for-other-party");
                 }
                 VerificationState::QrV1Show => {
                     if let Some(qrcode) = request.qr_code() {
-                        priv_.qrcode.set_qrcode(qrcode.clone());
-                        priv_.main_stack.set_visible_child_name("qrcode");
+                        imp.qrcode.set_qrcode(qrcode.clone());
+                        imp.main_stack.set_visible_child_name("qrcode");
                     } else {
                         warn!("Failed to get qrcode for QrVerification");
                         request.start_sas();
@@ -401,8 +400,7 @@ impl IdentityVerificationWidget {
                     self.start_scanning();
                 }
                 VerificationState::QrV1Scanned => {
-                    priv_
-                        .main_stack
+                    imp.main_stack
                         .set_visible_child_name("confirm-scanned-qr-code");
                 }
                 VerificationState::SasV1 => {
@@ -416,12 +414,10 @@ impl IdentityVerificationWidget {
                                     .map(String::as_str)
                                     .unwrap_or(emoji.description);
                                 if index < 4 {
-                                    priv_
-                                        .emoji_row_1
+                                    imp.emoji_row_1
                                         .append(&Emoji::new(emoji.symbol, emoji_name));
                                 } else {
-                                    priv_
-                                        .emoji_row_2
+                                    imp.emoji_row_2
                                         .append(&Emoji::new(emoji.symbol, emoji_name));
                                 }
                             }
@@ -434,13 +430,13 @@ impl IdentityVerificationWidget {
                             container.append(&gtk::Label::builder().label(&a.to_string()).build());
                             container.append(&gtk::Label::builder().label(&b.to_string()).build());
                             container.append(&gtk::Label::builder().label(&c.to_string()).build());
-                            priv_.emoji_row_1.append(&container);
+                            imp.emoji_row_1.append(&container);
                         }
                     }
-                    priv_.main_stack.set_visible_child_name("emoji");
+                    imp.main_stack.set_visible_child_name("emoji");
                 }
                 VerificationState::Completed => {
-                    priv_.main_stack.set_visible_child_name("completed");
+                    imp.main_stack.set_visible_child_name("completed");
                 }
                 VerificationState::Cancelled
                 | VerificationState::Dismissed
@@ -452,25 +448,25 @@ impl IdentityVerificationWidget {
 
     fn start_scanning(&self) {
         spawn!(clone!(@weak self as obj => async move {
-            let priv_ = obj.imp();
-            priv_.qr_code_scanner.start().await;
-            priv_.main_stack.set_visible_child_name("scan-qr-code");
+            let imp = obj.imp();
+            imp.qr_code_scanner.start().await;
+            imp.main_stack.set_visible_child_name("scan-qr-code");
         }));
     }
 
     fn finish_scanning(&self, data: QrVerificationData) {
-        let priv_ = self.imp();
-        priv_.qr_code_scanner.stop();
+        let imp = self.imp();
+        imp.qr_code_scanner.stop();
         if let Some(request) = self.request() {
             request.scanned_qr_code(data);
         }
-        priv_.main_stack.set_visible_child_name("qr-code-scanned");
+        imp.main_stack.set_visible_child_name("qr-code-scanned");
     }
 
     fn update_supported_methods(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         if let Some(request) = self.request() {
-            priv_.scan_qr_code_btn.set_visible(
+            imp.scan_qr_code_btn.set_visible(
                 request
                     .supported_methods()
                     .contains(VerificationSupportedMethods::QR_SCAN),
@@ -479,7 +475,7 @@ impl IdentityVerificationWidget {
     }
 
     fn init_mode(&self) {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let request = if let Some(request) = self.request() {
             request
         } else {
@@ -489,71 +485,67 @@ impl IdentityVerificationWidget {
         match request.mode() {
             VerificationMode::CurrentSession => {
                 // label1 and label2 won't be shown
-                priv_
-                    .label2
+                imp.label2
                     .set_label(&gettext("Verify the new session from the current session."));
-                priv_.label3.set_label(&gettext("Verify Session"));
-                priv_.label4.set_label(&gettext(
+                imp.label3.set_label(&gettext("Verify Session"));
+                imp.label4.set_label(&gettext(
                     "Scan the QR code from another session logged into this account.",
                 ));
-                priv_.label5.set_label(&gettext("You scanned the QR code successfully. You may need to confirm the verification from the other session."));
-                priv_.label8.set_label(&gettext("Verify Session"));
-                priv_
-                    .label9
+                imp.label5.set_label(&gettext("You scanned the QR code successfully. You may need to confirm the verification from the other session."));
+                imp.label8.set_label(&gettext("Verify Session"));
+                imp.label9
                     .set_label(&gettext("Scan this QR code from the other session."));
-                priv_.label10.set_label(&gettext("Verify Session"));
-                priv_.label11.set_label(&gettext(
+                imp.label10.set_label(&gettext("Verify Session"));
+                imp.label11.set_label(&gettext(
                     "Check if the same emoji appear in the same order on the other device.",
                 ));
-                priv_.label12.set_label(&gettext("Request Complete"));
-                priv_.label13.set_label(&gettext(
+                imp.label12.set_label(&gettext("Request Complete"));
+                imp.label13.set_label(&gettext(
                     "This session is ready to send and receive secure messages.",
                 ));
-                priv_.done_btn.set_label(&gettext("Get Started"));
-                priv_.label16.set_label(&gettext(
+                imp.done_btn.set_label(&gettext("Get Started"));
+                imp.label16.set_label(&gettext(
                     "Does the other session show a confirmation shield?",
                 ));
             }
             VerificationMode::OtherSession => {
-                priv_
-                    .label1
+                imp.label1
                     .set_label(&gettext("Login Request From Another Session"));
-                priv_
-                    .label2
+                imp.label2
                     .set_label(&gettext("Verify the new session from the current session."));
-                priv_.label3.set_label(&gettext("Verify Session"));
-                priv_.label4.set_label(&gettext("Scan the QR code from this session from another session logged into this account."));
-                priv_.label5.set_label(&gettext("You scanned the QR code successfully. You may need to confirm the verification from the other session."));
-                priv_.label8.set_label(&gettext("Verify Session"));
-                priv_.label9.set_label(&gettext(
+                imp.label3.set_label(&gettext("Verify Session"));
+                imp.label4.set_label(&gettext("Scan the QR code from this session from another session logged into this account."));
+                imp.label5.set_label(&gettext("You scanned the QR code successfully. You may need to confirm the verification from the other session."));
+                imp.label8.set_label(&gettext("Verify Session"));
+                imp.label9.set_label(&gettext(
                     "Scan this QR code from the newly logged in session.",
                 ));
-                priv_.label10.set_label(&gettext("Verify Session"));
-                priv_.label11.set_label(&gettext(
+                imp.label10.set_label(&gettext("Verify Session"));
+                imp.label11.set_label(&gettext(
                     "Check if the same emoji appear in the same order on the other device.",
                 ));
-                priv_.label12.set_label(&gettext("Request Complete"));
-                priv_.label13.set_label(&gettext(
+                imp.label12.set_label(&gettext("Request Complete"));
+                imp.label13.set_label(&gettext(
                     "The new session is now ready to send and receive secure messages.",
                 ));
-                priv_.label14.set_label(&gettext("Get Another Device"));
-                priv_.label15.set_label(&gettext(
+                imp.label14.set_label(&gettext("Get Another Device"));
+                imp.label15.set_label(&gettext(
                     "Accept the verification request from another session or device.",
                 ));
-                priv_.label16.set_label(&gettext(
+                imp.label16.set_label(&gettext(
                     "Does the other session show a confirmation shield?",
                 ));
             }
             VerificationMode::User => {
                 let name = request.user().display_name();
-                priv_.label1.set_markup(&gettext("Verification Request"));
-                priv_
+                imp.label1.set_markup(&gettext("Verification Request"));
+                imp
                     .label2
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     .set_markup(&gettext_f("{user} asked to be verified. Verifying a user increases the security of the conversation.", &[("user", &format!("<b>{}</b>", name))]));
-                priv_.label3.set_markup(&gettext("Verification Request"));
-                priv_.label4.set_markup(&gettext_f(
+                imp.label3.set_markup(&gettext("Verification Request"));
+                imp.label4.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Scan the QR code shown on the device of {user}.",
@@ -561,38 +553,38 @@ impl IdentityVerificationWidget {
                 ));
                 // Translators: Do NOT translate the content between '{' and '}', this is a
                 // variable name.
-                priv_.label5.set_markup(&gettext_f("You scanned the QR code successfully. {user} may need to confirm the verification.", &[("user", &format!("<b>{}</b>", name))]));
-                priv_.label8.set_markup(&gettext("Verification Request"));
-                priv_.label9.set_markup(&gettext_f(
+                imp.label5.set_markup(&gettext_f("You scanned the QR code successfully. {user} may need to confirm the verification.", &[("user", &format!("<b>{}</b>", name))]));
+                imp.label8.set_markup(&gettext("Verification Request"));
+                imp.label9.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Ask {user} to scan this QR code from their session.",
                     &[("user", &format!("<b>{}</b>", name))],
                 ));
-                priv_.label10.set_markup(&gettext("Verification Request"));
-                priv_.label11.set_markup(&gettext_f(
+                imp.label10.set_markup(&gettext("Verification Request"));
+                imp.label11.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Ask {user} if they see the following emoji appear in the same order on their screen.",
                     &[("user", &format!("<b>{}</b>", name))]
                 ));
-                priv_.label12.set_markup(&gettext("Verification Complete"));
+                imp.label12.set_markup(&gettext("Verification Complete"));
                 // Translators: Do NOT translate the content between '{' and '}', this is a
                 // variable name.
-                priv_.label13.set_markup(&gettext_f("{user} is verified and you can now be sure that your communication will be private.", &[("user", &format!("<b>{}</b>", name))]));
-                priv_.label14.set_markup(&gettext_f(
+                imp.label13.set_markup(&gettext_f("{user} is verified and you can now be sure that your communication will be private.", &[("user", &format!("<b>{}</b>", name))]));
+                imp.label14.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Waiting for {user}",
                     &[("user", &format!("<b>{}</b>", name))],
                 ));
-                priv_.label15.set_markup(&gettext_f(
+                imp.label15.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Ask {user} to accept the verification request.",
                     &[("user", &format!("<b>{}</b>", name))],
                 ));
-                priv_.label16.set_markup(&gettext_f(
+                imp.label16.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Does {user} see a confirmation shield on their session?",

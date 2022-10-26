@@ -291,21 +291,21 @@ impl Sidebar {
 
     /// Set the list of items in the sidebar.
     pub fn set_item_list(&self, item_list: Option<ItemList>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
-        if let Some(binding) = priv_.drop_binding.take() {
+        if let Some(binding) = imp.drop_binding.take() {
             binding.unbind();
         }
 
         let item_list = match item_list {
             Some(item_list) => item_list,
             None => {
-                priv_.listview.set_model(gtk::SelectionModel::NONE);
+                imp.listview.set_model(gtk::SelectionModel::NONE);
                 return;
             }
         };
 
-        priv_.drop_binding.replace(Some(
+        imp.drop_binding.replace(Some(
             self.bind_property("drop-source-type", &item_list, "show-all-for-category")
                 .flags(glib::BindingFlags::SYNC_CREATE)
                 .build(),
@@ -330,8 +330,7 @@ impl Sidebar {
             .build();
         let filter_model = gtk::FilterListModel::new(Some(&tree_model), Some(&filter));
 
-        priv_
-            .room_search_entry
+        imp.room_search_entry
             .bind_property("text", &filter, "search")
             .flags(glib::BindingFlags::SYNC_CREATE)
             .build();
@@ -341,7 +340,7 @@ impl Sidebar {
             .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::BIDIRECTIONAL)
             .build();
 
-        priv_.listview.set_model(Some(&selection));
+        imp.listview.set_model(Some(&selection));
     }
 
     /// Set the selected item in this sidebar.
@@ -398,18 +397,18 @@ impl Sidebar {
 
     /// Set the type of the source that activated drop mode.
     fn set_drop_source_type(&self, source_type: Option<RoomType>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.drop_source_type() == source_type {
             return;
         }
 
-        priv_.drop_source_type.set(source_type);
+        imp.drop_source_type.set(source_type);
 
         if source_type.is_some() {
-            priv_.listview.add_css_class("drop-mode");
+            imp.listview.add_css_class("drop-mode");
         } else {
-            priv_.listview.remove_css_class("drop-mode");
+            imp.listview.remove_css_class("drop-mode");
         }
 
         self.notify("drop-source-type");
@@ -504,10 +503,9 @@ impl Sidebar {
     }
 
     pub fn room_row_popover(&self) -> &gtk::PopoverMenu {
-        let priv_ = self.imp();
-        priv_
-            .room_row_popover
-            .get_or_init(|| gtk::PopoverMenu::from_model(Some(&*priv_.room_row_menu)))
+        let imp = self.imp();
+        imp.room_row_popover
+            .get_or_init(|| gtk::PopoverMenu::from_model(Some(&*imp.room_row_menu)))
     }
 
     /// Returns the parent `Window` containing the `Sidebar`

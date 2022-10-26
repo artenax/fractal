@@ -139,9 +139,9 @@ impl GeneralPage {
     }
 
     fn init_avatar(&self) {
-        let priv_ = self.imp();
-        let avatar_remove_button = &priv_.avatar_remove_button;
-        let avatar_edit_button = &priv_.avatar_edit_button;
+        let imp = self.imp();
+        let avatar_remove_button = &imp.avatar_remove_button;
+        let avatar_edit_button = &imp.avatar_edit_button;
 
         // Hide avatar controls when the user is not eligible to perform the actions.
         let room = self.room();
@@ -162,8 +162,8 @@ impl GeneralPage {
     }
 
     fn init_edit_toggle(&self) {
-        let priv_ = self.imp();
-        let edit_toggle = &priv_.edit_toggle;
+        let imp = self.imp();
+        let edit_toggle = &imp.edit_toggle;
         let label_enabled = gettext("Save Details");
         let label_disabled = gettext("Edit Details");
 
@@ -171,33 +171,33 @@ impl GeneralPage {
 
         // Save changes of name and topic on toggle button release.
         edit_toggle.connect_clicked(clone!(@weak self as this => move |button| {
-            let priv_ = this.imp();
-            if !priv_.edit_mode.get() {
-                priv_.edit_mode.set(true);
+            let imp = this.imp();
+            if !imp.edit_mode.get() {
+                imp.edit_mode.set(true);
                 button.set_label(&label_enabled);
-                priv_.room_topic_text_view.set_justification(gtk::Justification::Left);
-                priv_.room_name_entry.set_xalign(0.0);
-                priv_.room_name_entry.set_halign(gtk::Align::Center);
-                priv_.room_name_entry.set_sensitive(true);
-                priv_.room_name_entry.set_width_chars(25);
-                priv_.room_topic_entry.set_sensitive(true);
-                priv_.room_topic_label.show();
+                imp.room_topic_text_view.set_justification(gtk::Justification::Left);
+                imp.room_name_entry.set_xalign(0.0);
+                imp.room_name_entry.set_halign(gtk::Align::Center);
+                imp.room_name_entry.set_sensitive(true);
+                imp.room_name_entry.set_width_chars(25);
+                imp.room_topic_entry.set_sensitive(true);
+                imp.room_topic_label.show();
                 return;
             }
-            priv_.edit_mode.set(false);
+            imp.edit_mode.set(false);
             button.set_label(&label_disabled);
-            priv_.room_topic_text_view.set_justification(gtk::Justification::Center);
-            priv_.room_name_entry.set_xalign(0.5);
-            priv_.room_name_entry.set_sensitive(false);
-            priv_.room_name_entry.set_halign(gtk::Align::Fill);
-            priv_.room_name_entry.set_width_chars(-1);
-            priv_.room_topic_entry.set_sensitive(false);
-            priv_.room_topic_label.hide();
+            imp.room_topic_text_view.set_justification(gtk::Justification::Center);
+            imp.room_name_entry.set_xalign(0.5);
+            imp.room_name_entry.set_sensitive(false);
+            imp.room_name_entry.set_halign(gtk::Align::Fill);
+            imp.room_name_entry.set_width_chars(-1);
+            imp.room_topic_entry.set_sensitive(false);
+            imp.room_topic_label.hide();
 
             let room = this.room();
 
-            let room_name = priv_.room_name_entry.buffer().text();
-            let topic_buffer = priv_.room_topic_text_view.buffer();
+            let room_name = imp.room_name_entry.buffer().text();
+            let topic_buffer = imp.room_topic_text_view.buffer();
             let topic = topic_buffer.text(&topic_buffer.start_iter(), &topic_buffer.end_iter(), true);
             room.store_room_name(room_name);
             room.store_topic(topic.to_string());

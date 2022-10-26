@@ -142,27 +142,27 @@ impl Invite {
 
     /// Set the room currently displayed.
     pub fn set_room(&self, room: Option<Room>) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.room() == room {
             return;
         }
 
         match room {
-            Some(ref room) if priv_.accept_requests.borrow().contains(room) => {
+            Some(ref room) if imp.accept_requests.borrow().contains(room) => {
                 self.action_set_enabled("invite.accept", false);
                 self.action_set_enabled("invite.reject", false);
-                priv_.accept_button.set_loading(true);
+                imp.accept_button.set_loading(true);
             }
-            Some(ref room) if priv_.reject_requests.borrow().contains(room) => {
+            Some(ref room) if imp.reject_requests.borrow().contains(room) => {
                 self.action_set_enabled("invite.accept", false);
                 self.action_set_enabled("invite.reject", false);
-                priv_.reject_button.set_loading(true);
+                imp.reject_button.set_loading(true);
             }
             _ => self.reset(),
         }
 
-        if let Some(category_handler) = priv_.category_handler.take() {
+        if let Some(category_handler) = imp.category_handler.take() {
             if let Some(room) = self.room() {
                 room.disconnect(category_handler);
             }
@@ -173,20 +173,20 @@ impl Invite {
                 Some("category"),
                 clone!(@weak self as obj => move |room, _| {
                         if room.category() != RoomType::Invited {
-                                let priv_ = obj.imp();
-                                priv_.reject_requests.borrow_mut().remove(room);
-                                priv_.accept_requests.borrow_mut().remove(room);
+                                let imp = obj.imp();
+                                imp.reject_requests.borrow_mut().remove(room);
+                                imp.accept_requests.borrow_mut().remove(room);
                                 obj.reset();
-                                if let Some(category_handler) = priv_.category_handler.take() {
+                                if let Some(category_handler) = imp.category_handler.take() {
                                     room.disconnect(category_handler);
                                 }
                         }
                 }),
             );
-            priv_.category_handler.replace(Some(handler_id));
+            imp.category_handler.replace(Some(handler_id));
         }
 
-        priv_.room.replace(room);
+        imp.room.replace(room);
 
         self.notify("room");
     }
@@ -197,21 +197,21 @@ impl Invite {
     }
 
     fn reset(&self) {
-        let priv_ = self.imp();
-        priv_.accept_button.set_loading(false);
-        priv_.reject_button.set_loading(false);
+        let imp = self.imp();
+        imp.accept_button.set_loading(false);
+        imp.reject_button.set_loading(false);
         self.action_set_enabled("invite.accept", true);
         self.action_set_enabled("invite.reject", true);
     }
 
     fn accept(&self) -> Option<()> {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let room = self.room()?;
 
         self.action_set_enabled("invite.accept", false);
         self.action_set_enabled("invite.reject", false);
-        priv_.accept_button.set_loading(true);
-        priv_.accept_requests.borrow_mut().insert(room.clone());
+        imp.accept_button.set_loading(true);
+        imp.accept_requests.borrow_mut().insert(room.clone());
 
         spawn!(
             clone!(@weak self as obj, @strong room => move || async move {
@@ -227,13 +227,13 @@ impl Invite {
     }
 
     fn reject(&self) -> Option<()> {
-        let priv_ = self.imp();
+        let imp = self.imp();
         let room = self.room()?;
 
         self.action_set_enabled("invite.accept", false);
         self.action_set_enabled("invite.reject", false);
-        priv_.reject_button.set_loading(true);
-        priv_.reject_requests.borrow_mut().insert(room.clone());
+        imp.reject_button.set_loading(true);
+        imp.reject_requests.borrow_mut().insert(room.clone());
 
         spawn!(
             clone!(@weak self as obj, @strong room => move || async move {

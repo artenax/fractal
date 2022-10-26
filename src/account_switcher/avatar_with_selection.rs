@@ -89,18 +89,18 @@ impl AvatarWithSelection {
 
     /// Set whether this avatar is selected.
     pub fn set_selected(&self, selected: bool) {
-        let priv_ = self.imp();
+        let imp = self.imp();
 
         if self.is_selected() == selected {
             return;
         }
 
-        priv_.checkmark.set_visible(selected);
+        imp.checkmark.set_visible(selected);
 
         if selected {
-            priv_.child_avatar.add_css_class("selected-avatar");
+            imp.child_avatar.add_css_class("selected-avatar");
         } else {
-            priv_.child_avatar.remove_css_class("selected-avatar");
+            imp.child_avatar.remove_css_class("selected-avatar");
         }
 
         self.notify("selected");

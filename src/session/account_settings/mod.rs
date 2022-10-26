@@ -131,21 +131,19 @@ impl AccountSettings {
             return;
         }
 
-        let priv_ = self.imp();
+        let imp = self.imp();
         if let Some(session) = prev_session {
-            if let Some(handler) = priv_.session_handler.take() {
+            if let Some(handler) = imp.session_handler.take() {
                 session.disconnect(handler);
             }
         }
 
         if let Some(session) = &session {
-            priv_
-                .session_handler
-                .replace(Some(session.connect_logged_out(
-                    clone!(@weak self as obj => move |_| {
-                        obj.close();
-                    }),
-                )));
+            imp.session_handler.replace(Some(session.connect_logged_out(
+                clone!(@weak self as obj => move |_| {
+                    obj.close();
+                }),
+            )));
         }
 
         self.imp().session.set(session.as_ref());
