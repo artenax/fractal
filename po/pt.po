@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-10-23 20:18+0000\n"
-"PO-Revision-Date: 2022-10-25 14:31+0100\n"
+"POT-Creation-Date: 2022-10-25 13:32+0000\n"
+"PO-Revision-Date: 2022-10-26 14:00+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "Language: pt\n"
@@ -1836,9 +1836,8 @@ msgid "Left"
 msgstr "Seta esquerda"
 
 #: src/session/room/member.rs:48
-#, fuzzy
 msgid "Joined"
-msgstr "Uma nova pessoa juntou-se à sua equipa"
+msgstr "Entrou"
 
 #: src/session/room/member.rs:51
 msgid "Knocked"
@@ -1964,23 +1963,20 @@ msgid "Reject Invite"
 msgstr "Rejeitar convite"
 
 #: src/session/sidebar/category_row.rs:174
-#, fuzzy
 msgid "Join Room as People"
-msgstr "Aceitar convite (juntar-se à sala)"
+msgstr "Entrar na sala como Pessoas"
 
 #: src/session/sidebar/category_row.rs:178
 #: src/session/sidebar/category_row.rs:193
 #: src/session/sidebar/category_row.rs:207
-#, fuzzy
 msgid "Move to Rooms"
-msgstr "Salas"
+msgstr "Mover para Salas"
 
 #: src/session/sidebar/category_row.rs:179
 #: src/session/sidebar/category_row.rs:186
 #: src/session/sidebar/category_row.rs:208
-#, fuzzy
 msgid "Move to Low Priority"
-msgstr "Baixa prioridade"
+msgstr "Mover para Baixa prioridade"
 
 #: src/session/sidebar/category_row.rs:180
 #: src/session/sidebar/category_row.rs:187
@@ -1992,21 +1988,18 @@ msgstr "Sair da sala"
 #: src/session/sidebar/category_row.rs:181
 #: src/session/sidebar/category_row.rs:188
 #: src/session/sidebar/category_row.rs:195
-#, fuzzy
 msgid "Move to People"
-msgstr "Pessoas"
+msgstr "Mover para Pessoas"
 
 #: src/session/sidebar/category_row.rs:185
 #: src/session/sidebar/category_row.rs:192
 #: src/session/sidebar/category_row.rs:206
-#, fuzzy
 msgid "Move to Favorites"
-msgstr "Favoritos"
+msgstr "Mover para Favoritos"
 
 #: src/session/sidebar/category_row.rs:199
-#, fuzzy
 msgid "Rejoin Room as Favorites"
-msgstr "Entrar novamente na sala como baixa prioridade"
+msgstr "Entrar novamente na sala como Favoritos"
 
 #: src/session/sidebar/category_row.rs:200
 msgid "Rejoin Room"
@@ -2017,9 +2010,8 @@ msgid "Rejoin Room as Low Priority"
 msgstr "Entrar novamente na sala como baixa prioridade"
 
 #: src/session/sidebar/category_row.rs:202
-#, fuzzy
 msgid "Rejoin Room as People"
-msgstr "Entrar novamente na sala como baixa prioridade"
+msgstr "Entrar novamente na sala como Pesoas"
 
 #: src/session/sidebar/category_type.rs:34
 msgid "Verifications"
