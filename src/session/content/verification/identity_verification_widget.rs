@@ -118,13 +118,11 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "request",
-                    "Request",
-                    "The Object holding the data for the verification",
-                    IdentityVerification::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![
+                    glib::ParamSpecObject::builder::<IdentityVerification>("request")
+                        .explicit_notify()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -265,10 +263,12 @@ impl IdentityVerificationWidget {
         glib::Object::builder().property("request", request).build()
     }
 
+    /// The object holding the data for the verification.
     pub fn request(&self) -> Option<IdentityVerification> {
         self.imp().request.borrow().clone()
     }
 
+    /// Set the object holding the data for the verification.
     pub fn set_request(&self, request: Option<IdentityVerification>) {
         let priv_ = self.imp();
         let previous_request = self.request();

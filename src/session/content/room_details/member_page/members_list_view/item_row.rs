@@ -25,13 +25,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "item",
-                    "Item",
-                    "The membership subpage item represented by this row",
-                    glib::Object::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecObject::builder::<glib::Object>("item")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -66,10 +62,16 @@ impl ItemRow {
         glib::Object::new(&[])
     }
 
+    /// The item represented by this row.
+    ///
+    /// It can be a `Member` or a `MemberSubpageItem`.
     pub fn item(&self) -> Option<glib::Object> {
         self.imp().item.borrow().clone()
     }
 
+    /// Set the item represented by this row.
+    ///
+    /// It must be a `Member` or a `MemberSubpageItem`.
     fn set_item(&self, item: Option<glib::Object>) {
         if self.item() == item {
             return;

@@ -74,27 +74,11 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "compact",
-                        "Compact",
-                        "Whether a compact view is used",
-                        false,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "item",
-                        "Item",
-                        "The item currently shown",
-                        glib::Object::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<Session>("session").build(),
+                    glib::ParamSpecBoolean::builder("compact").build(),
+                    glib::ParamSpecObject::builder::<glib::Object>("item")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -105,7 +89,7 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => self.compact.set(value.get().unwrap()),
+                "compact" => obj.set_compact(value.get().unwrap()),
                 "session" => obj.set_session(value.get().unwrap()),
                 "item" => obj.set_item(value.get().unwrap()),
                 _ => unimplemented!(),
@@ -116,7 +100,7 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => self.compact.get().to_value(),
+                "compact" => obj.compact().to_value(),
                 "session" => obj.session().to_value(),
                 "item" => obj.item().to_value(),
                 _ => unimplemented!(),
@@ -162,10 +146,12 @@ impl Content {
         }
     }
 
+    /// The current session.
     pub fn session(&self) -> Option<Session> {
         self.imp().session.upgrade()
     }
 
+    /// Set the current session.
     pub fn set_session(&self, session: Option<Session>) {
         if session == self.session() {
             return;
@@ -175,6 +161,17 @@ impl Content {
         self.notify("session");
     }
 
+    /// Whether a compact view is used.
+    pub fn compact(&self) -> bool {
+        self.imp().compact.get()
+    }
+
+    /// Set whether a compact view is used.
+    pub fn set_compact(&self, compact: bool) {
+        self.imp().compact.set(compact)
+    }
+
+    /// Set the item currently displayed.
     pub fn set_item(&self, item: Option<glib::Object>) {
         let priv_ = self.imp();
 
@@ -219,6 +216,7 @@ impl Content {
         self.notify("item");
     }
 
+    /// The item currently displayed.
     pub fn item(&self) -> Option<glib::Object> {
         self.imp().item.borrow().clone()
     }

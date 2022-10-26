@@ -69,15 +69,8 @@ mod imp {
     impl ObjectImpl for ChangePasswordSubpage {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "session",
-                    "Session",
-                    "The session",
-                    Session::static_type(),
-                    glib::ParamFlags::READWRITE,
-                )]
-            });
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
+                Lazy::new(|| vec![glib::ParamSpecObject::builder::<Session>("session").build()]);
 
             PROPERTIES.as_ref()
         }
@@ -138,10 +131,12 @@ impl ChangePasswordSubpage {
         glib::Object::builder().property("session", session).build()
     }
 
+    /// The current session.
     pub fn session(&self) -> Option<Session> {
         self.imp().session.upgrade()
     }
 
+    /// Set the current session.
     pub fn set_session(&self, session: Option<Session>) {
         self.imp().session.set(session.as_ref());
     }

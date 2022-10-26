@@ -45,13 +45,9 @@ mod imp {
     impl ObjectImpl for MemberRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "member",
-                    "Member",
-                    "The member this row is showing",
-                    Member::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Member>("member")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -101,10 +97,12 @@ impl MemberRow {
         glib::Object::new(&[])
     }
 
+    /// The member displayed by this row.
     pub fn member(&self) -> Option<Member> {
         self.imp().member.borrow().clone()
     }
 
+    /// Set the member displayed by this row.
     pub fn set_member(&self, member: Option<Member>) {
         let priv_ = self.imp();
 

@@ -39,22 +39,13 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "item",
-                        "Item",
-                        "The Avatar item displayed by this widget",
-                        AvatarItem::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecInt::new(
-                        "size",
-                        "Size",
-                        "The size of the Avatar",
-                        -1,
-                        i32::MAX,
-                        -1,
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecObject::builder::<AvatarItem>("item")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecInt::builder("size")
+                        .minimum(-1)
+                        .default_value(-1)
+                        .build(),
                 ]
             });
 
@@ -106,10 +97,12 @@ impl Avatar {
         glib::Object::new(&[])
     }
 
+    /// Set the size of the Avatar.
     pub fn set_size(&self, size: i32) {
         self.imp().avatar.set_size(size);
     }
 
+    /// Set the Avatar item displayed by this widget.
     pub fn set_item(&self, item: Option<AvatarItem>) {
         let priv_ = self.imp();
 
@@ -126,10 +119,12 @@ impl Avatar {
         self.notify("item");
     }
 
+    /// The size of the Avatar.
     pub fn size(&self) -> i32 {
         self.imp().avatar.size()
     }
 
+    /// The Avatar item displayed by this widget.
     pub fn item(&self) -> Option<AvatarItem> {
         self.imp().item.borrow().clone()
     }

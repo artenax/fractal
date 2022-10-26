@@ -81,34 +81,18 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "view",
-                        "View",
-                        "The parent GtkTextView to autocomplete",
-                        gtk::TextView::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "user-id",
-                        "User ID",
-                        "The user ID of the current session",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "members",
-                        "Members",
-                        "The room members used for completion",
-                        MemberList::static_type(),
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "filtered-members",
-                        "Filtered Members",
-                        "The sorted and filtered room members",
-                        gtk::FilterListModel::static_type(),
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecObject::builder::<gtk::TextView>("view")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecString::builder("user-id")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<MemberList>("members")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<gtk::FilterListModel>("filtered-members")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -300,16 +284,19 @@ impl CompletionPopover {
         glib::Object::new(&[])
     }
 
+    /// The parent `GtkTextView` to autocomplete.
     pub fn view(&self) -> gtk::TextView {
         self.parent()
             .and_then(|parent| parent.downcast::<gtk::TextView>().ok())
             .unwrap()
     }
 
+    /// The ID of the logged-in user.
     pub fn user_id(&self) -> Option<String> {
         self.imp().user_id.borrow().clone()
     }
 
+    /// Set the ID of the logged-in user.
     pub fn set_user_id(&self, user_id: Option<String>) {
         let priv_ = self.imp();
 
@@ -330,12 +317,14 @@ impl CompletionPopover {
             .and_then(|model| model.downcast::<gtk::FilterListModel>().ok())
     }
 
+    /// The room members used for completion.
     pub fn members(&self) -> Option<MemberList> {
         self.first_model()
             .and_then(|first_model| first_model.model())
             .and_then(|model| model.downcast::<MemberList>().ok())
     }
 
+    /// Set the room members used for completion.
     pub fn set_members(&self, members: Option<&MemberList>) {
         if let Some(first_model) = self.first_model() {
             let priv_ = self.imp();
@@ -374,6 +363,8 @@ impl CompletionPopover {
                     )));
             }
         }
+
+        self.notify("members");
     }
 
     fn members_changed(&self, members: &MemberList, pos: u32, removed: u32, added: u32) {
@@ -446,6 +437,7 @@ impl CompletionPopover {
         }
     }
 
+    /// The sorted and filtered room members.
     pub fn filtered_members(&self) -> &gtk::FilterListModel {
         &self.imp().filtered_members
     }

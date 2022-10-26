@@ -77,13 +77,9 @@ mod imp {
     impl ObjectImpl for RoomRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "room",
-                    "Room",
-                    "The room of this row",
-                    Room::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Room>("room")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -164,10 +160,12 @@ impl RoomRow {
         glib::Object::new(&[])
     }
 
+    /// The room represented by this row.
     pub fn room(&self) -> Option<Room> {
         self.imp().room.borrow().clone()
     }
 
+    /// Set the room represented by this row.
     pub fn set_room(&self, room: Option<Room>) {
         let priv_ = self.imp();
 

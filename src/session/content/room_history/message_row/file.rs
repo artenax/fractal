@@ -39,20 +39,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "filename",
-                        "Filename",
-                        "The filename of the file",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "compact",
-                        "Compact",
-                        "Whether this file should be displayed in a compact format",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecString::builder("filename")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("compact")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -96,6 +88,7 @@ impl MessageFile {
         glib::Object::new(&[])
     }
 
+    /// Set the filename of the file.
     pub fn set_filename(&self, filename: Option<String>) {
         let priv_ = self.imp();
 
@@ -109,10 +102,12 @@ impl MessageFile {
         self.notify("filename");
     }
 
+    /// The filename of the file.
     pub fn filename(&self) -> Option<String> {
         self.imp().filename.borrow().to_owned()
     }
 
+    /// Set whether this file should be displayed in a compact format.
     pub fn set_compact(&self, compact: bool) {
         if self.compact() == compact {
             return;
@@ -122,6 +117,7 @@ impl MessageFile {
         self.notify("compact");
     }
 
+    /// Whether this file should be displayed in a compact format.
     pub fn compact(&self) -> bool {
         self.imp().compact.get()
     }

@@ -129,42 +129,21 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "user",
-                        "User",
-                        "The logged in user",
-                        User::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "compact",
-                        "Compact",
-                        "Whether a compact view is used",
-                        false,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "item-list",
-                        "Item List",
-                        "The list of items in the sidebar",
-                        ItemList::static_type(),
-                        glib::ParamFlags::WRITABLE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "selected-item",
-                        "Selected Item",
-                        "The selected item in this sidebar",
-                        glib::Object::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "drop-source-type",
-                        "Drop Source Type",
-                        "The type of the source that activated drop mode",
-                        CategoryType::static_type(),
-                        CategoryType::None as i32,
-                        glib::ParamFlags::READABLE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<User>("user")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("compact")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<ItemList>("item-list")
+                        .write_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<glib::Object>("selected-item")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecEnum::builder("drop-source-type", CategoryType::None)
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -175,7 +154,7 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => self.compact.set(value.get().unwrap()),
+                "compact" => obj.set_compact(value.get().unwrap()),
                 "user" => obj.set_user(value.get().unwrap()),
                 "item-list" => obj.set_item_list(value.get().unwrap()),
                 "selected-item" => obj.set_selected_item(value.get().unwrap()),
@@ -187,7 +166,7 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => self.compact.get().to_value(),
+                "compact" => obj.compact().to_value(),
                 "user" => obj.user().to_value(),
                 "selected-item" => obj.selected_item().to_value(),
                 "drop-source-type" => obj
@@ -291,6 +270,17 @@ impl Sidebar {
         glib::Object::new(&[])
     }
 
+    /// Whether a compact view is used.
+    pub fn compact(&self) -> bool {
+        self.imp().compact.get()
+    }
+
+    /// Set whether a compact view is used.
+    pub fn set_compact(&self, compact: bool) {
+        self.imp().compact.set(compact)
+    }
+
+    /// The selected item in this sidebar.
     pub fn selected_item(&self) -> Option<glib::Object> {
         self.imp().selected_item.borrow().clone()
     }
@@ -299,6 +289,7 @@ impl Sidebar {
         self.imp().room_search.clone()
     }
 
+    /// Set the list of items in the sidebar.
     pub fn set_item_list(&self, item_list: Option<ItemList>) {
         let priv_ = self.imp();
 
@@ -353,6 +344,7 @@ impl Sidebar {
         priv_.listview.set_model(Some(&selection));
     }
 
+    /// Set the selected item in this sidebar.
     pub fn set_selected_item(&self, selected_item: Option<glib::Object>) {
         if self.selected_item() == selected_item {
             return;
@@ -362,10 +354,12 @@ impl Sidebar {
         self.notify("selected-item");
     }
 
+    /// The logged-in user.
     pub fn user(&self) -> Option<User> {
         self.imp().user.borrow().clone()
     }
 
+    /// Set the logged-in user.
     fn set_user(&self, user: Option<User>) {
         let prev_user = self.user();
         if prev_user == user {
@@ -397,11 +391,13 @@ impl Sidebar {
         self.notify("user");
     }
 
+    /// The type of the source that activated drop mode.
     pub fn drop_source_type(&self) -> Option<RoomType> {
         self.imp().drop_source_type.get()
     }
 
-    pub fn set_drop_source_type(&self, source_type: Option<RoomType>) {
+    /// Set the type of the source that activated drop mode.
+    fn set_drop_source_type(&self, source_type: Option<RoomType>) {
         let priv_ = self.imp();
 
         if self.drop_source_type() == source_type {

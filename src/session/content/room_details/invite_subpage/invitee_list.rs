@@ -65,35 +65,18 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "room",
-                        "Room",
-                        "The room this invitee list refers to",
-                        Room::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "search-term",
-                        "Search Term",
-                        "The search term",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "has-selected",
-                        "Has Selected",
-                        "Whether the user has selected some users",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "state",
-                        "InviteeListState",
-                        "The state of the list",
-                        InviteeListState::static_type(),
-                        InviteeListState::default() as i32,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecString::builder("search-term")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("has-selected")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecEnum::builder("state", InviteeListState::default())
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -163,10 +146,12 @@ impl InviteeList {
         glib::Object::builder().property("room", room).build()
     }
 
+    /// The room this invitee list refers to.
     pub fn room(&self) -> &Room {
         self.imp().room.get().unwrap()
     }
 
+    /// Set the search term.
     pub fn set_search_term(&self, search_term: Option<String>) {
         let priv_ = self.imp();
 
@@ -184,10 +169,12 @@ impl InviteeList {
         self.notify("search_term");
     }
 
+    /// The search term.
     fn search_term(&self) -> Option<String> {
         self.imp().search_term.borrow().clone()
     }
 
+    /// Set the state of the list.
     fn set_state(&self, state: InviteeListState) {
         let priv_ = self.imp();
 
@@ -199,6 +186,7 @@ impl InviteeList {
         self.notify("state");
     }
 
+    /// The state of the list.
     pub fn state(&self) -> InviteeListState {
         self.imp().state.get()
     }
@@ -391,6 +379,7 @@ impl InviteeList {
         }
     }
 
+    /// Whether some users are selected.
     pub fn has_selected(&self) -> bool {
         !self.imp().invitee_list.borrow().is_empty()
     }

@@ -28,27 +28,15 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoolean::new(
-                        "invited",
-                        "Invited",
-                        "Whether this Invitee is actually invited",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "anchor",
-                        "Anchor",
-                        "The anchor location in the text buffer",
-                        gtk::TextChildAnchor::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "invite-exception",
-                        "Invite Exception",
-                        "The reason the user can't be invited",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecBoolean::builder("invited")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<gtk::TextChildAnchor>("anchor")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("invite-exception")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -101,10 +89,12 @@ impl Invitee {
         obj
     }
 
+    /// Whether this user is invited.
     pub fn is_invited(&self) -> bool {
         self.imp().invited.get()
     }
 
+    /// Set whether this user is invited.
     pub fn set_invited(&self, invited: bool) {
         if self.is_invited() == invited {
             return;
@@ -114,16 +104,21 @@ impl Invitee {
         self.notify("invited");
     }
 
+    /// The anchor for this user in the text buffer.
     pub fn anchor(&self) -> Option<gtk::TextChildAnchor> {
         self.imp().anchor.borrow().clone()
     }
 
+    /// Take the anchor for this user in the text buffer.
+    ///
+    /// The anchor will be `None` after calling this method.
     pub fn take_anchor(&self) -> Option<gtk::TextChildAnchor> {
         let anchor = self.imp().anchor.take();
         self.notify("anchor");
         anchor
     }
 
+    /// Set the anchor for this user in the text buffer.
     pub fn set_anchor(&self, anchor: Option<gtk::TextChildAnchor>) {
         if self.anchor() == anchor {
             return;
@@ -133,10 +128,12 @@ impl Invitee {
         self.notify("anchor");
     }
 
+    /// The reason the user can't be invited.
     pub fn invite_exception(&self) -> Option<String> {
         self.imp().invite_exception.borrow().clone()
     }
 
+    /// Set the reason the user can't be invited.
     pub fn set_invite_exception(&self, exception: Option<String>) {
         if exception == self.invite_exception() {
             return;

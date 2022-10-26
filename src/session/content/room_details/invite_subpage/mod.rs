@@ -80,13 +80,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "room",
-                    "Room",
-                    "The room users will be invited to",
-                    Room::static_type(),
-                    glib::ParamFlags::READWRITE,
-                )]
+                vec![glib::ParamSpecObject::builder::<Room>("room")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -190,10 +186,12 @@ impl InviteSubpage {
         glib::Object::builder().property("room", room).build()
     }
 
+    /// The room users will be invited to.
     pub fn room(&self) -> Option<Room> {
         self.imp().room.borrow().clone()
     }
 
+    /// Set the room users will be invited to.
     fn set_room(&self, room: Option<Room>) {
         let priv_ = self.imp();
 

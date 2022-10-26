@@ -39,14 +39,11 @@ mod imp {
     impl ObjectImpl for TimelinePlaceholder {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecEnum::new(
-                    "kind",
-                    "Kind",
-                    "The kind of placeholder",
-                    PlaceholderKind::static_type(),
-                    PlaceholderKind::default() as i32,
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![
+                    glib::ParamSpecEnum::builder("kind", PlaceholderKind::default())
+                        .construct_only()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -86,6 +83,7 @@ impl TimelinePlaceholder {
             .build()
     }
 
+    /// The kind of placeholder.
     pub fn kind(&self) -> PlaceholderKind {
         self.imp().kind.get()
     }

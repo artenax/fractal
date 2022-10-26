@@ -43,35 +43,18 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "category",
-                        "Category",
-                        "The category of this row",
-                        Category::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "expanded",
-                        "Expanded",
-                        "The expanded state of this row",
-                        true,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "label",
-                        "Label",
-                        "The label to show for this row",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "show-label-for-category",
-                        "Show Label for Category",
-                        "The CategoryType to show a label for",
-                        CategoryType::static_type(),
-                        CategoryType::None as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<Category>("category")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("expanded")
+                        .default_value(true)
+                        .explicit_notify()
+                        .construct()
+                        .build(),
+                    glib::ParamSpecString::builder("label").read_only().build(),
+                    glib::ParamSpecEnum::builder("show-label-for-category", CategoryType::None)
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -118,10 +101,12 @@ impl CategoryRow {
             .build()
     }
 
+    /// The category represented by this row.
     pub fn category(&self) -> Option<Category> {
         self.imp().category.borrow().clone()
     }
 
+    /// Set the category represented by this row.
     pub fn set_category(&self, category: Option<Category>) {
         if self.category() == category {
             return;
@@ -132,10 +117,12 @@ impl CategoryRow {
         self.notify("label");
     }
 
+    /// The expanded state of this row.
     fn expanded(&self) -> bool {
         self.imp().expanded.get()
     }
 
+    /// Set the expanded state of this row.
     fn set_expanded(&self, expanded: bool) {
         if self.expanded() == expanded {
             return;
@@ -160,6 +147,7 @@ impl CategoryRow {
         }
     }
 
+    /// The label to show for this row.
     pub fn label(&self) -> Option<String> {
         let to_type = self.category()?.type_();
         let from_type = self.show_label_for_category();
@@ -214,10 +202,15 @@ impl CategoryRow {
         Some(label)
     }
 
+    /// The `CategoryType` to show a label for.
+    ///
+    /// This will change the label according to the action that can be performed
+    /// when changing from the `CategoryType` to this row's `Category`.
     pub fn show_label_for_category(&self) -> CategoryType {
         self.imp().show_label_for_category.get()
     }
 
+    /// Set the `CategoryType` to show a label for.
     pub fn set_show_label_for_category(&self, category: CategoryType) {
         if category == self.show_label_for_category() {
             return;

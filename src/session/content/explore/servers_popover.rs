@@ -65,20 +65,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "server-list",
-                        "Server List",
-                        "The server list",
-                        ServerList::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<ServerList>("server-list")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -133,10 +125,12 @@ impl ExploreServersPopover {
         glib::Object::builder().property("session", session).build()
     }
 
+    /// The current session.
     pub fn session(&self) -> Option<Session> {
         self.imp().session.upgrade()
     }
 
+    /// Set the current session.
     pub fn set_session(&self, session: Option<Session>) {
         if session == self.session() {
             return;
@@ -165,6 +159,7 @@ impl ExploreServersPopover {
         }
     }
 
+    /// The server list.
     pub fn server_list(&self) -> Option<ServerList> {
         self.imp().server_list.borrow().clone()
     }

@@ -47,34 +47,16 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "loading",
-                        "Loading",
-                        "Whether a response is loaded",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "empty",
-                        "Empty",
-                        "Whether any matching rooms are found",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "complete",
-                        "Complete",
-                        "Whether all search results are loaded",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("loading")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("empty").read_only().build(),
+                    glib::ParamSpecBoolean::builder("complete")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -128,11 +110,13 @@ impl PublicRoomList {
         glib::Object::builder().property("session", session).build()
     }
 
+    /// The current session.
     pub fn session(&self) -> Option<Session> {
         self.imp().session.upgrade()
     }
 
-    pub fn set_session(&self, session: Option<Session>) {
+    /// Set the current session.
+    fn set_session(&self, session: Option<Session>) {
         if session == self.session() {
             return;
         }
@@ -141,14 +125,17 @@ impl PublicRoomList {
         self.notify("session");
     }
 
+    /// Whether the list is loading.
     pub fn loading(&self) -> bool {
         self.request_sent() && self.imp().list.borrow().is_empty()
     }
 
+    /// Whether the list is empty.
     pub fn empty(&self) -> bool {
         !self.request_sent() && self.imp().list.borrow().is_empty()
     }
 
+    /// Whether all results for the current search were loaded.
     pub fn complete(&self) -> bool {
         self.imp().next_batch.borrow().is_none()
     }

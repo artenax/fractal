@@ -124,138 +124,60 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "room-id",
-                        "Room id",
-                        "The room id of this Room",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "display-name",
-                        "Display Name",
-                        "The display name of this room",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "inviter",
-                        "Inviter",
-                        "The user who sent the invite to this room, this is only set when this room represents an invite",
-                        Member::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "avatar",
-                        "Avatar",
-                        "The Avatar of this room",
-                        Avatar::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "timeline",
-                        "Timeline",
-                        "The timeline of this room",
-                        Timeline::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecFlags::new(
-                        "highlight",
-                        "Highlight",
-                        "How this room is highlighted",
-                        HighlightFlags::static_type(),
-                        HighlightFlags::default().bits(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecUInt64::new(
-                        "notification-count",
-                        "Notification count",
-                        "The notification count of this room",
-                        std::u64::MIN,
-                        std::u64::MAX,
-                        0,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "category",
-                        "Category",
-                        "The category of this room",
-                        RoomType::static_type(),
-                        RoomType::default() as i32,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "topic",
-                        "Topic",
-                        "The topic of this room",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecUInt64::new(
-                        "latest-unread",
-                        "Latest Unread",
-                        "Timestamp of the latest possibly unread event",
-                        u64::MIN,
-                        u64::MAX,
-                        u64::default(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "latest-read",
-                        "Latest Read",
-                        "The latest read event in the room’s timeline",
-                        Event::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "members",
-                        "Members",
-                        "Model of the room’s members",
-                        MemberList::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "predecessor",
-                        "Predecessor",
-                        "The room id of predecessor of this Room",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "successor",
-                        "Successor",
-                        "The room id of successor of this Room",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "verification",
-                        "Verification",
-                        "The most recent active verification for a user in this room",
-                        IdentityVerification::static_type(),
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "encrypted",
-                        "Encrypted",
-                        "Whether this room is encrypted",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "typing-list",
-                        "Typing List",
-                        "The list of members currently typing in this room",
-                        TypingList::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecString::builder("room-id")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecString::builder("display-name")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Member>("inviter")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Avatar>("avatar")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Timeline>("timeline")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecFlags::builder::<HighlightFlags>("highlight")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecUInt64::builder("notification-count")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecEnum::builder("category", RoomType::default())
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("topic")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecUInt64::builder("latest-unread")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Event>("latest-read")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<MemberList>("members")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecString::builder("predecessor")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecString::builder("successor")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<IdentityVerification>("verification")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("encrypted")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<TypingList>("typing-list")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -380,10 +302,12 @@ impl Room {
             .build()
     }
 
+    /// The current session.
     pub fn session(&self) -> Session {
         self.imp().session.upgrade().unwrap()
     }
 
+    /// The ID of this room.
     pub fn room_id(&self) -> &RoomId {
         self.imp().room_id.get().unwrap()
     }
@@ -966,10 +890,12 @@ impl Room {
         self.imp().typing_list.update(members);
     }
 
+    /// The timeline of this room.
     pub fn timeline(&self) -> &Timeline {
         self.imp().timeline.get().unwrap()
     }
 
+    /// The members of this room.
     pub fn members(&self) -> &MemberList {
         self.imp().members.get().unwrap()
     }
@@ -1000,10 +926,12 @@ impl Room {
         self.set_highlight(highlight);
     }
 
+    /// How this room is highlighted.
     pub fn highlight(&self) -> HighlightFlags {
         self.imp().highlight.get()
     }
 
+    /// Set how this room is highlighted.
     fn set_highlight(&self, highlight: HighlightFlags) {
         if self.highlight() == highlight {
             return;
@@ -1043,11 +971,13 @@ impl Room {
             .is_none()
     }
 
+    /// The display name of this room.
     pub fn display_name(&self) -> String {
         let display_name = self.imp().name.borrow().clone();
         display_name.unwrap_or_else(|| gettext("Unknown"))
     }
 
+    /// Set the display name of this room.
     fn set_display_name(&self, display_name: Option<String>) {
         if Some(self.display_name()) == display_name {
             return;
@@ -1123,10 +1053,12 @@ impl Room {
         );
     }
 
+    /// The Avatar of this room.
     pub fn avatar(&self) -> &Avatar {
         self.imp().avatar.get().unwrap()
     }
 
+    /// The topic of this room.
     pub fn topic(&self) -> Option<String> {
         self.matrix_room()
             .topic()
@@ -1168,6 +1100,9 @@ impl Room {
         self.imp().power_levels.borrow().clone()
     }
 
+    /// The user who sent the invite to this room.
+    ///
+    /// This is only set when this room represents an invite.
     pub fn inviter(&self) -> Option<Member> {
         self.imp().inviter.borrow().clone()
     }
@@ -1254,7 +1189,7 @@ impl Room {
 
     /// The timestamp of the room's latest possibly unread event.
     ///
-    /// If it is not known, it will return 0.
+    /// If it is not known, it will return `0`.
     pub fn latest_unread(&self) -> u64 {
         self.imp().latest_unread.get()
     }
@@ -1590,10 +1525,13 @@ impl Room {
         })
     }
 
+    /// The ID of the predecessor of this room, if this room is an upgrade to a
+    /// previous room.
     pub fn predecessor(&self) -> Option<&RoomId> {
         self.imp().predecessor.get().map(std::ops::Deref::deref)
     }
 
+    /// Load the predecessor of this room.
     fn load_predecessor(&self) -> Option<()> {
         let priv_ = self.imp();
 
@@ -1609,10 +1547,12 @@ impl Room {
         Some(())
     }
 
+    /// The ID of the successor of this Room, if this room was upgraded.
     pub fn successor(&self) -> Option<&RoomId> {
         self.imp().successor.get().map(std::ops::Deref::deref)
     }
 
+    /// Load the successor of this room.
     pub fn load_successor(&self) -> Option<()> {
         let priv_ = self.imp();
 
@@ -1740,11 +1680,13 @@ impl Room {
         }
     }
 
+    /// Set the most recent active verification for a user in this room.
     pub fn set_verification(&self, verification: IdentityVerification) {
         self.imp().verification.replace(Some(verification));
         self.notify("verification");
     }
 
+    /// The most recent active verification for a user in this room.
     pub fn verification(&self) -> Option<IdentityVerification> {
         self.imp().verification.borrow().clone()
     }
@@ -1766,10 +1708,12 @@ impl Room {
         self.set_latest_unread(latest_unread);
     }
 
+    /// Whether this room is encrypted.
     pub fn is_encrypted(&self) -> bool {
         self.imp().is_encrypted.get()
     }
 
+    /// Set whether this room is encrypted.
     pub fn set_is_encrypted(&self, is_encrypted: bool) {
         let was_encrypted = self.is_encrypted();
         if was_encrypted == is_encrypted {

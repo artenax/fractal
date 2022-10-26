@@ -55,20 +55,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "device",
-                        "Device",
-                        "The device this row is showing",
-                        Device::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "is-current-device",
-                        "Is Current Device",
-                        "Whether this is the device of the current session",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
+                    glib::ParamSpecObject::builder::<Device>("device")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("is-current-device")
+                        .construct_only()
+                        .build(),
                 ]
             });
 
@@ -145,10 +137,12 @@ impl DeviceRow {
             .build()
     }
 
+    /// The device displayed by this row.
     pub fn device(&self) -> Option<Device> {
         self.imp().device.borrow().clone()
     }
 
+    /// Set the device displayed by this row.
     pub fn set_device(&self, device: Option<Device>) {
         let priv_ = self.imp();
 
@@ -184,6 +178,7 @@ impl DeviceRow {
         self.notify("device");
     }
 
+    /// Set whether this is the device of the current session.
     fn set_current_device(&self, input_bool: bool) {
         let priv_ = self.imp();
         if priv_.is_current_device.get() == input_bool {
@@ -193,6 +188,7 @@ impl DeviceRow {
         self.notify("is-current-device");
     }
 
+    /// Whether this is the device of the current session.
     pub fn is_current_device(&self) -> bool {
         self.imp().is_current_device.get()
     }

@@ -49,20 +49,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoolean::new(
-                        "compact",
-                        "Compact",
-                        "Whether this player should be displayed in a compact format",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "player",
-                        "Player",
-                        "The GStreamerPlayer for the video",
-                        Player::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecBoolean::builder("compact")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Player>("player")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -106,14 +98,17 @@ impl VideoPlayer {
         glib::Object::new(&[])
     }
 
+    /// The GStreamerPlayer for the video.
     pub fn player(&self) -> &Player {
         &self.imp().player
     }
 
+    /// Whether this player should be displayed in a compact format.
     pub fn compact(&self) -> bool {
         self.imp().compact.get()
     }
 
+    /// Set Wwether this player should be displayed in a compact format.
     pub fn set_compact(&self, compact: bool) {
         if self.compact() == compact {
             return;

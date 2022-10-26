@@ -65,13 +65,11 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "request",
-                    "Request",
-                    "The verification request this InfoBar is showing",
-                    IdentityVerification::static_type(),
-                    glib::ParamFlags::READWRITE,
-                )]
+                vec![
+                    glib::ParamSpecObject::builder::<IdentityVerification>("request")
+                        .explicit_notify()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -105,10 +103,12 @@ impl VerificationInfoBar {
         glib::Object::builder().property("label", &label).build()
     }
 
+    /// The verification request this InfoBar is showing.
     pub fn request(&self) -> Option<IdentityVerification> {
         self.imp().request.borrow().clone()
     }
 
+    /// Set the verification request this InfoBar is showing.
     pub fn set_request(&self, request: Option<IdentityVerification>) {
         let priv_ = self.imp();
 

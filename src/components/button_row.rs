@@ -45,13 +45,9 @@ mod imp {
 
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoolean::new(
-                    "to-subpage",
-                    "To Subpage",
-                    "Whether activating this button opens a subpage",
-                    false,
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecBoolean::builder("to-subpage")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -105,10 +101,12 @@ impl ButtonRow {
         glib::Object::new(&[])
     }
 
+    /// Whether activating this button opens a subpage.
     pub fn to_subpage(&self) -> bool {
         self.imp().to_subpage.get()
     }
 
+    /// Set whether activating this button opens a subpage.
     pub fn set_to_subpage(&self, to_subpage: bool) {
         if self.to_subpage() == to_subpage {
             return;

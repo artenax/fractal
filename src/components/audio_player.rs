@@ -38,20 +38,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "media-file",
-                        "Media File",
-                        "The media file to play",
-                        gtk::MediaFile::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "autoplay",
-                        "Autoplay",
-                        "Whether to play the media automatically",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<gtk::MediaFile>("media-file")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("autoplay")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -141,10 +133,12 @@ impl AudioPlayer {
         self.set_media_file(file.map(gtk::MediaFile::for_file));
     }
 
+    /// Whether to play the media automatically.
     pub fn autoplay(&self) -> bool {
         self.imp().autoplay.get()
     }
 
+    /// Set whether to play the media automatically.
     pub fn set_autoplay(&self, autoplay: bool) {
         if self.autoplay() == autoplay {
             return;

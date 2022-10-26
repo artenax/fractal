@@ -82,13 +82,9 @@ mod imp {
     impl ObjectImpl for Window {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoolean::new(
-                    "has-sessions",
-                    "Has Sessions",
-                    "Whether this window has sessions",
-                    false,
-                    glib::ParamFlags::READABLE,
-                )]
+                vec![glib::ParamSpecBoolean::builder("has-sessions")
+                    .read_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()

@@ -69,27 +69,13 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoolean::new(
-                        "fullscreened",
-                        "Fullscreened",
-                        "Whether the viewer is fullscreen",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "event",
-                        "Event",
-                        "The media event to display",
-                        SupportedEvent::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "body",
-                        "Body",
-                        "The body of the media event",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecBoolean::builder("fullscreened")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<SupportedEvent>("event")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("body").read_only().build(),
                 ]
             });
 
@@ -151,10 +137,12 @@ impl MediaViewer {
         glib::Object::new(&[])
     }
 
+    /// The media event to display.
     pub fn event(&self) -> Option<SupportedEvent> {
         self.imp().event.upgrade()
     }
 
+    /// Set the media event to display.
     pub fn set_event(&self, event: Option<SupportedEvent>) {
         if event == self.event() {
             return;
@@ -165,11 +153,13 @@ impl MediaViewer {
         self.notify("event");
     }
 
+    /// The body of the media event.
     pub fn body(&self) -> Option<String> {
         self.imp().body.borrow().clone()
     }
 
-    pub fn set_body(&self, body: Option<String>) {
+    /// Set the body of the media event.
+    fn set_body(&self, body: Option<String>) {
         if body == self.body() {
             return;
         }
@@ -178,10 +168,12 @@ impl MediaViewer {
         self.notify("body");
     }
 
+    /// Whether the viewer is fullscreened.
     pub fn fullscreened(&self) -> bool {
         self.imp().fullscreened.get()
     }
 
+    /// Set whether the viewer is fullscreened.
     pub fn set_fullscreened(&self, fullscreened: bool) {
         let priv_ = self.imp();
 

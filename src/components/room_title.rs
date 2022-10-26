@@ -42,20 +42,12 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "title",
-                        "Title",
-                        "The title of the room",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "subtitle",
-                        "Subtitle",
-                        "The subtitle of the room",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecString::builder("title")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("subtitle")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -101,6 +93,7 @@ impl RoomTitle {
         glib::Object::new(&[])
     }
 
+    /// Set the title of the room.
     pub fn set_title(&self, title: Option<String>) {
         let priv_ = self.imp();
         // Parse and escape markup in title
@@ -117,10 +110,12 @@ impl RoomTitle {
         self.notify("title");
     }
 
+    /// The title of the room.
     pub fn title(&self) -> Option<String> {
         self.imp().title.borrow().clone()
     }
 
+    /// Set the subtitle of the room.
     pub fn set_subtitle(&self, subtitle: Option<String>) {
         let priv_ = self.imp();
         // Parse and escape markup in subtitle
@@ -137,6 +132,7 @@ impl RoomTitle {
         self.notify("subtitle");
     }
 
+    /// The subtitle of the room.
     pub fn subtitle(&self) -> Option<String> {
         self.imp().subtitle.borrow().clone()
     }

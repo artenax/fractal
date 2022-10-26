@@ -40,13 +40,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "event",
-                    "Event",
-                    "The event that is displayed in the Dialog",
-                    Event::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Event>("event")
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -63,7 +59,7 @@ mod imp {
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "event" => self.event.get().to_value(),
+                "event" => self.obj().event().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -99,6 +95,11 @@ impl EventSourceDialog {
             .property("transient-for", window)
             .property("event", event)
             .build()
+    }
+
+    /// The event that is displayed in the dialog.
+    pub fn event(&self) -> Option<&Event> {
+        self.imp().event.get()
     }
 
     pub fn copy_to_clipboard(&self) {

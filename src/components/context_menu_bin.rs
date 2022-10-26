@@ -78,13 +78,11 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "popover",
-                    "Popover",
-                    "The popover of the context menu",
-                    gtk::PopoverMenu::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![
+                    glib::ParamSpecObject::builder::<gtk::PopoverMenu>("popover")
+                        .explicit_notify()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()

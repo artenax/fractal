@@ -3,14 +3,13 @@ use gtk::{glib, prelude::*, subclass::prelude::*};
 use super::{CategoryType, EntryType, SidebarItem, SidebarItemExt, SidebarItemImpl};
 
 mod imp {
-    use std::cell::{Cell, RefCell};
+    use std::cell::Cell;
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct Entry {
         pub type_: Cell<EntryType>,
-        pub icon_name: RefCell<Option<String>>,
     }
 
     #[glib::object_subclass]
@@ -25,28 +24,15 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecEnum::new(
-                        "type",
-                        "Type",
-                        "The type of this category",
-                        EntryType::static_type(),
-                        EntryType::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "display-name",
-                        "Display Name",
-                        "The display name of this Entry",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "icon-name",
-                        "Icon Name",
-                        "The icon name used for this Entry",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecEnum::builder("type", EntryType::default())
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecString::builder("display-name")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecString::builder("icon-name")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -58,9 +44,6 @@ mod imp {
                 "type" => {
                     self.type_.set(value.get().unwrap());
                 }
-                "icon-name" => {
-                    let _ = self.icon_name.replace(value.get().unwrap());
-                }
                 _ => unimplemented!(),
             }
         }
@@ -70,7 +53,7 @@ mod imp {
 
             match pspec.name() {
                 "type" => obj.type_().to_value(),
-                "display-name" => obj.type_().to_string().to_value(),
+                "display-name" => obj.display_name().to_value(),
                 "icon-name" => obj.icon_name().to_value(),
                 _ => unimplemented!(),
             }
@@ -102,10 +85,17 @@ impl Entry {
         glib::Object::builder().property("type", &type_).build()
     }
 
+    /// The type of this entry.
     pub fn type_(&self) -> EntryType {
         self.imp().type_.get()
     }
 
+    /// The display name of this entry.
+    pub fn display_name(&self) -> String {
+        self.type_().to_string()
+    }
+
+    /// The icon name used for this entry.
     pub fn icon_name(&self) -> Option<&str> {
         match self.type_() {
             EntryType::Explore => Some("explore-symbolic"),

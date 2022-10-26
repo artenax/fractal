@@ -74,13 +74,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "room",
-                    "Room",
-                    "The room backing all details of the preference window",
-                    Room::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Room>("room")
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -131,11 +127,13 @@ impl GeneralPage {
         glib::Object::builder().property("room", room).build()
     }
 
+    /// The room backing all the details of the preference window.
     pub fn room(&self) -> &Room {
         // Use unwrap because room property is CONSTRUCT_ONLY.
         self.imp().room.get().unwrap()
     }
 
+    /// Set the room backing all the details of the preference window.
     fn set_room(&self, room: Room) {
         self.imp().room.set(room).expect("Room already initialized");
     }

@@ -35,13 +35,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "entry",
-                    "Entry",
-                    "The entry of this row",
-                    Entry::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Entry>("entry")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -76,10 +72,12 @@ impl EntryRow {
         glib::Object::new(&[])
     }
 
+    /// The entry of this row.
     pub fn entry(&self) -> Option<Entry> {
         self.imp().entry.borrow().clone()
     }
 
+    /// Set the entry of this row.
     pub fn set_entry(&self, entry: Option<Entry>) {
         if self.entry() == entry {
             return;

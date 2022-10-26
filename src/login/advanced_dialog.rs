@@ -40,13 +40,10 @@ mod imp {
     impl ObjectImpl for LoginAdvancedDialog {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoolean::new(
-                    "autodiscovery",
-                    "Auto-discovery",
-                    "Whether auto-discovery is enabled",
-                    true,
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                )]
+                vec![glib::ParamSpecBoolean::builder("autodiscovery")
+                    .default_value(true)
+                    .construct()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -85,10 +82,12 @@ impl LoginAdvancedDialog {
             .build()
     }
 
+    /// Whether auto-discovery is enabled.
     pub fn autodiscovery(&self) -> bool {
         self.imp().autodiscovery.get()
     }
 
+    /// Set whether auto-discovery is enabled.
     pub fn set_autodiscovery(&self, autodiscovery: bool) {
         let priv_ = self.imp();
 

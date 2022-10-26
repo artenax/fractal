@@ -87,28 +87,13 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "room",
-                        "Room",
-                        "The Room containing this timeline",
-                        Room::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "empty",
-                        "Empty",
-                        "Whether the timeline is empty",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "state",
-                        "State",
-                        "The state the timeline is in",
-                        TimelineState::static_type(),
-                        TimelineState::default() as i32,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("empty").read_only().build(),
+                    glib::ParamSpecEnum::builder("state", TimelineState::default())
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -844,6 +829,7 @@ impl Timeline {
         added > 0
     }
 
+    /// Set the room containing this timeline.
     fn set_room(&self, room: Option<Room>) {
         self.imp().room.set(room.as_ref());
 
@@ -858,6 +844,7 @@ impl Timeline {
         }
     }
 
+    /// The room containing this timeline.
     pub fn room(&self) -> Room {
         self.imp().room.upgrade().unwrap()
     }
@@ -874,11 +861,12 @@ impl Timeline {
         self.notify("state");
     }
 
-    // The state of the timeline
+    /// The state of the timeline.
     pub fn state(&self) -> TimelineState {
         self.imp().state.get()
     }
 
+    /// Whether the timeline is empty.
     pub fn is_empty(&self) -> bool {
         let priv_ = self.imp();
         priv_.list.borrow().is_empty()

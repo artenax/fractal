@@ -25,13 +25,10 @@ mod imp {
     impl ObjectImpl for TypingList {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoolean::new(
-                    "is-empty",
-                    "Is Empty",
-                    "Whether the list is empty",
-                    true,
-                    glib::ParamFlags::READABLE,
-                )]
+                vec![glib::ParamSpecBoolean::builder("is-empty")
+                    .default_value(true)
+                    .read_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -78,6 +75,7 @@ impl TypingList {
         self.imp().members.borrow().clone()
     }
 
+    /// Whether the list is empty.
     pub fn is_empty(&self) -> bool {
         self.n_items() == 0
     }

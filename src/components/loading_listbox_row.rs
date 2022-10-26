@@ -44,20 +44,13 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoolean::new(
-                        "loading",
-                        "Loading",
-                        "Whether to show the loading spinner",
-                        true,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "error",
-                        "Error",
-                        "The error message to show",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecBoolean::builder("loading")
+                        .default_value(true)
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("error")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -127,10 +120,12 @@ impl LoadingListBoxRow {
         glib::Object::new(&[])
     }
 
+    /// Whether to show the loading spinner.
     pub fn is_loading(&self) -> bool {
         !self.imp().is_error.get()
     }
 
+    /// Set whether to show the loading spinner.
     pub fn set_loading(&self, loading: bool) {
         let priv_ = self.imp();
 
@@ -144,6 +139,7 @@ impl LoadingListBoxRow {
         self.notify("loading");
     }
 
+    /// The error message to display.
     pub fn error(&self) -> Option<glib::GString> {
         let message = self.imp().error_label.text();
         if message.is_empty() {
@@ -153,6 +149,10 @@ impl LoadingListBoxRow {
         }
     }
 
+    /// Set the error message to display.
+    ///
+    /// If this is `Some`, the error will be shown, otherwise the spinner will
+    /// be shown.
     pub fn set_error(&self, message: Option<&str>) {
         let priv_ = self.imp();
 

@@ -70,20 +70,10 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoolean::new(
-                        "compact",
-                        "Compact",
-                        "Whether a compact view is used",
-                        false,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecBoolean::builder("compact").build(),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -91,17 +81,21 @@ mod imp {
         }
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
-                "compact" => self.compact.set(value.get().unwrap()),
-                "session" => self.obj().set_session(value.get().unwrap()),
+                "compact" => obj.set_compact(value.get().unwrap()),
+                "session" => obj.set_session(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
-                "compact" => self.compact.get().to_value(),
-                "session" => self.obj().session().to_value(),
+                "compact" => obj.compact().to_value(),
+                "session" => obj.session().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -149,8 +143,19 @@ impl Explore {
         glib::Object::builder().property("session", session).build()
     }
 
+    /// The current session.
     pub fn session(&self) -> Option<Session> {
         self.imp().session.upgrade()
+    }
+
+    /// Whether a compact view is used.
+    pub fn compact(&self) -> bool {
+        self.imp().compact.get()
+    }
+
+    /// Set whether a compact view is used.
+    pub fn set_compact(&self, compact: bool) {
+        self.imp().compact.set(compact)
     }
 
     pub fn init(&self) {
@@ -168,6 +173,7 @@ impl Explore {
         self.imp().search_entry.grab_focus();
     }
 
+    /// Set the current session.
     pub fn set_session(&self, session: Option<Session>) {
         let priv_ = self.imp();
 

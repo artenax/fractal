@@ -29,27 +29,15 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "joined",
-                        "Joined",
-                        "The item for the subpage of joined members",
-                        gio::ListModel::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "invited",
-                        "Invited",
-                        "The item for the subpage of invited members",
-                        MembershipSubpageItem::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "banned",
-                        "Banned",
-                        "The item for the subpage of banned members",
-                        MembershipSubpageItem::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
+                    glib::ParamSpecObject::builder::<gio::ListModel>("joined")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<MembershipSubpageItem>("invited")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<MembershipSubpageItem>("banned")
+                        .construct_only()
+                        .build(),
                 ]
             });
 
@@ -153,26 +141,32 @@ impl ExtraLists {
             .build()
     }
 
+    /// The list of joined members.
     pub fn joined(&self) -> &gio::ListModel {
         self.imp().joined.get().unwrap()
     }
 
+    /// Set the list of joined members.
     fn set_joined(&self, model: gio::ListModel) {
         self.imp().joined.set(model).unwrap();
     }
 
+    /// The subpage item for invited members.
     pub fn invited(&self) -> &MembershipSubpageItem {
         self.imp().invited.get().unwrap()
     }
 
+    /// Set the subpage item for invited members.
     fn set_invited(&self, item: MembershipSubpageItem) {
         self.imp().invited.set(item).unwrap();
     }
 
+    /// The subpage for banned members.
     pub fn banned(&self) -> &MembershipSubpageItem {
         self.imp().banned.get().unwrap()
     }
 
+    /// Set the subpage for banned members.
     fn set_banned(&self, item: MembershipSubpageItem) {
         self.imp().banned.set(item).unwrap();
     }

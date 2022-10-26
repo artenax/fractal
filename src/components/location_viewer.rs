@@ -43,13 +43,9 @@ mod imp {
     impl ObjectImpl for LocationViewer {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoolean::new(
-                    "compact",
-                    "Compact",
-                    "Whether to display this location in a compact format",
-                    false,
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecBoolean::builder("compact")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()

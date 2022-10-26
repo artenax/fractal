@@ -41,20 +41,10 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "item",
-                        "Item",
-                        "The item of this row",
-                        MembershipSubpageItem::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "label",
-                        "Label",
-                        "The label to show for this row",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecObject::builder::<MembershipSubpageItem>("item")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("label").read_only().build(),
                 ]
             });
 
@@ -118,10 +108,12 @@ impl MembershipSubpageRow {
         glib::Object::new(&[])
     }
 
+    /// The item of this row.
     pub fn item(&self) -> Option<MembershipSubpageItem> {
         self.imp().item.borrow().clone()
     }
 
+    /// Set the item of this row.
     pub fn set_item(&self, item: Option<MembershipSubpageItem>) {
         let priv_ = self.imp();
         let prev_item = self.item();
@@ -153,6 +145,7 @@ impl MembershipSubpageRow {
         self.notify("label");
     }
 
+    /// The label of this row.
     pub fn label(&self) -> Option<String> {
         Some(self.item()?.state().to_string())
     }

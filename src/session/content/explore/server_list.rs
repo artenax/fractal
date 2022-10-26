@@ -29,13 +29,9 @@ mod imp {
     impl ObjectImpl for ServerList {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "session",
-                    "Session",
-                    "The session",
-                    Session::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Session>("session")
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -86,6 +82,7 @@ impl ServerList {
         glib::Object::builder().property("session", session).build()
     }
 
+    /// Set the current session.
     fn set_session(&self, session: Session) {
         let priv_ = self.imp();
 
@@ -102,6 +99,7 @@ impl ServerList {
         }));
     }
 
+    /// The current session.
     pub fn session(&self) -> Option<Session> {
         self.imp().session.upgrade()
     }

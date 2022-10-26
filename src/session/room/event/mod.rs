@@ -86,34 +86,14 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoxed::new(
-                        "pure-event",
-                        "Pure Event",
-                        "The pure Matrix event of this Event",
-                        BoxedSyncTimelineEvent::static_type(),
-                        glib::ParamFlags::WRITABLE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "source",
-                        "Source",
-                        "The JSON source of this Event",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "room",
-                        "Room",
-                        "The room containing this Event",
-                        Room::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "time",
-                        "Time",
-                        "The locally formatted time of this Matrix event",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecBoxed::builder::<BoxedSyncTimelineEvent>("pure-event")
+                        .write_only()
+                        .build(),
+                    glib::ParamSpecString::builder("source").read_only().build(),
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecString::builder("time").read_only().build(),
                 ]
             });
 

@@ -37,34 +37,18 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "label",
-                        "Label",
-                        "The label",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "placeholder",
-                        "Placeholder",
-                        "The placeholder that is replaced with widgets",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "use-markup",
-                        "Use Markup",
-                        "Whether the label's text is interpreted as Pango markup.",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "ellipsize",
-                        "Ellipsize",
-                        "Whether the label's text should be ellipsized.",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecString::builder("label")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("placeholder")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("use-markup")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("ellipsize")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -226,6 +210,7 @@ impl LabelWithWidgets {
         self.imp().widgets.borrow().to_owned()
     }
 
+    /// Set the text of the label.
     pub fn set_label(&self, label: Option<String>) {
         let priv_ = self.imp();
 
@@ -238,10 +223,12 @@ impl LabelWithWidgets {
         self.notify("label");
     }
 
+    /// The text of the label.
     pub fn label(&self) -> Option<String> {
         self.imp().text.borrow().to_owned()
     }
 
+    /// Set the placeholder that is replaced with widgets.
     pub fn set_placeholder(&self, placeholder: Option<String>) {
         let priv_ = self.imp();
 
@@ -254,6 +241,9 @@ impl LabelWithWidgets {
         self.notify("placeholder");
     }
 
+    /// The placeholder that is replaced with widgets.
+    ///
+    /// Defaults to `<widget>`.
     pub fn placeholder(&self) -> Option<String> {
         self.imp().placeholder.borrow().to_owned()
     }
@@ -354,6 +344,7 @@ impl LabelWithWidgets {
         }
     }
 
+    /// Whether the label's text is interpreted as Pango markup.
     pub fn uses_markup(&self) -> bool {
         self.imp().label.uses_markup()
     }

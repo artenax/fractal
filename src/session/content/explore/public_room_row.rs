@@ -54,13 +54,9 @@ mod imp {
     impl ObjectImpl for PublicRoomRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "public-room",
-                    "Public Room",
-                    "The public room displayed by this row",
-                    PublicRoom::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecObject::builder::<PublicRoom>("public-room")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -115,10 +111,12 @@ impl PublicRoomRow {
         glib::Object::new(&[])
     }
 
+    /// The public room displayed by this row.
     pub fn public_room(&self) -> Option<PublicRoom> {
         self.imp().public_room.borrow().clone()
     }
 
+    /// Set the public room displayed by this row.
     pub fn set_public_room(&self, public_room: Option<PublicRoom>) {
         let priv_ = self.imp();
         let old_public_room = self.public_room();

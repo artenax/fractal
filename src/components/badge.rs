@@ -24,15 +24,11 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecInt64::new(
-                    "power-level",
-                    "Power level",
-                    "The power level this badge displays",
-                    POWER_LEVEL_MIN,
-                    POWER_LEVEL_MAX,
-                    0,
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecInt64::builder("power-level")
+                    .minimum(POWER_LEVEL_MIN)
+                    .maximum(POWER_LEVEL_MAX)
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -80,10 +76,12 @@ impl Badge {
         glib::Object::new(&[])
     }
 
+    /// The power level this badge displays.
     pub fn power_level(&self) -> PowerLevel {
         self.imp().power_level.get()
     }
 
+    /// Set the power level this badge displays.
     pub fn set_power_level(&self, power_level: PowerLevel) {
         self.update_badge(power_level);
         self.imp().power_level.set(power_level);

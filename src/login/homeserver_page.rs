@@ -42,15 +42,8 @@ mod imp {
 
     impl ObjectImpl for LoginHomeserverPage {
         fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoolean::new(
-                    "autodiscovery",
-                    "Auto-discovery",
-                    "Whether homeserver auto-discovery is enabled",
-                    false,
-                    glib::ParamFlags::READWRITE,
-                )]
-            });
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
+                Lazy::new(|| vec![glib::ParamSpecBoolean::builder("autodiscovery").build()]);
 
             PROPERTIES.as_ref()
         }
@@ -99,10 +92,12 @@ impl LoginHomeserverPage {
         glib::Object::new(&[])
     }
 
+    /// Whether homeserver auto-discovery is enabled.
     pub fn autodiscovery(&self) -> bool {
         self.imp().autodiscovery.get()
     }
 
+    /// Set whether homeserver auto-discovery is enabled.
     fn set_autodiscovery(&self, autodiscovery: bool) {
         let priv_ = self.imp();
 

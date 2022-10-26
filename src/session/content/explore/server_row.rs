@@ -35,13 +35,9 @@ mod imp {
     impl ObjectImpl for ExploreServerRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "server",
-                    "Server",
-                    "The server displayed by this row",
-                    Server::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Server>("server")
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -86,6 +82,7 @@ impl ExploreServerRow {
         glib::Object::builder().property("server", server).build()
     }
 
+    /// The server displayed by this row.
     pub fn server(&self) -> Option<&Server> {
         self.imp().server.get()
     }

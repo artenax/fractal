@@ -112,22 +112,14 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "homeserver",
-                        "Homeserver",
-                        "The homeserver to log into",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "autodiscovery",
-                        "Auto-discovery",
-                        "Whether auto-discovery is enabled",
-                        true,
-                        glib::ParamFlags::READWRITE
-                            | glib::ParamFlags::CONSTRUCT
-                            | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecString::builder("homeserver")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("autodiscovery")
+                        .default_value(true)
+                        .construct()
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -241,10 +233,12 @@ impl Login {
         self.imp().current_session_id.replace(session_id);
     }
 
+    /// The homeserver to log into.
     pub fn homeserver(&self) -> Option<Url> {
         self.imp().homeserver.borrow().clone()
     }
 
+    /// The pretty-formatted homeserver to log into.
     pub fn homeserver_pretty(&self) -> Option<String> {
         let homeserver = self.homeserver();
         homeserver
@@ -253,6 +247,7 @@ impl Login {
             .or_else(|| homeserver.as_ref().map(ToString::to_string))
     }
 
+    /// Set the homeserver to log into.
     pub fn set_homeserver(&self, homeserver: Option<Url>) {
         let priv_ = self.imp();
 
@@ -264,10 +259,12 @@ impl Login {
         self.notify("homeserver");
     }
 
+    /// Whether auto-discovery is enabled.
     pub fn autodiscovery(&self) -> bool {
         self.imp().autodiscovery.get()
     }
 
+    /// Set whether auto-discovery is enabled
     pub fn set_autodiscovery(&self, autodiscovery: bool) {
         if self.autodiscovery() == autodiscovery {
             return;

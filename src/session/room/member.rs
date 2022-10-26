@@ -100,32 +100,17 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecInt64::new(
-                        "power-level",
-                        "Power level",
-                        "Power level of the member in its room.",
-                        POWER_LEVEL_MIN,
-                        POWER_LEVEL_MAX,
-                        0,
-                        glib::ParamFlags::READABLE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "membership",
-                        "Membership",
-                        "This member’s membership state.",
-                        Membership::static_type(),
-                        Membership::default() as i32,
-                        glib::ParamFlags::READABLE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecUInt64::new(
-                        "latest-activity",
-                        "Latest Activity",
-                        "The timestamp of the latest activity of this member",
-                        u64::MIN,
-                        u64::MAX,
-                        0,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecInt64::builder("power-level")
+                        .minimum(POWER_LEVEL_MIN)
+                        .maximum(POWER_LEVEL_MAX)
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecEnum::builder("membership", Membership::default())
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecUInt64::builder("latest-activity")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -166,10 +151,12 @@ impl Member {
             .build()
     }
 
+    /// The power level of the member.
     pub fn power_level(&self) -> PowerLevel {
         self.imp().power_level.get()
     }
 
+    /// Set the power level of the member.
     fn set_power_level(&self, power_level: PowerLevel) {
         if self.power_level() == power_level {
             return;
@@ -194,11 +181,13 @@ impl Member {
         self.role().is_peasant()
     }
 
+    /// This member's membership state.
     pub fn membership(&self) -> Membership {
         let priv_ = imp::Member::from_instance(self);
         priv_.membership.get()
     }
 
+    /// Set this member's membership state.
     fn set_membership(&self, membership: Membership) {
         if self.membership() == membership {
             return;
@@ -208,10 +197,12 @@ impl Member {
         self.notify("membership");
     }
 
+    /// The timestamp of the latest activity of this member.
     pub fn latest_activity(&self) -> u64 {
         self.imp().latest_activity.get()
     }
 
+    /// Set the timestamp of the latest activity of this member.
     pub fn set_latest_activity(&self, activity: u64) {
         if self.latest_activity() >= activity {
             return;

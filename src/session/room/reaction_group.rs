@@ -29,29 +29,13 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "key",
-                        "Key",
-                        "The key of the group",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecUInt::new(
-                        "count",
-                        "Count",
-                        "The number of reactions in this group",
-                        u32::MIN,
-                        u32::MAX,
-                        0,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "has-user",
-                        "Has User",
-                        "Whether this group has a reaction from this user",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecString::builder("key")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecUInt::builder("count").read_only().build(),
+                    glib::ParamSpecBoolean::builder("has-user")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -90,10 +74,12 @@ impl ReactionGroup {
         glib::Object::builder().property("key", &key).build()
     }
 
+    /// The key of the group.
     pub fn key(&self) -> &str {
         self.imp().key.get().unwrap()
     }
 
+    /// The number of reactions in this group.
     pub fn count(&self) -> u32 {
         self.imp()
             .reactions
@@ -103,7 +89,7 @@ impl ReactionGroup {
             .count() as u32
     }
 
-    /// The reaction in this group sent by this user, if any.
+    /// The reaction in this group sent by the logged-in user, if any.
     pub fn user_reaction(&self) -> Option<SupportedEvent> {
         let reactions = self.imp().reactions.borrow();
         if let Some(user) = reactions
@@ -119,7 +105,7 @@ impl ReactionGroup {
         None
     }
 
-    /// Whether this group has a reaction from this user.
+    /// Whether this group has a reaction from the logged-in user.
     pub fn has_user(&self) -> bool {
         self.user_reaction().is_some()
     }

@@ -125,21 +125,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecEnum::new(
-                        "brand",
-                        "Brand",
-                        "The brand of this button",
-                        IdpBrand::static_type(),
-                        IdpBrand::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "id",
-                        "Id",
-                        "The id of the selected identity-provider",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
+                    glib::ParamSpecEnum::builder("brand", IdpBrand::default())
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecString::builder("id")
+                        .construct_only()
+                        .build(),
                 ]
             });
 
@@ -195,19 +186,23 @@ impl IdpButton {
         self.set_icon_name(self.brand().icon());
     }
 
+    /// Set the id of the identity-provider represented by this button.
     pub fn set_id(&self, id: String) {
         self.set_action_target_value(Some(&Some(&id).to_variant()));
         self.imp().id.replace(Some(id));
     }
 
+    /// Set the brand of this button.
     pub fn set_brand(&self, brand: IdpBrand) {
         self.imp().brand.replace(brand);
     }
 
+    /// The id of the identity-provider represented by this button.
     pub fn id(&self) -> Option<String> {
         self.imp().id.borrow().clone()
     }
 
+    /// The brand of this button.
     pub fn brand(&self) -> IdpBrand {
         self.imp().brand.get()
     }

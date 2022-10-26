@@ -71,31 +71,17 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoolean::new(
-                        "is-animation",
-                        "Is Animation",
-                        "Whether this displays an animation",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecInt::new(
-                        "width",
-                        "Width",
-                        "The width of this paintable",
-                        i32::MIN,
-                        i32::MAX,
-                        -1,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecInt::new(
-                        "height",
-                        "Height",
-                        "The height of this paintable",
-                        i32::MIN,
-                        i32::MAX,
-                        -1,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecBoolean::builder("is-animation")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecInt::builder("width")
+                        .default_value(-1)
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecInt::builder("height")
+                        .default_value(-1)
+                        .read_only()
+                        .build(),
                 ]
             });
 

@@ -44,13 +44,9 @@ mod imp {
     impl ObjectImpl for CompletionRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "member",
-                    "Member",
-                    "The room member presented by this row",
-                    Member::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Member>("member")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -86,10 +82,12 @@ impl CompletionRow {
         glib::Object::new(&[])
     }
 
+    /// The room member displayed by this row.
     pub fn member(&self) -> Option<Member> {
         self.imp().member.borrow().clone()
     }
 
+    /// Set the room member displayed by this row.
     pub fn set_member(&self, member: Option<Member>) {
         let priv_ = self.imp();
 

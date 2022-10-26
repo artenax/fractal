@@ -48,13 +48,9 @@ mod imp {
     impl ObjectImpl for MembersListView {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "model",
-                    "Model",
-                    "The model used for this view",
-                    gio::ListModel::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecObject::builder::<gio::ListModel>("model")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -88,10 +84,12 @@ impl MembersListView {
         glib::Object::builder().property("model", model).build()
     }
 
+    /// The model used for this view.
     pub fn model(&self) -> Option<gio::ListModel> {
         self.imp().model.upgrade()
     }
 
+    /// Set the model used for this view.
     pub fn set_model(&self, model: Option<&impl IsA<gio::ListModel>>) {
         let model: Option<&gio::ListModel> = model.map(|model| model.upcast_ref());
         if self.model().as_ref() == model {

@@ -100,28 +100,15 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "room",
-                        "Room",
-                        "The room backing all details of the member page",
-                        Room::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "member-menu",
-                        "Member Menu",
-                        "The object holding information needed for the menu of each MemberRow",
-                        MemberMenu::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "state",
-                        "State",
-                        "The membership state of the displayed members",
-                        Membership::static_type(),
-                        Membership::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<MemberMenu>("member-menu")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecEnum::builder("state", Membership::default())
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -171,10 +158,12 @@ impl MemberPage {
         glib::Object::builder().property("room", room).build()
     }
 
+    /// The room backing all the details of the member page.
     pub fn room(&self) -> Option<Room> {
         self.imp().room.borrow().as_ref().cloned()
     }
 
+    /// Set the room backing all the details of the member page.
     pub fn set_room(&self, room: Option<Room>) {
         let priv_ = self.imp();
         let prev_room = self.room();
@@ -245,6 +234,7 @@ impl MemberPage {
         list_stack_children.insert(Membership::Ban, banned_view.downgrade());
     }
 
+    /// The object holding information needed for the menu of each `MemberRow`.
     pub fn member_menu(&self) -> &MemberMenu {
         self.imp().member_menu.get_or_init(|| {
             let menu = MemberMenu::new();
@@ -274,10 +264,12 @@ impl MemberPage {
         }));
     }
 
+    /// The membership state of the displayed members.
     pub fn state(&self) -> Membership {
         self.imp().state.get()
     }
 
+    /// Set the membership state of the displayed members.
     pub fn set_state(&self, state: Membership) {
         let priv_ = self.imp();
 

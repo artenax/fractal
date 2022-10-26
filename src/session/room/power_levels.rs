@@ -38,13 +38,11 @@ mod imp {
     impl ObjectImpl for PowerLevels {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoxed::new(
-                    "power-levels",
-                    "Power levels",
-                    "Ruma struct containing all power level information of a room",
-                    BoxedPowerLevelsEventContent::static_type(),
-                    glib::ParamFlags::READABLE,
-                )]
+                vec![
+                    glib::ParamSpecBoxed::builder::<BoxedPowerLevelsEventContent>("power-levels")
+                        .read_only()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -68,6 +66,7 @@ impl PowerLevels {
         glib::Object::new(&[])
     }
 
+    /// The source of the power levels information.
     pub fn power_levels(&self) -> BoxedPowerLevelsEventContent {
         self.imp().content.borrow().clone()
     }

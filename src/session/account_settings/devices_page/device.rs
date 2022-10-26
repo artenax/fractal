@@ -35,48 +35,24 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "device-id",
-                        "Device Id",
-                        "The Id of this device",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "display-name",
-                        "Display Name",
-                        "The display name of the device",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "last-seen-ip",
-                        "Last Seen Ip",
-                        "The last ip the device used",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoxed::new(
-                        "last-seen-ts",
-                        "Last Seen Ts",
-                        "The last time the device was used",
-                        glib::DateTime::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "verified",
-                        "Verified",
-                        "Whether this devices is verified",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecString::builder("device-id")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecString::builder("display-name")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecString::builder("last-seen-ip")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecBoxed::builder::<glib::DateTime>("last-seen-ts")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("verified")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -124,10 +100,12 @@ impl Device {
         obj
     }
 
+    /// The current session.
     pub fn session(&self) -> Session {
         self.imp().session.upgrade().unwrap()
     }
 
+    /// Set the Matrix device of this `Device`.
     fn set_matrix_device(&self, device: MatrixDevice, crypto_device: Option<CryptoDevice>) {
         let priv_ = self.imp();
         priv_.device.set(device).unwrap();
@@ -136,10 +114,12 @@ impl Device {
         }
     }
 
+    /// The ID of this device.
     pub fn device_id(&self) -> &DeviceId {
         &self.imp().device.get().unwrap().device_id
     }
 
+    /// The display name of the device.
     pub fn display_name(&self) -> &str {
         if let Some(ref display_name) = self.imp().device.get().unwrap().display_name {
             display_name
@@ -148,12 +128,14 @@ impl Device {
         }
     }
 
+    /// The last IP address the device used.
     pub fn last_seen_ip(&self) -> Option<&str> {
         // TODO: Would be nice to also show the location
         // See: https://gitlab.gnome.org/GNOME/fractal/-/issues/700
         self.imp().device.get().unwrap().last_seen_ip.as_deref()
     }
 
+    /// The last time the device was used.
     pub fn last_seen_ts(&self) -> Option<glib::DateTime> {
         self.imp()
             .device
@@ -196,6 +178,7 @@ impl Device {
         Ok(())
     }
 
+    /// Whether this device is verified.
     pub fn is_verified(&self) -> bool {
         self.imp()
             .crypto_device

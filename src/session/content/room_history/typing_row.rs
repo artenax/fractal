@@ -51,20 +51,13 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "list",
-                        "List",
-                        "The list of members that are currently typing",
-                        TypingList::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "is-empty",
-                        "Is Empty",
-                        "Whether the list is empty",
-                        true,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecObject::builder::<TypingList>("list")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("is-empty")
+                        .default_value(true)
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -110,6 +103,7 @@ impl TypingRow {
         glib::Object::new(&[])
     }
 
+    /// The list of members that are currently typing.
     pub fn list(&self) -> Option<TypingList> {
         self.imp()
             .list
@@ -118,6 +112,7 @@ impl TypingRow {
             .map(|(list, _)| list.clone())
     }
 
+    /// Set the list of members that are currently typing.
     pub fn set_list(&self, list: Option<TypingList>) {
         if self.list() == list {
             return;
@@ -148,6 +143,7 @@ impl TypingRow {
         self.notify("list");
     }
 
+    /// Whether the list is empty.
     pub fn is_empty(&self) -> bool {
         self.imp()
             .list

@@ -40,27 +40,15 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "item",
-                        "Item",
-                        "The sidebar item of this row",
-                        glib::Object::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "list-row",
-                        "List Row",
-                        "The list row to track for expander state",
-                        gtk::TreeListRow::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "sidebar",
-                        "sidebar",
-                        "The ancestor sidebar of this row",
-                        Sidebar::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
+                    glib::ParamSpecObject::builder::<glib::Object>("item")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<gtk::TreeListRow>("list-row")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Sidebar>("sidebar")
+                        .construct_only()
+                        .build(),
                 ]
             });
 
@@ -126,20 +114,24 @@ impl Row {
         glib::Object::builder().property("sidebar", sidebar).build()
     }
 
+    /// The ancestor sidebar of this row.
     pub fn sidebar(&self) -> Sidebar {
         self.imp().sidebar.upgrade().unwrap()
     }
 
+    /// The sidebar item of this row.
     pub fn item(&self) -> Option<SidebarItem> {
         self.list_row()
             .and_then(|r| r.item())
             .and_then(|obj| obj.downcast().ok())
     }
 
+    /// The list row to track for expander state.
     pub fn list_row(&self) -> Option<gtk::TreeListRow> {
         self.imp().list_row.borrow().clone()
     }
 
+    /// Set the list row to track for expander state.
     pub fn set_list_row(&self, list_row: Option<gtk::TreeListRow>) {
         let priv_ = self.imp();
 

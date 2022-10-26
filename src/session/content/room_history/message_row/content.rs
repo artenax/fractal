@@ -61,14 +61,11 @@ mod imp {
     impl ObjectImpl for MessageContent {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecEnum::new(
-                    "format",
-                    "Format",
-                    "The displayed format of the message",
-                    ContentFormat::static_type(),
-                    ContentFormat::default() as i32,
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![
+                    glib::ParamSpecEnum::builder("format", ContentFormat::default())
+                        .explicit_notify()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -103,10 +100,12 @@ impl MessageContent {
         glib::Object::new(&[])
     }
 
+    /// The displayed format of the message.
     pub fn format(&self) -> ContentFormat {
         self.imp().format.get()
     }
 
+    /// Set the displayed format of the message.
     pub fn set_format(&self, format: ContentFormat) {
         if self.format() == format {
             return;

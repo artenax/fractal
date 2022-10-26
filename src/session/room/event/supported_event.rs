@@ -65,20 +65,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoxed::new(
-                        "matrix-event",
-                        "Matrix Event",
-                        "The deserialized Matrix event of this Event",
-                        BoxedAnySyncTimelineEvent::static_type(),
-                        glib::ParamFlags::WRITABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "reactions",
-                        "Reactions",
-                        "The reactions related to this event",
-                        ReactionList::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecBoxed::builder::<BoxedAnySyncTimelineEvent>("matrix-event")
+                        .write_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<ReactionList>("reactions")
+                        .read_only()
+                        .build(),
                 ]
             });
 

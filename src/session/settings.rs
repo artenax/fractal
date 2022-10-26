@@ -60,20 +60,13 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "session-id",
-                        "Session ID",
-                        "The ID of the session these settings are for",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "notifications-enabled",
-                        "notifications-enabled",
-                        "",
-                        true,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecString::builder("session-id")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("notifications-enabled")
+                        .default_value(true)
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -114,10 +107,12 @@ impl SessionSettings {
             .build()
     }
 
+    /// The ID of the session these settings are for.
     pub fn session_id(&self) -> &str {
         self.imp().session_id.get().unwrap()
     }
 
+    /// Set the ID of the session these settings are for.
     fn set_session_id(&self, session_id: Option<String>) {
         let priv_ = self.imp();
 

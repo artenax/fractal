@@ -32,13 +32,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecString::new(
-                    "label",
-                    "Label",
-                    "The label for this divider",
-                    None,
-                    glib::ParamFlags::READWRITE,
-                )]
+                vec![glib::ParamSpecString::builder("label")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -76,10 +72,13 @@ impl DividerRow {
         glib::Object::builder().property("label", &label).build()
     }
 
+    /// The label of this divider.
     pub fn set_label(&self, label: &str) {
         self.imp().label.set_text(label);
+        self.notify("label");
     }
 
+    /// Set the label of this divider.
     pub fn label(&self) -> String {
         self.imp().label.text().as_str().to_owned()
     }

@@ -84,28 +84,13 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "file-path",
-                        "File Path",
-                        "The path to export the keys to",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "mode",
-                        "Mode",
-                        "The export/import mode of the subpage",
-                        KeysSubpageMode::static_type(),
-                        KeysSubpageMode::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<Session>("session").build(),
+                    glib::ParamSpecString::builder("file-path")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecEnum::builder("mode", KeysSubpageMode::default())
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -171,19 +156,23 @@ impl ImportExportKeysSubpage {
         glib::Object::builder().property("session", session).build()
     }
 
+    /// The current session.
     pub fn session(&self) -> Option<Session> {
         self.imp().session.upgrade()
     }
 
+    /// Set the current session.
     pub fn set_session(&self, session: Option<Session>) {
         self.imp().session.set(session.as_ref());
     }
 
+    /// The path to export the keys to.
     pub fn file_path(&self) -> Option<gio::File> {
         self.imp().file_path.borrow().clone()
     }
 
-    pub fn set_file_path(&self, path: Option<gio::File>) {
+    /// Set the path to export the keys to.
+    fn set_file_path(&self, path: Option<gio::File>) {
         let priv_ = self.imp();
         if priv_.file_path.borrow().as_ref() == path.as_ref() {
             return;
@@ -194,10 +183,12 @@ impl ImportExportKeysSubpage {
         self.notify("file-path");
     }
 
+    /// The export/import mode of the subpage.
     pub fn mode(&self) -> KeysSubpageMode {
         self.imp().mode.get()
     }
 
+    /// Set the export/import mode of the subpage.
     pub fn set_mode(&self, mode: KeysSubpageMode) {
         if self.mode() == mode {
             return;

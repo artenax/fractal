@@ -246,56 +246,27 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoolean::new(
-                        "compact",
-                        "Compact",
-                        "Whether a compact view is used",
-                        false,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "room",
-                        "Room",
-                        "The room currently shown",
-                        Room::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "empty",
-                        "Empty",
-                        "Whether there is currently a room shown",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "markdown-enabled",
-                        "Markdown enabled",
-                        "Whether outgoing messages should be interpreted as markdown",
-                        false,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "sticky",
-                        "Sticky",
-                        "Whether the room history should stick to the newest message in the timeline",
-                        true,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "related-event-type",
-                        "Related event type",
-                        "The type of related event of the composer",
-                        RelatedEventType::static_type(),
-                        RelatedEventType::default() as i32,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "related-event",
-                        "Related Event",
-                        "The related event of the composer",
-                        SupportedEvent::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecBoolean::builder("compact")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("empty")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("markdown-enabled")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("sticky")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecEnum::builder("related-event-type", RelatedEventType::default())
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<SupportedEvent>("related-event")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -306,17 +277,9 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => self.compact.set(value.get().unwrap()),
+                "compact" => obj.set_compact(value.get().unwrap()),
                 "room" => obj.set_room(value.get().unwrap()),
-                "markdown-enabled" => {
-                    let md_enabled = value.get().unwrap();
-                    self.md_enabled.set(md_enabled);
-                    self.markdown_button.set_icon_name(if md_enabled {
-                        "format-indent-more-symbolic"
-                    } else {
-                        "format-justify-left-symbolic"
-                    });
-                }
+                "markdown-enabled" => obj.set_markdown_enabled(value.get().unwrap()),
                 "sticky" => obj.set_sticky(value.get().unwrap()),
                 _ => unimplemented!(),
             }
@@ -326,10 +289,10 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => self.compact.get().to_value(),
+                "compact" => obj.compact().to_value(),
                 "room" => obj.room().to_value(),
-                "empty" => obj.room().is_none().to_value(),
-                "markdown-enabled" => self.md_enabled.get().to_value(),
+                "empty" => obj.is_empty().to_value(),
+                "markdown-enabled" => obj.markdown_enabled().to_value(),
                 "sticky" => obj.sticky().to_value(),
                 "related-event-type" => obj.related_event_type().to_value(),
                 "related-event" => obj.related_event().to_value(),
@@ -505,6 +468,18 @@ impl RoomHistory {
         glib::Object::new(&[])
     }
 
+    /// Whether a compact view is used.
+    pub fn compact(&self) -> bool {
+        self.imp().compact.get()
+    }
+
+    /// Set whether a compact view is used.
+    pub fn set_compact(&self, compact: bool) {
+        self.imp().compact.set(compact);
+        self.notify("compact");
+    }
+
+    /// Set the room currently displayed.
     pub fn set_room(&self, room: Option<Room>) {
         let priv_ = self.imp();
 
@@ -582,14 +557,41 @@ impl RoomHistory {
         self.notify("empty");
     }
 
+    /// The room currently displayed.
     pub fn room(&self) -> Option<Room> {
         self.imp().room.borrow().clone()
     }
 
+    /// Whether this `RoomHistory` is empty, aka no room is currently displayed.
+    pub fn is_empty(&self) -> bool {
+        self.imp().room.borrow().is_none()
+    }
+
+    /// Whether outgoing messages should be interpreted as markdown.
+    pub fn markdown_enabled(&self) -> bool {
+        self.imp().md_enabled.get()
+    }
+
+    /// Set whether outgoing messages should be interpreted as markdown.
+    pub fn set_markdown_enabled(&self, enabled: bool) {
+        let imp = self.imp();
+
+        imp.md_enabled.set(enabled);
+        imp.markdown_button.set_icon_name(if enabled {
+            "format-indent-more-symbolic"
+        } else {
+            "format-justify-left-symbolic"
+        });
+
+        self.notify("markdown-enabled");
+    }
+
+    /// The type of related event of the composer.
     pub fn related_event_type(&self) -> RelatedEventType {
         self.imp().related_event_type.get()
     }
 
+    /// Set the type of related event of the composer.
     fn set_related_event_type(&self, related_type: RelatedEventType) {
         if self.related_event_type() == related_type {
             return;
@@ -599,10 +601,12 @@ impl RoomHistory {
         self.notify("related-event-type");
     }
 
+    /// The related event of the composer.
     pub fn related_event(&self) -> Option<SupportedEvent> {
         self.imp().related_event.borrow().clone()
     }
 
+    /// Set the related event of the composer.
     fn set_related_event(&self, event: Option<SupportedEvent>) {
         let prev_event = self.related_event();
 
@@ -867,10 +871,14 @@ impl RoomHistory {
         self.root()?.downcast().ok()
     }
 
+    /// Whether the room history should stick to the newest message in the
+    /// timeline.
     pub fn sticky(&self) -> bool {
         self.imp().sticky.get()
     }
 
+    /// Set whether the room history should stick to the newest message in the
+    /// timeline.
     pub fn set_sticky(&self, sticky: bool) {
         let priv_ = self.imp();
 

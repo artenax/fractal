@@ -52,13 +52,10 @@ mod imp {
     impl ObjectImpl for SidebarItem {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoolean::new(
-                    "visible",
-                    "Visible",
-                    "Whether this item is visible.",
-                    true,
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecBoolean::builder("visible")
+                    .default_value(true)
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()

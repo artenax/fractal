@@ -68,20 +68,10 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoolean::new(
-                        "compact",
-                        "Compact",
-                        "Whether a compact view is used",
-                        false,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "room",
-                        "Room",
-                        "The room currently shown",
-                        Room::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecBoolean::builder("compact").build(),
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -89,17 +79,21 @@ mod imp {
         }
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
-                "compact" => self.compact.set(value.get().unwrap()),
-                "room" => self.obj().set_room(value.get().unwrap()),
+                "compact" => obj.set_compact(value.get().unwrap()),
+                "room" => obj.set_room(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
-                "compact" => self.compact.get().to_value(),
-                "room" => self.obj().room().to_value(),
+                "compact" => obj.compact().to_value(),
+                "room" => obj.room().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -136,6 +130,17 @@ impl Invite {
         glib::Object::new(&[])
     }
 
+    /// Whether a compact view is used.
+    pub fn compact(&self) -> bool {
+        self.imp().compact.get()
+    }
+
+    /// Set whether a compact view is used.
+    pub fn set_compact(&self, compact: bool) {
+        self.imp().compact.set(compact)
+    }
+
+    /// Set the room currently displayed.
     pub fn set_room(&self, room: Option<Room>) {
         let priv_ = self.imp();
 
@@ -186,6 +191,7 @@ impl Invite {
         self.notify("room");
     }
 
+    /// The room currently displayed.
     pub fn room(&self) -> Option<Room> {
         self.imp().room.borrow().clone()
     }

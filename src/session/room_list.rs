@@ -39,13 +39,9 @@ mod imp {
     impl ObjectImpl for RoomList {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "session",
-                    "Session",
-                    "The session",
-                    Session::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Session>("session")
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -108,6 +104,7 @@ impl RoomList {
         glib::Object::builder().property("session", session).build()
     }
 
+    /// The current session.
     pub fn session(&self) -> Session {
         self.imp().session.upgrade().unwrap()
     }

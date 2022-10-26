@@ -33,35 +33,16 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecEnum::new(
-                        "type",
-                        "Type",
-                        "The type of this category",
-                        CategoryType::static_type(),
-                        CategoryType::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "display-name",
-                        "Display Name",
-                        "The display name of this category",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "model",
-                        "Model",
-                        "The filter list model in that category",
-                        gio::ListModel::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "empty",
-                        "Empty",
-                        "Whether this category is empty",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecEnum::builder("type", CategoryType::default())
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecString::builder("display-name")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<gio::ListModel>("model")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("empty").read_only().build(),
                 ]
             });
 
@@ -81,8 +62,8 @@ mod imp {
 
             match pspec.name() {
                 "type" => obj.type_().to_value(),
-                "display-name" => obj.type_().to_string().to_value(),
-                "model" => self.model.get().to_value(),
+                "display-name" => obj.display_name().to_value(),
+                "model" => obj.model().to_value(),
                 "empty" => obj.is_empty().to_value(),
                 _ => unimplemented!(),
             }
@@ -139,10 +120,22 @@ impl Category {
             .build()
     }
 
+    /// The type of this category.
     pub fn type_(&self) -> CategoryType {
         self.imp().type_.get()
     }
 
+    /// The display name of this category.
+    pub fn display_name(&self) -> String {
+        self.type_().to_string()
+    }
+
+    /// The filter list model on this category.
+    pub fn model(&self) -> Option<&gio::ListModel> {
+        self.imp().model.get()
+    }
+
+    /// Set the filter list model of this category.
     fn set_model(&self, model: gio::ListModel) {
         let type_ = self.type_();
 
@@ -176,6 +169,7 @@ impl Category {
         self.imp().model.set(model).unwrap();
     }
 
+    /// Set whether this category is empty.
     fn set_is_empty(&self, is_empty: bool) {
         if is_empty == self.is_empty() {
             return;
@@ -185,6 +179,7 @@ impl Category {
         self.notify("empty");
     }
 
+    /// Whether this category is empty.
     pub fn is_empty(&self) -> bool {
         self.imp().is_empty.get()
     }

@@ -91,13 +91,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "session",
-                    "Session",
-                    "The session",
-                    Session::static_type(),
-                    glib::ParamFlags::READWRITE,
-                )]
+                vec![glib::ParamSpecObject::builder::<Session>("session")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -157,11 +153,13 @@ impl RoomCreation {
             .build()
     }
 
+    /// The current session.
     pub fn session(&self) -> Option<Session> {
         self.imp().session.upgrade()
     }
 
-    fn set_session(&self, session: Option<Session>) {
+    /// Set the current session.
+    pub fn set_session(&self, session: Option<Session>) {
         let priv_ = self.imp();
 
         if self.session() == session {

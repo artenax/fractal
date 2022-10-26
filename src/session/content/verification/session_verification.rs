@@ -72,13 +72,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "session",
-                    "Session",
-                    "The session",
-                    Session::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Session>("session")
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -134,11 +130,12 @@ impl SessionVerification {
         glib::Object::builder().property("session", session).build()
     }
 
-    /// The current `Session`.
+    /// The current session.
     pub fn session(&self) -> Session {
         self.imp().session.upgrade().unwrap()
     }
 
+    /// Set the current session.
     fn set_session(&self, session: Option<Session>) {
         self.imp().session.set(session.as_ref())
     }

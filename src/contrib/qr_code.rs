@@ -40,15 +40,11 @@ pub(crate) mod imp {
 
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecUInt::new(
-                    "block-size",
-                    "block-size",
-                    "block-size",
-                    1,
-                    u32::MAX,
-                    6,
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecUInt::builder("block-size")
+                    .minimum(1)
+                    .default_value(6)
+                    .explicit_notify()
+                    .build()]
             });
             PROPERTIES.as_ref()
         }
@@ -162,10 +158,10 @@ pub trait QRCodeExt {
     /// Sets the displayed code of `self` to a QR code generated from `bytes`.
     fn set_bytes(&self, bytes: &[u8]);
 
-    /// Gets the block size `self`. This determines the size of the widget.
+    /// Gets the block size of `self`. This determines the size of the widget.
     fn block_size(&self) -> u32;
 
-    /// Sets the block size `self`.
+    /// Sets the block size of `self`.
     fn set_block_size(&self, block_size: u32);
 
     fn connect_block_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId;

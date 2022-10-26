@@ -198,79 +198,36 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "user",
-                        "User",
-                        "The user to be verified",
-                        User::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The current session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "state",
-                        "State",
-                        "The current state of this verification",
-                        State::static_type(),
-                        State::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "mode",
-                        "Mode",
-                        "The mode of this verification",
-                        Mode::static_type(),
-                        Mode::default() as i32,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecFlags::new(
-                        "supported-methods",
-                        "Supported Methods",
-                        "The supported methods of this verification",
-                        SupportedMethods::static_type(),
-                        SupportedMethods::default().bits(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "display-name",
-                        "Display name",
-                        "The display name of this verification request",
-                        None,
-                        glib::ParamFlags::READABLE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "flow-id",
-                        "Flow Id",
-                        "The flow id of this verification request",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecBoxed::new(
-                        "start-time",
-                        "Start Time",
-                        "The time when this verification request was started",
-                        glib::DateTime::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecBoxed::new(
-                        "receive-time",
-                        "Receive Time",
-                        "The time when this verification request was received",
-                        glib::DateTime::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "force-current-session",
-                        "Force Current Session",
-                        "Whether this should be automatically accepted and treated as a Mode::CurrentSession",
-                        false,
-                        glib::ParamFlags::READWRITE| glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<User>("user")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecEnum::builder("state", State::default())
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecEnum::builder("mode", Mode::default())
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecFlags::builder::<SupportedMethods>("supported-methods")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecString::builder("display-name")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecString::builder("flow-id")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoxed::builder::<glib::DateTime>("start-time")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoxed::builder::<glib::DateTime>("receive-time")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("force-current-session")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -491,20 +448,23 @@ impl IdentityVerification {
         });
     }
 
-    /// The user to be verified.
+    /// The user to verify.
     pub fn user(&self) -> &User {
         self.imp().user.get().unwrap()
     }
 
+    /// Set the user to verify.
     fn set_user(&self, user: User) {
         self.imp().user.set(user).unwrap()
     }
 
+    /// Whether this should be automatically accepted and treated as a
+    /// `Mode::CurrentSession`.
     pub fn force_current_session(&self) -> bool {
         self.imp().force_current_session.get()
     }
 
-    /// Force that this `IdentityVerification` is considered a
+    /// Force this `IdentityVerification` to be considered as a
     /// `Mode::CurrentSession`.
     ///
     /// This is used during setup to accept incoming requests automatically.
@@ -518,11 +478,12 @@ impl IdentityVerification {
         self.notify("force-current-session");
     }
 
-    /// The current `Session`.
+    /// The current session.
     pub fn session(&self) -> Session {
         self.imp().session.upgrade().unwrap()
     }
 
+    /// Set the current session.
     fn set_session(&self, session: Option<Session>) {
         self.imp().session.set(session.as_ref())
     }
@@ -565,14 +526,17 @@ impl IdentityVerification {
         self.imp().start_time.get().unwrap()
     }
 
+    /// Set the time and date when this verification request was started.
     fn set_start_time(&self, time: glib::DateTime) {
         self.imp().start_time.set(time).unwrap();
     }
 
+    /// The time and date when this verification request was received.
     pub fn receive_time(&self) -> &glib::DateTime {
         self.imp().receive_time.get().unwrap()
     }
 
+    /// Set the supported methods of this verification.
     fn set_supported_methods(&self, supported_methods: SupportedMethods) {
         if self.supported_methods() == supported_methods {
             return;
@@ -582,6 +546,7 @@ impl IdentityVerification {
         self.notify("supported-methods");
     }
 
+    /// The supported methods of this verification.
     pub fn supported_methods(&self) -> SupportedMethods {
         self.imp().supported_methods.get()
     }
@@ -622,10 +587,12 @@ impl IdentityVerification {
         }
     }
 
+    /// The state of this verification.
     pub fn state(&self) -> State {
         self.imp().state.get()
     }
 
+    /// Set the state of this verification.
     fn set_state(&self, state: State) {
         if self.state() == state {
             return;
@@ -640,6 +607,7 @@ impl IdentityVerification {
         self.notify("state");
     }
 
+    /// The mode of this verification.
     pub fn mode(&self) -> Mode {
         let session = self.session();
         let our_user = session.user().unwrap();
@@ -696,6 +664,7 @@ impl IdentityVerification {
         toast!(self.session(), error_message);
     }
 
+    /// The display name of this verification request.
     pub fn display_name(&self) -> String {
         if self.user() != self.session().user().unwrap() {
             self.user().display_name()
@@ -705,6 +674,7 @@ impl IdentityVerification {
         }
     }
 
+    /// The flow ID of this verification request.
     pub fn flow_id(&self) -> &str {
         self.imp()
             .flow_id
@@ -712,6 +682,7 @@ impl IdentityVerification {
             .expect("Flow Id isn't always set on verifications with error state.")
     }
 
+    /// Set the flow ID of this verification request.
     fn set_flow_id(&self, flow_id: String) {
         self.imp().flow_id.set(flow_id).unwrap();
     }

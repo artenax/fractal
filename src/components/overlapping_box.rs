@@ -44,15 +44,9 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecUInt::new(
-                        "overlap",
-                        "Overlap",
-                        "The size by which the widgets overlap.",
-                        u32::MIN,
-                        u32::MAX,
-                        0,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecUInt::builder("overlap")
+                        .explicit_notify()
+                        .build(),
                     glib::ParamSpecOverride::for_interface::<gtk::Orientable>("orientation"),
                 ]
             });

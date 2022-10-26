@@ -31,13 +31,9 @@ mod imp {
     impl ObjectImpl for MemberList {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "room",
-                    "Room",
-                    "The associated room",
-                    Room::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Room>("room")
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -88,6 +84,7 @@ impl MemberList {
         glib::Object::builder().property("room", room).build()
     }
 
+    /// The room containing these members.
     pub fn room(&self) -> Room {
         self.imp().room.upgrade().unwrap()
     }

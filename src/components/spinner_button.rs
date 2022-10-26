@@ -38,13 +38,9 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecOverride::for_class::<gtk::Button>("label"),
-                    glib::ParamSpecBoolean::new(
-                        "loading",
-                        "Loading",
-                        "Whether to display the loading spinner or the content",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecBoolean::builder("loading")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -88,6 +84,7 @@ impl SpinnerButton {
         glib::Object::new(&[])
     }
 
+    /// Set the text of the button.
     pub fn set_label(&self, label: &str) {
         let priv_ = self.imp();
 
@@ -100,10 +97,12 @@ impl SpinnerButton {
         self.notify("label");
     }
 
+    /// The text of the button.
     pub fn label(&self) -> glib::GString {
         self.imp().label.label()
     }
 
+    /// Set whether to display the loading spinner.
     pub fn set_loading(&self, loading: bool) {
         let priv_ = self.imp();
 
@@ -126,6 +125,9 @@ impl SpinnerButton {
         self.notify("loading");
     }
 
+    /// Whether to display the loading spinner.
+    ///
+    /// If this is `false`, the text will be displayed.
     pub fn loading(&self) -> bool {
         let priv_ = self.imp();
         priv_.stack.visible_child().as_ref() == Some(priv_.spinner.upcast_ref())

@@ -47,43 +47,22 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "image",
-                        "Image",
-                        "The user defined image if any",
-                        gdk::Paintable::static_type(),
-                        glib::ParamFlags::READABLE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecUInt::new(
-                        "needed-size",
-                        "Needed Size",
-                        "The size needed of the user defined image. If 0 no image will be loaded",
-                        0,
-                        u32::MAX,
-                        0,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "url",
-                        "Url",
-                        "The url of the Avatar",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "display-name",
-                        "Display Name",
-                        "The display name used for this avatar",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
+                    glib::ParamSpecObject::builder::<gdk::Paintable>("image")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecUInt::builder("needed-size")
+                        .minimum(0)
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("url")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("display-name")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .construct_only()
+                        .build(),
                 ]
             });
 
@@ -135,14 +114,17 @@ impl Avatar {
             .build()
     }
 
+    /// The current session.
     fn session(&self) -> Session {
         self.imp().session.upgrade().unwrap()
     }
 
+    /// The user-defined image, if any.
     pub fn image(&self) -> Option<gdk::Paintable> {
         self.imp().image.borrow().clone()
     }
 
+    /// Set the user-defined image.
     fn set_image_data(&self, data: Option<Vec<u8>>) {
         let image = data
             .and_then(|data| ImagePaintable::from_bytes(&glib::Bytes::from(&data), None).ok())
@@ -183,6 +165,7 @@ impl Avatar {
         }
     }
 
+    /// Set the display name used for this avatar.
     pub fn set_display_name(&self, display_name: Option<String>) {
         if self.display_name() == display_name {
             return;
@@ -193,12 +176,14 @@ impl Avatar {
         self.notify("display-name");
     }
 
+    /// The display name used for this avatar.
     pub fn display_name(&self) -> Option<String> {
         self.imp().display_name.borrow().clone()
     }
 
-    /// Set the needed size.
-    /// Only the biggest size will be stored
+    /// Set the needed size of the user-defined image.
+    ///
+    /// Only the biggest size will be stored.
     pub fn set_needed_size(&self, size: u32) {
         let priv_ = self.imp();
 
@@ -211,11 +196,14 @@ impl Avatar {
         self.notify("needed-size");
     }
 
-    /// Get the biggest needed size
+    /// Get the biggest needed size of the user-defined image.
+    ///
+    /// If this is `0`, no image will be loaded.
     pub fn needed_size(&self) -> u32 {
         self.imp().needed_size.get()
     }
 
+    /// Set the url of the Avatar.
     pub fn set_url(&self, url: Option<OwnedMxcUri>) {
         let priv_ = self.imp();
 
@@ -235,6 +223,7 @@ impl Avatar {
         self.notify("url");
     }
 
+    /// The url of the Avatar.
     pub fn url(&self) -> Option<OwnedMxcUri> {
         self.imp().url.borrow().to_owned()
     }

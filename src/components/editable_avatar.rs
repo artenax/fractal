@@ -84,68 +84,34 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "avatar",
-                        "Avatar",
-                        "The Avatar to display",
-                        Avatar::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "editable",
-                        "Editable",
-                        "Whether this avatar is editable",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "edit-state",
-                        "Edit State",
-                        "The state of the avatar edit",
-                        ActionState::static_type(),
-                        ActionState::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "edit-sensitive",
-                        "Edit Sensitive",
-                        "Whether the edit button is sensitive",
-                        true,
-                        glib::ParamFlags::READWRITE
-                            | glib::ParamFlags::EXPLICIT_NOTIFY
-                            | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "removable",
-                        "Removable",
-                        "Whether this avatar is removable",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "remove-state",
-                        "Remove State",
-                        "The state of the avatar removal",
-                        ActionState::static_type(),
-                        ActionState::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "remove-sensitive",
-                        "Remove Sensitive",
-                        "Whether the remove button is sensitive",
-                        true,
-                        glib::ParamFlags::READWRITE
-                            | glib::ParamFlags::EXPLICIT_NOTIFY
-                            | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "temp-image",
-                        "Temp Image",
-                        "A temporary image to show instead of the avatar",
-                        gdk::Paintable::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecObject::builder::<Avatar>("avatar")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("editable")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecEnum::builder("edit-state", ActionState::default())
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("edit-sensitive")
+                        .default_value(true)
+                        .explicit_notify()
+                        .construct()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("removable")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecEnum::builder("remove-state", ActionState::default())
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("remove-sensitive")
+                        .default_value(true)
+                        .explicit_notify()
+                        .construct()
+                        .build(),
+                    glib::ParamSpecObject::builder::<gdk::Paintable>("temp-image")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -206,10 +172,12 @@ impl EditableAvatar {
         glib::Object::new(&[])
     }
 
+    /// The Avatar to display.
     pub fn avatar(&self) -> Option<Avatar> {
         self.imp().avatar.borrow().to_owned()
     }
 
+    /// Set the Avatar to display.
     pub fn set_avatar(&self, avatar: Option<Avatar>) {
         if self.avatar() == avatar {
             return;
@@ -219,10 +187,12 @@ impl EditableAvatar {
         self.notify("avatar");
     }
 
+    /// Whether this avatar is editable.
     pub fn editable(&self) -> bool {
         self.imp().editable.get()
     }
 
+    /// Set whether this avatar is editable.
     pub fn set_editable(&self, editable: bool) {
         if self.editable() == editable {
             return;
@@ -232,10 +202,12 @@ impl EditableAvatar {
         self.notify("editable");
     }
 
+    /// The state of the avatar edit.
     pub fn edit_state(&self) -> ActionState {
         self.imp().edit_state.get()
     }
 
+    /// Set the state of the avatar edit.
     pub fn set_edit_state(&self, state: ActionState) {
         if self.edit_state() == state {
             return;
@@ -245,10 +217,12 @@ impl EditableAvatar {
         self.notify("edit-state");
     }
 
+    /// Whether the edit button is sensitive.
     pub fn edit_sensitive(&self) -> bool {
         self.imp().edit_sensitive.get()
     }
 
+    /// Set whether the edit button is sensitive.
     pub fn set_edit_sensitive(&self, sensitive: bool) {
         if self.edit_sensitive() == sensitive {
             return;
@@ -258,10 +232,12 @@ impl EditableAvatar {
         self.notify("edit-sensitive");
     }
 
+    /// Whether this avatar is removable.
     pub fn removable(&self) -> bool {
         self.imp().removable.get()
     }
 
+    /// Set whether this avatar is removable.
     pub fn set_removable(&self, removable: bool) {
         if self.removable() == removable {
             return;
@@ -271,10 +247,12 @@ impl EditableAvatar {
         self.notify("removable");
     }
 
+    /// The state of the avatar removal.
     pub fn remove_state(&self) -> ActionState {
         self.imp().remove_state.get()
     }
 
+    /// Set the state of the avatar removal.
     pub fn set_remove_state(&self, state: ActionState) {
         if self.remove_state() == state {
             return;
@@ -284,10 +262,12 @@ impl EditableAvatar {
         self.notify("remove-state");
     }
 
+    /// Whether the remove button is sensitive.
     pub fn remove_sensitive(&self) -> bool {
         self.imp().remove_sensitive.get()
     }
 
+    /// Set whether the remove button is sensitive.
     pub fn set_remove_sensitive(&self, sensitive: bool) {
         if self.remove_sensitive() == sensitive {
             return;
@@ -297,6 +277,7 @@ impl EditableAvatar {
         self.notify("remove-sensitive");
     }
 
+    /// The temporary image to show instead of the avatar.
     pub fn temp_image(&self) -> Option<gdk::Paintable> {
         self.imp().temp_image.borrow().clone()
     }

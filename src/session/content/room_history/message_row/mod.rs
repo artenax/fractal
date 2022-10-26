@@ -65,15 +65,9 @@ mod imp {
     impl ObjectImpl for MessageRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecBoolean::new(
-                        "show-header",
-                        "Show Header",
-                        "Whether this item should show a header. This does nothing if this event doesn’t have a header. ",
-                        false,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                ]
+                vec![glib::ParamSpecBoolean::builder("show-header")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -120,11 +114,15 @@ impl MessageRow {
         glib::Object::new(&[])
     }
 
+    /// Whether this item should show its header.
+    ///
+    /// This is ignored if this event doesn’t have a header.
     pub fn show_header(&self) -> bool {
         let priv_ = self.imp();
         priv_.avatar.is_visible() && priv_.header.is_visible()
     }
 
+    /// Set whether this item should show its header.
     pub fn set_show_header(&self, visible: bool) {
         let priv_ = self.imp();
         priv_.avatar.set_visible(visible);

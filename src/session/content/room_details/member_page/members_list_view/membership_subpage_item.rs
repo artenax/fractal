@@ -28,21 +28,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecEnum::new(
-                        "state",
-                        "State",
-                        "The membership state this list contains",
-                        Membership::static_type(),
-                        Membership::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "model",
-                        "Model",
-                        "The model used for this subview",
-                        gio::ListModel::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
+                    glib::ParamSpecEnum::builder("state", Membership::default())
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<gio::ListModel>("model")
+                        .construct_only()
+                        .build(),
                 ]
             });
 
@@ -83,18 +74,22 @@ impl MembershipSubpageItem {
             .build()
     }
 
+    /// The membership state this list contains.
     pub fn state(&self) -> Membership {
         self.imp().state.get()
     }
 
+    /// Set the membership state this list contains.
     fn set_state(&self, state: Membership) {
         self.imp().state.set(state);
     }
 
+    /// The model used for this subpage.
     pub fn model(&self) -> &gio::ListModel {
         self.imp().model.get().unwrap()
     }
 
+    /// Set the model used for this subpage.
     fn set_model(&self, model: gio::ListModel) {
         self.imp().model.set(model).unwrap();
     }

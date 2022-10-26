@@ -36,20 +36,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "current-device",
-                        "Current Device",
-                        "The device of this session",
-                        DeviceItem::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<DeviceItem>("current-device")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -107,6 +99,7 @@ impl DeviceList {
         glib::Object::builder().property("session", session).build()
     }
 
+    /// The current session.
     pub fn session(&self) -> Session {
         self.imp().session.upgrade().unwrap()
     }
@@ -128,6 +121,7 @@ impl DeviceList {
         self.imp().loading.get()
     }
 
+    /// The device of this session.
     pub fn current_device(&self) -> DeviceItem {
         self.imp()
             .current_device
@@ -142,6 +136,7 @@ impl DeviceList {
             })
     }
 
+    /// Set the device of this session.
     fn set_current_device(&self, device: Option<DeviceItem>) {
         self.imp().current_device.replace(device);
 

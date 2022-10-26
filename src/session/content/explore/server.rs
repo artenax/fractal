@@ -31,34 +31,18 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "name",
-                        "Name",
-                        "The name of the server",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "network",
-                        "Network",
-                        "The ID of the network that is used during search",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "server",
-                        "Server",
-                        "The server name that is used during search",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "deletable",
-                        "Deletable",
-                        "Whether this server can be deleted from the list",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
+                    glib::ParamSpecString::builder("name")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecString::builder("network")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecString::builder("server")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("deletable")
+                        .construct_only()
+                        .build(),
                 ]
             });
 
@@ -124,18 +108,22 @@ impl Server {
             .build()
     }
 
+    /// The name of the server.
     pub fn name(&self) -> &str {
         self.imp().name.get().unwrap()
     }
 
+    /// The ID of the network that is used during search.
     pub fn network(&self) -> &str {
         self.imp().network.get().unwrap()
     }
 
+    /// The server name that is used during search.
     pub fn server(&self) -> Option<&str> {
         self.imp().server.get().map(String::as_ref)
     }
 
+    /// Whether this server can be deleted from the list.
     pub fn deletable(&self) -> bool {
         *self.imp().deletable.get().unwrap()
     }

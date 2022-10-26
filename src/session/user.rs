@@ -53,49 +53,24 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "user-id",
-                        "User id",
-                        "The user id of this user",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "display-name",
-                        "Display Name",
-                        "The display name of the user",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "avatar",
-                        "Avatar",
-                        "The avatar of this user",
-                        Avatar::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "verified",
-                        "Verified",
-                        "Whether this user has been verified",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecFlags::new(
-                        "allowed-actions",
-                        "Allowed Actions",
-                        "The actions the currently logged-in user is allowed to perform on this user.",
-                        UserActions::static_type(),
-                        UserActions::default().bits(),
-                        glib::ParamFlags::READABLE,
-                    )
+                    glib::ParamSpecString::builder("user-id")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecString::builder("display-name")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Avatar>("avatar")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("verified")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecFlags::builder::<UserActions>("allowed-actions")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -189,6 +164,7 @@ impl User {
         request
     }
 
+    /// Whether this user has been verified.
     pub fn is_verified(&self) -> bool {
         self.imp().is_verified.get()
     }
@@ -209,14 +185,17 @@ impl User {
 }
 
 pub trait UserExt: IsA<User> {
+    /// The current session.
     fn session(&self) -> Session {
         self.upcast_ref().imp().session.upgrade().unwrap()
     }
 
+    /// The ID of this user.
     fn user_id(&self) -> OwnedUserId {
         self.upcast_ref().imp().user_id.get().unwrap().clone()
     }
 
+    /// The display name of this user.
     fn display_name(&self) -> String {
         let priv_ = self.upcast_ref().imp();
 
@@ -227,6 +206,7 @@ pub trait UserExt: IsA<User> {
         }
     }
 
+    /// Set the display name of this user.
     fn set_display_name(&self, display_name: Option<String>) {
         if Some(self.display_name()) == display_name {
             return;
@@ -235,14 +215,18 @@ pub trait UserExt: IsA<User> {
         self.notify("display-name");
     }
 
+    /// The avatar of this user.
     fn avatar(&self) -> &Avatar {
         self.upcast_ref().imp().avatar.get().unwrap()
     }
 
+    /// Set the avatar URL of this user.
     fn set_avatar_url(&self, url: Option<OwnedMxcUri>) {
         self.avatar().set_url(url);
     }
 
+    /// The actions the currently logged-in user is allowed to perform on this
+    /// user.
     fn allowed_actions(&self) -> UserActions {
         let user = self.upcast_ref();
 

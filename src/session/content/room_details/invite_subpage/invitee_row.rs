@@ -40,13 +40,9 @@ mod imp {
     impl ObjectImpl for InviteeRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "user",
-                    "User",
-                    "The user this row is showing",
-                    Invitee::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![glib::ParamSpecObject::builder::<Invitee>("user")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -82,10 +78,12 @@ impl InviteeRow {
         glib::Object::builder().property("user", user).build()
     }
 
+    /// The user displayed by this row.
     pub fn user(&self) -> Option<Invitee> {
         self.imp().user.borrow().clone()
     }
 
+    /// Set the user displayed by this row.
     pub fn set_user(&self, user: Option<Invitee>) {
         let priv_ = self.imp();
 

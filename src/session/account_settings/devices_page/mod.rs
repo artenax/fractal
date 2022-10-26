@@ -51,15 +51,8 @@ mod imp {
     impl ObjectImpl for DevicesPage {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "user",
-                    "User",
-                    "The user of this account",
-                    User::static_type(),
-                    glib::ParamFlags::READWRITE,
-                )]
-            });
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
+                Lazy::new(|| vec![glib::ParamSpecObject::builder::<User>("user").build()]);
 
             PROPERTIES.as_ref()
         }
@@ -97,10 +90,12 @@ impl DevicesPage {
             .build()
     }
 
+    /// The logged-in user.
     pub fn user(&self) -> Option<User> {
         self.imp().user.borrow().clone()
     }
 
+    /// Set the logged-in user.
     fn set_user(&self, user: Option<User>) {
         let priv_ = self.imp();
 

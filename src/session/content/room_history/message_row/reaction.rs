@@ -40,13 +40,9 @@ mod imp {
     impl ObjectImpl for MessageReaction {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "group",
-                    "Group",
-                    "The reaction group to display",
-                    ReactionGroup::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![glib::ParamSpecObject::builder::<ReactionGroup>("group")
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -63,7 +59,7 @@ mod imp {
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "group" => self.group.get().to_value(),
+                "group" => self.obj().group().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -87,6 +83,12 @@ impl MessageReaction {
             .build()
     }
 
+    /// The reaction group to display.
+    pub fn group(&self) -> Option<&ReactionGroup> {
+        self.imp().group.get()
+    }
+
+    /// Set the reaction group to display.
     fn set_group(&self, group: ReactionGroup) {
         let priv_ = self.imp();
         let key = group.key();

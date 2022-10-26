@@ -27,20 +27,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoxed::new(
-                        "date",
-                        "Date",
-                        "The date of this divider",
-                        glib::DateTime::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "formatted-date",
-                        "Formatted Date",
-                        "The localized representation of the date of this divider",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecBoxed::builder::<glib::DateTime>("date")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecString::builder("formatted-date")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -78,10 +70,12 @@ impl TimelineDayDivider {
         glib::Object::builder().property("date", &date).build()
     }
 
+    /// The date of this divider.
     pub fn date(&self) -> Option<glib::DateTime> {
         self.imp().date.borrow().clone()
     }
 
+    /// Set the date of this divider.
     pub fn set_date(&self, date: Option<glib::DateTime>) {
         let priv_ = self.imp();
 
@@ -94,6 +88,7 @@ impl TimelineDayDivider {
         self.notify("formatted-date");
     }
 
+    /// The localized representation of the date of this divider.
     pub fn formatted_date(&self) -> String {
         self.date()
             .map(|date| {

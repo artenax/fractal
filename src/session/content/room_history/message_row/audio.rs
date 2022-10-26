@@ -57,28 +57,13 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "body",
-                        "Body",
-                        "The body of the audio message",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "state",
-                        "State",
-                        "The state of the audio file",
-                        MediaState::static_type(),
-                        MediaState::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "compact",
-                        "Compact",
-                        "Whether to display this audio message in a compact format",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecString::builder("body").read_only().build(),
+                    glib::ParamSpecEnum::builder("state", MediaState::default())
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("compact")
+                        .read_only()
+                        .build(),
                 ]
             });
 

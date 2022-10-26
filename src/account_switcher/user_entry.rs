@@ -42,20 +42,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session this entry represents",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "selected",
-                        "Selected",
-                        "Whether this session is selected",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("selected")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -99,6 +91,7 @@ impl UserEntryRow {
         glib::Object::builder().property("session", session).build()
     }
 
+    /// Set whether this session is selected.
     pub fn set_selected(&self, selected: bool) {
         let priv_ = self.imp();
 
@@ -117,6 +110,7 @@ impl UserEntryRow {
         self.notify("selected");
     }
 
+    /// Whether this session is selected.
     pub fn is_selected(&self) -> bool {
         self.imp().account_avatar.is_selected()
     }
@@ -132,10 +126,12 @@ impl UserEntryRow {
         }
     }
 
+    /// The session this entry represents.
     pub fn session(&self) -> Option<Session> {
         self.imp().session.upgrade()
     }
 
+    /// Set the session this entry represents.
     pub fn set_session(&self, session: Option<&Session>) {
         self.imp().session.set(session);
     }

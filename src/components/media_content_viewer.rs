@@ -82,13 +82,9 @@ mod imp {
     impl ObjectImpl for MediaContentViewer {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoolean::new(
-                    "autoplay",
-                    "Autoplay",
-                    "Whether to play the media content automatically",
-                    false,
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![glib::ParamSpecBoolean::builder("autoplay")
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -141,10 +137,12 @@ impl MediaContentViewer {
         }
     }
 
+    /// Whether to play the media content automatically.
     pub fn autoplay(&self) -> bool {
         self.imp().autoplay.get()
     }
 
+    /// Set whether to play the media content automatically.
     fn set_autoplay(&self, autoplay: bool) {
         if self.autoplay() == autoplay {
             return;

@@ -26,21 +26,13 @@ mod imp {
     impl ObjectImpl for MemberMenu {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "member",
-                    "Member",
-                    "The member this row is showing",
-                    Member::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                ),
-                glib::ParamSpecFlags::new(
-                        "allowed-actions",
-                        "Allowed Actions",
-                        "The actions the currently logged-in user is allowed to perform on the selected member.",
-                        UserActions::static_type(),
-                        UserActions::default().bits(),
-                        glib::ParamFlags::READABLE,
-                    )
+                vec![
+                    glib::ParamSpecObject::builder::<Member>("member")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecFlags::builder::<UserActions>("allowed-actions")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -85,10 +77,12 @@ impl MemberMenu {
         glib::Object::new(&[])
     }
 
+    /// The member to apply actions to.
     pub fn member(&self) -> Option<Member> {
         self.imp().member.borrow().clone()
     }
 
+    /// Set the member to apply actions to.
     pub fn set_member(&self, member: Option<Member>) {
         let priv_ = self.imp();
         let prev_member = self.member();
@@ -119,6 +113,7 @@ impl MemberMenu {
         self.notify("allowed-actions");
     }
 
+    /// The actions the logged-in user is allowed to perform on the member.
     pub fn allowed_actions(&self) -> UserActions {
         self.member()
             .map_or(UserActions::NONE, |member| member.allowed_actions())

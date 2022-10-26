@@ -32,28 +32,15 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "room-list",
-                        "Room list",
-                        "The list of rooms",
-                        RoomList::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "verification-list",
-                        "Verification list",
-                        "The list of verification requests",
-                        VerificationList::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "show-all-for-category",
-                        "Show All For Category",
-                        "The `CategoryType` to show all compatible categories for",
-                        CategoryType::static_type(),
-                        CategoryType::None as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<RoomList>("room-list")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<VerificationList>("verification-list")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecEnum::builder("show-all-for-category", CategoryType::None)
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -161,10 +148,15 @@ impl ItemList {
             .build()
     }
 
+    /// The `CategoryType` to show all compatible categories for.
+    ///
+    /// The UI is updated to show possible actions for the list items according
+    /// to the `CategoryType`.
     pub fn show_all_for_category(&self) -> CategoryType {
         self.imp().show_all_for_category.get()
     }
 
+    /// Set the `CategoryType` to show all compatible categories for.
     pub fn set_show_all_for_category(&self, category: CategoryType) {
         let priv_ = self.imp();
 
@@ -180,18 +172,22 @@ impl ItemList {
         self.notify("show-all-for-category");
     }
 
+    /// Set the list of rooms.
     fn set_room_list(&self, room_list: RoomList) {
         self.imp().room_list.set(room_list).unwrap();
     }
 
+    /// Set the list of verification requests.
     fn set_verification_list(&self, verification_list: VerificationList) {
         self.imp().verification_list.set(verification_list).unwrap();
     }
 
+    /// The list of rooms.
     pub fn room_list(&self) -> &RoomList {
         self.imp().room_list.get().unwrap()
     }
 
+    /// The list of verification requests.
     pub fn verification_list(&self) -> &VerificationList {
         self.imp().verification_list.get().unwrap()
     }

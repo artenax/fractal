@@ -89,21 +89,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "icon-name",
-                        "Icon Name",
-                        "The icon used in the default state",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "state",
-                        "State",
-                        "The state of the button",
-                        ActionState::static_type(),
-                        ActionState::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecString::builder("icon-name")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecEnum::builder("state", ActionState::default())
+                        .explicit_notify()
+                        .build(),
                     glib::ParamSpecOverride::for_interface::<gtk::Actionable>("action-name"),
                     glib::ParamSpecOverride::for_interface::<gtk::Actionable>("action-target"),
                 ]
@@ -172,10 +163,12 @@ impl ActionButton {
         glib::Object::new(&[])
     }
 
+    /// The icon used in the default state.
     pub fn icon_name(&self) -> String {
         self.imp().icon_name.borrow().clone()
     }
 
+    /// Set the icon used in the default state.
     pub fn set_icon_name(&self, icon_name: &str) {
         if self.icon_name() == icon_name {
             return;
@@ -204,10 +197,12 @@ impl ActionButton {
             .replace(classes.iter().map(ToString::to_string).collect());
     }
 
+    /// The state of the button.
     pub fn state(&self) -> ActionState {
         self.imp().state.get()
     }
 
+    /// Set the state of the button.
     pub fn set_state(&self, state: ActionState) {
         if self.state() == state {
             return;

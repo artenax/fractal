@@ -103,39 +103,22 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecInt::new(
-                        "width",
-                        "Width",
-                        "The intended display width of the media",
-                        -1,
-                        i32::MAX,
-                        -1,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecInt::new(
-                        "height",
-                        "Height",
-                        "The intended display height of the media",
-                        -1,
-                        i32::MAX,
-                        -1,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "state",
-                        "State",
-                        "The state of the media",
-                        MediaState::static_type(),
-                        MediaState::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "compact",
-                        "Compact",
-                        "Whether to display this media in a compact format",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecInt::builder("width")
+                        .minimum(-1)
+                        .default_value(-1)
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecInt::builder("height")
+                        .minimum(-1)
+                        .default_value(-1)
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecEnum::builder("state", MediaState::default())
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("compact")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -263,11 +246,13 @@ impl MessageMedia {
         glib::Object::new(&[])
     }
 
+    /// The intended display width of the media.
     pub fn width(&self) -> i32 {
         self.imp().width.get()
     }
 
-    fn set_width(&self, width: i32) {
+    /// Set the intended display width of the media.
+    pub fn set_width(&self, width: i32) {
         if self.width() == width {
             return;
         }
@@ -276,11 +261,13 @@ impl MessageMedia {
         self.notify("width");
     }
 
+    /// The intended display height of the media.
     pub fn height(&self) -> i32 {
         self.imp().height.get()
     }
 
-    fn set_height(&self, height: i32) {
+    /// Set the intended display height of the media.
+    pub fn set_height(&self, height: i32) {
         if self.height() == height {
             return;
         }
@@ -289,11 +276,13 @@ impl MessageMedia {
         self.notify("height");
     }
 
+    /// The state of the media.
     pub fn state(&self) -> MediaState {
         self.imp().state.get()
     }
 
-    fn set_state(&self, state: MediaState) {
+    /// Set the state of the media.
+    pub fn set_state(&self, state: MediaState) {
         let priv_ = self.imp();
 
         if self.state() == state {
@@ -319,10 +308,12 @@ impl MessageMedia {
         self.notify("state");
     }
 
-    fn compact(&self) -> bool {
+    /// Whether to display this media in a compact format.
+    pub fn compact(&self) -> bool {
         self.imp().compact.get()
     }
 
+    /// Set whether to display this media in a compact format.
     fn set_compact(&self, compact: bool) {
         self.imp().compact.set(compact);
         self.notify("compact");

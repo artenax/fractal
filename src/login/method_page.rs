@@ -51,20 +51,8 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "homeserver",
-                        "Homeserver",
-                        "The homeserver to log into",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "autodiscovery",
-                        "Auto-discovery",
-                        "Whether homeserver auto-discovery is enabled",
-                        false,
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecString::builder("homeserver").build(),
+                    glib::ParamSpecBoolean::builder("autodiscovery").build(),
                 ]
             });
 
@@ -72,19 +60,23 @@ mod imp {
         }
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
-                "homeserver" => self.homeserver.borrow().to_value(),
-                "autodiscovery" => self.autodiscovery.get().to_value(),
+                "homeserver" => obj.homeserver().to_value(),
+                "autodiscovery" => obj.autodiscovery().to_value(),
                 _ => unimplemented!(),
             }
         }
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "homeserver" => {
-                    self.homeserver.replace(value.get().ok());
+                    obj.set_homeserver(value.get().unwrap());
                 }
-                "autodiscovery" => self.autodiscovery.set(value.get().unwrap()),
+                "autodiscovery" => obj.set_autodiscovery(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -127,6 +119,26 @@ glib::wrapper! {
 impl LoginMethodPage {
     pub fn new() -> Self {
         glib::Object::new(&[])
+    }
+
+    /// The homeserver to log into.
+    pub fn homeserver(&self) -> Option<String> {
+        self.imp().homeserver.borrow().clone()
+    }
+
+    /// Set the homeserver to log into.
+    pub fn set_homeserver(&self, homeserver: Option<String>) {
+        self.imp().homeserver.replace(homeserver);
+    }
+
+    /// Whether homeserver auto-discovery is enabled.
+    pub fn autodiscovery(&self) -> bool {
+        self.imp().autodiscovery.get()
+    }
+
+    /// Set whether homeserver auto-discovery is enabled.
+    pub fn set_autodiscovery(&self, autodiscovery: bool) {
+        self.imp().autodiscovery.set(autodiscovery)
     }
 
     /// The username entered by the user.

@@ -24,13 +24,11 @@ mod imp {
     impl ObjectImpl for VideoPlayerRenderer {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "paintable",
-                    "Paintable",
-                    "Paintable to render the video into",
-                    gdk::Paintable::static_type(),
-                    glib::ParamFlags::READABLE,
-                )]
+                vec![
+                    glib::ParamSpecObject::builder::<gdk::Paintable>("paintable")
+                        .read_only()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -66,6 +64,7 @@ impl VideoPlayerRenderer {
         glib::Object::new(&[])
     }
 
+    /// The GdkPaintable to render the video into.
     pub fn paintable(&self) -> gdk::Paintable {
         self.imp().sink.get().unwrap().property("paintable")
     }

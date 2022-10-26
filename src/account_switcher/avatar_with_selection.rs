@@ -37,29 +37,16 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "item",
-                        "Item",
-                        "The Avatar item displayed by this widget",
-                        AvatarItem::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecInt::new(
-                        "size",
-                        "Size",
-                        "The size of the Avatar",
-                        -1,
-                        i32::MAX,
-                        -1,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "selected",
-                        "Selected",
-                        "Style helper for the inner Avatar",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<AvatarItem>("item")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecInt::builder("size")
+                        .minimum(-1)
+                        .default_value(-1)
+                        .build(),
+                    glib::ParamSpecBoolean::builder("selected")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -100,6 +87,7 @@ impl AvatarWithSelection {
         glib::Object::new(&[])
     }
 
+    /// Set whether this avatar is selected.
     pub fn set_selected(&self, selected: bool) {
         let priv_ = self.imp();
 
@@ -118,12 +106,23 @@ impl AvatarWithSelection {
         self.notify("selected");
     }
 
+    /// Whether this avatar is selected.
     pub fn is_selected(&self) -> bool {
         self.imp().checkmark.get_visible()
     }
 
     pub fn avatar(&self) -> &Avatar {
         &self.imp().child_avatar
+    }
+
+    /// The Avatar item displayed by this widget.
+    pub fn item(&self) -> Option<AvatarItem> {
+        self.avatar().item()
+    }
+
+    /// The size of the Avatar.
+    pub fn size(&self) -> i32 {
+        self.avatar().size()
     }
 }
 

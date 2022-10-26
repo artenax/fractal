@@ -47,20 +47,10 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "item",
-                        "Item",
-                        "The timeline item represented by this row",
-                        TimelineItem::static_type(),
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "room-history",
-                        "room-history",
-                        "The ancestor room history of this row",
-                        RoomHistory::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
+                    glib::ParamSpecObject::builder::<TimelineItem>("item").build(),
+                    glib::ParamSpecObject::builder::<RoomHistory>("room-history")
+                        .construct_only()
+                        .build(),
                 ]
             });
 
@@ -176,6 +166,7 @@ impl ItemRow {
             .build()
     }
 
+    /// The ancestor room history of this row.
     pub fn room_history(&self) -> RoomHistory {
         self.imp().room_history.upgrade().unwrap()
     }

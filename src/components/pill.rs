@@ -48,20 +48,12 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "user",
-                        "User",
-                        "The user displayed by this widget",
-                        User::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "room",
-                        "Room",
-                        "The room displayed by this widget",
-                        Room::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<User>("user")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -109,6 +101,7 @@ impl Pill {
         glib::Object::builder().property("room", room).build()
     }
 
+    /// Set the user displayed by this widget.
     pub fn set_user(&self, user: Option<User>) {
         let priv_ = self.imp();
 
@@ -137,10 +130,12 @@ impl Pill {
         self.notify("user");
     }
 
+    /// The user displayed by this widget.
     pub fn user(&self) -> Option<User> {
         self.imp().user.borrow().clone()
     }
 
+    /// Set the room displayed by this widget.
     pub fn set_room(&self, room: Option<Room>) {
         let priv_ = self.imp();
 
@@ -169,6 +164,7 @@ impl Pill {
         self.notify("room");
     }
 
+    /// The room displayed by this widget.
     pub fn room(&self) -> Option<Room> {
         self.imp().room.borrow().clone()
     }

@@ -112,21 +112,12 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "room",
-                        "Room",
-                        "The room backing all details of the preference window",
-                        Room::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecEnum::new(
-                        "visible-page",
-                        "Visible Page",
-                        "The page currently visible",
-                        PageName::static_type(),
-                        PageName::default() as i32,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecEnum::builder("visible-page", PageName::default())
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -171,19 +162,23 @@ impl RoomDetails {
             .build()
     }
 
+    /// The room backing all the details of the preference window.
     pub fn room(&self) -> &Room {
         // Use unwrap because room property is CONSTRUCT_ONLY.
         self.imp().room.get().unwrap()
     }
 
+    /// Set the room backing all the details of the preference window.
     fn set_room(&self, room: Room) {
         self.imp().room.set(room).expect("Room already initialized");
     }
 
+    /// The page that is currently visible.
     pub fn visible_page(&self) -> PageName {
         self.imp().visible_page.get()
     }
 
+    /// Set the page that is currently visible.
     pub fn set_visible_page(&self, name: PageName) {
         let priv_ = self.imp();
         let prev_name = self.visible_page();

@@ -204,34 +204,18 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "session-id",
-                        "Session ID",
-                        "The unique ID of this session",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "item-list",
-                        "Item List",
-                        "The list of items in the sidebar",
-                        ItemList::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "user",
-                        "User",
-                        "The user of this session",
-                        User::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "offline",
-                        "Offline",
-                        "Whether this session has a connection to the homeserver",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecString::builder("session-id")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<ItemList>("item-list")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<User>("user")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("offline")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -574,6 +558,7 @@ impl Session {
         self.item_list().verification_list()
     }
 
+    /// The list of items in the sidebar.
     pub fn item_list(&self) -> &ItemList {
         self.imp()
             .item_list
@@ -613,6 +598,7 @@ impl Session {
             .clone()
     }
 
+    /// Whether this session has a connection to the homeserver.
     pub fn is_offline(&self) -> bool {
         self.imp().offline.get()
     }

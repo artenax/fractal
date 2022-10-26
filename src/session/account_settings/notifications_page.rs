@@ -57,34 +57,18 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "session",
-                        "Session",
-                        "The session",
-                        Session::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "account-enabled",
-                        "account-enabled",
-                        "",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "account-loading",
-                        "account-loading",
-                        "",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "session-enabled",
-                        "session-enabled",
-                        "",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("account-enabled")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("account-loading")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("session-enabled")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 

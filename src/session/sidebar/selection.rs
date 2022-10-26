@@ -33,29 +33,16 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "model",
-                        "Model",
-                        "The model being managed",
-                        gio::ListModel::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecUInt::new(
-                        "selected",
-                        "Selected",
-                        "The position of the selected item",
-                        0,
-                        u32::MAX,
-                        gtk::INVALID_LIST_POSITION,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "selected-item",
-                        "Selected Item",
-                        "The selected item",
-                        glib::Object::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
+                    glib::ParamSpecObject::builder::<gio::ListModel>("model")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecUInt::builder("selected")
+                        .default_value(gtk::INVALID_LIST_POSITION)
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<glib::Object>("selected-item")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -133,18 +120,22 @@ impl Selection {
         glib::Object::builder().property("model", &model).build()
     }
 
+    /// The underlying model.
     pub fn model(&self) -> Option<gio::ListModel> {
         self.imp().model.borrow().clone()
     }
 
+    /// The position of the selected item.
     pub fn selected(&self) -> u32 {
         self.imp().selected.get()
     }
 
+    /// The selected item.
     pub fn selected_item(&self) -> Option<glib::Object> {
         self.imp().selected_item.borrow().clone()
     }
 
+    /// Set the underlying model.
     pub fn set_model<P: IsA<gio::ListModel>>(&self, model: Option<&P>) {
         let priv_ = self.imp();
 
@@ -196,6 +187,7 @@ impl Selection {
         self.notify("model");
     }
 
+    /// Set the selected item by its position.
     pub fn set_selected(&self, position: u32) {
         let priv_ = self.imp();
 
@@ -237,6 +229,7 @@ impl Selection {
         self.notify("selected-item");
     }
 
+    /// Set the selected item.
     fn set_selected_item(&self, item: Option<glib::Object>) {
         let priv_ = self.imp();
 

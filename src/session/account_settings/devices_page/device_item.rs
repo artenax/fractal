@@ -39,13 +39,10 @@ mod imp {
     impl ObjectImpl for Item {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoxed::new(
-                    "type",
-                    "Type",
-                    "The type of this item",
-                    BoxedItemType::static_type(),
-                    glib::ParamFlags::WRITABLE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![glib::ParamSpecBoxed::builder::<BoxedItemType>("type")
+                    .write_only()
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -84,6 +81,7 @@ impl Item {
         glib::Object::builder().property("type", &type_).build()
     }
 
+    /// The type of this item.
     pub fn type_(&self) -> &ItemType {
         self.imp().type_.get().unwrap()
     }

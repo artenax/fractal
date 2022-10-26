@@ -31,34 +31,18 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "room-list",
-                        "Room List",
-                        "The list of rooms in this session",
-                        RoomList::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "room",
-                        "Room",
-                        "The room, this is only set if the user is already a member",
-                        Room::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "pending",
-                        "Pending",
-                        "A room is pending when the user already clicked to join a room",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "avatar",
-                        "Avatar",
-                        "The Avatar of this room",
-                        Avatar::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecObject::builder::<RoomList>("room-list")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("pending")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Avatar>("avatar")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -121,24 +105,29 @@ impl PublicRoom {
             .build()
     }
 
+    /// The list of rooms in this session.
     pub fn room_list(&self) -> &RoomList {
         self.imp().room_list.get().unwrap()
     }
 
+    /// The Avatar of this room.
     pub fn avatar(&self) -> &Avatar {
         self.imp().avatar.get().unwrap()
     }
 
-    /// The room if the user is already a member of this room.
+    /// The `Room` object for this room, if the user is already a member of this
+    /// room.
     pub fn room(&self) -> Option<&Room> {
         self.imp().room.get()
     }
 
+    /// Set the `Room` object for this room.
     fn set_room(&self, room: Room) {
         self.imp().room.set(room).unwrap();
         self.notify("room");
     }
 
+    /// Set whether this room is pending.
     fn set_pending(&self, is_pending: bool) {
         if self.is_pending() == is_pending {
             return;
@@ -148,6 +137,9 @@ impl PublicRoom {
         self.notify("pending");
     }
 
+    /// Whether the room is pending.
+    ///
+    /// A room is pending when the user clicked to join it.
     pub fn is_pending(&self) -> bool {
         self.imp().is_pending.get()
     }

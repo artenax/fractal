@@ -59,41 +59,21 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoolean::new(
-                        "selectable",
-                        "Selectable",
-                        "Whether this item is selectable.",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "activatable",
-                        "Activatable",
-                        "Whether this item is activatable.",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "show-header",
-                        "Show Header",
-                        "Whether this item should show its header.",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "can-hide-header",
-                        "Can hide header",
-                        "Whether this item is allowed to hide its header.",
-                        false,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "event-sender",
-                        "Event Sender",
-                        "If this item is a Matrix event, the sender of the event.",
-                        Member::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecBoolean::builder("selectable")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("activatable")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("show-header")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("can-hide-header")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Member>("event-sender")
+                        .read_only()
+                        .build(),
                 ]
             });
 

@@ -52,13 +52,11 @@ mod imp {
     impl ObjectImpl for AccountSwitcher {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "pages",
-                    "Pages",
-                    "A model containing the stack pages for each logged in account",
-                    gtk::SelectionModel::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
-                )]
+                vec![
+                    glib::ParamSpecObject::builder::<gtk::SelectionModel>("pages")
+                        .explicit_notify()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -113,6 +111,7 @@ impl AccountSwitcher {
         glib::Object::new(&[])
     }
 
+    /// Set the model containing the stack pages for each logged in account.
     pub fn set_pages(&self, pages: Option<gtk::SelectionModel>) {
         let priv_ = self.imp();
         let prev_pages = self.pages();
@@ -154,6 +153,7 @@ impl AccountSwitcher {
         self.notify("pages");
     }
 
+    /// The model containing the stack pages for each logged in account.
     pub fn pages(&self) -> Option<gtk::SelectionModel> {
         self.imp().pages.borrow().clone()
     }
