@@ -23,22 +23,19 @@ use crate::{
     },
 };
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum, IntoPrimitive, TryFromPrimitive)]
+#[derive(
+    Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum, IntoPrimitive, TryFromPrimitive,
+)]
 #[repr(u32)]
 #[enum_type(name = "Membership")]
 pub enum Membership {
+    #[default]
     Leave = 0,
     Join = 1,
     Invite = 2,
     Ban = 3,
     Knock = 4,
     Custom = 5,
-}
-
-impl Default for Membership {
-    fn default() -> Self {
-        Membership::Leave
-    }
 }
 
 impl std::fmt::Display for Membership {

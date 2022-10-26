@@ -498,17 +498,14 @@ impl CompletionPopover {
             port: String,
         }
 
+        #[derive(Default)]
         enum ServerNameContext {
             Ipv6(String),
             // According to the Matrix spec definition, the IPv4 grammar is a
             // subset of the domain name grammar.
             Ipv4OrDomain(String),
+            #[default]
             Unknown,
-        }
-        impl Default for ServerNameContext {
-            fn default() -> Self {
-                Self::Unknown
-            }
         }
 
         fn is_possible_word_char(c: char) -> bool {

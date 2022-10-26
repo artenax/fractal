@@ -12,20 +12,15 @@ use log::warn;
 pub use self::{general_page::GeneralPage, invite_subpage::InviteSubpage, member_page::MemberPage};
 use crate::session::Room;
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
 #[enum_type(name = "RoomDetailsPageName")]
 pub enum PageName {
+    #[default]
     None,
     General,
     Members,
     Invite,
-}
-
-impl Default for PageName {
-    fn default() -> Self {
-        Self::None
-    }
 }
 
 impl glib::variant::StaticVariantType for PageName {

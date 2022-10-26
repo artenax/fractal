@@ -5,7 +5,7 @@ use gtk::glib;
 
 use crate::session::room::RoomType;
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(i32)]
 #[enum_type(name = "CategoryType")]
 pub enum CategoryType {
@@ -13,18 +13,13 @@ pub enum CategoryType {
     VerificationRequest = 0,
     Invited = 1,
     Favorite = 2,
+    #[default]
     Normal = 3,
     LowPriority = 4,
     Left = 5,
     Outdated = 6,
     Space = 7,
     Direct = 8,
-}
-
-impl Default for CategoryType {
-    fn default() -> Self {
-        CategoryType::Normal
-    }
 }
 
 impl fmt::Display for CategoryType {

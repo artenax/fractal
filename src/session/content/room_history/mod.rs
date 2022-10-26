@@ -62,18 +62,13 @@ use crate::{
     },
 };
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(i32)]
 #[enum_type(name = "RelatedEventType")]
 pub enum RelatedEventType {
+    #[default]
     None = 0,
     Reply = 1,
-}
-
-impl Default for RelatedEventType {
-    fn default() -> Self {
-        Self::None
-    }
 }
 
 mod imp {

@@ -3,18 +3,13 @@ use std::fmt;
 use gettextrs::gettext;
 use gtk::glib;
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
 #[enum_type(name = "EntryType")]
 pub enum EntryType {
+    #[default]
     Explore = 0,
     Forget = 1,
-}
-
-impl Default for EntryType {
-    fn default() -> Self {
-        EntryType::Explore
-    }
 }
 
 impl fmt::Display for EntryType {

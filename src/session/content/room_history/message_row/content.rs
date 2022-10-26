@@ -13,11 +13,12 @@ use super::{
 };
 use crate::{prelude::*, session::room::SupportedEvent, spawn, utils::media::filename_for_mime};
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(i32)]
 #[enum_type(name = "ContentFormat")]
 pub enum ContentFormat {
     /// The content should appear at its natural size.
+    #[default]
     Natural = 0,
 
     /// The content should appear in a smaller format without interactions, if
@@ -31,12 +32,6 @@ pub enum ContentFormat {
     /// Like `Compact`, but the content should be ellipsized if possible to show
     /// only a single line.
     Ellipsized = 2,
-}
-
-impl Default for ContentFormat {
-    fn default() -> Self {
-        Self::Natural
-    }
 }
 
 mod imp {

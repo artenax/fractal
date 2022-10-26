@@ -31,10 +31,11 @@ use crate::{
     spawn, spawn_tokio, toast,
 };
 
-#[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
 #[enum_type(name = "VerificationState")]
 pub enum State {
+    #[default]
     Requested,
     RequestSend,
     SasV1,
@@ -48,25 +49,14 @@ pub enum State {
     Error,
 }
 
-impl Default for State {
-    fn default() -> Self {
-        Self::Requested
-    }
-}
-
-#[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
 #[enum_type(name = "VerificationMode")]
 pub enum Mode {
     CurrentSession,
     OtherSession,
+    #[default]
     User,
-}
-
-impl Default for Mode {
-    fn default() -> Self {
-        Self::User
-    }
 }
 
 #[glib::flags(name = "VerificationSupportedMethods")]

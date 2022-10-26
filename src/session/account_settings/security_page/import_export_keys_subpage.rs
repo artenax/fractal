@@ -12,18 +12,13 @@ use crate::{
     components::SpinnerButton, i18n::ngettext_f, session::Session, spawn, spawn_tokio, toast,
 };
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
 #[enum_type(name = "KeysSubpageMode")]
 pub enum KeysSubpageMode {
+    #[default]
     Export = 0,
     Import = 1,
-}
-
-impl Default for KeysSubpageMode {
-    fn default() -> Self {
-        Self::Export
-    }
 }
 
 mod imp {

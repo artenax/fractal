@@ -41,20 +41,15 @@ pub enum MediaType {
     Video = 2,
 }
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
 #[enum_type(name = "MediaState")]
 pub enum MediaState {
+    #[default]
     Initial = 0,
     Loading = 1,
     Ready = 2,
     Error = 3,
-}
-
-impl Default for MediaState {
-    fn default() -> Self {
-        Self::Initial
-    }
 }
 
 mod imp {

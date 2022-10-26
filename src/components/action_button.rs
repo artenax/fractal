@@ -1,10 +1,11 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, glib::closure_local, prelude::*, CompositeTemplate};
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
 #[enum_type(name = "ActionState")]
 pub enum ActionState {
+    #[default]
     Default = 0,
     Confirm = 1,
     Retry = 2,
@@ -12,12 +13,6 @@ pub enum ActionState {
     Success = 4,
     Warning = 5,
     Error = 6,
-}
-
-impl Default for ActionState {
-    fn default() -> Self {
-        Self::Default
-    }
 }
 
 impl AsRef<str> for ActionState {

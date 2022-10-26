@@ -26,21 +26,16 @@ use tokio::task::JoinHandle;
 use super::{Event, Room, SupportedEvent, UnsupportedEvent};
 use crate::{prelude::*, spawn_tokio};
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
 #[enum_type(name = "TimelineState")]
 pub enum TimelineState {
+    #[default]
     Initial,
     Loading,
     Ready,
     Error,
     Complete,
-}
-
-impl Default for TimelineState {
-    fn default() -> Self {
-        TimelineState::Initial
-    }
 }
 
 const MAX_BATCH_SIZE: usize = 20;

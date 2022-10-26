@@ -15,21 +15,16 @@ use crate::{
     spawn, spawn_tokio,
 };
 
-#[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
 #[enum_type(name = "ContentInviteeListState")]
 pub enum InviteeListState {
+    #[default]
     Initial = 0,
     Loading = 1,
     NoMatching = 2,
     Matching = 3,
     Error = 4,
-}
-
-impl Default for InviteeListState {
-    fn default() -> Self {
-        Self::Initial
-    }
 }
 
 mod imp {

@@ -3,10 +3,11 @@ use matrix_sdk::ruma::api::client::session::get_login_types::v3::{
     IdentityProvider, IdentityProviderBrand,
 };
 
-#[derive(Hash, Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(i32)]
 #[enum_type(name = "IdpBrand")]
 pub enum IdpBrand {
+    #[default]
     Apple = 0,
     Facebook = 1,
     GitHub = 2,
@@ -39,12 +40,6 @@ impl IdpBrand {
             IdpBrand::Google => "idp-google",
             IdpBrand::Twitter => "idp-twitter",
         }
-    }
-}
-
-impl Default for IdpBrand {
-    fn default() -> Self {
-        IdpBrand::Apple
     }
 }
 

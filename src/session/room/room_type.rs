@@ -7,12 +7,15 @@ use crate::session::sidebar::CategoryType;
 
 // TODO: do we also want custom tags support?
 // See https://spec.matrix.org/v1.2/client-server-api/#room-tagging
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum, IntoPrimitive, TryFromPrimitive)]
+#[derive(
+    Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum, IntoPrimitive, TryFromPrimitive,
+)]
 #[repr(u32)]
 #[enum_type(name = "RoomType")]
 pub enum RoomType {
     Invited = 0,
     Favorite = 1,
+    #[default]
     Normal = 2,
     LowPriority = 3,
     Left = 4,
@@ -64,12 +67,6 @@ impl RoomType {
                 )
             }
         }
-    }
-}
-
-impl Default for RoomType {
-    fn default() -> Self {
-        RoomType::Normal
     }
 }
 

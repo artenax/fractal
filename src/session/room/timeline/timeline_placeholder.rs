@@ -2,18 +2,13 @@ use gtk::{glib, prelude::*, subclass::prelude::*};
 
 use super::{TimelineItem, TimelineItemImpl};
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
 #[enum_type(name = "PlaceholderKind")]
 pub enum PlaceholderKind {
+    #[default]
     Spinner = 0,
     Typing = 1,
-}
-
-impl Default for PlaceholderKind {
-    fn default() -> Self {
-        Self::Spinner
-    }
 }
 
 mod imp {

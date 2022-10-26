@@ -7,10 +7,12 @@ use log::warn;
 use super::{AudioPlayer, ImagePaintable, LocationViewer};
 use crate::spawn;
 
+#[derive(Debug, Default, Clone, Copy)]
 pub enum ContentType {
     Image,
     Audio,
     Video,
+    #[default]
     Unknown,
 }
 
@@ -22,12 +24,6 @@ impl ContentType {
             ContentType::Video => "video-x-generic-symbolic",
             ContentType::Unknown => "text-x-generic-symbolic",
         }
-    }
-}
-
-impl Default for ContentType {
-    fn default() -> Self {
-        Self::Unknown
     }
 }
 
