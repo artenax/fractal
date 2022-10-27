@@ -169,6 +169,8 @@ impl LoginMethodPage {
             }
         };
 
+        self.clean_idp_box();
+
         let mut has_unknown_methods = false;
         let mut has_known_methods = false;
 
@@ -199,7 +201,13 @@ impl LoginMethodPage {
         priv_.username_entry.set_text("");
         priv_.password_entry.set_text("");
 
-        // Empty the identity providers box.
+        self.clean_idp_box();
+    }
+
+    /// Empty the identity providers box.
+    pub fn clean_idp_box(&self) {
+        let priv_ = self.imp();
+
         let mut child = priv_.sso_idp_box.first_child();
         while child.is_some() {
             priv_.sso_idp_box.remove(&child.unwrap());

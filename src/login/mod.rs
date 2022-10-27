@@ -1,4 +1,4 @@
-use std::{fs, path::PathBuf};
+use std::{ffi::OsStr, fs, path::PathBuf};
 
 use adw::{prelude::*, subclass::prelude::BinImpl};
 use gettextrs::gettext;
@@ -46,6 +46,8 @@ mod imp {
     pub struct Login {
         /// The current created Matrix client and its configuration.
         pub created_client: RefCell<Option<CreatedClient>>,
+        /// The ID of the session that is currently logging in.
+        pub current_session_id: RefCell<Option<String>>,
         #[template_child]
         pub back_button: TemplateChild<gtk::Button>,
         #[template_child]
@@ -173,7 +175,7 @@ mod imp {
         }
 
         fn dispose(&self, obj: &Self::Type) {
-            obj.prune_created_client(true);
+            obj.prune_created_client();
         }
     }
 
@@ -211,12 +213,10 @@ impl Login {
             .map(|c| c.client.clone())
     }
 
-    pub fn prune_created_client(&self, clean: bool) {
+    pub fn prune_created_client(&self) {
         if let Some(created_client) = self.imp().created_client.take() {
-            if clean {
-                if let Err(error) = fs::remove_dir_all(created_client.path) {
-                    error!("Failed to remove newly-created database: {}", error);
-                }
+            if let Err(error) = fs::remove_dir_all(created_client.path) {
+                error!("Failed to remove newly-created database: {}", error);
             }
         }
     }
@@ -230,6 +230,18 @@ impl Login {
 
         self.set_homeserver(homeserver);
         self.imp().created_client.replace(created_client);
+    }
+
+    /// The ID of the session that is currently logging in.
+    ///
+    /// This will be set until the session is marked as `ready`.
+    pub fn current_session_id(&self) -> Option<String> {
+        self.imp().current_session_id.borrow().clone()
+    }
+
+    /// Set the ID of the session that is currently logging in.
+    pub fn set_current_session_id(&self, session_id: Option<String>) {
+        self.imp().current_session_id.replace(session_id);
     }
 
     pub fn homeserver(&self) -> Option<Url> {
@@ -276,7 +288,7 @@ impl Login {
     fn set_visible_child(&self, visible_child: &str) {
         // Clean up the created client when we come back to the homeserver selection.
         if visible_child == "homeserver" {
-            self.prune_created_client(true);
+            self.prune_created_client();
         }
 
         self.imp().main_stack.set_visible_child_name(visible_child);
@@ -367,6 +379,14 @@ impl Login {
 
         match handle.await.unwrap() {
             Ok(created_client) => {
+                let session_id = created_client
+                    .path
+                    .iter()
+                    .next_back()
+                    .and_then(OsStr::to_str)
+                    .unwrap();
+                self.set_current_session_id(Some(session_id.to_owned()));
+
                 self.set_created_client(Some(created_client)).await;
                 self.check_login_types().await;
             }
@@ -379,7 +399,7 @@ impl Login {
                 toast!(self, error.to_user_facing());
 
                 // Clean up the created client because it's bound to the homeserver.
-                self.prune_created_client(true);
+                self.prune_created_client();
             }
         };
     }
@@ -522,6 +542,19 @@ impl Login {
         }
     }
 
+    /// Restore a matrix client with the current settings.
+    ///
+    /// This is necessary when going back from a cancelled verification after a
+    /// successful login, because we can't reuse a logged-out Matrix client.
+    pub fn restore_client(&self) {
+        spawn!(
+            glib::PRIORITY_DEFAULT_IDLE,
+            clone!(@weak self as obj => async move {
+                obj.get_homeserver().await
+            })
+        );
+    }
+
     pub async fn restore_previous_session(&self, session: StoredSession) {
         let handle = spawn_tokio!(async move {
             let created_client = CreatedClient::new(
@@ -558,7 +591,7 @@ impl Login {
     }
 
     pub async fn create_session(&self, session_info: StoredSession, is_new: bool) {
-        let client = self.client().unwrap();
+        let client = self.imp().created_client.take().unwrap().client;
         let session = Session::new();
 
         if is_new {
@@ -572,10 +605,12 @@ impl Login {
                 return;
             }
 
+            // Clean the `Login` when the session is ready because we won't need
+            // to restore it anymore.
             session.connect_ready(clone!(@weak self as obj => move |_| {
                 obj.clean();
             }));
-        };
+        }
 
         session.prepare(client, session_info).await;
         self.parent_window().add_session(&session);
@@ -589,7 +624,8 @@ impl Login {
         priv_.method_page.clean();
 
         // Clean data.
-        self.prune_created_client(false);
+        self.set_current_session_id(None);
+        self.prune_created_client();
         self.set_autodiscovery(true);
 
         // Reinitialize UI.
@@ -707,6 +743,8 @@ pub struct CreatedClient {
 
 impl CreatedClient {
     /// Create a Matrix `Client` for the given homeserver.
+    ///
+    /// Returns the `CreatedClient` and its ID.
     async fn new(
         homeserver: &HomeserverOrServerName,
         use_discovery: bool,

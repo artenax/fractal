@@ -198,7 +198,12 @@ impl Window {
 
         priv_.sessions.remove(session);
 
-        if let Some(child) = priv_.sessions.first_child() {
+        // If the session was a new login that was logged out before being ready, go
+        // back to the login screen.
+        if priv_.login.current_session_id().as_deref() == Some(session.session_id()) {
+            priv_.login.restore_client();
+            self.switch_to_login_page();
+        } else if let Some(child) = priv_.sessions.first_child() {
             priv_.sessions.set_visible_child(&child);
         } else {
             self.notify("has-sessions");
