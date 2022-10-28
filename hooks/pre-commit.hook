@@ -18,26 +18,31 @@ elif [[ $? -eq 2 ]]; then
     echo ""
     echo "A missing dependency was found"
     echo ""
-    echo "y: Skip checks and proceed with commit"
-    echo "N: Abort commit"
-    echo ""
-    while true
-    do
-        echo -n "Skip the pre-commit checks? [y/N]: "; read yn < /dev/tty
-        case $yn in
-            [Yy]* )
-                echo -e "  ${act}Skipping${res} checks"
-                exit 0
-                ;;
-            [Nn]* | "" )
-                echo -e "  ${err}Aborting${res} commit"
-                exit  1
-                ;;
-            * ) 
-                echo -e "${neg}Invalid input${res}"
-                ;;
-        esac
-    done
+    if [ ! -t 1 ]; then
+        echo "This is a non-interactive shell, skipping checks."
+        exit 0
+    else
+        echo "y: Skip checks and proceed with commit"
+        echo "N: Abort commit"
+        echo ""
+        while true
+        do
+            echo -n "Skip the pre-commit checks? [y/N]: "; read yn < /dev/tty
+            case $yn in
+                [Yy]* )
+                    echo -e "  ${act}Skipping${res} checks"
+                    exit 0
+                    ;;
+                [Nn]* | "" )
+                    echo -e "  ${err}Aborting${res} commit"
+                    exit  1
+                    ;;
+                * ) 
+                    echo -e "${neg}Invalid input${res}"
+                    ;;
+            esac
+        done
+    fi
 else
     echo ""
     echo -e "Pre-commit checks result: ${neg}fail${res}"
