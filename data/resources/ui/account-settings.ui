@@ -10,6 +10,11 @@
       </object>
     </child>
     <child>
+      <object class="NotificationsPage">
+        <property name="session" bind-source="AccountSettings" bind-property="session" bind-flags="sync-create"/>
+      </object>
+    </child>
+    <child>
       <object class="DevicesPage">
         <binding name="user">
           <lookup name="user">

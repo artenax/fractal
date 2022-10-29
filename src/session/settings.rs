@@ -1,4 +1,5 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
+use log::error;
 use serde::{Deserialize, Serialize};
 
 use crate::Application;
@@ -11,22 +12,42 @@ struct StoredSessionSettings {
     /// Custom servers to explore.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     explore_custom_servers: Vec<String>,
+
+    /// Whether notifications are enabled for this session.
+    #[serde(
+        default = "ruma::serde::default_true",
+        skip_serializing_if = "ruma::serde::is_true"
+    )]
+    notifications_enabled: bool,
 }
 
 mod imp {
-    use std::cell::RefCell;
+    use std::cell::{Cell, RefCell};
 
     use once_cell::sync::{Lazy, OnceCell};
 
     use super::*;
 
-    #[derive(Debug, Default)]
+    #[derive(Debug)]
     pub struct SessionSettings {
         /// The ID of the session these settings are for.
         pub session_id: OnceCell<String>,
 
         /// Custom servers to explore.
         pub explore_custom_servers: RefCell<Vec<String>>,
+
+        /// Whether notifications are enabled for this session.
+        pub notifications_enabled: Cell<bool>,
+    }
+
+    impl Default for SessionSettings {
+        fn default() -> Self {
+            Self {
+                session_id: Default::default(),
+                explore_custom_servers: Default::default(),
+                notifications_enabled: Cell::new(true),
+            }
+        }
     }
 
     #[glib::object_subclass]
@@ -38,13 +59,22 @@ mod imp {
     impl ObjectImpl for SessionSettings {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecString::new(
-                    "session-id",
-                    "Session ID",
-                    "The ID of the session these settings are for",
-                    None,
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![
+                    glib::ParamSpecString::new(
+                        "session-id",
+                        "Session ID",
+                        "The ID of the session these settings are for",
+                        None,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                    ),
+                    glib::ParamSpecBoolean::new(
+                        "notifications-enabled",
+                        "notifications-enabled",
+                        "",
+                        true,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::EXPLICIT_NOTIFY,
+                    ),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -59,6 +89,7 @@ mod imp {
         ) {
             match pspec.name() {
                 "session-id" => obj.set_session_id(value.get().ok()),
+                "notifications-enabled" => obj.set_notifications_enabled(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -66,6 +97,7 @@ mod imp {
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "session-id" => obj.session_id().to_value(),
+                "notifications-enabled" => obj.notifications_enabled().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -107,17 +139,35 @@ impl SessionSettings {
         priv_.session_id.set(session_id).unwrap();
 
         if let Some(settings) = index.and_then(|idx| sessions.into_iter().nth(idx)) {
-            *priv_.explore_custom_servers.borrow_mut() = settings.explore_custom_servers;
+            self.update_from_stored_settings(settings);
         } else {
             self.store_settings();
         }
     }
 
-    fn store_settings(&self) {
-        let new_settings = StoredSessionSettings {
+    fn update_from_stored_settings(&self, settings: StoredSessionSettings) {
+        let priv_ = self.imp();
+        let StoredSessionSettings {
+            session_id: _,
+            explore_custom_servers,
+            notifications_enabled,
+        } = settings;
+
+        *priv_.explore_custom_servers.borrow_mut() = explore_custom_servers;
+        priv_.notifications_enabled.set(notifications_enabled);
+    }
+
+    fn as_stored_settings(&self) -> StoredSessionSettings {
+        StoredSessionSettings {
             session_id: self.session_id().to_owned(),
             explore_custom_servers: self.explore_custom_servers(),
-        };
+            notifications_enabled: self.notifications_enabled(),
+        }
+    }
+
+    fn store_settings(&self) {
+        let new_settings = self.as_stored_settings();
+
         let app_settings = Application::default().settings();
         let mut sessions =
             serde_json::from_str::<Vec<StoredSessionSettings>>(&app_settings.string("sessions"))
@@ -135,7 +185,7 @@ impl SessionSettings {
         if let Err(error) =
             app_settings.set_string("sessions", &serde_json::to_string(&sessions).unwrap())
         {
-            log::error!("Error storing settings for session: {error}");
+            error!("Error storing settings for session: {error}");
         }
     }
 
@@ -179,5 +229,21 @@ impl SessionSettings {
 
         self.imp().explore_custom_servers.replace(servers);
         self.store_settings();
+    }
+
+    /// Whether notifications are enabled for this session.
+    pub fn notifications_enabled(&self) -> bool {
+        self.imp().notifications_enabled.get()
+    }
+
+    /// Set whether notifications are enabled for this session.
+    pub fn set_notifications_enabled(&self, enabled: bool) {
+        if self.notifications_enabled() == enabled {
+            return;
+        }
+
+        self.imp().notifications_enabled.replace(enabled);
+        self.store_settings();
+        self.notify("notifications-enabled");
     }
 }

@@ -916,6 +916,11 @@ impl Session {
     /// The notification won't be shown if the application is active and this
     /// session is displayed.
     fn show_notification(&self, matrix_notification: Notification) {
+        // Don't show notifications if they are disabled.
+        if !self.settings().notifications_enabled() {
+            return;
+        }
+
         let window = self.parent_window().unwrap();
 
         // Don't show notifications for the current session if the window is active.

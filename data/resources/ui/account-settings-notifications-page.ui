@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="NotificationsPage" parent="AdwPreferencesPage">
+    <property name="icon-name">preferences-system-notifications-symbolic</property>
+    <property name="title" translatable="yes">Notifications</property>
+    <property name="name">notifications</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Enable for this account</property>
+            <child type="suffix">
+              <object class="GtkBox">
+                <property name="valign">center</property>
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkSpinner">
+                    <property name="visible" bind-source="NotificationsPage" bind-property="account-loading" bind-flags="sync-create"/>
+                    <property name="spinning" bind-source="NotificationsPage" bind-property="account-loading" bind-flags="sync-create"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch">
+                    <property name="active" bind-source="NotificationsPage" bind-property="account-enabled" bind-flags="sync-create | bidirectional"/>
+                    <property name="sensitive" bind-source="NotificationsPage" bind-property="account-loading" bind-flags="sync-create | invert-boolean"/>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Enable for this session</property>
+            <property name="sensitive" bind-source="NotificationsPage" bind-property="account-enabled" bind-flags="sync-create"/>
+            <child type="suffix">
+              <object class="GtkSwitch">
+                <property name="valign">center</property>
+                <property name="active" bind-source="NotificationsPage" bind-property="session-enabled" bind-flags="sync-create | bidirectional"/>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

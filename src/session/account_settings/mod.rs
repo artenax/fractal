@@ -6,12 +6,14 @@ use gtk::{
 };
 
 mod devices_page;
+mod notifications_page;
 mod security_page;
 mod user_page;
-use devices_page::DevicesPage;
-use security_page::SecurityPage;
-use user_page::UserPage;
 
+use self::{
+    devices_page::DevicesPage, notifications_page::NotificationsPage, security_page::SecurityPage,
+    user_page::UserPage,
+};
 use super::Session;
 
 mod imp {
@@ -37,6 +39,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             DevicesPage::static_type();
             UserPage::static_type();
+            NotificationsPage::static_type();
             SecurityPage::static_type();
             Self::bind_template(klass);
 
