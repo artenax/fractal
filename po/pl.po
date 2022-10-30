@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-10-07 18:41+0000\n"
-"PO-Revision-Date: 2022-10-09 13:33+0200\n"
+"POT-Creation-Date: 2022-10-28 19:46+0000\n"
+"PO-Revision-Date: 2022-10-30 13:28+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -86,20 +86,20 @@ msgstr ""
 "w języku Rust. Jego interfejs jest zoptymalizowany do współpracy dużych "
 "grup, takich jak projekty wolnego oprogramowania."
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:177
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:169
 msgid "The Fractal Team"
 msgstr "Zespół programu Fractal"
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:9
+#: data/resources/ui/account-settings-change-password-subpage.ui:12
 #: data/resources/ui/account-settings-user-page.ui:62
 msgid "Change Password"
 msgstr "Zmień hasło"
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:52
+#: data/resources/ui/account-settings-change-password-subpage.ui:60
 msgid "Changing your password will log you out of your other sessions."
 msgstr "Zmiana hasła spowoduje wylogowanie z innych sesji."
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:64
+#: data/resources/ui/account-settings-change-password-subpage.ui:71
 msgid ""
 "Fractal’s support for encryption is unstable so you might lose access to "
 "your encrypted message history. It is recommended to backup your encryption "
@@ -109,26 +109,26 @@ msgstr ""
 "dostęp do historii zaszyfrowanych wiadomości. Przed kontynuowaniem zalecane "
 "jest wykonanie kopii zapasowej kluczy szyfrowania."
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:76
+#: data/resources/ui/account-settings-change-password-subpage.ui:94
 msgid "New Password"
 msgstr "Nowe hasło"
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:81
+#: data/resources/ui/account-settings-change-password-subpage.ui:134
 msgid "Confirm New Password"
 msgstr "Potwierdzenie nowego hasła"
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:94
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:90
+#: data/resources/ui/account-settings-change-password-subpage.ui:164
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
 #: src/session/content/room_history/verification_info_bar.rs:181
 msgid "Continue"
 msgstr "Kontynuuj"
 
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:9
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:12
 #: data/resources/ui/account-settings-user-page.ui:123
 msgid "Deactivate Account"
 msgstr "Dezaktywuj konto"
 
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:52
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:60
 msgid ""
 "Deactivating your account means you will lose access to all your messages, "
 "contacts, files, and more, forever."
@@ -136,7 +136,7 @@ msgstr ""
 "Dezaktywacja konta oznacza utratę dostępu do wszystkich wiadomości, "
 "kontaktów, plików i nie tylko na zawsze."
 
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:67
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:71
 msgid ""
 "To confirm that you really want to deactivate this account, type in your "
 "Matrix user ID:"
@@ -168,16 +168,16 @@ msgstr "Obecna sesja"
 msgid "Other Active Sessions"
 msgstr "Pozostałe aktywne sesje"
 
-#: data/resources/ui/account-settings-import-export-keys-subpage.ui:62
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:80
 #: data/resources/ui/session-verification.ui:280
 msgid "Passphrase"
 msgstr "Hasło"
 
-#: data/resources/ui/account-settings-import-export-keys-subpage.ui:68
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:97
 msgid "Confirm Passphrase"
 msgstr "Potwierdzenie hasła"
 
-#: data/resources/ui/account-settings-import-export-keys-subpage.ui:82
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:132
 msgid "Choose…"
 msgstr "Wybierz…"
 
@@ -214,12 +214,12 @@ msgid "Room Encryption Keys"
 msgstr "Klucze szyfrowania pokoju"
 
 #: data/resources/ui/account-settings-security-page.ui:12
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:234
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:228
 msgid "Export Room Encryption Keys"
 msgstr "Eksport kluczy szyfrowania pokoju"
 
 #: data/resources/ui/account-settings-security-page.ui:19
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:246
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:240
 msgid "Import Room Encryption Keys"
 msgstr "Import kluczy szyfrowania pokoju"
 
@@ -261,9 +261,9 @@ msgstr "Uwierzytelnij przez przeglądarkę"
 #: data/resources/ui/components-auth-dialog.ui:113
 #: data/resources/ui/identity-verification-widget.ui:452
 #: src/components/editable_avatar.rs:342
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:292
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:286
 #: src/session/content/room_history/verification_info_bar.rs:182
-#: src/session/room/event_actions.rs:275
+#: src/session/room/event_actions.rs:274
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -359,8 +359,8 @@ msgstr "Wyszukiwanie członków pokoju"
 msgid "Search for room members"
 msgstr "Wyszukiwanie członków pokoju"
 
-#: data/resources/ui/content-message-file.ui:19
-#: src/session/room/event_actions.rs:274
+#: data/resources/ui/content-message-file.ui:25
+#: src/session/room/event_actions.rs:273
 msgid "Save"
 msgstr "Zapisz"
 
@@ -673,7 +673,7 @@ msgstr "Dołączenie do pokoju"
 msgid "Enter a room ID, room alias, or permalink."
 msgstr "Proszę podać identyfikator pokoju, alias pokoju lub trwały odnośnik."
 
-#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:842
+#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:631
 msgid "_Join"
 msgstr "_Dołącz"
 
@@ -697,38 +697,38 @@ msgstr ""
 msgid "_Auto-discovery"
 msgstr "A_utomatyczne wykrywanie"
 
-#: data/resources/ui/login.ui:23
-msgid "_Next"
-msgstr "_Dalej"
-
 #. Translators: As in 'Advanced Settings'.
-#: data/resources/ui/login.ui:107
+#: data/resources/ui/login-homeserver-page.ui:59
 msgid "Advanced…"
 msgstr "Zaawansowane…"
 
-#: data/resources/ui/login.ui:149 src/login/mod.rs:358
+#: data/resources/ui/login-method-page.ui:37 src/login/homeserver_page.rs:122
 msgid "Homeserver URL"
 msgstr "Adres URL serwera domowego"
 
-#: data/resources/ui/login.ui:172
+#: data/resources/ui/login-method-page.ui:60
 msgid "Matrix Username"
 msgstr "Nazwa użytkownika Matrix"
 
-#: data/resources/ui/login.ui:184
+#: data/resources/ui/login-method-page.ui:72
 msgid "Password"
 msgstr "Hasło"
 
-#: data/resources/ui/login.ui:190
+#: data/resources/ui/login-method-page.ui:78
 msgid "_Forgot Password?"
 msgstr "_Nie pamiętasz hasła?"
 
-#: data/resources/ui/login.ui:212
+#: data/resources/ui/login-method-page.ui:100
 msgid "More SSO Providers"
 msgstr "Więcej dostawców pojedynczego logowania"
 
-#: data/resources/ui/login.ui:235
+#: data/resources/ui/login-sso-page.ui:21
 msgid "Please follow the steps in the browser."
 msgstr "Proszę wykonać te kroki w przeglądarce."
+
+#: data/resources/ui/login.ui:23
+msgid "_Next"
+msgstr "_Dalej"
 
 #: data/resources/ui/member-menu.ui:6
 msgid "_Verify"
@@ -974,11 +974,11 @@ msgstr "Umożliwia przechodzenie między pokojami"
 msgid "Unable to connect to Camera"
 msgstr "Nie można połączyć się z aparatem"
 
-#: src/application.rs:185
+#: src/application.rs:177
 msgid "© 2017-2022 The Fractal Team"
 msgstr "© 2017-2022 Zespół programu Fractal"
 
-#: src/application.rs:199
+#: src/application.rs:191
 msgid "translator-credits"
 msgstr ""
 "Marek Jędrzejewski <kontakt@marekjedrzejewski.pl>, 2018\n"
@@ -986,7 +986,7 @@ msgstr ""
 "Aviary.pl <community-poland@mozilla.org>, 2018-2022"
 
 #. This can't be added via the builder
-#: src/application.rs:203
+#: src/application.rs:195
 msgid "Name by"
 msgstr "Nazwa"
 
@@ -1007,7 +1007,7 @@ msgid "Could not determine the type of the chosen file"
 msgstr "Nie można ustalić typu wybranego pliku"
 
 #: src/components/editable_avatar.rs:373
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:308
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:302
 msgid "No file was chosen"
 msgstr "Nie wybrano pliku"
 
@@ -1031,89 +1031,142 @@ msgstr "Nie można odtworzyć filmu"
 msgid "File not Viewable"
 msgstr "Nie można wyświetlić pliku"
 
-#: src/error_page.rs:108
+#: src/error_page.rs:110
 msgid "Session removed successfully."
 msgstr "Pomyślnie usunięto sesję."
 
-#: src/error_page.rs:116
+#: src/error_page.rs:118
 msgid "Could not remove session from secret storage"
 msgstr "Nie można usunąć sesji z przechowalni haseł"
 
-#: src/greeter.rs:82 src/login/mod.rs:661 src/window.rs:347
+#: src/greeter.rs:82 src/login/mod.rs:681 src/window.rs:343
 msgid "No network connection"
 msgstr "Brak połączenia z siecią"
 
-#: src/greeter.rs:88 src/login/mod.rs:669 src/window.rs:352
+#: src/greeter.rs:88 src/login/mod.rs:687 src/window.rs:348
 msgid "No Internet connection"
 msgstr "Brak połączenia z Internetem"
 
-#: src/login/mod.rs:353
+#: src/login/homeserver_page.rs:117
 msgid "Domain Name"
 msgstr "Nazwa domeny"
 
-#: src/login/mod.rs:355
+#: src/login/homeserver_page.rs:119
 msgid "The domain of your Matrix homeserver, for example gnome.org"
 msgstr "Domena serwera domowego Matrix, na przykład gnome.org"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/login/mod.rs:362
+#: src/login/homeserver_page.rs:126
 msgid "The URL of your Matrix homeserver, for example {address}"
 msgstr "Adres URL serwera domowego Matrix, na przykład {address}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/login/mod.rs:488
+#: src/login/method_page.rs:152
 msgid "Connecting to {domain_name}"
 msgstr "Łączenie z domeną {domain_name}"
 
-#: src/secret.rs:52
-msgid "Could not unlock the secret storage"
-msgstr "Nie można odblokować przechowalni haseł"
+#: src/login/mod.rs:606
+msgid "Unable to store session"
+msgstr "Nie można przechować sesji"
 
-#: src/secret.rs:55 src/secret.rs:59
-msgid "An unknown error occurred when interacting with the secret storage"
-msgstr "Wystąpił nieznany błąd podczas współdziałania z przechowalnią haseł"
+#: src/secret.rs:56
+msgid "The secret storage file is corrupted."
+msgstr "Plik przechowalni haseł jest uszkodzony."
+
+#: src/secret.rs:60
+msgid "Could not access the secret storage file location."
+msgstr "Nie można uzyskać dostępu do położenia pliku przechowalni haseł."
+
+#: src/secret.rs:63
+msgid "An unknown error occurred when accessing the secret storage file."
+msgstr ""
+"Wystąpił nieznany błąd podczas uzyskiwania dostępu do położenia pliku "
+"przechowalni haseł."
+
+#: src/secret.rs:66
+msgid "The secret storage file has been changed by another process."
+msgstr "Plik przechowalni haseł został zmieniony przez inny proces."
+
+#: src/secret.rs:69 src/secret.rs:95
+msgid ""
+"An unknown error occurred when interacting with the D-Bus Secret Service."
+msgstr ""
+"Wystąpił nieznany błąd podczas współdziałania z usługą Secret Service na "
+"magistrali D-Bus."
+
+#: src/secret.rs:72
+msgid ""
+"The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
+"any prompt asking to access it."
+msgstr ""
+"Żądanie do portalu haseł Flatpak zostało anulowane. Należy się upewnić, że "
+"zaakceptowano prośbę o dostęp do niego."
+
+#: src/secret.rs:75
+msgid ""
+"The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
+"installed, and it is at least at version 1.5.0."
+msgstr ""
+"Portal haseł Flatpak jest niedostępny. Należy się upewnić, że zainstalowano "
+"xdg-desktop-portal w wersji co najmniej 1.5.0."
+
+#: src/secret.rs:85
+msgid "The item was deleted."
+msgstr "Element został usunięty."
 
 #: src/secret.rs:88
+msgid ""
+"The request to the D-Bus Secret Service was cancelled. Make sure to accept "
+"any prompt asking to access it."
+msgstr ""
+"Żądanie do usługi Secret Service na magistrali D-Bus zostało anulowane. "
+"Należy się upewnić, że zaakceptowano prośbę o dostęp do niej."
+
+#: src/secret.rs:91
+msgid ""
+"Could not access the default collection. Make sure a keyring was created and "
+"set as default."
+msgstr ""
+"Nie można uzyskać dostępu do domyślnej kolekcji. Należy się upewnić, że "
+"utworzono bazę kluczy i ustawiono ją jako domyślną."
+
+#: src/secret.rs:135
 msgid "Malformed homeserver in stored session"
 msgstr "Błędnie sformatowany serwer domowy w przechowanej sesji"
 
-#: src/secret.rs:95
+#: src/secret.rs:142
 msgid "Could not find homeserver in stored session"
 msgstr "Nie można odnaleźć serwera domowego w przechowanej sesji"
 
-#: src/secret.rs:109
+#: src/secret.rs:156
 msgid "Malformed user ID in stored session"
 msgstr "Błędnie sformatowany identyfikator użytkownika w przechowanej sesji"
 
-#: src/secret.rs:116
+#: src/secret.rs:163
 msgid "Could not find user ID in stored session"
 msgstr "Nie można odnaleźć identyfikatora użytkownika w przechowanej sesji"
 
-#: src/secret.rs:125
+#: src/secret.rs:172
 msgid "Could not find device ID in stored session"
 msgstr "Nie można odnaleźć identyfikatora urządzenia w przechowanej sesji"
 
-#: src/secret.rs:134
+#: src/secret.rs:181
 msgid "Could not find database path in stored session"
 msgstr "Nie można odnaleźć ścieżki do bazy danych w przechowanej sesji"
 
-#: src/secret.rs:145
+#: src/secret.rs:192
 msgid "Malformed secret in stored session"
 msgstr "Błędnie sformatowane hasło w przechowanej sesji"
 
-#: src/secret.rs:152
-msgid "No secret in stored session"
-msgstr "Brak hasła w przechowanej sesji"
-
-#: src/secret.rs:159
+#: src/secret.rs:200
 msgid "Could not get secret in stored session"
 msgstr "Nie można uzyskać hasła z przechowanej sesji"
 
-#. Translators: Do NOT translate the content between '{' and '}', this is a variable
-#. name.
-#: src/secret.rs:283
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/secret.rs:310
 msgid "Fractal: Matrix credentials for {user_id}"
 msgstr "Fractal: dane uwierzytelniania Matrix dla użytkownika {user_id}"
 
@@ -1219,7 +1272,7 @@ msgstr "Ostatnio widziano %-d %B %Y o %H∶%M"
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "Ostatnio widziano %-d %B %Y o %l∶%M %p"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:236
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:230
 msgid ""
 "Exporting your room encryption keys allows you to make a backup to be able "
 "to decrypt your messages in end-to-end encrypted rooms on another device or "
@@ -1229,7 +1282,7 @@ msgstr ""
 "zapasowej, aby można było odszyfrowywać swoje wiadomości w zaszyfrowanych "
 "pokojach na innym urządzeniu lub za pomocą innego klienta sieci Matrix."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:239
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:233
 msgid ""
 "The backup must be stored in a safe place and must be protected with a "
 "strong passphrase that will be used to encrypt the data."
@@ -1237,11 +1290,11 @@ msgstr ""
 "Kopia zapasowa musi być przechowywana w bezpiecznym miejscu i musi być "
 "chroniona silnym hasłem, które będzie używane do odszyfrowania danych."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:242
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:236
 msgid "Export Keys"
 msgstr "Wyeksportuj klucze"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:248
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:242
 msgid ""
 "Importing your room encryption keys allows you to decrypt your messages in "
 "end-to-end encrypted rooms with a previous backup from a Matrix client."
@@ -1250,92 +1303,92 @@ msgstr ""
 "wiadomości w zaszyfrowanych pokojach za pomocą wcześniej wykonanej kopii "
 "zapasowej z klienta sieci Matrix."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:251
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:245
 msgid "Enter the passphrase provided when the backup file was created."
 msgstr "Proszę wpisać hasło podane podczas tworzenia pliku kopii zapasowej."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:254
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:248
 msgid "Import Keys"
 msgstr "Zaimportuj klucze"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:271
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:265
 msgid "Save Encryption Keys To…"
 msgstr "Zapis kluczy szyfrowania w…"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:276
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:270
 msgid "Import Encryption Keys From…"
 msgstr "Import kluczy szyfrowania z…"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:291
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:285
 msgid "Select"
 msgstr "Wybierz"
 
 #. Translators: Do no translate "fractal" as it is the application
 #. name.
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:300
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:294
 msgid "fractal-encryption-keys"
 msgstr "klucze-szyfrowania-fractal"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:333
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:327
 msgid "Passphrases do not match"
 msgstr "Hasła się nie zgadzają"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:404
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:401
 msgid "Room encryption keys exported successfully"
 msgstr "Pomyślnie wyeksportowano klucze szyfrowania pokoju"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:409
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:406
 msgid "Imported 1 room encryption key"
 msgid_plural "Imported {n} room encryption keys"
 msgstr[0] "Zaimportowano 1 klucz szyfrowania pokoju"
 msgstr[1] "Zaimportowano {n} klucze szyfrowania pokojów"
 msgstr[2] "Zaimportowano {n} kluczy szyfrowania pokojów"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:422
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:419
 msgid "Could not export the keys"
 msgstr "Nie można wyeksportować kluczy"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:432
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:429
 msgid "The passphrase doesn't match the one used to export the keys."
 msgstr "Hasło nie zgadza się z hasłem użytym do wyeksportowania kluczy."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:436
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:433
 msgid "Could not import the keys"
 msgstr "Nie można zaimportować kluczy"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:208
+#: src/session/account_settings/user_page/change_password_subpage.rs:188
 msgid "Password must be at least 8 characters long"
 msgstr "Hasło musi mieć co najmniej 8 znaków"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:211
+#: src/session/account_settings/user_page/change_password_subpage.rs:191
 msgid "Password must have at least one lower-case letter"
 msgstr "Hasło musi mieć co najmniej jedną małą literę"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:215
+#: src/session/account_settings/user_page/change_password_subpage.rs:195
 msgid "Password must have at least one upper-case letter"
 msgstr "Hasło musi mieć co najmniej jedną wielką literę"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:218
+#: src/session/account_settings/user_page/change_password_subpage.rs:198
 msgid "Password must have at least one digit"
 msgstr "Hasło musi mieć co najmniej jedną cyfrę"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:220
+#: src/session/account_settings/user_page/change_password_subpage.rs:200
 msgid "Password must have at least one symbol"
 msgstr "Hasło musi mieć co najmniej jeden symbol"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:246
+#: src/session/account_settings/user_page/change_password_subpage.rs:230
 msgid "Passwords do not match"
 msgstr "Hasła się nie zgadzają"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:302
+#: src/session/account_settings/user_page/change_password_subpage.rs:294
 msgid "Password changed successfully"
 msgstr "Pomyślnie zmieniono hasło"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:317
+#: src/session/account_settings/user_page/change_password_subpage.rs:309
 msgid "Password rejected for being too weak"
 msgstr "Hasło zostało odrzucone z powodu niskiej jakości"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:321
+#: src/session/account_settings/user_page/change_password_subpage.rs:313
 msgid "Could not change password"
 msgstr "Nie można zmienić hasła"
 
@@ -1434,12 +1487,12 @@ msgstr "Zaproś nowych członków"
 msgid "New Messages"
 msgstr "Nowe wiadomości"
 
-#: src/session/content/room_history/message_row/audio.rs:245
-#: src/session/content/room_history/message_row/audio.rs:249
+#: src/session/content/room_history/message_row/audio.rs:247
+#: src/session/content/room_history/message_row/audio.rs:251
 msgid "Could not retrieve audio file"
 msgstr "Nie można odebrać pliku dźwiękowego"
 
-#: src/session/content/room_history/message_row/audio.rs:262
+#: src/session/content/room_history/message_row/audio.rs:264
 msgid "Error reading audio file"
 msgstr "Błąd podczas odczytywania pliku dźwiękowego"
 
@@ -1464,64 +1517,64 @@ msgstr ""
 msgid "This message was removed."
 msgstr "Ta wiadomość została usunięta."
 
-#: src/session/content/room_history/message_row/location.rs:106
+#: src/session/content/room_history/message_row/location.rs:104
 msgid "Location is invalid and cannot be displayed"
 msgstr "Położenie jest nieprawidłowe i nie można go wyświetlić"
 
-#: src/session/content/room_history/message_row/media.rs:448
+#: src/session/content/room_history/message_row/media.rs:450
 msgid "Image file not supported"
 msgstr "Plik obrazu jest nieobsługiwany"
 
-#: src/session/content/room_history/message_row/media.rs:487
-#: src/session/content/room_history/message_row/media.rs:492
+#: src/session/content/room_history/message_row/media.rs:489
+#: src/session/content/room_history/message_row/media.rs:494
 msgid "Could not retrieve media"
 msgstr "Nie można odebrać multimediów"
 
-#: src/session/content/room_history/mod.rs:195
+#: src/session/content/room_history/mod.rs:201
 msgid "The location request has been cancelled."
 msgstr "Prośba o udostępnienie położenia została anulowana."
 
-#: src/session/content/room_history/mod.rs:199
+#: src/session/content/room_history/mod.rs:205
 msgid "Failed to retrieve current location."
 msgstr "Ustalenie obecnego położenia się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/content/room_history/mod.rs:625
+#: src/session/content/room_history/mod.rs:632
 msgid "Reply to {user}"
 msgstr "Odpowiedź do użytkownika {user}"
 
-#: src/session/content/room_history/mod.rs:741
+#: src/session/content/room_history/mod.rs:748
 #: src/session/room/event_actions.rs:106
 msgid "Permalink copied to clipboard"
 msgstr "Skopiowano trwały odnośnik do schowka"
 
-#: src/session/content/room_history/mod.rs:745
+#: src/session/content/room_history/mod.rs:752
 #: src/session/room/event_actions.rs:110
 msgid "Failed to copy the permalink"
 msgstr "Skopiowanie trwałego odnośnika się nie powiodło"
 
-#: src/session/content/room_history/mod.rs:934
+#: src/session/content/room_history/mod.rs:926
 msgid "Your Location"
 msgstr "Położenie użytkownika"
 
-#: src/session/content/room_history/mod.rs:944
+#: src/session/content/room_history/mod.rs:936
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Położenie użytkownika {geo_uri} w dniu {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:1048
+#: src/session/content/room_history/mod.rs:1069
 msgid "Error reading file"
 msgstr "Błąd podczas odczytywania pliku"
 
-#: src/session/content/room_history/mod.rs:1074
+#: src/session/content/room_history/mod.rs:1095
 msgid "Error getting file from drop"
 msgstr "Błąd podczas uzyskiwania pliku z przeciągnięcia"
 
-#: src/session/content/room_history/mod.rs:1106
+#: src/session/content/room_history/mod.rs:1127
 msgid "Error getting image from clipboard"
 msgstr "Błąd podczas uzyskiwania obrazu ze schowka"
 
-#: src/session/content/room_history/mod.rs:1123
+#: src/session/content/room_history/mod.rs:1144
 msgid "Error getting file from clipboard"
 msgstr "Błąd podczas uzyskiwania pliku ze schowka"
 
@@ -1821,15 +1874,11 @@ msgstr "Anulowano uwierzytelnianie wymagane do utworzenia kluczy szyfrowania."
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Wystąpił błąd podczas tworzenia kluczy szyfrowania."
 
-#: src/session/mod.rs:505
-msgid "Unable to store session"
-msgstr "Nie można przechować sesji"
-
-#: src/session/mod.rs:840
+#: src/session/mod.rs:629
 msgid "_View"
 msgstr "_Wyświetl"
 
-#: src/session/mod.rs:886
+#: src/session/mod.rs:675
 msgid "Failed to logout the session."
 msgstr "Wylogowanie sesji się nie powiodło."
 
@@ -1914,7 +1963,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1627
+#: src/session/room/mod.rs:1656
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr ""
 "Zaproszenie użytkownika {user} do pokoju {room} się nie powiodło. Proszę "
@@ -1922,7 +1971,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1639
+#: src/session/room/mod.rs:1668
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1969,70 +2018,70 @@ msgstr ""
 "Dołączenie do pokoju {room_name} się nie powiodło. Proszę spróbować ponownie "
 "później."
 
-#: src/session/sidebar/category_row.rs:161
+#: src/session/sidebar/category_row.rs:170
 msgid "Join Room as Favorite"
 msgstr "Dołącz do pokoju jako ulubiony"
 
-#: src/session/sidebar/category_row.rs:162
+#: src/session/sidebar/category_row.rs:171
 msgid "Join Room"
 msgstr "Dołącz do pokoju"
 
-#: src/session/sidebar/category_row.rs:163
+#: src/session/sidebar/category_row.rs:172
 msgid "Join Room as Low Priority"
 msgstr "Dołącz do pokoju jako niski priorytet"
 
-#: src/session/sidebar/category_row.rs:164
+#: src/session/sidebar/category_row.rs:173
 msgid "Reject Invite"
 msgstr "Odrzuć zaproszenie"
 
-#: src/session/sidebar/category_row.rs:165
+#: src/session/sidebar/category_row.rs:174
 msgid "Join Room as People"
 msgstr "Dołącz do pokoju jako osoby"
 
-#: src/session/sidebar/category_row.rs:169
-#: src/session/sidebar/category_row.rs:184
-#: src/session/sidebar/category_row.rs:198
+#: src/session/sidebar/category_row.rs:178
+#: src/session/sidebar/category_row.rs:193
+#: src/session/sidebar/category_row.rs:207
 msgid "Move to Rooms"
 msgstr "Przenieś do pokojów"
 
-#: src/session/sidebar/category_row.rs:170
-#: src/session/sidebar/category_row.rs:177
-#: src/session/sidebar/category_row.rs:199
+#: src/session/sidebar/category_row.rs:179
+#: src/session/sidebar/category_row.rs:186
+#: src/session/sidebar/category_row.rs:208
 msgid "Move to Low Priority"
 msgstr "Przenieś do niskich priorytetów"
 
-#: src/session/sidebar/category_row.rs:171
-#: src/session/sidebar/category_row.rs:178
-#: src/session/sidebar/category_row.rs:185
-#: src/session/sidebar/category_row.rs:200
+#: src/session/sidebar/category_row.rs:180
+#: src/session/sidebar/category_row.rs:187
+#: src/session/sidebar/category_row.rs:194
+#: src/session/sidebar/category_row.rs:209
 msgid "Leave Room"
 msgstr "Opuść pokój"
 
-#: src/session/sidebar/category_row.rs:172
-#: src/session/sidebar/category_row.rs:179
-#: src/session/sidebar/category_row.rs:186
+#: src/session/sidebar/category_row.rs:181
+#: src/session/sidebar/category_row.rs:188
+#: src/session/sidebar/category_row.rs:195
 msgid "Move to People"
 msgstr "Przenieś do osób"
 
-#: src/session/sidebar/category_row.rs:176
-#: src/session/sidebar/category_row.rs:183
-#: src/session/sidebar/category_row.rs:197
+#: src/session/sidebar/category_row.rs:185
+#: src/session/sidebar/category_row.rs:192
+#: src/session/sidebar/category_row.rs:206
 msgid "Move to Favorites"
 msgstr "Przenieś do ulubionych"
 
-#: src/session/sidebar/category_row.rs:190
+#: src/session/sidebar/category_row.rs:199
 msgid "Rejoin Room as Favorites"
 msgstr "Ponownie dołącz do pokoju jako ulubiony"
 
-#: src/session/sidebar/category_row.rs:191
+#: src/session/sidebar/category_row.rs:200
 msgid "Rejoin Room"
 msgstr "Ponownie dołącz do pokoju"
 
-#: src/session/sidebar/category_row.rs:192
+#: src/session/sidebar/category_row.rs:201
 msgid "Rejoin Room as Low Priority"
 msgstr "Ponownie dołącz do pokoju jako niski priorytet"
 
-#: src/session/sidebar/category_row.rs:193
+#: src/session/sidebar/category_row.rs:202
 msgid "Rejoin Room as People"
 msgstr "Ponownie dołącz do pokoju jako osoby"
 
@@ -2164,25 +2213,25 @@ msgstr ""
 "ręcznie podać pełny adres URL."
 
 #. Translators: Default name for image files.
-#: src/utils.rs:304
+#: src/utils/media.rs:50
 msgid "image"
 msgstr "obraz"
 
 #. Translators: Default name for video files.
-#: src/utils.rs:306
+#: src/utils/media.rs:52
 msgid "video"
 msgstr "film"
 
 #. Translators: Default name for audio files.
-#: src/utils.rs:308
+#: src/utils/media.rs:54
 msgid "audio"
 msgstr "dźwięk"
 
 #. Translators: Default name for files.
-#: src/utils.rs:310
+#: src/utils/media.rs:56
 msgid "file"
 msgstr "plik"
 
-#: src/window.rs:246
+#: src/window.rs:245
 msgid "Failed to restore previous sessions"
 msgstr "Przywrócenie poprzednich sesji się nie powiodło"
