@@ -1,1086 +1,2703 @@
-# Dutch translation for fractal.
+# Dutch translation for Fractal.
 # Copyright (C) 2019 fractal's COPYRIGHT HOLDER
 # This file is distributed under the same license as the fractal package.
-# Nathan Follens <nthn@unseen.is>, 2019-2021.
+# Nathan Follens <nfollens@gnome.org>, 2019-2022.
 # Justin van Steijn <jvs@fsfe.org>, 2019.
+# Jelv <post@jelv.nl>, 2022.
 #
-# room - gesprek
-# direct chat - tweegesprek
+# space - space
+# room - kamer
+# direct chat - directe chat
 # private - privé
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2021-02-05 12:39+0000\n"
-"PO-Revision-Date: 2021-04-02 16:32+0200\n"
-"Last-Translator: Nathan Follens <nthn@unseen.is>\n"
+"POT-Creation-Date: 2022-10-28 19:46+0000\n"
+"PO-Revision-Date: 2022-11-01 22:46+0100\n"
+"Last-Translator: Nathan Follens <nfollens@gnome.org>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.1.1\n"
 
-#: fractal-gtk/res/gtk/help-overlay.ui:13
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Algemeen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:18
-msgctxt "shortcut window"
-msgid "Close the active room"
-msgstr "Actief gesprek sluiten"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:25
-msgctxt "shortcut window"
-msgid "Open main menu"
-msgstr "Hoofdmenu openen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:32
-msgctxt "shortcut window"
-msgid "Open / close the room sidebar search"
-msgstr "Zijbalk voor zoeken in gesprek tonen/verbergen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:39
-msgctxt "shortcut window"
-msgid "Open the previous room in the list"
-msgstr "Vorig gesprek in de lijst openen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:46
-msgctxt "shortcut window"
-msgid "Open the next room in the list"
-msgstr "Volgend gesprek in de lijst openen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:53
-msgctxt "shortcut window"
-msgid "Open the previous room with unread messages in the list"
-msgstr "Vorig gesprek met ongelezen berichten in de lijst openen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:60
-msgctxt "shortcut window"
-msgid "Open the next room with unread messages in the list"
-msgstr "Volgend gesprek met ongelezen berichten in de lijst openen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:67
-msgctxt "shortcut window"
-msgid "Open the first room of the list"
-msgstr "Eerste gesprek van de lijst openen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:74
-msgctxt "shortcut window"
-msgid "Open the last room of the list"
-msgstr "Laatste gesprek van de lijst openen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:81
-msgctxt "shortcut window"
-msgid "View older messages"
-msgstr "Eerdere berichten bekijken"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:88
-msgctxt "shortcut window"
-msgid "View newer messages"
-msgstr "Recentere berichten bekijken"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:94
-msgctxt "shortcut window"
-msgid "Keyboard Shortcuts"
-msgstr "Sneltoetsen"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:101
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "Afsluiten"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:110
-msgctxt "shortcut message"
-msgid "Composing a new message"
-msgstr "Nieuw bericht schrijven"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:115
-msgctxt "shortcut message"
-msgid "Write on a new line"
-msgstr "Op een nieuwe regel schrijven"
-
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:3
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:5
-#: fractal-gtk/res/ui/login_flow.ui:19 fractal-gtk/src/appop/mod.rs:170
+#: data/org.gnome.Fractal.desktop.in.in:3
+#: data/org.gnome.Fractal.metainfo.xml.in.in:7
 msgid "Fractal"
 msgstr "Fractal"
 
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:4
+#: data/org.gnome.Fractal.desktop.in.in:4
 msgid ""
 "Fractal is a decentralized, secure messaging client for collaborative group "
 "communication."
 msgstr ""
-"Fractal is een gedecentraliseerde, beveiligde berichtencliënt voor "
-"samenwerkende groepscommunicatie."
+"Fractal is een gedecentraliseerde, veilige berichtentoepassing voor "
+"gemeenschappelijke groepscommunicatie."
 
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:5
+#: data/org.gnome.Fractal.desktop.in.in:5
 msgid "Fractal group messaging"
-msgstr "Fractal groepsgesprekken"
+msgstr "Fractal groepsberichten"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:14
+#: data/org.gnome.Fractal.desktop.in.in:14
 msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
 msgstr ""
 "Matrix;matrix.org;chat;irc;communications;talk;riot;element;gesprek;praten;"
-"chatten;praat;babbelen;communicatie;"
+"chatten;praat;praten;babbelen;communicatie;space;spaces;groepschat;messenger;"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:13
-msgid "Type of password and token storage"
-msgstr "Type wachtwoord- en tokenopslag"
+#: data/org.gnome.Fractal.gschema.xml.in:6
+msgid "Window width"
+msgstr "Vensterbreedte"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:14
-msgid "Type of password and token storage, default value is: Secret Service"
-msgstr "Type wachtwoord- en tokenopslag, standaardwaarde is: Geheime Dienst"
+#: data/org.gnome.Fractal.gschema.xml.in:10
+msgid "Window height"
+msgstr "Vensterhoogte"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:21
-msgid "If markdown sending is active"
-msgstr "Of Markdown-verzenden actief is"
+#: data/org.gnome.Fractal.gschema.xml.in:14
+msgid "Window maximized state"
+msgstr "Venster gemaximaliseerd"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:22
-msgid "Whether support for sending markdown messages is on"
-msgstr ""
-"Of ondersteuning voor verzenden van berichten geformatteerd met Markdown is "
-"ingeschakeld"
+#: data/org.gnome.Fractal.gschema.xml.in:18
+msgid "Enable markdown formatting"
+msgstr "Markdown-opmaak inschakelen"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:29
-msgid "X position of the main window on startup"
-msgstr "De X-positie van het hoofdvenster bij opstarten"
+#: data/org.gnome.Fractal.gschema.xml.in:19
+msgid "Whether messages should be processed as markdown when sending them"
+msgstr "Bepaalt of berichten bij verzending als markdown worden verwerkt"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:34
-msgid "Y position of the main window on startup"
-msgstr "De Y-positie van het hoofdvenster bij opstarten"
+#: data/org.gnome.Fractal.gschema.xml.in:23
+msgid "Session settings"
+msgstr "Sessie-instellingen"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:39
-msgid "Width of the main window on startup"
-msgstr "De breedte van het hoofdvenster bij opstarten"
+#: data/org.gnome.Fractal.gschema.xml.in:24
+msgid "Serialized list of settings per session"
+msgstr "Lijst van instellingen per sessie in serie"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:44
-msgid "Height of the main window on startup"
-msgstr "De hoogte van het hoofdvenster bij opstarten"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:49
-msgid "Whether the main window is maximized on startup"
-msgstr "Of het hoofdvenster gemaximaliseerd moet starten"
-
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:8
-msgid "Daniel García Moreno"
-msgstr "Daniel García Moreno"
-
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:9
+#: data/org.gnome.Fractal.metainfo.xml.in.in:8
 msgid "Matrix group messaging app"
 msgstr "Matrix-groepsgesprekkentoepassing"
 
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:11
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
 msgid ""
 "Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
 "is optimized for collaboration in large groups, such as free software "
 "projects."
 msgstr ""
-"Fractal is een Matrix-berichtentoepassing voor Gnome, geschreven in Rust. De "
-"gebruikersinterface is geoptimaliseerd voor samenwerken in grote groepen, "
-"zoals vrijesoftwareprojecten."
+"Fractal is een Matrix-berichtentoepassing voor GNOME geschreven in Rust. De "
+"interface is geoptimaliseerd voor samenwerken in grote groepen, zoals "
+"vrijesoftwareprojecten."
 
-#: fractal-gtk/res/ui/account_settings.ui:14 fractal-gtk/res/ui/main_menu.ui:94
-msgid "Account Settings"
-msgstr "Accountinstellingen"
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:169
+msgid "The Fractal Team"
+msgstr "Het Fractal-team"
 
-#: fractal-gtk/res/ui/account_settings.ui:30
-#: fractal-gtk/res/ui/main_window.ui:217 fractal-gtk/res/ui/main_window.ui:454
-#: fractal-gtk/res/ui/media_viewer.ui:36 fractal-gtk/res/ui/room_settings.ui:30
-msgid "Back"
-msgstr "Terug"
+#: data/resources/ui/account-settings-change-password-subpage.ui:12
+#: data/resources/ui/account-settings-user-page.ui:62
+msgid "Change Password"
+msgstr "Wachtwoord wijzigen"
 
-#: fractal-gtk/res/ui/account_settings.ui:92
-msgid "Other people can find you by searching for any of these identifiers."
-msgstr ""
-"Anderen kunnen u vinden door te zoeken naar een van deze identificeerders."
+#: data/resources/ui/account-settings-change-password-subpage.ui:60
+msgid "Changing your password will log you out of your other sessions."
+msgstr "Door uw wachtwoord te wijzigen wordt u bij uw andere sessies afgemeld."
 
-#: fractal-gtk/res/ui/account_settings.ui:115
-msgid "Name"
-msgstr "Naam"
-
-#: fractal-gtk/res/ui/account_settings.ui:138
-msgid "Type in your name"
-msgstr "Voer uw naam in"
-
-#: fractal-gtk/res/ui/account_settings.ui:167
-msgid "Email"
-msgstr "E-mailadres"
-
-#: fractal-gtk/res/ui/account_settings.ui:196
-msgid "Phone"
-msgstr "Telefoon"
-
-#: fractal-gtk/res/ui/account_settings.ui:225
-msgid "Password"
-msgstr "Wachtwoord"
-
-#: fractal-gtk/res/ui/account_settings.ui:287
-msgid "Advanced Information"
-msgstr "Geavanceerde informatie"
-
-#: fractal-gtk/res/ui/account_settings.ui:312
-msgid "Homeserver"
-msgstr "Thuisserver"
-
-#: fractal-gtk/res/ui/account_settings.ui:341
-msgid "Matrix ID"
-msgstr "Matrix-ID"
-
-#: fractal-gtk/res/ui/account_settings.ui:370
-msgid "Device ID"
-msgstr "Apparaat-ID"
-
-#: fractal-gtk/res/ui/account_settings.ui:410
-#: fractal-gtk/res/ui/account_settings.ui:466
-msgid "Deactivate Account"
-msgstr "Account verwijderen"
-
-#: fractal-gtk/res/ui/account_settings.ui:431
+#: data/resources/ui/account-settings-change-password-subpage.ui:71
 msgid ""
-"Deactivating your account means that you will lose all your messages, "
-"contacts, and files."
+"Fractal’s support for encryption is unstable so you might lose access to "
+"your encrypted message history. It is recommended to backup your encryption "
+"keys before proceeding."
 msgstr ""
-"Uw account verwijderen houdt in dat u al uw berichten, contacten en "
-"bestanden zult verliezen."
-
-#: fractal-gtk/res/ui/account_settings.ui:441
-msgid ""
-"To confirm that you really want to deactivate this account type in your "
-"password:"
-msgstr ""
-"Voer uw wachtwoord in om te bevestigen dat u deze account echt wilt "
-"verwijderen:"
-
-#: fractal-gtk/res/ui/account_settings.ui:456
-msgid "Also erase all messages"
-msgstr "Ook alle berichten verwijderen"
-
-#: fractal-gtk/res/ui/account_settings.ui:523
-msgid "Check your email"
-msgstr "Controleer uw e-mail"
-
-#: fractal-gtk/res/ui/account_settings.ui:526
-#: fractal-gtk/res/ui/direct_chat.ui:83 fractal-gtk/res/ui/invite_user.ui:84
-#: fractal-gtk/res/ui/join_room.ui:71 fractal-gtk/res/ui/leave_room.ui:31
-#: fractal-gtk/res/ui/new_room.ui:24 fractal-gtk/src/appop/account.rs:87
-#: fractal-gtk/src/appop/account.rs:143 fractal-gtk/src/ui/attach.rs:41
-msgid "Cancel"
-msgstr "Annuleren"
-
-#: fractal-gtk/res/ui/account_settings.ui:534
-msgid "Apply"
-msgstr "Toepassen"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:8
-msgid "Room Directory"
-msgstr "Gespreksmap"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:12
-msgid "Join Room"
-msgstr "Gesprek binnengaan"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:18
-msgid "New Room"
-msgstr "Nieuw gesprek"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:22
-msgid "New Direct Chat"
-msgstr "Nieuw tweegesprek"
-
-#: fractal-gtk/res/ui/audio_player.ui:34 fractal-gtk/res/ui/audio_player.ui:45
-msgid "Play"
-msgstr "Afspelen"
-
-#: fractal-gtk/res/ui/direct_chat.ui:80
-msgid "New direct chat"
-msgstr "Nieuw tweegesprek"
-
-#: fractal-gtk/res/ui/direct_chat.ui:91
-msgid "Start chat"
-msgstr "Gesprek beginnen"
-
-#: fractal-gtk/res/ui/invite.ui:18
-msgid "Invitation"
-msgstr "Uitnodiging"
-
-#: fractal-gtk/res/ui/invite.ui:32
-msgid "Reject"
-msgstr "Weigeren"
-
-#: fractal-gtk/res/ui/invite.ui:40
-msgid "Accept"
-msgstr "Aanvaarden"
-
-#: fractal-gtk/res/ui/invite_user.ui:81 fractal-gtk/res/ui/invite_user.ui:92
-#: fractal-gtk/src/ui/invite.rs:133
-msgid "Invite"
-msgstr "Uitnodigen"
-
-#: fractal-gtk/res/ui/join_room.ui:34
-msgid "ID or Alias"
-msgstr "ID of alias"
-
-#: fractal-gtk/res/ui/join_room.ui:68
-msgid "Join room"
-msgstr "Gesprek binnengaan"
-
-#: fractal-gtk/res/ui/join_room.ui:79 fractal-gtk/src/ui/directory.rs:245
-msgid "Join"
-msgstr "Binnengaan"
-
-#: fractal-gtk/res/ui/kicked_room.ui:29 fractal-gtk/res/ui/msg_src_window.ui:32
-msgid "Close"
-msgstr "Sluiten"
-
-#: fractal-gtk/res/ui/leave_room.ui:18
-msgid "Leave?"
-msgstr "Verlaten?"
-
-#: fractal-gtk/res/ui/leave_room.ui:19
-msgid ""
-"Once you leave, you won’t be able to interact with people in the room "
-"anymore."
-msgstr ""
-"Van zodra u het gesprek verlaat, zult u geen berichten meer kunnen "
-"uitwisselen met de andere deelnemers van het gesprek."
-
-#: fractal-gtk/res/ui/leave_room.ui:39
-msgid "Leave room"
-msgstr "Gesprek verlaten"
-
-#: fractal-gtk/res/ui/login_flow.ui:29
-msgid "Welcome to Fractal"
-msgstr "Welkom bij Fractal"
-
-#: fractal-gtk/res/ui/login_flow.ui:42 fractal-gtk/res/ui/login_flow.ui:211
-msgid "_Log In"
-msgstr "Aanme_lden"
-
-#: fractal-gtk/res/ui/login_flow.ui:55
-msgid "_Create Account"
-msgstr "_Account aanmaken"
-
-#: fractal-gtk/res/ui/login_flow.ui:84
-msgid "Choose Provider"
-msgstr "Kies een leverancier"
-
-#: fractal-gtk/res/ui/login_flow.ui:107
-msgid "_Next"
-msgstr "Volge_nde"
-
-#: fractal-gtk/res/ui/login_flow.ui:125
-msgid "What is your Provider?"
-msgstr "Wie is uw leverancier?"
-
-#: fractal-gtk/res/ui/login_flow.ui:146
-msgid "Matrix provider domain, e.g. myserver.co"
-msgstr "Matrix-leveranciersdomein, bv. mijnserver.be"
-
-#: fractal-gtk/res/ui/login_flow.ui:161
-msgid "The domain may not be empty."
-msgstr "Het domein mag niet leeg zijn."
-
-#: fractal-gtk/res/ui/login_flow.ui:188
-msgid "Log In"
-msgstr "Aanmelden"
-
-#: fractal-gtk/res/ui/login_flow.ui:236
-msgid "_User ID"
-msgstr "Gebr_uikers-ID"
-
-#: fractal-gtk/res/ui/login_flow.ui:252
-msgid "_Password"
-msgstr "Wa_chtwoord"
-
-#: fractal-gtk/res/ui/login_flow.ui:284
-msgid "User name, email, or phone number"
-msgstr "Gebruikersnaam, e-mailadres of telefoonnummer"
-
-#: fractal-gtk/res/ui/login_flow.ui:317
-msgid "_Forgot Password?"
-msgstr "Wachtwoord _vergeten?"
-
-#: fractal-gtk/res/ui/login_flow.ui:335
-msgid "Invalid username or password"
-msgstr "Ongeldige gebruikersnaam of wachtwoord"
-
-#: fractal-gtk/res/ui/main_menu.ui:103
-msgid "Log Out"
-msgstr "Uitloggen"
-
-#: fractal-gtk/res/ui/main_menu.ui:120
-msgid "Keyboard _Shortcuts"
-msgstr "_Sneltoetsen"
-
-#: fractal-gtk/res/ui/main_menu.ui:129
-msgid "_About Fractal"
-msgstr "_Over Fractal"
-
-#: fractal-gtk/res/ui/main_window.ui:56
-msgid "User"
-msgstr "Gebruiker"
-
-#: fractal-gtk/res/ui/main_window.ui:82
-msgid "Add"
-msgstr "Toevoegen"
-
-#: fractal-gtk/res/ui/main_window.ui:111
-msgid "Room search"
-msgstr "Gesprek zoeken"
-
-#: fractal-gtk/res/ui/main_window.ui:282
-msgid "Room Menu"
-msgstr "Gespreksmenu"
-
-#: fractal-gtk/res/ui/main_window.ui:349
-msgid "No Room Selected"
-msgstr "Geen gesprek geselecteerd"
-
-#: fractal-gtk/res/ui/main_window.ui:350
-msgid "Join a room to start chatting."
-msgstr "Ga een gesprek binnen om te beginnen babbelen."
-
-#: fractal-gtk/res/ui/main_window.ui:354
-msgid "No room"
-msgstr "Geen gesprek"
-
-#: fractal-gtk/res/ui/main_window.ui:494
-#: fractal-gtk/res/ui/server_chooser_menu.ui:51
-#: fractal-gtk/src/ui/connect/directory.rs:117
-msgid "Default Matrix Server"
-msgstr "Standaard-Matrix-server"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:23
-msgid "Markdown"
-msgstr "Markdown"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:52
-msgid "> quote"
-msgstr "> citeren"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:63
-msgid "**bold**"
-msgstr "**vetgedrukt**"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:78
-msgid "`code`"
-msgstr "`code`"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:90
-msgid "*italic*"
-msgstr "*schuingedrukt*"
-
-#: fractal-gtk/res/ui/media_viewer.ui:63
-msgid "Toggle fullscreen"
-msgstr "Volledig scherm aan/uit"
-
-#: fractal-gtk/res/ui/media_viewer.ui:226
-msgid "Loading more media"
-msgstr "Meer media worden geladen"
-
-#: fractal-gtk/res/ui/message_menu.ui:22
-msgid "Reply"
-msgstr "Beantwoorden"
-
-#: fractal-gtk/res/ui/message_menu.ui:29
-msgid "Open With…"
-msgstr "Openen met…"
-
-#: fractal-gtk/res/ui/message_menu.ui:37
-msgid "Save Image As…"
-msgstr "Afbeelding opslaan als…"
-
-#: fractal-gtk/res/ui/message_menu.ui:45
-msgid "Save Video As…"
-msgstr "Video opslaan als…"
-
-#: fractal-gtk/res/ui/message_menu.ui:53
-msgid "Copy Image"
-msgstr "Afbeelding kopiëren"
-
-#: fractal-gtk/res/ui/message_menu.ui:61
-msgid "Copy Selection"
-msgstr "Selectie kopiëren"
-
-#: fractal-gtk/res/ui/message_menu.ui:69
-msgid "Copy Text"
-msgstr "Tekst kopiëren"
-
-#: fractal-gtk/res/ui/message_menu.ui:79
-msgid "View Source"
-msgstr "Bron bekijken"
-
-#: fractal-gtk/res/ui/message_menu.ui:94
-msgid "Delete Message"
-msgstr "Bericht verwijderen"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:21
-msgid "Message Source"
-msgstr "Berichtbron"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:24
-msgid "Copy To Clipboard"
-msgstr "Kopiëren naar klembord"
-
-#: fractal-gtk/res/ui/new_room.ui:21
-msgid "Create new room"
-msgstr "Nieuw gesprek aanmaken"
-
-#: fractal-gtk/res/ui/new_room.ui:32
-msgid "Create"
-msgstr "Aanmaken"
-
-#: fractal-gtk/res/ui/new_room.ui:71
-msgid "Room name"
-msgstr "Gespreksnaam"
-
-#: fractal-gtk/res/ui/new_room.ui:100
-msgid "Visibility"
-msgstr "Zichtbaarheid"
-
-#: fractal-gtk/res/ui/new_room.ui:114
-msgid "Private"
-msgstr "Privé"
-
-#: fractal-gtk/res/ui/new_room.ui:125
-msgid "Public"
-msgstr "Openbaar"
-
-#: fractal-gtk/res/ui/password_dialog.ui:22
-#: fractal-gtk/src/widgets/file_dialog.rs:12
-#: fractal-gtk/src/widgets/file_dialog.rs:33
-msgid "_Cancel"
-msgstr "_Annuleren"
-
-#: fractal-gtk/res/ui/password_dialog.ui:35
-msgid "Ch_ange"
-msgstr "_Wijzigen"
-
-#: fractal-gtk/res/ui/password_dialog.ui:125
-msgid "The passwords do not match."
-msgstr "De wachtwoorden komen niet overeen."
-
-#: fractal-gtk/res/ui/password_dialog.ui:143
-msgid "_Verify New Password"
-msgstr "Nieuw wachtwoord _controleren"
-
-#: fractal-gtk/res/ui/password_dialog.ui:160
-msgid "_New Password"
-msgstr "_Nieuw wachtwoord"
-
-#: fractal-gtk/res/ui/password_dialog.ui:204
-msgid "Current _Password"
-msgstr "Huidig _wachtwoord"
-
-#: fractal-gtk/res/ui/room_menu.ui:8
-msgid "Room Details"
-msgstr "Gespreksdetails"
-
-#: fractal-gtk/res/ui/room_menu.ui:12
-msgid "Invite to This Room"
-msgstr "Uitnodigen voor dit gesprek"
-
-#: fractal-gtk/res/ui/room_menu.ui:18
-msgid "Leave Room"
-msgstr "Gesprek verlaten"
-
-#: fractal-gtk/res/ui/room_settings.ui:14
-msgid "Details"
-msgstr "Gegevens"
-
-#: fractal-gtk/res/ui/room_settings.ui:112
-msgid "Unknown"
-msgstr "Onbekend"
-
-#: fractal-gtk/res/ui/room_settings.ui:133
-msgid "Add name"
-msgstr "Naam toevoegen"
-
-#: fractal-gtk/res/ui/room_settings.ui:160
-msgid "Add topic"
-msgstr "Onderwerp toevoegen"
-
-#: fractal-gtk/res/ui/room_settings.ui:179
-msgid "Type in your room topic"
-msgstr "Voer uw gespreksonderwerp in"
-
-#: fractal-gtk/res/ui/room_settings.ui:202
-msgid "No room description"
-msgstr "Geen gespreksbeschrijving"
-
-#: fractal-gtk/res/ui/room_settings.ui:230
-msgid "Notifications"
-msgstr "Meldingen"
-
-#: fractal-gtk/res/ui/room_settings.ui:258
-msgid "Notification sounds"
-msgstr "Meldingsgeluiden"
-
-#: fractal-gtk/res/ui/room_settings.ui:290
-msgid "For all messages"
-msgstr "Voor alle berichten"
-
-#: fractal-gtk/res/ui/room_settings.ui:322
-msgid "Only for mentions"
-msgstr "Enkel bij vermeldingen"
-
-#: fractal-gtk/res/ui/room_settings.ui:352
-msgid "Shared Media"
-msgstr "Gedeelde media"
-
-#: fractal-gtk/res/ui/room_settings.ui:394
-msgid "photos"
-msgstr "foto’s"
-
-#: fractal-gtk/res/ui/room_settings.ui:424
-msgid "videos"
-msgstr "video’s"
-
-#: fractal-gtk/res/ui/room_settings.ui:454
-msgid "documents"
-msgstr "documenten"
-
-#: fractal-gtk/res/ui/room_settings.ui:475
-msgid "New members can see"
-msgstr "Nieuwe leden kunnen het volgende zien"
-
-#: fractal-gtk/res/ui/room_settings.ui:507
-msgid "All room history"
-msgstr "Volledige gespreksgeschiedenis"
-
-#: fractal-gtk/res/ui/room_settings.ui:539
-msgid "History after they were invited"
-msgstr "Geschiedenis sinds uitnodiging"
-
-#: fractal-gtk/res/ui/room_settings.ui:569
-msgid "Room Visibility"
-msgstr "Zichtbaarheid van gesprek"
-
-#: fractal-gtk/res/ui/room_settings.ui:604
-msgid "Allow guests"
-msgstr "Gasten toestaan"
-
-#: fractal-gtk/res/ui/room_settings.ui:635
-msgid "Allow joining without invite"
-msgstr "Deelnemen zonder uitnodiging toestaan"
-
-#: fractal-gtk/res/ui/room_settings.ui:666
-msgid "Publish in room directory"
-msgstr "Publiceren in gespreksmap"
-
-# ??????? - Nathan
-#: fractal-gtk/res/ui/room_settings.ui:695
-msgid "Join addresses"
-msgstr "Deelname-adressen"
-
-#: fractal-gtk/res/ui/room_settings.ui:749
-msgid "members"
-msgstr "deelnemers"
-
-#: fractal-gtk/res/ui/room_settings.ui:761
-msgid "Invite New Member"
-msgstr "Nieuwe deelnemer uitnodigen"
-
-#: fractal-gtk/res/ui/room_settings.ui:786
-msgid "Search for room members"
-msgstr "Zoeken naar gespreksdeelnemers"
-
-#: fractal-gtk/res/ui/scroll_widget.ui:63
-msgid "Scroll to bottom"
-msgstr "Scroll naar onderen"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:30
-msgid "Show rooms from:"
-msgstr "Gesprekken tonen van:"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:65
-msgid "Your homeserver"
-msgstr "Uw thuisserver"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:93
-msgid "Other Protocol"
-msgstr "Ander protocol"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:139
-msgid "Other Homeserver"
-msgstr "Andere thuisserver"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:156
-msgid "Homeserver URL"
-msgstr "Thuisserver-URL"
-
-#: fractal-gtk/src/actions/account_settings.rs:31
-#: fractal-gtk/src/actions/room_settings.rs:37
-msgid "Images"
-msgstr "Afbeeldingen"
-
-#: fractal-gtk/src/actions/account_settings.rs:32
-#: fractal-gtk/src/actions/room_settings.rs:39
-msgid "Select a new avatar"
-msgstr "Kies een nieuwe avatar"
-
-#: fractal-gtk/src/actions/global.rs:320
-msgid "Select a file"
-msgstr "Kies een bestand"
-
-#: fractal-gtk/src/actions/message.rs:57
-msgid "This message has no source."
-msgstr "Dit bericht heeft geen bron."
-
-#: fractal-gtk/src/actions/message.rs:131
-#: fractal-gtk/src/actions/message.rs:162
-msgid "Could not download the file"
-msgstr "Kon bestand niet downloaden"
-
-#: fractal-gtk/src/actions/message.rs:138
-msgid "Couldn’t save file"
-msgstr "Kon bestand niet opslaan"
-
-#: fractal-gtk/src/actions/room_settings.rs:53
-msgid "Couldn’t open file"
-msgstr "Kon bestand niet openen"
-
-#: fractal-gtk/src/appop/account.rs:65
-msgid "The validation code is not correct."
-msgstr "De validatiecode is onjuist."
-
-#: fractal-gtk/src/appop/account.rs:73
-msgid "Enter the code received via SMS"
-msgstr "Voer de code in die u in een sms hebt ontvangen"
-
-#: fractal-gtk/src/appop/account.rs:88 fractal-gtk/src/appop/account.rs:144
+"De ondersteuning van Fractal voor versleuteling is instabiel, dus mogelijk "
+"verliest u toegang tot uw versleutelde berichtengeschiedenis. We raden aan "
+"om een back-up van uw veiligheidssleutel te maken voordat u doorgaat."
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:94
+msgid "New Password"
+msgstr "Nieuw wachtwoord"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:134
+msgid "Confirm New Password"
+msgstr "Bevestig nieuw wachtwoord"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:164
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
+#: src/session/content/room_history/verification_info_bar.rs:181
 msgid "Continue"
 msgstr "Doorgaan"
 
-#: fractal-gtk/src/appop/account.rs:134
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:12
+#: data/resources/ui/account-settings-user-page.ui:123
+msgid "Deactivate Account"
+msgstr "Account uitschakelen"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:60
 msgid ""
-"In order to add this email address, go to your inbox and follow the link you "
-"received. Once you’ve done that, click Continue."
+"Deactivating your account means you will lose access to all your messages, "
+"contacts, files, and more, forever."
 msgstr ""
-"Om dit e-mailadres te gebruiken, gaat u naar uw postvak IN en volgt u de "
-"koppeling die u hebt ontvangen. Klik daarna op Doorgaan."
+"Uw account uitschakelen houdt in dat u de toegang tot al uw berichten, "
+"contacten, bestanden en meer voor altijd zult verliezen."
 
-#: fractal-gtk/src/appop/account.rs:348
-msgid "Are you sure you want to delete your account?"
-msgstr "Weet u zeker dat u uw account wilt verwijderen?"
-
-#: fractal-gtk/src/appop/mod.rs:176
-msgid "Fractal [{}]"
-msgstr "Fractal [{}]"
-
-#: fractal-gtk/src/appop/notify.rs:18
-msgid "An audio file has been added to the conversation."
-msgstr "Er is een geluidsbestand toegevoegd aan het gesprek."
-
-#: fractal-gtk/src/appop/notify.rs:19
-msgid "An image has been added to the conversation."
-msgstr "Er is een afbeelding toegevoegd aan het gesprek."
-
-#: fractal-gtk/src/appop/notify.rs:20
-msgid "A video has been added to the conversation."
-msgstr "Er is een video toegevoegd aan het gesprek."
-
-#: fractal-gtk/src/appop/notify.rs:21
-msgid "A file has been added to the conversation."
-msgstr "Er is een bestand toegevoegd aan het gesprek."
-
-#: fractal-gtk/src/appop/notify.rs:26
-msgid " (direct message)"
-msgstr " (één-op-één-bericht)"
-
-#: fractal-gtk/src/appop/room.rs:352
-msgid "Leave {room_name}?"
-msgstr "{room_name} verlaten?"
-
-#: fractal-gtk/src/appop/room.rs:539
-msgid "The room ID is malformed"
-msgstr "De gespreks-ID is onjuist"
-
-#: fractal-gtk/src/appop/room.rs:607
-msgid "EMPTY ROOM"
-msgstr "LEEG GESPREK"
-
-#: fractal-gtk/src/appop/room.rs:609
-msgid "{m1} and {m2}"
-msgstr "{m1} en {m2}"
-
-#: fractal-gtk/src/appop/room.rs:610
-msgid "{m1} and Others"
-msgstr "{m1} en anderen"
-
-#: fractal-gtk/src/appop/room.rs:710
-msgid "Several users are typing…"
-msgstr "Meerdere gebruikers typen…"
-
-#: fractal-gtk/src/appop/room.rs:713
-msgid "<b>{}</b> is typing…"
-msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
-msgstr[0] "<b>{}</b> typt…"
-msgstr[1] "<b>{}</b> en <b>{}</b> typen…"
-
-#: fractal-gtk/src/appop/sync.rs:24
-msgid "Syncing, this could take a while"
-msgstr "Bezig met synchroniseren, dit kan even duren"
-
-#: fractal-gtk/src/backend/directory.rs:35
-#: fractal-gtk/src/backend/directory.rs:81
-msgid "Error searching for rooms"
-msgstr "Fout bij zoeken naar gesprekken"
-
-#: fractal-gtk/src/backend/register.rs:42
-msgid "Can’t login, try again"
-msgstr "Kan niet inloggen, probeer het opnieuw"
-
-#: fractal-gtk/src/backend/room.rs:403
-msgid "Error deleting message"
-msgstr "Fout bij verwijderen van bericht"
-
-#: fractal-gtk/src/backend/room.rs:443
-msgid "Can’t join the room, try again."
-msgstr "Kan niet deelnemen aan gesprek, probeer het opnieuw."
-
-#: fractal-gtk/src/backend/room.rs:675 fractal-gtk/src/backend/room.rs:727
-msgid "Can’t create the room, try again"
-msgstr "Kan gesprek niet aanmaken, probeer het opnieuw"
-
-#: fractal-gtk/src/backend/user.rs:113
-msgid "Sorry, account settings can’t be loaded."
-msgstr "Sorry, de accountinstellingen kunnen niet geladen worden."
-
-#: fractal-gtk/src/backend/user.rs:141
-msgid "Email is already in use"
-msgstr "E-mailadres is al in gebruik"
-
-#: fractal-gtk/src/backend/user.rs:144
-msgid "Please enter a valid email address."
-msgstr "Voer een geldig e-mailadres in."
-
-#: fractal-gtk/src/backend/user.rs:147
-msgid "Couldn’t add the email address."
-msgstr "Kon e-mailadres niet toevoegen."
-
-#: fractal-gtk/src/backend/user.rs:184
-msgid "Phone number is already in use"
-msgstr "Telefoonnummer is al in gebruik"
-
-#: fractal-gtk/src/backend/user.rs:188
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:71
 msgid ""
-"Please enter your phone number in the format: \n"
-" + your country code and your phone number."
+"To confirm that you really want to deactivate this account, type in your "
+"Matrix user ID:"
 msgstr ""
-"Voer uw telefoonnummer in volgens onderstaand formaat: \n"
-" + uw landcode en uw telefoonnummer."
+"Voer uw Matrix-ID in om te bevestigen dat u deze account echt wilt "
+"uitschakelen:"
 
-#: fractal-gtk/src/backend/user.rs:192
-msgid "Couldn’t add the phone number."
-msgstr "Kon telefoonnummer niet toevoegen."
+#: data/resources/ui/account-settings-device-row.ui:59
+#: src/session/content/verification/identity_verification_widget.rs:500
+#: src/session/content/verification/identity_verification_widget.rs:505
+#: src/session/content/verification/identity_verification_widget.rs:509
+#: src/session/content/verification/identity_verification_widget.rs:529
+#: src/session/content/verification/identity_verification_widget.rs:532
+#: src/session/content/verification/identity_verification_widget.rs:536
+msgid "Verify Session"
+msgstr "Sessie verifiëren"
 
-#: fractal-gtk/src/backend/user.rs:330
-msgid "Couldn’t change the password"
-msgstr "Kon wachtwoord niet wijzigen"
+#: data/resources/ui/account-settings-devices-page.ui:5
+msgid "Sessions"
+msgstr "Sessies"
 
-#: fractal-gtk/src/backend/user.rs:383
-msgid "Couldn’t delete the account"
-msgstr "Kon account niet verwijderen"
+#: data/resources/ui/account-settings-devices-page.ui:9
+#: data/resources/ui/account-settings-devices-page.ui:13
+msgid "Current Session"
+msgstr "Huidige sessie"
 
-#: fractal-gtk/src/ui/about.rs:12
-msgid "A Matrix.org client for GNOME"
-msgstr "Een Matrix.org-cliënt voor Gnome"
+#: data/resources/ui/account-settings-devices-page.ui:24
+#: data/resources/ui/account-settings-devices-page.ui:28
+msgid "Other Active Sessions"
+msgstr "Andere actieve sessies"
 
-#: fractal-gtk/src/ui/about.rs:14
-msgid "© 2017–2020 Daniel García Moreno, et al."
-msgstr "© 2017–2020 Daniel García Moreno, et al."
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:80
+#: data/resources/ui/session-verification.ui:280
+msgid "Passphrase"
+msgstr "Wachtwoord"
 
-#: fractal-gtk/src/ui/about.rs:21
-msgid "Learn more about Fractal"
-msgstr "Kom meer te weten over Fractal"
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:97
+msgid "Confirm Passphrase"
+msgstr "Bevestig wachtwoord"
 
-#: fractal-gtk/src/ui/about.rs:22
-msgid "translator-credits"
-msgstr ""
-"Nathan Follens <nthn@unseen.is>\n"
-"\n"
-"Meer info over Gnome-NL http://nl.gnome.org"
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:132
+msgid "Choose…"
+msgstr "Kiezen…"
 
-#: fractal-gtk/src/ui/about.rs:37
-msgid "Name by"
-msgstr "Naam bedacht door"
+#: data/resources/ui/account-settings-user-page.ui:5
+msgid "General"
+msgstr "Algemeen"
 
-#: fractal-gtk/src/ui/attach.rs:26
-msgid "Image from Clipboard"
-msgstr "Afbeelding van klembord"
+#: data/resources/ui/account-settings-user-page.ui:38
+msgid "Name"
+msgstr "Naam"
 
-#: fractal-gtk/src/ui/attach.rs:42
-msgid "Send"
-msgstr "Verzenden"
+#: data/resources/ui/account-settings-user-page.ui:71
+msgid "Advanced Information"
+msgstr "Geavanceerde informatie"
 
-#. Filename for the attached image
-#: fractal-gtk/src/ui/attach.rs:90
-msgid "image"
-msgstr "afbeelding"
+#: data/resources/ui/account-settings-user-page.ui:74
+msgid "Homeserver"
+msgstr "Homeserver"
 
-#: fractal-gtk/src/ui/invite.rs:131
-msgid "Invite to {name}"
-msgstr "Uitnodigen in {name}"
+#: data/resources/ui/account-settings-user-page.ui:88
+msgid "Matrix User ID"
+msgstr "Matrix-ID"
 
-#: fractal-gtk/src/ui/invite.rs:183
-msgid "Join {room_name}?"
-msgstr "[room_name} binnengaan?"
+#: data/resources/ui/account-settings-user-page.ui:102
+msgid "Session ID"
+msgstr "Sessie-ID"
 
-#: fractal-gtk/src/ui/invite.rs:187
+#: data/resources/ui/account-settings-security-page.ui:5
+msgid "Security"
+msgstr "Beveiliging"
+
+#: data/resources/ui/account-settings-security-page.ui:9
+msgid "Room Encryption Keys"
+msgstr "Kamersleutels"
+
+#: data/resources/ui/account-settings-security-page.ui:12
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:228
+msgid "Export Room Encryption Keys"
+msgstr "Kamersleutels exporteren"
+
+#: data/resources/ui/account-settings-security-page.ui:19
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:240
+msgid "Import Room Encryption Keys"
+msgstr "Kamersleutels importeren"
+
+#: data/resources/ui/account-settings.ui:4
+msgid "Account Settings"
+msgstr "Accountinstellingen"
+
+#: data/resources/ui/attachment-dialog.ui:14
+#: data/resources/ui/content-invite-subpage.ui:12
+#: data/resources/ui/join-room-dialog.ui:9
+#: data/resources/ui/room-creation.ui:16
+msgid "_Cancel"
+msgstr "_Annuleren"
+
+#: data/resources/ui/attachment-dialog.ui:21
+msgid "_Send"
+msgstr "Ver_zenden"
+
+#: data/resources/ui/components-auth-dialog.ui:20
+msgid "Authentication"
+msgstr "Authenticatie"
+
+#: data/resources/ui/components-auth-dialog.ui:43
+msgid "Please authenticate the operation with your password"
+msgstr "Authenticeer deze actie met uw wachtwoord"
+
+#: data/resources/ui/components-auth-dialog.ui:70
 msgid ""
-"You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</b>"
-msgstr "U bent uitgenodigd in <b>{room_name}</b> door <b>{sender_name}</b>"
+"Please authenticate the operation via the browser and once completed press "
+"confirm."
+msgstr "Authenticeer deze actie via de browser en bevestig na het voltooien."
 
-#: fractal-gtk/src/ui/invite.rs:192
-msgid "You’ve been invited to join <b>{room_name}</b>"
-msgstr "U bent uitgenodigd in <b>{room_name}</b>"
+#: data/resources/ui/components-auth-dialog.ui:80
+msgid "Authenticate via Browser"
+msgstr "Authenticatie via browser"
 
-#: fractal-gtk/src/ui/mod.rs:77
-msgid "You don’t have permission to post to this room"
-msgstr "U heeft geen toestemming om in dit gesprek berichten te sturen"
+#: data/resources/ui/components-auth-dialog.ui:113
+#: data/resources/ui/identity-verification-widget.ui:452
+#: src/components/editable_avatar.rs:342
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:286
+#: src/session/content/room_history/verification_info_bar.rs:182
+#: src/session/room/event_actions.rs:274
+msgid "Cancel"
+msgstr "Annuleren"
 
-#: fractal-gtk/src/ui/mod.rs:159
-msgid "OK"
-msgstr "Oké"
+#: data/resources/ui/components-auth-dialog.ui:118
+#: data/resources/ui/identity-verification-widget.ui:442
+msgid "Confirm"
+msgstr "Bevestigen"
 
-#: fractal-gtk/src/ui/room_settings.rs:264
-msgid "Room · {} member"
-msgid_plural "Room · {} members"
-msgstr[0] "Gesprek · {} deelnemer"
-msgstr[1] "Gesprek · {} deelnemers"
+#: data/resources/ui/components-loading-listbox-row.ui:32
+msgid "Try again"
+msgstr "Opnieuw proberen"
 
-#: fractal-gtk/src/ui/room_settings.rs:699
-msgid "{} member"
-msgid_plural "{} members"
-msgstr[0] "{} deelnemer"
-msgstr[1] "{} deelnemers"
+#: data/resources/ui/content-explore-servers-popover.ui:35
+msgid "Add server…"
+msgstr "Server toevoegen…"
 
-#: fractal-gtk/src/widgets/file_dialog.rs:8
-msgid "Save media as"
-msgstr "Media opslaan als"
+#: data/resources/ui/content-explore.ui:71
+msgid "No rooms matching the search were found"
+msgstr "Geen overeenkomstige kamers gevonden"
 
-#: fractal-gtk/src/widgets/file_dialog.rs:11
-msgid "_Save"
-msgstr "Op_slaan"
+#: data/resources/ui/content-explore.ui:97
+msgid "Room List"
+msgstr "Kamerlijst"
 
-#: fractal-gtk/src/widgets/file_dialog.rs:32
-msgid "_Select"
-msgstr "_Selecteren"
+#: data/resources/ui/content-invite-subpage.ui:18
+msgid "I_nvite"
+msgstr "Uitnodigen"
 
-#: fractal-gtk/src/widgets/inline_player.rs:513
-msgid "Could not retrieve file URI"
-msgstr "Kon bestands-URI niet ophalen"
+#: data/resources/ui/content-invite-subpage.ui:85
+msgid "Search"
+msgstr "Zoek"
 
-#: fractal-gtk/src/widgets/kicked_dialog.rs:46
-msgid "You have been kicked from {}"
-msgstr "U bent uit {} verwijderd"
+#: data/resources/ui/content-invite-subpage.ui:86
+msgid "Search for users to invite them to this room."
+msgstr "Zoek personen om uit te nodigen in deze kamer."
 
-#: fractal-gtk/src/widgets/kicked_dialog.rs:50
-msgid ""
-"Kicked by: {}\n"
-" “{}”"
-msgstr ""
-"Verwijderd door: {}\n"
-"‘{}’"
+#: data/resources/ui/content-invite-subpage.ui:115
+msgid "No Users Found"
+msgstr "Geen personen gevonden"
 
-#: fractal-gtk/src/widgets/login.rs:95
-msgid "Malformed server URL"
-msgstr "Onjuiste server-URL"
+#: data/resources/ui/content-invite-subpage.ui:116
+msgid "No users matching the search were found."
+msgstr "Geen overeenkomstige personen gevonden."
 
-#: fractal-gtk/src/widgets/media_viewer.rs:1026
-msgid "Error while loading previous media"
-msgstr "Fout bij laden van vorige media"
+#: data/resources/ui/content-invite-subpage.ui:122
+msgid "Error"
+msgstr "Fout"
 
-#: fractal-gtk/src/widgets/members_list.rs:50
-msgid "No matching members found"
-msgstr "Geen overeenkomstige deelnemers gevonden"
+#: data/resources/ui/content-invite-subpage.ui:123
+msgid "An error occurred while searching for matches."
+msgstr "Er is een fout opgetreden tijdens het zoeken."
 
-#: fractal-gtk/src/widgets/members_list.rs:146
-msgid "Admin"
-msgstr "Beheerder"
+#: data/resources/ui/content-invite.ui:26
+#: data/resources/ui/content-invite.ui:51
+#: data/resources/ui/content-member-page.ui:69
+msgid "Invite"
+msgstr "Uitnodigen"
 
-#: fractal-gtk/src/widgets/members_list.rs:147
-msgid "Moderator"
-msgstr "Moderator"
+#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:33
+msgid "_Reject"
+msgstr "_Weigeren"
 
-#: fractal-gtk/src/widgets/members_list.rs:148
-msgid "Privileged"
-msgstr "Geprivilegieerd"
+#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:28
+msgid "_Accept"
+msgstr "_Accepteren"
 
-#: fractal-gtk/src/widgets/message.rs:471
-#, c-format
-msgid "Last edited %c"
-msgstr "Laatst gewijzigd %c"
+#: data/resources/ui/content-markdown-popover.ui:17
+msgid "_Markdown"
+msgstr "_Markdown"
 
-#: fractal-gtk/src/widgets/message.rs:665
-#: fractal-gtk/src/widgets/message.rs:832
+#: data/resources/ui/content-markdown-popover.ui:37
+msgid "> quote"
+msgstr "> citeren"
+
+#: data/resources/ui/content-markdown-popover.ui:46
+msgid "**bold**"
+msgstr "**vetgedrukt**"
+
+#: data/resources/ui/content-markdown-popover.ui:59
+msgid "`code`"
+msgstr "`code`"
+
+#: data/resources/ui/content-markdown-popover.ui:69
+msgid "*italic*"
+msgstr "*schuingedrukt*"
+
+#: data/resources/ui/content-member-page.ui:19
+msgid "Search for Room Members"
+msgstr "Zoeken naar kamerleden"
+
+#: data/resources/ui/content-member-page.ui:35
+#: data/resources/ui/content-member-page.ui:39
+msgid "Search for room members"
+msgstr "Zoeken naar kamerleden"
+
+#: data/resources/ui/content-message-file.ui:25
+#: src/session/room/event_actions.rs:273
 msgid "Save"
 msgstr "Opslaan"
 
-#: fractal-gtk/src/widgets/message.rs:847
-msgid "Open"
-msgstr "Openen"
+#: data/resources/ui/content-room-details.ui:4
+#: src/session/content/room_details/mod.rs:212
+msgid "Room Details"
+msgstr "Kamerdetails"
 
-#. Use 12h time format (AM/PM)
-#: fractal-gtk/src/widgets/message.rs:990
-msgid "%l∶%M %p"
-msgstr "%H:%m"
+#: data/resources/ui/content-room-details-general-page.ui:102
+msgid "Description"
+msgstr "Beschrijving"
 
-#. Use 24 time format
-#: fractal-gtk/src/widgets/message.rs:993
-msgid "%R"
-msgstr "%R"
+#: data/resources/ui/content-room-details-general-page.ui:150
+msgid "Members"
+msgstr "Leden"
 
-#: fractal-gtk/src/widgets/room_history.rs:108
+#: data/resources/ui/content-room-history.ui:6
+msgid "Room _Details"
+msgstr "Kamer_details"
+
+#: data/resources/ui/content-room-history.ui:11
+msgid "_Invite New Member"
+msgstr "N_ieuwe leden uitnodigen"
+
+#: data/resources/ui/content-room-history.ui:16
+msgid "Room _Permalink"
+msgstr "Kamer_permalink"
+
+#: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:62
+msgid "_Leave Room"
+msgstr "Kamer ver_laten"
+
+#: data/resources/ui/content-room-history.ui:31
+msgid "_Location"
+msgstr "_Locatie"
+
+#: data/resources/ui/content-room-history.ui:36
+msgid "_Attachment"
+msgstr "Bijl_age"
+
+#: data/resources/ui/content-room-history.ui:60
+msgid "Back"
+msgstr "Terug"
+
+#: data/resources/ui/content-room-history.ui:85
+msgid "Room Settings"
+msgstr "Kamerinstellingen"
+
+#: data/resources/ui/content-room-history.ui:93
+msgid "Toggle Room History Search"
+msgstr "Zoeken in kamergeschiedenis aan/uit"
+
+#: data/resources/ui/content-room-history.ui:111
+msgid "Room History Search"
+msgstr "Zoeken in kamergeschiedenis"
+
+#: data/resources/ui/content-room-history.ui:146
+msgid "Unable to load room"
+msgstr "Kan kamer niet laden"
+
+#: data/resources/ui/content-room-history.ui:147
+msgid "Check your network connection."
+msgstr "Controleer uw netwerkverbinding."
+
+#: data/resources/ui/content-room-history.ui:150
+msgid "Try Again"
+msgstr "Opnieuw proberen"
+
+#: data/resources/ui/content-room-history.ui:175
+msgid "Scroll to bottom"
+msgstr "Scrol naar onderen"
+
+#: data/resources/ui/content-room-history.ui:187
+msgid "Drop Here to Send"
+msgstr "Versleep naar hier om te verzenden"
+
+#: data/resources/ui/content-room-history.ui:208
+msgid "Room History"
+msgstr "Kamergeschiedenis"
+
+#: data/resources/ui/content-room-history.ui:304
+msgid "Enable Markdown Formatting"
+msgstr "Markdown-opmaak inschakelen"
+
+#: data/resources/ui/content-room-history.ui:325
+msgid "Message Entry"
+msgstr "Berichtinvoer"
+
+#: data/resources/ui/content-room-history.ui:339
+msgid "Open Emoji Picker"
+msgstr "Emojikiezer openen"
+
+#: data/resources/ui/content-room-history.ui:350
+msgid "Open Message Menu"
+msgstr "Berichtmenu openen"
+
+#: data/resources/ui/content-room-history.ui:365
+msgid "Send Message"
+msgstr "Bericht verzenden"
+
+#: data/resources/ui/content-state-creation.ui:19
+msgid "Previous room"
+msgstr "Vorige kamer"
+
+#: data/resources/ui/content-state-tombstone.ui:14
+msgid "There is a newer version of this room."
+msgstr "Er is een nieuwere versie van deze kamer."
+
+#: data/resources/ui/content-state-tombstone.ui:19
+msgid "Go there"
+msgstr "Ga erheen"
+
+#: data/resources/ui/content.ui:36
+msgid "No Room Selected"
+msgstr "Geen kamer geselecteerd"
+
+#: data/resources/ui/content.ui:37
+msgid "Join a room to start chatting."
+msgstr "Betreed een kamer en begin met chatten."
+
+# Geen idee naar wat 'Secret Service' hier verwijst - Nathan
+#: data/resources/ui/error-page.ui:40
+msgid ""
+"It seems like one of the Fractal sessions stored in the Secret Service is "
+"corrupted. If you know how to fix it you should do so."
+msgstr ""
+"Het ziet ernaar uit dat een van de Fractal-sessies opgeslagen in de Secret "
+"Service corrupt is. Als u weet hoe u dit kunt oplossen moet u dit doen."
+
+#: data/resources/ui/error-page.ui:51
+msgid ""
+"Alternatively, we could disconnect this session for you. This means you will "
+"have to login again and you will lose access to your encrypted messages, "
+"unless you have a session open in another client or you have already backed "
+"up your encryption keys."
+msgstr ""
+"Een alternatief is om deze sessie van u te verbreken. Dit betekent dat u "
+"zich opnieuw moet aanmelden en u de toegang verliest tot uw versleutelde "
+"berichten, tenzij u nog een sessie open hebt in een andere toepassing, of "
+"als u al een back-up van uw sleutels hebt."
+
+#: data/resources/ui/error-page.ui:74
+msgid "Clicking this button might disconnect more than one session!"
+msgstr "Het klikken op deze knop kan meer dan één sessie verbreken!"
+
+#: data/resources/ui/error-page.ui:86
+msgid "Disconnect the corrupted session"
+msgstr "De corrupte sessie verbreken"
+
+#: data/resources/ui/error-page.ui:109
+msgid ""
+"Fractal relies on a Secret Service Provider to manage your sensitive session "
+"information and an error occurred while we were trying to store or get your "
+"session."
+msgstr ""
+"Fractal maakt gebruik van een Secret Service Provider om uw gevoelige sessie-"
+"informatie te beheren, en er is een fout opgetreden bij het opslaan of "
+"ophalen van uw sessie."
+
+#: data/resources/ui/error-page.ui:124
+msgid ""
+"Here are a few things that might help you fix issues with the Secret Service:"
+msgstr ""
+"Hier zijn een aantal dingen die u mogelijk kunnen helpen om het probleem met "
+"de Secret Service op te lossen:"
+
+#: data/resources/ui/error-page.ui:147
+msgid ""
+"Make sure you have a Secret Service Provider installed, like gnome-keyring."
+msgstr ""
+"Controleer of u een Secret Service Provider geïnstalleerd hebt, zoals gnome-"
+"keyring."
+
+#: data/resources/ui/error-page.ui:172
+msgid "Check that you have a default keyring and that it is unlocked."
+msgstr ""
+"Controleer of u een standaardsleutelbos hebt en of deze ontgrendeld is."
+
+#: data/resources/ui/error-page.ui:187
+msgid ""
+"Check the application logs and your distribution’s documentation for more "
+"details."
+msgstr ""
+"Controleer de toepassingslogboeken en de documentatie van uw distributie "
+"voor meer informatie."
+
+#. Translators: In this string, 'Reply' is a verb.
+#: data/resources/ui/event-menu.ui:12
+msgid "_Reply"
+msgstr "Beantwoo_rden"
+
+#. Translators: In this string, 'Edit' is a verb.
+#: data/resources/ui/event-menu.ui:18
+msgid "_Edit"
+msgstr "B_ewerken"
+
+#. Translators: In this string, 'Forward' is a verb.
+#: data/resources/ui/event-menu.ui:24 data/resources/ui/event-menu.ui:115
+msgid "_Forward"
+msgstr "_Doorsturen"
+
+#: data/resources/ui/event-menu.ui:31 data/resources/ui/event-menu.ui:122
+msgid "_Select"
+msgstr "_Selecteren"
+
+#: data/resources/ui/event-menu.ui:38 data/resources/ui/event-menu.ui:129
+msgid "_Copy Text"
+msgstr "Tekst _kopiëren"
+
+#: data/resources/ui/event-menu.ui:44 data/resources/ui/event-menu.ui:85
+msgid "_Copy Image"
+msgstr "Afbeelding _kopiëren"
+
+#: data/resources/ui/event-menu.ui:49 data/resources/ui/event-menu.ui:90
+msgid "S_ave Image"
+msgstr "Afbeelding opsl_aan"
+
+#: data/resources/ui/event-menu.ui:54 data/resources/ui/event-menu.ui:95
+msgid "S_ave Video"
+msgstr "Video opsl_aan"
+
+#: data/resources/ui/event-menu.ui:59 data/resources/ui/event-menu.ui:100
+msgid "S_ave Audio"
+msgstr "Audio opsl_aan"
+
+#: data/resources/ui/event-menu.ui:64 data/resources/ui/event-menu.ui:105
+#: data/resources/ui/event-menu.ui:135
+msgid "_Permalink"
+msgstr "_Permalink"
+
+#: data/resources/ui/event-menu.ui:69 data/resources/ui/event-menu.ui:140
+msgid "_View Source"
+msgstr "Bron _bekijken"
+
+#: data/resources/ui/event-menu.ui:76 data/resources/ui/event-menu.ui:147
+msgid "Re_move"
+msgstr "_Verwijderen"
+
+#: data/resources/ui/event-source-dialog.ui:5
+msgid "Event Source"
+msgstr "Gebeurtenisbron"
+
+#: data/resources/ui/greeter.ui:43
+msgid ""
+"You are running an early stage development version. Be aware it is a work in "
+"progress and far from complete yet."
+msgstr ""
+"U gebruikt een vroege ontwikkelingsversie. Wees u ervan bewust dat deze nog "
+"in ontwikkeling is en nog lang niet af is."
+
+#. Fractal is the application name and shouldn't be translated
+#: data/resources/ui/greeter.ui:101
+msgid "Welcome to Fractal"
+msgstr "Welkom bij Fractal"
+
+#: data/resources/ui/greeter.ui:126
+msgid "_Log in"
+msgstr "Aanme_lden"
+
+#: data/resources/ui/greeter.ui:136
+msgid "_Create Account"
+msgstr "_Account aanmaken"
+
+#: data/resources/ui/identity-verification-widget.ui:46
+#: src/session/content/room_history/verification_info_bar.rs:177
+msgid "Decline"
+msgstr "Afwijzen"
+
+#: data/resources/ui/identity-verification-widget.ui:56
+#: src/session/content/room_history/verification_info_bar.rs:176
+msgid "Verify"
+msgstr "Verifïeren"
+
+#: data/resources/ui/identity-verification-widget.ui:109
+#: data/resources/ui/identity-verification-widget.ui:213
+msgid "Can’t scan QR code?"
+msgstr "QR-scannen mislukt?"
+
+#: data/resources/ui/identity-verification-widget.ui:117
+#: data/resources/ui/identity-verification-widget.ui:230
+msgid "Compare Emoji"
+msgstr "Emoji vergelijken"
+
+#: data/resources/ui/identity-verification-widget.ui:144
+msgid "Scan Complete"
+msgstr "Scan voltooid"
+
+#: data/resources/ui/identity-verification-widget.ui:222
+msgid "Scan QR code with this session"
+msgstr "Scan QR-code met deze sessie"
+
+#: data/resources/ui/identity-verification-widget.ui:290
+msgid "Do Not Match"
+msgstr "Komen niet overeen"
+
+#: data/resources/ui/identity-verification-widget.ui:300
+msgid "Match"
+msgstr "Komen overeen"
+
+#: data/resources/ui/identity-verification-widget.ui:350
+msgid "Done"
+msgstr "Klaar"
+
+#: data/resources/ui/identity-verification-widget.ui:419
+msgid "Confirm Scan"
+msgstr "Scan bevestigen"
+
+#: data/resources/ui/join-room-dialog.ui:4
+msgid "Join a Room"
+msgstr "Betreed een kamer"
+
+#: data/resources/ui/join-room-dialog.ui:5
+msgid "Enter a room ID, room alias, or permalink."
+msgstr "Voer een kamer-ID, -alias of -permalink in."
+
+#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:631
+msgid "_Join"
+msgstr "_Betreden"
+
+#: data/resources/ui/login-advanced-dialog.ui:5
+msgid "Homeserver Discovery"
+msgstr "Homeserverontdekking"
+
+#: data/resources/ui/login-advanced-dialog.ui:14
+msgid ""
+"Auto-discovery, also known as “well-known lookup”, allows to discover the "
+"URL of a Matrix homeserver from a domain name. This should only be disabled "
+"if your homeserver doesn’t support auto-discovery or if you want to provide "
+"the URL yourself."
+msgstr ""
+"Auto-ontdekking, ook bekend als “well-known lookup”, staat toe dat het adres "
+"van de Matrix-homeserver zichtbaar is vanaf een domeinnaam. Dit zou alleen "
+"uitgeschakeld moeten worden als uw homeserver geen ondersteuning heeft voor "
+"auto-ontdekking of als u zelf een adres wilt instellen."
+
+#: data/resources/ui/login-advanced-dialog.ui:17
+msgid "_Auto-discovery"
+msgstr "_Auto-ontdekking"
+
+#. Translators: As in 'Advanced Settings'.
+#: data/resources/ui/login-homeserver-page.ui:59
+msgid "Advanced…"
+msgstr "Geavanceerd…"
+
+#: data/resources/ui/login-method-page.ui:37 src/login/homeserver_page.rs:122
+msgid "Homeserver URL"
+msgstr "Homeserveradres"
+
+#: data/resources/ui/login-method-page.ui:60
+msgid "Matrix Username"
+msgstr "Matrix-gebruikersnaam"
+
+#: data/resources/ui/login-method-page.ui:72
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: data/resources/ui/login-method-page.ui:78
+msgid "_Forgot Password?"
+msgstr "Wachtwoord _vergeten?"
+
+#: data/resources/ui/login-method-page.ui:100
+msgid "More SSO Providers"
+msgstr "Meer SSO-leveranciers"
+
+#: data/resources/ui/login-sso-page.ui:21
+msgid "Please follow the steps in the browser."
+msgstr "Volg de stappen in de browser."
+
+#: data/resources/ui/login.ui:23
+msgid "_Next"
+msgstr "Volge_nde"
+
+#: data/resources/ui/member-menu.ui:6
+msgid "_Verify"
+msgstr "_Verifiëren"
+
+#: data/resources/ui/member-menu.ui:14
+msgid "Make _Mod"
+msgstr "_Moderator maken"
+
+#: data/resources/ui/member-menu.ui:20
+msgid "Make _Admin"
+msgstr "_Beheerder maken"
+
+#: data/resources/ui/member-menu.ui:26
+msgid "_Kick"
+msgstr "_Verwijderen"
+
+#: data/resources/ui/room-creation.ui:4
+msgid "Create new Room"
+msgstr "Nieuwe kamer aanmaken"
+
+#: data/resources/ui/room-creation.ui:22
+msgid "C_reate"
+msgstr "_Aanmaken"
+
+#: data/resources/ui/room-creation.ui:58
+msgid "Room Name"
+msgstr "Kamernaam"
+
+#: data/resources/ui/room-creation.ui:93
+msgid "Visibility"
+msgstr "Zichtbaarheid"
+
+#: data/resources/ui/room-creation.ui:103
+msgid "_Private"
+msgstr "_Privé"
+
+#: data/resources/ui/room-creation.ui:110
+msgid "P_ublic"
+msgstr "_Openbaar"
+
+#: data/resources/ui/room-creation.ui:122
+msgid "Room Address"
+msgstr "Kameradres"
+
+#: data/resources/ui/session-verification.ui:49
+#: src/session/content/verification/identity_verification_widget.rs:544
+msgid "Get Another Device"
+msgstr "Kies ander apparaat"
+
+#: data/resources/ui/session-verification.ui:60
+#: src/session/content/verification/identity_verification_widget.rs:546
+msgid "Accept the verification request from another session or device."
+msgstr "Accepteer de verificatie vanaf een andere sessie of apparaat."
+
+#: data/resources/ui/session-verification.ui:73
+msgid "No other devices logged into this account?"
+msgstr "Geen andere apparaten aangemeld met deze account?"
+
+#: data/resources/ui/session-verification.ui:81
+#: data/resources/ui/session-verification.ui:176
+msgid "Recovery"
+msgstr "Herstellen"
+
+#: data/resources/ui/session-verification.ui:91
+#: src/session/content/verification/session_verification.rs:238
+msgid "Reset"
+msgstr "Terugzetten"
+
+#: data/resources/ui/session-verification.ui:128
+msgid "Setup Encryption Identity"
+msgstr "Versleuteling Instellen"
+
+#: data/resources/ui/session-verification.ui:139
+msgid ""
+"You need to setup an encryption identity, since this is the first time you "
+"logged into your account."
+msgstr ""
+"Omdat dit de eerste keer is dat u zich aanmeldt met uw account, moet u een "
+"versleutelingsidentiteit instellen."
+
+#: data/resources/ui/session-verification.ui:147
+msgid "Setup"
+msgstr "Instellen"
+
+#: data/resources/ui/session-verification.ui:187
+msgid ""
+"Without another device you need a recovery passphrase or key to access your "
+"messages"
+msgstr ""
+"Zonder een ander apparaat hebt u een herstelwachtwoord of -sleutel nodig om "
+"toegang te krijgen tot uw berichten"
+
+#: data/resources/ui/session-verification.ui:195
+#: data/resources/ui/session-verification.ui:250
+msgid "Recovery Passphrase"
+msgstr "Herstelwachtwoord"
+
+#: data/resources/ui/session-verification.ui:204
+#: data/resources/ui/session-verification.ui:314
+msgid "Recovery Key"
+msgstr "Herstelsleutel"
+
+#: data/resources/ui/session-verification.ui:213
+msgid ""
+"If you don’t have any of these you can reset your identity, but be aware "
+"this makes your old messages inaccessible forever."
+msgstr ""
+"Als u over geen van beide beschikt, kunt u uw identiteit terugzetten, maar "
+"hiermee verliest u voor altijd de toegang tot uw eerdere berichten."
+
+#: data/resources/ui/session-verification.ui:222
+msgid "Reset Identity"
+msgstr "Identiteit terugzetten"
+
+#: data/resources/ui/session-verification.ui:261
+msgid ""
+"Your Recovery Passphrase was set up when you first created this account."
+msgstr ""
+"Uw herstelwachtwoord werd ingesteld toen u uw account voor het eerst "
+"aanmaakte."
+
+#: data/resources/ui/session-verification.ui:269
+msgid "If you opted for a Recovery Key instead go back and choose that option."
+msgstr ""
+"Als u gekozen had voor een herstelsleutel, ga dan terug en kies die optie."
+
+#: data/resources/ui/session-verification.ui:285
+#: data/resources/ui/session-verification.ui:350
+msgid "Next"
+msgstr "Volgende"
+
+#: data/resources/ui/session-verification.ui:325
+msgid "Your Recovery Key was set up when you first created this account."
+msgstr ""
+"Uw herstelsleutel werd ingesteld toen u uw account voor het eerst aanmaakte."
+
+#: data/resources/ui/session-verification.ui:333
+msgid ""
+"If you opted for a Recovery Passphrase instead go back and choose that "
+"option."
+msgstr ""
+"Als u gekozen had voor een herstelwachtwoord, ga dan terug en kies die optie."
+
+#: data/resources/ui/shortcuts.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Algemeen"
+
+#: data/resources/ui/shortcuts.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Sneltoetsen tonen"
+
+#: data/resources/ui/shortcuts.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Afsluiten"
+
+#: data/resources/ui/shortcuts.ui:26
+msgctxt "shortcut window"
+msgid "Search Room List"
+msgstr "Zoeken in kamerlijst"
+
+#: data/resources/ui/shortcuts.ui:32
+msgctxt "shortcut window"
+msgid "Close Room"
+msgstr "Kamer sluiten"
+
+#: data/resources/ui/sidebar.ui:6
+msgid "_New Room"
+msgstr "Nieuwe kamer"
+
+#: data/resources/ui/sidebar.ui:10
+msgid "_Join Room"
+msgstr "_Kamer toetreden"
+
+#: data/resources/ui/sidebar.ui:16
+msgid "_Keyboard Shortcuts"
+msgstr "Sneltoetsen"
+
+#: data/resources/ui/sidebar.ui:20
+msgid "_About Fractal"
+msgstr "_Over Fractal"
+
+#: data/resources/ui/sidebar.ui:40
+msgid "Move to _Favorites"
+msgstr "Verplaatsen naar _favorieten"
+
+#: data/resources/ui/sidebar.ui:45
+msgid "Move to _Rooms"
+msgstr "Verplaatsen naar kame_rs"
+
+#: data/resources/ui/sidebar.ui:50
+msgid "Move to _People"
+msgstr "Verplaatsen naar _personen"
+
+#: data/resources/ui/sidebar.ui:55
+msgid "Move to Low _Priority"
+msgstr "Verplaatsen naar lage _prioriteit"
+
+#: data/resources/ui/sidebar.ui:67
+msgid "Re_join Room"
+msgstr "Kamer _opnieuw betreden"
+
+#: data/resources/ui/sidebar.ui:72
+msgid "_Forget Room"
+msgstr "Kamer _vergeten"
+
+#: data/resources/ui/sidebar.ui:91
+msgid "Switch Accounts"
+msgstr "Account wisselen"
+
+#: data/resources/ui/sidebar.ui:113
+msgid "App Settings Menu"
+msgstr "Toepassingsmenu"
+
+#: data/resources/ui/sidebar.ui:123
+msgid "Toggle Room Search"
+msgstr "Zoeken naar kamers aan/uit"
+
+#: data/resources/ui/sidebar.ui:135
+msgid "Room Search"
+msgstr "Zoeken naar kamers"
+
+#: data/resources/ui/sidebar.ui:136
+msgid "Search for a room"
+msgstr "Zoek een kamer"
+
+#: data/resources/ui/sidebar.ui:146
+msgid "Offline"
+msgstr "Offline"
+
+#: data/resources/ui/sidebar.ui:166
+msgid "Sidebar"
+msgstr "Zijbalk"
+
+#: data/resources/ui/sidebar.ui:167
+msgid "Allows to navigate between rooms"
+msgstr "Navigeren tussen kamers toestaan"
+
+#: data/resources/ui/qr-code-scanner.ui:21
+msgid "Unable to connect to Camera"
+msgstr "Kon niet met de camera verbinden"
+
+#: src/application.rs:177
+msgid "© 2017-2022 The Fractal Team"
+msgstr "© 2017-2022 Het Fractal-team"
+
+#: src/application.rs:191
+msgid "translator-credits"
+msgstr ""
+"Nathan Follens <nfollens@gnome.org>\n"
+"Justin van Steijn <jvs@fsfe.org>\n"
+"Jelv <post@jelv.nl>\n"
+"Meer info over Gnome-NL http://nl.gnome.org"
+
+#. This can't be added via the builder
+#: src/application.rs:195
+msgid "Name by"
+msgstr "Naam bedacht door"
+
+#: src/components/editable_avatar.rs:332
+msgid "Choose Avatar"
+msgstr "Kies een avatar"
+
+#: src/components/editable_avatar.rs:341
+msgid "Choose"
+msgstr "Kiezen"
+
+#: src/components/editable_avatar.rs:362
+msgid "The chosen file is not an image"
+msgstr "Het gekozen bestand is geen afbeelding"
+
+#: src/components/editable_avatar.rs:368
+msgid "Could not determine the type of the chosen file"
+msgstr "Kon het gekozen bestandstype niet bepalen"
+
+#: src/components/editable_avatar.rs:373
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:302
+msgid "No file was chosen"
+msgstr "Geen bestand gekozen"
+
+#: src/components/location_viewer.rs:148
+msgid "Location at latitude {latitude} and longitude {longitude}"
+msgstr "Locatie op breedtegraad {latitude} en lengtegraad {longitude}"
+
+#: src/components/media_content_viewer.rs:177
+msgid "Image not Viewable"
+msgstr "Afbeelding niet bekijkbaar"
+
+#: src/components/media_content_viewer.rs:178
+msgid "Audio Clip not Playable"
+msgstr "Audioclip niet afspeelbaar"
+
+#: src/components/media_content_viewer.rs:179
+msgid "Video not Playable"
+msgstr "Video niet afspeelbaar"
+
+#: src/components/media_content_viewer.rs:180
+msgid "File not Viewable"
+msgstr "Bestand niet bekijkbaar"
+
+#: src/error_page.rs:110
+msgid "Session removed successfully."
+msgstr "Sessie verwijderd."
+
+#: src/error_page.rs:118
+msgid "Could not remove session from secret storage"
+msgstr "Kon sessie niet verwijderen van geheimenopslag"
+
+#: src/greeter.rs:82 src/login/mod.rs:681 src/window.rs:343
+msgid "No network connection"
+msgstr "Geen netwerkverbinding"
+
+#: src/greeter.rs:88 src/login/mod.rs:687 src/window.rs:348
+msgid "No Internet connection"
+msgstr "Geen internetverbinding"
+
+#: src/login/homeserver_page.rs:117
+msgid "Domain Name"
+msgstr "Domeinnaam"
+
+#: src/login/homeserver_page.rs:119
+msgid "The domain of your Matrix homeserver, for example gnome.org"
+msgstr "Het domein van uw Matrix-homeserver, bijvoorbeeld gnome.org"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/login/homeserver_page.rs:126
+msgid "The URL of your Matrix homeserver, for example {address}"
+msgstr "Het adres van uw Matrix-homeserver, bijvoorbeeld {address}"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable
+#. name.
+#: src/login/method_page.rs:152
+msgid "Connecting to {domain_name}"
+msgstr "Verbinden met {domain_name}"
+
+#: src/login/mod.rs:606
+msgid "Unable to store session"
+msgstr "Het opslaan van de sessie is mislukt"
+
+#: src/secret.rs:56
+msgid "The secret storage file is corrupted."
+msgstr "Het geheimenopslagbestand is beschadigd."
+
+#: src/secret.rs:60
+msgid "Could not access the secret storage file location."
+msgstr "Kon de geheimenopslaglocatie niet benaderen."
+
+#: src/secret.rs:63
+msgid "An unknown error occurred when accessing the secret storage file."
+msgstr ""
+"Er is een onbekende fout opgetreden bij het raadplegen van het "
+"geheimenopslagbestand."
+
+#: src/secret.rs:66
+msgid "The secret storage file has been changed by another process."
+msgstr "Het geheimenopslagbestand is gewijzigd door een ander proces."
+
+#: src/secret.rs:69 src/secret.rs:95
+msgid ""
+"An unknown error occurred when interacting with the D-Bus Secret Service."
+msgstr ""
+"Er is een onbekende fout opgetreden bij het raadplegen van de D-Bus-"
+"geheimendienst."
+
+#: src/secret.rs:72
+msgid ""
+"The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
+"any prompt asking to access it."
+msgstr ""
+"Het verzoek aan het Flatpak-geheimenportaal is geannuleerd. Zorg dat u elk "
+"verzoek om toegang ertoe aanvaardt."
+
+#: src/secret.rs:75
+msgid ""
+"The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
+"installed, and it is at least at version 1.5.0."
+msgstr ""
+"Het Flatpak-geheimenportaal is niet beschikbaar. Zorg dat xdg-desktop-portal "
+"geïnstalleerd is, en minstens op versie 1.5.0 staat."
+
+#: src/secret.rs:85
+msgid "The item was deleted."
+msgstr "Het item is verwijderd."
+
+#: src/secret.rs:88
+msgid ""
+"The request to the D-Bus Secret Service was cancelled. Make sure to accept "
+"any prompt asking to access it."
+msgstr ""
+"Het verzoek aan de D-Bus-geheimendienst is geannuleerd. Zorg dat u elk "
+"verzoek om toegang ertoe aanvaardt."
+
+#: src/secret.rs:91
+msgid ""
+"Could not access the default collection. Make sure a keyring was created and "
+"set as default."
+msgstr ""
+"Kon de standaardverzameling niet openen. Zorg dat er een sleutelbos "
+"aangemaakt werd, en dat deze als standaard ingesteld is."
+
+#: src/secret.rs:135
+msgid "Malformed homeserver in stored session"
+msgstr "Onjuiste homeserver in opgeslagen sessie"
+
+#: src/secret.rs:142
+msgid "Could not find homeserver in stored session"
+msgstr "Kon geen homeserver vinden in opgeslagen sessie"
+
+#: src/secret.rs:156
+msgid "Malformed user ID in stored session"
+msgstr "Onjuiste persoons-ID in opgeslagen sessie"
+
+#: src/secret.rs:163
+msgid "Could not find user ID in stored session"
+msgstr "Kon geen persoons-ID vinden in opgeslagen sessie"
+
+#: src/secret.rs:172
+msgid "Could not find device ID in stored session"
+msgstr "Kon geen apparaats-ID vinden in opgeslagen sessie"
+
+#: src/secret.rs:181
+msgid "Could not find database path in stored session"
+msgstr "Kon geen databasepad vinden in opgeslagen sessie"
+
+#: src/secret.rs:192
+msgid "Malformed secret in stored session"
+msgstr "Onjuiste sleutel in opgeslagen sessie"
+
+#: src/secret.rs:200
+msgid "Could not get secret in stored session"
+msgstr "Kon geen sleutel vinden in opgeslagen sessie"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/secret.rs:310
+msgid "Fractal: Matrix credentials for {user_id}"
+msgstr "Fractal: Matrix-gegevens voor {user-id}"
+
+#: src/session/account_settings/devices_page/device_list.rs:144
+msgid "Failed to load connected device."
+msgstr "Laden van verbonden apparaat mislukt."
+
+#: src/session/account_settings/devices_page/device_list.rs:189
+msgid "Failed to load the list of connected devices."
+msgstr "Laden van verbonden apparaten mislukt."
+
+#: src/session/account_settings/devices_page/device_row.rs:110
+msgid "Disconnect Session"
+msgstr "Sessie verbreken"
+
+#: src/session/account_settings/devices_page/device_row.rs:112
+msgid "Log Out"
+msgstr "Afmelden"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/account_settings/devices_page/device_row.rs:215
+msgid "Failed to disconnect device “{device_name}”"
+msgstr "Verbreken van apparaat “{device_name}” mislukt"
+
+#: src/session/account_settings/devices_page/device_row.rs:228
+msgid ""
+"Fractal doesn't support online backup of room encryption keys so you might "
+"lose access to your encrypted message history. It is recommended to backup "
+"your encryption keys before proceeding."
+msgstr ""
+"Fractal ondersteunt geen online back-up van sleutels, dus u kunt mogelijk de "
+"toegang tot uw versleutelde berichtgeschiedenis verliezen. Het is aangeraden "
+"om een back-up te maken van uw sleutels voordat u doorgaat."
+
+#. Translators: Time in 24h format
+#: src/session/account_settings/devices_page/device_row.rs:286
+msgid "Last seen at %H:%M"
+msgstr "Laatst gezien om %H.%M"
+
+#. Translators: Time in 12h format
+#: src/session/account_settings/devices_page/device_row.rs:289
+msgid "Last seen at %l:%M %p"
+msgstr "Laatst gezien om %l.%M %p"
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:298
+#, no-c-format
+msgid "Last seen Yesterday at %H:%M"
+msgstr "Laatst gezien gisteren om %H.%M"
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:303
+#, no-c-format
+msgid "Last seen Yesterday at %l:%M %p"
+msgstr "Laatst gezien gisteren om %l:%M %p"
+
+#. Translators: this is the name of the week day followed by
+#. a time in 24h format. i.e. "Last seen Monday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:312
+#, no-c-format
+msgid "Last seen %A at %H:%M"
+msgstr "Laatst gezien op %A om %H.%M"
+
+#. Translators: this is the week day name followed by
+#. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:317
+#, no-c-format
+msgid "Last seen %A at %l:%M %p"
+msgstr "Laatst gezien op %A om %l.%M %p"
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 24h format i.e. "Last seen February 3 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:325
+#, no-c-format
+msgid "Last seen %B %-e at %H:%M"
+msgstr "Laatst gezien op %B %-e om %H.%M"
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 12h format i.e. "Last seen February 3 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:331
+#, no-c-format
+msgid "Last seen %B %-e at %l:%M %p"
+msgstr "Laatst gezien op %B %-e om %l.%M %p"
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:338
+#, no-c-format
+msgid "Last seen %B %-e %Y at %H:%M"
+msgstr "Laatst gezien op %B %-e %Y om %H.%M"
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:344
+#, no-c-format
+msgid "Last seen %B %-e %Y at %l:%M %p"
+msgstr "Laatst gezien op %B %-e %Y om %l.%M %p"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:230
+msgid ""
+"Exporting your room encryption keys allows you to make a backup to be able "
+"to decrypt your messages in end-to-end encrypted rooms on another device or "
+"with another Matrix client."
+msgstr ""
+"Door uw kamersleutels te exporteren kunt u een back-up maken om uw berichten "
+"in eind-tot-eind-versleutelde kamers op een ander apparaat of met een andere "
+"Matrix-toepassing te ontsleutelen."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:233
+msgid ""
+"The backup must be stored in a safe place and must be protected with a "
+"strong passphrase that will be used to encrypt the data."
+msgstr ""
+"De back-up moet opgeslagen worden op een veilige plek en moet beveiligd "
+"worden met een sterk wachtwoord dat gebruikt zal worden om de gegevens te "
+"versleutelen."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:236
+msgid "Export Keys"
+msgstr "Sleutels exporteren"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:242
+msgid ""
+"Importing your room encryption keys allows you to decrypt your messages in "
+"end-to-end encrypted rooms with a previous backup from a Matrix client."
+msgstr ""
+"Door uw kamersleutels te importeren kunt u uw berichten uit eind-tot-eind-"
+"versleutelde kamers van een eerdere back-up vanaf een Matrix-toepassing "
+"ontsleutelen."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:245
+msgid "Enter the passphrase provided when the backup file was created."
+msgstr ""
+"Voer het wachtwoord in dat u ingesteld hebt bij het aanmaken van de back-up."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:248
+msgid "Import Keys"
+msgstr "Sleutels importeren"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:265
+msgid "Save Encryption Keys To…"
+msgstr "Sleutels opslaan naar…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:270
+msgid "Import Encryption Keys From…"
+msgstr "Sleutels importeren van…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:285
+msgid "Select"
+msgstr "Selecteren"
+
+#. Translators: Do no translate "fractal" as it is the application
+#. name.
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:294
+msgid "fractal-encryption-keys"
+msgstr "fractal-sleutels"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:327
+msgid "Passphrases do not match"
+msgstr "Wachtwoorden komen niet overeen"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:401
+msgid "Room encryption keys exported successfully"
+msgstr "Kamersleutels geëxporteerd"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:406
+msgid "Imported 1 room encryption key"
+msgid_plural "Imported {n} room encryption keys"
+msgstr[0] "1 kamersleutel geïmporteerd"
+msgstr[1] "{n} kamersleutels geïmporteerd"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:419
+msgid "Could not export the keys"
+msgstr "Kon sleutels niet exporteren"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:429
+msgid "The passphrase doesn't match the one used to export the keys."
+msgstr ""
+"Het wachtwoord komt niet overeen met dat van de geëxporteerde sleutels."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:433
+msgid "Could not import the keys"
+msgstr "Kon sleutels niet importeren"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:188
+msgid "Password must be at least 8 characters long"
+msgstr "Wachtwoord moet minimaal 8 tekens lang zijn"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:191
+msgid "Password must have at least one lower-case letter"
+msgstr "Wachtwoord moet minimaal één kleine letter bevatten"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:195
+msgid "Password must have at least one upper-case letter"
+msgstr "Wachtwoord moet minimaal één hoofdletter bevatten"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:198
+msgid "Password must have at least one digit"
+msgstr "Wachtwoord moet minimaal één getal bevatten"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:200
+msgid "Password must have at least one symbol"
+msgstr "Wachtwoord moet minimaal één symbool bevatten"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:230
+msgid "Passwords do not match"
+msgstr "Wachtwoorden komen niet overeen"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:294
+msgid "Password changed successfully"
+msgstr "Wachtwoord gewijzigd"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:309
+msgid "Password rejected for being too weak"
+msgstr "Wachtwoord afgewezen omdat het te zwak is"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:313
+msgid "Could not change password"
+msgstr "Kon wachtwoord niet wijzigen"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:189
+msgid "Account successfully deactivated"
+msgstr "Account uitgeschakeld"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:197
+msgid "Could not deactivate account"
+msgstr "Kon account niet uitschakelen"
+
+#: src/session/account_settings/user_page/mod.rs:216
+msgid "Avatar removed successfully"
+msgstr "Avatar verwijderd"
+
+#: src/session/account_settings/user_page/mod.rs:231
+msgid "Avatar changed successfully"
+msgstr "Avatar gewijzigd"
+
+#: src/session/account_settings/user_page/mod.rs:276
+msgid "Could not upload avatar"
+msgstr "Kon avatar niet uploaden"
+
+#: src/session/account_settings/user_page/mod.rs:298
+msgid "Could not change avatar"
+msgstr "Kon avatar niet wijzigen"
+
+#: src/session/account_settings/user_page/mod.rs:327
+msgid "Could not remove avatar"
+msgstr "Kon avatar niet verwijderen"
+
+#: src/session/account_settings/user_page/mod.rs:360
+msgid "Name changed successfully"
+msgstr "Naam gewijzigd"
+
+#: src/session/account_settings/user_page/mod.rs:392
+msgid "Could not change display name"
+msgstr "Kon weergavenaam niet wijzigen"
+
+#: src/session/content/explore/public_room_row.rs:221
+msgid "View"
+msgstr "Bekijken"
+
+#: src/session/content/explore/public_room_row.rs:223
+msgid "Join"
+msgstr "Betreden"
+
+#: src/session/content/invite.rs:134
+msgid "{user} invited you"
+msgstr "{user} heeft u uitgenodigd"
+
+#: src/session/content/room_details/general_page/mod.rs:174
+msgid "Save Details"
+msgstr "Details opslaan"
+
+#: src/session/content/room_details/general_page/mod.rs:175
+msgid "Edit Details"
+msgstr "Details wijzigen"
+
+#: src/session/content/room_details/general_page/mod.rs:231
+msgid "Choose avatar"
+msgstr "Avatar kiezen"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:314
+msgid "Member"
+msgstr "Leden"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:315
+#: src/session/room/member.rs:50
+msgid "Banned"
+msgstr "Verbannen"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:317
+#: src/session/room/member.rs:49 src/session/sidebar/category_type.rs:35
+msgid "Invited"
+msgstr "Uitgenodigd"
+
+#: src/session/content/room_details/member_page/mod.rs:302
+msgid "Invited Room Members"
+msgstr "Uitgenodigde kamerleden"
+
+#: src/session/content/room_details/member_page/mod.rs:303
+msgid "Banned Room Members"
+msgstr "Gebannen kamerleden"
+
+#: src/session/content/room_details/member_page/mod.rs:304
+#: src/session/content/room_details/mod.rs:228
+msgid "Room Members"
+msgstr "Kamerleden"
+
+#: src/session/content/room_details/mod.rs:244
+msgid "Invite new Members"
+msgstr "Nieuwe leden uitnodigen"
+
+#: src/session/content/room_history/item_row.rs:271
 msgid "New Messages"
 msgstr "Nieuwe berichten"
 
+#: src/session/content/room_history/message_row/audio.rs:247
+#: src/session/content/room_history/message_row/audio.rs:251
+msgid "Could not retrieve audio file"
+msgstr "Kon audiobestand niet ophalen"
+
+#: src/session/content/room_history/message_row/audio.rs:264
+msgid "Error reading audio file"
+msgstr "Fout bij lezen van audiobestand"
+
+#: src/session/content/room_history/message_row/content.rs:307
+msgid "Identity verification was started"
+msgstr "Identiteitsverificatie is gestart"
+
+#: src/session/content/room_history/message_row/content.rs:320
+#: src/session/content/room_history/message_row/content.rs:367
+msgid "Unsupported event"
+msgstr "Niet-ondersteunde gebeurtenis"
+
+#: src/session/content/room_history/message_row/content.rs:344
+msgid ""
+"Unable to decrypt this message, decryption will be retried once the keys are "
+"available."
+msgstr ""
+"Het ontsleutelen van dit bericht is mislukt, ontsleutelen zal opnieuw "
+"geprobeerd worden wanneer de sleutels beschikbaar zijn."
+
+#: src/session/content/room_history/message_row/content.rs:355
+msgid "This message was removed."
+msgstr "Dit bericht is verwijderd."
+
+#: src/session/content/room_history/message_row/location.rs:104
+msgid "Location is invalid and cannot be displayed"
+msgstr "Locatie is ongeldig en kan niet weergegeven worden"
+
+#: src/session/content/room_history/message_row/media.rs:450
+msgid "Image file not supported"
+msgstr "Afbeeldingsbestand niet ondersteund"
+
+#: src/session/content/room_history/message_row/media.rs:489
+#: src/session/content/room_history/message_row/media.rs:494
+msgid "Could not retrieve media"
+msgstr "Kon media niet ophalen"
+
+#: src/session/content/room_history/mod.rs:201
+msgid "The location request has been cancelled."
+msgstr "Het locatieverzoek is geannuleerd."
+
+#: src/session/content/room_history/mod.rs:205
+msgid "Failed to retrieve current location."
+msgstr "Ophalen van huidige locatie is mislukt."
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name. In this string, 'Reply' is a noun.
+#: src/session/content/room_history/mod.rs:632
+msgid "Reply to {user}"
+msgstr "Beantwoord {user}"
+
+#: src/session/content/room_history/mod.rs:748
+#: src/session/room/event_actions.rs:106
+msgid "Permalink copied to clipboard"
+msgstr "Permalink gekopieerd naar klembord"
+
+#: src/session/content/room_history/mod.rs:752
+#: src/session/room/event_actions.rs:110
+msgid "Failed to copy the permalink"
+msgstr "Kopiëren van permalink is mislukt"
+
+#: src/session/content/room_history/mod.rs:926
+msgid "Your Location"
+msgstr "Uw locatie"
+
+#: src/session/content/room_history/mod.rs:936
+msgid "User Location {geo_uri} at {iso8601_datetime}"
+msgstr "Locatie van persoon {geo_uri} op {iso8601_datetime}"
+
+#: src/session/content/room_history/mod.rs:1069
+msgid "Error reading file"
+msgstr "Fout bij lezen van bestand"
+
+#: src/session/content/room_history/mod.rs:1095
+msgid "Error getting file from drop"
+msgstr "Fout bij ophalen van bestand"
+
+#: src/session/content/room_history/mod.rs:1127
+msgid "Error getting image from clipboard"
+msgstr "Fout bij ophalen van afbeelding van klembord"
+
+#: src/session/content/room_history/mod.rs:1144
+msgid "Error getting file from clipboard"
+msgstr "Fout bij ophalen van bestand van klembord"
+
+#: src/session/content/room_history/state_row/creation.rs:62
+msgid "This is the continuation of an upgraded room."
+msgstr "Dit is een voortzetting van een opgewaardeerde kamer."
+
+#: src/session/content/room_history/state_row/creation.rs:68
+msgid "This is the beginning of this room."
+msgstr "Dit is het begin van deze kamer."
+
+#: src/session/content/room_history/state_row/mod.rs:66
+msgid "This room is encrypted from this point on."
+msgstr "Deze kamer is versleuteld vanaf dit punt."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:85
+msgid "{previous_user_name} removed their display name."
+msgstr "{previous_user_name} heeft geen weergavenaam meer."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:92
+msgid "{previous_user_name} changed their display name to {new_user_name}."
+msgstr ""
+"{previous_user_name} heeft een nieuwe weergavenaam ingesteld: "
+"{new_user_name}."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:101
+msgid "{user_id} set their display name to {new_user_name}."
+msgstr "{user_id} heeft een weergavenaam ingesteld: {new_user_name}."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:114
+msgid "{user} set their avatar."
+msgstr "{user} heeft een avatar ingesteld."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:121
+msgid "{user} removed their avatar."
+msgstr "{user} heeft geen avatar meer."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:128
+msgid "{user} changed their avatar."
+msgstr "{user} heeft een nieuwe avatar ingesteld."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:139
+msgid "{user} joined this room."
+msgstr "{user} heeft de kamer betreden."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/state_row/mod.rs:145
+#: src/session/content/room_history/state_row/mod.rs:222
+msgid "{user} was invited to this room."
+msgstr "{user} is uitgenodigd voor deze kamer."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:153
+msgid "{user} requested to be invited to this room."
+msgstr "{user} heeft verzocht om uitgenodigd te worden voor deze kamer."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:164
+msgid "{user} rejected the invite."
+msgstr "{user} heeft de uitnodiging afgewezen."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:171
+msgid "The invitation for {user} has been revoked."
+msgstr "De uitnodiging voor {user} is ingetrokken."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:180
+msgid "{user} was unbanned."
+msgstr "De ban van {user} is ingetrokken."
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:191
+msgid "{user} left the room."
+msgstr "{user} heeft de kamer verlaten."
+
+#. Translators: Do NOT translate the content between '{' and
+#. '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:196
+msgid "{user} was kicked out of the room."
+msgstr "{user} is uit de kamer verwijderd."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#: src/session/content/room_history/state_row/mod.rs:205
+msgid "{user} was banned."
+msgstr "{user} is verwijderd."
+
+#: src/session/content/room_history/state_row/mod.rs:210
+msgid "An unsupported room member event was received."
+msgstr "Er is een niet-ondersteunde kamerlidgebeurtenis ontvangen."
+
+#: src/session/content/room_history/state_row/mod.rs:231
+msgid "An unsupported state event was received."
+msgstr "Er is een niet-ondersteunde statusgebeurtenis ontvangen."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/verification_info_bar.rs:170
+msgid "{user_name} wants to be verified"
+msgstr "{user_name} verzoekt verificatie"
+
+#: src/session/content/room_history/verification_info_bar.rs:180
+msgid "Verification in progress"
+msgstr "Verificatie in uitvoering"
+
+#: src/session/content/verification/identity_verification_widget.rs:499
+#: src/session/content/verification/identity_verification_widget.rs:528
+msgid "Verify the new session from the current session."
+msgstr "Verifieer de nieuwe sessie vanaf de huidige sessie."
+
+#: src/session/content/verification/identity_verification_widget.rs:502
+msgid "Scan the QR code from another session logged into this account."
+msgstr ""
+"Scan de QR-code vanaf een andere sessie die aangemeld is met deze account."
+
+#: src/session/content/verification/identity_verification_widget.rs:504
+#: src/session/content/verification/identity_verification_widget.rs:531
+msgid ""
+"You scanned the QR code successfully. You may need to confirm the "
+"verification from the other session."
+msgstr ""
+"U hebt de QR-code succesvol gescand. Mogelijk moet u de verificatie nog "
+"bevestigen vanaf de andere sessie."
+
+#: src/session/content/verification/identity_verification_widget.rs:508
+msgid "Scan this QR code from the other session."
+msgstr "Scan deze QR-code vanaf de andere sessie."
+
+#: src/session/content/verification/identity_verification_widget.rs:511
+#: src/session/content/verification/identity_verification_widget.rs:538
+msgid "Check if the same emoji appear in the same order on the other device."
+msgstr ""
+"Controleer of dezelfde emoji in dezelfde volgorde worden getoond op het "
+"andere apparaat."
+
+#: src/session/content/verification/identity_verification_widget.rs:513
+#: src/session/content/verification/identity_verification_widget.rs:540
+msgid "Request Complete"
+msgstr "Verzoek voltooid"
+
+#: src/session/content/verification/identity_verification_widget.rs:515
+msgid "This session is ready to send and receive secure messages."
+msgstr ""
+"Deze sessie is klaar om beveiligde berichten te versturen en ontvangen."
+
+#: src/session/content/verification/identity_verification_widget.rs:517
+msgid "Get Started"
+msgstr "Aan de slag"
+
+#: src/session/content/verification/identity_verification_widget.rs:519
+#: src/session/content/verification/identity_verification_widget.rs:549
+msgid "Does the other session show a confirmation shield?"
+msgstr "Toont de andere sessie een bevestigingsschild?"
+
+#: src/session/content/verification/identity_verification_widget.rs:525
+msgid "Login Request From Another Session"
+msgstr "Aanmeldingsverzoek vanaf andere sessie"
+
+#: src/session/content/verification/identity_verification_widget.rs:530
+msgid ""
+"Scan the QR code from this session from another session logged into this "
+"account."
+msgstr ""
+"Scan de QR-code van deze sessie vanaf een andere sessie die aangemeld is met "
+"deze account."
+
+#: src/session/content/verification/identity_verification_widget.rs:534
+msgid "Scan this QR code from the newly logged in session."
+msgstr "Scan deze QR-code vanaf de nieuw aangemelde sessie."
+
+#: src/session/content/verification/identity_verification_widget.rs:542
+msgid "The new session is now ready to send and receive secure messages."
+msgstr ""
+"De nieuwe sessie is nu klaar om beveiligde berichten te versturen en "
+"ontvangen."
+
+#: src/session/content/verification/identity_verification_widget.rs:554
+#: src/session/content/verification/identity_verification_widget.rs:560
+#: src/session/content/verification/identity_verification_widget.rs:570
+#: src/session/content/verification/identity_verification_widget.rs:577
+msgid "Verification Request"
+msgstr "Verificatieverzoek"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:559
+msgid ""
+"{user} asked to be verified. Verifying a user increases the security of the "
+"conversation."
+msgstr ""
+"{user} wil geverifieerd worden. Door een persoon te verifiëren verhoogt u de "
+"veiligheid van het gesprek."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:564
+msgid "Scan the QR code shown on the device of {user}."
+msgstr "Scan de QR-code op het apparaat van {user}."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:569
+msgid ""
+"You scanned the QR code successfully. {user} may need to confirm the "
+"verification."
+msgstr ""
+"U hebt de QR-code succesvol gescand. {user} moet mogelijk de verificatie nog "
+"bevestigen."
+
+# Zonder 'from their session' zal het ook wel duidelijk zijn, neem ik aan. - Nathan
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:574
+msgid "Ask {user} to scan this QR code from their session."
+msgstr "Vraag {user} om deze QR-code te scannen."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:581
+msgid ""
+"Ask {user} if they see the following emoji appear in the same order on their "
+"screen."
+msgstr ""
+"Vraag of de volgende emoji in dezelfde volgorde op het scherm van {user} "
+"verschijnen."
+
+#: src/session/content/verification/identity_verification_widget.rs:584
+msgid "Verification Complete"
+msgstr "Verificatie voltooid"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:587
+msgid ""
+"{user} is verified and you can now be sure that your communication will be "
+"private."
+msgstr ""
+"{user} is geverifieerd, u kunt nu zeker weten dat uw communicatie privé zal "
+"zijn."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:591
+msgid "Waiting for {user}"
+msgstr "Wachten op {user}"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:597
+msgid "Ask {user} to accept the verification request."
+msgstr "Vraag {user} om het verificatieverzoek te accepteren."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:603
+msgid "Does {user} see a confirmation shield on their session?"
+msgstr "Verschijnt er een bevestigingsschild op de sessie van {user}?"
+
+#: src/session/content/verification/session_verification.rs:235
+msgid ""
+"If you lost access to all other sessions you can create a new crypto "
+"identity. Be careful because this will reset all verified users and make "
+"previously encrypted conversations unreadable."
+msgstr ""
+"Als u de toegang tot al uw andere sessies bent verloren kunt u een nieuwe "
+"identiteit maken. Let op, dit reset alle geverifieerde personen en maakt "
+"eerder versleutelde gesprekken onleesbaar."
+
+#: src/session/content/verification/session_verification.rs:318
+msgid "You cancelled the authentication needed to create the encryption keys."
+msgstr ""
+"U hebt de authenticatie die nodig is om de sleutels aan te maken geannuleerd."
+
+#: src/session/content/verification/session_verification.rs:322
+msgid "An error occurred during the creation of the encryption keys."
+msgstr "Er is een fout opgetreden tijdens het aanmaken van de sleutels."
+
+#: src/session/mod.rs:629
+msgid "_View"
+msgstr "_Bekijken"
+
+#: src/session/mod.rs:675
+msgid "Failed to logout the session."
+msgstr "Het afmelden van de sessie is mislukt."
+
+#: src/session/room/event_actions.rs:188 src/session/room/event_actions.rs:210
+msgid "Message copied to clipboard"
+msgstr "Bericht gekopieerd naar klembord"
+
+#: src/session/room/event_actions.rs:270
+msgid "Save File"
+msgstr "Bestand opslaan"
+
+#: src/session/room/member.rs:47
+msgid "Left"
+msgstr "Vertrokken"
+
+#: src/session/room/member.rs:48
+msgid "Joined"
+msgstr "Toegetreden"
+
+#: src/session/room/member.rs:51
+msgid "Knocked"
+msgstr "Aangeklopt"
+
+#: src/session/room/member.rs:52
+msgid "Custom"
+msgstr "Aangepast"
+
+#: src/session/room/member_role.rs:48
+msgid "Admin"
+msgstr "Beheerder"
+
+#: src/session/room/member_role.rs:49
+msgid "Moderator"
+msgstr "Moderator"
+
+#: src/session/room/member_role.rs:50
+msgid "Normal user"
+msgstr "Normaal persoon"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:457
+msgid "Failed to forget {room}."
+msgstr "Vergeten van {room} is mislukt."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:711
+msgid "Failed to move {room} from {previous_category} to {new_category}."
+msgstr ""
+"Verplaatsen van {room} van {previous_category} naar {new_category} is "
+"mislukt."
+
+#: src/session/room/mod.rs:1004
+msgid "Unknown"
+msgstr "Onbekend"
+
+#. Translators: This is the name of a room that is empty but had another user before.
+#. Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:1031
+msgid "Empty Room (was {user})"
+msgstr "Lege kamer (was {user})"
+
+#. Translators: This is the name of a room without other users.
+#: src/session/room/mod.rs:1033
+msgid "Empty Room"
+msgstr "Lege kamer"
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1433
+msgid "Failed to accept invitation for {room}. Try again later."
+msgstr ""
+"Accepteren van de uitnodiging voor {room} is mislukt. Probeer het later "
+"opnieuw."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1462
+msgid "Failed to reject invitation for {room}. Try again later."
+msgstr ""
+"Weigeren van uitnodiging voor {room} is mislukt. Probeer het later opnieuw."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1656
+msgid "Failed to invite {user} to {room}. Try again later."
+msgstr ""
+"Uitnodigen van {user} voor {room} is mislukt. Probeer het later opnieuw."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1668
+msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
+msgid_plural ""
+"Failed to invite {user} and {n} other users to {room}. Try again later."
+msgstr[0] ""
+"Uitnodigen van {user} en 1 andere persoon voor {room} is mislukt. Probeer "
+"het later opnieuw."
+msgstr[1] ""
+"Uitnodigen van {user} en {n} andere personen voor {room} is mislukt. Probeer "
+"het later opnieuw."
+
 #. Translators: This is a date format in the day divider without the year
-#: fractal-gtk/src/widgets/room_history.rs:798
-msgid "%B %e"
-msgstr "%d %B"
+#: src/session/room/timeline/timeline_day_divider.rs:106
+msgid "%A, %B %e"
+msgstr "%A, %e %B"
 
 #. Translators: This is a date format in the day divider with the year
-#: fractal-gtk/src/widgets/room_history.rs:801
-msgid "%B %e, %Y"
-msgstr "%d %B %Y"
+#: src/session/room/timeline/timeline_day_divider.rs:109
+msgid "%A, %B %e, %Y"
+msgstr "%A, %e %B, %Y"
 
-#: fractal-gtk/src/widgets/roomlist.rs:480
-msgid "Invites"
-msgstr "Uitnodigingen"
+#: src/session/room_creation/mod.rs:257
+msgid "The address is already taken."
+msgstr "Het adres is al bezet."
 
-#: fractal-gtk/src/widgets/roomlist.rs:481
-msgid "You don’t have any invitations"
-msgstr "U hebt geen uitnodigingen"
+#: src/session/room_creation/mod.rs:286
+msgid "Can’t contain “:”"
+msgstr "Mag geen “:” bevatten"
 
-#: fractal-gtk/src/widgets/roomlist.rs:485
+#: src/session/room_creation/mod.rs:291
+msgid "Can’t contain “#”"
+msgstr "Mag geen “#” bevatten"
+
+#: src/session/room_creation/mod.rs:296
+msgid "Too long. Use a shorter address."
+msgstr "Te lang. Kies een korter adres."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room_list.rs:324
+msgid "Failed to join room {room_name}. Try again later."
+msgstr "Toetreden tot kamer {room_name} is mislukt. Probeer het later opnieuw."
+
+#: src/session/sidebar/category_row.rs:170
+msgid "Join Room as Favorite"
+msgstr "Kamer toetreden als favoriet"
+
+#: src/session/sidebar/category_row.rs:171
+msgid "Join Room"
+msgstr "Kamer toetreden"
+
+#: src/session/sidebar/category_row.rs:172
+msgid "Join Room as Low Priority"
+msgstr "Kamer toetreden als lage prioriteit"
+
+#: src/session/sidebar/category_row.rs:173
+msgid "Reject Invite"
+msgstr "Uitnodiging weigeren"
+
+#: src/session/sidebar/category_row.rs:174
+msgid "Join Room as People"
+msgstr "Kamer toetreden als persoon"
+
+#: src/session/sidebar/category_row.rs:178
+#: src/session/sidebar/category_row.rs:193
+#: src/session/sidebar/category_row.rs:207
+msgid "Move to Rooms"
+msgstr "Naar kamers verplaatsen"
+
+#: src/session/sidebar/category_row.rs:179
+#: src/session/sidebar/category_row.rs:186
+#: src/session/sidebar/category_row.rs:208
+msgid "Move to Low Priority"
+msgstr "Naar lage prioriteit verplaatsen"
+
+#: src/session/sidebar/category_row.rs:180
+#: src/session/sidebar/category_row.rs:187
+#: src/session/sidebar/category_row.rs:194
+#: src/session/sidebar/category_row.rs:209
+msgid "Leave Room"
+msgstr "Kamer verlaten"
+
+#: src/session/sidebar/category_row.rs:181
+#: src/session/sidebar/category_row.rs:188
+#: src/session/sidebar/category_row.rs:195
+msgid "Move to People"
+msgstr "Naar personen verplaatsen"
+
+#: src/session/sidebar/category_row.rs:185
+#: src/session/sidebar/category_row.rs:192
+#: src/session/sidebar/category_row.rs:206
+msgid "Move to Favorites"
+msgstr "Naar favorieten verplaatsen"
+
+#: src/session/sidebar/category_row.rs:199
+msgid "Rejoin Room as Favorites"
+msgstr "Kamer herbetreden als favoriet"
+
+#: src/session/sidebar/category_row.rs:200
+msgid "Rejoin Room"
+msgstr "Kamer herbetreden"
+
+#: src/session/sidebar/category_row.rs:201
+msgid "Rejoin Room as Low Priority"
+msgstr "Kamer herbetreden als lage prioriteit"
+
+#: src/session/sidebar/category_row.rs:202
+msgid "Rejoin Room as People"
+msgstr "Kamer herbetreden als persoon"
+
+#: src/session/sidebar/category_type.rs:34
+msgid "Verifications"
+msgstr "Verificaties"
+
+#: src/session/sidebar/category_type.rs:36
 msgid "Favorites"
 msgstr "Favorieten"
 
-#: fractal-gtk/src/widgets/roomlist.rs:486
-msgid "Drag and drop rooms here to add them to your favorites"
-msgstr "Versleep gesprekken naar hier om ze aan uw favorieten toe te voegen"
-
-#: fractal-gtk/src/widgets/roomlist.rs:490
+#: src/session/sidebar/category_type.rs:37
 msgid "Rooms"
-msgstr "Gesprekken"
+msgstr "Kamers"
 
-#: fractal-gtk/src/widgets/roomlist.rs:491
-msgid "You don’t have any rooms yet"
-msgstr "U hebt nog geen gesprekken"
+#: src/session/sidebar/category_type.rs:38
+msgid "Low Priority"
+msgstr "Lage prioriteit"
+
+#: src/session/sidebar/category_type.rs:39
+msgid "Historical"
+msgstr "Historisch"
+
+#. Translators: This shouldn't ever be visible to the user,
+#: src/session/sidebar/category_type.rs:41
+msgid "Outdated"
+msgstr "Verouderd"
+
+#: src/session/sidebar/category_type.rs:42
+msgid "Spaces"
+msgstr "Spaces"
+
+#: src/session/sidebar/category_type.rs:43
+msgid "People"
+msgstr "Personen"
+
+#: src/session/sidebar/entry_type.rs:23
+msgid "Explore"
+msgstr "Ontdekken"
+
+#: src/session/sidebar/entry_type.rs:24
+msgid "Forget Room"
+msgstr "Kamer vergeten"
+
+#: src/session/verification/identity_verification.rs:680
+msgid "You cancelled the verification process."
+msgstr "U hebt het verificatieproces geannuleerd."
+
+#: src/session/verification/identity_verification.rs:682
+msgid "The verification process failed because it reached a timeout."
+msgstr "Het verificatieproces is mislukt omdat het een time-out heeft bereikt."
+
+#: src/session/verification/identity_verification.rs:685
+msgid "You accepted the request from an other session."
+msgstr "U hebt het verzoek van een andere sessie geaccepteerd."
+
+#: src/session/verification/identity_verification.rs:688
+msgid "The emoji did not match."
+msgstr "De emoji komen niet overeen."
+
+#: src/session/verification/identity_verification.rs:697
+msgid "An unknown error occurred during the verification process."
+msgstr "Er is een onbekende fout opgetreden tijdens het verificatieproces."
+
+#: src/user_facing_error.rs:23
+msgid "The connection timed out. Try again later."
+msgstr "De verbinding heeft een time-out. Probeer het later opnieuw."
+
+#: src/user_facing_error.rs:25
+msgid "Unable to connect to the homeserver."
+msgstr "Het verbinden met de homeserver is mislukt."
+
+#: src/user_facing_error.rs:32
+msgid "The provided username or password is invalid."
+msgstr "De opgegeven persoons-ID of het wachtwoord is ongeldig."
+
+#: src/user_facing_error.rs:33
+msgid "The account is deactivated."
+msgstr "De account is uitgeschakeld."
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/user_facing_error.rs:40
+msgid "You exceeded the homeserver’s rate limit, retry in 1 second."
+msgid_plural "You exceeded the homeserver’s rate limit, retry in {n} seconds."
+msgstr[0] ""
+"U hebt de toegangslimiet van de homeserver overschreden, probeer het opnieuw "
+"over 1 seconde."
+msgstr[1] ""
+"U hebt de toegangslimiet van de homeserver overschreden, probeer het opnieuw "
+"over {n} seconden."
+
+#: src/user_facing_error.rs:46
+msgid "You exceeded the homeserver’s rate limit, try again later."
+msgstr ""
+"U hebt de toegangslimiet van de homeserver overschreden, probeer het later "
+"opnieuw."
+
+#: src/user_facing_error.rs:56
+msgid "An unknown connection error occurred."
+msgstr "Er is een onbekende verbindingsfout opgetreden."
+
+#: src/user_facing_error.rs:64
+msgid "Could not decrypt the event"
+msgstr "Kon de gebeurtenis niet ontsleutelen"
+
+#: src/user_facing_error.rs:66 src/user_facing_error.rs:86
+msgid "An unknown error occurred."
+msgstr "Er is een onbekende fout opgetreden."
+
+#: src/user_facing_error.rs:73
+msgid "Could not open the store."
+msgstr "Kon de opslag niet openen."
+
+#: src/user_facing_error.rs:80
+msgid "This is not a valid URL"
+msgstr "Dit is geen geldig adres"
+
+#: src/user_facing_error.rs:82
+msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
+msgstr ""
+"Auto-ontdekking van homeserver is mislukt. Probeer het volledige adres "
+"handmatig in te voeren."
+
+#. Translators: Default name for image files.
+#: src/utils/media.rs:50
+msgid "image"
+msgstr "afbeelding"
+
+#. Translators: Default name for video files.
+#: src/utils/media.rs:52
+msgid "video"
+msgstr "video"
+
+#. Translators: Default name for audio files.
+#: src/utils/media.rs:54
+msgid "audio"
+msgstr "audio"
+
+#. Translators: Default name for files.
+#: src/utils/media.rs:56
+msgid "file"
+msgstr "bestand"
+
+#: src/window.rs:245
+msgid "Failed to restore previous sessions"
+msgstr "Herstellen van vorige sessies is mislukt"
+
+#~ msgid "No secret in stored session"
+#~ msgstr "Geen sleutel in opgeslagen sessie"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Close the active room"
+#~ msgstr "Actieve akmer sluiten"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open / close the room sidebar search"
+#~ msgstr "Zijbalk voor zoeken in kamer tonen/verbergen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room in the list"
+#~ msgstr "Vorige kamer in de lijst openen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room in the list"
+#~ msgstr "Volgende kamer in de lijst openen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room with unread messages in the list"
+#~ msgstr "Vorige kamer met ongelezen berichten in de lijst openen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room with unread messages in the list"
+#~ msgstr "Volgende kamer met ongelezen berichten in de lijst openen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the first room of the list"
+#~ msgstr "Eerste kamer van de lijst openen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the last room of the list"
+#~ msgstr "Laatste kamer van de lijst openen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View older messages"
+#~ msgstr "Eerdere berichten bekijken"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View newer messages"
+#~ msgstr "Recentere berichten bekijken"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Composing a new message"
+#~ msgstr "Nieuw bericht schrijven"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Write on a new line"
+#~ msgstr "Op een nieuwe regel schrijven"
+
+#~ msgid "Type of password and token storage"
+#~ msgstr "Type wachtwoord- en tokenopslag"
+
+#~ msgid "Type of password and token storage, default value is: Secret Service"
+#~ msgstr "Type wachtwoord- en tokenopslag, standaardwaarde is: Geheime Dienst"
+
+#~ msgid "If markdown sending is active"
+#~ msgstr "Of Markdown-verzenden actief is"
+
+#~ msgid "Whether support for sending markdown messages is on"
+#~ msgstr ""
+#~ "Of ondersteuning voor verzenden van berichten geformatteerd met Markdown "
+#~ "is ingeschakeld"
+
+#~ msgid "X position of the main window on startup"
+#~ msgstr "De X-positie van het hoofdvenster bij opstarten"
+
+#~ msgid "Y position of the main window on startup"
+#~ msgstr "De Y-positie van het hoofdvenster bij opstarten"
+
+#~ msgid "Width of the main window on startup"
+#~ msgstr "De breedte van het hoofdvenster bij opstarten"
+
+#~ msgid "Height of the main window on startup"
+#~ msgstr "De hoogte van het hoofdvenster bij opstarten"
+
+#~ msgid "Daniel García Moreno"
+#~ msgstr "Daniel García Moreno"
+
+#~ msgid "Other people can find you by searching for any of these identifiers."
+#~ msgstr ""
+#~ "Anderen kunnen u vinden door te zoeken naar een van deze identificeerders."
+
+#~ msgid "Type in your name"
+#~ msgstr "Voer uw naam in"
+
+#~ msgid "Email"
+#~ msgstr "E-mailadres"
+
+#~ msgid "Phone"
+#~ msgstr "Telefoon"
+
+#~ msgid "Device ID"
+#~ msgstr "Apparaat-ID"
+
+#~ msgid "Also erase all messages"
+#~ msgstr "Ook alle berichten verwijderen"
+
+#~ msgid "Check your email"
+#~ msgstr "Controleer uw e-mail"
+
+#~ msgid "Apply"
+#~ msgstr "Toepassen"
+
+#~ msgid "New Direct Chat"
+#~ msgstr "Nieuwe directe chat"
+
+#~ msgid "Play"
+#~ msgstr "Afspelen"
+
+#~ msgid "New direct chat"
+#~ msgstr "Nieuwe directe chat"
+
+#~ msgid "Start chat"
+#~ msgstr "Chat beginnen"
+
+#~ msgid "Invitation"
+#~ msgstr "Uitnodiging"
+
+#~ msgid "ID or Alias"
+#~ msgstr "ID of alias"
+
+#~ msgid "Join room"
+#~ msgstr "Kamer toetreden"
+
+#~ msgid "Close"
+#~ msgstr "Sluiten"
+
+#~ msgid "Leave?"
+#~ msgstr "Verlaten?"
+
+#~ msgid ""
+#~ "Once you leave, you won’t be able to interact with people in the room "
+#~ "anymore."
+#~ msgstr ""
+#~ "Zodra u de kamer verlaat, zult u geen berichten meer kunnen uitwisselen "
+#~ "met de andere deelnemers van de kamer."
+
+#~ msgid "What is your Provider?"
+#~ msgstr "Wie is uw leverancier?"
+
+#~ msgid "Matrix provider domain, e.g. myserver.co"
+#~ msgstr "Matrix-leveranciersdomein, bv. mijnserver.be"
+
+#~ msgid "The domain may not be empty."
+#~ msgstr "Het domein mag niet leeg zijn."
+
+#~ msgid "Log In"
+#~ msgstr "Inloggen"
+
+#~ msgid "_User ID"
+#~ msgstr "Persoon-ID"
+
+#~ msgid "_Password"
+#~ msgstr "Wa_chtwoord"
+
+#~ msgid "User name, email, or phone number"
+#~ msgstr "Persoon-ID, e-mailadres of telefoonnummer"
+
+#~ msgid "Invalid username or password"
+#~ msgstr "Ongeldige persoon-ID of wachtwoord"
+
+#~ msgid "Keyboard _Shortcuts"
+#~ msgstr "_Sneltoetsen"
+
+#~ msgid "User"
+#~ msgstr "Persoon"
+
+#~ msgid "Add"
+#~ msgstr "Toevoegen"
+
+#~ msgid "Room Menu"
+#~ msgstr "Kamermenu"
+
+#~ msgid "No room"
+#~ msgstr "Geen kamer"
+
+#~ msgid "Default Matrix Server"
+#~ msgstr "Standaard-Matrix-server"
+
+#~ msgid "Toggle fullscreen"
+#~ msgstr "Volledig scherm aan/uit"
+
+#~ msgid "Loading more media"
+#~ msgstr "Meer media worden geladen"
+
+#~ msgid "Open With…"
+#~ msgstr "Openen met…"
+
+#~ msgid "Copy Selection"
+#~ msgstr "Selectie kopiëren"
+
+#~ msgid "Delete Message"
+#~ msgstr "Bericht verwijderen"
+
+#~ msgid "Copy To Clipboard"
+#~ msgstr "Kopiëren naar klembord"
+
+#~ msgid "Ch_ange"
+#~ msgstr "_Wijzigen"
+
+#~ msgid "Add name"
+#~ msgstr "Naam toevoegen"
+
+#~ msgid "Add topic"
+#~ msgstr "Onderwerp toevoegen"
+
+#~ msgid "Type in your room topic"
+#~ msgstr "Voer uw kamer onderwerp in"
+
+#~ msgid "For all messages"
+#~ msgstr "Voor alle berichten"
+
+#~ msgid "Only for mentions"
+#~ msgstr "Enkel bij vermeldingen"
+
+#~ msgid "Shared Media"
+#~ msgstr "Gedeelde Media"
+
+#~ msgid "photos"
+#~ msgstr "foto’s"
+
+#~ msgid "documents"
+#~ msgstr "documenten"
+
+#~ msgid "New members can see"
+#~ msgstr "Nieuwe leden kunnen het volgende zien"
+
+#~ msgid "All room history"
+#~ msgstr "Volledige kamergeschiedenis"
+
+#~ msgid "History after they were invited"
+#~ msgstr "Geschiedenis sinds uitnodiging"
+
+#~ msgid "Room Visibility"
+#~ msgstr "Zichtbaarheid van kamer"
+
+#~ msgid "Allow guests"
+#~ msgstr "Gasten toestaan"
+
+#~ msgid "Allow joining without invite"
+#~ msgstr "Deelnemen zonder uitnodiging toestaan"
+
+#~ msgid "Publish in room directory"
+#~ msgstr "Publiceren in kamerlijst"
+
+#~ msgid "Show rooms from:"
+#~ msgstr "Kamers tonen van:"
+
+#~ msgid "Your homeserver"
+#~ msgstr "Uw homeserver"
+
+#~ msgid "Other Protocol"
+#~ msgstr "Ander protocol"
+
+#~ msgid "Other Homeserver"
+#~ msgstr "Andere homeserver"
+
+#~ msgid "Images"
+#~ msgstr "Afbeeldingen"
+
+#~ msgid "Select a new avatar"
+#~ msgstr "Kies een nieuwe avatar"
+
+#~ msgid "Select a file"
+#~ msgstr "Kies een bestand"
+
+#~ msgid "Couldn’t save file"
+#~ msgstr "Kon bestand niet opslaan"
+
+#~ msgid "Couldn’t open file"
+#~ msgstr "Kon bestand niet openen"
+
+#~ msgid "The validation code is not correct."
+#~ msgstr "De validatiecode is onjuist."
+
+#~ msgid "Enter the code received via SMS"
+#~ msgstr "Voer de code in die u in een sms hebt ontvangen"
+
+#~ msgid ""
+#~ "In order to add this email address, go to your inbox and follow the link "
+#~ "you received. Once you’ve done that, click Continue."
+#~ msgstr ""
+#~ "Om dit e-mailadres te gebruiken, gaat u naar uw postvak IN en volgt u de "
+#~ "koppeling die u hebt ontvangen. Klik daarna op Doorgaan."
+
+#~ msgid "Are you sure you want to delete your account?"
+#~ msgstr "Weet u zeker dat u uw account wilt verwijderen?"
+
+#~ msgid "Fractal [{}]"
+#~ msgstr "Fractal [{}]"
+
+#~ msgid "An audio file has been added to the conversation."
+#~ msgstr "Er is een geluidsbestand toegevoegd aan het gesprek."
+
+#~ msgid "An image has been added to the conversation."
+#~ msgstr "Er is een afbeelding toegevoegd aan het gesprek."
+
+#~ msgid "A video has been added to the conversation."
+#~ msgstr "Er is een video toegevoegd aan het gesprek."
+
+#~ msgid "A file has been added to the conversation."
+#~ msgstr "Er is een bestand toegevoegd aan het gesprek."
+
+#~ msgid " (direct message)"
+#~ msgstr " (één-op-één-bericht)"
+
+#~ msgid "Leave {room_name}?"
+#~ msgstr "{room_name} verlaten?"
+
+#~ msgid "The room ID is malformed"
+#~ msgstr "De kamer-ID is onjuist"
+
+#~ msgid "EMPTY ROOM"
+#~ msgstr "LEGE KAMER"
+
+#~ msgid "{m1} and {m2}"
+#~ msgstr "{m1} en {m2}"
+
+#~ msgid "{m1} and Others"
+#~ msgstr "{m1} en anderen"
+
+#~ msgid "Several users are typing…"
+#~ msgstr "Meerdere personen typen…"
+
+#~ msgid "<b>{}</b> is typing…"
+#~ msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+#~ msgstr[0] "<b>{}</b> typt…"
+#~ msgstr[1] "<b>{}</b> en <b>{}</b> typen…"
+
+#~ msgid "Syncing, this could take a while"
+#~ msgstr "Bezig met synchroniseren, dit kan even duren"
+
+#~ msgid "Can’t login, try again"
+#~ msgstr "Kan niet inloggen, probeer het opnieuw"
+
+#~ msgid "Error deleting message"
+#~ msgstr "Fout bij verwijderen van bericht"
+
+#~ msgid "Can’t join the room, try again."
+#~ msgstr "Kan niet toetreden tot de kamer, probeer het opnieuw."
+
+#~ msgid "Can’t create the room, try again"
+#~ msgstr "Kan de kamer niet aanmaken, probeer het opnieuw"
+
+#~ msgid "Sorry, account settings can’t be loaded."
+#~ msgstr "Sorry, de accountinstellingen kunnen niet geladen worden."
+
+#~ msgid "Email is already in use"
+#~ msgstr "E-mailadres is al in gebruik"
+
+#~ msgid "Please enter a valid email address."
+#~ msgstr "Voer een geldig e-mailadres in."
+
+#~ msgid "Couldn’t add the email address."
+#~ msgstr "Kon e-mailadres niet toevoegen."
+
+#~ msgid "Phone number is already in use"
+#~ msgstr "Telefoonnummer is al in gebruik"
+
+#~ msgid ""
+#~ "Please enter your phone number in the format: \n"
+#~ " + your country code and your phone number."
+#~ msgstr ""
+#~ "Voer uw telefoonnummer in volgens onderstaand formaat: \n"
+#~ " + uw landcode en uw telefoonnummer."
+
+#~ msgid "Couldn’t add the phone number."
+#~ msgstr "Kon telefoonnummer niet toevoegen."
+
+#~ msgid "A Matrix.org client for GNOME"
+#~ msgstr "Een Matrix.org-cliënt voor Gnome"
+
+#~ msgid "© 2017–2020 Daniel García Moreno, et al."
+#~ msgstr "© 2017–2020 Daniel García Moreno, et al."
+
+#~ msgid "Learn more about Fractal"
+#~ msgstr "Kom meer te weten over Fractal"
+
+#~ msgid "Invite to {name}"
+#~ msgstr "Uitnodigen in {name}"
+
+#~ msgid "Join {room_name}?"
+#~ msgstr "[room_name} binnengaan?"
+
+#~ msgid ""
+#~ "You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</"
+#~ "b>"
+#~ msgstr "U bent uitgenodigd in <b>{room_name}</b> door <b>{sender_name}</b>"
+
+#~ msgid "You’ve been invited to join <b>{room_name}</b>"
+#~ msgstr "U bent uitgenodigd in <b>{room_name}</b>"
+
+#~ msgid "You don’t have permission to post to this room"
+#~ msgstr "U heeft geen toestemming om in deze kamer berichten te sturen"
+
+#~ msgid "OK"
+#~ msgstr "Oké"
+
+#~ msgid "Room · {} member"
+#~ msgid_plural "Room · {} members"
+#~ msgstr[0] "Kamer · {} lid"
+#~ msgstr[1] "Kamer · {} leden"
+
+#~ msgid "{} member"
+#~ msgid_plural "{} members"
+#~ msgstr[0] "{} lid"
+#~ msgstr[1] "{} leden"
+
+#~ msgid "Save media as"
+#~ msgstr "Media opslaan als"
+
+#~ msgid "_Save"
+#~ msgstr "Op_slaan"
+
+#~ msgid "You have been kicked from {}"
+#~ msgstr "U bent uit {} verwijderd"
+
+#~ msgid ""
+#~ "Kicked by: {}\n"
+#~ " “{}”"
+#~ msgstr ""
+#~ "Verwijderd door: {}\n"
+#~ "‘{}’"
+
+#~ msgid "Malformed server URL"
+#~ msgstr "Onjuiste server-URL"
+
+#~ msgid "Error while loading previous media"
+#~ msgstr "Fout bij laden van vorige media"
+
+#~ msgid "Privileged"
+#~ msgstr "Geprivilegieerd"
+
+#, c-format
+#~ msgid "Last edited %c"
+#~ msgstr "Laatst gewijzigd %c"
+
+#~ msgid "Open"
+#~ msgstr "Openen"
+
+#~ msgid "%l∶%M %p"
+#~ msgstr "%H:%m"
+
+#~ msgid "%R"
+#~ msgstr "%R"
+
+#~ msgid "Invites"
+#~ msgstr "Uitnodigingen"
+
+#~ msgid "You don’t have any invitations"
+#~ msgstr "U heeft geen uitnodigingen"
+
+#~ msgid "Drag and drop rooms here to add them to your favorites"
+#~ msgstr "Versleep kamers naar hier om ze aan uw favorieten toe te voegen"
+
+#~ msgid "You don’t have any rooms yet"
+#~ msgstr "U heeft nog geen kamers"
 
 #~ msgid "Select room image file"
-#~ msgstr "Selecteer afbeelding voor gesprek"
+#~ msgstr "Selecteer afbeelding voor kamer"
 
 # Misschien nog aan te passen, geen idee waar dit juist staat - Nathan
 #~ msgid "Chat"
-#~ msgstr "Gesprek"
+#~ msgstr "Chat"
 
 #~ msgid "Directory"
 #~ msgstr "Map"
@@ -1089,10 +2706,7 @@ msgstr "U hebt nog geen gesprekken"
 #~ msgstr "Bezig met laden"
 
 #~ msgid "Private Chat"
-#~ msgstr "Privégesprek"
-
-#~ msgid "The identity server is invalid."
-#~ msgstr "De identiteitsserver is ongeldig."
+#~ msgstr "Privéchat"
 
 #~ msgid "Uploading video."
 #~ msgstr "Video wordt geüpload."
@@ -1103,20 +2717,11 @@ msgstr "U hebt nog geen gesprekken"
 #~ msgid "Uploading image."
 #~ msgstr "Afbeelding wordt geüpload."
 
-#~ msgid "Uploading file."
-#~ msgstr "Bestand wordt geüpload."
-
 #~ msgid "Save as…"
 #~ msgstr "Opslaan als…"
 
-#~ msgid "Error sending message"
-#~ msgstr "Fout bij verzenden van bericht"
-
 #~ msgid "Media is not loaded yet."
 #~ msgstr "Media nog niet ingeladen."
-
-#~ msgid "Could not save the file"
-#~ msgstr "Kon bestand niet opslaan"
 
 #~ msgid "@icon@"
 #~ msgstr "@icon@"
@@ -1131,7 +2736,7 @@ msgstr "U hebt nog geen gesprekken"
 #~ "weigeren"
 
 #~ msgid "Username"
-#~ msgstr "Gebruikersnaam"
+#~ msgstr "Persoon-ID"
 
 #~ msgctxt "login button"
 #~ msgid "Log In"
@@ -1140,23 +2745,17 @@ msgstr "U hebt nog geen gesprekken"
 #~ msgid "Identity server URL"
 #~ msgstr "Identiteitsserver-URL"
 
-#~ msgid "Matrix Server"
-#~ msgstr "Matrix-server"
-
-#~ msgid "Advanced"
-#~ msgstr "Geavanceerd"
-
 #~ msgid "Reset Password"
-#~ msgstr "Wachtwoord opnieuw instellen"
+#~ msgstr "Wachtwoord Resetten"
 
 #~ msgid "Log In as Guest"
-#~ msgstr "Inloggen als gast"
+#~ msgstr "Inloggen als Gast"
 
 #~ msgid "Login"
 #~ msgstr "Inloggen"
 
 #~ msgid "Room topic"
-#~ msgstr "Gespreksonderwerp"
+#~ msgstr "Kamer onderwerp"
 
 #~ msgid "Media viewer"
 #~ msgstr "Mediaweergave"
