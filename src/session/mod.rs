@@ -495,11 +495,6 @@ impl Session {
     pub async fn mark_ready(&self) {
         let imp = self.imp();
 
-        // FIXME: we should actually check if we have now the keys
-        spawn!(clone!(@weak self as obj => async move {
-            obj.has_cross_signing_keys().await;
-        }));
-
         imp.logout_on_dispose.set(false);
 
         self.show_content();
@@ -832,19 +827,23 @@ impl Session {
         imp.stack.set_visible_child(&*imp.media_viewer);
     }
 
-    async fn has_cross_signing_keys(&self) -> bool {
+    pub async fn cross_signing_status(&self) -> Option<CrossSigningStatus> {
         let encryption = self.client().encryption();
-        spawn_tokio!(async move {
-            if let Some(cross_signing_status) = encryption.cross_signing_status().await {
-                debug!("Cross signing keys status: {:?}", cross_signing_status);
-                cross_signing_status.has_self_signing && cross_signing_status.has_user_signing
-            } else {
-                debug!("Session doesn't have needed cross signing keys");
-                false
-            }
-        })
-        .await
-        .unwrap()
+
+        spawn_tokio!(async move { encryption.cross_signing_status().await })
+            .await
+            .unwrap()
+            .map(|s| CrossSigningStatus {
+                has_self_signing: s.has_self_signing,
+                has_user_signing: s.has_user_signing,
+            })
+    }
+
+    pub async fn has_cross_signing_keys(&self) -> bool {
+        self.cross_signing_status()
+            .await
+            .filter(|s| s.has_all_keys())
+            .is_some()
     }
 
     fn setup_direct_room_handler(&self) {
@@ -1052,4 +1051,17 @@ fn parse_room(room: &str) -> Option<(OwnedRoomOrAliasId, Vec<OwnedServerName>)> 
 
 fn notification_id(session_id: &str, room_id: &RoomId, event_id: &EventId) -> String {
     format!("{session_id}:{room_id}:{event_id}")
+}
+
+#[derive(Debug, Default, Clone, Copy)]
+pub struct CrossSigningStatus {
+    pub has_self_signing: bool,
+    pub has_user_signing: bool,
+}
+
+impl CrossSigningStatus {
+    /// Whether this status indicates that we have all the keys.
+    pub fn has_all_keys(&self) -> bool {
+        self.has_self_signing && self.has_user_signing
+    }
 }

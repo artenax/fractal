@@ -14,9 +14,10 @@ use crate::{
     session::{
         user::UserExt,
         verification::{
-            IdentityVerification, SasData, VerificationMode, VerificationState,
+            IdentityVerification, SasData, VerificationList, VerificationMode, VerificationState,
             VerificationSupportedMethods,
         },
+        Session,
     },
     spawn,
 };
@@ -93,6 +94,14 @@ mod imp {
         pub wait_for_other_party_instructions: TemplateChild<gtk::Label>,
         #[template_child]
         pub confirm_scanned_qr_code_question: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub user_signing_key_icon: TemplateChild<gtk::Image>,
+        #[template_child]
+        pub self_signing_key_icon: TemplateChild<gtk::Image>,
+        #[template_child]
+        pub missing_keys_restart_btn: TemplateChild<gtk::Button>,
+        pub keys_received_handler: RefCell<Option<SignalHandlerId>>,
+        pub keys_timeout_source: RefCell<Option<glib::SourceId>>,
     }
 
     #[glib::object_subclass]
@@ -225,6 +234,15 @@ mod imp {
                 .connect_code_detected(clone!(@weak obj => move |_, data| {
                     obj.finish_scanning(data);
                 }));
+
+            self.missing_keys_restart_btn
+                .connect_clicked(clone!(@weak obj => move |_| {
+                    if let Some(request) = obj.request() {
+                        if request.mode() == VerificationMode::CurrentSession {
+                            obj.activate_action("session-verification.start-request", None).unwrap();
+                        }
+                    }
+                }));
         }
 
         fn dispose(&self) {
@@ -239,6 +257,14 @@ mod imp {
 
                 if let Some(handler) = self.supported_methods_handler.take() {
                     request.disconnect(handler);
+                }
+
+                if let Some(handler_id) = self.keys_received_handler.take() {
+                    request.session().verification_list().disconnect(handler_id);
+                }
+
+                if let Some(source) = self.keys_timeout_source.take() {
+                    source.remove()
                 }
             }
         }
@@ -290,6 +316,17 @@ impl IdentityVerificationWidget {
 
             if let Some(handler) = imp.supported_methods_handler.take() {
                 previous_request.disconnect(handler);
+            }
+
+            if let Some(handler_id) = imp.keys_received_handler.take() {
+                previous_request
+                    .session()
+                    .verification_list()
+                    .disconnect(handler_id);
+            }
+
+            if let Some(source) = imp.keys_timeout_source.take() {
+                source.remove()
             }
         }
 
@@ -436,7 +473,9 @@ impl IdentityVerificationWidget {
                     imp.main_stack.set_visible_child_name("emoji");
                 }
                 VerificationState::Completed => {
-                    imp.main_stack.set_visible_child_name("completed");
+                    spawn!(clone!(@weak self as obj => async move {
+                        obj.handle_completed().await;
+                    }));
                 }
                 VerificationState::Cancelled
                 | VerificationState::Dismissed
@@ -504,9 +543,8 @@ impl IdentityVerificationWidget {
                     "This session is ready to send and receive secure messages.",
                 ));
                 imp.done_btn.set_label(&gettext("Get Started"));
-                imp.confirm_scanned_qr_code_question.set_label(&gettext(
-                    "Does the other session show a confirmation shield?",
-                ));
+                imp.confirm_scanned_qr_code_question
+                    .set_label(&gettext("Does the other session show a confirmation?"));
             }
             VerificationMode::OtherSession => {
                 imp.accept_request_title
@@ -514,7 +552,8 @@ impl IdentityVerificationWidget {
                 imp.accept_request_instructions
                     .set_label(&gettext("Verify the new session from the current session."));
                 imp.scan_qrcode_title.set_label(&gettext("Verify Session"));
-                imp.scan_qrcode_instructions.set_label(&gettext("Scan the QR code from this session from another session logged into this account."));
+                imp.scan_qrcode_instructions
+                    .set_label(&gettext("Scan the QR code displayed by the other session."));
                 imp.qrcode_scanned_message.set_label(&gettext("You scanned the QR code successfully. You may need to confirm the verification from the other session."));
                 imp.qrcode_title.set_label(&gettext("Verify Session"));
                 imp.qrcode_instructions.set_label(&gettext(
@@ -533,9 +572,8 @@ impl IdentityVerificationWidget {
                 imp.wait_for_other_party_instructions.set_label(&gettext(
                     "Accept the verification request from another session or device.",
                 ));
-                imp.confirm_scanned_qr_code_question.set_label(&gettext(
-                    "Does the other session show a confirmation shield?",
-                ));
+                imp.confirm_scanned_qr_code_question
+                    .set_label(&gettext("Does the other session show a confirmation?"));
             }
             VerificationMode::User => {
                 let name = request.user().display_name();
@@ -592,11 +630,89 @@ impl IdentityVerificationWidget {
                 imp.confirm_scanned_qr_code_question.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
-                    "Does {user} see a confirmation shield on their session?",
+                    "Does {user} see a confirmation on their session?",
                     &[("user", &format!("<b>{}</b>", name))],
                 ));
             }
         }
+    }
+
+    async fn handle_completed(&self) {
+        let request = match self.request() {
+            Some(request) => request,
+            None => return,
+        };
+        let imp = self.imp();
+
+        if request.mode() != VerificationMode::CurrentSession {
+            imp.main_stack.set_visible_child_name("completed");
+            return;
+        }
+
+        // Check that we have received the necessary cross-signing keys.
+        let session = request.session();
+        if self.check_keys_received(&session).await {
+            return;
+        }
+
+        // Listen to new signing keys received.
+        imp.keys_received_handler
+            .replace(Some(session.verification_list().connect_closure(
+                "secret-received",
+                true,
+                glib::closure_local!(@watch self as obj => move |list: VerificationList| {
+                    let session = list.session();
+
+                    spawn!(clone!(@weak obj, @weak session => async move {
+                        obj.check_keys_received(&session).await;
+                    }));
+                }),
+            )));
+
+        // If we still didn't receive the signing keys, show the missing keys screen
+        // after 5 seconds.
+        imp.keys_timeout_source
+            .replace(Some(glib::timeout_add_seconds_local_once(
+                5,
+                clone!(@weak self as obj, @weak session => move || {
+                    obj.imp().keys_timeout_source.take();
+
+                    spawn!(clone!(@weak obj, @weak session => async move {
+                        // Check one last time.
+                        if !obj.check_keys_received(&session).await {
+                            obj.imp().main_stack.set_visible_child_name("missing-keys");
+                        }
+                    }));
+                }),
+            )));
+    }
+
+    /// Check whether all signing keys were received.
+    ///
+    /// Returns `true` if all the keys were received.
+    async fn check_keys_received(&self, session: &Session) -> bool {
+        let imp = self.imp();
+
+        let status = session.cross_signing_status().await.unwrap_or_default();
+
+        if status.has_all_keys() {
+            imp.main_stack.set_visible_child_name("completed");
+
+            if let Some(handler_id) = imp.keys_received_handler.take() {
+                session.verification_list().disconnect(handler_id);
+            }
+            if let Some(source) = imp.keys_timeout_source.take() {
+                source.remove()
+            }
+
+            return true;
+        }
+
+        // Update the "missing keys" screen so it's always ready.
+        set_state_icon(&imp.self_signing_key_icon, status.has_self_signing);
+        set_state_icon(&imp.user_signing_key_icon, status.has_user_signing);
+
+        false
     }
 }
 
@@ -620,4 +736,22 @@ fn sas_emoji_i18n() -> HashMap<String, String> {
     }
 
     HashMap::new()
+}
+
+/// Set the icon state on the given `GtkImage` based on whether a parameter is
+/// present or not.
+fn set_state_icon(image: &gtk::Image, present: bool) {
+    if present {
+        image.set_icon_name(Some("emblem-default-symbolic"));
+        image.remove_css_class("error");
+        image.add_css_class("success");
+        // Translators: This is the tooltip when a signing key was received.
+        image.set_tooltip_text(Some(&gettext("Received")));
+    } else {
+        image.set_icon_name(Some("emblem-important-symbolic"));
+        image.add_css_class("error");
+        image.remove_css_class("success");
+        // Translators: This is the tooltip when a signing key is missing.
+        image.set_tooltip_text(Some(&gettext("Missing")));
+    }
 }

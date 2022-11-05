@@ -61,6 +61,14 @@ mod imp {
                     obj.show_bootstrap();
                 },
             );
+
+            klass.install_action(
+                "session-verification.start-request",
+                None,
+                move |obj, _, _| {
+                    obj.start_request();
+                },
+            );
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {

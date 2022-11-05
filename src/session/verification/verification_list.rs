@@ -48,7 +48,7 @@ impl indexmap::Equivalent<FlowId> for FlowIdUnowned<'_> {
 mod imp {
     use std::cell::RefCell;
 
-    use glib::object::WeakRef;
+    use glib::{object::WeakRef, subclass::Signal};
     use indexmap::IndexMap;
     use once_cell::sync::Lazy;
 
@@ -68,6 +68,12 @@ mod imp {
     }
 
     impl ObjectImpl for VerificationList {
+        fn signals() -> &'static [Signal] {
+            static SIGNALS: Lazy<Vec<Signal>> =
+                Lazy::new(|| vec![Signal::builder("secret-received").build()]);
+            SIGNALS.as_ref()
+        }
+
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![glib::ParamSpecObject::builder::<Session>("session")
@@ -178,6 +184,10 @@ impl VerificationList {
                 }
                 AnyToDeviceEvent::KeyVerificationDone(e) => {
                     self.get_by_id(&e.sender, &e.content.transaction_id)
+                }
+                AnyToDeviceEvent::SecretSend(_) => {
+                    self.emit_by_name::<()>("secret-received", &[]);
+                    continue;
                 }
                 _ => continue,
             };
