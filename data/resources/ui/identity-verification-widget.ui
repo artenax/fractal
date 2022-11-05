@@ -20,7 +20,7 @@
                     <property name="spacing">18</property>
                     <property name="valign">center</property>
                     <child>
-                      <object class="GtkLabel" id="label1">
+                      <object class="GtkLabel" id="accept_request_title">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -30,7 +30,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label2">
+                      <object class="GtkLabel" id="accept_request_instructions">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -80,7 +80,7 @@
                     <property name="spacing">18</property>
                     <property name="valign">center</property>
                     <child>
-                      <object class="GtkLabel" id="label3">
+                      <object class="GtkLabel" id="scan_qrcode_title">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -90,7 +90,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label4">
+                      <object class="GtkLabel" id="scan_qrcode_instructions">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -156,7 +156,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label5">
+                      <object class="GtkLabel" id="qrcode_scanned_message">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -181,7 +181,7 @@
                     <property name="spacing">18</property>
                     <property name="valign">center</property>
                     <child>
-                      <object class="GtkLabel" id="label8">
+                      <object class="GtkLabel" id="qrcode_title">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -191,7 +191,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label9">
+                      <object class="GtkLabel" id="qrcode_instructions">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -253,7 +253,7 @@
                     <property name="spacing">18</property>
                     <property name="valign">center</property>
                     <child>
-                      <object class="GtkLabel" id="label10">
+                      <object class="GtkLabel" id="emoji_title">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -263,7 +263,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label11">
+                      <object class="GtkLabel" id="emoji_instructions">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -324,7 +324,7 @@
                     <property name="spacing">18</property>
                     <property name="valign">center</property>
                     <child>
-                      <object class="GtkLabel" id="label12">
+                      <object class="GtkLabel" id="completed_title">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -339,7 +339,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label13">
+                      <object class="GtkLabel" id="completed_message">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -375,7 +375,7 @@
                     <property name="valign">center</property>
                     <property name="halign">center</property>
                     <child>
-                      <object class="GtkLabel" id="label14">
+                      <object class="GtkLabel" id="wait_for_other_party_title">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -385,7 +385,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label15">
+                      <object class="GtkLabel" id="wait_for_other_party_instructions">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>
@@ -431,7 +431,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label16">
+                      <object class="GtkLabel" id="confirm_scanned_qr_code_question">
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="justify">center</property>

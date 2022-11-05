@@ -66,33 +66,33 @@ mod imp {
         #[template_child]
         pub cancel_scanning_btn: TemplateChild<SpinnerButton>,
         #[template_child]
-        pub label1: TemplateChild<gtk::Label>,
+        pub accept_request_title: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label2: TemplateChild<gtk::Label>,
+        pub accept_request_instructions: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label3: TemplateChild<gtk::Label>,
+        pub scan_qrcode_title: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label4: TemplateChild<gtk::Label>,
+        pub scan_qrcode_instructions: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label5: TemplateChild<gtk::Label>,
+        pub qrcode_scanned_message: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label8: TemplateChild<gtk::Label>,
+        pub qrcode_title: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label9: TemplateChild<gtk::Label>,
+        pub qrcode_instructions: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label10: TemplateChild<gtk::Label>,
+        pub emoji_title: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label11: TemplateChild<gtk::Label>,
+        pub emoji_instructions: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label12: TemplateChild<gtk::Label>,
+        pub completed_title: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label13: TemplateChild<gtk::Label>,
+        pub completed_message: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label14: TemplateChild<gtk::Label>,
+        pub wait_for_other_party_title: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label15: TemplateChild<gtk::Label>,
+        pub wait_for_other_party_instructions: TemplateChild<gtk::Label>,
         #[template_child]
-        pub label16: TemplateChild<gtk::Label>,
+        pub confirm_scanned_qr_code_question: TemplateChild<gtk::Label>,
     }
 
     #[glib::object_subclass]
@@ -484,68 +484,71 @@ impl IdentityVerificationWidget {
 
         match request.mode() {
             VerificationMode::CurrentSession => {
-                // label1 and label2 won't be shown
-                imp.label2
+                // accept_request_title and accept_request_instructions won't be shown
+                imp.accept_request_instructions
                     .set_label(&gettext("Verify the new session from the current session."));
-                imp.label3.set_label(&gettext("Verify Session"));
-                imp.label4.set_label(&gettext(
+                imp.scan_qrcode_title.set_label(&gettext("Verify Session"));
+                imp.scan_qrcode_instructions.set_label(&gettext(
                     "Scan the QR code from another session logged into this account.",
                 ));
-                imp.label5.set_label(&gettext("You scanned the QR code successfully. You may need to confirm the verification from the other session."));
-                imp.label8.set_label(&gettext("Verify Session"));
-                imp.label9
+                imp.qrcode_scanned_message.set_label(&gettext("You scanned the QR code successfully. You may need to confirm the verification from the other session."));
+                imp.qrcode_title.set_label(&gettext("Verify Session"));
+                imp.qrcode_instructions
                     .set_label(&gettext("Scan this QR code from the other session."));
-                imp.label10.set_label(&gettext("Verify Session"));
-                imp.label11.set_label(&gettext(
+                imp.emoji_title.set_label(&gettext("Verify Session"));
+                imp.emoji_instructions.set_label(&gettext(
                     "Check if the same emoji appear in the same order on the other device.",
                 ));
-                imp.label12.set_label(&gettext("Request Complete"));
-                imp.label13.set_label(&gettext(
+                imp.completed_title.set_label(&gettext("Request Complete"));
+                imp.completed_message.set_label(&gettext(
                     "This session is ready to send and receive secure messages.",
                 ));
                 imp.done_btn.set_label(&gettext("Get Started"));
-                imp.label16.set_label(&gettext(
+                imp.confirm_scanned_qr_code_question.set_label(&gettext(
                     "Does the other session show a confirmation shield?",
                 ));
             }
             VerificationMode::OtherSession => {
-                imp.label1
+                imp.accept_request_title
                     .set_label(&gettext("Login Request From Another Session"));
-                imp.label2
+                imp.accept_request_instructions
                     .set_label(&gettext("Verify the new session from the current session."));
-                imp.label3.set_label(&gettext("Verify Session"));
-                imp.label4.set_label(&gettext("Scan the QR code from this session from another session logged into this account."));
-                imp.label5.set_label(&gettext("You scanned the QR code successfully. You may need to confirm the verification from the other session."));
-                imp.label8.set_label(&gettext("Verify Session"));
-                imp.label9.set_label(&gettext(
+                imp.scan_qrcode_title.set_label(&gettext("Verify Session"));
+                imp.scan_qrcode_instructions.set_label(&gettext("Scan the QR code from this session from another session logged into this account."));
+                imp.qrcode_scanned_message.set_label(&gettext("You scanned the QR code successfully. You may need to confirm the verification from the other session."));
+                imp.qrcode_title.set_label(&gettext("Verify Session"));
+                imp.qrcode_instructions.set_label(&gettext(
                     "Scan this QR code from the newly logged in session.",
                 ));
-                imp.label10.set_label(&gettext("Verify Session"));
-                imp.label11.set_label(&gettext(
+                imp.emoji_title.set_label(&gettext("Verify Session"));
+                imp.emoji_instructions.set_label(&gettext(
                     "Check if the same emoji appear in the same order on the other device.",
                 ));
-                imp.label12.set_label(&gettext("Request Complete"));
-                imp.label13.set_label(&gettext(
+                imp.completed_title.set_label(&gettext("Request Complete"));
+                imp.completed_message.set_label(&gettext(
                     "The new session is now ready to send and receive secure messages.",
                 ));
-                imp.label14.set_label(&gettext("Get Another Device"));
-                imp.label15.set_label(&gettext(
+                imp.wait_for_other_party_title
+                    .set_label(&gettext("Get Another Device"));
+                imp.wait_for_other_party_instructions.set_label(&gettext(
                     "Accept the verification request from another session or device.",
                 ));
-                imp.label16.set_label(&gettext(
+                imp.confirm_scanned_qr_code_question.set_label(&gettext(
                     "Does the other session show a confirmation shield?",
                 ));
             }
             VerificationMode::User => {
                 let name = request.user().display_name();
-                imp.label1.set_markup(&gettext("Verification Request"));
+                imp.accept_request_title
+                    .set_markup(&gettext("Verification Request"));
                 imp
-                    .label2
+                    .accept_request_instructions
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     .set_markup(&gettext_f("{user} asked to be verified. Verifying a user increases the security of the conversation.", &[("user", &format!("<b>{}</b>", name))]));
-                imp.label3.set_markup(&gettext("Verification Request"));
-                imp.label4.set_markup(&gettext_f(
+                imp.scan_qrcode_title
+                    .set_markup(&gettext("Verification Request"));
+                imp.scan_qrcode_instructions.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Scan the QR code shown on the device of {user}.",
@@ -553,38 +556,40 @@ impl IdentityVerificationWidget {
                 ));
                 // Translators: Do NOT translate the content between '{' and '}', this is a
                 // variable name.
-                imp.label5.set_markup(&gettext_f("You scanned the QR code successfully. {user} may need to confirm the verification.", &[("user", &format!("<b>{}</b>", name))]));
-                imp.label8.set_markup(&gettext("Verification Request"));
-                imp.label9.set_markup(&gettext_f(
+                imp.qrcode_scanned_message.set_markup(&gettext_f("You scanned the QR code successfully. {user} may need to confirm the verification.", &[("user", &format!("<b>{}</b>", name))]));
+                imp.qrcode_title
+                    .set_markup(&gettext("Verification Request"));
+                imp.qrcode_instructions.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Ask {user} to scan this QR code from their session.",
                     &[("user", &format!("<b>{}</b>", name))],
                 ));
-                imp.label10.set_markup(&gettext("Verification Request"));
-                imp.label11.set_markup(&gettext_f(
+                imp.emoji_title.set_markup(&gettext("Verification Request"));
+                imp.emoji_instructions.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Ask {user} if they see the following emoji appear in the same order on their screen.",
                     &[("user", &format!("<b>{}</b>", name))]
                 ));
-                imp.label12.set_markup(&gettext("Verification Complete"));
+                imp.completed_title
+                    .set_markup(&gettext("Verification Complete"));
                 // Translators: Do NOT translate the content between '{' and '}', this is a
                 // variable name.
-                imp.label13.set_markup(&gettext_f("{user} is verified and you can now be sure that your communication will be private.", &[("user", &format!("<b>{}</b>", name))]));
-                imp.label14.set_markup(&gettext_f(
+                imp.completed_message.set_markup(&gettext_f("{user} is verified and you can now be sure that your communication will be private.", &[("user", &format!("<b>{}</b>", name))]));
+                imp.wait_for_other_party_title.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Waiting for {user}",
                     &[("user", &format!("<b>{}</b>", name))],
                 ));
-                imp.label15.set_markup(&gettext_f(
+                imp.wait_for_other_party_instructions.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Ask {user} to accept the verification request.",
                     &[("user", &format!("<b>{}</b>", name))],
                 ));
-                imp.label16.set_markup(&gettext_f(
+                imp.confirm_scanned_qr_code_question.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Does {user} see a confirmation shield on their session?",
