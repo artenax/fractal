@@ -11,8 +11,8 @@ use crate::{
             message_row::MessageRow, DividerRow, RoomHistory, StateRow, TypingRow,
         },
         room::{
-            Event, EventActions, PlaceholderKind, SupportedEvent, TimelineDayDivider, TimelineItem,
-            TimelineNewMessagesDivider, TimelinePlaceholder,
+            Event, EventActions, EventTexture, PlaceholderKind, SupportedEvent, TimelineDayDivider,
+            TimelineItem, TimelineNewMessagesDivider, TimelinePlaceholder,
         },
     },
 };
@@ -345,4 +345,11 @@ impl ItemRow {
     }
 }
 
-impl EventActions for ItemRow {}
+impl EventActions for ItemRow {
+    fn texture(&self) -> Option<EventTexture> {
+        self.child()
+            .and_then(|w| w.downcast::<MessageRow>().ok())
+            .and_then(|r| r.texture())
+            .map(EventTexture::Thumbnail)
+    }
+}

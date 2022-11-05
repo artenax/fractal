@@ -41,7 +41,7 @@
         <attribute name="hidden-when">action-missing</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_Copy Image</attribute>
+        <attribute name="label" translatable="yes">_Copy Thumbnail</attribute>
         <attribute name="action">event.copy-image</attribute>
         <attribute name="hidden-when">action-missing</attribute>
       </item>

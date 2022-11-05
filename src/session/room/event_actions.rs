@@ -1,5 +1,5 @@
 use gettextrs::gettext;
-use gtk::{gio, glib, glib::clone, prelude::*};
+use gtk::{gdk, gio, glib, glib::clone, prelude::*};
 use log::error;
 use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventContent};
 use once_cell::sync::Lazy;
@@ -213,6 +213,27 @@ where
                     }
 
                     MessageType::Image(_) => {
+                        // Copy the texture to the clipboard.
+                        gtk_macros::action!(
+                            &action_group,
+                            "copy-image",
+                            clone!(@weak self as widget, @weak event => move |_, _| {
+                                let texture = widget.texture().expect("A widget with an image should have a texture");
+
+                                match texture {
+                                    EventTexture::Original(texture) => {
+                                        widget.clipboard().set_texture(&texture);
+                                        toast!(widget, gettext("Image copied to clipboard"));
+                                    }
+                                    EventTexture::Thumbnail(texture) => {
+                                        widget.clipboard().set_texture(&texture);
+                                        toast!(widget, gettext("Thumbnail copied to clipboard"));
+                                    }
+                                }
+                            })
+                        );
+
+                        // Save the image to a file.
                         gtk_macros::action!(
                             &action_group,
                             "save-image",
@@ -294,4 +315,16 @@ where
             })
         );
     }
+
+    /// Get the texture displayed by this widget, if any.
+    fn texture(&self) -> Option<EventTexture>;
+}
+
+/// A texture from an event.
+pub enum EventTexture {
+    /// The texture is the original image.
+    Original(gdk::Texture),
+
+    /// The texture is a thumbnail of the image.
+    Thumbnail(gdk::Texture),
 }

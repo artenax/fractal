@@ -303,4 +303,15 @@ impl MediaContentViewer {
         location.set_location(geo_uri);
         self.show_viewer();
     }
+
+    /// Get the texture displayed by this widget, if any.
+    pub fn texture(&self) -> Option<gdk::Texture> {
+        self.imp()
+            .viewer
+            .child()
+            .and_then(|w| w.downcast::<gtk::Picture>().ok())
+            .and_then(|p| p.paintable())
+            .and_then(|p| p.downcast::<ImagePaintable>().ok())
+            .and_then(|p| p.current_frame())
+    }
 }

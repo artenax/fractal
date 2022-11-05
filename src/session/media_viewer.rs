@@ -3,7 +3,7 @@ use gtk::{gdk, gio, glib, glib::clone, CompositeTemplate};
 use log::warn;
 use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventContent};
 
-use super::room::EventActions;
+use super::room::{EventActions, EventTexture};
 use crate::{
     components::{ContentType, ImagePaintable, MediaContentViewer},
     session::room::SupportedEvent,
@@ -293,4 +293,8 @@ impl MediaViewer {
     }
 }
 
-impl EventActions for MediaViewer {}
+impl EventActions for MediaViewer {
+    fn texture(&self) -> Option<EventTexture> {
+        self.imp().media.texture().map(EventTexture::Original)
+    }
+}

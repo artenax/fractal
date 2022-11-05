@@ -1,6 +1,6 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
-use gtk::{glib, glib::clone};
+use gtk::{gdk, glib, glib::clone};
 use log::warn;
 use matrix_sdk::ruma::events::{
     room::message::{MessageType, Relation},
@@ -136,6 +136,17 @@ impl MessageContent {
         } else {
             build_content(self, event, format);
         }
+    }
+
+    /// Get the texture displayed by this widget, if any.
+    pub fn texture(&self) -> Option<gdk::Texture> {
+        let mut content = self.child()?;
+
+        if let Some(reply) = content.downcast_ref::<MessageReply>() {
+            content = reply.content().child()?;
+        }
+
+        content.downcast_ref::<MessageMedia>()?.texture()
     }
 }
 

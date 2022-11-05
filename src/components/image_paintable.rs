@@ -359,6 +359,11 @@ impl ImagePaintable {
     pub fn is_animation(&self) -> bool {
         self.imp().frames.borrow().is_some()
     }
+
+    /// Get the current frame of this `ImagePaintable`, if any.
+    pub fn current_frame(&self) -> Option<gdk::Texture> {
+        self.imp().frame.borrow().clone()
+    }
 }
 
 fn texture_from_data(

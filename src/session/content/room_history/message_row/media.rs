@@ -1,7 +1,7 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{
-    gio,
+    gdk, gio,
     glib::{self, clone},
     CompositeTemplate,
 };
@@ -475,5 +475,16 @@ impl MessageMedia {
                 }
             })
         );
+    }
+
+    /// Get the texture displayed by this widget, if any.
+    pub fn texture(&self) -> Option<gdk::Texture> {
+        self.imp()
+            .media
+            .child()
+            .and_then(|w| w.downcast::<gtk::Picture>().ok())
+            .and_then(|p| p.paintable())
+            .and_then(|p| p.downcast::<ImagePaintable>().ok())
+            .and_then(|p| p.current_frame())
     }
 }

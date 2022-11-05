@@ -10,7 +10,7 @@ mod text;
 
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{
-    glib,
+    gdk, glib,
     glib::{clone, signal::SignalHandlerId},
     CompositeTemplate,
 };
@@ -195,5 +195,10 @@ impl MessageRow {
 
     fn update_content(&self, event: &SupportedEvent) {
         self.imp().content.update_for_event(event);
+    }
+
+    /// Get the texture displayed by this widget, if any.
+    pub fn texture(&self) -> Option<gdk::Texture> {
+        self.imp().content.texture()
     }
 }

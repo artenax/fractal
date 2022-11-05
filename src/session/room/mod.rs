@@ -46,7 +46,7 @@ use ruma::events::{typing::TypingEventContent, MessageLikeEventContent, SyncEphe
 
 pub use self::{
     event::*,
-    event_actions::EventActions,
+    event_actions::{EventActions, EventTexture},
     highlight_flags::HighlightFlags,
     member::{Member, Membership},
     member_list::MemberList,
