@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <object class="GstPlayer" id="player">
+  <object class="GstPlay" id="player">
     <property name="video-renderer">
       <object class="ComponentsVideoPlayerRenderer" id="video_renderer"/>
     </property>
-    <property name="signal-dispatcher">
-      <object class="GstPlayerGMainContextSignalDispatcher"/>
-    </property>
-    <signal name="duration-changed" handler="duration_changed" swapped="true"/>
   </object>
   <template class="ComponentsVideoPlayer" parent="AdwBin">
     <child>

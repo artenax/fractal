@@ -1,7 +1,8 @@
 use adw::subclass::prelude::*;
 use gst::ClockTime;
-use gst_player::{Player, PlayerGMainContextSignalDispatcher};
-use gtk::{gio, glib, prelude::*, CompositeTemplate};
+use gst_play::{Play as GstPlay, PlayMessage};
+use gtk::{gio, glib, glib::clone, prelude::*, CompositeTemplate};
+use log::{error, warn};
 
 use super::VideoPlayerRenderer;
 
@@ -24,7 +25,7 @@ mod imp {
         #[template_child]
         pub timestamp: TemplateChild<gtk::Label>,
         #[template_child]
-        pub player: TemplateChild<Player>,
+        pub player: TemplateChild<GstPlay>,
     }
 
     #[glib::object_subclass]
@@ -35,9 +36,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             VideoPlayerRenderer::static_type();
-            PlayerGMainContextSignalDispatcher::static_type();
             Self::bind_template(klass);
-            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -52,7 +51,7 @@ mod imp {
                     glib::ParamSpecBoolean::builder("compact")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecObject::builder::<Player>("player")
+                    glib::ParamSpecObject::builder::<GstPlay>("player")
                         .read_only()
                         .build(),
                 ]
@@ -77,6 +76,31 @@ mod imp {
                 _ => unimplemented!(),
             }
         }
+
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
+
+            self.player
+                .message_bus()
+                .add_watch_local(
+                    clone!(@weak obj =>  @default-return glib::Continue(false), move |_, message| {
+                        match PlayMessage::parse(message) {
+                            Ok(PlayMessage::DurationChanged { duration }) => obj.duration_changed(duration),
+                            Ok(PlayMessage::Warning { error, .. }) => {
+                                warn!("Warning playing video: {error}");
+                            }
+                            Ok(PlayMessage::Error { error, .. }) => {
+                                error!("Error playing video: {error}");
+                            }
+                            _ => {}
+                        }
+
+                        glib::Continue(true)
+                    }),
+                )
+                .unwrap();
+        }
     }
 
     impl WidgetImpl for VideoPlayer {}
@@ -90,7 +114,6 @@ glib::wrapper! {
         @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
 }
 
-#[gtk::template_callbacks]
 impl VideoPlayer {
     /// Create a new video player.
     #[allow(clippy::new_without_default)]
@@ -98,8 +121,8 @@ impl VideoPlayer {
         glib::Object::new(&[])
     }
 
-    /// The GStreamerPlayer for the video.
-    pub fn player(&self) -> &Player {
+    /// The `GstPlay` for the video.
+    pub fn player(&self) -> &GstPlay {
         &self.imp().player
     }
 
@@ -127,7 +150,6 @@ impl VideoPlayer {
         player.play();
     }
 
-    #[template_callback]
     fn duration_changed(&self, duration: Option<ClockTime>) {
         let label = if let Some(duration) = duration {
             let mut time = duration.seconds();

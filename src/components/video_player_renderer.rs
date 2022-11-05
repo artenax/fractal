@@ -1,6 +1,6 @@
 use adw::subclass::prelude::*;
 use gst_gtk::PaintableSink;
-use gst_player::{subclass::prelude::*, Player, PlayerVideoRenderer};
+use gst_play::{subclass::prelude::*, Play, PlayVideoRenderer};
 use gtk::{gdk, glib, prelude::*};
 
 mod imp {
@@ -18,7 +18,7 @@ mod imp {
     impl ObjectSubclass for VideoPlayerRenderer {
         const NAME: &'static str = "ComponentsVideoPlayerRenderer";
         type Type = super::VideoPlayerRenderer;
-        type Interfaces = (PlayerVideoRenderer,);
+        type Interfaces = (PlayVideoRenderer,);
     }
 
     impl ObjectImpl for VideoPlayerRenderer {
@@ -46,8 +46,8 @@ mod imp {
         }
     }
 
-    impl PlayerVideoRendererImpl for VideoPlayerRenderer {
-        fn create_video_sink(&self, _player: &Player) -> gst::Element {
+    impl PlayVideoRendererImpl for VideoPlayerRenderer {
+        fn create_video_sink(&self, _player: &Play) -> gst::Element {
             self.sink.get().unwrap().to_owned().upcast()
         }
     }
@@ -56,7 +56,7 @@ mod imp {
 glib::wrapper! {
     /// A widget displaying a video media file.
     pub struct VideoPlayerRenderer(ObjectSubclass<imp::VideoPlayerRenderer>)
-        @implements PlayerVideoRenderer;
+        @implements PlayVideoRenderer;
 }
 
 impl VideoPlayerRenderer {
