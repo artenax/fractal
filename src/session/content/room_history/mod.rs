@@ -1244,12 +1244,6 @@ impl RoomHistory {
     }
 }
 
-impl Default for RoomHistory {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 enum MentionChunk {
     Text(String),
     Mention { name: String, uri: String },

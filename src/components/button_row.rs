@@ -126,9 +126,3 @@ impl ButtonRow {
         )
     }
 }
-
-impl Default for ButtonRow {
-    fn default() -> Self {
-        Self::new()
-    }
-}

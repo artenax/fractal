@@ -43,9 +43,3 @@ impl LoginSsoPage {
         glib::Object::new(&[])
     }
 }
-
-impl Default for LoginSsoPage {
-    fn default() -> Self {
-        Self::new()
-    }
-}

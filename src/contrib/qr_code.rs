@@ -133,21 +133,15 @@ glib::wrapper! {
         @extends gtk::Widget;
 }
 
-impl Default for QRCode {
-    fn default() -> Self {
-        glib::Object::new(&[])
-    }
-}
-
 impl QRCode {
     /// Creates a new [`QRCode`].
     pub fn new() -> Self {
-        Self::default()
+        glib::Object::new(&[])
     }
 
     /// Creates a new [`QRCode`] with a QR code generated from `bytes`.
     pub fn from_bytes(bytes: &[u8]) -> Self {
-        let qrcode = Self::default();
+        let qrcode = Self::new();
         qrcode.set_bytes(bytes);
 
         qrcode

@@ -402,9 +402,3 @@ impl LabelWithWidgets {
         self.invalidate_child_widgets();
     }
 }
-
-impl Default for LabelWithWidgets {
-    fn default() -> Self {
-        Self::new()
-    }
-}

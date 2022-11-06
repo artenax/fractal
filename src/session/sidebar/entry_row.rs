@@ -87,9 +87,3 @@ impl EntryRow {
         self.notify("entry");
     }
 }
-
-impl Default for EntryRow {
-    fn default() -> Self {
-        Self::new()
-    }
-}

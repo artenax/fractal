@@ -180,9 +180,3 @@ impl MemberMenu {
         }
     }
 }
-
-impl Default for MemberMenu {
-    fn default() -> Self {
-        Self::new()
-    }
-}

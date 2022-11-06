@@ -92,9 +92,3 @@ impl Greeter {
         }
     }
 }
-
-impl Default for Greeter {
-    fn default() -> Self {
-        Self::new()
-    }
-}

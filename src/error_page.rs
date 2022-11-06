@@ -123,9 +123,3 @@ impl ErrorPage {
         }
     }
 }
-
-impl Default for ErrorPage {
-    fn default() -> Self {
-        Self::new()
-    }
-}

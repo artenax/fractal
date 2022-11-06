@@ -91,9 +91,3 @@ impl VerificationRow {
         self.notify("identity-verification");
     }
 }
-
-impl Default for VerificationRow {
-    fn default() -> Self {
-        Self::new()
-    }
-}

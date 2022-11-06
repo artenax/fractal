@@ -56,9 +56,3 @@ impl MessageReactionList {
         });
     }
 }
-
-impl Default for MessageReactionList {
-    fn default() -> Self {
-        Self::new()
-    }
-}

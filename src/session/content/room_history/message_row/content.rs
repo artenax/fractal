@@ -139,12 +139,6 @@ impl MessageContent {
     }
 }
 
-impl Default for MessageContent {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 /// Build the content widget of `event` as a child of `parent`.
 fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: ContentFormat) {
     let parent = parent.upcast_ref();

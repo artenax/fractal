@@ -63,9 +63,3 @@ impl MessageReply {
         self.imp().content.as_ref()
     }
 }
-
-impl Default for MessageReply {
-    fn default() -> Self {
-        Self::new()
-    }
-}

@@ -125,9 +125,3 @@ impl AvatarWithSelection {
         self.avatar().size()
     }
 }
-
-impl Default for AvatarWithSelection {
-    fn default() -> Self {
-        Self::new()
-    }
-}

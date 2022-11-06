@@ -154,9 +154,3 @@ impl MembershipSubpageRow {
         self.imp().members_count.set_text(&format!("{}", n));
     }
 }
-
-impl Default for MembershipSubpageRow {
-    fn default() -> Self {
-        Self::new()
-    }
-}

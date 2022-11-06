@@ -254,9 +254,3 @@ impl OverlappingBox {
         self.queue_resize();
     }
 }
-
-impl Default for OverlappingBox {
-    fn default() -> Self {
-        Self::new()
-    }
-}

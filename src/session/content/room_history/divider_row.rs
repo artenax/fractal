@@ -83,9 +83,3 @@ impl DividerRow {
         self.imp().label.text().as_str().to_owned()
     }
 }
-
-impl Default for DividerRow {
-    fn default() -> Self {
-        Self::new()
-    }
-}

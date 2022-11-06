@@ -688,12 +688,6 @@ impl Login {
     }
 }
 
-impl Default for Login {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 /// A homeserver URL or a server name.
 pub enum HomeserverOrServerName {
     /// A homeserver URL.

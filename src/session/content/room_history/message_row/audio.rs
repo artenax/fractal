@@ -250,9 +250,3 @@ impl MessageAudio {
         self.set_state(MediaState::Ready);
     }
 }
-
-impl Default for MessageAudio {
-    fn default() -> Self {
-        Self::new()
-    }
-}

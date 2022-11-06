@@ -197,9 +197,3 @@ impl MessageRow {
         self.imp().content.update_for_event(event);
     }
 }
-
-impl Default for MessageRow {
-    fn default() -> Self {
-        Self::new()
-    }
-}

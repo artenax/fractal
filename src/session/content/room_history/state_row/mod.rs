@@ -260,9 +260,3 @@ fn text(label: String) -> gtk::Label {
     child.set_xalign(0.0);
     child
 }
-
-impl Default for StateRow {
-    fn default() -> Self {
-        Self::new()
-    }
-}

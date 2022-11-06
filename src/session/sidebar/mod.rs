@@ -513,9 +513,3 @@ impl Sidebar {
         self.root()?.downcast().ok()
     }
 }
-
-impl Default for Sidebar {
-    fn default() -> Self {
-        Self::new()
-    }
-}

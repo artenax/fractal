@@ -374,9 +374,3 @@ impl EditableAvatar {
         )
     }
 }
-
-impl Default for EditableAvatar {
-    fn default() -> Self {
-        Self::new()
-    }
-}

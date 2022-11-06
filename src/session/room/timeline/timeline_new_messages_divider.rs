@@ -29,9 +29,3 @@ impl TimelineNewMessagesDivider {
         glib::Object::new(&[])
     }
 }
-
-impl Default for TimelineNewMessagesDivider {
-    fn default() -> Self {
-        Self::new()
-    }
-}

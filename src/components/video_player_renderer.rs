@@ -69,9 +69,3 @@ impl VideoPlayerRenderer {
         self.imp().sink.get().unwrap().property("paintable")
     }
 }
-
-impl Default for VideoPlayerRenderer {
-    fn default() -> Self {
-        Self::new()
-    }
-}

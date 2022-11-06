@@ -93,15 +93,9 @@ glib::wrapper! {
         @extends gtk::Widget, adw::Bin;
 }
 
-impl Default for DragOverlay {
-    fn default() -> Self {
-        glib::Object::new(&[])
-    }
-}
-
 impl DragOverlay {
     pub fn new() -> Self {
-        Self::default()
+        glib::Object::new(&[])
     }
 
     /// The title of this `DragOverlay`.

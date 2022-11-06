@@ -222,9 +222,3 @@ impl CategoryRow {
         self.notify("label");
     }
 }
-
-impl Default for CategoryRow {
-    fn default() -> Self {
-        Self::new()
-    }
-}

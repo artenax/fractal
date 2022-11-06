@@ -77,9 +77,3 @@ impl MarkdownPopover {
         self.imp().markdown_enabled.set(enabled)
     }
 }
-
-impl Default for MarkdownPopover {
-    fn default() -> Self {
-        Self::new()
-    }
-}

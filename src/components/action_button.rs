@@ -224,9 +224,3 @@ impl ActionButton {
         self.emit_by_name::<()>("clicked", &[]);
     }
 }
-
-impl Default for ActionButton {
-    fn default() -> Self {
-        Self::new()
-    }
-}

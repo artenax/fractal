@@ -216,9 +216,3 @@ impl PublicRoomRow {
         button.set_loading(public_room.is_pending());
     }
 }
-
-impl Default for PublicRoomRow {
-    fn default() -> Self {
-        Self::new()
-    }
-}

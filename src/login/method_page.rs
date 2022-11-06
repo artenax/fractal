@@ -226,9 +226,3 @@ impl LoginMethodPage {
         self.imp().username_entry.grab_focus();
     }
 }
-
-impl Default for LoginMethodPage {
-    fn default() -> Self {
-        Self::new()
-    }
-}

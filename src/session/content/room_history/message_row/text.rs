@@ -434,9 +434,3 @@ fn extract_mentions(s: &str, room: &Room) -> (String, Vec<Pill>) {
 
     (label, widgets)
 }
-
-impl Default for MessageText {
-    fn default() -> Self {
-        Self::new()
-    }
-}

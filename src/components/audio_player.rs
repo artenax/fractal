@@ -147,9 +147,3 @@ impl AudioPlayer {
         self.notify("autoplay");
     }
 }
-
-impl Default for AudioPlayer {
-    fn default() -> Self {
-        Self::new()
-    }
-}

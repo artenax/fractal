@@ -115,9 +115,3 @@ impl Badge {
         }
     }
 }
-
-impl Default for Badge {
-    fn default() -> Self {
-        Self::new()
-    }
-}

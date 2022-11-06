@@ -129,9 +129,3 @@ impl MemberRow {
         Some(member_page.member_menu().clone())
     }
 }
-
-impl Default for MemberRow {
-    fn default() -> Self {
-        Self::new()
-    }
-}

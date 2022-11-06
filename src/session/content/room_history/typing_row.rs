@@ -237,9 +237,3 @@ impl TypingRow {
         }
     }
 }
-
-impl Default for TypingRow {
-    fn default() -> Self {
-        Self::new()
-    }
-}

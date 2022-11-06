@@ -37,9 +37,3 @@ impl CustomEntry {
         glib::Object::new(&[])
     }
 }
-
-impl Default for CustomEntry {
-    fn default() -> Self {
-        Self::new()
-    }
-}

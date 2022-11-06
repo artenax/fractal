@@ -151,12 +151,6 @@ impl LoginHomeserverPage {
     }
 }
 
-impl Default for LoginHomeserverPage {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 fn build_server_name(server: &str) -> Result<OwnedServerName, IdParseError> {
     let server = server
         .strip_prefix("http://")
