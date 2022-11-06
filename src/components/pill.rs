@@ -102,6 +102,8 @@ impl Pill {
     }
 
     /// Set the user displayed by this widget.
+    ///
+    /// This removes the room, if one was set.
     pub fn set_user(&self, user: Option<User>) {
         let imp = self.imp();
 
@@ -112,6 +114,7 @@ impl Pill {
         while let Some(binding) = imp.bindings.borrow_mut().pop() {
             binding.unbind();
         }
+        self.set_room(None);
 
         if let Some(ref user) = user {
             let display_name_binding = user
@@ -123,7 +126,7 @@ impl Pill {
         }
 
         imp.avatar
-            .set_item(user.clone().map(|user| user.avatar().clone()));
+            .set_item(user.as_ref().map(|user| user.avatar().clone()));
         imp.user.replace(user);
 
         self.notify("user");
@@ -135,6 +138,8 @@ impl Pill {
     }
 
     /// Set the room displayed by this widget.
+    ///
+    /// This removes the user, if one was set.
     pub fn set_room(&self, room: Option<Room>) {
         let imp = self.imp();
 
@@ -145,6 +150,7 @@ impl Pill {
         while let Some(binding) = imp.bindings.borrow_mut().pop() {
             binding.unbind();
         }
+        self.set_user(None);
 
         if let Some(ref room) = room {
             let display_name_binding = room
@@ -156,7 +162,7 @@ impl Pill {
         }
 
         imp.avatar
-            .set_item(room.clone().map(|room| room.avatar().clone()));
+            .set_item(room.as_ref().map(|room| room.avatar().clone()));
         imp.room.replace(room);
 
         self.notify("room");
