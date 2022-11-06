@@ -6,7 +6,10 @@ use log::{debug, error};
 use super::IdentityVerificationWidget;
 use crate::{
     components::{AuthDialog, AuthError, SpinnerButton},
-    session::verification::{IdentityVerification, VerificationState},
+    session::{
+        verification::{IdentityVerification, VerificationState},
+        UserExt,
+    },
     spawn, toast, Session, Window,
 };
 
@@ -22,6 +25,8 @@ mod imp {
     pub struct SessionVerification {
         pub request: RefCell<Option<IdentityVerification>>,
         pub session: WeakRef<Session>,
+        #[template_child]
+        pub header_title: TemplateChild<gtk::Label>,
         #[template_child]
         pub bootstrap_button: TemplateChild<SpinnerButton>,
         #[template_child]
@@ -145,7 +150,15 @@ impl SessionVerification {
 
     /// Set the current session.
     fn set_session(&self, session: Option<Session>) {
-        self.imp().session.set(session.as_ref())
+        let imp = self.imp();
+
+        if let Some(user) = session.as_ref().and_then(|s| s.user()) {
+            imp.header_title.set_text(user.user_id().as_str())
+        } else {
+            imp.header_title.set_text("");
+        }
+
+        imp.session.set(session.as_ref())
     }
 
     fn request(&self) -> Option<IdentityVerification> {

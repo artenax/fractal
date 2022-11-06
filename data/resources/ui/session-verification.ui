@@ -23,6 +23,16 @@
                 </style>
               </object>
             </child>
+            <property name="title-widget">
+              <object class="GtkLabel" id="header_title">
+                <property name="single-line-mode">True</property>
+                <property name="ellipsize">end</property>
+                <property name="width-chars">5</property>
+                <style>
+                  <class name="title"/>
+                </style>
+              </object>
+            </property>
           </object>
         </child>
         <child>
