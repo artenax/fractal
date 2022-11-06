@@ -77,7 +77,6 @@ glib::wrapper! {
 
 impl MessageLocation {
     /// Create a new location message.
-    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         glib::Object::new(&[])
     }

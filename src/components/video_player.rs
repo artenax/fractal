@@ -116,7 +116,6 @@ glib::wrapper! {
 
 impl VideoPlayer {
     /// Create a new video player.
-    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         glib::Object::new(&[])
     }

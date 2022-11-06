@@ -236,7 +236,6 @@ glib::wrapper! {
 
 impl MessageMedia {
     /// Create a new media message.
-    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         glib::Object::new(&[])
     }

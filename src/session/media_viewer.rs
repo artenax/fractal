@@ -132,7 +132,6 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl MediaViewer {
-    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         glib::Object::new(&[])
     }

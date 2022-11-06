@@ -96,7 +96,6 @@ glib::wrapper! {
 
 impl LocationViewer {
     /// Create a new location message.
-    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         glib::Object::new(&[])
     }

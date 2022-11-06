@@ -2,6 +2,7 @@
     html_logo_url = "https://gitlab.gnome.org/GNOME/fractal/-/raw/main/data/icons/org.gnome.Fractal.svg?inline=false",
     html_favicon_url = "https://gitlab.gnome.org/GNOME/fractal/-/raw/main/data/icons/org.gnome.Fractal-symbolic.svg?inline=false"
 )]
+#![allow(clippy::new_without_default)]
 
 mod application;
 #[rustfmt::skip]
