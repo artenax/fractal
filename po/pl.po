@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-10-28 19:46+0000\n"
-"PO-Revision-Date: 2022-10-30 13:28+0100\n"
+"POT-Creation-Date: 2022-11-05 09:49+0000\n"
+"PO-Revision-Date: 2022-11-06 15:33+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -86,7 +86,7 @@ msgstr ""
 "w języku Rust. Jego interfejs jest zoptymalizowany do współpracy dużych "
 "grup, takich jak projekty wolnego oprogramowania."
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:169
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:183
 msgid "The Fractal Team"
 msgstr "Zespół programu Fractal"
 
@@ -180,6 +180,18 @@ msgstr "Potwierdzenie hasła"
 #: data/resources/ui/account-settings-import-export-keys-subpage.ui:132
 msgid "Choose…"
 msgstr "Wybierz…"
+
+#: data/resources/ui/account-settings-notifications-page.ui:5
+msgid "Notifications"
+msgstr "Powiadomienia"
+
+#: data/resources/ui/account-settings-notifications-page.ui:11
+msgid "Enable for this account"
+msgstr "Włączone na tym koncie"
+
+#: data/resources/ui/account-settings-notifications-page.ui:34
+msgid "Enable for this session"
+msgstr "Włączone w tej sesji"
 
 #: data/resources/ui/account-settings-user-page.ui:5
 msgid "General"
@@ -673,7 +685,7 @@ msgstr "Dołączenie do pokoju"
 msgid "Enter a room ID, room alias, or permalink."
 msgstr "Proszę podać identyfikator pokoju, alias pokoju lub trwały odnośnik."
 
-#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:631
+#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:729
 msgid "_Join"
 msgstr "_Dołącz"
 
@@ -974,11 +986,11 @@ msgstr "Umożliwia przechodzenie między pokojami"
 msgid "Unable to connect to Camera"
 msgstr "Nie można połączyć się z aparatem"
 
-#: src/application.rs:177
+#: src/application.rs:191
 msgid "© 2017-2022 The Fractal Team"
 msgstr "© 2017-2022 Zespół programu Fractal"
 
-#: src/application.rs:191
+#: src/application.rs:205
 msgid "translator-credits"
 msgstr ""
 "Marek Jędrzejewski <kontakt@marekjedrzejewski.pl>, 2018\n"
@@ -986,7 +998,7 @@ msgstr ""
 "Aviary.pl <community-poland@mozilla.org>, 2018-2022"
 
 #. This can't be added via the builder
-#: src/application.rs:195
+#: src/application.rs:209
 msgid "Name by"
 msgstr "Nazwa"
 
@@ -1039,11 +1051,11 @@ msgstr "Pomyślnie usunięto sesję."
 msgid "Could not remove session from secret storage"
 msgstr "Nie można usunąć sesji z przechowalni haseł"
 
-#: src/greeter.rs:82 src/login/mod.rs:681 src/window.rs:343
+#: src/greeter.rs:82 src/login/mod.rs:681 src/window.rs:368
 msgid "No network connection"
 msgstr "Brak połączenia z siecią"
 
-#: src/greeter.rs:88 src/login/mod.rs:687 src/window.rs:348
+#: src/greeter.rs:88 src/login/mod.rs:687 src/window.rs:373
 msgid "No Internet connection"
 msgstr "Brak połączenia z Internetem"
 
@@ -1272,6 +1284,20 @@ msgstr "Ostatnio widziano %-d %B %Y o %H∶%M"
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "Ostatnio widziano %-d %B %Y o %l∶%M %p"
 
+#: src/session/account_settings/notifications_page.rs:194
+#: src/session/account_settings/notifications_page.rs:207
+msgid "Could not load notifications settings. Try again later"
+msgstr ""
+"Nie można wczytać ustawień powiadomień. Proszę spróbować ponownie później"
+
+#: src/session/account_settings/notifications_page.rs:302
+msgid "Could not enable account notifications"
+msgstr "Nie można włączyć powiadomień konta"
+
+#: src/session/account_settings/notifications_page.rs:304
+msgid "Could not disable account notifications"
+msgstr "Nie można wyłączyć powiadomień konta"
+
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:230
 msgid ""
 "Exporting your room encryption keys allows you to make a backup to be able "
@@ -1483,7 +1509,7 @@ msgstr "Członkowie pokoju"
 msgid "Invite new Members"
 msgstr "Zaproś nowych członków"
 
-#: src/session/content/room_history/item_row.rs:271
+#: src/session/content/room_history/item_row.rs:297
 msgid "New Messages"
 msgstr "Nowe wiadomości"
 
@@ -1530,51 +1556,51 @@ msgstr "Plik obrazu jest nieobsługiwany"
 msgid "Could not retrieve media"
 msgstr "Nie można odebrać multimediów"
 
-#: src/session/content/room_history/mod.rs:201
+#: src/session/content/room_history/mod.rs:202
 msgid "The location request has been cancelled."
 msgstr "Prośba o udostępnienie położenia została anulowana."
 
-#: src/session/content/room_history/mod.rs:205
+#: src/session/content/room_history/mod.rs:206
 msgid "Failed to retrieve current location."
 msgstr "Ustalenie obecnego położenia się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/content/room_history/mod.rs:632
+#: src/session/content/room_history/mod.rs:644
 msgid "Reply to {user}"
 msgstr "Odpowiedź do użytkownika {user}"
 
-#: src/session/content/room_history/mod.rs:748
+#: src/session/content/room_history/mod.rs:760
 #: src/session/room/event_actions.rs:106
 msgid "Permalink copied to clipboard"
 msgstr "Skopiowano trwały odnośnik do schowka"
 
-#: src/session/content/room_history/mod.rs:752
+#: src/session/content/room_history/mod.rs:764
 #: src/session/room/event_actions.rs:110
 msgid "Failed to copy the permalink"
 msgstr "Skopiowanie trwałego odnośnika się nie powiodło"
 
-#: src/session/content/room_history/mod.rs:926
+#: src/session/content/room_history/mod.rs:938
 msgid "Your Location"
 msgstr "Położenie użytkownika"
 
-#: src/session/content/room_history/mod.rs:936
+#: src/session/content/room_history/mod.rs:948
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Położenie użytkownika {geo_uri} w dniu {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:1069
+#: src/session/content/room_history/mod.rs:1081
 msgid "Error reading file"
 msgstr "Błąd podczas odczytywania pliku"
 
-#: src/session/content/room_history/mod.rs:1095
+#: src/session/content/room_history/mod.rs:1107
 msgid "Error getting file from drop"
 msgstr "Błąd podczas uzyskiwania pliku z przeciągnięcia"
 
-#: src/session/content/room_history/mod.rs:1127
+#: src/session/content/room_history/mod.rs:1139
 msgid "Error getting image from clipboard"
 msgstr "Błąd podczas uzyskiwania obrazu ze schowka"
 
-#: src/session/content/room_history/mod.rs:1144
+#: src/session/content/room_history/mod.rs:1156
 msgid "Error getting file from clipboard"
 msgstr "Błąd podczas uzyskiwania pliku ze schowka"
 
@@ -1693,6 +1719,27 @@ msgstr "Odebrano nieobsługiwane wydarzenie członka pokoju."
 #: src/session/content/room_history/state_row/mod.rs:231
 msgid "An unsupported state event was received."
 msgstr "Odebrano nieobsługiwane wydarzenie stanu."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/typing_row.rs:217
+msgid "<b>{user}</b> is typing…"
+msgstr "<b>{user}</b> pisze…"
+
+#. Translators: Do NOT translate the content between '{' and '}', these are
+#. variable names.
+#: src/session/content/room_history/typing_row.rs:227
+msgid "<b>{user1}</b> and <b>{user2}</b> are typing…"
+msgstr "<b>{user1}</b> i <b>{user2}</b> piszą…"
+
+#. Translators: Do NOT translate the content between '{' and '}', these are
+#. variable names.
+#: src/session/content/room_history/typing_row.rs:234
+msgid "<b>{user1}</b>, <b>{user2}</b> and 1 other are typing…"
+msgid_plural "<b>{user1}</b>, <b>{user2}</b> and {n} others are typing…"
+msgstr[0] "<b>{user1}</b>, <b>{user2}</b> i jeszcze 1 osoba piszą…"
+msgstr[1] "<b>{user1}</b>, <b>{user2}</b> i jeszcze {n} osoby piszą…"
+msgstr[2] "<b>{user1}</b>, <b>{user2}</b> i jeszcze {n} osób pisze…"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
@@ -1874,11 +1921,11 @@ msgstr "Anulowano uwierzytelnianie wymagane do utworzenia kluczy szyfrowania."
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Wystąpił błąd podczas tworzenia kluczy szyfrowania."
 
-#: src/session/mod.rs:629
+#: src/session/mod.rs:727
 msgid "_View"
 msgstr "_Wyświetl"
 
-#: src/session/mod.rs:675
+#: src/session/mod.rs:773
 msgid "Failed to logout the session."
 msgstr "Wylogowanie sesji się nie powiodło."
 
@@ -1919,35 +1966,35 @@ msgid "Normal user"
 msgstr "Zwykły użytkownik"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:457
+#: src/session/room/mod.rs:470
 msgid "Failed to forget {room}."
 msgstr "Zapomnienie pokoju {room} się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:711
+#: src/session/room/mod.rs:724
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr ""
 "Przeniesienie pokoju {room} z kategorii {previous_category} do "
 "{new_category} się nie powiodło."
 
-#: src/session/room/mod.rs:1004
+#: src/session/room/mod.rs:1056
 msgid "Unknown"
 msgstr "Nieznane"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:1031
+#: src/session/room/mod.rs:1083
 msgid "Empty Room (was {user})"
 msgstr "Pusty pokój (wcześniej: {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:1033
+#: src/session/room/mod.rs:1085
 msgid "Empty Room"
 msgstr "Pusty pokój"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1433
+#: src/session/room/mod.rs:1501
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 "Przyjęcie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -1955,7 +2002,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1462
+#: src/session/room/mod.rs:1530
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 "Odrzucenie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -1963,7 +2010,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1656
+#: src/session/room/mod.rs:1724
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr ""
 "Zaproszenie użytkownika {user} do pokoju {room} się nie powiodło. Proszę "
@@ -1971,7 +2018,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1668
+#: src/session/room/mod.rs:1736
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -2232,6 +2279,39 @@ msgstr "dźwięk"
 msgid "file"
 msgstr "plik"
 
-#: src/window.rs:245
+#: src/utils/matrix.rs:100
+msgid "{user} sent an audio file."
+msgstr "Użytkownik {user} wysłał plik dźwiękowy."
+
+#: src/utils/matrix.rs:103 src/utils/matrix.rs:116 src/utils/matrix.rs:120
+#: src/utils/matrix.rs:124
+msgid "{user}: {message}"
+msgstr "{user}: {message}"
+
+#: src/utils/matrix.rs:107
+msgid "{user} sent a file."
+msgstr "Użytkownik {user} wysłał plik."
+
+#: src/utils/matrix.rs:110
+msgid "{user} sent an image."
+msgstr "Użytkownik {user} wysłał obraz."
+
+#: src/utils/matrix.rs:113
+msgid "{user} sent their location."
+msgstr "Użytkownik {user} wysłał swoje położenie."
+
+#: src/utils/matrix.rs:128
+msgid "{user} sent a video."
+msgstr "Użytkownik {user} wysłał film."
+
+#: src/utils/matrix.rs:131
+msgid "{user} sent a verification request."
+msgstr "Użytkownik {user} wysłał prośbę o weryfikację."
+
+#: src/utils/matrix.rs:140
+msgid "{user} sent a sticker."
+msgstr "Użytkownik {user} wysłał naklejkę."
+
+#: src/window.rs:246
 msgid "Failed to restore previous sessions"
 msgstr "Przywrócenie poprzednich sesji się nie powiodło"
