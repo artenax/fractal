@@ -111,11 +111,17 @@ mod imp {
                     obj.close();
                 }));
 
-            self.text_buffer.connect_delete_range(clone!(@weak obj => move |_, start, end| {
+            self.text_buffer.connect_delete_range(|_, start, end| {
                 let mut current = start.to_owned();
                 loop {
                     if let Some(anchor) = current.child_anchor() {
-                        let user = anchor.widgets()[0].downcast_ref::<Pill>().unwrap().user().unwrap().downcast::<Invitee>().unwrap();
+                        let user = anchor.widgets()[0]
+                            .downcast_ref::<Pill>()
+                            .unwrap()
+                            .user()
+                            .unwrap()
+                            .downcast::<Invitee>()
+                            .unwrap();
                         user.take_anchor();
                         user.set_invited(false);
                     }
@@ -126,10 +132,10 @@ mod imp {
                         break;
                     }
                 }
-            }));
+            });
 
-            self.text_buffer.connect_insert_text(
-                clone!(@weak obj => move |text_buffer, location, text| {
+            self.text_buffer
+                .connect_insert_text(|text_buffer, location, text| {
                     let mut changed = false;
 
                     // We don't allow adding chars before and between pills
@@ -149,8 +155,7 @@ mod imp {
                         text_buffer.stop_signal_emission_by_name("insert-text");
                         text_buffer.insert(location, text);
                     }
-                }),
-            );
+                });
 
             self.invite_button
                 .connect_clicked(clone!(@weak obj => move |_| {
