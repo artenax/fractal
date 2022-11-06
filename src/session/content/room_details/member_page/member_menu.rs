@@ -116,7 +116,8 @@ impl MemberMenu {
     /// The actions the logged-in user is allowed to perform on the member.
     pub fn allowed_actions(&self) -> UserActions {
         self.member()
-            .map_or(UserActions::NONE, |member| member.allowed_actions())
+            .map(|member| member.allowed_actions())
+            .unwrap_or_default()
     }
 
     fn popover_menu(&self) -> &gtk::PopoverMenu {

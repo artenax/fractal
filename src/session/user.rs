@@ -16,13 +16,12 @@ use crate::{
 
 #[glib::flags(name = "UserActions")]
 pub enum UserActions {
-    NONE = 0b00000000,
     VERIFY = 0b00000001,
 }
 
 impl Default for UserActions {
     fn default() -> Self {
-        Self::NONE
+        Self::empty()
     }
 }
 
@@ -230,14 +229,14 @@ pub trait UserExt: IsA<User> {
     fn allowed_actions(&self) -> UserActions {
         let user = self.upcast_ref();
 
-        let is_us = self.session().user().map_or(false, |session_user| {
+        let is_other = self.session().user().map_or(false, |session_user| {
             session_user.user_id() != self.user_id()
         });
 
-        if !user.is_verified() && is_us {
+        if !user.is_verified() && is_other {
             UserActions::VERIFY
         } else {
-            UserActions::NONE
+            UserActions::empty()
         }
     }
 
