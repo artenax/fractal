@@ -196,6 +196,13 @@ impl ItemRow {
     fn set_item(&self, item: Option<TimelineItem>) {
         let imp = self.imp();
 
+        // Reinitialize the header.
+        if let Some(list_item) = self.parent() {
+            if list_item.has_css_class("has-header") {
+                list_item.remove_css_class("has-header");
+            }
+        }
+
         if let Some(event) = imp
             .item
             .borrow()
