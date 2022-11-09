@@ -1,3 +1,5 @@
+use std::cell::Cell;
+
 use adw::subclass::prelude::AdwApplicationWindowImpl;
 use gettextrs::gettext;
 use glib::signal::Inhibit;
@@ -39,6 +41,7 @@ mod imp {
         #[template_child]
         pub offline_info_bar_label: TemplateChild<gtk::Label>,
         pub account_switcher: AccountSwitcher,
+        pub waiting_sessions: Cell<usize>,
     }
 
     #[glib::object_subclass]
@@ -150,6 +153,9 @@ mod imp {
             if let Err(err) = self.obj().save_window_size() {
                 warn!("Failed to save window state, {}", &err);
             }
+            if let Err(err) = self.obj().save_current_visible_session() {
+                warn!("Failed to save current session: {err}");
+            }
             Inhibit(false)
         }
     }
@@ -177,7 +183,25 @@ impl Window {
         let prev_has_sessions = self.has_sessions();
 
         imp.sessions.add_named(session, session.session_id());
-        imp.sessions.set_visible_child(session);
+        let settings = Application::default().settings();
+        let mut is_opened = false;
+        if session.session_id().unwrap() == settings.string("current-session") {
+            imp.sessions.set_visible_child(session);
+            is_opened = true;
+
+            session.connect_ready(|session| {
+                session.show_content();
+            });
+        } else if imp.waiting_sessions.get() > 0 {
+            imp.waiting_sessions.set(imp.waiting_sessions.get() - 1);
+        }
+
+        if imp.waiting_sessions.get() == 0 && !is_opened {
+            imp.sessions.set_visible_child(session);
+            session.connect_ready(|session| {
+                session.show_content();
+            });
+        }
         // We need to grab the focus so that keyboard shortcuts work
         session.grab_focus();
 
@@ -211,12 +235,14 @@ impl Window {
     }
 
     pub async fn restore_sessions(&self) {
+        let imp = self.imp();
         let handle = spawn_tokio!(secret::restore_sessions());
         match handle.await.unwrap() {
             Ok(sessions) => {
                 if sessions.is_empty() {
                     self.switch_to_greeter_page();
                 } else {
+                    imp.waiting_sessions.set(sessions.len());
                     for stored_session in sessions {
                         info!(
                             "Restoring previous session for user: {}",
@@ -380,5 +406,16 @@ impl Window {
         }
 
         self.present();
+    }
+
+    pub fn save_current_visible_session(&self) -> Result<(), glib::BoolError> {
+        let settings = Application::default().settings();
+
+        settings.set_string(
+            "current-session",
+            self.current_session_id().unwrap_or_default().as_str(),
+        )?;
+
+        Ok(())
     }
 }

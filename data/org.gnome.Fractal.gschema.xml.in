@@ -23,5 +23,9 @@
       <summary>Session settings</summary>
       <description>Serialized list of settings per session</description>
     </key>
+    <key name="current-session" type="s">
+      <default>""</default>
+      <summary>Current session</summary>
+    </key>
   </schema>
 </schemalist>

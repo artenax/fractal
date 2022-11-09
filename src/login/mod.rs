@@ -30,7 +30,7 @@ use crate::{
     secret::{self, Secret, StoredSession},
     spawn, spawn_tokio, toast,
     user_facing_error::UserFacingError,
-    Session, Window,
+    Application, Session, Window,
 };
 
 mod imp {
@@ -589,6 +589,15 @@ impl Login {
         let session = Session::new();
 
         if is_new {
+            // Save ID of logging in session to GSettings
+            let settings = Application::default().settings();
+            if let Err(err) = settings.set_string(
+                "current-session",
+                self.current_session_id().unwrap_or_default().as_str(),
+            ) {
+                warn!("Failed to save current session: {err}");
+            }
+
             let session_info = session_info.clone();
             let handle = spawn_tokio!(async move { secret::store_session(&session_info).await });
 

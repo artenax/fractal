@@ -497,8 +497,6 @@ impl Session {
 
         imp.logout_on_dispose.set(false);
 
-        self.show_content();
-
         if let Some(session_verification) = imp.stack.child_by_name("session-verification") {
             imp.stack.remove(&session_verification);
         }
