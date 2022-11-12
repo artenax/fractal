@@ -3184,6 +3184,7 @@ dependencies = [
  "serde",
  "sha2 0.10.5",
  "tokio",
+ "tracing",
  "zbus 2.3.2",
  "zeroize",
 ]
