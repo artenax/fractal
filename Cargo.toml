@@ -79,7 +79,7 @@ package = "libshumate"
 version = "0.2.0"
 
 [dependencies.matrix-sdk]
-version = "0.6.0"
+version = "0.6.2"
 features = [
     "socks",
     "sso-login",
