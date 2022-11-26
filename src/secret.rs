@@ -3,7 +3,7 @@ use std::{collections::HashMap, ffi::OsStr, fmt, path::PathBuf, string::FromUtf8
 use gettextrs::gettext;
 use log::error;
 use matrix_sdk::ruma::{DeviceId, OwnedDeviceId, OwnedUserId, UserId};
-use oo7::{is_sandboxed, Item, Keyring};
+use oo7::{Item, Keyring};
 use serde::{Deserialize, Serialize};
 use serde_json::error::Error as JsonError;
 use thiserror::Error;
@@ -219,6 +219,7 @@ impl StoredSession {
             ("user", self.user_id.as_str()),
             ("device-id", self.device_id.as_str()),
             ("db-path", self.path.to_str().unwrap()),
+            (SCHEMA_ATTRIBUTE, APP_ID),
         ])
     }
 
@@ -272,13 +273,56 @@ impl Secret {
 pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
     let keyring = Keyring::new().await?;
 
-    let items = if is_sandboxed() {
-        keyring.items().await?
-    } else {
-        keyring
-            .search_items(HashMap::from([(SCHEMA_ATTRIBUTE, APP_ID)]))
-            .await?
-    };
+    let mut items = keyring
+        .search_items(HashMap::from([(SCHEMA_ATTRIBUTE, APP_ID)]))
+        .await?;
+
+    if items.is_empty() {
+        // If the keyring uses the file (portal) backend, look for all items,
+        // because libsecret didn't store the secrets with the schema attribute.
+        if let Keyring::File(_) = keyring {
+            items = keyring.items().await?;
+
+            if !items.is_empty() {
+                // Migrate those secrets to use the schema attribute.
+                for item in items {
+                    let attributes = item.attributes().await?;
+                    let secret = item.secret().await?;
+                    let user_id = match attributes.get("user") {
+                        Some(user_id) => user_id,
+                        None => continue,
+                    };
+
+                    item.delete().await?;
+
+                    let attr = attributes
+                        .iter()
+                        .map(|(k, v)| (k.as_str(), v.as_str()))
+                        .chain([(SCHEMA_ATTRIBUTE, APP_ID)])
+                        .collect::<HashMap<_, _>>();
+
+                    keyring
+                        .create_item(
+                            &gettext_f(
+                                // Translators: Do NOT translate the content between '{' and '}',
+                                // this is a variable name.
+                                "Fractal: Matrix credentials for {user_id}",
+                                &[("user_id", user_id.as_str())],
+                            ),
+                            attr,
+                            secret,
+                            true,
+                        )
+                        .await?;
+                }
+
+                // Get the migrated items to build the sessions.
+                items = keyring
+                    .search_items(HashMap::from([(SCHEMA_ATTRIBUTE, APP_ID)]))
+                    .await?;
+            }
+        }
+    }
 
     let mut sessions = Vec::with_capacity(items.len());
 
@@ -294,12 +338,7 @@ pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
 pub async fn store_session(session: &StoredSession) -> Result<(), SecretError> {
     let keyring = Keyring::new().await?;
 
-    let mut attributes = session.attributes();
-
-    if !is_sandboxed() {
-        attributes.insert(SCHEMA_ATTRIBUTE, APP_ID);
-    }
-
+    let attributes = session.attributes();
     let secret = serde_json::to_string(&session.secret).unwrap();
 
     keyring
