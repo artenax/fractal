@@ -7,105 +7,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-01-17 21:00+0000\n"
-"PO-Revision-Date: 2022-02-11 23:58+1000\n"
-"Last-Translator: Ser82-png <sw@atrus.ru>\n"
+"POT-Creation-Date: 2022-11-24 22:00+0000\n"
+"PO-Revision-Date: 2022-11-27 20:34+0300\n"
+"Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 2.3\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 3.2.1\n"
 
-#: fractal-gtk/res/gtk/help-overlay.ui:13
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Основное"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:18
-msgctxt "shortcut window"
-msgid "Close the active room"
-msgstr "Закрыть активную комнату"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:25
-msgctxt "shortcut window"
-msgid "Open main menu"
-msgstr "Открыть главное меню"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:32
-msgctxt "shortcut window"
-msgid "Open / close the room sidebar search"
-msgstr "Открыть / закрыть поиск комнат в боковой панели"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:39
-msgctxt "shortcut window"
-msgid "Open the previous room in the list"
-msgstr "Открыть предыдущую комнату по списку"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:46
-msgctxt "shortcut window"
-msgid "Open the next room in the list"
-msgstr "Открыть следующую комнату по списку"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:53
-msgctxt "shortcut window"
-msgid "Open the previous room with unread messages in the list"
-msgstr "Открыть предыдущую комнату с непрочитанными сообщениями по списку"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:60
-msgctxt "shortcut window"
-msgid "Open the next room with unread messages in the list"
-msgstr "Открыть следующую комнату с непрочитанными сообщениями по списку"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:67
-msgctxt "shortcut window"
-msgid "Open the first room of the list"
-msgstr "Открыть первую комнату в списке"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:74
-msgctxt "shortcut window"
-msgid "Open the last room of the list"
-msgstr "Открыть последнюю комнату в списке"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:81
-msgctxt "shortcut window"
-msgid "View older messages"
-msgstr "Просмотреть старые сообщения"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:88
-msgctxt "shortcut window"
-msgid "View newer messages"
-msgstr "Просмотреть новый сообщения"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:94
-msgctxt "shortcut window"
-msgid "Keyboard Shortcuts"
-msgstr "Комбинации клавиш"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:101
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "Завершить"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:110
-msgctxt "shortcut message"
-msgid "Composing a new message"
-msgstr "Создание нового сообщения"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:115
-msgctxt "shortcut message"
-msgid "Write on a new line"
-msgstr "Написать с новой строки"
-
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:3
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:5
-#: fractal-gtk/res/ui/login_flow.ui:19 fractal-gtk/src/appop/mod.rs:170
+#: data/org.gnome.Fractal.desktop.in.in:3
+#: data/org.gnome.Fractal.metainfo.xml.in.in:7
 msgid "Fractal"
 msgstr "Fractal"
 
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:4
+#: data/org.gnome.Fractal.desktop.in.in:4
 msgid ""
 "Fractal is a decentralized, secure messaging client for collaborative group "
 "communication."
@@ -113,959 +32,2786 @@ msgstr ""
 "Fractal — это децентрализованный, безопасный клиент обмена сообщениями для "
 "совместного группового общения."
 
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:5
+#: data/org.gnome.Fractal.desktop.in.in:5
 msgid "Fractal group messaging"
 msgstr "Fractal групповой обмен сообщениями"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:14
+#: data/org.gnome.Fractal.desktop.in.in:14
 msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
-msgstr "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
+msgstr ""
+"Matrix;matrix.org;chat;irc;communications;talk;riot;element;матрикс;чат;"
+"общение;"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:13
-msgid "Type of password and token storage"
-msgstr "Тип пароля и токена"
+#: data/org.gnome.Fractal.gschema.xml.in:6
+msgid "Window width"
+msgstr "Ширина окна"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:14
-msgid "Type of password and token storage, default value is: Secret Service"
-msgstr "Тип хранения пароля и токена, значение по-умолчанию: Secret Service"
+#: data/org.gnome.Fractal.gschema.xml.in:10
+msgid "Window height"
+msgstr "Высота окна"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:21
-msgid "If markdown sending is active"
-msgstr "Если отправка разметки языка активна"
+#: data/org.gnome.Fractal.gschema.xml.in:14
+msgid "Window maximized state"
+msgstr "Окно имеет максимальный размер"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:22
-msgid "Whether support for sending markdown messages is on"
-msgstr "Поддерживается ли разметка языка для отправки сообщений"
+#: data/org.gnome.Fractal.gschema.xml.in:18
+msgid "Enable markdown formatting"
+msgstr "Включить форматирование markdown"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:29
-msgid "X position of the main window on startup"
-msgstr "Позиция основного окна по X при запуске"
+#: data/org.gnome.Fractal.gschema.xml.in:19
+msgid "Whether messages should be processed as markdown when sending them"
+msgstr "Должны ли сообщения при отправке оформляться как markdown"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:34
-msgid "Y position of the main window on startup"
-msgstr "Позиция основного окна по Y при запуске"
+#: data/org.gnome.Fractal.gschema.xml.in:23
+msgid "Session settings"
+msgstr "Настройки сеанса"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:39
-msgid "Width of the main window on startup"
-msgstr "Длина главного окна при запуске"
+#: data/org.gnome.Fractal.gschema.xml.in:24
+msgid "Serialized list of settings per session"
+msgstr "Последовательный список настроек для каждого сеанса"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:44
-msgid "Height of the main window on startup"
-msgstr "Ширина главного окна при запуске"
-
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:49
-msgid "Whether the main window is maximized on startup"
-msgstr "Развернуто ли окно при запуске или нет"
-
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:8
-msgid "Daniel García Moreno"
-msgstr "Daniel García Moreno"
-
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:9
+#: data/org.gnome.Fractal.metainfo.xml.in.in:8
 msgid "Matrix group messaging app"
-msgstr "Приложение по обмену групповыми сообщениями Matrix"
+msgstr "Приложение для обмена групповыми сообщениями Matrix"
 
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:11
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
 msgid ""
 "Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
 "is optimized for collaboration in large groups, such as free software "
 "projects."
 msgstr ""
-"Fractal — Matrix приложение обмена сообщениями для GNOME, написанное на "
+"Fractal — Matrix приложение для обмена сообщениями для GNOME, написанное на "
 "Rust. Интерфейс оптимизирован для совместной работы в больших группах, таких "
 "как проекты свободного программного обеспечения."
 
-#: fractal-gtk/res/ui/account_settings.ui:14 fractal-gtk/res/ui/main_menu.ui:94
-msgid "Account Settings"
-msgstr "Настройки учётной записи"
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:183
+msgid "The Fractal Team"
+msgstr "Команда Fractal"
 
-#: fractal-gtk/res/ui/account_settings.ui:30
-#: fractal-gtk/res/ui/main_window.ui:217 fractal-gtk/res/ui/main_window.ui:454
-#: fractal-gtk/res/ui/media_viewer.ui:36 fractal-gtk/res/ui/room_settings.ui:30
-msgid "Back"
-msgstr "Назад"
+#: data/resources/ui/account-settings-change-password-subpage.ui:12
+#: data/resources/ui/account-settings-user-page.ui:62
+msgid "Change Password"
+msgstr "Изменить пароль"
 
-#: fractal-gtk/res/ui/account_settings.ui:92
-msgid "Other people can find you by searching for any of these identifiers."
-msgstr "Другие люди смогут найти вас по одному из этих идентификаторов."
+#: data/resources/ui/account-settings-change-password-subpage.ui:60
+msgid "Changing your password will log you out of your other sessions."
+msgstr "Изменение пароля приведет к выходу из других сеансов."
 
-#: fractal-gtk/res/ui/account_settings.ui:115
-msgid "Name"
-msgstr "Имя"
-
-#: fractal-gtk/res/ui/account_settings.ui:138
-msgid "Type in your name"
-msgstr "Введите своё имя"
-
-#: fractal-gtk/res/ui/account_settings.ui:167
-msgid "Email"
-msgstr "Эл. почта"
-
-#: fractal-gtk/res/ui/account_settings.ui:196
-msgid "Phone"
-msgstr "Телефон"
-
-#: fractal-gtk/res/ui/account_settings.ui:225
-msgid "Password"
-msgstr "Пароль"
-
-#: fractal-gtk/res/ui/account_settings.ui:287
-msgid "Advanced Information"
-msgstr "Дополнительная информация"
-
-#: fractal-gtk/res/ui/account_settings.ui:312
-msgid "Homeserver"
-msgstr "Домашний сервер"
-
-#: fractal-gtk/res/ui/account_settings.ui:341
-msgid "Matrix ID"
-msgstr "Matrix ID"
-
-#: fractal-gtk/res/ui/account_settings.ui:370
-msgid "Device ID"
-msgstr "ID устройства"
-
-#: fractal-gtk/res/ui/account_settings.ui:410
-#: fractal-gtk/res/ui/account_settings.ui:466
-msgid "Deactivate Account"
-msgstr "Деактивировать учётную запись"
-
-#: fractal-gtk/res/ui/account_settings.ui:431
+#: data/resources/ui/account-settings-change-password-subpage.ui:71
 msgid ""
-"Deactivating your account means that you will lose all your messages, "
-"contacts, and files."
+"Fractal’s support for encryption is unstable so you might lose access to "
+"your encrypted message history. It is recommended to backup your encryption "
+"keys before proceeding."
 msgstr ""
-"Деактивация вашей учётной записи означает, что вы потеряете все свои "
-"сообщения, контакты и файлы."
-
-#: fractal-gtk/res/ui/account_settings.ui:441
-msgid ""
-"To confirm that you really want to deactivate this account type in your "
-"password:"
-msgstr ""
-"Чтобы подтвердить, что вы действительно хотите деактивировать эту учётную "
-"запись введите свой пароль:"
-
-#: fractal-gtk/res/ui/account_settings.ui:456
-msgid "Also erase all messages"
-msgstr "Также удалить все сообщения"
-
-#: fractal-gtk/res/ui/account_settings.ui:523
-msgid "Check your email"
-msgstr "Проверьте свою электронную почту"
-
-#: fractal-gtk/res/ui/account_settings.ui:526
-#: fractal-gtk/res/ui/direct_chat.ui:83 fractal-gtk/res/ui/invite_user.ui:84
-#: fractal-gtk/res/ui/join_room.ui:71 fractal-gtk/res/ui/leave_room.ui:31
-#: fractal-gtk/res/ui/new_room.ui:24 fractal-gtk/src/appop/account.rs:87
-#: fractal-gtk/src/appop/account.rs:143 fractal-gtk/src/ui/attach.rs:41
-msgid "Cancel"
-msgstr "Отмена"
-
-#: fractal-gtk/res/ui/account_settings.ui:534
-msgid "Apply"
-msgstr "Применить"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:8
-msgid "Room Directory"
-msgstr "Список комнат"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:12
-msgid "Join Room"
-msgstr "Войти в комнату"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:18
-msgid "New Room"
-msgstr "Новая комната"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:22
-msgid "New Direct Chat"
-msgstr "Новый чат"
-
-#: fractal-gtk/res/ui/audio_player.ui:34 fractal-gtk/res/ui/audio_player.ui:45
-msgid "Play"
-msgstr "Воспроизвести"
-
-#: fractal-gtk/res/ui/direct_chat.ui:80
-msgid "New direct chat"
-msgstr "Новый чат"
-
-#: fractal-gtk/res/ui/direct_chat.ui:91
-msgid "Start chat"
-msgstr "Начать чат"
-
-#: fractal-gtk/res/ui/invite.ui:18
-msgid "Invitation"
-msgstr "Приглашение"
-
-#: fractal-gtk/res/ui/invite.ui:32
-msgid "Reject"
-msgstr "Отклонить"
-
-#: fractal-gtk/res/ui/invite.ui:40
-msgid "Accept"
-msgstr "Принять"
-
-#: fractal-gtk/res/ui/invite_user.ui:81 fractal-gtk/res/ui/invite_user.ui:92
-#: fractal-gtk/src/ui/invite.rs:133
-msgid "Invite"
-msgstr "Пригласить"
-
-#: fractal-gtk/res/ui/join_room.ui:34
-msgid "ID or Alias"
-msgstr "Идентификатор или псевдоним"
-
-#: fractal-gtk/res/ui/join_room.ui:68
-msgid "Join room"
-msgstr "Войти в комнату"
-
-#: fractal-gtk/res/ui/join_room.ui:79 fractal-gtk/src/ui/directory.rs:245
-msgid "Join"
-msgstr "Войти"
-
-#: fractal-gtk/res/ui/kicked_room.ui:29 fractal-gtk/res/ui/msg_src_window.ui:32
-msgid "Close"
-msgstr "Закрыть"
-
-#: fractal-gtk/res/ui/leave_room.ui:18
-msgid "Leave?"
-msgstr "Покинуть?"
-
-#: fractal-gtk/res/ui/leave_room.ui:19
-msgid ""
-"Once you leave, you won’t be able to interact with people in the room "
-"anymore."
-msgstr ""
-"После того, как вы покинете комнату, вы больше не сможете общаться с людьми "
-"в этой комнате."
-
-#: fractal-gtk/res/ui/leave_room.ui:39
-msgid "Leave room"
-msgstr "Покинуть комнату"
-
-#: fractal-gtk/res/ui/login_flow.ui:29
-msgid "Welcome to Fractal"
-msgstr "Добро пожаловать в Fractal"
-
-#: fractal-gtk/res/ui/login_flow.ui:42 fractal-gtk/res/ui/login_flow.ui:211
-msgid "_Log In"
-msgstr "_Авторизоваться"
-
-#: fractal-gtk/res/ui/login_flow.ui:55
-msgid "_Create Account"
-msgstr "_Создать учётную запись"
-
-#: fractal-gtk/res/ui/login_flow.ui:84
-msgid "Choose Provider"
-msgstr "Выберите провайдера"
-
-#: fractal-gtk/res/ui/login_flow.ui:107
-msgid "_Next"
-msgstr "_Далее"
-
-#: fractal-gtk/res/ui/login_flow.ui:125
-msgid "What is your Provider?"
-msgstr "Какой ваш серверный провайдер?"
-
-#: fractal-gtk/res/ui/login_flow.ui:146
-msgid "Matrix provider domain, e.g. myserver.co"
-msgstr "Имя провайдера доменного имени Matrix, например myserver.co"
-
-#: fractal-gtk/res/ui/login_flow.ui:161
-msgid "The domain may not be empty."
-msgstr "Доменное имя не может быть пустым."
-
-#: fractal-gtk/res/ui/login_flow.ui:188
-msgid "Log In"
-msgstr "Авторизоваться"
-
-#: fractal-gtk/res/ui/login_flow.ui:236
-msgid "_User ID"
-msgstr "_ID пользователя"
-
-#: fractal-gtk/res/ui/login_flow.ui:252
-msgid "_Password"
-msgstr "_Пароль"
-
-#: fractal-gtk/res/ui/login_flow.ui:284
-msgid "User name, email, or phone number"
-msgstr "Имя пользователя Matrix, адрес электронной почты или номер телефона"
-
-#: fractal-gtk/res/ui/login_flow.ui:317
-msgid "_Forgot Password?"
-msgstr "_Забыли пароль?"
-
-#: fractal-gtk/res/ui/login_flow.ui:335
-msgid "Invalid username or password"
-msgstr "Неправильное имя пользователя или пароль"
-
-#: fractal-gtk/res/ui/main_menu.ui:103
-msgid "Log Out"
-msgstr "Выйти"
-
-#: fractal-gtk/res/ui/main_menu.ui:120
-msgid "Keyboard _Shortcuts"
-msgstr "Комбинации _клавиш"
-
-#: fractal-gtk/res/ui/main_menu.ui:129
-msgid "_About Fractal"
-msgstr "_О Fractal"
-
-#: fractal-gtk/res/ui/main_window.ui:56
-msgid "User"
-msgstr "Пользователь"
-
-#: fractal-gtk/res/ui/main_window.ui:82
-msgid "Add"
-msgstr "Добавить"
-
-#: fractal-gtk/res/ui/main_window.ui:111
-msgid "Room search"
-msgstr "Поиск комнаты"
-
-#: fractal-gtk/res/ui/main_window.ui:282
-msgid "Room Menu"
-msgstr "Меню комнаты"
-
-#: fractal-gtk/res/ui/main_window.ui:349
-msgid "No Room Selected"
-msgstr "Не выбрано ни одной комнаты"
-
-#: fractal-gtk/res/ui/main_window.ui:350
-msgid "Join a room to start chatting."
-msgstr "Войдите в комнату, чтобы начать чат."
-
-#: fractal-gtk/res/ui/main_window.ui:354
-msgid "No room"
-msgstr "Нет комнаты"
-
-#: fractal-gtk/res/ui/main_window.ui:494
-#: fractal-gtk/res/ui/server_chooser_menu.ui:51
-#: fractal-gtk/src/ui/connect/directory.rs:117
-msgid "Default Matrix Server"
-msgstr "Сервер Matrix по умолчанию"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:23
-msgid "Markdown"
-msgstr "Markdown"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:52
-msgid "> quote"
-msgstr "> цитата"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:63
-msgid "**bold**"
-msgstr "**жирный**"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:78
-msgid "`code`"
-msgstr "`моноширинный`"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:90
-msgid "*italic*"
-msgstr "*курсив*"
-
-#: fractal-gtk/res/ui/media_viewer.ui:63
-msgid "Toggle fullscreen"
-msgstr "Переключить полноэкранный режим"
-
-#: fractal-gtk/res/ui/media_viewer.ui:226
-msgid "Loading more media"
-msgstr "Загрузить ещё медиа"
-
-#: fractal-gtk/res/ui/message_menu.ui:22
-msgid "Reply"
-msgstr "Ответить"
-
-#: fractal-gtk/res/ui/message_menu.ui:29
-msgid "Open With…"
-msgstr "Открыть с помощью…"
-
-#: fractal-gtk/res/ui/message_menu.ui:37
-msgid "Save Image As…"
-msgstr "Сохранить изображение как…"
-
-#: fractal-gtk/res/ui/message_menu.ui:45
-msgid "Save Video As…"
-msgstr "Сохранить видео как…"
-
-#: fractal-gtk/res/ui/message_menu.ui:53
-msgid "Copy Image"
-msgstr "Копировать изображение"
-
-#: fractal-gtk/res/ui/message_menu.ui:61
-msgid "Copy Selection"
-msgstr "Копировать выделенное"
-
-#: fractal-gtk/res/ui/message_menu.ui:69
-msgid "Copy Text"
-msgstr "Копировать текст"
-
-#: fractal-gtk/res/ui/message_menu.ui:79
-msgid "View Source"
-msgstr "Просмотреть исходный код"
-
-#: fractal-gtk/res/ui/message_menu.ui:94
-msgid "Delete Message"
-msgstr "Удалить сообщение"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:21
-msgid "Message Source"
-msgstr "Исходный код сообщения"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:24
-msgid "Copy To Clipboard"
-msgstr "Копировать в буфер обмена"
-
-#: fractal-gtk/res/ui/new_room.ui:21
-msgid "Create new room"
-msgstr "Создать новую комнату"
-
-#: fractal-gtk/res/ui/new_room.ui:32
-msgid "Create"
-msgstr "Создать"
-
-#: fractal-gtk/res/ui/new_room.ui:71
-msgid "Room name"
-msgstr "Имя комнаты"
-
-#: fractal-gtk/res/ui/new_room.ui:100
-msgid "Visibility"
-msgstr "Видимость"
-
-#: fractal-gtk/res/ui/new_room.ui:114
-msgid "Private"
-msgstr "Приватная"
-
-#: fractal-gtk/res/ui/new_room.ui:125
-msgid "Public"
-msgstr "Общедоступная"
-
-#: fractal-gtk/res/ui/password_dialog.ui:22
-#: fractal-gtk/src/widgets/file_dialog.rs:12
-#: fractal-gtk/src/widgets/file_dialog.rs:33
-msgid "_Cancel"
-msgstr "_Отменить"
-
-#: fractal-gtk/res/ui/password_dialog.ui:35
-msgid "Ch_ange"
-msgstr "_Изменить"
-
-#: fractal-gtk/res/ui/password_dialog.ui:125
-msgid "The passwords do not match."
-msgstr "Пароли не совпадают."
-
-#: fractal-gtk/res/ui/password_dialog.ui:143
-msgid "_Verify New Password"
-msgstr "_Проверить новый пароль"
-
-#: fractal-gtk/res/ui/password_dialog.ui:160
-msgid "_New Password"
-msgstr "_Новый пароль"
-
-#: fractal-gtk/res/ui/password_dialog.ui:204
-msgid "Current _Password"
-msgstr "_Текущий пароль"
-
-#: fractal-gtk/res/ui/room_menu.ui:8
-msgid "Room Details"
-msgstr "Информация о комнате"
-
-#: fractal-gtk/res/ui/room_menu.ui:12
-msgid "Invite to This Room"
-msgstr "Пригласить в эту комнату"
-
-#: fractal-gtk/res/ui/room_menu.ui:18
-msgid "Leave Room"
-msgstr "Покинуть комнату"
-
-#: fractal-gtk/res/ui/room_settings.ui:14
-msgid "Details"
-msgstr "Подробности"
-
-#: fractal-gtk/res/ui/room_settings.ui:112
-msgid "Unknown"
-msgstr "Неизвестно"
-
-#: fractal-gtk/res/ui/room_settings.ui:133
-msgid "Add name"
-msgstr "Добавить имя"
-
-#: fractal-gtk/res/ui/room_settings.ui:160
-msgid "Add topic"
-msgstr "Добавить тему"
-
-#: fractal-gtk/res/ui/room_settings.ui:179
-msgid "Type in your room topic"
-msgstr "Введите тему вашей комнаты"
-
-#: fractal-gtk/res/ui/room_settings.ui:202
-msgid "No room description"
-msgstr "Описание комнаты отсутствует"
-
-#: fractal-gtk/res/ui/room_settings.ui:230
-msgid "Notifications"
-msgstr "Уведомления"
-
-#: fractal-gtk/res/ui/room_settings.ui:258
-msgid "Notification sounds"
-msgstr "Звуки уведомлений"
-
-#: fractal-gtk/res/ui/room_settings.ui:290
-msgid "For all messages"
-msgstr "Для всех сообщений"
-
-#: fractal-gtk/res/ui/room_settings.ui:322
-msgid "Only for mentions"
-msgstr "Только для упоминаний"
-
-#: fractal-gtk/res/ui/room_settings.ui:352
-msgid "Shared Media"
-msgstr "Общие медиа"
-
-#: fractal-gtk/res/ui/room_settings.ui:394
-msgid "photos"
-msgstr "фотографии"
-
-#: fractal-gtk/res/ui/room_settings.ui:424
-msgid "videos"
-msgstr "видео"
-
-#: fractal-gtk/res/ui/room_settings.ui:454
-msgid "documents"
-msgstr "документы"
-
-#: fractal-gtk/res/ui/room_settings.ui:475
-msgid "New members can see"
-msgstr "Новые участники могут видеть"
-
-#: fractal-gtk/res/ui/room_settings.ui:507
-msgid "All room history"
-msgstr "Вся история комнаты"
-
-#: fractal-gtk/res/ui/room_settings.ui:539
-msgid "History after they were invited"
-msgstr "Видимость истории после приглашения участников"
-
-#: fractal-gtk/res/ui/room_settings.ui:569
-msgid "Room Visibility"
-msgstr "Видимость комнаты"
-
-#: fractal-gtk/res/ui/room_settings.ui:604
-msgid "Allow guests"
-msgstr "Разрешать гостей"
-
-#: fractal-gtk/res/ui/room_settings.ui:635
-msgid "Allow joining without invite"
-msgstr "Разрешить вход без приглашения"
-
-#: fractal-gtk/res/ui/room_settings.ui:666
-msgid "Publish in room directory"
-msgstr "Опубликовать в каталоге комнат"
-
-#: fractal-gtk/res/ui/room_settings.ui:695
-msgid "Join addresses"
-msgstr "Адреса подключения"
-
-#: fractal-gtk/res/ui/room_settings.ui:749
-msgid "members"
-msgstr "участники"
-
-#: fractal-gtk/res/ui/room_settings.ui:761
-msgid "Invite New Member"
-msgstr "Пригласить нового пользователя"
-
-#: fractal-gtk/res/ui/room_settings.ui:786
-msgid "Search for room members"
-msgstr "Поиск участников в комнате"
-
-#: fractal-gtk/res/ui/scroll_widget.ui:63
-msgid "Scroll to bottom"
-msgstr "Прокрутить вниз"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:30
-msgid "Show rooms from:"
-msgstr "Показать комнаты из:"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:65
-msgid "Your homeserver"
-msgstr "Ваш homeserver"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:93
-msgid "Other Protocol"
-msgstr "Другой протокол"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:139
-msgid "Other Homeserver"
-msgstr "Другой Homeserver"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:156
-msgid "Homeserver URL"
-msgstr "Адрес сервера"
-
-#: fractal-gtk/src/actions/account_settings.rs:31
-#: fractal-gtk/src/actions/room_settings.rs:37
-msgid "Images"
-msgstr "Изображения"
-
-#: fractal-gtk/src/actions/account_settings.rs:32
-#: fractal-gtk/src/actions/room_settings.rs:39
-msgid "Select a new avatar"
-msgstr "Выбрать новый аватар"
-
-#: fractal-gtk/src/actions/global.rs:320
-msgid "Select a file"
-msgstr "Выберите файл"
-
-#: fractal-gtk/src/actions/message.rs:57
-msgid "This message has no source."
-msgstr "У этого сообщения нет исходного кода."
-
-#: fractal-gtk/src/actions/message.rs:131
-#: fractal-gtk/src/actions/message.rs:162
-msgid "Could not download the file"
-msgstr "Не удалось загрузить файл"
-
-#: fractal-gtk/src/actions/message.rs:138
-msgid "Couldn’t save file"
-msgstr "Не удалось сохранить файл"
-
-#: fractal-gtk/src/actions/room_settings.rs:53
-msgid "Couldn’t open file"
-msgstr "Не удалось открыть файл"
-
-#: fractal-gtk/src/appop/account.rs:65
-msgid "The validation code is not correct."
-msgstr "Проверочный код неверен."
-
-#: fractal-gtk/src/appop/account.rs:73
-msgid "Enter the code received via SMS"
-msgstr "Введите код полученный в SMS"
-
-#: fractal-gtk/src/appop/account.rs:88 fractal-gtk/src/appop/account.rs:144
+"Поддержка шифрования в Fractal нестабильна, поэтому вы можете потерять "
+"доступ к истории зашифрованных сообщений. Перед началом работы рекомендуется "
+"создать резервную копию ключей шифрования."
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:94
+msgid "New Password"
+msgstr "Новый пароль"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:134
+msgid "Confirm New Password"
+msgstr "Подтвердить новый пароль"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:164
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
+#: src/session/content/room_history/verification_info_bar.rs:175
 msgid "Continue"
 msgstr "Продолжить"
 
-#: fractal-gtk/src/appop/account.rs:134
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:12
+#: data/resources/ui/account-settings-user-page.ui:123
+msgid "Deactivate Account"
+msgstr "Деактивировать учетную запись"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:60
 msgid ""
-"In order to add this email address, go to your inbox and follow the link you "
-"received. Once you’ve done that, click Continue."
+"Deactivating your account means you will lose access to all your messages, "
+"contacts, files, and more, forever."
 msgstr ""
-"Чтобы добавить этот адрес электронной почты, перейдите в свой почтовый ящик "
-"и перейдите по полученной вами ссылке. После этого, нажмите «Продолжить»."
+"Деактивация учетной записи означает, что вы навсегда потеряете доступ ко "
+"всем своим сообщениям, контактам, файлам и многому другому."
 
-#: fractal-gtk/src/appop/account.rs:348
-msgid "Are you sure you want to delete your account?"
-msgstr "Вы действительно хотите удалить свою учётную запись?"
-
-#: fractal-gtk/src/appop/mod.rs:176
-msgid "Fractal [{}]"
-msgstr "Fractal [{}]"
-
-#: fractal-gtk/src/appop/notify.rs:18
-msgid "An audio file has been added to the conversation."
-msgstr "К разговору был добавлен аудиофайл."
-
-#: fractal-gtk/src/appop/notify.rs:19
-msgid "An image has been added to the conversation."
-msgstr "К разговору было добавлено изображение."
-
-#: fractal-gtk/src/appop/notify.rs:20
-msgid "A video has been added to the conversation."
-msgstr "К разговору было добавлено видео."
-
-#: fractal-gtk/src/appop/notify.rs:21
-msgid "A file has been added to the conversation."
-msgstr "К разговору был добавлен файл."
-
-#: fractal-gtk/src/appop/notify.rs:26
-msgid " (direct message)"
-msgstr " (личное сообщение)"
-
-#: fractal-gtk/src/appop/room.rs:351
-msgid "Leave {room_name}?"
-msgstr "Покинуть {room_name}?"
-
-#: fractal-gtk/src/appop/room.rs:540
-msgid "The room ID is malformed"
-msgstr "Идентификатор комнаты имеет неверный формат"
-
-#: fractal-gtk/src/appop/room.rs:608
-msgid "EMPTY ROOM"
-msgstr "ПУСТАЯ КОМНАТА"
-
-#: fractal-gtk/src/appop/room.rs:610
-msgid "{m1} and {m2}"
-msgstr "{m1} и {m2}"
-
-#: fractal-gtk/src/appop/room.rs:611
-msgid "{m1} and Others"
-msgstr "{m1} и другие"
-
-#: fractal-gtk/src/appop/room.rs:711
-msgid "Several users are typing…"
-msgstr "Несколько пользователей пишут…"
-
-#: fractal-gtk/src/appop/room.rs:714
-msgid "<b>{}</b> is typing…"
-msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
-msgstr[0] "<b>{}</b> и <b>{}</b> печатают…"
-msgstr[1] "<b>{}</b> и <b>{}</b> печатают…"
-msgstr[2] "<b>{}</b> и <b>{}</b> печатают…"
-
-#: fractal-gtk/src/appop/sync.rs:24
-msgid "Syncing, this could take a while"
-msgstr "Выполняется синхронизация, это может занять некоторое время"
-
-#: fractal-gtk/src/backend/directory.rs:35
-#: fractal-gtk/src/backend/directory.rs:81
-msgid "Error searching for rooms"
-msgstr "Ошибка при поиске комнат"
-
-#: fractal-gtk/src/backend/register.rs:42
-msgid "Can’t login, try again"
-msgstr "Не удаётся войти, повторите попытку"
-
-#: fractal-gtk/src/backend/room.rs:402
-msgid "Error deleting message"
-msgstr "Ошибка при удалении сообщения"
-
-#: fractal-gtk/src/backend/room.rs:442
-msgid "Can’t join the room, try again."
-msgstr "Невозможно войти в комнату, повторите попытку."
-
-#: fractal-gtk/src/backend/room.rs:680 fractal-gtk/src/backend/room.rs:732
-msgid "Can’t create the room, try again"
-msgstr "Невозможно создать комнату, повторите попытку"
-
-#: fractal-gtk/src/backend/user.rs:112
-msgid "Sorry, account settings can’t be loaded."
-msgstr "Извините, настройки учетной записи не могут быть загружены."
-
-#: fractal-gtk/src/backend/user.rs:140
-msgid "Email is already in use"
-msgstr "Этот адрес электронной почты уже используется"
-
-#: fractal-gtk/src/backend/user.rs:143
-msgid "Please enter a valid email address."
-msgstr "Пожалуйста, введите действительный адрес эл. почты."
-
-#: fractal-gtk/src/backend/user.rs:146
-msgid "Couldn’t add the email address."
-msgstr "Не удалось добавить адрес электронной почты."
-
-#: fractal-gtk/src/backend/user.rs:183
-msgid "Phone number is already in use"
-msgstr "Этот номер телефона уже используется"
-
-#: fractal-gtk/src/backend/user.rs:187
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:71
 msgid ""
-"Please enter your phone number in the format: \n"
-" + your country code and your phone number."
+"To confirm that you really want to deactivate this account, type in your "
+"Matrix user ID:"
 msgstr ""
-"Пожалуйста, введите ваш номер телефона в формате: \n"
-" + код страны и номер вашего телефона."
+"Чтобы подтвердить, что вы действительно хотите деактивировать эту учетную "
+"запись, введите свой ID пользователя Matrix:"
 
-#: fractal-gtk/src/backend/user.rs:191
-msgid "Couldn’t add the phone number."
-msgstr "Не удалось добавить номер телефона."
+#: data/resources/ui/account-settings-device-row.ui:59
+#: src/session/content/verification/identity_verification_widget.rs:529
+#: src/session/content/verification/identity_verification_widget.rs:534
+#: src/session/content/verification/identity_verification_widget.rs:537
+#: src/session/content/verification/identity_verification_widget.rs:554
+#: src/session/content/verification/identity_verification_widget.rs:558
+#: src/session/content/verification/identity_verification_widget.rs:562
+msgid "Verify Session"
+msgstr "Проверить сеанс"
 
-#: fractal-gtk/src/backend/user.rs:329
-msgid "Couldn’t change the password"
-msgstr "Не удалось изменить пароль"
+#: data/resources/ui/account-settings-devices-page.ui:5
+msgid "Sessions"
+msgstr "Сеансы"
 
-#: fractal-gtk/src/backend/user.rs:382
-msgid "Couldn’t delete the account"
-msgstr "Не удалось удалить учётную запись"
+#: data/resources/ui/account-settings-devices-page.ui:9
+#: data/resources/ui/account-settings-devices-page.ui:13
+msgid "Current Session"
+msgstr "Текущий сеанс"
 
-#: fractal-gtk/src/ui/about.rs:12
-msgid "A Matrix.org client for GNOME"
-msgstr "Matrix.org клиент для GNOME"
+#: data/resources/ui/account-settings-devices-page.ui:24
+#: data/resources/ui/account-settings-devices-page.ui:28
+msgid "Other Active Sessions"
+msgstr "Другие активные сеансы"
 
-#: fractal-gtk/src/ui/about.rs:14
-msgid "© 2017–2020 Daniel García Moreno, et al."
-msgstr "© 2017–2020 Daniel García Moreno, и другие."
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:80
+#: data/resources/ui/session-verification.ui:290
+msgid "Passphrase"
+msgstr "Парольная фраза"
 
-#: fractal-gtk/src/ui/about.rs:21
-msgid "Learn more about Fractal"
-msgstr "Узнайте больше о Fractal"
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:97
+msgid "Confirm Passphrase"
+msgstr "Подтвердить парольную фразу"
 
-#: fractal-gtk/src/ui/about.rs:22
-msgid "translator-credits"
-msgstr ""
-"Artem Polishchuk <ego.cordatus@gmail.com>, 2018-2019\n"
-"Artemii Sudakov <finziyr@yandex.ru>, 2020"
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:132
+msgid "Choose…"
+msgstr "Выбрать…"
 
-#: fractal-gtk/src/ui/about.rs:37
-msgid "Name by"
+#: data/resources/ui/account-settings-notifications-page.ui:5
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: data/resources/ui/account-settings-notifications-page.ui:11
+msgid "Enable for this account"
+msgstr "Включить для этой учетной записи"
+
+#: data/resources/ui/account-settings-notifications-page.ui:34
+msgid "Enable for this session"
+msgstr "Включить для этого сеанса"
+
+#: data/resources/ui/account-settings-user-page.ui:5
+msgid "General"
+msgstr "Общие"
+
+#: data/resources/ui/account-settings-user-page.ui:38
+msgid "Name"
 msgstr "Имя"
 
-#: fractal-gtk/src/ui/attach.rs:26
-msgid "Image from Clipboard"
-msgstr "Изображение из буфера обмена"
+#: data/resources/ui/account-settings-user-page.ui:71
+msgid "Advanced Information"
+msgstr "Дополнительная информация"
 
-#: fractal-gtk/src/ui/attach.rs:42
-msgid "Send"
-msgstr "Отправить"
+#: data/resources/ui/account-settings-user-page.ui:74
+msgid "Homeserver"
+msgstr "Домашний сервер"
 
-#. Filename for the attached image
-#: fractal-gtk/src/ui/attach.rs:90
-msgid "image"
-msgstr "изображения"
+#: data/resources/ui/account-settings-user-page.ui:88
+msgid "Matrix User ID"
+msgstr "ID пользователя Matrix"
 
-#: fractal-gtk/src/ui/invite.rs:131
-msgid "Invite to {name}"
-msgstr "Пригласить в {name}"
+#: data/resources/ui/account-settings-user-page.ui:102
+msgid "Session ID"
+msgstr "ID сеанса"
 
-#: fractal-gtk/src/ui/invite.rs:183
-msgid "Join {room_name}?"
-msgstr "Войти в {room_name}?"
+#: data/resources/ui/account-settings-security-page.ui:5
+msgid "Security"
+msgstr "Безопасность"
 
-#: fractal-gtk/src/ui/invite.rs:187
+#: data/resources/ui/account-settings-security-page.ui:9
+msgid "Room Encryption Keys"
+msgstr "Ключи шифрования комнаты"
+
+#: data/resources/ui/account-settings-security-page.ui:12
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:210
+msgid "Export Room Encryption Keys"
+msgstr "Экспорт ключей шифрования комнаты"
+
+#: data/resources/ui/account-settings-security-page.ui:19
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:220
+msgid "Import Room Encryption Keys"
+msgstr "Импорт ключей шифрования комнаты"
+
+#: data/resources/ui/account-settings.ui:4
+msgid "Account Settings"
+msgstr "Настройки учетной записи"
+
+#: data/resources/ui/attachment-dialog.ui:14
+#: data/resources/ui/content-invite-subpage.ui:12
+#: data/resources/ui/join-room-dialog.ui:9
+#: data/resources/ui/room-creation.ui:16
+msgid "_Cancel"
+msgstr "_Отменить"
+
+#: data/resources/ui/attachment-dialog.ui:21
+msgid "_Send"
+msgstr "_Отправить"
+
+#: data/resources/ui/components-auth-dialog.ui:20
+msgid "Authentication"
+msgstr "Аутентификация"
+
+#: data/resources/ui/components-auth-dialog.ui:43
+msgid "Please authenticate the operation with your password"
+msgstr "Пожалуйста, подтвердите операцию с помощью вашего пароля"
+
+#: data/resources/ui/components-auth-dialog.ui:70
 msgid ""
-"You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</b>"
-msgstr "<b>{sender_name}</b> пригласил вас в комнату <b>{room_name}</b>"
-
-#: fractal-gtk/src/ui/invite.rs:192
-msgid "You’ve been invited to join <b>{room_name}</b>"
-msgstr "Вас пригласили в комнату <b>{room_name}</b>"
-
-#: fractal-gtk/src/ui/mod.rs:77
-msgid "You don’t have permission to post to this room"
-msgstr "У вас недостаточно прав на отправку в этой комнате"
-
-#: fractal-gtk/src/ui/mod.rs:159
-msgid "OK"
-msgstr "OK"
-
-#: fractal-gtk/src/ui/room_settings.rs:264
-msgid "Room · {} member"
-msgid_plural "Room · {} members"
-msgstr[0] "Комната · {} участник"
-msgstr[1] "Комната · {} участника"
-msgstr[2] "Комната · {} участников"
-
-#: fractal-gtk/src/ui/room_settings.rs:699
-msgid "{} member"
-msgid_plural "{} members"
-msgstr[0] "{} участник"
-msgstr[1] "{} участника"
-msgstr[2] "{} участников"
-
-#: fractal-gtk/src/widgets/file_dialog.rs:8
-msgid "Save media as"
-msgstr "Сохранить медиа как"
-
-#: fractal-gtk/src/widgets/file_dialog.rs:11
-msgid "_Save"
-msgstr "_Сохранить"
-
-#: fractal-gtk/src/widgets/file_dialog.rs:32
-msgid "_Select"
-msgstr "_Выбрать"
-
-#: fractal-gtk/src/widgets/inline_player.rs:513
-msgid "Could not retrieve file URI"
-msgstr "Не удалось получить URI файла"
-
-#: fractal-gtk/src/widgets/kicked_dialog.rs:46
-msgid "You have been kicked from {}"
-msgstr "Вы были исключены из {}"
-
-#: fractal-gtk/src/widgets/kicked_dialog.rs:50
-msgid ""
-"Kicked by: {}\n"
-" “{}”"
+"Please authenticate the operation via the browser and once completed press "
+"confirm."
 msgstr ""
-"Исключены: {}\n"
-" “{}”"
+"Пожалуйста, подтвердите операцию через браузер и после завершения нажмите "
+"подтвердить."
 
-#: fractal-gtk/src/widgets/login.rs:95
-msgid "Malformed server URL"
-msgstr "Неверно сформированный URL сервера"
+#: data/resources/ui/components-auth-dialog.ui:80
+msgid "Authenticate via Browser"
+msgstr "Аутентификация через браузер"
 
-#: fractal-gtk/src/widgets/media_viewer.rs:1026
-msgid "Error while loading previous media"
-msgstr "Ошибка при загрузке предыдущего медиа"
+#: data/resources/ui/components-auth-dialog.ui:113
+#: data/resources/ui/identity-verification-widget.ui:452
+#: src/components/editable_avatar.rs:318
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:266
+#: src/session/content/room_history/verification_info_bar.rs:176
+#: src/session/room/event_actions.rs:295
+msgid "Cancel"
+msgstr "Отменить"
 
-#: fractal-gtk/src/widgets/members_list.rs:50
-msgid "No matching members found"
-msgstr "Не найдено ни одного соответствующего участника"
+#: data/resources/ui/components-auth-dialog.ui:118
+#: data/resources/ui/identity-verification-widget.ui:442
+msgid "Confirm"
+msgstr "Подтвердить"
 
-#: fractal-gtk/src/widgets/members_list.rs:146
-msgid "Admin"
-msgstr "Администратор"
+#: data/resources/ui/components-loading-listbox-row.ui:32
+msgid "Try again"
+msgstr "Попробовать снова"
 
-#: fractal-gtk/src/widgets/members_list.rs:147
-msgid "Moderator"
-msgstr "Модератор"
+#: data/resources/ui/content-explore-servers-popover.ui:35
+msgid "Add server…"
+msgstr "Добавить сервер…"
 
-#: fractal-gtk/src/widgets/members_list.rs:148
-msgid "Privileged"
-msgstr "Привилегированный"
+#: data/resources/ui/content-explore.ui:71
+msgid "No rooms matching the search were found"
+msgstr "Комнат, соответствующих запросу, не найдено"
 
-#: fractal-gtk/src/widgets/message.rs:471
-#, c-format
-msgid "Last edited %c"
-msgstr "Последнее редактирование %c"
+#: data/resources/ui/content-explore.ui:97
+msgid "Room List"
+msgstr "Список комнат"
 
-#: fractal-gtk/src/widgets/message.rs:665
-#: fractal-gtk/src/widgets/message.rs:831
+#: data/resources/ui/content-invite-subpage.ui:18
+msgid "I_nvite"
+msgstr "П_ригласить"
+
+#: data/resources/ui/content-invite-subpage.ui:85
+msgid "Search"
+msgstr "Поиск"
+
+#: data/resources/ui/content-invite-subpage.ui:86
+msgid "Search for users to invite them to this room."
+msgstr "Поиск пользователей, чтобы пригласить их в эту комнату."
+
+#: data/resources/ui/content-invite-subpage.ui:115
+msgid "No Users Found"
+msgstr "Пользователи не найдены"
+
+#: data/resources/ui/content-invite-subpage.ui:116
+msgid "No users matching the search were found."
+msgstr "Пользователей, соответствующих запросу, не найдено."
+
+#: data/resources/ui/content-invite-subpage.ui:122
+msgid "Error"
+msgstr "Ошибка"
+
+#: data/resources/ui/content-invite-subpage.ui:123
+msgid "An error occurred while searching for matches."
+msgstr "Произошла ошибка при поиске совпадений."
+
+#: data/resources/ui/content-invite.ui:26
+#: data/resources/ui/content-invite.ui:51
+#: data/resources/ui/content-member-page.ui:69
+msgid "Invite"
+msgstr "Пригласить"
+
+#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:33
+msgid "_Reject"
+msgstr "_Отклонить"
+
+#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:28
+msgid "_Accept"
+msgstr "_Принять"
+
+#: data/resources/ui/content-markdown-popover.ui:17
+msgid "_Markdown"
+msgstr "_Markdown"
+
+#: data/resources/ui/content-markdown-popover.ui:37
+msgid "> quote"
+msgstr "> цитата"
+
+#: data/resources/ui/content-markdown-popover.ui:46
+msgid "**bold**"
+msgstr "**жирный**"
+
+#: data/resources/ui/content-markdown-popover.ui:59
+msgid "`code`"
+msgstr "`моноширинный`"
+
+#: data/resources/ui/content-markdown-popover.ui:69
+msgid "*italic*"
+msgstr "*курсив*"
+
+#: data/resources/ui/content-member-page.ui:19
+msgid "Search for Room Members"
+msgstr "Поиск участников комнаты"
+
+#: data/resources/ui/content-member-page.ui:35
+#: data/resources/ui/content-member-page.ui:39
+msgid "Search for room members"
+msgstr "Поиск участников комнаты"
+
+#: data/resources/ui/content-message-file.ui:25
+#: src/session/room/event_actions.rs:294
 msgid "Save"
 msgstr "Сохранить"
 
-#: fractal-gtk/src/widgets/message.rs:846
-msgid "Open"
-msgstr "Открыть"
+#: data/resources/ui/content-room-details.ui:4
+#: src/session/content/room_details/mod.rs:200
+msgid "Room Details"
+msgstr "Информация о комнате"
 
-#. Use 12h time format (AM/PM)
-#: fractal-gtk/src/widgets/message.rs:989
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+#: data/resources/ui/content-room-details-general-page.ui:102
+msgid "Description"
+msgstr "Описание"
 
-#. Use 24 time format
-#: fractal-gtk/src/widgets/message.rs:992
-msgid "%R"
-msgstr "%R"
+#: data/resources/ui/content-room-details-general-page.ui:150
+msgid "Members"
+msgstr "Участники"
 
-#: fractal-gtk/src/widgets/room_history.rs:108
+#: data/resources/ui/content-room-history.ui:6
+msgid "Room _Details"
+msgstr "_Информация о комнате"
+
+#: data/resources/ui/content-room-history.ui:11
+msgid "_Invite New Member"
+msgstr "_Пригласить нового участника"
+
+#: data/resources/ui/content-room-history.ui:16
+msgid "Room _Permalink"
+msgstr "_Постоянная ссылка комнаты"
+
+#: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:62
+msgid "_Leave Room"
+msgstr "_Покинуть комнату"
+
+#: data/resources/ui/content-room-history.ui:31
+msgid "_Location"
+msgstr "_Местонахождение"
+
+#: data/resources/ui/content-room-history.ui:36
+msgid "_Attachment"
+msgstr "_Вложение"
+
+#: data/resources/ui/content-room-history.ui:60
+msgid "Back"
+msgstr "Назад"
+
+#: data/resources/ui/content-room-history.ui:85
+msgid "Room Settings"
+msgstr "Настройки комнаты"
+
+#: data/resources/ui/content-room-history.ui:93
+msgid "Toggle Room History Search"
+msgstr "Переключить поиск по истории комнаты"
+
+#: data/resources/ui/content-room-history.ui:111
+msgid "Room History Search"
+msgstr "Поиск по истории комнаты"
+
+#: data/resources/ui/content-room-history.ui:146
+msgid "Unable to load room"
+msgstr "Не удается загрузить комнату"
+
+#: data/resources/ui/content-room-history.ui:147
+msgid "Check your network connection."
+msgstr "Проверьте свое сетевое подключение."
+
+#: data/resources/ui/content-room-history.ui:150
+msgid "Try Again"
+msgstr "Попробовать снова"
+
+#: data/resources/ui/content-room-history.ui:175
+msgid "Scroll to bottom"
+msgstr "Прокрутить вниз"
+
+#: data/resources/ui/content-room-history.ui:187
+msgid "Drop Here to Send"
+msgstr "Сбросьте здесь, чтобы отправить"
+
+#: data/resources/ui/content-room-history.ui:208
+msgid "Room History"
+msgstr "История комнаты"
+
+#: data/resources/ui/content-room-history.ui:304
+msgid "Enable Markdown Formatting"
+msgstr "Включить форматирование markdown"
+
+#: data/resources/ui/content-room-history.ui:325
+msgid "Message Entry"
+msgstr "Ввод сообщения"
+
+#: data/resources/ui/content-room-history.ui:339
+msgid "Open Emoji Picker"
+msgstr "Открыть выбор эмодзи"
+
+#: data/resources/ui/content-room-history.ui:350
+msgid "Open Message Menu"
+msgstr "Открыть меню сообщений"
+
+#: data/resources/ui/content-room-history.ui:365
+msgid "Send Message"
+msgstr "Отправить сообщение"
+
+#: data/resources/ui/content-state-creation.ui:19
+msgid "Previous room"
+msgstr "Предыдущая комната"
+
+#: data/resources/ui/content-state-tombstone.ui:14
+msgid "There is a newer version of this room."
+msgstr "Есть более новая версия этой комнаты."
+
+#: data/resources/ui/content-state-tombstone.ui:19
+msgid "Go there"
+msgstr "Перейти туда"
+
+#: data/resources/ui/content.ui:36
+msgid "No Room Selected"
+msgstr "Не выбрано ни одной комнаты"
+
+#: data/resources/ui/content.ui:37
+msgid "Join a room to start chatting."
+msgstr "Присоединитесь к комнате, чтобы начать общаться."
+
+#: data/resources/ui/error-page.ui:40
+msgid ""
+"It seems like one of the Fractal sessions stored in the Secret Service is "
+"corrupted. If you know how to fix it you should do so."
+msgstr ""
+"Похоже, что один из сеансов Fractal, хранящийся в Секретной службе, "
+"поврежден. Если вы знаете, как это исправить, сделайте это."
+
+#: data/resources/ui/error-page.ui:51
+msgid ""
+"Alternatively, we could disconnect this session for you. This means you will "
+"have to login again and you will lose access to your encrypted messages, "
+"unless you have a session open in another client or you have already backed "
+"up your encryption keys."
+msgstr ""
+"В качестве альтернативы мы можем отключить этот сеанс для вас. Это означает, "
+"что вам придется снова войти в приложение, и вы потеряете доступ к своим "
+"зашифрованным сообщениям, если только у вас не открыт сеанс в другом клиенте "
+"или вы не сделали резервную копию ключей шифрования."
+
+#: data/resources/ui/error-page.ui:74
+msgid "Clicking this button might disconnect more than one session!"
+msgstr ""
+"Нажатие этой кнопки может привести к отключению более чем одного сеанса!"
+
+#: data/resources/ui/error-page.ui:86
+msgid "Disconnect the corrupted session"
+msgstr "Отключить поврежденный сеанс"
+
+#: data/resources/ui/error-page.ui:109
+msgid ""
+"Fractal relies on a Secret Service Provider to manage your sensitive session "
+"information and an error occurred while we were trying to store or get your "
+"session."
+msgstr ""
+"Fractal полагается на поставщика Секретной службы для управления "
+"конфиденциальной информацией о сеансе, и во время попытки сохранить или "
+"получить ваш сеанс произошла ошибка."
+
+#: data/resources/ui/error-page.ui:124
+msgid ""
+"Here are a few things that might help you fix issues with the Secret Service:"
+msgstr ""
+"Вот несколько вещей, которые могут помочь вам решить проблемы с Секретной "
+"службой:"
+
+#: data/resources/ui/error-page.ui:147
+msgid ""
+"Make sure you have a Secret Service Provider installed, like gnome-keyring."
+msgstr ""
+"Убедитесь, что у вас установлен поставщик Секретной службы, например gnome-"
+"keyring."
+
+#: data/resources/ui/error-page.ui:172
+msgid "Check that you have a default keyring and that it is unlocked."
+msgstr ""
+"Убедитесь, что у вас есть связка ключей по умолчанию и что она "
+"разблокирована."
+
+#: data/resources/ui/error-page.ui:187
+msgid ""
+"Check the application logs and your distribution’s documentation for more "
+"details."
+msgstr ""
+"Проверьте журналы приложений и документацию вашего дистрибутива для "
+"получения более подробной информации."
+
+#. Translators: In this string, 'Reply' is a verb.
+#: data/resources/ui/event-menu.ui:12
+msgid "_Reply"
+msgstr "_Ответить"
+
+#. Translators: In this string, 'Edit' is a verb.
+#: data/resources/ui/event-menu.ui:18
+msgid "_Edit"
+msgstr "_Редактировать"
+
+#. Translators: In this string, 'Forward' is a verb.
+#: data/resources/ui/event-menu.ui:24 data/resources/ui/event-menu.ui:115
+msgid "_Forward"
+msgstr "_Переслать"
+
+#: data/resources/ui/event-menu.ui:31 data/resources/ui/event-menu.ui:122
+msgid "_Select"
+msgstr "_Выбрать"
+
+#: data/resources/ui/event-menu.ui:38 data/resources/ui/event-menu.ui:129
+msgid "_Copy Text"
+msgstr "_Копировать текст"
+
+#: data/resources/ui/event-menu.ui:44
+msgid "_Copy Thumbnail"
+msgstr "_Копировать эскиз"
+
+#: data/resources/ui/event-menu.ui:49 data/resources/ui/event-menu.ui:90
+msgid "S_ave Image"
+msgstr "Со_хранить изображение"
+
+#: data/resources/ui/event-menu.ui:54 data/resources/ui/event-menu.ui:95
+msgid "S_ave Video"
+msgstr "Со_хранить видео"
+
+#: data/resources/ui/event-menu.ui:59 data/resources/ui/event-menu.ui:100
+msgid "S_ave Audio"
+msgstr "Со_хранить аудио"
+
+#: data/resources/ui/event-menu.ui:64 data/resources/ui/event-menu.ui:105
+#: data/resources/ui/event-menu.ui:135
+msgid "_Permalink"
+msgstr "_Постоянная ссылка"
+
+#: data/resources/ui/event-menu.ui:69 data/resources/ui/event-menu.ui:140
+msgid "_View Source"
+msgstr "_Посмотреть источник"
+
+#: data/resources/ui/event-menu.ui:76 data/resources/ui/event-menu.ui:147
+msgid "Re_move"
+msgstr "_Удалить"
+
+#: data/resources/ui/event-menu.ui:85
+msgid "_Copy Image"
+msgstr "_Копировать изображение"
+
+#: data/resources/ui/event-source-dialog.ui:5
+msgid "Event Source"
+msgstr "Источник события"
+
+#: data/resources/ui/greeter.ui:43
+msgid ""
+"You are running an early stage development version. Be aware it is a work in "
+"progress and far from complete yet."
+msgstr ""
+"Вы используете версию, находящуюся на ранней стадии разработки. Имейте в "
+"виду, что работа над ней продолжается и она еще далека от завершения."
+
+#. Fractal is the application name and shouldn't be translated
+#: data/resources/ui/greeter.ui:101
+msgid "Welcome to Fractal"
+msgstr "Добро пожаловать в Fractal"
+
+#: data/resources/ui/greeter.ui:126
+msgid "_Log in"
+msgstr "_Войти"
+
+#: data/resources/ui/greeter.ui:136
+msgid "_Create Account"
+msgstr "_Создать учетную запись"
+
+#: data/resources/ui/identity-verification-widget.ui:46
+#: src/session/content/room_history/verification_info_bar.rs:171
+msgid "Decline"
+msgstr "Отклонить"
+
+#: data/resources/ui/identity-verification-widget.ui:56
+#: src/session/content/room_history/verification_info_bar.rs:170
+msgid "Verify"
+msgstr "Проверить"
+
+#: data/resources/ui/identity-verification-widget.ui:109
+#: data/resources/ui/identity-verification-widget.ui:213
+msgid "Can’t scan QR code?"
+msgstr "Не можете отсканировать QR-код?"
+
+#: data/resources/ui/identity-verification-widget.ui:117
+#: data/resources/ui/identity-verification-widget.ui:230
+msgid "Compare Emoji"
+msgstr "Сравнить Эмодзи"
+
+#: data/resources/ui/identity-verification-widget.ui:144
+msgid "Scan Complete"
+msgstr "Сканирование выполнено"
+
+#: data/resources/ui/identity-verification-widget.ui:222
+msgid "Scan QR code with this session"
+msgstr "Сканировать QR-код с помощью этого сеанса"
+
+#: data/resources/ui/identity-verification-widget.ui:290
+msgid "Do Not Match"
+msgstr "Не совпадает"
+
+#: data/resources/ui/identity-verification-widget.ui:300
+msgid "Match"
+msgstr "Совпадает"
+
+#: data/resources/ui/identity-verification-widget.ui:350
+msgid "Done"
+msgstr "Готово"
+
+#: data/resources/ui/identity-verification-widget.ui:419
+msgid "Confirm Scan"
+msgstr "Подтвердить сканирование"
+
+#: data/resources/ui/identity-verification-widget.ui:482
+msgid "Missing Cross-Signing Keys"
+msgstr "Отсутствуют ключи перекрестного подписания"
+
+#: data/resources/ui/identity-verification-widget.ui:500
+msgid ""
+"Even though the verification was successful, the other device didn’t send us "
+"the necessary keys:"
+msgstr ""
+"Несмотря на то, что проверка прошла успешно, другое устройство не прислало "
+"нам необходимые ключи:"
+
+#: data/resources/ui/identity-verification-widget.ui:518
+msgid "User-signing key"
+msgstr "Ключ подписания пользователя"
+
+#: data/resources/ui/identity-verification-widget.ui:538
+msgid "Self-signing key"
+msgstr "Ключ самоподписания"
+
+#: data/resources/ui/identity-verification-widget.ui:557
+msgid "You can wait a bit longer, or choose one of the following options:"
+msgstr ""
+"Вы можете подождать еще немного или выбрать один из следующих вариантов:"
+
+#: data/resources/ui/identity-verification-widget.ui:578
+msgid "Verify your session with another device"
+msgstr "Проверить сеанс с помощью другого устройства"
+
+#: data/resources/ui/identity-verification-widget.ui:601
+msgid "Reset cross-signing on your other device and retry verification"
+msgstr ""
+"Сбросить перекрестное подписание на другом устройстве и повторить проверку"
+
+#: data/resources/ui/identity-verification-widget.ui:624
+msgid ""
+"Verify this session without another device, or reset cross-signing on this "
+"device"
+msgstr ""
+"Проверить этот сеанс без другого устройства или сбросить перекрестное "
+"подписание на этом устройстве"
+
+#: data/resources/ui/identity-verification-widget.ui:633
+msgid "Restart verification"
+msgstr "Перезапустить проверку"
+
+#: data/resources/ui/join-room-dialog.ui:4
+msgid "Join a Room"
+msgstr "Присоединиться к комнате"
+
+#: data/resources/ui/join-room-dialog.ui:5
+msgid "Enter a room ID, room alias, or permalink."
+msgstr "Введите ID комнаты, псевдоним комнаты или постоянную ссылку."
+
+#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:712
+msgid "_Join"
+msgstr "_Присоединиться"
+
+#: data/resources/ui/login-advanced-dialog.ui:5
+msgid "Homeserver Discovery"
+msgstr "Обнаружение домашнего сервера"
+
+#: data/resources/ui/login-advanced-dialog.ui:14
+msgid ""
+"Auto-discovery, also known as “well-known lookup”, allows to discover the "
+"URL of a Matrix homeserver from a domain name. This should only be disabled "
+"if your homeserver doesn’t support auto-discovery or if you want to provide "
+"the URL yourself."
+msgstr ""
+"Автообнаружение, также известное как \"известный поиск\", позволяет "
+"обнаружить URL домашнего сервера Matrix по доменному имени. Эта функция "
+"должна быть отключена, только если ваш домашний сервер не поддерживает "
+"автообнаружение или если вы хотите предоставить URL самостоятельно."
+
+#: data/resources/ui/login-advanced-dialog.ui:17
+msgid "_Auto-discovery"
+msgstr "_Автообнаружение"
+
+#. Translators: As in 'Advanced Settings'.
+#: data/resources/ui/login-homeserver-page.ui:59
+msgid "Advanced…"
+msgstr "Дополнительно…"
+
+#: data/resources/ui/login-method-page.ui:37 src/login/homeserver_page.rs:112
+msgid "Homeserver URL"
+msgstr "URL домашнего сервера"
+
+#: data/resources/ui/login-method-page.ui:60
+msgid "Matrix Username"
+msgstr "Имя пользователя Matrix"
+
+#: data/resources/ui/login-method-page.ui:72
+msgid "Password"
+msgstr "Пароль"
+
+#: data/resources/ui/login-method-page.ui:78
+msgid "_Forgot Password?"
+msgstr "_Забыли пароль?"
+
+#: data/resources/ui/login-method-page.ui:100
+msgid "More SSO Providers"
+msgstr "Больше поставщиков SSO"
+
+#: data/resources/ui/login-sso-page.ui:21
+msgid "Please follow the steps in the browser."
+msgstr "Пожалуйста, следуйте инструкциям в браузере."
+
+#: data/resources/ui/login.ui:23
+msgid "_Next"
+msgstr "_Далее"
+
+#: data/resources/ui/member-menu.ui:6
+msgid "_Verify"
+msgstr "_Проверить"
+
+#: data/resources/ui/member-menu.ui:14
+msgid "Make _Mod"
+msgstr "Сделать _Модератором"
+
+#: data/resources/ui/member-menu.ui:20
+msgid "Make _Admin"
+msgstr "Сделать _администратором"
+
+#: data/resources/ui/member-menu.ui:26
+msgid "_Kick"
+msgstr "_Удалить"
+
+#: data/resources/ui/room-creation.ui:4
+msgid "Create new Room"
+msgstr "Создать новую комнату"
+
+#: data/resources/ui/room-creation.ui:22
+msgid "C_reate"
+msgstr "С_оздать"
+
+#: data/resources/ui/room-creation.ui:58
+msgid "Room Name"
+msgstr "Имя комнаты"
+
+#: data/resources/ui/room-creation.ui:93
+msgid "Visibility"
+msgstr "Видимость"
+
+#: data/resources/ui/room-creation.ui:103
+msgid "_Private"
+msgstr "_Приватная"
+
+#: data/resources/ui/room-creation.ui:110
+msgid "P_ublic"
+msgstr "Об_щедоступная"
+
+#: data/resources/ui/room-creation.ui:122
+msgid "Room Address"
+msgstr "Адрес комнаты"
+
+#: data/resources/ui/session-verification.ui:59
+#: src/session/content/verification/identity_verification_widget.rs:571
+msgid "Get Another Device"
+msgstr "Подключить другое устройство"
+
+#: data/resources/ui/session-verification.ui:70
+#: src/session/content/verification/identity_verification_widget.rs:573
+msgid "Accept the verification request from another session or device."
+msgstr "Примите запрос на проверку из другого сеанса или устройства."
+
+#: data/resources/ui/session-verification.ui:83
+msgid "No other devices logged into this account?"
+msgstr "Нет других устройств, вошедших в эту учетную запись?"
+
+#: data/resources/ui/session-verification.ui:91
+#: data/resources/ui/session-verification.ui:186
+msgid "Recovery"
+msgstr "Восстановление"
+
+#: data/resources/ui/session-verification.ui:101
+#: src/session/content/verification/session_verification.rs:249
+msgid "Reset"
+msgstr "Сброс"
+
+#: data/resources/ui/session-verification.ui:138
+msgid "Setup Encryption Identity"
+msgstr "Установка идентификатора шифрования"
+
+#: data/resources/ui/session-verification.ui:149
+msgid ""
+"You need to setup an encryption identity, since this is the first time you "
+"logged into your account."
+msgstr ""
+"Вам необходимо установить идентификатор шифрования, поскольку вы впервые "
+"вошли в свою учетную запись."
+
+#: data/resources/ui/session-verification.ui:157
+msgid "Setup"
+msgstr "Установка"
+
+#: data/resources/ui/session-verification.ui:197
+msgid ""
+"Without another device you need a recovery passphrase or key to access your "
+"messages"
+msgstr ""
+"Без другого устройства требуется парольная фраза или ключ восстановления для "
+"доступа к сообщениям"
+
+#: data/resources/ui/session-verification.ui:205
+#: data/resources/ui/session-verification.ui:260
+msgid "Recovery Passphrase"
+msgstr "Парольная фраза восстановления"
+
+#: data/resources/ui/session-verification.ui:214
+#: data/resources/ui/session-verification.ui:324
+msgid "Recovery Key"
+msgstr "Ключ восстановления"
+
+#: data/resources/ui/session-verification.ui:223
+msgid ""
+"If you don’t have any of these you can reset your identity, but be aware "
+"this makes your old messages inaccessible forever."
+msgstr ""
+"Если у вас нет ничего из этого, вы можете сбросить свой идентификатор, но "
+"имейте в виду, что это сделает ваши старые сообщения недоступными навсегда."
+
+#: data/resources/ui/session-verification.ui:232
+msgid "Reset Identity"
+msgstr "Сбросить идентификатор"
+
+#: data/resources/ui/session-verification.ui:271
+msgid ""
+"Your Recovery Passphrase was set up when you first created this account."
+msgstr ""
+"Ваша парольная фраза восстановления была установлена при первом создании "
+"этой учетной записи."
+
+#: data/resources/ui/session-verification.ui:279
+msgid "If you opted for a Recovery Key instead go back and choose that option."
+msgstr ""
+"Если вы выбрали вместо этого ключ восстановления, вернитесь назад и выберите "
+"этот вариант."
+
+#: data/resources/ui/session-verification.ui:295
+#: data/resources/ui/session-verification.ui:360
+msgid "Next"
+msgstr "Далее"
+
+#: data/resources/ui/session-verification.ui:335
+msgid "Your Recovery Key was set up when you first created this account."
+msgstr ""
+"Ваш ключ восстановления был установлен при первом создании этой учетной "
+"записи."
+
+#: data/resources/ui/session-verification.ui:343
+msgid ""
+"If you opted for a Recovery Passphrase instead go back and choose that "
+"option."
+msgstr ""
+"Если вы выбрали вместо этого парольную фразу восстановления, вернитесь назад "
+"и выберите этот вариант."
+
+#: data/resources/ui/shortcuts.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Общие"
+
+#: data/resources/ui/shortcuts.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Показать комбинации клавиш"
+
+#: data/resources/ui/shortcuts.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Закрыть"
+
+#: data/resources/ui/shortcuts.ui:26
+msgctxt "shortcut window"
+msgid "Search Room List"
+msgstr "Поиск по списку комнат"
+
+#: data/resources/ui/shortcuts.ui:32
+msgctxt "shortcut window"
+msgid "Close Room"
+msgstr "Закрыть комнату"
+
+#: data/resources/ui/sidebar.ui:6
+msgid "_New Room"
+msgstr "_Новая комната"
+
+#: data/resources/ui/sidebar.ui:10
+msgid "_Join Room"
+msgstr "_Присоединиться к комнате"
+
+#: data/resources/ui/sidebar.ui:16
+msgid "_Keyboard Shortcuts"
+msgstr "_Комбинации клавиш"
+
+#: data/resources/ui/sidebar.ui:20
+msgid "_About Fractal"
+msgstr "_О Fractal"
+
+#: data/resources/ui/sidebar.ui:40
+msgid "Move to _Favorites"
+msgstr "Переместить в _Избранное"
+
+#: data/resources/ui/sidebar.ui:45
+msgid "Move to _Rooms"
+msgstr "Переместить в _Комнаты"
+
+#: data/resources/ui/sidebar.ui:50
+msgid "Move to _People"
+msgstr "Переместить в _Люди"
+
+#: data/resources/ui/sidebar.ui:55
+msgid "Move to Low _Priority"
+msgstr "Переместить в Низкий _приоритет"
+
+#: data/resources/ui/sidebar.ui:67
+msgid "Re_join Room"
+msgstr "Ве_рнуться в комнату"
+
+#: data/resources/ui/sidebar.ui:72
+msgid "_Forget Room"
+msgstr "_Забыть комнату"
+
+#: data/resources/ui/sidebar.ui:91
+msgid "Switch Accounts"
+msgstr "Переключить учетные записи"
+
+#: data/resources/ui/sidebar.ui:113
+msgid "App Settings Menu"
+msgstr "Меню настроек приложения"
+
+#: data/resources/ui/sidebar.ui:123
+msgid "Toggle Room Search"
+msgstr "Переключить поиск комнаты"
+
+#: data/resources/ui/sidebar.ui:135
+msgid "Room Search"
+msgstr "Поиск комнаты"
+
+#: data/resources/ui/sidebar.ui:136
+msgid "Search for a room"
+msgstr "Поиск в комнате"
+
+#: data/resources/ui/sidebar.ui:146
+msgid "Offline"
+msgstr "Не в сети"
+
+#: data/resources/ui/sidebar.ui:166
+msgid "Sidebar"
+msgstr "Боковая панель"
+
+#: data/resources/ui/sidebar.ui:167
+msgid "Allows to navigate between rooms"
+msgstr "Позволяет перемещаться между комнатами"
+
+#: data/resources/ui/qr-code-scanner.ui:21
+msgid "Unable to connect to Camera"
+msgstr "Невозможно подключиться к камере"
+
+#: src/application.rs:191
+msgid "© 2017-2022 The Fractal Team"
+msgstr "© 2017-2022 Команда Fractal"
+
+#: src/application.rs:205
+msgid "translator-credits"
+msgstr ""
+"Artem Polishchuk <ego.cordatus@gmail.com>, 2018-2019\n"
+"Aleksandr Melman <alexmelman88@gmail.com>, 2022"
+
+#. This can't be added via the builder
+#: src/application.rs:209
+msgid "Name by"
+msgstr "Имя"
+
+#: src/components/editable_avatar.rs:308
+msgid "Choose Avatar"
+msgstr "Выбрать аватар"
+
+#: src/components/editable_avatar.rs:317
+msgid "Choose"
+msgstr "Выбрать"
+
+#: src/components/editable_avatar.rs:338
+msgid "The chosen file is not an image"
+msgstr "Выбранный файл не является изображением"
+
+#: src/components/editable_avatar.rs:344
+msgid "Could not determine the type of the chosen file"
+msgstr "Не удалось определить тип выбранного файла"
+
+#: src/components/editable_avatar.rs:349
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:282
+msgid "No file was chosen"
+msgstr "Не был выбран файл"
+
+#: src/components/location_viewer.rs:137
+msgid "Location at latitude {latitude} and longitude {longitude}"
+msgstr "Местоположение на широте {latitude} и долготе {longitude}"
+
+#: src/components/media_content_viewer.rs:167
+msgid "Image not Viewable"
+msgstr "Изображение не просматривается"
+
+#: src/components/media_content_viewer.rs:168
+msgid "Audio Clip not Playable"
+msgstr "Аудиоклип не воспроизводится"
+
+#: src/components/media_content_viewer.rs:169
+msgid "Video not Playable"
+msgstr "Видео не воспроизводится"
+
+#: src/components/media_content_viewer.rs:170
+msgid "File not Viewable"
+msgstr "Файл не просматривается"
+
+#: src/error_page.rs:111
+msgid "Session removed successfully."
+msgstr "Сеанс успешно удален."
+
+#: src/error_page.rs:119
+msgid "Could not remove session from secret storage"
+msgstr "Не удалось удалить сеанс из секретного хранилища"
+
+#: src/greeter.rs:82 src/login/mod.rs:674 src/window.rs:365
+msgid "No network connection"
+msgstr "Нет подключения к сети"
+
+#: src/greeter.rs:87 src/login/mod.rs:679 src/window.rs:369
+msgid "No Internet connection"
+msgstr "Нет подключения к Интернету"
+
+#: src/login/homeserver_page.rs:107
+msgid "Domain Name"
+msgstr "Имя домена"
+
+#: src/login/homeserver_page.rs:109
+msgid "The domain of your Matrix homeserver, for example gnome.org"
+msgstr "Домен вашего домашнего сервера Matrix, например, gnome.org"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/login/homeserver_page.rs:116
+msgid "The URL of your Matrix homeserver, for example {address}"
+msgstr "URL вашего домашнего сервера Matrix, например {address}"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable
+#. name.
+#: src/login/method_page.rs:159
+msgid "Connecting to {domain_name}"
+msgstr "Подключение к {domain_name}"
+
+#: src/login/mod.rs:600
+msgid "Unable to store session"
+msgstr "Невозможно сохранить сеанс"
+
+#: src/secret.rs:56
+msgid "The secret storage file is corrupted."
+msgstr "Файл секретного хранилища поврежден."
+
+#: src/secret.rs:60
+msgid "Could not access the secret storage file location."
+msgstr "Не удалось получить доступ к расположению файла секретного хранилища."
+
+#: src/secret.rs:63
+msgid "An unknown error occurred when accessing the secret storage file."
+msgstr "Произошла неизвестная ошибка при доступе к файлу секретного хранилища."
+
+#: src/secret.rs:66
+msgid "The secret storage file has been changed by another process."
+msgstr "Файл секретного хранилища был изменен другим процессом."
+
+#: src/secret.rs:69 src/secret.rs:95
+msgid ""
+"An unknown error occurred when interacting with the D-Bus Secret Service."
+msgstr ""
+"Произошла неизвестная ошибка при взаимодействии с Секретной службой D-Bus."
+
+#: src/secret.rs:72
+msgid ""
+"The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
+"any prompt asking to access it."
+msgstr ""
+"Запрос на секретный портал Flatpak был отменен. Обязательно примите любое "
+"приглашение с просьбой получить к нему доступ."
+
+#: src/secret.rs:75
+msgid ""
+"The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
+"installed, and it is at least at version 1.5.0."
+msgstr ""
+"Секретный портал Flatpak недоступен. Убедитесь, что xdg-desktop-portal "
+"установлен и имеет версию не ниже 1.5.0."
+
+#: src/secret.rs:85
+msgid "The item was deleted."
+msgstr "Элемент был удален."
+
+#: src/secret.rs:88
+msgid ""
+"The request to the D-Bus Secret Service was cancelled. Make sure to accept "
+"any prompt asking to access it."
+msgstr ""
+"Запрос в Секретную службу D-Bus был отменен. Обязательно примите любое "
+"приглашение с просьбой получить к нему доступ."
+
+#: src/secret.rs:91
+msgid ""
+"Could not access the default collection. Make sure a keyring was created and "
+"set as default."
+msgstr ""
+"Не удалось получить доступ к коллекции по умолчанию. Убедитесь, что связка "
+"ключей была создана и установлена по умолчанию."
+
+#: src/secret.rs:135
+msgid "Malformed homeserver in stored session"
+msgstr "Некорректный домашний сервер в сохраненном сеансе"
+
+#: src/secret.rs:142
+msgid "Could not find homeserver in stored session"
+msgstr "Не удалось найти домашний сервер в сохраненном сеансе"
+
+#: src/secret.rs:156
+msgid "Malformed user ID in stored session"
+msgstr "Некорректный ID пользователя в сохраненном сеансе"
+
+#: src/secret.rs:163
+msgid "Could not find user ID in stored session"
+msgstr "Не удалось найти ID пользователя в сохраненном сеансе"
+
+#: src/secret.rs:172
+msgid "Could not find device ID in stored session"
+msgstr "Не удалось найти ID устройства в сохраненном сеансе"
+
+#: src/secret.rs:181
+msgid "Could not find database path in stored session"
+msgstr "Не удалось найти путь к базе данных в сохраненном сеансе"
+
+#: src/secret.rs:192
+msgid "Malformed secret in stored session"
+msgstr "Некорректный секрет в сохраненном сеансе"
+
+#: src/secret.rs:200
+msgid "Could not get secret in stored session"
+msgstr "Не удалось получить секрет в сохраненном сеансе"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/secret.rs:310
+msgid "Fractal: Matrix credentials for {user_id}"
+msgstr "Fractal: Учетные данные Matrix для {user_id}"
+
+#: src/session/account_settings/devices_page/device_list.rs:134
+msgid "Failed to load connected device."
+msgstr "Не удалось загрузить подключенное устройство."
+
+#: src/session/account_settings/devices_page/device_list.rs:180
+msgid "Failed to load the list of connected devices."
+msgstr "Не удалось загрузить список подключенных устройств."
+
+#: src/session/account_settings/devices_page/device_row.rs:101
+msgid "Disconnect Session"
+msgstr "Отключить сеанс"
+
+#: src/session/account_settings/devices_page/device_row.rs:103
+msgid "Log Out"
+msgstr "Выйти"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/account_settings/devices_page/device_row.rs:209
+msgid "Failed to disconnect device “{device_name}”"
+msgstr "Не удалось отключить устройство “{device_name}”"
+
+#: src/session/account_settings/devices_page/device_row.rs:222
+msgid ""
+"Fractal doesn't support online backup of room encryption keys so you might "
+"lose access to your encrypted message history. It is recommended to backup "
+"your encryption keys before proceeding."
+msgstr ""
+"Fractal не поддерживает резервное копирование ключей шифрования комнаты в "
+"режиме онлайн, поэтому вы можете потерять доступ к истории зашифрованных "
+"сообщений. Перед началом работы рекомендуется создать резервную копию ключей "
+"шифрования."
+
+#. Translators: Time in 24h format
+#: src/session/account_settings/devices_page/device_row.rs:280
+msgid "Last seen at %H:%M"
+msgstr "Был(-а) в сети в %H:%M"
+
+#. Translators: Time in 12h format
+#: src/session/account_settings/devices_page/device_row.rs:283
+msgid "Last seen at %l:%M %p"
+msgstr "Был(-а) в сети в %l:%M %p"
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:292
+#, no-c-format
+msgid "Last seen Yesterday at %H:%M"
+msgstr "Был(-а) в сети вчера в %H:%M"
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:297
+#, no-c-format
+msgid "Last seen Yesterday at %l:%M %p"
+msgstr "Был(-а) в сети вчера в %l:%M %p"
+
+#. Translators: this is the name of the week day followed by
+#. a time in 24h format. i.e. "Last seen Monday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:306
+#, no-c-format
+msgid "Last seen %A at %H:%M"
+msgstr "Был(-а) в сети в %A в %H:%M"
+
+#. Translators: this is the week day name followed by
+#. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:311
+#, no-c-format
+msgid "Last seen %A at %l:%M %p"
+msgstr "Был(-а) в сети в %A в %l:%M %p"
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 24h format i.e. "Last seen February 3 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:319
+#, no-c-format
+msgid "Last seen %B %-e at %H:%M"
+msgstr "Был(-а) в сети %-e %b в %H:%M"
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 12h format i.e. "Last seen February 3 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:325
+#, no-c-format
+msgid "Last seen %B %-e at %l:%M %p"
+msgstr "Был(-а) в сети %-e %b в %l:%M %p"
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:332
+#, no-c-format
+msgid "Last seen %B %-e %Y at %H:%M"
+msgstr "Был(-а) в сети %-e %b %Y в %H:%M"
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:338
+#, no-c-format
+msgid "Last seen %B %-e %Y at %l:%M %p"
+msgstr "Был(-а) в сети %-e %b %Y в %l:%M %p"
+
+#: src/session/account_settings/notifications_page.rs:176
+#: src/session/account_settings/notifications_page.rs:189
+msgid "Could not load notifications settings. Try again later"
+msgstr "Не удалось загрузить настройки уведомлений. Повторите попытку позже"
+
+#: src/session/account_settings/notifications_page.rs:284
+msgid "Could not enable account notifications"
+msgstr "Не удалось включить уведомления учетной записи"
+
+#: src/session/account_settings/notifications_page.rs:286
+msgid "Could not disable account notifications"
+msgstr "Не удалось отключить уведомления учетной записи"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:212
+msgid ""
+"Exporting your room encryption keys allows you to make a backup to be able "
+"to decrypt your messages in end-to-end encrypted rooms on another device or "
+"with another Matrix client."
+msgstr ""
+"Экспортирование ключей шифрования комнат позволяет сделать резервную копию, "
+"чтобы иметь возможность расшифровать сообщения в комнатах со сквозным "
+"шифрованием на другом устройстве или с помощью другого клиента Matrix."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:215
+msgid ""
+"The backup must be stored in a safe place and must be protected with a "
+"strong passphrase that will be used to encrypt the data."
+msgstr ""
+"Резервная копия должна храниться в надежном месте и должна быть защищена "
+"надежной парольной фразой, которая будет использоваться для шифрования "
+"данных."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:218
+msgid "Export Keys"
+msgstr "Экспорт ключей"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:222
+msgid ""
+"Importing your room encryption keys allows you to decrypt your messages in "
+"end-to-end encrypted rooms with a previous backup from a Matrix client."
+msgstr ""
+"Импортирование ключей шифрования комнат позволяет расшифровывать сообщения в "
+"комнатах со сквозным шифрованием с помощью предыдущей резервной копии из "
+"клиента Matrix."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:225
+msgid "Enter the passphrase provided when the backup file was created."
+msgstr "Введите парольную фразу, указанную при создании файла резервной копии."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:228
+msgid "Import Keys"
+msgstr "Импорт ключей"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:245
+msgid "Save Encryption Keys To…"
+msgstr "Сохранить ключи шифрования в…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:250
+msgid "Import Encryption Keys From…"
+msgstr "Импортировать ключи шифрования из…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:265
+msgid "Select"
+msgstr "Выбрать"
+
+#. Translators: Do no translate "fractal" as it is the application
+#. name.
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:274
+msgid "fractal-encryption-keys"
+msgstr "fractal-encryption-keys"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:307
+msgid "Passphrases do not match"
+msgstr "Парольные фразы не совпадают"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:381
+msgid "Room encryption keys exported successfully"
+msgstr "Ключи шифрования комнаты успешно экспортированы"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:386
+msgid "Imported 1 room encryption key"
+msgid_plural "Imported {n} room encryption keys"
+msgstr[0] "Импортирован {n} ключ шифрования комнаты"
+msgstr[1] "Импортировано {n} ключа шифрования комнаты"
+msgstr[2] "Импортировано {n} ключей шифрования комнаты"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:399
+msgid "Could not export the keys"
+msgstr "Не удалось экспортировать ключи"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:409
+msgid "The passphrase doesn't match the one used to export the keys."
+msgstr ""
+"Парольная фраза не совпадает с той, которая использовалась для экспорта "
+"ключей."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:413
+msgid "Could not import the keys"
+msgstr "Не удалось импортировать ключи"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:178
+msgid "Password must be at least 8 characters long"
+msgstr "Пароль должен содержать не менее 8 символов"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:181
+msgid "Password must have at least one lower-case letter"
+msgstr "Пароль должен содержать хотя бы одну строчную букву"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:185
+msgid "Password must have at least one upper-case letter"
+msgstr "Пароль должен содержать хотя бы одну заглавную букву"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:188
+msgid "Password must have at least one digit"
+msgstr "Пароль должен содержать хотя бы одну цифру"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:190
+msgid "Password must have at least one symbol"
+msgstr "Пароль должен содержать хотя бы один символ"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:220
+msgid "Passwords do not match"
+msgstr "Пароли не совпадают"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:284
+msgid "Password changed successfully"
+msgstr "Пароль успешно изменен"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:299
+msgid "Password rejected for being too weak"
+msgstr "Пароль отклонен как слишком слабый"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:303
+msgid "Could not change password"
+msgstr "Не удалось изменить пароль"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:178
+msgid "Account successfully deactivated"
+msgstr "Учетная запись успешно деактивирована"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:186
+msgid "Could not deactivate account"
+msgstr "Не удалось деактивировать учетную запись"
+
+#: src/session/account_settings/user_page/mod.rs:211
+msgid "Avatar removed successfully"
+msgstr "Аватар успешно удален"
+
+#: src/session/account_settings/user_page/mod.rs:226
+msgid "Avatar changed successfully"
+msgstr "Аватар успешно изменен"
+
+#: src/session/account_settings/user_page/mod.rs:271
+msgid "Could not upload avatar"
+msgstr "Не удалось загрузить аватар"
+
+#: src/session/account_settings/user_page/mod.rs:293
+msgid "Could not change avatar"
+msgstr "Не удалось изменить аватар"
+
+#: src/session/account_settings/user_page/mod.rs:322
+msgid "Could not remove avatar"
+msgstr "Не удалось удалить аватар"
+
+#: src/session/account_settings/user_page/mod.rs:355
+msgid "Name changed successfully"
+msgstr "Имя успешно изменено"
+
+#: src/session/account_settings/user_page/mod.rs:386
+msgid "Could not change display name"
+msgstr "Не удалось изменить отображаемое имя"
+
+#: src/session/content/explore/public_room_row.rs:211
+msgid "View"
+msgstr "Просмотр"
+
+#: src/session/content/explore/public_room_row.rs:213
+msgid "Join"
+msgstr "Присоединиться"
+
+#: src/session/content/invite.rs:115
+msgid "{user} invited you"
+msgstr "{user} пригласил(-а) вас"
+
+#: src/session/content/room_details/general_page/mod.rs:167
+msgid "Save Details"
+msgstr "Сохранить подробности"
+
+#: src/session/content/room_details/general_page/mod.rs:168
+msgid "Edit Details"
+msgstr "Редактировать подробности"
+
+#: src/session/content/room_details/general_page/mod.rs:224
+msgid "Choose avatar"
+msgstr "Выбрать аватар"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:287
+msgid "Member"
+msgstr "Участник"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:288
+#: src/session/room/member.rs:47
+msgid "Banned"
+msgstr "Заблокирован(-а)"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:290
+#: src/session/room/member.rs:46 src/session/sidebar/category_type.rs:30
+msgid "Invited"
+msgstr "Приглашен(-а)"
+
+#: src/session/content/room_details/member_page/mod.rs:290
+msgid "Invited Room Members"
+msgstr "Приглашенные участники комнаты"
+
+#: src/session/content/room_details/member_page/mod.rs:291
+msgid "Banned Room Members"
+msgstr "Заблокированные участники комнаты"
+
+#: src/session/content/room_details/member_page/mod.rs:292
+#: src/session/content/room_details/mod.rs:216
+msgid "Room Members"
+msgstr "Участники комнаты"
+
+#: src/session/content/room_details/mod.rs:232
+msgid "Invite new Members"
+msgstr "Пригласить новых участников"
+
+#: src/session/content/room_history/item_row.rs:295
 msgid "New Messages"
 msgstr "Новые сообщения"
 
+#: src/session/content/room_history/message_row/audio.rs:228
+#: src/session/content/room_history/message_row/audio.rs:232
+msgid "Could not retrieve audio file"
+msgstr "Не удалось получить аудиофайл"
+
+#: src/session/content/room_history/message_row/audio.rs:245
+msgid "Error reading audio file"
+msgstr "Ошибка чтения аудиофайла"
+
+#: src/session/content/room_history/message_row/content.rs:300
+msgid "Identity verification was started"
+msgstr "Началась проверка идентификатора"
+
+#: src/session/content/room_history/message_row/content.rs:313
+#: src/session/content/room_history/message_row/content.rs:360
+msgid "Unsupported event"
+msgstr "Неподдерживаемое событие"
+
+#: src/session/content/room_history/message_row/content.rs:337
+msgid ""
+"Unable to decrypt this message, decryption will be retried once the keys are "
+"available."
+msgstr ""
+"Не удается расшифровать это сообщение, расшифровка будет повторена, как "
+"только ключи будут доступны."
+
+#: src/session/content/room_history/message_row/content.rs:348
+msgid "This message was removed."
+msgstr "Это сообщение было удалено."
+
+#: src/session/content/room_history/message_row/location.rs:98
+msgid "Location is invalid and cannot be displayed"
+msgstr "Местоположение неверно и не может быть отображено"
+
+#: src/session/content/room_history/message_row/media.rs:428
+msgid "Image file not supported"
+msgstr "Файл изображения не поддерживается"
+
+#: src/session/content/room_history/message_row/media.rs:467
+#: src/session/content/room_history/message_row/media.rs:472
+msgid "Could not retrieve media"
+msgstr "Не удалось получить медиафайл"
+
+#: src/session/content/room_history/mod.rs:197
+msgid "The location request has been cancelled."
+msgstr "Запрос местоположения был отменен."
+
+#: src/session/content/room_history/mod.rs:201
+msgid "Failed to retrieve current location."
+msgstr "Не удалось получить текущее местоположение."
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name. In this string, 'Reply' is a noun.
+#: src/session/content/room_history/mod.rs:635
+msgid "Reply to {user}"
+msgstr "Ответ для {user}"
+
+#: src/session/content/room_history/mod.rs:751
+#: src/session/room/event_actions.rs:106
+msgid "Permalink copied to clipboard"
+msgstr "Постоянная ссылка скопирована в буфер обмена"
+
+#: src/session/content/room_history/mod.rs:755
+#: src/session/room/event_actions.rs:110
+msgid "Failed to copy the permalink"
+msgstr "Не удалось скопировать постоянную ссылку"
+
+#: src/session/content/room_history/mod.rs:931
+msgid "Your Location"
+msgstr "Ваше местоположение"
+
+#: src/session/content/room_history/mod.rs:941
+msgid "User Location {geo_uri} at {iso8601_datetime}"
+msgstr "Местоположение пользователя {geo_uri} в {iso8601_datetime}"
+
+#: src/session/content/room_history/mod.rs:1074
+msgid "Error reading file"
+msgstr "Ошибка чтения файла"
+
+#: src/session/content/room_history/mod.rs:1100
+msgid "Error getting file from drop"
+msgstr "Ошибка получения файла из сброса"
+
+#: src/session/content/room_history/mod.rs:1132
+msgid "Error getting image from clipboard"
+msgstr "Ошибка получения изображения из буфера обмена"
+
+#: src/session/content/room_history/mod.rs:1149
+msgid "Error getting file from clipboard"
+msgstr "Ошибка получения файла из буфера обмена"
+
+#: src/session/content/room_history/state_row/creation.rs:61
+msgid "This is the continuation of an upgraded room."
+msgstr "Это продолжение обновленной комнаты."
+
+#: src/session/content/room_history/state_row/creation.rs:66
+msgid "This is the beginning of this room."
+msgstr "Это начало этой комнаты."
+
+#: src/session/content/room_history/state_row/mod.rs:66
+msgid "This room is encrypted from this point on."
+msgstr "С этого момента эта комната зашифрована."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:85
+msgid "{previous_user_name} removed their display name."
+msgstr "{previous_user_name} удалил(-а) свое отображаемое имя."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:92
+msgid "{previous_user_name} changed their display name to {new_user_name}."
+msgstr ""
+"{previous_user_name} изменил(-а) свое отображаемое имя на {new_user_name}."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:101
+msgid "{user_id} set their display name to {new_user_name}."
+msgstr "{user_id} установил(-а) свое отображаемое имя на {new_user_name}."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:114
+msgid "{user} set their avatar."
+msgstr "{user} установил(-а) свой аватар."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:121
+msgid "{user} removed their avatar."
+msgstr "{user} удалил(-а) свой аватар."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:128
+msgid "{user} changed their avatar."
+msgstr "{user} изменил(-а) свой аватар."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:139
+msgid "{user} joined this room."
+msgstr "{user} присоединился(-ась) к этой комнате."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/state_row/mod.rs:145
+#: src/session/content/room_history/state_row/mod.rs:222
+msgid "{user} was invited to this room."
+msgstr "{user} был(-а) приглашен(-а) в эту комнату."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:153
+msgid "{user} requested to be invited to this room."
+msgstr "{user} запросил(-а) приглашение в эту комнату."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:164
+msgid "{user} rejected the invite."
+msgstr "{user} отклонил(-а) приглашение."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:171
+msgid "The invitation for {user} has been revoked."
+msgstr "Приглашение для {user} было отозвано."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:180
+msgid "{user} was unbanned."
+msgstr "{user} был(-а) разблокирован(-а)."
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:191
+msgid "{user} left the room."
+msgstr "{user} покинул(-а) комнату."
+
+#. Translators: Do NOT translate the content between '{' and
+#. '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:196
+msgid "{user} was kicked out of the room."
+msgstr "{user} был(-а) удален(-а) из комнаты."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#: src/session/content/room_history/state_row/mod.rs:205
+msgid "{user} was banned."
+msgstr "{user} был(-а) заблокирован(-а)."
+
+#: src/session/content/room_history/state_row/mod.rs:210
+msgid "An unsupported room member event was received."
+msgstr "Получено неподдерживаемое событие участника комнаты."
+
+#: src/session/content/room_history/state_row/mod.rs:231
+msgid "An unsupported state event was received."
+msgstr "Получено неподдерживаемое событие состояния."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/typing_row.rs:209
+msgid "<b>{user}</b> is typing…"
+msgstr "<b>{user}</b> печатает…"
+
+#. Translators: Do NOT translate the content between '{' and '}', these are
+#. variable names.
+#: src/session/content/room_history/typing_row.rs:219
+msgid "<b>{user1}</b> and <b>{user2}</b> are typing…"
+msgstr "<b>{user1}</b> и <b>{user2}</b> печатают…"
+
+#. Translators: Do NOT translate the content between '{' and '}', these are
+#. variable names.
+#: src/session/content/room_history/typing_row.rs:226
+msgid "<b>{user1}</b>, <b>{user2}</b> and 1 other are typing…"
+msgid_plural "<b>{user1}</b>, <b>{user2}</b> and {n} others are typing…"
+msgstr[0] "<b>{user1}</b>, <b>{user2}</b> и еще {n} участник печатают…"
+msgstr[1] "<b>{user1}</b>, <b>{user2}</b> и еще {n} участника печатают…"
+msgstr[2] "<b>{user1}</b>, <b>{user2}</b> и еще {n} участников печатают…"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/verification_info_bar.rs:164
+msgid "{user_name} wants to be verified"
+msgstr "{user_name} хочет быть проверенным"
+
+#: src/session/content/room_history/verification_info_bar.rs:174
+msgid "Verification in progress"
+msgstr "Выполняется проверка"
+
+#: src/session/content/verification/identity_verification_widget.rs:528
+#: src/session/content/verification/identity_verification_widget.rs:553
+msgid "Verify the new session from the current session."
+msgstr "Проверьте новый сеанс из текущего сеанса."
+
+#: src/session/content/verification/identity_verification_widget.rs:531
+msgid "Scan the QR code from another session logged into this account."
+msgstr "Отсканируйте QR-код из другого сеанса, вошедшего в эту учетную запись."
+
+#: src/session/content/verification/identity_verification_widget.rs:533
+#: src/session/content/verification/identity_verification_widget.rs:557
+msgid ""
+"You scanned the QR code successfully. You may need to confirm the "
+"verification from the other session."
+msgstr ""
+"Вы успешно отсканировали QR-код. Возможно, вам потребуется подтвердить "
+"проверку из другого сеанса."
+
+#: src/session/content/verification/identity_verification_widget.rs:536
+msgid "Scan this QR code from the other session."
+msgstr "Отсканируйте этот QR-код из другого сеанса."
+
+#: src/session/content/verification/identity_verification_widget.rs:539
+#: src/session/content/verification/identity_verification_widget.rs:564
+msgid "Check if the same emoji appear in the same order on the other device."
+msgstr ""
+"Проверьте, отображаются ли те же эмодзи в том же порядке на другом "
+"устройстве."
+
+#: src/session/content/verification/identity_verification_widget.rs:541
+#: src/session/content/verification/identity_verification_widget.rs:566
+msgid "Request Complete"
+msgstr "Запрос выполнен"
+
+#: src/session/content/verification/identity_verification_widget.rs:543
+msgid "This session is ready to send and receive secure messages."
+msgstr "Этот сеанс готов к отправке и получению защищенных сообщений."
+
+#: src/session/content/verification/identity_verification_widget.rs:545
+msgid "Get Started"
+msgstr "Начать"
+
+#: src/session/content/verification/identity_verification_widget.rs:547
+#: src/session/content/verification/identity_verification_widget.rs:576
+msgid "Does the other session show a confirmation?"
+msgstr "Показывает ли другой сеанс подтверждение?"
+
+#: src/session/content/verification/identity_verification_widget.rs:551
+msgid "Login Request From Another Session"
+msgstr "Запрос на вход из другого сеанса"
+
+#: src/session/content/verification/identity_verification_widget.rs:556
+msgid "Scan the QR code displayed by the other session."
+msgstr "Отсканируйте QR-код, отображаемый другим сеансом."
+
+#: src/session/content/verification/identity_verification_widget.rs:560
+msgid "Scan this QR code from the newly logged in session."
+msgstr "Отсканируйте этот QR-код из нового сеанса входа."
+
+#: src/session/content/verification/identity_verification_widget.rs:568
+msgid "The new session is now ready to send and receive secure messages."
+msgstr "Теперь новый сеанс готов к отправке и получению защищенных сообщений."
+
+#: src/session/content/verification/identity_verification_widget.rs:581
+#: src/session/content/verification/identity_verification_widget.rs:588
+#: src/session/content/verification/identity_verification_widget.rs:599
+#: src/session/content/verification/identity_verification_widget.rs:606
+msgid "Verification Request"
+msgstr "Запрос на проверку"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:586
+msgid ""
+"{user} asked to be verified. Verifying a user increases the security of the "
+"conversation."
+msgstr ""
+"{user} попросил(-а) пройти проверку. Проверка пользователя повышает "
+"безопасность общения."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:592
+msgid "Scan the QR code shown on the device of {user}."
+msgstr "Отсканируйте QR-код, показанный на устройстве {user}."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:597
+msgid ""
+"You scanned the QR code successfully. {user} may need to confirm the "
+"verification."
+msgstr ""
+"Вы успешно отсканировали QR-код. Возможно, {user} потребуется подтвердить "
+"проверку."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:603
+msgid "Ask {user} to scan this QR code from their session."
+msgstr "Попросите {user} отсканировать этот QR-код из своего сеанса."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:610
+msgid ""
+"Ask {user} if they see the following emoji appear in the same order on their "
+"screen."
+msgstr ""
+"Спросите {user}, видят ли они, что следующие эмодзи появляются на их экране "
+"в том же порядке."
+
+#: src/session/content/verification/identity_verification_widget.rs:614
+msgid "Verification Complete"
+msgstr "Проверка выполнена"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:617
+msgid ""
+"{user} is verified and you can now be sure that your communication will be "
+"private."
+msgstr ""
+"{user} проверен(-а), и теперь вы можете быть уверены, что ваше общение будет "
+"конфиденциальным."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:621
+msgid "Waiting for {user}"
+msgstr "Ожидание для {user}"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:627
+msgid "Ask {user} to accept the verification request."
+msgstr "Попросите {user} принять запрос на проверку."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:633
+msgid "Does {user} see a confirmation on their session?"
+msgstr "Видит ли {user} подтверждение на своем сеансе?"
+
+#. Translators: This is the tooltip when a signing key was received.
+#: src/session/content/verification/identity_verification_widget.rs:749
+msgid "Received"
+msgstr "Получено"
+
+#. Translators: This is the tooltip when a signing key is missing.
+#: src/session/content/verification/identity_verification_widget.rs:755
+msgid "Missing"
+msgstr "Отсутствует"
+
+#: src/session/content/verification/session_verification.rs:246
+msgid ""
+"If you lost access to all other sessions you can create a new crypto "
+"identity. Be careful because this will reset all verified users and make "
+"previously encrypted conversations unreadable."
+msgstr ""
+"Если вы потеряли доступ ко всем другим сеансам, вы можете создать новую "
+"криптоидентификацию. Будьте осторожны, поскольку это приведет к сбросу всех "
+"проверенных пользователей и сделает ранее зашифрованные разговоры "
+"нечитаемыми."
+
+#: src/session/content/verification/session_verification.rs:329
+msgid "You cancelled the authentication needed to create the encryption keys."
+msgstr ""
+"Вы отменили аутентификацию, необходимую для создания ключей шифрования."
+
+#: src/session/content/verification/session_verification.rs:333
+msgid "An error occurred during the creation of the encryption keys."
+msgstr "Во время создания ключей шифрования произошла ошибка."
+
+#: src/session/mod.rs:710
+msgid "_View"
+msgstr "_Просмотр"
+
+#: src/session/mod.rs:756
+msgid "Failed to logout the session."
+msgstr "Не удалось выйти из сеанса."
+
+#: src/session/room/event_actions.rs:188 src/session/room/event_actions.rs:210
+msgid "Message copied to clipboard"
+msgstr "Сообщение скопировано в буфер обмена"
+
+#: src/session/room/event_actions.rs:226
+msgid "Image copied to clipboard"
+msgstr "Изображение скопировано в буфер обмена"
+
+#: src/session/room/event_actions.rs:230
+msgid "Thumbnail copied to clipboard"
+msgstr "Эскиз скопирован в буфер обмена"
+
+#: src/session/room/event_actions.rs:291
+msgid "Save File"
+msgstr "Сохранить файл"
+
+#: src/session/room/member.rs:44
+msgid "Left"
+msgstr "Покинул(-а)"
+
+#: src/session/room/member.rs:45
+msgid "Joined"
+msgstr "Присоединился(-ась)"
+
+#: src/session/room/member.rs:48
+msgid "Knocked"
+msgstr "Выбит(-а)"
+
+#: src/session/room/member.rs:49
+msgid "Custom"
+msgstr "Пользовательский"
+
+#: src/session/room/member_role.rs:48
+msgid "Admin"
+msgstr "Администратор"
+
+#: src/session/room/member_role.rs:49
+msgid "Moderator"
+msgstr "Модератор"
+
+#: src/session/room/member_role.rs:50
+msgid "Normal user"
+msgstr "Обычный пользователь"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:386
+msgid "Failed to forget {room}."
+msgstr "Не удалось забыть {room}."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:640
+msgid "Failed to move {room} from {previous_category} to {new_category}."
+msgstr "Не удалось переместить {room} из {previous_category} в {new_category}."
+
+#: src/session/room/mod.rs:977
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#. Translators: This is the name of a room that is empty but had another user before.
+#. Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:1005
+msgid "Empty Room (was {user})"
+msgstr "Пустая комната (был(-а) {user})"
+
+#. Translators: This is the name of a room without other users.
+#: src/session/room/mod.rs:1007
+msgid "Empty Room"
+msgstr "Пустая комната"
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1428
+msgid "Failed to accept invitation for {room}. Try again later."
+msgstr "Не удалось принять приглашение для {room}. Повторите попытку позже."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1457
+msgid "Failed to reject invitation for {room}. Try again later."
+msgstr "Не удалось отклонить приглашение для {room}. Повторите попытку позже."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1656
+msgid "Failed to invite {user} to {room}. Try again later."
+msgstr "Не удалось пригласить {user} в {room}. Повторите попытку позже."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1668
+msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
+msgid_plural ""
+"Failed to invite {user} and {n} other users to {room}. Try again later."
+msgstr[0] ""
+"Не удалось пригласить {user} и еще {n} пользователя в {room}. Повторите "
+"попытку позже."
+msgstr[1] ""
+"Не удалось пригласить {user} и еще {n} пользователей в {room}. Повторите "
+"попытку позже."
+msgstr[2] ""
+"Не удалось пригласить {user} и еще {n} пользователей в {room}. Повторите "
+"попытку позже."
+
 #. Translators: This is a date format in the day divider without the year
-#: fractal-gtk/src/widgets/room_history.rs:799
-msgid "%B %e"
-msgstr "%e %B"
+#: src/session/room/timeline/timeline_day_divider.rs:97
+msgid "%A, %B %e"
+msgstr "%A, %e %b"
 
 #. Translators: This is a date format in the day divider with the year
-#: fractal-gtk/src/widgets/room_history.rs:802
-msgid "%B %e, %Y"
-msgstr "%e, %B %Y"
+#: src/session/room/timeline/timeline_day_divider.rs:100
+msgid "%A, %B %e, %Y"
+msgstr "%A, %e %b, %Y"
 
-#: fractal-gtk/src/widgets/roomlist.rs:480
-msgid "Invites"
-msgstr "Приглашения"
+#: src/session/room_creation/mod.rs:250
+msgid "The address is already taken."
+msgstr "Адрес уже занят."
 
-#: fractal-gtk/src/widgets/roomlist.rs:481
-msgid "You don’t have any invitations"
-msgstr "У вас нет приглашений"
+#: src/session/room_creation/mod.rs:278
+msgid "Can’t contain “:”"
+msgstr "Не может содержать “:”"
 
-#: fractal-gtk/src/widgets/roomlist.rs:485
+#: src/session/room_creation/mod.rs:282
+msgid "Can’t contain “#”"
+msgstr "Не может содержать “#”"
+
+#: src/session/room_creation/mod.rs:286
+msgid "Too long. Use a shorter address."
+msgstr "Слишком длинный. Используйте более короткий адрес."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room_list.rs:311
+msgid "Failed to join room {room_name}. Try again later."
+msgstr ""
+"Не удалось присоединиться к комнате {room_name}. Повторите попытку позже."
+
+#: src/session/sidebar/category_row.rs:157
+msgid "Join Room as Favorite"
+msgstr "Присоединиться к комнате как Избранное"
+
+#: src/session/sidebar/category_row.rs:158
+msgid "Join Room"
+msgstr "Присоединиться к комнате"
+
+#: src/session/sidebar/category_row.rs:159
+msgid "Join Room as Low Priority"
+msgstr "Присоединиться к комнате как Низкий приоритет"
+
+#: src/session/sidebar/category_row.rs:160
+msgid "Reject Invite"
+msgstr "Отклонить приглашение"
+
+#: src/session/sidebar/category_row.rs:161
+msgid "Join Room as People"
+msgstr "Присоединиться к комнате как Люди"
+
+#: src/session/sidebar/category_row.rs:165
+#: src/session/sidebar/category_row.rs:180
+#: src/session/sidebar/category_row.rs:194
+msgid "Move to Rooms"
+msgstr "Переместить в Комнаты"
+
+#: src/session/sidebar/category_row.rs:166
+#: src/session/sidebar/category_row.rs:173
+#: src/session/sidebar/category_row.rs:195
+msgid "Move to Low Priority"
+msgstr "Переместить в Низкий приоритет"
+
+#: src/session/sidebar/category_row.rs:167
+#: src/session/sidebar/category_row.rs:174
+#: src/session/sidebar/category_row.rs:181
+#: src/session/sidebar/category_row.rs:196
+msgid "Leave Room"
+msgstr "Покинуть комнату"
+
+#: src/session/sidebar/category_row.rs:168
+#: src/session/sidebar/category_row.rs:175
+#: src/session/sidebar/category_row.rs:182
+msgid "Move to People"
+msgstr "Переместить в Люди"
+
+#: src/session/sidebar/category_row.rs:172
+#: src/session/sidebar/category_row.rs:179
+#: src/session/sidebar/category_row.rs:193
+msgid "Move to Favorites"
+msgstr "Переместить в Избранное"
+
+#: src/session/sidebar/category_row.rs:186
+msgid "Rejoin Room as Favorites"
+msgstr "Вернуться в комнату как Избранное"
+
+#: src/session/sidebar/category_row.rs:187
+msgid "Rejoin Room"
+msgstr "Вернуться в комнату"
+
+#: src/session/sidebar/category_row.rs:188
+msgid "Rejoin Room as Low Priority"
+msgstr "Вернуться в комнату как Низкий приоритет"
+
+#: src/session/sidebar/category_row.rs:189
+msgid "Rejoin Room as People"
+msgstr "Вернуться в комнату как Люди"
+
+#: src/session/sidebar/category_type.rs:29
+msgid "Verifications"
+msgstr "Проверки"
+
+#: src/session/sidebar/category_type.rs:31
 msgid "Favorites"
 msgstr "Избранное"
 
-#: fractal-gtk/src/widgets/roomlist.rs:486
-msgid "Drag and drop rooms here to add them to your favorites"
-msgstr "Перетащите сюда комнаты, чтобы добавить их в избранное"
-
-#: fractal-gtk/src/widgets/roomlist.rs:490
+#: src/session/sidebar/category_type.rs:32
 msgid "Rooms"
 msgstr "Комнаты"
 
-#: fractal-gtk/src/widgets/roomlist.rs:491
-msgid "You don’t have any rooms yet"
-msgstr "У вас пока нет комнат"
+#: src/session/sidebar/category_type.rs:33
+msgid "Low Priority"
+msgstr "Низкий приоритет"
+
+#: src/session/sidebar/category_type.rs:34
+msgid "Historical"
+msgstr "Историческое"
+
+#. Translators: This shouldn't ever be visible to the user,
+#: src/session/sidebar/category_type.rs:36
+msgid "Outdated"
+msgstr "Устаревшее"
+
+#: src/session/sidebar/category_type.rs:37
+msgid "Spaces"
+msgstr "Места"
+
+#: src/session/sidebar/category_type.rs:38
+msgid "People"
+msgstr "Люди"
+
+#: src/session/sidebar/entry_type.rs:18
+msgid "Explore"
+msgstr "Обзор"
+
+#: src/session/sidebar/entry_type.rs:19
+msgid "Forget Room"
+msgstr "Забыть комнату"
+
+#: src/session/verification/identity_verification.rs:634
+msgid "You cancelled the verification process."
+msgstr "Вы отменили процесс проверки."
+
+#: src/session/verification/identity_verification.rs:636
+msgid "The verification process failed because it reached a timeout."
+msgstr ""
+"Процесс проверки завершился неудачно, поскольку время ожидания истекло."
+
+#: src/session/verification/identity_verification.rs:639
+msgid "You accepted the request from an other session."
+msgstr "Вы приняли запрос из другого сеанса."
+
+#: src/session/verification/identity_verification.rs:642
+msgid "The emoji did not match."
+msgstr "Эмодзи не совпали."
+
+#: src/session/verification/identity_verification.rs:651
+msgid "An unknown error occurred during the verification process."
+msgstr "Произошла неизвестная ошибка в процессе проверки."
+
+#: src/user_facing_error.rs:23
+msgid "The connection timed out. Try again later."
+msgstr "Подключение прервалось. Повторите попытку позже."
+
+#: src/user_facing_error.rs:25
+msgid "Unable to connect to the homeserver."
+msgstr "Невозможно подключиться к домашнему серверу."
+
+#: src/user_facing_error.rs:32
+msgid "The provided username or password is invalid."
+msgstr "Предоставленные имя пользователя или пароль неверны."
+
+#: src/user_facing_error.rs:33
+msgid "The account is deactivated."
+msgstr "Учетная запись деактивирована."
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/user_facing_error.rs:40
+msgid "You exceeded the homeserver’s rate limit, retry in 1 second."
+msgid_plural "You exceeded the homeserver’s rate limit, retry in {n} seconds."
+msgstr[0] ""
+"Вы превысили лимит скорости домашнего сервера, повторная попытка через {n} "
+"секунду."
+msgstr[1] ""
+"Вы превысили лимит скорости домашнего сервера, повторная попытка через {n} "
+"секунды."
+msgstr[2] ""
+"Вы превысили лимит скорости домашнего сервера, повторная попытка через {n} "
+"секунд."
+
+#: src/user_facing_error.rs:46
+msgid "You exceeded the homeserver’s rate limit, try again later."
+msgstr ""
+"Вы превысили лимит скорости домашнего сервера, повторите попытку позже."
+
+#: src/user_facing_error.rs:56
+msgid "An unknown connection error occurred."
+msgstr "Произошла неизвестная ошибка подключения."
+
+#: src/user_facing_error.rs:64
+msgid "Could not decrypt the event"
+msgstr "Не удалось расшифровать событие"
+
+#: src/user_facing_error.rs:66 src/user_facing_error.rs:86
+msgid "An unknown error occurred."
+msgstr "Произошла неизвестная ошибка."
+
+#: src/user_facing_error.rs:73
+msgid "Could not open the store."
+msgstr "Не удалось открыть хранилище."
+
+#: src/user_facing_error.rs:80
+msgid "This is not a valid URL"
+msgstr "Это неверный URL"
+
+#: src/user_facing_error.rs:82
+msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
+msgstr ""
+"Сбой автообнаружения домашнего сервера. Попробуйте ввести полный URL вручную."
+
+#. Translators: Default name for image files.
+#: src/utils/media.rs:50
+msgid "image"
+msgstr "изображение"
+
+#. Translators: Default name for video files.
+#: src/utils/media.rs:52
+msgid "video"
+msgstr "видео"
+
+#. Translators: Default name for audio files.
+#: src/utils/media.rs:54
+msgid "audio"
+msgstr "аудио"
+
+#. Translators: Default name for files.
+#: src/utils/media.rs:56
+msgid "file"
+msgstr "файл"
+
+#: src/utils/matrix.rs:100
+msgid "{user} sent an audio file."
+msgstr "{user} отправил(-а) аудиофайл."
+
+#: src/utils/matrix.rs:103 src/utils/matrix.rs:116 src/utils/matrix.rs:120
+#: src/utils/matrix.rs:124
+msgid "{user}: {message}"
+msgstr "{user}: {message}"
+
+#: src/utils/matrix.rs:107
+msgid "{user} sent a file."
+msgstr "{user} отправил(-а) файл."
+
+#: src/utils/matrix.rs:110
+msgid "{user} sent an image."
+msgstr "{user} отправил(-а) изображение."
+
+#: src/utils/matrix.rs:113
+msgid "{user} sent their location."
+msgstr "{user} отправил(-а) свое местоположение."
+
+#: src/utils/matrix.rs:128
+msgid "{user} sent a video."
+msgstr "{user} отправил(-а) видео."
+
+#: src/utils/matrix.rs:131
+msgid "{user} sent a verification request."
+msgstr "{user} отправил(-а) запрос на проверку."
+
+#: src/utils/matrix.rs:140
+msgid "{user} sent a sticker."
+msgstr "{user} отправил(-а) стикер."
+
+#: src/window.rs:245
+msgid "Failed to restore previous sessions"
+msgstr "Не удалось восстановить предыдущие сеансы"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Close the active room"
+#~ msgstr "Закрыть активную комнату"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open / close the room sidebar search"
+#~ msgstr "Открыть / закрыть поиск комнат в боковой панели"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room in the list"
+#~ msgstr "Открыть предыдущую комнату по списку"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room in the list"
+#~ msgstr "Открыть следующую комнату по списку"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the previous room with unread messages in the list"
+#~ msgstr "Открыть предыдущую комнату с непрочитанными сообщениями по списку"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the next room with unread messages in the list"
+#~ msgstr "Открыть следующую комнату с непрочитанными сообщениями по списку"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the first room of the list"
+#~ msgstr "Открыть первую комнату в списке"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open the last room of the list"
+#~ msgstr "Открыть последнюю комнату в списке"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View older messages"
+#~ msgstr "Просмотреть старые сообщения"
+
+#~ msgctxt "shortcut window"
+#~ msgid "View newer messages"
+#~ msgstr "Просмотреть новый сообщения"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Composing a new message"
+#~ msgstr "Создание нового сообщения"
+
+#~ msgctxt "shortcut message"
+#~ msgid "Write on a new line"
+#~ msgstr "Написать с новой строки"
+
+#~ msgid "Type of password and token storage"
+#~ msgstr "Тип пароля и токена"
+
+#~ msgid "Type of password and token storage, default value is: Secret Service"
+#~ msgstr "Тип хранения пароля и токена, значение по-умолчанию: Secret Service"
+
+#~ msgid "If markdown sending is active"
+#~ msgstr "Если отправка разметки языка активна"
+
+#~ msgid "Whether support for sending markdown messages is on"
+#~ msgstr "Поддерживается ли разметка языка для отправки сообщений"
+
+#~ msgid "X position of the main window on startup"
+#~ msgstr "Позиция основного окна по X при запуске"
+
+#~ msgid "Y position of the main window on startup"
+#~ msgstr "Позиция основного окна по Y при запуске"
+
+#~ msgid "Width of the main window on startup"
+#~ msgstr "Длина главного окна при запуске"
+
+#~ msgid "Height of the main window on startup"
+#~ msgstr "Ширина главного окна при запуске"
+
+#~ msgid "Daniel García Moreno"
+#~ msgstr "Daniel García Moreno"
+
+#~ msgid "Other people can find you by searching for any of these identifiers."
+#~ msgstr "Другие люди смогут найти вас по одному из этих идентификаторов."
+
+#~ msgid "Type in your name"
+#~ msgstr "Введите своё имя"
+
+#~ msgid "Email"
+#~ msgstr "Эл. почта"
+
+#~ msgid "Phone"
+#~ msgstr "Телефон"
+
+#~ msgid "Device ID"
+#~ msgstr "ID устройства"
+
+#~ msgid "Also erase all messages"
+#~ msgstr "Также удалить все сообщения"
+
+#~ msgid "Check your email"
+#~ msgstr "Проверьте свою электронную почту"
+
+#~ msgid "Apply"
+#~ msgstr "Применить"
+
+#~ msgid "New Direct Chat"
+#~ msgstr "Новый чат"
+
+#~ msgid "Play"
+#~ msgstr "Воспроизвести"
+
+#~ msgid "New direct chat"
+#~ msgstr "Новый чат"
+
+#~ msgid "Start chat"
+#~ msgstr "Начать чат"
+
+#~ msgid "Invitation"
+#~ msgstr "Приглашение"
+
+#~ msgid "ID or Alias"
+#~ msgstr "Идентификатор или псевдоним"
+
+#~ msgid "Join room"
+#~ msgstr "Войти в комнату"
+
+#~ msgid "Close"
+#~ msgstr "Закрыть"
+
+#~ msgid "Leave?"
+#~ msgstr "Покинуть?"
+
+#~ msgid ""
+#~ "Once you leave, you won’t be able to interact with people in the room "
+#~ "anymore."
+#~ msgstr ""
+#~ "После того, как вы покинете комнату, вы больше не сможете общаться с "
+#~ "людьми в этой комнате."
+
+#~ msgid "What is your Provider?"
+#~ msgstr "Какой ваш серверный провайдер?"
+
+#~ msgid "Matrix provider domain, e.g. myserver.co"
+#~ msgstr "Имя провайдера доменного имени Matrix, например myserver.co"
+
+#~ msgid "The domain may not be empty."
+#~ msgstr "Доменное имя не может быть пустым."
+
+#~ msgid "Log In"
+#~ msgstr "Авторизоваться"
+
+#~ msgid "_User ID"
+#~ msgstr "_ID пользователя"
+
+#~ msgid "_Password"
+#~ msgstr "_Пароль"
+
+#~ msgid "User name, email, or phone number"
+#~ msgstr "Имя пользователя Matrix, адрес электронной почты или номер телефона"
+
+#~ msgid "Keyboard _Shortcuts"
+#~ msgstr "Комбинации _клавиш"
+
+#~ msgid "User"
+#~ msgstr "Пользователь"
+
+#~ msgid "Add"
+#~ msgstr "Добавить"
+
+#~ msgid "Room Menu"
+#~ msgstr "Меню комнаты"
+
+#~ msgid "No room"
+#~ msgstr "Нет комнаты"
+
+#~ msgid "Default Matrix Server"
+#~ msgstr "Сервер Matrix по умолчанию"
+
+#~ msgid "Toggle fullscreen"
+#~ msgstr "Переключить полноэкранный режим"
+
+#~ msgid "Loading more media"
+#~ msgstr "Загрузить ещё медиа"
+
+#~ msgid "Open With…"
+#~ msgstr "Открыть с помощью…"
+
+#~ msgid "Copy Selection"
+#~ msgstr "Копировать выделенное"
+
+#~ msgid "Delete Message"
+#~ msgstr "Удалить сообщение"
+
+#~ msgid "Copy To Clipboard"
+#~ msgstr "Копировать в буфер обмена"
+
+#~ msgid "Ch_ange"
+#~ msgstr "_Изменить"
+
+#~ msgid "Add name"
+#~ msgstr "Добавить имя"
+
+#~ msgid "Add topic"
+#~ msgstr "Добавить тему"
+
+#~ msgid "Type in your room topic"
+#~ msgstr "Введите тему вашей комнаты"
+
+#~ msgid "For all messages"
+#~ msgstr "Для всех сообщений"
+
+#~ msgid "Only for mentions"
+#~ msgstr "Только для упоминаний"
+
+#~ msgid "Shared Media"
+#~ msgstr "Общие медиа"
+
+#~ msgid "photos"
+#~ msgstr "фотографии"
+
+#~ msgid "documents"
+#~ msgstr "документы"
+
+#~ msgid "New members can see"
+#~ msgstr "Новые участники могут видеть"
+
+#~ msgid "All room history"
+#~ msgstr "Вся история комнаты"
+
+#~ msgid "History after they were invited"
+#~ msgstr "Видимость истории после приглашения участников"
+
+#~ msgid "Room Visibility"
+#~ msgstr "Видимость комнаты"
+
+#~ msgid "Allow guests"
+#~ msgstr "Разрешать гостей"
+
+#~ msgid "Allow joining without invite"
+#~ msgstr "Разрешить вход без приглашения"
+
+#~ msgid "Publish in room directory"
+#~ msgstr "Опубликовать в каталоге комнат"
+
+#~ msgid "Show rooms from:"
+#~ msgstr "Показать комнаты из:"
+
+#~ msgid "Your homeserver"
+#~ msgstr "Ваш homeserver"
+
+#~ msgid "Other Protocol"
+#~ msgstr "Другой протокол"
+
+#~ msgid "Other Homeserver"
+#~ msgstr "Другой Homeserver"
+
+#~ msgid "Images"
+#~ msgstr "Изображения"
+
+#~ msgid "Select a new avatar"
+#~ msgstr "Выбрать новый аватар"
+
+#~ msgid "Couldn’t save file"
+#~ msgstr "Не удалось сохранить файл"
+
+#~ msgid "Couldn’t open file"
+#~ msgstr "Не удалось открыть файл"
+
+#~ msgid "The validation code is not correct."
+#~ msgstr "Проверочный код неверен."
+
+#~ msgid "Enter the code received via SMS"
+#~ msgstr "Введите код полученный в SMS"
+
+#~ msgid ""
+#~ "In order to add this email address, go to your inbox and follow the link "
+#~ "you received. Once you’ve done that, click Continue."
+#~ msgstr ""
+#~ "Чтобы добавить этот адрес электронной почты, перейдите в свой почтовый "
+#~ "ящик и перейдите по полученной вами ссылке. После этого, нажмите "
+#~ "«Продолжить»."
+
+#~ msgid "Are you sure you want to delete your account?"
+#~ msgstr "Вы действительно хотите удалить свою учётную запись?"
+
+#~ msgid "Fractal [{}]"
+#~ msgstr "Fractal [{}]"
+
+#~ msgid "An audio file has been added to the conversation."
+#~ msgstr "К разговору был добавлен аудиофайл."
+
+#~ msgid "An image has been added to the conversation."
+#~ msgstr "К разговору было добавлено изображение."
+
+#~ msgid "A video has been added to the conversation."
+#~ msgstr "К разговору было добавлено видео."
+
+#~ msgid "A file has been added to the conversation."
+#~ msgstr "К разговору был добавлен файл."
+
+#~ msgid " (direct message)"
+#~ msgstr " (личное сообщение)"
+
+#~ msgid "Leave {room_name}?"
+#~ msgstr "Покинуть {room_name}?"
+
+#~ msgid "The room ID is malformed"
+#~ msgstr "Идентификатор комнаты имеет неверный формат"
+
+#~ msgid "EMPTY ROOM"
+#~ msgstr "ПУСТАЯ КОМНАТА"
+
+#~ msgid "{m1} and {m2}"
+#~ msgstr "{m1} и {m2}"
+
+#~ msgid "{m1} and Others"
+#~ msgstr "{m1} и другие"
+
+#~ msgid "Several users are typing…"
+#~ msgstr "Несколько пользователей пишут…"
+
+#~ msgid "Syncing, this could take a while"
+#~ msgstr "Выполняется синхронизация, это может занять некоторое время"
+
+#~ msgid "Can’t login, try again"
+#~ msgstr "Не удаётся войти, повторите попытку"
+
+#~ msgid "Error deleting message"
+#~ msgstr "Ошибка при удалении сообщения"
+
+#~ msgid "Can’t join the room, try again."
+#~ msgstr "Невозможно войти в комнату, повторите попытку."
+
+#~ msgid "Can’t create the room, try again"
+#~ msgstr "Невозможно создать комнату, повторите попытку"
+
+#~ msgid "Sorry, account settings can’t be loaded."
+#~ msgstr "Извините, настройки учетной записи не могут быть загружены."
+
+#~ msgid "Email is already in use"
+#~ msgstr "Этот адрес электронной почты уже используется"
+
+#~ msgid "Please enter a valid email address."
+#~ msgstr "Пожалуйста, введите действительный адрес эл. почты."
+
+#~ msgid "Couldn’t add the email address."
+#~ msgstr "Не удалось добавить адрес электронной почты."
+
+#~ msgid "Phone number is already in use"
+#~ msgstr "Этот номер телефона уже используется"
+
+#~ msgid ""
+#~ "Please enter your phone number in the format: \n"
+#~ " + your country code and your phone number."
+#~ msgstr ""
+#~ "Пожалуйста, введите ваш номер телефона в формате: \n"
+#~ " + код страны и номер вашего телефона."
+
+#~ msgid "Couldn’t add the phone number."
+#~ msgstr "Не удалось добавить номер телефона."
+
+#~ msgid "A Matrix.org client for GNOME"
+#~ msgstr "Matrix.org клиент для GNOME"
+
+#~ msgid "© 2017–2020 Daniel García Moreno, et al."
+#~ msgstr "© 2017–2020 Daniel García Moreno, и другие."
+
+#~ msgid "Learn more about Fractal"
+#~ msgstr "Узнайте больше о Fractal"
+
+#~ msgid "Invite to {name}"
+#~ msgstr "Пригласить в {name}"
+
+#~ msgid "Join {room_name}?"
+#~ msgstr "Войти в {room_name}?"
+
+#~ msgid ""
+#~ "You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</"
+#~ "b>"
+#~ msgstr "<b>{sender_name}</b> пригласил вас в комнату <b>{room_name}</b>"
+
+#~ msgid "You’ve been invited to join <b>{room_name}</b>"
+#~ msgstr "Вас пригласили в комнату <b>{room_name}</b>"
+
+#~ msgid "You don’t have permission to post to this room"
+#~ msgstr "У вас недостаточно прав на отправку в этой комнате"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Room · {} member"
+#~ msgid_plural "Room · {} members"
+#~ msgstr[0] "Комната · {} участник"
+#~ msgstr[1] "Комната · {} участника"
+#~ msgstr[2] "Комната · {} участников"
+
+#~ msgid "{} member"
+#~ msgid_plural "{} members"
+#~ msgstr[0] "{} участник"
+#~ msgstr[1] "{} участника"
+#~ msgstr[2] "{} участников"
+
+#~ msgid "Save media as"
+#~ msgstr "Сохранить медиа как"
+
+#~ msgid "_Save"
+#~ msgstr "_Сохранить"
+
+#~ msgid "You have been kicked from {}"
+#~ msgstr "Вы были исключены из {}"
+
+#~ msgid ""
+#~ "Kicked by: {}\n"
+#~ " “{}”"
+#~ msgstr ""
+#~ "Исключены: {}\n"
+#~ " “{}”"
+
+#~ msgid "Malformed server URL"
+#~ msgstr "Неверно сформированный URL сервера"
+
+#~ msgid "Error while loading previous media"
+#~ msgstr "Ошибка при загрузке предыдущего медиа"
+
+#~ msgid "Privileged"
+#~ msgstr "Привилегированный"
+
+#, c-format
+#~ msgid "Last edited %c"
+#~ msgstr "Последнее редактирование %c"
+
+#~ msgid "Open"
+#~ msgstr "Открыть"
+
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgid "%R"
+#~ msgstr "%R"
+
+#~ msgid "Invites"
+#~ msgstr "Приглашения"
+
+#~ msgid "You don’t have any invitations"
+#~ msgstr "У вас нет приглашений"
+
+#~ msgid "Drag and drop rooms here to add them to your favorites"
+#~ msgstr "Перетащите сюда комнаты, чтобы добавить их в избранное"
+
+#~ msgid "You don’t have any rooms yet"
+#~ msgstr "У вас пока нет комнат"
 
 #~ msgid "@icon@"
 #~ msgstr "@icon@"
@@ -1092,14 +2838,8 @@ msgstr "У вас пока нет комнат"
 #~ msgid "Log In"
 #~ msgstr "Авторизоваться"
 
-#~ msgid "Matrix Server"
-#~ msgstr "Сервер Matrix"
-
 #~ msgid "Identity server"
 #~ msgstr "Сервер идентификации"
-
-#~ msgid "Advanced"
-#~ msgstr "Дополнительно"
 
 #~ msgid "Reset Password"
 #~ msgstr "Сброс пароля"
@@ -1122,14 +2862,8 @@ msgstr "У вас пока нет комнат"
 #~ msgid "Private Chat"
 #~ msgstr "Приватный чат"
 
-#~ msgid "Error sending message"
-#~ msgstr "Ошибка при отправке сообщения"
-
 #~ msgid "Unknown Error"
 #~ msgstr "Неизвестная ошибка"
 
 #~ msgid "Passwords didn’t match, try again"
 #~ msgstr "Пароли не совпадают, попробуйте ещё раз"
-
-#~ msgid "Could not save the file"
-#~ msgstr "Не удалось сохранить файл"
