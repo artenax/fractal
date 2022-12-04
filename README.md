@@ -126,7 +126,8 @@ Yes, the current development version (`main` branch) has encryption support usin
 * Can I run Fractal with the window closed?
 
 Currently Fractal does not support this. Fractal is a GNOME application, and accordingly adheres GNOME
-guidelines and paradigms. This will be revisited if or when GNOME gets a "Do Not Disturb" feature.
+guidelines and paradigms. This will be revisited if or when GNOME gets a proper paradigm to interact
+with apps running in the background.
 
 ## The origin of Fractal
 
