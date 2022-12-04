@@ -83,23 +83,41 @@ flatpak install --user gnome-nightly org.gnome.Fractal.Devel
 
 ### Runtime Dependencies
 
-Fractal doesn't store your **password** but uses 
-[Secret Service](https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/)
-to store your **access token** and **passphrase** used to encrypt the local cache.
-Therefore, you need to have software providing that service on your system.
-If you're using GNOME this should just work. 
-If you are using a different desktop environment or are facing issues, 
-make sure you have `xdg-desktop-portal` installed and a 
-[Secret Service](https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/) provider,
-for example `gnome-keyring` or KeepassXC ([setup guide](https://avaldes.co/2020/01/28/secret-service-keepassxc.html)).
+Fractal doesn’t store your **password**, but it stores your **access token** and the **passphrase**
+used to encrypt the database and the local cache.
+
+The stable Flatpak available on Flathub and any version that is not sandboxed rely on software that
+implements the [Secret Service API](https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/)
+to store those secrets. Therefore, you need to have software providing that service on your system,
+like gnome-keyring, KeepassXC ([setup guide](https://avaldes.co/2020/01/28/secret-service-keepassxc.html)),
+or a recent version of KWallet. If you are using GNOME this should just work.
+
+With the nightly Flatpak, Fractal uses the [Secret portal](https://docs.flatpak.org/en/latest/portal-api-reference.html#gdbus-org.freedesktop.portal.Secret)
+to store those secrets. Once again, if you are using GNOME this should just work. If you are using a
+different desktop environment or are facing issues, make sure `xdg-desktop-portal` is installed
+along with a service that provides the [Secret portal backend interface](https://docs.flatpak.org/en/latest/portal-api-reference.html#gdbus-org.freedesktop.impl.portal.Secret),
+which is currently only implemented by gnome-keyring.
+
+If you prefer to use other software that only implements the Secret Service API while using the
+nightly Flatpak, you need to make sure that no service implementing the Secret portal backend
+interface is running, and you need to allow Fractal to access the D-Bus service with this command:
+
+```sh
+flatpak override --user --talk-name=org.freedesktop.secrets org.gnome.Fractal.Devel
+```
+
+Or with [Flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal), by adding
+`org.freedesktop.secrets` in the **Session Bus** > **Talk** list of Fractal.
 
 ## Security Best Practices
 
-Additionally to setting up the [Secret Service](https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/),
-make sure to use a strong **password** for the keyring, or for the user session if used to unlock the keyring
-(normally it's the case), since it will be used to encrypt secrets in **Secret Service**.
-Furthermore, make sure to lock your system when stepping away from the computer since an unlocked computer
-gives other people access to your private communications and stored secrets.
+You should use a strong **password** that is hard to guess to protect the secrets stored on your
+device, whether the password is used directly to unlock your secrets (with a password manager for
+example) or if it is used to open your user session and your secrets are unlocked automatically
+(which is normally the case with a GNOME session).
+
+Furthermore, make sure to lock your system when stepping away from the computer since an unlocked
+computer can allow other people to access your private communications and your secrets.
 
 ## Contributing
 
@@ -125,9 +143,9 @@ Yes, the current development version (`main` branch) has encryption support usin
 
 * Can I run Fractal with the window closed?
 
-Currently Fractal does not support this. Fractal is a GNOME application, and accordingly adheres GNOME
-guidelines and paradigms. This will be revisited if or when GNOME gets a proper paradigm to interact
-with apps running in the background.
+Currently Fractal does not support this. Fractal is a GNOME application, and accordingly adheres to
+the GNOME guidelines and paradigms. This will be revisited if or when GNOME gets a proper paradigm
+to interact with apps running in the background.
 
 ## The origin of Fractal
 
