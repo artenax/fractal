@@ -137,7 +137,7 @@ impl CameraPaintable {
         let mut src_builder =
             gst::ElementFactory::make("pipewiresrc").property("fd", fd.as_raw_fd());
         if let Some(node_id) = streams.get(0).map(|s| s.node_id()) {
-            src_builder = src_builder.property("path", node_id);
+            src_builder = src_builder.property("path", node_id.to_string());
         }
         let pipewire_src = src_builder.build().unwrap();
 
