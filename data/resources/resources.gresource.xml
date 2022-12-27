@@ -18,7 +18,7 @@
     <file preprocess="xml-stripblanks">icons/scalable/actions/map-marker-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/send-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/status/devices-symbolic.svg</file>
-    <file preprocess="xml-stripblanks">icons/scalable/status/empty-page.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/status/empty-page-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/status/explore-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/status/verified-symbolic.svg</file>
     <file compressed="true">sas-emoji/ar.json</file>
