@@ -52,6 +52,9 @@
             <property name="spacing">6</property>
             <child>
               <object class="SpinnerButton" id="delete_logout_button"/>
+              <style>
+                <class name="label-button"/>
+            </style>
             </child>
             <child>
               <object class="SpinnerButton" id="verify_button">

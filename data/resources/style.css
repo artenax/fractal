@@ -95,6 +95,10 @@ levelbar.discrete.error block.filled {
   background-color: @error_color;
 }
 
+.content .label-button {
+	min-width: 86px;
+}
+
 
 /* Components */
 
