@@ -57,7 +57,7 @@ pub fn filename_for_mime(mime_type: Option<&str>, fallback: Option<mime::Name>) 
     };
 
     extension
-        .map(|extension| format!("{}.{}", name, extension))
+        .map(|extension| format!("{name}.{extension}"))
         .unwrap_or(name)
 }
 

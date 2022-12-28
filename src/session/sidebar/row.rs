@@ -230,7 +230,7 @@ impl Row {
                     list_item.set_css_classes(&["room"]);
                 }
             } else {
-                panic!("Wrong row item: {:?}", item);
+                panic!("Wrong row item: {item:?}");
             }
             self.activate_action("sidebar.update-drop-targets", None)
                 .unwrap();

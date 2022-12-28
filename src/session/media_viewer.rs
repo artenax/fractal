@@ -240,7 +240,7 @@ impl MediaViewer {
                                         // we need to store the file.
                                         // See: https://gitlab.gnome.org/GNOME/gtk/-/issues/4062
                                         let mut path = cache_dir();
-                                        path.push(format!("{}_{}", uid, filename));
+                                        path.push(format!("{uid}_{filename}"));
                                         let file = gio::File::for_path(path);
                                         file.replace_contents(
                                             &data,

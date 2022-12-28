@@ -13,7 +13,7 @@ use crate::gettext_f;
 /// the `transaction_id`.
 pub fn pending_event_ids() -> (OwnedTransactionId, OwnedEventId) {
     let txn_id = TransactionId::new();
-    let event_id = EventId::parse(format!("${}:fractal.gnome.org", txn_id)).unwrap();
+    let event_id = EventId::parse(format!("${txn_id}:fractal.gnome.org")).unwrap();
     (txn_id, event_id)
 }
 

@@ -311,10 +311,10 @@ impl std::fmt::Display for AvatarError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         use AvatarError::*;
         match self {
-            Filesystem(e) => write!(f, "Could not open room avatar file: {}", e),
-            Upload(e) => write!(f, "Could not upload room avatar: {}", e),
+            Filesystem(e) => write!(f, "Could not open room avatar file: {e}"),
+            Upload(e) => write!(f, "Could not upload room avatar: {e}"),
             NotAMember => write!(f, "Room avatar can’t be changed when not a member."),
-            UnknownFiletype(e) => write!(f, "Room avatar file has an unknown filetype: {}", e),
+            UnknownFiletype(e) => write!(f, "Room avatar file has an unknown filetype: {e}"),
         }
     }
 }

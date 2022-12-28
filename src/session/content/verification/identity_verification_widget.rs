@@ -583,55 +583,55 @@ impl IdentityVerificationWidget {
                     .accept_request_instructions
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
-                    .set_markup(&gettext_f("{user} asked to be verified. Verifying a user increases the security of the conversation.", &[("user", &format!("<b>{}</b>", name))]));
+                    .set_markup(&gettext_f("{user} asked to be verified. Verifying a user increases the security of the conversation.", &[("user", &format!("<b>{name}</b>"))]));
                 imp.scan_qrcode_title
                     .set_markup(&gettext("Verification Request"));
                 imp.scan_qrcode_instructions.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Scan the QR code shown on the device of {user}.",
-                    &[("user", &format!("<b>{}</b>", name))],
+                    &[("user", &format!("<b>{name}</b>"))],
                 ));
                 // Translators: Do NOT translate the content between '{' and '}', this is a
                 // variable name.
-                imp.qrcode_scanned_message.set_markup(&gettext_f("You scanned the QR code successfully. {user} may need to confirm the verification.", &[("user", &format!("<b>{}</b>", name))]));
+                imp.qrcode_scanned_message.set_markup(&gettext_f("You scanned the QR code successfully. {user} may need to confirm the verification.", &[("user", &format!("<b>{name}</b>"))]));
                 imp.qrcode_title
                     .set_markup(&gettext("Verification Request"));
                 imp.qrcode_instructions.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Ask {user} to scan this QR code from their session.",
-                    &[("user", &format!("<b>{}</b>", name))],
+                    &[("user", &format!("<b>{name}</b>"))],
                 ));
                 imp.emoji_title.set_markup(&gettext("Verification Request"));
                 imp.emoji_instructions.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Ask {user} if they see the following emoji appear in the same order on their screen.",
-                    &[("user", &format!("<b>{}</b>", name))]
+                    &[("user", &format!("<b>{name}</b>"))]
                 ));
                 imp.completed_title
                     .set_markup(&gettext("Verification Complete"));
                 // Translators: Do NOT translate the content between '{' and '}', this is a
                 // variable name.
-                imp.completed_message.set_markup(&gettext_f("{user} is verified and you can now be sure that your communication will be private.", &[("user", &format!("<b>{}</b>", name))]));
+                imp.completed_message.set_markup(&gettext_f("{user} is verified and you can now be sure that your communication will be private.", &[("user", &format!("<b>{name}</b>"))]));
                 imp.wait_for_other_party_title.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Waiting for {user}",
-                    &[("user", &format!("<b>{}</b>", name))],
+                    &[("user", &format!("<b>{name}</b>"))],
                 ));
                 imp.wait_for_other_party_instructions.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Ask {user} to accept the verification request.",
-                    &[("user", &format!("<b>{}</b>", name))],
+                    &[("user", &format!("<b>{name}</b>"))],
                 ));
                 imp.confirm_scanned_qr_code_question.set_markup(&gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
                     // variable name.
                     "Does {user} see a confirmation on their session?",
-                    &[("user", &format!("<b>{}</b>", name))],
+                    &[("user", &format!("<b>{name}</b>"))],
                 ));
             }
         }

@@ -366,8 +366,7 @@ impl AuthDialog {
         }
 
         let uri = format!(
-            "{}_matrix/client/r0/auth/{}/fallback/web?session={}",
-            homeserver, auth_type, session
+            "{homeserver}_matrix/client/r0/auth/{auth_type}/fallback/web?session={session}"
         );
 
         let handler = imp

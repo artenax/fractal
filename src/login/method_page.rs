@@ -159,7 +159,7 @@ impl LoginMethodPage {
             "Connecting to {domain_name}",
             &[(
                 "domain_name",
-                &format!("<span segment=\"word\">{}</span>", domain_name),
+                &format!("<span segment=\"word\">{domain_name}</span>"),
             )],
         ))
     }

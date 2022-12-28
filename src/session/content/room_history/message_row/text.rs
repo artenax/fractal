@@ -212,7 +212,7 @@ fn create_widget_for_html_block(
             }
             let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
             w.set_use_markup(true);
-            w.add_css_class(&format!("h{}", n));
+            w.add_css_class(&format!("h{n}"));
             w.set_ellipsize(ellipsize);
             w.upcast()
         }

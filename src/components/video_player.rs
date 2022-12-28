@@ -162,11 +162,11 @@ impl VideoPlayer {
             if hour > 0 {
                 // FIXME: Find how to localize this.
                 // hour:minutes:seconds
-                format!("{}:{:02}:{:02}", hour, min, sec)
+                format!("{hour}:{min:02}:{sec:02}")
             } else {
                 // FIXME: Find how to localize this.
                 // minutes:seconds
-                format!("{:02}:{:02}", min, sec)
+                format!("{min:02}:{sec:02}")
             }
         } else {
             "--:--".to_owned()

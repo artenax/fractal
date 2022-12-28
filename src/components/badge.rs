@@ -94,13 +94,13 @@ impl Badge {
 
         match role {
             MemberRole::ADMIN => {
-                label.set_text(&format!("{} {}", role, power_level));
+                label.set_text(&format!("{role} {power_level}"));
                 self.add_css_class("admin");
                 self.remove_css_class("mod");
                 self.show();
             }
             MemberRole::MOD => {
-                label.set_text(&format!("{} {}", role, power_level));
+                label.set_text(&format!("{role} {power_level}"));
                 self.add_css_class("mod");
                 self.remove_css_class("admin");
                 self.show();

@@ -151,6 +151,6 @@ impl MembershipSubpageRow {
     }
 
     fn member_count_changed(&self, n: u32) {
-        self.imp().members_count.set_text(&format!("{}", n));
+        self.imp().members_count.set_text(&format!("{n}"));
     }
 }
