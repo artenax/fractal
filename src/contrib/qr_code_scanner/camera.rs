@@ -7,6 +7,7 @@ use once_cell::sync::Lazy;
 use tokio::time::timeout;
 
 use super::camera_paintable::CameraPaintable;
+use crate::spawn_tokio;
 
 mod imp {
     use super::*;
@@ -72,7 +73,11 @@ impl Camera {
     async fn paintable_internal(&self) -> Option<CameraPaintable> {
         if let Some(paintable) = self.imp().paintable.upgrade() {
             Some(paintable)
-        } else if let Ok(Some((stream_fd, streams))) = camera::request().await {
+        } else if let Ok(Some((stream_fd, streams))) =
+            spawn_tokio!(async move { camera::request().await })
+                .await
+                .unwrap()
+        {
             let paintable = CameraPaintable::new(stream_fd, streams).await;
             self.imp().paintable.set(Some(&paintable));
             Some(paintable)

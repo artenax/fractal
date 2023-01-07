@@ -37,10 +37,11 @@ futures = "0.3"
 rand = "0.8"
 indexmap = "1.6.2"
 qrcode = "0.12.0"
-ashpd = { version = "0.4.0-alpha.1", features = [
+ashpd = { version = "0.4.0-alpha.2", default-features = false, features = [
     "gtk4",
     "pipewire",
     "tracing",
+    "tokio",
 ] }
 gst = { version = "0.19.1", package = "gstreamer" }
 gst_base = { version = "0.19.1", package = "gstreamer-base" }

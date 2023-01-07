@@ -350,8 +350,11 @@ impl IdentityVerification {
             session.user().unwrap()
         };
 
-        let supported_methods =
-            SupportedMethods::with_camera(Camera::default().has_camera().await.unwrap_or_default());
+        let has_camera =
+            spawn_tokio!(async move { Camera::default().has_camera().await.unwrap_or_default() })
+                .await
+                .unwrap();
+        let supported_methods = SupportedMethods::with_camera(has_camera);
 
         if let Some(identity) = user.crypto_identity().await {
             let handle = spawn_tokio!(async move {
@@ -954,7 +957,13 @@ impl Context {
             wait![self];
 
             // Check whether we have a camera
-            if !Camera::default().has_camera().await.unwrap_or_default() {
+            let has_camera =
+                spawn_tokio!(
+                    async move { Camera::default().has_camera().await.unwrap_or_default() }
+                )
+                .await
+                .unwrap();
+            if !has_camera {
                 self.supported_methods.remove(SupportedMethods::QR_SCAN);
             }
 
