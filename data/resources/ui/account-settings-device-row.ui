@@ -51,10 +51,11 @@
           <object class="GtkBox">
             <property name="spacing">6</property>
             <child>
-              <object class="SpinnerButton" id="delete_logout_button"/>
-              <style>
-                <class name="label-button"/>
-            </style>
+              <object class="SpinnerButton" id="delete_logout_button">
+                <style>
+                  <class name="label-button"/>
+                </style>
+              </object>
             </child>
             <child>
               <object class="SpinnerButton" id="verify_button">
@@ -68,4 +69,3 @@
     </property>
   </template>
 </interface>
-
