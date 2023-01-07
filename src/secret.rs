@@ -52,7 +52,8 @@ impl UserFacingError for oo7::portal::Error {
             oo7::portal::Error::NoData |
             oo7::portal::Error::MacError |
             oo7::portal::Error::HashedAttributeMac(_) |
-            oo7::portal::Error::GVariantDeserialization(_) => gettext(
+            oo7::portal::Error::GVariantDeserialization(_) |
+            oo7::portal::Error::SaltSizeMismatch(_, _) => gettext(
                 "The secret storage file is corrupted.",
             ),
             oo7::portal::Error::NoParentDir(_) |
@@ -66,7 +67,7 @@ impl UserFacingError for oo7::portal::Error {
                 "The secret storage file has been changed by another process.",
             ),
             oo7::portal::Error::PortalBus(_) => gettext(
-                "An unknown error occurred when interacting with the D-Bus Secret Service.",
+                "An unknown error occurred when interacting with the D-Bus Secret Portal backend.",
             ),
             oo7::portal::Error::CancelledPortalRequest => gettext(
                 "The request to the Flatpak Secret Portal was cancelled. Make sure to accept any prompt asking to access it.",
@@ -74,6 +75,11 @@ impl UserFacingError for oo7::portal::Error {
             oo7::portal::Error::PortalNotAvailable => gettext(
                 "The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is installed, and it is at least at version 1.5.0.",
             ),
+            oo7::portal::Error::WeakKey(_) => gettext(
+                "The Flatpak Secret Portal provided a key that is too weak to be secure.",
+            ),
+            // Can only occur when using the `replace_item_index` or `delete_item_index` methods.
+            oo7::portal::Error::InvalidItemIndex(_) => unreachable!(),
         }
     }
 }
