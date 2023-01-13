@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the fractal package.
 #
 # Artem Polishchuk <ego.cordatus@gmail.com>, 2019.
-# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-11-08 14:28+0000\n"
-"PO-Revision-Date: 2022-11-10 09:55+0200\n"
+"POT-Creation-Date: 2023-01-11 17:04+0000\n"
+"PO-Revision-Date: 2023-01-13 16:50+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -73,6 +73,11 @@ msgstr "Параметри сеансу"
 #: data/org.gnome.Fractal.gschema.xml.in:24
 msgid "Serialized list of settings per session"
 msgstr "Перетворений у послідовну форму список параметрів окремого сеансу"
+
+#: data/org.gnome.Fractal.gschema.xml.in:28
+#| msgid "Current Session"
+msgid "Current session"
+msgstr "Поточний сеанс"
 
 #: data/org.gnome.Fractal.metainfo.xml.in.in:8
 msgid "Matrix group messaging app"
@@ -146,7 +151,7 @@ msgstr ""
 "Щоб підтвердити, що ви дійсно хочете деактивувати цей обліковий запис "
 "введіть свій ідентифікатор Matrix:"
 
-#: data/resources/ui/account-settings-device-row.ui:59
+#: data/resources/ui/account-settings-device-row.ui:63
 #: src/session/content/verification/identity_verification_widget.rs:529
 #: src/session/content/verification/identity_verification_widget.rs:534
 #: src/session/content/verification/identity_verification_widget.rs:537
@@ -585,7 +590,6 @@ msgid "_Copy Text"
 msgstr "_Копіювати текст"
 
 #: data/resources/ui/event-menu.ui:44
-#| msgid "_Copy Image"
 msgid "_Copy Thumbnail"
 msgstr "_Копіювати мініатюру"
 
@@ -696,8 +700,8 @@ msgid ""
 "Even though the verification was successful, the other device didn’t send us "
 "the necessary keys:"
 msgstr ""
-"Хоча перевірку успішно пройдено, іншим пристроєм не надіслано нам необхідних"
-" ключів:"
+"Хоча перевірку успішно пройдено, іншим пристроєм не надіслано нам необхідних "
+"ключів:"
 
 #: data/resources/ui/identity-verification-widget.ui:518
 msgid "User-signing key"
@@ -718,19 +722,18 @@ msgstr "Перевірити ваш сеанс за допомогою іншо�
 #: data/resources/ui/identity-verification-widget.ui:601
 msgid "Reset cross-signing on your other device and retry verification"
 msgstr ""
-"Скинути стан взаємного підписування на вашому іншому пристрої і повторити"
-" спробу перевірки"
+"Скинути стан взаємного підписування на вашому іншому пристрої і повторити "
+"спробу перевірки"
 
 #: data/resources/ui/identity-verification-widget.ui:624
 msgid ""
 "Verify this session without another device, or reset cross-signing on this "
 "device"
 msgstr ""
-"Перевірити цей сеанс без іншого пристрою або скинути стан взаємного"
-" підписування на цьому пристрої"
+"Перевірити цей сеанс без іншого пристрою або скинути стан взаємного "
+"підписування на цьому пристрої"
 
 #: data/resources/ui/identity-verification-widget.ui:633
-#| msgid "Verifications"
 msgid "Restart verification"
 msgstr "Перезапустити перевірку"
 
@@ -744,7 +747,7 @@ msgstr ""
 "Введіть ідентифікатор кімнати, альтернативну назву кімнати або постійне "
 "посилання."
 
-#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:712
+#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:710
 msgid "_Join"
 msgstr "_Увійти"
 
@@ -1111,11 +1114,11 @@ msgstr "Сеанс успішно вилучено."
 msgid "Could not remove session from secret storage"
 msgstr "Не вдалося вилучити сеанс із зашифрованого сховища"
 
-#: src/greeter.rs:82 src/login/mod.rs:674 src/window.rs:365
+#: src/greeter.rs:82 src/login/mod.rs:683 src/window.rs:391
 msgid "No network connection"
 msgstr "Немає з'єднання з мережею"
 
-#: src/greeter.rs:87 src/login/mod.rs:679 src/window.rs:369
+#: src/greeter.rs:87 src/login/mod.rs:688 src/window.rs:395
 msgid "No Internet connection"
 msgstr "Відсутнє з'єднання з інтернетом"
 
@@ -1139,39 +1142,43 @@ msgstr "Адреса вашого домашнього сервера Matrix, н
 msgid "Connecting to {domain_name}"
 msgstr "Встановлюємо з'єднання із {domain_name}"
 
-#: src/login/mod.rs:600
+#: src/login/mod.rs:609
 msgid "Unable to store session"
 msgstr "Не вдалося зберегти сеанс"
 
-#: src/secret.rs:56
+#: src/secret.rs:57
 msgid "The secret storage file is corrupted."
 msgstr "Файл сховища реєстраційних даних пошкоджено."
 
-#: src/secret.rs:60
+#: src/secret.rs:61
 msgid "Could not access the secret storage file location."
 msgstr ""
 "Не вдалося отримати доступ до місця зберігання файл сховища реєстраційних "
 "даних."
 
-#: src/secret.rs:63
+#: src/secret.rs:64
 msgid "An unknown error occurred when accessing the secret storage file."
 msgstr ""
 "Під час спроби доступу до файла сховища реєстраційних даних сталася невідома "
 "помилка"
 
-#: src/secret.rs:66
+#: src/secret.rs:67
 msgid "The secret storage file has been changed by another process."
 msgstr ""
 "До файла сховища реєстраційних даних внесено зміни стороннім процесом."
 
-#: src/secret.rs:69 src/secret.rs:95
+#: src/secret.rs:70
+#| msgid ""
+#| "An unknown error occurred when interacting with the D-Bus Secret Service."
 msgid ""
-"An unknown error occurred when interacting with the D-Bus Secret Service."
+"An unknown error occurred when interacting with the D-Bus Secret Portal "
+"backend."
 msgstr ""
-"Під час роботи із службою реєстраційних даних за допомогою D-Bus сталася "
+"Під час роботи із модулем порталу реєстраційних даних за допомогою D-Bus"
+" сталася "
 "невідома помилка"
 
-#: src/secret.rs:72
+#: src/secret.rs:73
 msgid ""
 "The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1179,7 +1186,7 @@ msgstr ""
 "Запит до порталу реєстраційних даних Flatpak було скасовано. Переконайтеся, "
 "що прийнято усі запити, що вимагають доступу до нього."
 
-#: src/secret.rs:75
+#: src/secret.rs:76
 msgid ""
 "The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
 "installed, and it is at least at version 1.5.0."
@@ -1187,11 +1194,18 @@ msgstr ""
 "Немає доступу до порталу реєстраційних даних Flatpak. Переконайтеся, що "
 "встановлено пакунок xdg-desktop-portal версії, яка є не меншою за 1.5.0."
 
-#: src/secret.rs:85
+#: src/secret.rs:79
+msgid ""
+"The Flatpak Secret Portal provided a key that is too weak to be secure."
+msgstr ""
+"Портал реєстраційних даних Flatpak надав ключ, який є надто простим, щоб"
+" бути безпечним."
+
+#: src/secret.rs:91
 msgid "The item was deleted."
 msgstr "Запис було вилучено."
 
-#: src/secret.rs:88
+#: src/secret.rs:94
 msgid ""
 "The request to the D-Bus Secret Service was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1200,7 +1214,7 @@ msgstr ""
 "скасовано. Переконайтеся, що прийнято усі запити, що вимагають доступу до "
 "неї."
 
-#: src/secret.rs:91
+#: src/secret.rs:97
 msgid ""
 "Could not access the default collection. Make sure a keyring was created and "
 "set as default."
@@ -1208,42 +1222,51 @@ msgstr ""
 "Не вдалося отримати доступу до типової збірки. Переконайтеся, що в'язку "
 "ключів було створено і зроблено типовою."
 
-#: src/secret.rs:135
+#: src/secret.rs:101
+msgid ""
+"An unknown error occurred when interacting with the D-Bus Secret Service."
+msgstr ""
+"Під час роботи із службою реєстраційних даних за допомогою D-Bus сталася "
+"невідома помилка"
+
+#: src/secret.rs:141
 msgid "Malformed homeserver in stored session"
 msgstr "Помилкове форматування запису домашнього сервера у збереженому сеансі"
 
-#: src/secret.rs:142
+#: src/secret.rs:148
 msgid "Could not find homeserver in stored session"
 msgstr "Не вдалося знайти дані домашнього сервера у збереженому сеансі"
 
-#: src/secret.rs:156
+#: src/secret.rs:162
 msgid "Malformed user ID in stored session"
 msgstr ""
 "Помилкове форматування ідентифікатора користувача у збереженому сеансі"
 
-#: src/secret.rs:163
+#: src/secret.rs:169
 msgid "Could not find user ID in stored session"
 msgstr "Не вдалося знайти ідентифікатор користувача у збереженому сеансі"
 
-#: src/secret.rs:172
+#: src/secret.rs:178
 msgid "Could not find device ID in stored session"
 msgstr "Не вдалося знайти ідентифікатор пристрою у збереженому сеансі"
 
-#: src/secret.rs:181
+#: src/secret.rs:187
 msgid "Could not find database path in stored session"
 msgstr "Не вдалося знайти шлях до бази даних у збереженому сеансі"
 
-#: src/secret.rs:192
+#: src/secret.rs:198
 msgid "Malformed secret in stored session"
 msgstr "Помилкове форматування реєстраційних даних у збереженому сеансі"
 
-#: src/secret.rs:200
+#: src/secret.rs:206
 msgid "Could not get secret in stored session"
 msgstr "Не вдалося отримати зашифровані дані у збереженому сеансі"
 
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:310
+#: src/secret.rs:315 src/secret.rs:355
 msgid "Fractal: Matrix credentials for {user_id}"
 msgstr "Фрактал: реєстраційні дані Matrix для {user_id}"
 
@@ -1577,7 +1600,7 @@ msgstr "Учасники кімнати"
 msgid "Invite new Members"
 msgstr "Запросити нових учасників"
 
-#: src/session/content/room_history/item_row.rs:288
+#: src/session/content/room_history/item_row.rs:295
 msgid "New Messages"
 msgstr "Нові повідомлення"
 
@@ -1863,7 +1886,6 @@ msgstr "Початок"
 
 #: src/session/content/verification/identity_verification_widget.rs:547
 #: src/session/content/verification/identity_verification_widget.rs:576
-#| msgid "Does the other session show a confirmation shield?"
 msgid "Does the other session show a confirmation?"
 msgstr "Чи показано в іншому сеансі підтвердження?"
 
@@ -1872,7 +1894,6 @@ msgid "Login Request From Another Session"
 msgstr "Запит щодо входу з іншого сеансу"
 
 #: src/session/content/verification/identity_verification_widget.rs:556
-#| msgid "Scan this QR code from the other session."
 msgid "Scan the QR code displayed by the other session."
 msgstr "Скануйте QR-код, який показано в іншому сеансі."
 
@@ -1963,7 +1984,6 @@ msgstr "Попросити {user} прийняти запит щодо пере�
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
 #: src/session/content/verification/identity_verification_widget.rs:633
-#| msgid "Does {user} see a confirmation shield on their session?"
 msgid "Does {user} see a confirmation on their session?"
 msgstr "Чи бачить {user} підтвердження у сеансі?"
 
@@ -1997,11 +2017,11 @@ msgstr ""
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Під час створення ключів шифрування сталася помилка."
 
-#: src/session/mod.rs:710
+#: src/session/mod.rs:708
 msgid "_View"
 msgstr "П_ерегляд"
 
-#: src/session/mod.rs:756
+#: src/session/mod.rs:754
 msgid "Failed to logout the session."
 msgstr "Не вдалося вийти з сеансу."
 
@@ -2010,12 +2030,10 @@ msgid "Message copied to clipboard"
 msgstr "Повідомлення скопійовано до буфера обміну"
 
 #: src/session/room/event_actions.rs:226
-#| msgid "Message copied to clipboard"
 msgid "Image copied to clipboard"
 msgstr "Зображення скопійовано до буфера обміну"
 
 #: src/session/room/event_actions.rs:230
-#| msgid "Permalink copied to clipboard"
 msgid "Thumbnail copied to clipboard"
 msgstr "Мініатюру скопійовано до буфера обміну"
 
@@ -2254,24 +2272,24 @@ msgstr "Ознайомлення"
 msgid "Forget Room"
 msgstr "Забути про кімнату"
 
-#: src/session/verification/identity_verification.rs:634
+#: src/session/verification/identity_verification.rs:637
 msgid "You cancelled the verification process."
 msgstr "Вами скасовано процедуру перевірки."
 
-#: src/session/verification/identity_verification.rs:636
+#: src/session/verification/identity_verification.rs:639
 msgid "The verification process failed because it reached a timeout."
 msgstr ""
 "Перевірку не пройдено, оскільки перевищено час очікування на відповідь."
 
-#: src/session/verification/identity_verification.rs:639
+#: src/session/verification/identity_verification.rs:642
 msgid "You accepted the request from an other session."
 msgstr "Ви прийняли цей запит з іншого сеансу."
 
-#: src/session/verification/identity_verification.rs:642
+#: src/session/verification/identity_verification.rs:645
 msgid "The emoji did not match."
 msgstr "Емодзі не збігаються."
 
-#: src/session/verification/identity_verification.rs:651
+#: src/session/verification/identity_verification.rs:654
 msgid "An unknown error occurred during the verification process."
 msgstr "Під час процедури перевірки сталася невідома помилка."
 
@@ -2396,7 +2414,7 @@ msgstr "Користувачем {user} надіслано запит щодо �
 msgid "{user} sent a sticker."
 msgstr "Користувачем {user} надіслано наліпку."
 
-#: src/window.rs:245
+#: src/window.rs:271
 msgid "Failed to restore previous sessions"
 msgstr "Не вдалося відновити попередні сеанси"
 
