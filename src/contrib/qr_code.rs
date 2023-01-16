@@ -228,10 +228,8 @@ impl TryFrom<&[u8]> for QRCodeData {
             .module_dimensions(1, 1)
             .build()
             .split('\n')
-            .into_iter()
             .map(|line| {
                 line.chars()
-                    .into_iter()
                     .map(|c| !c.is_whitespace())
                     .collect::<Vec<bool>>()
             })
@@ -257,10 +255,8 @@ impl From<qrcode::QrCode> for QRCodeData {
             .module_dimensions(1, 1)
             .build()
             .split('\n')
-            .into_iter()
             .map(|line| {
                 line.chars()
-                    .into_iter()
                     .map(|c| !c.is_whitespace())
                     .collect::<Vec<bool>>()
             })
