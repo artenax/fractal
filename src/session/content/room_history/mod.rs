@@ -895,6 +895,14 @@ impl RoomHistory {
             .emit_by_name::<bool>("scroll-child", &[&gtk::ScrollType::End, &false]);
     }
 
+    /// Set `RoomHistory` to stick to the bottom based on scrollbar position
+    pub fn enable_sticky_mode(&self) {
+        let imp = self.imp();
+        let adj = imp.listview.vadjustment().unwrap();
+        let is_at_bottom = adj.value() + adj.page_size() == adj.upper();
+        self.set_sticky(is_at_bottom);
+    }
+
     fn try_again(&self) {
         self.start_loading();
     }

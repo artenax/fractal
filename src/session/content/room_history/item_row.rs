@@ -99,6 +99,7 @@ mod imp {
             if let Some(event) = obj.item().and_then(|item| item.downcast::<Event>().ok()) {
                 let room_history = obj.room_history();
                 let popover = room_history.item_context_menu().to_owned();
+                room_history.set_sticky(false);
 
                 if let Some(list_item) = obj.parent() {
                     list_item.add_css_class("has-open-popup");
@@ -106,7 +107,9 @@ mod imp {
                     let cell: Rc<RefCell<Option<glib::signal::SignalHandlerId>>> =
                         Rc::new(RefCell::new(None));
                     let signal_id = popover.connect_closed(
-                        clone!(@weak list_item, @strong cell => move |popover| {
+                        clone!(@weak list_item, @strong cell, @weak room_history => move |popover| {
+                            room_history.enable_sticky_mode();
+
                             list_item.remove_css_class("has-open-popup");
 
                             if let Some(signal_id) = cell.take() {
