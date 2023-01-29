@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-11-24 22:00+0000\n"
-"PO-Revision-Date: 2022-11-28 16:43+0300\n"
+"POT-Creation-Date: 2023-01-11 17:04+0000\n"
+"PO-Revision-Date: 2023-01-14 18:07+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.2.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: data/org.gnome.Fractal.desktop.in.in:3
 #: data/org.gnome.Fractal.metainfo.xml.in.in:7
@@ -70,6 +70,10 @@ msgstr "Настройки сеанса"
 #: data/org.gnome.Fractal.gschema.xml.in:24
 msgid "Serialized list of settings per session"
 msgstr "Последовательный список настроек для каждого сеанса"
+
+#: data/org.gnome.Fractal.gschema.xml.in:28
+msgid "Current session"
+msgstr "Текущий сеанс"
 
 #: data/org.gnome.Fractal.metainfo.xml.in.in:8
 msgid "Matrix group messaging app"
@@ -143,7 +147,7 @@ msgstr ""
 "Чтобы подтвердить, что вы действительно хотите деактивировать эту учетную "
 "запись, введите свой ID пользователя Matrix:"
 
-#: data/resources/ui/account-settings-device-row.ui:59
+#: data/resources/ui/account-settings-device-row.ui:63
 #: src/session/content/verification/identity_verification_widget.rs:529
 #: src/session/content/verification/identity_verification_widget.rs:534
 #: src/session/content/verification/identity_verification_widget.rs:537
@@ -738,7 +742,7 @@ msgstr "Присоединиться к комнате"
 msgid "Enter a room ID, room alias, or permalink."
 msgstr "Введите ID комнаты, псевдоним комнаты или постоянную ссылку."
 
-#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:712
+#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:710
 msgid "_Join"
 msgstr "_Присоединиться"
 
@@ -1106,11 +1110,11 @@ msgstr "Сеанс успешно удален."
 msgid "Could not remove session from secret storage"
 msgstr "Не удалось удалить сеанс из секретного хранилища"
 
-#: src/greeter.rs:82 src/login/mod.rs:674 src/window.rs:365
+#: src/greeter.rs:82 src/login/mod.rs:683 src/window.rs:391
 msgid "No network connection"
 msgstr "Нет подключения к сети"
 
-#: src/greeter.rs:87 src/login/mod.rs:679 src/window.rs:369
+#: src/greeter.rs:87 src/login/mod.rs:688 src/window.rs:395
 msgid "No Internet connection"
 msgstr "Нет подключения к Интернету"
 
@@ -1134,33 +1138,35 @@ msgstr "URL вашего домашнего сервера Matrix, наприм�
 msgid "Connecting to {domain_name}"
 msgstr "Подключение к {domain_name}"
 
-#: src/login/mod.rs:600
+#: src/login/mod.rs:609
 msgid "Unable to store session"
 msgstr "Невозможно сохранить сеанс"
 
-#: src/secret.rs:56
+#: src/secret.rs:57
 msgid "The secret storage file is corrupted."
 msgstr "Файл секретного хранилища поврежден."
 
-#: src/secret.rs:60
+#: src/secret.rs:61
 msgid "Could not access the secret storage file location."
 msgstr "Не удалось получить доступ к расположению файла секретного хранилища."
 
-#: src/secret.rs:63
+#: src/secret.rs:64
 msgid "An unknown error occurred when accessing the secret storage file."
 msgstr "Произошла неизвестная ошибка при доступе к файлу секретного хранилища."
 
-#: src/secret.rs:66
+#: src/secret.rs:67
 msgid "The secret storage file has been changed by another process."
 msgstr "Файл секретного хранилища был изменен другим процессом."
 
-#: src/secret.rs:69 src/secret.rs:95
+#: src/secret.rs:70
 msgid ""
-"An unknown error occurred when interacting with the D-Bus Secret Service."
+"An unknown error occurred when interacting with the D-Bus Secret Portal "
+"backend."
 msgstr ""
-"Произошла неизвестная ошибка при взаимодействии с Секретной службой D-Bus."
+"Произошла неизвестная ошибка при взаимодействии с бэкендом Секретного "
+"портала D-Bus."
 
-#: src/secret.rs:72
+#: src/secret.rs:73
 msgid ""
 "The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1168,7 +1174,7 @@ msgstr ""
 "Запрос на секретный портал Flatpak был отменен. Обязательно примите любое "
 "приглашение с просьбой получить к нему доступ."
 
-#: src/secret.rs:75
+#: src/secret.rs:76
 msgid ""
 "The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
 "installed, and it is at least at version 1.5.0."
@@ -1176,11 +1182,17 @@ msgstr ""
 "Секретный портал Flatpak недоступен. Убедитесь, что xdg-desktop-portal "
 "установлен и имеет версию не ниже 1.5.0."
 
-#: src/secret.rs:85
+#: src/secret.rs:79
+msgid "The Flatpak Secret Portal provided a key that is too weak to be secure."
+msgstr ""
+"Секретный портал Flatpak предоставил ключ, который слишком слаб, чтобы быть "
+"безопасным."
+
+#: src/secret.rs:91
 msgid "The item was deleted."
 msgstr "Элемент был удален."
 
-#: src/secret.rs:88
+#: src/secret.rs:94
 msgid ""
 "The request to the D-Bus Secret Service was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1188,7 +1200,7 @@ msgstr ""
 "Запрос в Секретную службу D-Bus был отменен. Обязательно примите любое "
 "приглашение с просьбой получить к нему доступ."
 
-#: src/secret.rs:91
+#: src/secret.rs:97
 msgid ""
 "Could not access the default collection. Make sure a keyring was created and "
 "set as default."
@@ -1196,41 +1208,49 @@ msgstr ""
 "Не удалось получить доступ к коллекции по умолчанию. Убедитесь, что связка "
 "ключей была создана и установлена по умолчанию."
 
-#: src/secret.rs:135
+#: src/secret.rs:101
+msgid ""
+"An unknown error occurred when interacting with the D-Bus Secret Service."
+msgstr ""
+"Произошла неизвестная ошибка при взаимодействии с Секретной службой D-Bus."
+
+#: src/secret.rs:141
 msgid "Malformed homeserver in stored session"
 msgstr "Некорректный домашний сервер в сохраненном сеансе"
 
-#: src/secret.rs:142
+#: src/secret.rs:148
 msgid "Could not find homeserver in stored session"
 msgstr "Не удалось найти домашний сервер в сохраненном сеансе"
 
-#: src/secret.rs:156
+#: src/secret.rs:162
 msgid "Malformed user ID in stored session"
 msgstr "Некорректный ID пользователя в сохраненном сеансе"
 
-#: src/secret.rs:163
+#: src/secret.rs:169
 msgid "Could not find user ID in stored session"
 msgstr "Не удалось найти ID пользователя в сохраненном сеансе"
 
-#: src/secret.rs:172
+#: src/secret.rs:178
 msgid "Could not find device ID in stored session"
 msgstr "Не удалось найти ID устройства в сохраненном сеансе"
 
-#: src/secret.rs:181
+#: src/secret.rs:187
 msgid "Could not find database path in stored session"
 msgstr "Не удалось найти путь к базе данных в сохраненном сеансе"
 
-#: src/secret.rs:192
+#: src/secret.rs:198
 msgid "Malformed secret in stored session"
 msgstr "Некорректный секрет в сохраненном сеансе"
 
-#: src/secret.rs:200
+#: src/secret.rs:206
 msgid "Could not get secret in stored session"
 msgstr "Не удалось получить секрет в сохраненном сеансе"
 
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:310
+#: src/secret.rs:315 src/secret.rs:355
 msgid "Fractal: Matrix credentials for {user_id}"
 msgstr "Fractal: Учетные данные Matrix для {user_id}"
 
@@ -1977,11 +1997,11 @@ msgstr ""
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Во время создания ключей шифрования произошла ошибка."
 
-#: src/session/mod.rs:710
+#: src/session/mod.rs:708
 msgid "_View"
 msgstr "_Просмотр"
 
-#: src/session/mod.rs:756
+#: src/session/mod.rs:754
 msgid "Failed to logout the session."
 msgstr "Не удалось выйти из сеанса."
 
@@ -2228,24 +2248,24 @@ msgstr "Обзор"
 msgid "Forget Room"
 msgstr "Забыть комнату"
 
-#: src/session/verification/identity_verification.rs:634
+#: src/session/verification/identity_verification.rs:637
 msgid "You cancelled the verification process."
 msgstr "Вы отменили процесс проверки."
 
-#: src/session/verification/identity_verification.rs:636
+#: src/session/verification/identity_verification.rs:639
 msgid "The verification process failed because it reached a timeout."
 msgstr ""
 "Процесс проверки завершился неудачно, поскольку время ожидания истекло."
 
-#: src/session/verification/identity_verification.rs:639
+#: src/session/verification/identity_verification.rs:642
 msgid "You accepted the request from an other session."
 msgstr "Вы приняли запрос из другого сеанса."
 
-#: src/session/verification/identity_verification.rs:642
+#: src/session/verification/identity_verification.rs:645
 msgid "The emoji did not match."
 msgstr "Эмодзи не совпали."
 
-#: src/session/verification/identity_verification.rs:651
+#: src/session/verification/identity_verification.rs:654
 msgid "An unknown error occurred during the verification process."
 msgstr "Произошла неизвестная ошибка в процессе проверки."
 
@@ -2363,6 +2383,6 @@ msgstr "{user} отправил(-а) запрос на проверку."
 msgid "{user} sent a sticker."
 msgstr "{user} отправил(-а) стикер."
 
-#: src/window.rs:245
+#: src/window.rs:271
 msgid "Failed to restore previous sessions"
 msgstr "Не удалось восстановить предыдущие сеансы"
