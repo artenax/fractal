@@ -293,7 +293,7 @@ where
     // TODO: Use blurhash
     let response = matrix_client
         .media()
-        .upload(&content_type.parse()?, &image)
+        .upload(&content_type.parse()?, image)
         .await?;
     Ok(response.content_uri)
 }

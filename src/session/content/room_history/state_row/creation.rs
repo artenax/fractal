@@ -2,6 +2,7 @@ use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{glib, CompositeTemplate};
 use matrix_sdk::ruma::events::room::create::RoomCreateEventContent;
+use ruma::events::FullStateEventContent;
 
 mod imp {
     use glib::subclass::InitializingObject;
@@ -43,15 +44,21 @@ glib::wrapper! {
 }
 
 impl StateCreation {
-    pub fn new(event: &RoomCreateEventContent) -> Self {
+    pub fn new(event: &FullStateEventContent<RoomCreateEventContent>) -> Self {
         let obj: Self = glib::Object::new(&[]);
         obj.set_event(event);
         obj
     }
 
-    fn set_event(&self, event: &RoomCreateEventContent) {
+    fn set_event(&self, event: &FullStateEventContent<RoomCreateEventContent>) {
         let imp = self.imp();
-        if let Some(predecessor) = &event.predecessor {
+
+        let predecessor = match event {
+            FullStateEventContent::Original { content, .. } => content.predecessor.as_ref(),
+            FullStateEventContent::Redacted(_) => None,
+        };
+
+        if let Some(predecessor) = &predecessor {
             imp.previous_room_btn.set_detailed_action_name(&format!(
                 "session.show-room::{}",
                 predecessor.room_id.as_str()

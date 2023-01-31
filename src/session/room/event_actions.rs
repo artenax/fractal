@@ -1,14 +1,14 @@
 use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, prelude::*};
 use log::error;
-use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventContent};
+use matrix_sdk::{room::timeline::TimelineItemContent, ruma::events::room::message::MessageType};
 use once_cell::sync::Lazy;
 
 use crate::{
     prelude::*,
     session::{
         event_source_dialog::EventSourceDialog,
-        room::{Event, RoomAction, SupportedEvent},
+        room::{Event, EventKey, RoomAction},
     },
     spawn, spawn_tokio, toast, UserFacingError, Window,
 };
@@ -116,8 +116,11 @@ where
             );
         }
 
-        if let Some(event) = event.downcast_ref::<SupportedEvent>() {
-            if let Some(AnyMessageLikeEventContent::RoomMessage(message)) = event.content() {
+        if let Some(event) = event
+            .downcast_ref::<Event>()
+            .filter(|event| event.event_id().is_some())
+        {
+            if let TimelineItemContent::Message(message) = event.content() {
                 let user_id = event
                     .room()
                     .session()
@@ -138,7 +141,9 @@ where
                         &action_group,
                         "remove",
                         clone!(@weak event, => move |_, _| {
-                            event.room().redact(event.event_id(), None);
+                            if let Some(event_id) = event.event_id() {
+                                event.room().redact(event_id, None);
+                            }
                         })
                     );
                 }
@@ -154,12 +159,14 @@ where
 
                         let reaction_group = event.reactions().reaction_group_by_key(&key);
 
-                        if let Some(reaction) = reaction_group.and_then(|group| group.user_reaction()) {
-                            // The user already sent that reaction, redact it.
-                            room.redact(reaction.event_id(), None);
-                        } else {
-                            // The user didn't send that redaction, send it.
-                            room.send_reaction(key, event.event_id());
+                        if let Some(reaction_key) = reaction_group.and_then(|group| group.user_reaction_event_key()) {
+                            // The user already sent that reaction, redact it if it has been sent.
+                            if let EventKey::EventId(reaction_id) = reaction_key {
+                                room.redact(reaction_id, None);
+                            }
+                        } else if let Some(event_id) = event.event_id() {
+                            // The user didn't send that reaction, send it.
+                            room.send_reaction(key, event_id);
                         }
                     })
                 );
@@ -170,21 +177,25 @@ where
                     "reply",
                     None,
                     clone!(@weak event, @weak self as widget => move |_, _| {
-                        let _ = widget.activate_action(
-                            "room-history.reply",
-                            Some(&event.event_id().as_str().to_variant())
-                        );
+                        if let Some(event_id) = event.event_id() {
+                            let _ = widget.activate_action(
+                                "room-history.reply",
+                                Some(&event_id.as_str().to_variant())
+                            );
+                        }
                     })
                 );
 
-                match message.msgtype {
+                match message.msgtype() {
                     // Copy Text-Message
                     MessageType::Text(text_message) => {
+                        let body = text_message.body.clone();
+
                         gtk_macros::action!(
                             &action_group,
                             "copy-text",
                             clone!(@weak self as widget => move |_, _| {
-                                widget.clipboard().set_text(&text_message.body);
+                                widget.clipboard().set_text(&body);
                                 toast!(widget, gettext("Message copied to clipboard"));
                             })
                         );
@@ -200,6 +211,8 @@ where
                         );
                     }
                     MessageType::Emote(message) => {
+                        let message = message.clone();
+
                         gtk_macros::action!(
                             &action_group,
                             "copy-text",
@@ -270,9 +283,9 @@ where
 
     /// Save the file in `event`.
     ///
-    /// See [`SupportedEvent::get_media_content()`] for compatible events.
+    /// See [`Event::get_media_content()`] for compatible events.
     /// Panics on an incompatible event.
-    fn save_event_file(&self, event: SupportedEvent) {
+    fn save_event_file(&self, event: Event) {
         let window: Window = self.root().unwrap().downcast().unwrap();
         spawn!(
             glib::PRIORITY_LOW,

@@ -1,17 +1,24 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{gdk, glib, glib::clone};
-use log::warn;
-use matrix_sdk::ruma::events::{
-    room::message::{MessageType, Relation},
-    AnyMessageLikeEventContent,
+use log::{error, warn};
+use matrix_sdk::{
+    room::timeline::{TimelineDetails, TimelineItemContent},
+    ruma::events::room::message::MessageType,
 };
 
 use super::{
     audio::MessageAudio, file::MessageFile, location::MessageLocation, media::MessageMedia,
     reply::MessageReply, text::MessageText,
 };
-use crate::{prelude::*, session::room::SupportedEvent, spawn, utils::media::filename_for_mime};
+use crate::{
+    session::{
+        room::{Event, Member},
+        Room,
+    },
+    spawn,
+    utils::media::filename_for_mime,
+};
 
 #[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(i32)]
@@ -110,32 +117,58 @@ impl MessageContent {
         self.notify("format");
     }
 
-    pub fn update_for_event(&self, event: &SupportedEvent) {
+    pub fn update_for_event(&self, event: &Event) {
         let format = self.format();
-        if format == ContentFormat::Natural && event.is_reply() {
-            spawn!(
-                glib::PRIORITY_HIGH,
-                clone!(@weak self as obj, @weak event => async move {
-                    if let Some(related_event) = event
-                        .reply_to_event()
-                        .await
-                        .ok()
-                        .flatten()
-                        .and_then(|event| event.downcast::<SupportedEvent>().ok())
-                    {
-                        let reply = MessageReply::new();
-                        reply.set_related_content_sender(&related_event.sender().upcast());
-                        build_content(reply.related_content(), &related_event, ContentFormat::Compact);
-                        build_content(reply.content(), &event, ContentFormat::Natural);
-                        obj.set_child(Some(&reply));
-                    } else {
-                        build_content(&obj, &event, format);
+        if format == ContentFormat::Natural {
+            if let Some(related_content) = event.reply_to_event_content() {
+                match related_content {
+                    TimelineDetails::Unavailable => {
+                        spawn!(
+                            glib::PRIORITY_HIGH,
+                            clone!(@weak event => async move {
+                                if let Err(error) = event.fetch_missing_details().await {
+                                    error!("Failed to fetch event details: {error}");
+                                }
+                            })
+                        );
                     }
-                })
-            );
-        } else {
-            build_content(self, event, format);
+                    TimelineDetails::Error(error) => {
+                        error!(
+                            "Failed to fetch replied to event '{}': {error}",
+                            event.reply_to_id().unwrap()
+                        );
+                    }
+                    TimelineDetails::Ready(related_content) => {
+                        let room = event.room();
+                        let sender = room
+                            .members()
+                            .member_by_id(related_content.sender().to_owned());
+                        let reply = MessageReply::new();
+                        reply.set_related_content_sender(sender.upcast_ref());
+                        build_content(
+                            reply.related_content(),
+                            TimelineItemContent::Message(related_content.message().clone()),
+                            ContentFormat::Compact,
+                            sender,
+                            &room,
+                        );
+                        build_content(
+                            reply.content(),
+                            event.content(),
+                            ContentFormat::Natural,
+                            event.sender(),
+                            &room,
+                        );
+                        self.set_child(Some(&reply));
+
+                        return;
+                    }
+                    TimelineDetails::Pending => {}
+                }
+            }
         }
+
+        build_content(self, event.content(), format, event.sender(), &event.room());
     }
 
     /// Get the texture displayed by this widget, if any.
@@ -151,16 +184,17 @@ impl MessageContent {
 }
 
 /// Build the content widget of `event` as a child of `parent`.
-fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: ContentFormat) {
+fn build_content(
+    parent: &impl IsA<adw::Bin>,
+    content: TimelineItemContent,
+    format: ContentFormat,
+    sender: Member,
+    room: &Room,
+) {
     let parent = parent.upcast_ref();
-    match event.content() {
-        Some(AnyMessageLikeEventContent::RoomMessage(message)) => {
-            let msgtype = if let Some(Relation::Replacement(replacement)) = message.relates_to {
-                replacement.new_content.msgtype
-            } else {
-                message.msgtype
-            };
-            match msgtype {
+    match content {
+        TimelineItemContent::Message(message) => {
+            match message.msgtype() {
                 MessageType::Audio(message) => {
                     let child = if let Some(Ok(child)) =
                         parent.child().map(|w| w.downcast::<MessageAudio>())
@@ -171,7 +205,7 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.audio(message, &event.room().session(), format);
+                    child.audio(message.clone(), &room.session(), format);
                 }
                 MessageType::Emote(message) => {
                     let child = if let Some(Ok(child)) =
@@ -184,10 +218,10 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
                         child
                     };
                     child.emote(
-                        message.formatted,
-                        message.body,
-                        event.sender(),
-                        &event.room(),
+                        message.formatted.clone(),
+                        message.body.clone(),
+                        sender,
+                        room,
                         format,
                     );
                 }
@@ -195,8 +229,9 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
                     let info = message.info.as_ref();
                     let filename = message
                         .filename
+                        .clone()
                         .filter(|name| !name.is_empty())
-                        .or(Some(message.body))
+                        .or_else(|| Some(message.body.clone()))
                         .filter(|name| !name.is_empty())
                         .unwrap_or_else(|| {
                             filename_for_mime(info.and_then(|info| info.mimetype.as_deref()), None)
@@ -224,7 +259,7 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.image(message, &event.room().session(), format);
+                    child.image(message.clone(), &room.session(), format);
                 }
                 MessageType::Location(message) => {
                     let child = if let Some(Ok(child)) =
@@ -248,7 +283,12 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.markup(message.formatted, message.body, &event.room(), format);
+                    child.markup(
+                        message.formatted.clone(),
+                        message.body.clone(),
+                        room,
+                        format,
+                    );
                 }
                 MessageType::ServerNotice(message) => {
                     let child = if let Some(Ok(child)) =
@@ -260,7 +300,7 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.text(message.body, format);
+                    child.text(message.body.clone(), format);
                 }
                 MessageType::Text(message) => {
                     let child = if let Some(Ok(child)) =
@@ -272,7 +312,12 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.markup(message.formatted, message.body, &event.room(), format);
+                    child.markup(
+                        message.formatted.clone(),
+                        message.body.clone(),
+                        room,
+                        format,
+                    );
                 }
                 MessageType::Video(message) => {
                     let child = if let Some(Ok(child)) =
@@ -284,7 +329,7 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.video(message, &event.room().session(), format);
+                    child.video(message.clone(), &room.session(), format);
                 }
                 MessageType::VerificationRequest(_) => {
                     // TODO: show more information about the verification
@@ -299,7 +344,7 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
                     };
                     child.text(gettext("Identity verification was started"), format);
                 }
-                _ => {
+                msgtype => {
                     warn!("Event not supported: {:?}", msgtype);
                     let child = if let Some(Ok(child)) =
                         parent.child().map(|w| w.downcast::<MessageText>())
@@ -314,7 +359,7 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
                 }
             }
         }
-        Some(AnyMessageLikeEventContent::Sticker(content)) => {
+        TimelineItemContent::Sticker(sticker) => {
             let child =
                 if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageMedia>()) {
                     child
@@ -323,9 +368,9 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
                     parent.set_child(Some(&child));
                     child
                 };
-            child.sticker(content, &event.room().session(), format);
+            child.sticker(sticker.content().clone(), &room.session(), format);
         }
-        Some(AnyMessageLikeEventContent::RoomEncrypted(_)) => {
+        TimelineItemContent::UnableToDecrypt(_) => {
             let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
             {
                 child
@@ -336,19 +381,8 @@ fn build_content(parent: &impl IsA<adw::Bin>, event: &SupportedEvent, format: Co
             };
             child.text(gettext("Unable to decrypt this message, decryption will be retried once the keys are available."), format);
         }
-        Some(AnyMessageLikeEventContent::RoomRedaction(_)) => {
-            let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
-            {
-                child
-            } else {
-                let child = MessageText::new();
-                parent.set_child(Some(&child));
-                child
-            };
-            child.text(gettext("This message was removed."), format);
-        }
-        _ => {
-            warn!("Unsupported event: {:?}", event.content());
+        content => {
+            warn!("Unsupported event content: {content:?}");
             let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
             {
                 child

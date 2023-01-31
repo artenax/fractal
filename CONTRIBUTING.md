@@ -21,7 +21,7 @@ and ask us any questions you might have.
 
 ### Prerequisites
 
-Fractal is written in Rust, so you will need to have at least Rust 1.63 and Cargo available on your
+Fractal is written in Rust, so you will need to have at least Rust 1.65 and Cargo available on your
 system. You will also need to install the Rust nightly toolchain to be able to run our
 [pre-commit hook](#pre-commit).
 

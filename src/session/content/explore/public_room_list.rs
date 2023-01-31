@@ -263,19 +263,17 @@ impl PublicRoomList {
             let room_network = match network.as_deref() {
                 Some("matrix") => RoomNetwork::Matrix,
                 Some("all") => RoomNetwork::All,
-                Some(custom) => RoomNetwork::ThirdParty(custom),
+                Some(custom) => RoomNetwork::ThirdParty(custom.to_owned()),
                 _ => RoomNetwork::default(),
             };
-            let server = server
-                .as_deref()
-                .and_then(|server| <&ServerName>::try_from(server).ok());
+            let server = server.and_then(|server| ServerName::parse(server).ok());
 
             let request = assign!(PublicRoomsRequest::new(), {
               limit: Some(uint!(20)),
-              since: next_batch.as_deref(),
+              since: next_batch,
               room_network,
               server,
-              filter: assign!(Filter::new(), { generic_search_term: search_term.as_deref() }),
+              filter: assign!(Filter::new(), { generic_search_term: search_term }),
             });
             client.public_rooms_filtered(request).await
         });

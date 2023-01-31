@@ -165,11 +165,10 @@ impl Device {
                 async move {
                     if let Some(auth) = auth_data {
                         let auth = Some(auth.as_matrix_auth_data());
-                        let request =
-                            assign!(delete_device::v3::Request::new(&device_id), { auth });
+                        let request = assign!(delete_device::v3::Request::new(device_id), { auth });
                         client.send(request, None).await.map_err(Into::into)
                     } else {
-                        let request = delete_device::v3::Request::new(&device_id);
+                        let request = delete_device::v3::Request::new(device_id);
                         client.send(request, None).await.map_err(Into::into)
                     }
                 }

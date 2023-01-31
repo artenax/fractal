@@ -1,12 +1,12 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{gdk, gio, glib, glib::clone, CompositeTemplate};
 use log::warn;
-use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventContent};
+use matrix_sdk::{room::timeline::TimelineItemContent, ruma::events::room::message::MessageType};
 
 use super::room::{EventActions, EventTexture};
 use crate::{
     components::{ContentType, ImagePaintable, MediaContentViewer},
-    session::room::SupportedEvent,
+    session::room::Event,
     spawn,
     utils::cache_dir,
     Window,
@@ -24,7 +24,7 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/media-viewer.ui")]
     pub struct MediaViewer {
         pub fullscreened: Cell<bool>,
-        pub event: WeakRef<SupportedEvent>,
+        pub event: WeakRef<Event>,
         pub body: RefCell<Option<String>>,
         #[template_child]
         pub flap: TemplateChild<adw::Flap>,
@@ -72,7 +72,7 @@ mod imp {
                     glib::ParamSpecBoolean::builder("fullscreened")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecObject::builder::<SupportedEvent>("event")
+                    glib::ParamSpecObject::builder::<Event>("event")
                         .explicit_notify()
                         .build(),
                     glib::ParamSpecString::builder("body").read_only().build(),
@@ -137,12 +137,12 @@ impl MediaViewer {
     }
 
     /// The media event to display.
-    pub fn event(&self) -> Option<SupportedEvent> {
+    pub fn event(&self) -> Option<Event> {
         self.imp().event.upgrade()
     }
 
     /// Set the media event to display.
-    pub fn set_event(&self, event: Option<SupportedEvent>) {
+    pub fn set_event(&self, event: Option<Event>) {
         if event == self.event() {
             return;
         }
@@ -199,9 +199,10 @@ impl MediaViewer {
 
         if let Some(event) = self.event() {
             self.set_event_actions(Some(event.upcast_ref()));
-            if let Some(AnyMessageLikeEventContent::RoomMessage(content)) = event.content() {
-                match content.msgtype {
+            if let TimelineItemContent::Message(content) = event.content() {
+                match content.msgtype() {
                     MessageType::Image(image) => {
+                        let image = image.clone();
                         self.set_body(Some(image.body));
 
                         spawn!(
@@ -227,7 +228,7 @@ impl MediaViewer {
                         );
                     }
                     MessageType::Video(video) => {
-                        self.set_body(Some(video.body));
+                        self.set_body(Some(video.body.clone()));
 
                         spawn!(
                             glib::PRIORITY_LOW,

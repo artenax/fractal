@@ -7,9 +7,9 @@ use log::{error, warn};
 use matrix_sdk::{
     config::{RequestConfig, StoreConfig},
     ruma::api::client::session::get_login_types::v3::LoginType,
-    store::{MigrationConflictStrategy, OpenStoreError, SledStateStore},
     Client, ClientBuildError, StoreError,
 };
+use matrix_sdk_sled::{MigrationConflictStrategy, OpenStoreError, SledStateStore};
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use ruma::OwnedServerName;
 use thiserror::Error;
@@ -561,7 +561,7 @@ impl Login {
 
             created_client
                 .client
-                .restore_login(matrix_sdk::Session {
+                .restore_session(matrix_sdk::Session {
                     user_id: session.user_id.clone(),
                     device_id: session.device_id.clone(),
                     access_token: session.secret.access_token.clone(),
@@ -770,7 +770,7 @@ impl CreatedClient {
             .migration_conflict_strategy(MigrationConflictStrategy::Drop)
             .build()
             .map_err(|err| OpenStoreError::from(StoreError::backend(err)))?;
-        let crypto_store = state_store.open_crypto_store()?;
+        let crypto_store = state_store.open_crypto_store().await?;
         let store_config = StoreConfig::new()
             .state_store(state_store)
             .crypto_store(crypto_store);

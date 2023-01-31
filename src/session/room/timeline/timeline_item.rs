@@ -1,6 +1,11 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
+use matrix_sdk::room::timeline::{TimelineItem as SdkTimelineItem, VirtualTimelineItem};
 
-use crate::session::room::Member;
+use super::{TimelineDayDivider, TimelineNewMessagesDivider, TimelinePlaceholder};
+use crate::session::{
+    room::{Event, Member},
+    Room,
+};
 
 mod imp {
     use std::cell::Cell;
@@ -12,6 +17,7 @@ mod imp {
     #[repr(C)]
     pub struct TimelineItemClass {
         pub parent_class: glib::object::ObjectClass,
+        pub is_visible: fn(&super::TimelineItem) -> bool,
         pub selectable: fn(&super::TimelineItem) -> bool,
         pub activatable: fn(&super::TimelineItem) -> bool,
         pub can_hide_header: fn(&super::TimelineItem) -> bool,
@@ -20,6 +26,11 @@ mod imp {
 
     unsafe impl ClassStruct for TimelineItemClass {
         type Type = TimelineItem;
+    }
+
+    pub(super) fn timeline_item_is_visible(this: &super::TimelineItem) -> bool {
+        let klass = this.class();
+        (klass.as_ref().is_visible)(this)
     }
 
     pub(super) fn timeline_item_selectable(this: &super::TimelineItem) -> bool {
@@ -59,6 +70,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
+                    glib::ParamSpecBoolean::builder("is-visible")
+                        .read_only()
+                        .build(),
                     glib::ParamSpecBoolean::builder("selectable")
                         .read_only()
                         .build(),
@@ -91,6 +105,7 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
+                "is-visible" => obj.is_visible().to_value(),
                 "selectable" => obj.selectable().to_value(),
                 "activatable" => obj.activatable().to_value(),
                 "show-header" => obj.show_header().to_value(),
@@ -107,12 +122,60 @@ glib::wrapper! {
     pub struct TimelineItem(ObjectSubclass<imp::TimelineItem>);
 }
 
+impl TimelineItem {
+    /// Create a new `TimelineItem` with the given SDK timeline item.
+    ///
+    /// Constructs the proper child type.
+    pub fn new(item: &SdkTimelineItem, room: &Room) -> Self {
+        match item {
+            SdkTimelineItem::Event(event) => {
+                let event = Event::new(event.clone(), room);
+                event.upcast()
+            }
+            SdkTimelineItem::Virtual(item) => match item {
+                VirtualTimelineItem::DayDivider(ts) => {
+                    TimelineDayDivider::with_timestamp(*ts).upcast()
+                }
+                VirtualTimelineItem::ReadMarker => TimelineNewMessagesDivider::new().upcast(),
+                VirtualTimelineItem::LoadingIndicator => TimelinePlaceholder::spinner().upcast(),
+                VirtualTimelineItem::TimelineStart => {
+                    TimelinePlaceholder::timeline_start().upcast()
+                }
+            },
+        }
+    }
+
+    /// Try to update this `TimelineItem` with the given SDK timeline item.
+    ///
+    /// Returns `true` if the update succeeded.
+    pub fn try_update_with(&self, item: &SdkTimelineItem) -> bool {
+        match item {
+            SdkTimelineItem::Event(new_event) => {
+                if let Some(event) = self.downcast_ref::<Event>() {
+                    return event.try_update_with(new_event);
+                }
+            }
+            SdkTimelineItem::Virtual(_item) => {
+                // Always invalidate. It shouldn't happen often and updating
+                // those should be unexpensive.
+            }
+        }
+
+        false
+    }
+}
+
 /// Public trait containing implemented methods for everything that derives from
 /// `TimelineItem`.
 ///
 /// To override the behavior of these methods, override the corresponding method
 /// of `TimelineItemImpl`.
 pub trait TimelineItemExt: 'static {
+    /// Whether this `TimelineItem` is visible.
+    ///
+    /// Defaults to `true`.
+    fn is_visible(&self) -> bool;
+
     /// Whether this `TimelineItem` is selectable.
     ///
     /// Defaults to `false`.
@@ -143,6 +206,10 @@ pub trait TimelineItemExt: 'static {
 }
 
 impl<O: IsA<TimelineItem>> TimelineItemExt for O {
+    fn is_visible(&self) -> bool {
+        imp::timeline_item_is_visible(self.upcast_ref())
+    }
+
     fn selectable(&self) -> bool {
         imp::timeline_item_selectable(self.upcast_ref())
     }
@@ -181,6 +248,10 @@ impl<O: IsA<TimelineItem>> TimelineItemExt for O {
 /// Overriding a method from this Trait overrides also its behavior in
 /// `TimelineItemExt`.
 pub trait TimelineItemImpl: ObjectImpl {
+    fn is_visible(&self) -> bool {
+        true
+    }
+
     fn selectable(&self) -> bool {
         false
     }
@@ -209,6 +280,7 @@ where
 
         let klass = class.as_mut();
 
+        klass.is_visible = is_visible_trampoline::<T>;
         klass.selectable = selectable_trampoline::<T>;
         klass.activatable = activatable_trampoline::<T>;
         klass.can_hide_header = can_hide_header_trampoline::<T>;
@@ -217,6 +289,15 @@ where
 }
 
 // Virtual method implementation trampolines.
+fn is_visible_trampoline<T>(this: &TimelineItem) -> bool
+where
+    T: ObjectSubclass + TimelineItemImpl,
+    T::Type: IsA<TimelineItem>,
+{
+    let this = this.downcast_ref::<T::Type>().unwrap();
+    this.imp().is_visible()
+}
+
 fn selectable_trampoline<T>(this: &TimelineItem) -> bool
 where
     T: ObjectSubclass + TimelineItemImpl,

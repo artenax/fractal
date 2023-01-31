@@ -1,22 +1,26 @@
-use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
+use gtk::{glib, prelude::*, subclass::prelude::*};
+use matrix_sdk::room::timeline::ReactionGroup as SdkReactionGroup;
 
-use super::SupportedEvent;
-use crate::prelude::*;
+use super::EventKey;
+use crate::{prelude::*, session::User};
 
 mod imp {
     use std::cell::RefCell;
 
-    use indexmap::IndexSet;
     use once_cell::{sync::Lazy, unsync::OnceCell};
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct ReactionGroup {
+        /// The user of the parent session.
+        pub user: OnceCell<User>,
+
         /// The key of the group.
         pub key: OnceCell<String>,
+
         /// The reactions in the group.
-        pub reactions: RefCell<IndexSet<SupportedEvent>>,
+        pub reactions: RefCell<Option<SdkReactionGroup>>,
     }
 
     #[glib::object_subclass]
@@ -29,6 +33,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
+                    glib::ParamSpecObject::builder::<User>("user")
+                        .construct_only()
+                        .build(),
                     glib::ParamSpecString::builder("key")
                         .construct_only()
                         .build(),
@@ -44,6 +51,9 @@ mod imp {
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
+                "user" => {
+                    self.user.set(value.get().unwrap()).unwrap();
+                }
                 "key" => {
                     self.key.set(value.get().unwrap()).unwrap();
                 }
@@ -55,8 +65,9 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
+                "user" => obj.user().to_value(),
                 "key" => obj.key().to_value(),
-                "count" => obj.count().to_value(),
+                "count" => (obj.count() as u32).to_value(),
                 "has-user" => obj.has_user().to_value(),
                 _ => unimplemented!(),
             }
@@ -70,8 +81,16 @@ glib::wrapper! {
 }
 
 impl ReactionGroup {
-    pub fn new(key: &str) -> Self {
-        glib::Object::builder().property("key", &key).build()
+    pub fn new(key: &str, user: &User) -> Self {
+        glib::Object::builder()
+            .property("key", &key)
+            .property("user", user)
+            .build()
+    }
+
+    /// The user of the parent session.
+    pub fn user(&self) -> &User {
+        self.imp().user.get().unwrap()
     }
 
     /// The key of the group.
@@ -79,66 +98,55 @@ impl ReactionGroup {
         self.imp().key.get().unwrap()
     }
 
-    /// The number of reactions in this group.
-    pub fn count(&self) -> u32 {
+    /// The number of reactions in this group
+    pub fn count(&self) -> u64 {
         self.imp()
             .reactions
             .borrow()
-            .iter()
-            .filter(|event| !event.redacted())
-            .count() as u32
+            .as_ref()
+            .map(|reactions| reactions.len() as u64)
+            .unwrap_or_default()
     }
 
-    /// The reaction in this group sent by the logged-in user, if any.
-    pub fn user_reaction(&self) -> Option<SupportedEvent> {
-        let reactions = self.imp().reactions.borrow();
-        if let Some(user) = reactions
-            .first()
-            .and_then(|event| event.room().session().user().cloned())
-        {
-            for reaction in reactions.iter().filter(|event| !event.redacted()) {
-                if reaction.sender_id() == user.user_id() {
-                    return Some(reaction.clone());
-                }
-            }
-        }
-        None
+    /// The event ID of the reaction in this group sent by the logged-in user,
+    /// if any.
+    pub fn user_reaction_event_key(&self) -> Option<EventKey> {
+        let user_id = self.user().user_id();
+        self.imp()
+            .reactions
+            .borrow()
+            .as_ref()
+            .and_then(|reactions| {
+                reactions.iter().find_map(|(timeline_key, sender)| {
+                    (*sender == user_id).then(|| match timeline_key {
+                        (Some(txn_id), None) => Some(EventKey::TransactionId(txn_id.clone())),
+                        (_, Some(event_id)) => Some(EventKey::EventId(event_id.clone())),
+                        _ => None,
+                    })
+                })
+            })
+            .flatten()
     }
 
     /// Whether this group has a reaction from the logged-in user.
     pub fn has_user(&self) -> bool {
-        self.user_reaction().is_some()
+        let user_id = self.user().user_id();
+        self.imp()
+            .reactions
+            .borrow()
+            .as_ref()
+            .filter(|reactions| reactions.iter().any(|(_, sender)| *sender == user_id))
+            .is_some()
     }
 
-    /// Add new reactions to this group.
-    pub fn add_reactions(&self, new_reactions: Vec<SupportedEvent>) {
+    /// Update this group with the given reactions.
+    pub fn update(&self, new_reactions: SdkReactionGroup) {
         let prev_has_user = self.has_user();
-        let mut added_reactions = Vec::with_capacity(new_reactions.len());
+        let prev_count = self.count();
 
-        {
-            let mut reactions = self.imp().reactions.borrow_mut();
+        *self.imp().reactions.borrow_mut() = Some(new_reactions);
 
-            reactions.reserve(new_reactions.len());
-
-            for reaction in new_reactions {
-                if reactions.insert(reaction.clone()) {
-                    added_reactions.push(reaction);
-                }
-            }
-        }
-
-        for reaction in added_reactions.iter() {
-            // Reaction's source should only change when it is redacted.
-            reaction.connect_notify_local(
-                Some("source"),
-                clone!(@weak self as obj => move |_, _| {
-                    obj.notify("count");
-                    obj.notify("has-user");
-                }),
-            );
-        }
-
-        if !added_reactions.is_empty() {
+        if self.count() != prev_count {
             self.notify("count");
         }
 

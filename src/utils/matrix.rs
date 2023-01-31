@@ -1,21 +1,10 @@
 //! Collection of methods related to the Matrix specification.
 
-use matrix_sdk::ruma::{
-    events::{room::message::MessageType, AnyMessageLikeEventContent, AnySyncTimelineEvent},
-    EventId, OwnedEventId, OwnedTransactionId, TransactionId,
+use matrix_sdk::ruma::events::{
+    room::message::MessageType, AnyMessageLikeEventContent, AnySyncTimelineEvent,
 };
 
 use crate::gettext_f;
-
-/// Generate temporary IDs for pending events.
-///
-/// Returns a `(transaction_id, event_id)` tuple. The `event_id` is derived from
-/// the `transaction_id`.
-pub fn pending_event_ids() -> (OwnedTransactionId, OwnedEventId) {
-    let txn_id = TransactionId::new();
-    let event_id = EventId::parse(format!("${txn_id}:fractal.gnome.org")).unwrap();
-    (txn_id, event_id)
-}
 
 /// The result of a password validation.
 #[derive(Debug, Default, Clone, Copy)]

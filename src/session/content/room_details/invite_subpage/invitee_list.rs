@@ -256,7 +256,7 @@ impl InviteeList {
                                 if user_id == search_term {
                                     let client = session.client();
                                     let handle = spawn_tokio!(async move {
-                                        let request = get_profile::v3::Request::new(&user_id);
+                                        let request = get_profile::v3::Request::new(user_id);
                                         client.send(request, None).await
                                     });
                                     spawn!(clone!(@weak user => async move {
@@ -325,7 +325,7 @@ impl InviteeList {
 
         let search_term_clone = search_term.clone();
         let handle = spawn_tokio!(async move {
-            let request = search_users::v3::Request::new(&search_term_clone);
+            let request = search_users::v3::Request::new(search_term_clone);
             client.send(request, None).await
         });
 

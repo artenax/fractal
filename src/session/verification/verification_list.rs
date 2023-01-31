@@ -1,11 +1,11 @@
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, warn};
 use matrix_sdk::ruma::{
-    api::client::sync::sync_events::v3::ToDevice,
     events::{
         room::message::MessageType, AnySyncMessageLikeEvent, AnySyncTimelineEvent,
         AnyToDeviceEvent, SyncMessageLikeEvent,
     },
+    serde::Raw,
     MilliSecondsSinceUnixEpoch, OwnedUserId, UserId,
 };
 
@@ -130,8 +130,8 @@ impl VerificationList {
         self.imp().session.upgrade().unwrap()
     }
 
-    pub fn handle_response_to_device(&self, to_device: ToDevice) {
-        for event in to_device.events.iter().filter_map(|e| e.deserialize().ok()) {
+    pub fn handle_response_to_device(&self, to_device_events: Vec<Raw<AnyToDeviceEvent>>) {
+        for event in to_device_events.iter().filter_map(|e| e.deserialize().ok()) {
             debug!("Received to-device verification event: {:?}", event);
             let request = match event {
                 AnyToDeviceEvent::KeyVerificationRequest(e) => {

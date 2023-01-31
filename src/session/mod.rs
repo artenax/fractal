@@ -24,16 +24,15 @@ use gtk::{
 use log::{debug, error, warn};
 use matrix_sdk::{
     config::SyncSettings,
-    deserialized_responses::SyncResponse,
     room::Room as MatrixRoom,
     ruma::{
         api::{
             client::{
-                error::ErrorKind,
+                error::{Error as ClientApiError, ErrorBody, ErrorKind},
                 filter::{FilterDefinition, LazyLoadOptions, RoomEventFilter, RoomFilter},
                 session::logout,
             },
-            error::{FromHttpResponseError, ServerError},
+            error::FromHttpResponseError,
         },
         assign,
         events::{
@@ -44,6 +43,7 @@ use matrix_sdk::{
         MatrixToUri, MatrixUri, OwnedEventId, OwnedRoomId, OwnedRoomOrAliasId, OwnedServerName,
         RoomId, RoomOrAliasId,
     },
+    sync::SyncResponse,
     Client, HttpError, RumaApiError,
 };
 use ruma::{api::client::push::get_notifications::v3::Notification, EventId};
@@ -59,7 +59,7 @@ use self::{
 };
 pub use self::{
     avatar::Avatar,
-    room::{Room, SupportedEvent},
+    room::{Event, Room},
     room_creation::RoomCreation,
     settings::SessionSettings,
     user::{User, UserActions, UserExt},
@@ -402,11 +402,6 @@ impl Session {
         let session_weak: glib::SendWeakRef<Session> = self.downgrade().into();
 
         let handle = spawn_tokio!(async move {
-            let sync_token = client.sync_token().await;
-            if sync_token.is_none() {
-                debug!("Proceeding to initial sync…");
-            }
-
             // TODO: only create the filter once and reuse it in the future
             let room_event_filter = assign!(RoomEventFilter::default(), {
                 lazy_load_options: LazyLoadOptions::Enabled {include_redundant_members: false},
@@ -657,7 +652,7 @@ impl Session {
             Ok(response) => {
                 self.room_list().handle_response_rooms(response.rooms);
                 self.verification_list()
-                    .handle_response_to_device(response.to_device);
+                    .handle_response_to_device(response.to_device_events);
 
                 if !self.is_loaded() {
                     self.mark_loaded();
@@ -665,12 +660,17 @@ impl Session {
             }
             Err(error) => {
                 if let matrix_sdk::Error::Http(HttpError::Api(FromHttpResponseError::Server(
-                    ServerError::Known(RumaApiError::ClientApi(ref error)),
-                ))) = error
+                    RumaApiError::ClientApi(ClientApiError {
+                        body:
+                            ErrorBody::Standard {
+                                kind: ErrorKind::UnknownToken { .. },
+                                ..
+                            },
+                        ..
+                    }),
+                ))) = &error
                 {
-                    if let ErrorKind::UnknownToken { soft_logout: _ } = error.kind {
-                        self.handle_logged_out();
-                    }
+                    self.handle_logged_out();
                 }
                 error!("Failed to perform sync: {:?}", error);
             }
@@ -818,7 +818,7 @@ impl Session {
     }
 
     /// Show a media event
-    pub fn show_media(&self, event: &SupportedEvent) {
+    pub fn show_media(&self, event: &Event) {
         let imp = self.imp();
         imp.media_viewer.set_event(Some(event.clone()));
 

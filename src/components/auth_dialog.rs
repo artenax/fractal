@@ -10,21 +10,17 @@ use gtk::{
 };
 use matrix_sdk::{
     ruma::{
-        api::{
-            client::{
-                error::ErrorBody,
-                uiaa::{
-                    AuthData as MatrixAuthData, AuthType,
-                    FallbackAcknowledgement as MatrixFallbackAcknowledgement,
-                    Password as MatrixPassword, UiaaInfo, UiaaResponse, UserIdentifier,
-                },
+        api::client::{
+            error::StandardErrorBody,
+            uiaa::{
+                AuthData as MatrixAuthData, AuthType,
+                FallbackAcknowledgement as MatrixFallbackAcknowledgement,
+                Password as MatrixPassword, UserIdentifier,
             },
-            error::{FromHttpResponseError, ServerError},
         },
         assign,
     },
-    Error,
-    HttpError::UiaaError,
+    Error, RumaApiError,
 };
 
 use crate::{
@@ -58,11 +54,13 @@ impl AuthData {
                 password,
                 session,
             }) => MatrixAuthData::Password(assign!(MatrixPassword::new(
-                                UserIdentifier::UserIdOrLocalpart(user_id),
-                                password,
-                            ), { session: session.as_deref() })),
+                                UserIdentifier::UserIdOrLocalpart(user_id.clone()),
+                                password.clone(),
+                            ), { session: session.clone() })),
             AuthData::FallbackAcknowledgement(FallbackAcknowledgement { session }) => {
-                MatrixAuthData::FallbackAcknowledgement(MatrixFallbackAcknowledgement::new(session))
+                MatrixAuthData::FallbackAcknowledgement(MatrixFallbackAcknowledgement::new(
+                    session.clone(),
+                ))
             }
         }
     }
@@ -234,12 +232,19 @@ impl AuthDialog {
             let handle = spawn_tokio!(async move { callback_clone(client_clone, auth_data).await });
             let response = handle.await.unwrap();
 
-            let uiaa_info: UiaaInfo = match response {
+            let uiaa_info = match response {
                 Ok(result) => return Ok(result),
-                Err(Error::Http(UiaaError(FromHttpResponseError::Server(ServerError::Known(
-                    UiaaResponse::AuthResponse(uiaa_info),
-                ))))) => uiaa_info,
-                Err(error) => return Err(AuthError::ServerResponse(Box::new(error))),
+                Err(error) => {
+                    if let Some(uiaa_info) = error.as_ruma_api_error().and_then(|error| match error
+                    {
+                        RumaApiError::Uiaa(uiaa_info) => Some(uiaa_info),
+                        _ => None,
+                    }) {
+                        uiaa_info.clone()
+                    } else {
+                        return Err(AuthError::ServerResponse(Box::new(error)));
+                    }
+                }
             };
 
             self.show_auth_error(&uiaa_info.auth_error);
@@ -347,7 +352,7 @@ impl AuthDialog {
         result.then_some(()).ok_or(AuthError::UserCancelled)
     }
 
-    fn show_auth_error(&self, auth_error: &Option<ErrorBody>) {
+    fn show_auth_error(&self, auth_error: &Option<StandardErrorBody>) {
         let imp = self.imp();
 
         if let Some(auth_error) = auth_error {

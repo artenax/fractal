@@ -1,19 +1,22 @@
-use std::collections::HashMap;
+use gtk::{gio, glib, prelude::*, subclass::prelude::*};
+use matrix_sdk::room::timeline::BundledReactions;
 
-use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use matrix_sdk::ruma::events::AnyMessageLikeEventContent;
-
-use super::{ReactionGroup, SupportedEvent};
+use super::ReactionGroup;
+use crate::session::User;
 
 mod imp {
     use std::cell::RefCell;
 
     use indexmap::IndexMap;
+    use once_cell::sync::OnceCell;
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct ReactionList {
+        /// The user of the parent session.
+        pub user: OnceCell<User>,
+
         /// The list of reactions grouped by key.
         pub reactions: RefCell<IndexMap<String, ReactionGroup>>,
     }
@@ -57,53 +60,55 @@ impl ReactionList {
         glib::Object::new(&[])
     }
 
-    /// Add reactions with the given reaction `SupportedEvent`s.
-    ///
-    /// Ignores `SupportedEvent`s that are not reactions.
-    pub fn add_reactions(&self, new_reactions: Vec<SupportedEvent>) {
-        let mut reactions = self.imp().reactions.borrow_mut();
-        let prev_len = reactions.len();
+    /// The user of the parent session.
+    pub fn user(&self) -> &User {
+        self.imp().user.get().unwrap()
+    }
 
-        // Group reactions by key
-        let mut grouped_reactions: HashMap<String, Vec<SupportedEvent>> = HashMap::new();
-        for event in new_reactions {
-            if let Some(AnyMessageLikeEventContent::Reaction(reaction)) = event.content() {
-                let relation = reaction.relates_to;
-                grouped_reactions
-                    .entry(relation.key)
-                    .or_default()
-                    .push(event);
-            }
-        }
+    /// Set the user of the parent session.
+    pub fn set_user(&self, user: User) {
+        let _ = self.imp().user.set(user);
+    }
 
-        // Add groups to the list
-        for (key, reactions_list) in grouped_reactions {
-            reactions
-                .entry(key)
-                .or_insert_with_key(|key| {
-                    let group = ReactionGroup::new(key);
-                    group.connect_notify_local(
-                        Some("count"),
-                        clone!(@weak self as obj => move |group, _| {
-                            if group.count() == 0 {
-                                obj.remove_reaction_group(group.key());
-                            }
-                        }),
-                    );
-                    group
+    /// Update the reaction list with the given reactions.
+    pub fn update(&self, new_reactions: BundledReactions) {
+        let reactions = &self.imp().reactions;
+
+        let changed = {
+            let old_reactions = reactions.borrow();
+
+            old_reactions.len() != new_reactions.len()
+                || new_reactions
+                    .keys()
+                    .zip(old_reactions.keys())
+                    .any(|(new_key, old_key)| new_key != old_key)
+        };
+
+        if changed {
+            let mut reactions = reactions.borrow_mut();
+            let user = self.user();
+            let prev_len = reactions.len();
+            let new_len = new_reactions.len();
+
+            *reactions = new_reactions
+                .into_iter()
+                .map(|(key, reactions)| {
+                    let group = ReactionGroup::new(&key, user);
+                    group.update(reactions);
+                    (key, group)
                 })
-                .add_reactions(reactions_list);
-        }
+                .collect();
 
-        let num_reactions_added = reactions.len().saturating_sub(prev_len);
+            // We can't have the borrow active when items_changed is emitted because that
+            // will probably cause reads of the reactions field.
+            std::mem::drop(reactions);
 
-        // We can't have the borrow active when items_changed is emitted because that
-        // will probably cause reads of the reactions field.
-        std::mem::drop(reactions);
-
-        if num_reactions_added > 0 {
-            // IndexMap preserves insertion order, so all the new items will be at the end.
-            self.items_changed(prev_len as u32, 0, num_reactions_added as u32);
+            self.items_changed(0, prev_len as u32, new_len as u32);
+        } else {
+            let reactions = reactions.borrow();
+            for (reactions, group) in new_reactions.into_values().zip(reactions.values()) {
+                group.update(reactions);
+            }
         }
     }
 

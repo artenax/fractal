@@ -4,8 +4,8 @@ use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use indexmap::map::IndexMap;
 use log::error;
 use matrix_sdk::{
-    deserialized_responses::Rooms as ResponseRooms,
     ruma::{OwnedRoomId, OwnedRoomOrAliasId, OwnedServerName, RoomId, RoomOrAliasId},
+    sync::Rooms as ResponseRooms,
 };
 
 use crate::{
@@ -301,7 +301,7 @@ impl RoomList {
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
-                    Ok(response) => obj.pending_rooms_replace_or_remove(&identifier, &response.room_id),
+                    Ok(matrix_room) => obj.pending_rooms_replace_or_remove(&identifier, matrix_room.room_id()),
                     Err(error) => {
                         obj.pending_rooms_remove(&identifier);
                         error!("Joining room {} failed: {}", identifier, error);

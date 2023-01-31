@@ -8,7 +8,7 @@ use gtk::{
     CompositeTemplate,
 };
 use log::error;
-use matrix_sdk::ruma::events::RoomEventType;
+use matrix_sdk::ruma::events::StateEventType;
 
 use crate::{
     components::CustomEntry,
@@ -154,7 +154,7 @@ impl GeneralPage {
             ));
 
         let room_avatar_changeable =
-            room.new_allowed_expr(RoomAction::StateEvent(RoomEventType::RoomAvatar));
+            room.new_allowed_expr(RoomAction::StateEvent(StateEventType::RoomAvatar));
         let room_avatar_removable = and_expr(&room_avatar_changeable, &room_avatar_exists);
 
         room_avatar_removable.bind(&avatar_remove_button.get(), "visible", gtk::Widget::NONE);
@@ -206,9 +206,9 @@ impl GeneralPage {
         // Hide edit controls when the user is not eligible to perform the actions.
         let room = self.room();
         let room_name_changeable =
-            room.new_allowed_expr(RoomAction::StateEvent(RoomEventType::RoomName));
+            room.new_allowed_expr(RoomAction::StateEvent(StateEventType::RoomName));
         let room_topic_changeable =
-            room.new_allowed_expr(RoomAction::StateEvent(RoomEventType::RoomTopic));
+            room.new_allowed_expr(RoomAction::StateEvent(StateEventType::RoomTopic));
 
         let edit_toggle_visible = or_expr(room_name_changeable, room_topic_changeable);
         edit_toggle_visible.bind(&edit_toggle.get(), "visible", gtk::Widget::NONE);

@@ -1,6 +1,7 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{glib, CompositeTemplate};
 use matrix_sdk::ruma::events::room::tombstone::RoomTombstoneEventContent;
+use ruma::events::FullStateEventContent;
 
 mod imp {
     use glib::subclass::InitializingObject;
@@ -40,16 +41,25 @@ glib::wrapper! {
 }
 
 impl StateTombstone {
-    pub fn new(event: &RoomTombstoneEventContent) -> Self {
+    pub fn new(event: &FullStateEventContent<RoomTombstoneEventContent>) -> Self {
         let obj: Self = glib::Object::new(&[]);
         obj.set_event(event);
         obj
     }
 
-    fn set_event(&self, event: &RoomTombstoneEventContent) {
-        self.imp().new_room_btn.set_detailed_action_name(&format!(
-            "session.show-room::{}",
-            event.replacement_room.as_str()
-        ));
+    fn set_event(&self, event: &FullStateEventContent<RoomTombstoneEventContent>) {
+        let new_room_btn = &self.imp().new_room_btn;
+        match event {
+            FullStateEventContent::Original { content, .. } => {
+                new_room_btn.set_detailed_action_name(&format!(
+                    "session.show-room::{}",
+                    content.replacement_room
+                ));
+                new_room_btn.show();
+            }
+            FullStateEventContent::Redacted(_) => {
+                new_room_btn.hide();
+            }
+        }
     }
 }

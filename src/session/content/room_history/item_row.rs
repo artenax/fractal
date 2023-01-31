@@ -1,19 +1,19 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{gio, glib, glib::clone};
-use matrix_sdk::ruma::events::AnySyncTimelineEvent;
+use matrix_sdk::room::timeline::TimelineItemContent;
 
 use crate::{
     components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl, ReactionChooser},
-    prelude::*,
     session::{
         content::room_history::{
             message_row::MessageRow, DividerRow, RoomHistory, StateRow, TypingRow,
         },
         room::{
-            Event, EventActions, EventTexture, PlaceholderKind, SupportedEvent, TimelineDayDivider,
-            TimelineItem, TimelineNewMessagesDivider, TimelinePlaceholder,
+            Event, EventActions, EventTexture, PlaceholderKind, TimelineDayDivider, TimelineItem,
+            TimelineNewMessagesDivider, TimelinePlaceholder,
         },
+        UserExt,
     },
 };
 
@@ -80,7 +80,7 @@ mod imp {
                 .item
                 .borrow()
                 .as_ref()
-                .and_then(|item| item.downcast_ref::<SupportedEvent>())
+                .and_then(|item| item.downcast_ref::<Event>())
             {
                 if let Some(handler) = self.notify_handler.borrow_mut().take() {
                     event.disconnect(handler);
@@ -122,8 +122,8 @@ mod imp {
                 }
 
                 if let Some(event) = event
-                    .downcast_ref::<SupportedEvent>()
-                    .filter(|event| event.content().is_some())
+                    .downcast_ref::<Event>()
+                    .filter(|event| event.is_message())
                 {
                     let menu_model = Self::Type::event_message_menu_model();
                     let reaction_chooser = room_history.item_reaction_chooser();
@@ -210,7 +210,7 @@ impl ItemRow {
             .item
             .borrow()
             .as_ref()
-            .and_then(|item| item.downcast_ref::<SupportedEvent>())
+            .and_then(|item| item.downcast_ref::<Event>())
         {
             if let Some(handler) = imp.notify_handler.borrow_mut().take() {
                 event.disconnect(handler);
@@ -220,7 +220,7 @@ impl ItemRow {
         }
 
         if let Some(ref item) = item {
-            if let Some(event) = item.downcast_ref::<SupportedEvent>() {
+            if let Some(event) = item.downcast_ref::<Event>() {
                 let notify_handler =
                     event.connect_source_notify(clone!(@weak self as obj => move |event| {
                         obj.set_event_widget(event);
@@ -251,44 +251,60 @@ impl ItemRow {
                     .build();
                 imp.binding.replace(Some(binding));
             } else if let Some(item) = item.downcast_ref::<TimelinePlaceholder>() {
-                let kind = item.kind();
+                match item.kind() {
+                    PlaceholderKind::Spinner => {
+                        if self
+                            .child()
+                            .filter(|widget| widget.is::<gtk::Spinner>())
+                            .is_none()
+                        {
+                            self.set_popover(None);
+                            self.set_action_group(None);
+                            self.set_event_actions(None);
 
-                if kind == PlaceholderKind::Spinner
-                    && self
-                        .child()
-                        .filter(|widget| widget.is::<gtk::Spinner>())
-                        .is_none()
-                {
-                    self.set_popover(None);
-                    self.set_action_group(None);
-                    self.set_event_actions(None);
+                            let spinner = gtk::Spinner::builder()
+                                .spinning(true)
+                                .margin_top(12)
+                                .margin_bottom(12)
+                                .build();
+                            self.set_child(Some(&spinner));
+                        }
+                    }
+                    PlaceholderKind::Typing => {
+                        self.set_popover(None);
+                        self.set_action_group(None);
+                        self.set_event_actions(None);
 
-                    let spinner = gtk::Spinner::builder()
-                        .spinning(true)
-                        .margin_top(12)
-                        .margin_bottom(12)
-                        .build();
-                    self.set_child(Some(&spinner));
-                } else if kind == PlaceholderKind::Typing {
-                    self.set_popover(None);
-                    self.set_action_group(None);
-                    self.set_event_actions(None);
+                        let child = if let Some(child) =
+                            self.child().and_then(|w| w.downcast::<TypingRow>().ok())
+                        {
+                            child
+                        } else {
+                            let child = TypingRow::new();
+                            self.set_child(Some(&child));
+                            child
+                        };
 
-                    let child = if let Some(child) =
-                        self.child().and_then(|w| w.downcast::<TypingRow>().ok())
-                    {
-                        child
-                    } else {
-                        let child = TypingRow::new();
-                        self.set_child(Some(&child));
-                        child
-                    };
+                        child.set_list(
+                            self.room_history()
+                                .room()
+                                .map(|room| room.typing_list().clone()),
+                        );
+                    }
+                    PlaceholderKind::TimelineStart => {
+                        self.set_popover(None);
+                        self.set_action_group(None);
+                        self.set_event_actions(None);
 
-                    child.set_list(
-                        self.room_history()
-                            .room()
-                            .map(|room| room.typing_list().clone()),
-                    );
+                        let label = gettext("This is the start of the visible history");
+
+                        if let Some(Ok(child)) = self.child().map(|w| w.downcast::<DividerRow>()) {
+                            child.set_label(&label);
+                        } else {
+                            let child = DividerRow::with_label(label);
+                            self.set_child(Some(&child));
+                        };
+                    }
                 }
             } else if item.downcast_ref::<TimelineNewMessagesDivider>().is_some() {
                 self.set_popover(None);
@@ -308,9 +324,9 @@ impl ItemRow {
         imp.item.replace(item);
     }
 
-    fn set_event_widget(&self, event: &SupportedEvent) {
-        match event.matrix_event() {
-            AnySyncTimelineEvent::State(state) => {
+    fn set_event_widget(&self, event: &Event) {
+        match event.content() {
+            TimelineItemContent::MembershipChange(membership_change) => {
                 let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<StateRow>())
                 {
                     child
@@ -319,7 +335,29 @@ impl ItemRow {
                     self.set_child(Some(&child));
                     child
                 };
-                child.update(&state);
+                child.update_with_membership_change(&membership_change, &event.sender_id());
+            }
+            TimelineItemContent::ProfileChange(profile_change) => {
+                let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<StateRow>())
+                {
+                    child
+                } else {
+                    let child = StateRow::new();
+                    self.set_child(Some(&child));
+                    child
+                };
+                child.update_with_profile_change(&profile_change, &event.sender().display_name());
+            }
+            TimelineItemContent::OtherState(state) => {
+                let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<StateRow>())
+                {
+                    child
+                } else {
+                    let child = StateRow::new();
+                    self.set_child(Some(&child));
+                    child
+                };
+                child.update_with_other_state(&state);
             }
             _ => {
                 let child =

@@ -6,10 +6,10 @@ use matrix_sdk::{
     ruma::{
         api::{
             client::{
-                error::ErrorKind as RumaClientErrorKind,
+                error::{Error as ClientApiError, ErrorBody, ErrorKind},
                 room::{create_room, Visibility},
             },
-            error::{FromHttpResponseError, ServerError},
+            error::FromHttpResponseError,
         },
         assign,
     },
@@ -202,9 +202,9 @@ impl RoomCreation {
         let handle = spawn_tokio!(async move {
             let request = assign!(create_room::v3::Request::new(),
             {
-                name: Some(&room_name),
+                name: Some(room_name),
                 visibility,
-                room_alias_name: room_address.as_deref()
+                room_alias_name: room_address
             });
             client.create_room(request).await
         });
@@ -213,9 +213,9 @@ impl RoomCreation {
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
-                        Ok(response) => {
+                        Ok(matrix_room) => {
                             if let Some(session) = obj.session() {
-                                let room = session.room_list().get_wait(&response.room_id).await;
+                                let room = session.room_list().get_wait(matrix_room.room_id()).await;
                                 session.select_room(room);
                             }
                             obj.close();
@@ -240,11 +240,14 @@ impl RoomCreation {
         imp.cancel_button.set_sensitive(true);
 
         // Treat the room address already taken error special
-        if let HttpError::Api(FromHttpResponseError::Server(ServerError::Known(
-            RumaApiError::ClientApi(ref client_error),
-        ))) = error
+        if let HttpError::Api(FromHttpResponseError::Server(RumaApiError::ClientApi(
+            ClientApiError {
+                body: ErrorBody::Standard { kind, .. },
+                ..
+            },
+        ))) = &error
         {
-            if client_error.kind == RumaClientErrorKind::RoomInUse {
+            if *kind == ErrorKind::RoomInUse {
                 imp.room_address.add_css_class("error");
                 imp.room_address_error
                     .set_text(&gettext("The address is already taken."));

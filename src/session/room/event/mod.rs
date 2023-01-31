@@ -1,92 +1,71 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
-use log::warn;
 use matrix_sdk::{
-    deserialized_responses::SyncTimelineEvent,
-    ruma::{MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedUserId},
+    media::MediaEventContent,
+    room::timeline::{
+        AnyOtherFullStateEventContent, EventTimelineItem, RepliedToEvent, TimelineDetails,
+        TimelineItemContent,
+    },
+    ruma::{
+        events::room::message::MessageType, MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedUserId,
+    },
+    Error as MatrixError,
 };
+use ruma::{events::AnySyncTimelineEvent, serde::Raw, OwnedTransactionId};
 
 use super::{
     timeline::{TimelineItem, TimelineItemImpl},
-    Member, Room,
+    Member, ReactionList, Room,
+};
+use crate::{
+    spawn_tokio,
+    utils::media::{filename_for_mime, media_type_uid},
 };
 
-mod supported_event;
-mod unsupported_event;
+/// The unique key to identify an event in a room.
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum EventKey {
+    /// This is the local echo of the event, the key is its transaction ID.
+    TransactionId(OwnedTransactionId),
 
-pub use supported_event::{count_as_unread, SupportedEvent};
-pub use unsupported_event::UnsupportedEvent;
+    /// This is the remote echo of the event, the key is its event ID.
+    EventId(OwnedEventId),
+}
 
 #[derive(Clone, Debug, glib::Boxed)]
-#[boxed_type(name = "BoxedSyncTimelineEvent")]
-pub struct BoxedSyncTimelineEvent(SyncTimelineEvent);
+#[boxed_type(name = "BoxedEventTimelineItem")]
+pub struct BoxedEventTimelineItem(EventTimelineItem);
 
 mod imp {
     use std::cell::RefCell;
 
-    use glib::{object::WeakRef, Class};
+    use glib::object::WeakRef;
     use once_cell::sync::Lazy;
 
     use super::*;
 
-    #[repr(C)]
-    pub struct EventClass {
-        pub parent_class: Class<TimelineItem>,
-        pub source: fn(&super::Event) -> String,
-        pub event_id: fn(&super::Event) -> Option<OwnedEventId>,
-        pub sender_id: fn(&super::Event) -> Option<OwnedUserId>,
-        pub origin_server_ts: fn(&super::Event) -> Option<MilliSecondsSinceUnixEpoch>,
-    }
-
-    unsafe impl ClassStruct for EventClass {
-        type Type = Event;
-    }
-
-    pub(super) fn event_source(this: &super::Event) -> String {
-        let klass = this.class();
-        (klass.as_ref().source)(this)
-    }
-
-    pub(super) fn event_event_id(this: &super::Event) -> Option<OwnedEventId> {
-        let klass = this.class();
-        (klass.as_ref().event_id)(this)
-    }
-
-    pub(super) fn event_sender_id(this: &super::Event) -> Option<OwnedUserId> {
-        let klass = this.class();
-        (klass.as_ref().sender_id)(this)
-    }
-
-    pub(super) fn event_origin_server_ts(
-        this: &super::Event,
-    ) -> Option<MilliSecondsSinceUnixEpoch> {
-        let klass = this.class();
-        (klass.as_ref().origin_server_ts)(this)
-    }
-
     #[derive(Debug, Default)]
     pub struct Event {
-        /// The SDK event containing encryption information and the serialized
-        /// event as `Raw`.
-        pub pure_event: RefCell<Option<SyncTimelineEvent>>,
+        /// The underlying SDK timeline item.
+        pub item: RefCell<Option<EventTimelineItem>>,
 
         /// The room containing this `Event`.
         pub room: WeakRef<Room>,
+
+        pub reactions: ReactionList,
     }
 
     #[glib::object_subclass]
     impl ObjectSubclass for Event {
         const NAME: &'static str = "RoomEvent";
-        const ABSTRACT: bool = true;
         type Type = super::Event;
         type ParentType = TimelineItem;
-        type Class = EventClass;
     }
 
     impl ObjectImpl for Event {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoxed::builder::<BoxedSyncTimelineEvent>("pure-event")
+                    glib::ParamSpecBoxed::builder::<BoxedEventTimelineItem>("item")
                         .write_only()
                         .build(),
                     glib::ParamSpecString::builder("source").read_only().build(),
@@ -94,6 +73,9 @@ mod imp {
                         .construct_only()
                         .build(),
                     glib::ParamSpecString::builder("time").read_only().build(),
+                    glib::ParamSpecObject::builder::<ReactionList>("reactions")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -101,13 +83,15 @@ mod imp {
         }
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
-                "pure-event" => {
-                    let event = value.get::<BoxedSyncTimelineEvent>().unwrap();
-                    self.obj().set_pure_event(event.0);
+                "item" => {
+                    let item = value.get::<BoxedEventTimelineItem>().unwrap();
+                    obj.set_item(item.0);
                 }
                 "room" => {
-                    self.room.set(value.get().ok().as_ref());
+                    obj.set_room(value.get().unwrap());
                 }
                 _ => unimplemented!(),
             }
@@ -120,19 +104,77 @@ mod imp {
                 "source" => obj.source().to_value(),
                 "room" => obj.room().to_value(),
                 "time" => obj.time().to_value(),
+                "reactions" => obj.reactions().to_value(),
                 _ => unimplemented!(),
             }
         }
     }
 
     impl TimelineItemImpl for Event {
+        fn is_visible(&self) -> bool {
+            match self.obj().content() {
+                TimelineItemContent::Message(message) => matches!(
+                    message.msgtype(),
+                    MessageType::Audio(_)
+                        | MessageType::Emote(_)
+                        | MessageType::File(_)
+                        | MessageType::Image(_)
+                        | MessageType::Location(_)
+                        | MessageType::Notice(_)
+                        | MessageType::ServerNotice(_)
+                        | MessageType::Text(_)
+                        | MessageType::Video(_)
+                        | MessageType::VerificationRequest(_)
+                ),
+                TimelineItemContent::Sticker(_) => true,
+                TimelineItemContent::UnableToDecrypt(_) => true,
+                TimelineItemContent::MembershipChange(_) => true,
+                TimelineItemContent::ProfileChange(_) => true,
+                TimelineItemContent::OtherState(state) => matches!(
+                    state.content(),
+                    AnyOtherFullStateEventContent::RoomCreate(_)
+                        | AnyOtherFullStateEventContent::RoomEncryption(_)
+                        | AnyOtherFullStateEventContent::RoomThirdPartyInvite(_)
+                        | AnyOtherFullStateEventContent::RoomTombstone(_)
+                ),
+                _ => false,
+            }
+        }
+
+        fn activatable(&self) -> bool {
+            match self.obj().content() {
+                // The event can be activated to open the media viewer if it's an image or a video.
+                TimelineItemContent::Message(message) => {
+                    matches!(
+                        message.msgtype(),
+                        MessageType::Image(_) | MessageType::Video(_)
+                    )
+                }
+                _ => false,
+            }
+        }
+
+        fn can_hide_header(&self) -> bool {
+            match self.obj().content() {
+                TimelineItemContent::Message(message) => {
+                    matches!(
+                        message.msgtype(),
+                        MessageType::Audio(_)
+                            | MessageType::File(_)
+                            | MessageType::Image(_)
+                            | MessageType::Location(_)
+                            | MessageType::Notice(_)
+                            | MessageType::Text(_)
+                            | MessageType::Video(_)
+                    )
+                }
+                TimelineItemContent::Sticker(_) => true,
+                _ => false,
+            }
+        }
+
         fn event_sender(&self) -> Option<Member> {
-            Some(
-                self.obj()
-                    .room()
-                    .members()
-                    .member_by_id(self.obj().sender_id()?),
-            )
+            Some(self.obj().sender())
         }
 
         fn selectable(&self) -> bool {
@@ -147,246 +189,361 @@ glib::wrapper! {
 }
 
 impl Event {
-    /// Create an `Event` with the given pure SDK event and room.
-    ///
-    /// Constructs the proper subtype according to the event.
-    pub fn new(pure_event: SyncTimelineEvent, room: &Room) -> Self {
-        SupportedEvent::try_from_event(pure_event.clone(), room)
-            .map(|event| event.upcast())
-            .unwrap_or_else(|error| {
-                warn!("Failed to deserialize event: {error}; {pure_event:?}");
-                UnsupportedEvent::new(pure_event, room).upcast()
-            })
+    /// Create a new `Event` with the given SDK timeline item.
+    pub fn new(item: EventTimelineItem, room: &Room) -> Self {
+        let item = BoxedEventTimelineItem(item);
+        glib::Object::builder()
+            .property("item", &item)
+            .property("room", room)
+            .build()
     }
-}
 
-/// Public trait containing implemented methods for everything that derives from
-/// `Event`.
-///
-/// To override the behavior of these methods, override the corresponding method
-/// of `EventImpl`.
-pub trait EventExt: 'static {
-    /// The `Room` where this `Event` was sent.
-    fn room(&self) -> Room;
-
-    /// The pure SDK event of this `Event`.
-    fn pure_event(&self) -> SyncTimelineEvent;
-
-    /// Set the pure SDK event of this `Event`.
-    fn set_pure_event(&self, pure_event: SyncTimelineEvent);
-
-    /// The source JSON of this `Event`.
-    fn original_source(&self) -> String;
-
-    /// The source JSON displayed for this `Event`.
+    /// Try to update this `Event` with the given SDK timeline item.
     ///
-    /// Defaults to the `original_source`.
-    fn source(&self) -> String;
+    /// Returns `true` if the update succeeded.
+    pub fn try_update_with(&self, item: &EventTimelineItem) -> bool {
+        match self.key() {
+            EventKey::TransactionId(txn_id) => match item {
+                EventTimelineItem::Local(local_event) if local_event.transaction_id == txn_id => {
+                    self.set_item(item.clone());
+                    return true;
+                }
+                _ => {}
+            },
+            EventKey::EventId(event_id) => match item {
+                EventTimelineItem::Remote(remote_event) if remote_event.event_id == event_id => {
+                    self.set_item(item.clone());
+                    return true;
+                }
+                _ => {}
+            },
+        }
 
-    /// The event ID of this `Event`, if it was found.
-    fn event_id(&self) -> Option<OwnedEventId>;
+        false
+    }
 
-    /// The user ID of the sender of this `Event`, if it was found.
-    fn sender_id(&self) -> Option<OwnedUserId>;
+    /// The room that contains this `Event`.
+    pub fn room(&self) -> Room {
+        self.imp().room.upgrade().unwrap()
+    }
 
-    /// The timestamp on the origin server when this `Event` was sent as
-    /// `MilliSecondsSinceUnixEpoch`, if it was found.
-    fn origin_server_ts(&self) -> Option<MilliSecondsSinceUnixEpoch>;
+    /// Set the room that contains this `Event`.
+    fn set_room(&self, room: Room) {
+        let imp = self.imp();
+        imp.room.set(Some(&room));
+        imp.reactions
+            .set_user(room.session().user().unwrap().clone());
+    }
 
-    /// The timestamp on the origin server when this `Event` was sent as
-    /// `glib::DateTime`.
+    /// The underlying SDK timeline item of this `Event`.
+    pub fn item(&self) -> EventTimelineItem {
+        self.imp().item.borrow().clone().unwrap()
+    }
+
+    /// Set the underlying SDK timeline item of this `Event`.
+    pub fn set_item(&self, item: EventTimelineItem) {
+        let imp = self.imp();
+
+        imp.reactions.update(
+            item.as_remote()
+                .map(|i| i.reactions().clone())
+                .unwrap_or_default(),
+        );
+        imp.item.replace(Some(item));
+
+        self.notify("activatable");
+        self.notify("source");
+    }
+
+    /// The raw JSON source for this `Event`, if it has been echoed back
+    /// by the server.
+    pub fn raw(&self) -> Option<Raw<AnySyncTimelineEvent>> {
+        self.imp().item.borrow().as_ref().unwrap().raw().cloned()
+    }
+
+    /// The pretty-formatted JSON source for this `Event`, if it has
+    /// been echoed back by the server.
+    pub fn source(&self) -> Option<String> {
+        self.imp().item.borrow().as_ref().unwrap().raw().map(|raw| {
+            // We have to convert it to a Value, because a RawValue cannot be
+            // pretty-printed.
+            let json = serde_json::to_value(raw).unwrap();
+
+            serde_json::to_string_pretty(&json).unwrap()
+        })
+    }
+
+    /// The unique of this `Event` in the timeline.
+    pub fn key(&self) -> EventKey {
+        match self.imp().item.borrow().as_ref().unwrap() {
+            EventTimelineItem::Local(event) => {
+                EventKey::TransactionId(event.transaction_id.clone())
+            }
+            EventTimelineItem::Remote(event) => EventKey::EventId(event.event_id.clone()),
+        }
+    }
+
+    /// The event ID of this `Event`, if it has been received from the server.
+    pub fn event_id(&self) -> Option<OwnedEventId> {
+        match self.key() {
+            EventKey::EventId(event_id) => Some(event_id),
+            _ => None,
+        }
+    }
+
+    /// The transaction ID of this `Event`, if it is still pending.
+    pub fn transaction_id(&self) -> Option<OwnedTransactionId> {
+        match self.key() {
+            EventKey::TransactionId(txn_id) => Some(txn_id),
+            _ => None,
+        }
+    }
+
+    /// The user ID of the sender of this `Event`.
+    pub fn sender_id(&self) -> OwnedUserId {
+        self.imp()
+            .item
+            .borrow()
+            .as_ref()
+            .unwrap()
+            .sender()
+            .to_owned()
+    }
+
+    /// The sender of this `Event`.
+    pub fn sender(&self) -> Member {
+        self.room().members().member_by_id(self.sender_id())
+    }
+
+    /// The timestamp of this `Event` as the number of milliseconds
+    /// since Unix Epoch, if it has been echoed back by the server.
     ///
-    /// This is computed from the `origin_server_ts`.
-    fn timestamp(&self) -> Option<glib::DateTime> {
-        glib::DateTime::from_unix_utc(self.origin_server_ts()?.as_secs().into())
+    /// Otherwise it's the local time when this event was created.
+    pub fn origin_server_ts(&self) -> MilliSecondsSinceUnixEpoch {
+        self.imp().item.borrow().as_ref().unwrap().timestamp()
+    }
+
+    /// The timestamp of this `Event`.
+    pub fn timestamp(&self) -> glib::DateTime {
+        let ts = self.origin_server_ts();
+
+        glib::DateTime::from_unix_utc(ts.as_secs().into())
             .and_then(|t| t.to_local())
-            .ok()
+            .unwrap()
     }
 
-    /// The formatted time when this `Event` was sent.
-    ///
-    /// This is computed from the `origin_server_ts`.
-    fn time(&self) -> Option<String> {
-        let datetime = self.timestamp()?;
+    /// The formatted time of this `Event`.
+    pub fn time(&self) -> String {
+        let datetime = self.timestamp();
 
-        // FIXME Is there a cleaner to find out if we should use 24h format?
+        // FIXME Is there a cleaner way to know whether the locale uses 12 or 24 hour
+        // format?
         let local_time = datetime.format("%X").unwrap().as_str().to_ascii_lowercase();
 
-        let time = if local_time.ends_with("am") || local_time.ends_with("pm") {
+        if local_time.ends_with("am") || local_time.ends_with("pm") {
             // Use 12h time format (AM/PM)
             datetime.format("%l∶%M %p").unwrap().to_string()
         } else {
             // Use 24 time format
             datetime.format("%R").unwrap().to_string()
-        };
-        Some(time)
-    }
-
-    fn connect_source_notify<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId;
-}
-
-impl<O: IsA<Event>> EventExt for O {
-    fn room(&self) -> Room {
-        self.upcast_ref().imp().room.upgrade().unwrap()
-    }
-
-    fn pure_event(&self) -> SyncTimelineEvent {
-        self.upcast_ref().imp().pure_event.borrow().clone().unwrap()
-    }
-
-    fn set_pure_event(&self, pure_event: SyncTimelineEvent) {
-        let imp = self.upcast_ref().imp();
-        imp.pure_event.replace(Some(pure_event));
-
-        self.notify("source");
-    }
-
-    fn original_source(&self) -> String {
-        let pure_event = self.upcast_ref().imp().pure_event.borrow();
-        let raw = pure_event.as_ref().unwrap().event.json().get();
-
-        // We have to convert it to a Value, because a RawValue cannot be
-        // pretty-printed.
-        if let Ok(json) = serde_json::from_str::<serde_json::Value>(raw) {
-            serde_json::to_string_pretty(&json).unwrap()
-        } else {
-            raw.to_owned()
         }
     }
 
-    fn source(&self) -> String {
-        imp::event_source(self.upcast_ref())
+    /// The content to display for this `Event`.
+    pub fn content(&self) -> TimelineItemContent {
+        self.imp().item.borrow().as_ref().unwrap().content().clone()
     }
 
-    fn event_id(&self) -> Option<OwnedEventId> {
-        imp::event_event_id(self.upcast_ref())
+    /// The reactions to this event.
+    pub fn reactions(&self) -> &ReactionList {
+        &self.imp().reactions
     }
 
-    fn sender_id(&self) -> Option<OwnedUserId> {
-        imp::event_sender_id(self.upcast_ref())
+    /// Get the ID of the event this `Event` replies to, if any.
+    pub fn reply_to_id(&self) -> Option<OwnedEventId> {
+        match self.imp().item.borrow().as_ref().unwrap().content() {
+            TimelineItemContent::Message(message) => {
+                message.in_reply_to().map(|d| d.event_id.clone())
+            }
+            _ => None,
+        }
     }
 
-    fn origin_server_ts(&self) -> Option<MilliSecondsSinceUnixEpoch> {
-        imp::event_origin_server_ts(self.upcast_ref())
+    /// Whether this `Event` is a reply to another event.
+    pub fn is_reply(&self) -> bool {
+        self.reply_to_id().is_some()
     }
 
-    fn connect_source_notify<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId {
+    /// Get the details of the event this `Event` replies to, if any.
+    ///
+    /// Returns `None(_)` if this event is not a reply.
+    pub fn reply_to_event_content(&self) -> Option<TimelineDetails<Box<RepliedToEvent>>> {
+        match self.imp().item.borrow().as_ref().unwrap().content() {
+            TimelineItemContent::Message(message) => {
+                message.in_reply_to().map(|d| d.details.clone())
+            }
+            _ => None,
+        }
+    }
+
+    /// Fetch missing details for this event.
+    ///
+    /// This is a no-op if called for a local event.
+    pub async fn fetch_missing_details(&self) -> Result<(), MatrixError> {
+        let Some(event_id) = self.event_id() else {
+            return Ok(())
+        };
+
+        let timeline = self.room().timeline().matrix_timeline();
+        spawn_tokio!(async move { timeline.fetch_event_details(&event_id).await })
+            .await
+            .unwrap()
+    }
+
+    /// Fetch the content of the media message in this `SupportedEvent`.
+    ///
+    /// Compatible events:
+    ///
+    /// - File message (`MessageType::File`).
+    /// - Image message (`MessageType::Image`).
+    /// - Video message (`MessageType::Video`).
+    /// - Audio message (`MessageType::Audio`).
+    ///
+    /// Returns `Ok((uid, filename, binary_content))` on success. `uid` is a
+    /// unique identifier for this media.
+    ///
+    /// Returns `Err` if an error occurred while fetching the content. Panics on
+    /// an incompatible event.
+    pub async fn get_media_content(&self) -> Result<(String, String, Vec<u8>), matrix_sdk::Error> {
+        if let TimelineItemContent::Message(message) = self.content() {
+            let media = self.room().session().client().media();
+            match message.msgtype() {
+                MessageType::File(content) => {
+                    let content = content.clone();
+                    let uid = media_type_uid(content.source());
+                    let filename = content
+                        .filename
+                        .as_ref()
+                        .filter(|name| !name.is_empty())
+                        .or(Some(&content.body))
+                        .filter(|name| !name.is_empty())
+                        .cloned()
+                        .unwrap_or_else(|| {
+                            filename_for_mime(
+                                content
+                                    .info
+                                    .as_ref()
+                                    .and_then(|info| info.mimetype.as_deref()),
+                                None,
+                            )
+                        });
+                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+                    let data = handle.await.unwrap()?.unwrap();
+                    return Ok((uid, filename, data));
+                }
+                MessageType::Image(content) => {
+                    let content = content.clone();
+                    let uid = media_type_uid(content.source());
+                    let filename = if content.body.is_empty() {
+                        filename_for_mime(
+                            content
+                                .info
+                                .as_ref()
+                                .and_then(|info| info.mimetype.as_deref()),
+                            Some(mime::IMAGE),
+                        )
+                    } else {
+                        content.body.clone()
+                    };
+                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+                    let data = handle.await.unwrap()?.unwrap();
+                    return Ok((uid, filename, data));
+                }
+                MessageType::Video(content) => {
+                    let content = content.clone();
+                    let uid = media_type_uid(content.source());
+                    let filename = if content.body.is_empty() {
+                        filename_for_mime(
+                            content
+                                .info
+                                .as_ref()
+                                .and_then(|info| info.mimetype.as_deref()),
+                            Some(mime::VIDEO),
+                        )
+                    } else {
+                        content.body.clone()
+                    };
+                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+                    let data = handle.await.unwrap()?.unwrap();
+                    return Ok((uid, filename, data));
+                }
+                MessageType::Audio(content) => {
+                    let content = content.clone();
+                    let uid = media_type_uid(content.source());
+                    let filename = if content.body.is_empty() {
+                        filename_for_mime(
+                            content
+                                .info
+                                .as_ref()
+                                .and_then(|info| info.mimetype.as_deref()),
+                            Some(mime::AUDIO),
+                        )
+                    } else {
+                        content.body.clone()
+                    };
+                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+                    let data = handle.await.unwrap()?.unwrap();
+                    return Ok((uid, filename, data));
+                }
+                _ => {}
+            };
+        };
+
+        panic!("Trying to get the media content of an event of incompatible type");
+    }
+
+    /// Whether this `Event` is considered a message.
+    pub fn is_message(&self) -> bool {
+        matches!(
+            self.content(),
+            TimelineItemContent::Message(_) | TimelineItemContent::Sticker(_)
+        )
+    }
+
+    /// Whether this `Event` can count as an unread message.
+    ///
+    /// This follows the algorithm in [MSC2654], excluding events that we don't
+    /// show in the timeline.
+    ///
+    /// [MSC2654]: https://github.com/matrix-org/matrix-spec-proposals/pull/2654
+    pub fn counts_as_unread(&self) -> bool {
+        count_as_unread(self.imp().item.borrow().as_ref().unwrap().content())
+    }
+
+    /// Listen to changes of the source of this `TimelineEvent`.
+    pub fn connect_source_notify<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId {
         self.connect_notify_local(Some("source"), move |this, _| {
             f(this);
         })
     }
 }
 
-/// Public trait that must be implemented for everything that derives from
-/// `Event`.
+/// Whether the given event can count as an unread message.
 ///
-/// Overriding a method from this trait overrides also its behavior in
-/// `EventExt`.
-pub trait EventImpl: ObjectImpl {
-    fn source(&self) -> String {
-        self.obj()
-            .dynamic_cast_ref::<Event>()
-            .map(|event| event.original_source())
-            .unwrap_or_default()
+/// This follows the algorithm in [MSC2654], excluding events that we don't
+/// show in the timeline.
+///
+/// [MSC2654]: https://github.com/matrix-org/matrix-spec-proposals/pull/2654
+pub fn count_as_unread(content: &TimelineItemContent) -> bool {
+    match content {
+        TimelineItemContent::Message(message) => {
+            !matches!(message.msgtype(), MessageType::Notice(_))
+        }
+        TimelineItemContent::Sticker(_) => true,
+        TimelineItemContent::OtherState(state) => matches!(
+            state.content(),
+            AnyOtherFullStateEventContent::RoomTombstone(_)
+        ),
+        _ => false,
     }
-
-    fn event_id(&self) -> Option<OwnedEventId> {
-        self.obj().dynamic_cast_ref::<Event>().and_then(|event| {
-            event
-                .imp()
-                .pure_event
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .event
-                .get_field::<OwnedEventId>("event_id")
-                .ok()
-                .flatten()
-        })
-    }
-
-    fn sender_id(&self) -> Option<OwnedUserId> {
-        self.obj().dynamic_cast_ref::<Event>().and_then(|event| {
-            event
-                .imp()
-                .pure_event
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .event
-                .get_field::<OwnedUserId>("sender")
-                .ok()
-                .flatten()
-        })
-    }
-
-    fn origin_server_ts(&self) -> Option<MilliSecondsSinceUnixEpoch> {
-        self.obj().dynamic_cast_ref::<Event>().and_then(|event| {
-            event
-                .imp()
-                .pure_event
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .event
-                .get_field::<MilliSecondsSinceUnixEpoch>("origin_server_ts")
-                .ok()
-                .flatten()
-        })
-    }
-}
-
-// Make `Event` subclassable.
-unsafe impl<T> IsSubclassable<T> for Event
-where
-    T: TimelineItemImpl + EventImpl,
-    T::Type: IsA<TimelineItem> + IsA<Event>,
-{
-    fn class_init(class: &mut glib::Class<Self>) {
-        Self::parent_class_init::<T>(class.upcast_ref_mut());
-
-        let klass = class.as_mut();
-
-        klass.source = source_trampoline::<T>;
-        klass.event_id = event_id_trampoline::<T>;
-        klass.sender_id = sender_id_trampoline::<T>;
-        klass.origin_server_ts = origin_server_ts_trampoline::<T>;
-    }
-}
-
-// Virtual method implementation trampolines.
-fn source_trampoline<T>(this: &Event) -> String
-where
-    T: ObjectSubclass + EventImpl,
-    T::Type: IsA<Event>,
-{
-    let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().source()
-}
-
-fn event_id_trampoline<T>(this: &Event) -> Option<OwnedEventId>
-where
-    T: ObjectSubclass + EventImpl,
-    T::Type: IsA<Event>,
-{
-    let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().event_id()
-}
-
-fn sender_id_trampoline<T>(this: &Event) -> Option<OwnedUserId>
-where
-    T: ObjectSubclass + EventImpl,
-    T::Type: IsA<Event>,
-{
-    let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().sender_id()
-}
-
-fn origin_server_ts_trampoline<T>(this: &Event) -> Option<MilliSecondsSinceUnixEpoch>
-where
-    T: ObjectSubclass + EventImpl,
-    T::Type: IsA<Event>,
-{
-    let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().origin_server_ts()
 }

@@ -5,7 +5,14 @@ use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{glib, CompositeTemplate};
 use log::warn;
-use matrix_sdk::ruma::events::{room::member::MembershipState, AnySyncStateEvent, SyncStateEvent};
+use matrix_sdk::{
+    room::timeline::{
+        AnyOtherFullStateEventContent, MemberProfileChange, MembershipChange, OtherState,
+        RoomMembershipChange,
+    },
+    ruma::events::room::member::MembershipState,
+};
+use ruma::{events::FullStateEventContent, UserId};
 
 use self::{creation::StateCreation, tombstone::StateTombstone};
 use crate::gettext_f;
@@ -54,167 +61,23 @@ impl StateRow {
         glib::Object::new(&[])
     }
 
-    pub fn update(&self, state: &AnySyncStateEvent) {
-        // We may want to show more state events in the future
-        // For a full list of state events see:
-        // https://matrix-org.github.io/matrix-rust-sdk/matrix_sdk/events/enum.AnyStateEventContent.html
-        let message = match state {
-            AnySyncStateEvent::RoomCreate(SyncStateEvent::Original(event)) => {
-                WidgetType::Creation(StateCreation::new(&event.content))
+    pub fn update_with_other_state(&self, other_state: &OtherState) {
+        let widget = match other_state.content() {
+            AnyOtherFullStateEventContent::RoomCreate(content) => {
+                WidgetType::Creation(StateCreation::new(content))
             }
-            AnySyncStateEvent::RoomEncryption(_event) => {
+            AnyOtherFullStateEventContent::RoomEncryption(_) => {
                 WidgetType::Text(gettext("This room is encrypted from this point on."))
             }
-            AnySyncStateEvent::RoomMember(SyncStateEvent::Original(event)) => {
-                let content = &event.content;
-                let display_name = content
-                    .displayname
-                    .clone()
-                    .unwrap_or_else(|| event.state_key.to_string());
-
-                match content.membership {
-                    MembershipState::Join => {
-                        let message = match &event.unsigned.prev_content {
-                            Some(prev) if content.membership != prev.membership => None,
-                            Some(prev) if content.displayname != prev.displayname => {
-                                if let Some(prev_name) = &prev.displayname {
-                                    if content.displayname.is_none() {
-                                        Some(gettext_f(
-                                            // Translators: Do NOT translate the content between
-                                            // '{' and '}', this is a variable name.
-                                            "{previous_user_name} removed their display name.",
-                                            &[("previous_user_name", prev_name)],
-                                        ))
-                                    } else {
-                                        Some(gettext_f(
-                                            // Translators: Do NOT translate the content between
-                                            // '{' and '}', this is a variable name.
-                                            "{previous_user_name} changed their display name to {new_user_name}.",
-                                            &[("previous_user_name", prev_name),
-                                            ("new_user_name", &display_name)]
-                                        ))
-                                    }
-                                } else {
-                                    Some(gettext_f(
-                                        // Translators: Do NOT translate the content between
-                                        // '{' and '}', this is a variable name.
-                                        "{user_id} set their display name to {new_user_name}.",
-                                        &[
-                                            ("user_id", event.state_key.as_ref()),
-                                            ("new_user_name", &display_name),
-                                        ],
-                                    ))
-                                }
-                            }
-                            Some(prev) if content.avatar_url != prev.avatar_url => {
-                                if prev.avatar_url.is_none() {
-                                    Some(gettext_f(
-                                        // Translators: Do NOT translate the content between
-                                        // '{' and '}', this is a variable name.
-                                        "{user} set their avatar.",
-                                        &[("user", &display_name)],
-                                    ))
-                                } else if content.avatar_url.is_none() {
-                                    Some(gettext_f(
-                                        // Translators: Do NOT translate the content between
-                                        // '{' and '}', this is a variable name.
-                                        "{user} removed their avatar.",
-                                        &[("user", &display_name)],
-                                    ))
-                                } else {
-                                    Some(gettext_f(
-                                        // Translators: Do NOT translate the content between
-                                        // '{' and '}', this is a variable name.
-                                        "{user} changed their avatar.",
-                                        &[("user", &display_name)],
-                                    ))
-                                }
-                            }
-                            _ => None,
-                        };
-
-                        WidgetType::Text(message.unwrap_or_else(|| {
-                            // Translators: Do NOT translate the content between '{' and '}', this
-                            // is a variable name.
-                            gettext_f("{user} joined this room.", &[("user", &display_name)])
-                        }))
+            AnyOtherFullStateEventContent::RoomThirdPartyInvite(content) => {
+                let display_name = match content {
+                    FullStateEventContent::Original { content, .. } => {
+                        match &content.display_name {
+                            s if s.is_empty() => other_state.state_key(),
+                            s => s,
+                        }
                     }
-                    MembershipState::Invite => WidgetType::Text(gettext_f(
-                        // Translators: Do NOT translate the content between '{' and '}', this is
-                        // a variable name.
-                        "{user} was invited to this room.",
-                        &[("user", &display_name)],
-                    )),
-                    MembershipState::Knock => {
-                        // TODO: Add button to invite the user.
-                        WidgetType::Text(gettext_f(
-                            // Translators: Do NOT translate the content between '{' and '}', this
-                            // is a variable name.
-                            "{user} requested to be invited to this room.",
-                            &[("user", &display_name)],
-                        ))
-                    }
-                    MembershipState::Leave => {
-                        let message = match &event.unsigned.prev_content {
-                            Some(prev) if prev.membership == MembershipState::Invite => {
-                                if event.state_key == event.sender {
-                                    Some(gettext_f(
-                                        // Translators: Do NOT translate the content between
-                                        // '{' and '}', this is a variable name.
-                                        "{user} rejected the invite.",
-                                        &[("user", &display_name)],
-                                    ))
-                                } else {
-                                    Some(gettext_f(
-                                        // Translators: Do NOT translate the content between
-                                        // '{' and '}', this is a variable name.
-                                        "The invitation for {user} has been revoked.",
-                                        &[("user", &display_name)],
-                                    ))
-                                }
-                            }
-                            Some(prev) if prev.membership == MembershipState::Ban => {
-                                Some(gettext_f(
-                                    // Translators: Do NOT translate the content between
-                                    // '{' and '}', this is a variable name.
-                                    "{user} was unbanned.",
-                                    &[("user", &display_name)],
-                                ))
-                            }
-                            _ => None,
-                        };
-
-                        WidgetType::Text(message.unwrap_or_else(|| {
-                            if event.state_key == event.sender {
-                                // Translators: Do NOT translate the content between '{' and '}',
-                                // this is a variable name.
-                                gettext_f("{user} left the room.", &[("user", &display_name)])
-                            } else {
-                                gettext_f(
-                                    // Translators: Do NOT translate the content between '{' and
-                                    // '}', this is a variable name.
-                                    "{user} was kicked out of the room.",
-                                    &[("user", &display_name)],
-                                )
-                            }
-                        }))
-                    }
-                    MembershipState::Ban => WidgetType::Text(gettext_f(
-                        // Translators: Do NOT translate the content between '{' and '}', this is
-                        // a variable name.
-                        "{user} was banned.",
-                        &[("user", &display_name)],
-                    )),
-                    _ => {
-                        warn!("Unsupported room member event: {:?}", event);
-                        WidgetType::Text(gettext("An unsupported room member event was received."))
-                    }
-                }
-            }
-            AnySyncStateEvent::RoomThirdPartyInvite(SyncStateEvent::Original(event)) => {
-                let display_name = match &event.content.display_name {
-                    s if s.is_empty() => &event.state_key,
-                    s => s,
+                    FullStateEventContent::Redacted(_) => other_state.state_key(),
                 };
                 WidgetType::Text(gettext_f(
                     // Translators: Do NOT translate the content between '{' and '}', this is a
@@ -223,16 +86,19 @@ impl StateRow {
                     &[("user", display_name)],
                 ))
             }
-            AnySyncStateEvent::RoomTombstone(SyncStateEvent::Original(event)) => {
-                WidgetType::Tombstone(StateTombstone::new(&event.content))
+            AnyOtherFullStateEventContent::RoomTombstone(content) => {
+                WidgetType::Tombstone(StateTombstone::new(content))
             }
             _ => {
-                warn!("Unsupported state event: {}", state.event_type());
+                warn!(
+                    "Unsupported state event: {}",
+                    other_state.content().event_type()
+                );
                 WidgetType::Text(gettext("An unsupported state event was received."))
             }
         };
 
-        match message {
+        match widget {
             WidgetType::Text(message) => {
                 if let Some(Ok(child)) = self.child().map(|w| w.downcast::<gtk::Label>()) {
                     child.set_text(&message);
@@ -243,6 +109,230 @@ impl StateRow {
             WidgetType::Creation(widget) => self.set_child(Some(&widget)),
             WidgetType::Tombstone(widget) => self.set_child(Some(&widget)),
         }
+    }
+
+    pub fn update_with_membership_change(
+        &self,
+        membership_change: &RoomMembershipChange,
+        sender: &UserId,
+    ) {
+        let display_name = match membership_change.content() {
+            FullStateEventContent::Original { content, .. } => content
+                .displayname
+                .clone()
+                .unwrap_or_else(|| membership_change.user_id().to_string()),
+            FullStateEventContent::Redacted(_) => membership_change.user_id().to_string(),
+        };
+
+        // Fallback to showing the membership when we don't know / don't want to show
+        // the change.
+        let supported_membership_change =
+            match membership_change.change().unwrap_or(MembershipChange::None) {
+                MembershipChange::Joined => MembershipChange::Joined,
+                MembershipChange::Left => MembershipChange::Left,
+                MembershipChange::Banned => MembershipChange::Banned,
+                MembershipChange::Unbanned => MembershipChange::Unbanned,
+                MembershipChange::Kicked => MembershipChange::Kicked,
+                MembershipChange::Invited => MembershipChange::Invited,
+                MembershipChange::KickedAndBanned => MembershipChange::KickedAndBanned,
+                MembershipChange::InvitationAccepted => MembershipChange::InvitationAccepted,
+                MembershipChange::InvitationRejected => MembershipChange::InvitationRejected,
+                MembershipChange::InvitationRevoked => MembershipChange::InvitationRevoked,
+                MembershipChange::Knocked => MembershipChange::Knocked,
+                MembershipChange::KnockAccepted => MembershipChange::KnockAccepted,
+                MembershipChange::KnockRetracted => MembershipChange::KnockRetracted,
+                MembershipChange::KnockDenied => MembershipChange::KnockDenied,
+                _ => {
+                    let membership = match membership_change.content() {
+                        FullStateEventContent::Original { content, .. } => &content.membership,
+                        FullStateEventContent::Redacted(content) => &content.membership,
+                    };
+
+                    match membership {
+                        MembershipState::Ban => MembershipChange::Banned,
+                        MembershipState::Invite => MembershipChange::Invited,
+                        MembershipState::Join => MembershipChange::Joined,
+                        MembershipState::Knock => MembershipChange::Knocked,
+                        MembershipState::Leave => {
+                            if membership_change.user_id() == sender {
+                                MembershipChange::Left
+                            } else {
+                                MembershipChange::Kicked
+                            }
+                        }
+                        _ => MembershipChange::NotImplemented,
+                    }
+                }
+            };
+
+        let message = match supported_membership_change {
+            MembershipChange::Joined => {
+                // Translators: Do NOT translate the content between '{' and '}', this
+                // is a variable name.
+                gettext_f("{user} joined this room.", &[("user", &display_name)])
+            }
+            MembershipChange::Left => {
+                // Translators: Do NOT translate the content between '{' and '}',
+                // this is a variable name.
+                gettext_f("{user} left the room.", &[("user", &display_name)])
+            }
+            MembershipChange::Banned => gettext_f(
+                // Translators: Do NOT translate the content between
+                // '{' and '}', this is a variable name.
+                "{user} was banned.",
+                &[("user", &display_name)],
+            ),
+            MembershipChange::Unbanned => gettext_f(
+                // Translators: Do NOT translate the content between
+                // '{' and '}', this is a variable name.
+                "{user} was unbanned.",
+                &[("user", &display_name)],
+            ),
+            MembershipChange::Kicked => gettext_f(
+                // Translators: Do NOT translate the content between '{' and
+                // '}', this is a variable name.
+                "{user} was kicked out of the room.",
+                &[("user", &display_name)],
+            ),
+            MembershipChange::Invited | MembershipChange::KnockAccepted => gettext_f(
+                // Translators: Do NOT translate the content between '{' and '}', this is
+                // a variable name.
+                "{user} was invited to this room.",
+                &[("user", &display_name)],
+            ),
+            MembershipChange::KickedAndBanned => gettext_f(
+                // Translators: Do NOT translate the content between '{' and '}', this is
+                // a variable name.
+                "{user} was kicked out of the room and banned.",
+                &[("user", &display_name)],
+            ),
+            MembershipChange::InvitationAccepted => gettext_f(
+                // Translators: Do NOT translate the content between
+                // '{' and '}', this is a variable name.
+                "{user} accepted the invite.",
+                &[("user", &display_name)],
+            ),
+            MembershipChange::InvitationRejected => gettext_f(
+                // Translators: Do NOT translate the content between
+                // '{' and '}', this is a variable name.
+                "{user} rejected the invite.",
+                &[("user", &display_name)],
+            ),
+            MembershipChange::InvitationRevoked => gettext_f(
+                // Translators: Do NOT translate the content between
+                // '{' and '}', this is a variable name.
+                "The invitation for {user} has been revoked.",
+                &[("user", &display_name)],
+            ),
+            MembershipChange::Knocked =>
+            // TODO: Add button to invite the user.
+            {
+                gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this
+                    // is a variable name.
+                    "{user} requested to be invited to this room.",
+                    &[("user", &display_name)],
+                )
+            }
+            MembershipChange::KnockRetracted => gettext_f(
+                // Translators: Do NOT translate the content between
+                // '{' and '}', this is a variable name.
+                "{user} retracted their request to be invited to this room.",
+                &[("user", &display_name)],
+            ),
+            MembershipChange::KnockDenied => gettext_f(
+                // Translators: Do NOT translate the content between
+                // '{' and '}', this is a variable name.
+                "{user}’s request to be invited to this room was denied.",
+                &[("user", &display_name)],
+            ),
+            _ => {
+                warn!(
+                    "Unsupported membership change event: {:?}",
+                    membership_change.content()
+                );
+                gettext("An unsupported room member event was received.")
+            }
+        };
+
+        if let Some(Ok(child)) = self.child().map(|w| w.downcast::<gtk::Label>()) {
+            child.set_text(&message);
+        } else {
+            self.set_child(Some(&text(message)));
+        };
+    }
+
+    pub fn update_with_profile_change(
+        &self,
+        profile_change: &MemberProfileChange,
+        display_name: &str,
+    ) {
+        let message = if let Some(displayname) = profile_change.displayname_change() {
+            if let Some(prev_name) = &displayname.old {
+                if displayname.new.is_none() {
+                    gettext_f(
+                        // Translators: Do NOT translate the content between
+                        // '{' and '}', this is a variable name.
+                        "{previous_user_name} removed their display name.",
+                        &[("previous_user_name", prev_name)],
+                    )
+                } else {
+                    gettext_f(
+                        // Translators: Do NOT translate the content between
+                        // '{' and '}', this is a variable name.
+                        "{previous_user_name} changed their display name to {new_user_name}.",
+                        &[
+                            ("previous_user_name", prev_name),
+                            ("new_user_name", display_name),
+                        ],
+                    )
+                }
+            } else {
+                gettext_f(
+                    // Translators: Do NOT translate the content between
+                    // '{' and '}', this is a variable name.
+                    "{user_id} set their display name to {new_user_name}.",
+                    &[
+                        ("user_id", profile_change.user_id().as_ref()),
+                        ("new_user_name", display_name),
+                    ],
+                )
+            }
+        } else if let Some(avatar_url) = profile_change.avatar_url_change() {
+            if avatar_url.old.is_none() {
+                gettext_f(
+                    // Translators: Do NOT translate the content between
+                    // '{' and '}', this is a variable name.
+                    "{user} set their avatar.",
+                    &[("user", display_name)],
+                )
+            } else if avatar_url.new.is_none() {
+                gettext_f(
+                    // Translators: Do NOT translate the content between
+                    // '{' and '}', this is a variable name.
+                    "{user} removed their avatar.",
+                    &[("user", display_name)],
+                )
+            } else {
+                gettext_f(
+                    // Translators: Do NOT translate the content between
+                    // '{' and '}', this is a variable name.
+                    "{user} changed their avatar.",
+                    &[("user", display_name)],
+                )
+            }
+        } else {
+            // We don't know what changed so fall back to the membership.
+            // Translators: Do NOT translate the content between '{' and '}', this
+            // is a variable name.
+            gettext_f("{user} joined this room.", &[("user", display_name)])
+        };
+
+        if let Some(Ok(child)) = self.child().map(|w| w.downcast::<gtk::Label>()) {
+            child.set_text(&message);
+        } else {
+            self.set_child(Some(&text(message)));
+        };
     }
 }
 

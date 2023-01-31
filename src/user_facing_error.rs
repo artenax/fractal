@@ -1,12 +1,15 @@
 use gettextrs::gettext;
 use matrix_sdk::{
     ruma::api::{
-        client::error::ErrorKind::{Forbidden, LimitExceeded, UserDeactivated},
-        error::{FromHttpResponseError, ServerError},
+        client::error::{
+            Error as ClientApiError, ErrorBody,
+            ErrorKind::{Forbidden, LimitExceeded, UserDeactivated},
+        },
+        error::FromHttpResponseError,
     },
-    store::OpenStoreError,
     ClientBuildError, Error, HttpError, RumaApiError,
 };
+use matrix_sdk_sled::OpenStoreError;
 
 use crate::ngettext_f;
 
@@ -25,10 +28,13 @@ impl UserFacingError for HttpError {
                     gettext("Unable to connect to the homeserver.")
                 }
             }
-            HttpError::Api(FromHttpResponseError::Server(ServerError::Known(
-                RumaApiError::ClientApi(error),
+            HttpError::Api(FromHttpResponseError::Server(RumaApiError::ClientApi(
+                ClientApiError {
+                    body: ErrorBody::Standard { kind, message },
+                    ..
+                },
             ))) => {
-                match error.kind {
+                match kind {
                     Forbidden => gettext("The provided username or password is invalid."),
                     UserDeactivated => gettext("The account is deactivated."),
                     LimitExceeded { retry_after_ms } => {
@@ -49,7 +55,7 @@ impl UserFacingError for HttpError {
                     _ => {
                         // TODO: The server may not give us pretty enough error message. We should
                         // add our own error message.
-                        error.message
+                        message
                     }
                 }
             }

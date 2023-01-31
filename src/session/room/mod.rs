@@ -18,31 +18,33 @@ use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, info, warn};
 use matrix_sdk::{
     attachment::{generate_image_thumbnail, AttachmentConfig, AttachmentInfo, Thumbnail},
-    deserialized_responses::{JoinedRoom, LeftRoom, SyncTimelineEvent},
+    deserialized_responses::SyncTimelineEvent,
     room::Room as MatrixRoom,
     ruma::{
         api::client::sync::sync_events::v3::InvitedRoom,
         events::{
-            reaction::{ReactionEventContent, Relation as ReactionRelation},
+            reaction::ReactionEventContent,
             receipt::{ReceiptEventContent, ReceiptType},
+            relation::Annotation,
             room::{
-                member::MembershipState,
-                name::RoomNameEventContent,
-                redaction::{OriginalSyncRoomRedactionEvent, RoomRedactionEventContent},
-                topic::RoomTopicEventContent,
+                member::MembershipState, name::RoomNameEventContent, topic::RoomTopicEventContent,
             },
             room_key::ToDeviceRoomKeyEventContent,
             tag::{TagInfo, TagName},
             AnyRoomAccountDataEvent, AnyStrippedStateEvent, AnySyncStateEvent,
-            AnySyncTimelineEvent, MessageLikeUnsigned, OriginalSyncMessageLikeEvent,
-            StateEventType, SyncStateEvent, ToDeviceEvent,
+            AnySyncTimelineEvent, StateEventType, SyncStateEvent, ToDeviceEvent,
         },
-        serde::Raw,
-        EventId, MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
+        OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
     },
+    sync::{JoinedRoom, LeftRoom},
     DisplayName, Result as MatrixResult,
 };
-use ruma::events::{typing::TypingEventContent, MessageLikeEventContent, SyncEphemeralRoomEvent};
+use ruma::events::{
+    room::message::{MessageType, Relation},
+    typing::TypingEventContent,
+    AnyMessageLikeEventContent, AnySyncMessageLikeEvent, SyncEphemeralRoomEvent,
+    SyncMessageLikeEvent,
+};
 
 pub use self::{
     event::*,
@@ -69,7 +71,6 @@ use crate::{
         Avatar, Session, User,
     },
     spawn, spawn_tokio, toast,
-    utils::matrix::pending_event_ids,
 };
 
 mod imp {
@@ -98,9 +99,9 @@ mod imp {
         /// The timestamp of the latest possibly unread event in this room.
         pub latest_unread: Cell<u64>,
         /// The event of the user's read receipt for this room.
-        pub read_receipt: RefCell<Option<Event>>,
+        pub read_receipt: RefCell<Option<AnySyncTimelineEvent>>,
         /// The latest read event in the room's timeline.
-        pub latest_read: RefCell<Option<SupportedEvent>>,
+        pub latest_read: RefCell<Option<Event>>,
         /// The highlight state of the room,
         pub highlight: Cell<HighlightFlags>,
         pub predecessor: OnceCell<OwnedRoomId>,
@@ -266,7 +267,10 @@ mod imp {
                 .unwrap();
 
             obj.load_power_levels();
-            obj.setup_is_encrypted();
+
+            spawn!(clone!(@strong obj => async move {
+                obj.setup_is_encrypted().await;
+            }));
 
             obj.bind_property("display-name", obj.avatar(), "display-name")
                 .flags(glib::BindingFlags::SYNC_CREATE)
@@ -733,7 +737,7 @@ impl Room {
 
                 match handle.await.unwrap() {
                     Ok(Some((event_id, _))) => {
-                        obj.update_read_receipt(&event_id).await;
+                        obj.update_read_receipt(event_id).await;
                     },
                     Err(error) => {
                         error!(
@@ -773,7 +777,7 @@ impl Room {
             if let Some(users) = receipts.get(&ReceiptType::Read) {
                 for user in users.keys() {
                     if user == &user_id {
-                        self.update_read_receipt(event_id.as_ref()).await;
+                        self.update_read_receipt(event_id.clone()).await;
                         return;
                     }
                 }
@@ -783,13 +787,8 @@ impl Room {
 
     /// Update the user's read receipt event for this room with the given event
     /// ID.
-    async fn update_read_receipt(&self, event_id: &EventId) {
-        if Some(event_id)
-            == self
-                .read_receipt()
-                .and_then(|event| event.event_id())
-                .as_deref()
-        {
+    async fn update_read_receipt(&self, event_id: OwnedEventId) {
+        if Some(event_id.as_ref()) == self.read_receipt().as_ref().map(|event| event.event_id()) {
             return;
         }
 
@@ -808,13 +807,20 @@ impl Room {
     }
 
     /// The user's read receipt event for this room.
-    pub fn read_receipt(&self) -> Option<Event> {
+    pub fn read_receipt(&self) -> Option<AnySyncTimelineEvent> {
         self.imp().read_receipt.borrow().clone()
     }
 
     /// Set the user's read receipt event for this room.
-    fn set_read_receipt(&self, read_receipt: Option<Event>) {
-        if read_receipt == self.read_receipt() {
+    fn set_read_receipt(&self, read_receipt: Option<AnySyncTimelineEvent>) {
+        if read_receipt.as_ref().map(|event| event.event_id())
+            == self
+                .imp()
+                .read_receipt
+                .borrow()
+                .as_ref()
+                .map(|event| event.event_id())
+        {
             return;
         }
 
@@ -832,7 +838,7 @@ impl Room {
                 timeline
                     .item(i)
                     .as_ref()
-                    .and_then(|obj| obj.downcast_ref::<SupportedEvent>())
+                    .and_then(|obj| obj.downcast_ref::<Event>())
                     .and_then(|event| {
                         // The user sent the event so it's the latest read event.
                         // Necessary because we don't get read receipts for the user's own events.
@@ -841,7 +847,7 @@ impl Room {
                         }
 
                         // This is the event corresponding to the read receipt.
-                        if event == &read_receipt {
+                        if event.event_id().as_deref() == Some(read_receipt.event_id()) {
                             return Some(event.to_owned());
                         }
 
@@ -861,12 +867,12 @@ impl Room {
     }
 
     /// The latest read event in the room's timeline.
-    pub fn latest_read(&self) -> Option<SupportedEvent> {
+    pub fn latest_read(&self) -> Option<Event> {
         self.imp().latest_read.borrow().clone()
     }
 
     /// Set the latest read event.
-    fn set_latest_read(&self, latest_read: Option<SupportedEvent>) {
+    fn set_latest_read(&self, latest_read: Option<Event>) {
         if latest_read == self.latest_read() {
             return;
         }
@@ -951,7 +957,7 @@ impl Room {
                     if let Some(event) = timeline
                         .item(i)
                         .as_ref()
-                        .and_then(|obj| obj.downcast_ref::<SupportedEvent>())
+                        .and_then(|obj| obj.downcast_ref::<Event>())
                     {
                         // This is the event corresponding to the read receipt so there's no unread
                         // messages.
@@ -1274,79 +1280,31 @@ impl Room {
     }
 
     /// Send a message with the given `content` in this room.
-    pub fn send_room_message_event(&self, content: impl MessageLikeEventContent + Send + 'static) {
-        if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
-            let (txn_id, event_id) = pending_event_ids();
-            let matrix_event = OriginalSyncMessageLikeEvent {
-                content,
-                event_id,
-                sender: self.session().user().unwrap().user_id(),
-                origin_server_ts: MilliSecondsSinceUnixEpoch::now(),
-                unsigned: MessageLikeUnsigned::default(),
-            };
+    pub fn send_room_message_event(&self, content: impl Into<AnyMessageLikeEventContent>) {
+        let timeline = self.timeline().matrix_timeline();
+        let content = content.into();
 
-            let raw_event: Raw<AnySyncTimelineEvent> = Raw::new(&matrix_event).unwrap().cast();
-            let event = SupportedEvent::try_from_event(raw_event.into(), self).unwrap();
-            self.imp()
-                .timeline
-                .get()
-                .unwrap()
-                .append_pending(&txn_id, event);
+        let handle = spawn_tokio!(async move { timeline.send(content, None).await });
 
-            let content = matrix_event.content;
-
-            let handle =
-                spawn_tokio!(async move { matrix_room.send(content, Some(&txn_id)).await });
-
-            spawn!(
-                glib::PRIORITY_DEFAULT_IDLE,
-                clone!(@weak self as obj => async move {
-                    // FIXME: We should retry the request if it fails
-                    match handle.await.unwrap() {
-                            Ok(_) => {},
-                            Err(error) => error!("Couldn’t send room message event: {}", error),
-                    };
-                })
-            );
-        }
+        spawn!(
+            glib::PRIORITY_DEFAULT_IDLE,
+            clone!(@weak self as obj => async move {
+                handle.await.unwrap();
+            })
+        );
     }
 
     /// Send a `key` reaction for the `relates_to` event ID in this room.
     pub fn send_reaction(&self, key: String, relates_to: OwnedEventId) {
-        self.send_room_message_event(ReactionEventContent::new(ReactionRelation::new(
-            relates_to, key,
-        )));
+        self.send_room_message_event(ReactionEventContent::new(Annotation::new(relates_to, key)));
     }
 
     /// Redact `redacted_event_id` in this room because of `reason`.
     pub fn redact(&self, redacted_event_id: OwnedEventId, reason: Option<String>) {
-        let (txn_id, event_id) = pending_event_ids();
-        let content = if let Some(reason) = reason.as_ref() {
-            RoomRedactionEventContent::with_reason(reason.clone())
-        } else {
-            RoomRedactionEventContent::new()
-        };
-        let event = OriginalSyncRoomRedactionEvent {
-            content,
-            redacts: redacted_event_id.clone(),
-            event_id,
-            sender: self.session().user().unwrap().user_id(),
-            origin_server_ts: MilliSecondsSinceUnixEpoch::now(),
-            unsigned: MessageLikeUnsigned::default(),
-        };
-
         if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
-            let raw_event: Raw<AnySyncTimelineEvent> = Raw::new(&event).unwrap().cast();
-            let event = SupportedEvent::try_from_event(raw_event.into(), self).unwrap();
-            self.imp()
-                .timeline
-                .get()
-                .unwrap()
-                .append_pending(&txn_id, event);
-
             let handle = spawn_tokio!(async move {
                 matrix_room
-                    .redact(&redacted_event_id, reason.as_deref(), Some(txn_id))
+                    .redact(&redacted_event_id, reason.as_deref(), None)
                     .await
             });
 
@@ -1478,7 +1436,6 @@ impl Room {
 
         if response_room
             .account_data
-            .events
             .iter()
             .any(|e| matches!(e.deserialize(), Ok(AnyRoomAccountDataEvent::Tag(_))))
         {
@@ -1590,8 +1547,8 @@ impl Room {
                     Ok((data, info)) => {
                         data_slot = data;
                         Some(Thumbnail {
-                            data: &data_slot,
-                            content_type: &mime::IMAGE_JPEG,
+                            data: data_slot,
+                            content_type: mime::IMAGE_JPEG,
                             info: Some(info),
                         })
                     }
@@ -1608,7 +1565,7 @@ impl Room {
                 matrix_room
                     // TODO This should be added to pending messages instead of
                     // sending it directly.
-                    .send_attachment(&body, &mime, &bytes, config)
+                    .send_attachment(&body, &mime, bytes, config)
                     .await
                     .unwrap();
             });
@@ -1699,7 +1656,7 @@ impl Room {
         let mut latest_unread = self.latest_unread();
 
         for event in events {
-            if event::count_as_unread(event) {
+            if count_as_unread(event) {
                 latest_unread = latest_unread.max(event.origin_server_ts().get().into());
                 break;
             }
@@ -1725,17 +1682,29 @@ impl Room {
             return;
         }
 
-        if self.matrix_room().is_encrypted() != is_encrypted {
-            // TODO: enable encryption if it isn't enabled yet
-        }
+        // if self.matrix_room().is_encrypted() != is_encrypted {
+        // TODO: enable encryption if it isn't enabled yet
+        // }
 
-        self.setup_is_encrypted();
+        spawn!(clone!(@strong self as obj => async move {
+            obj.setup_is_encrypted().await;
+        }));
     }
 
-    fn setup_is_encrypted(&self) {
-        if !self.matrix_room().is_encrypted() {
+    async fn setup_is_encrypted(&self) {
+        let matrix_room = self.matrix_room();
+        let handle = spawn_tokio!(async move { matrix_room.is_encrypted().await });
+
+        if handle
+            .await
+            .unwrap()
+            .ok()
+            .filter(|encrypted| *encrypted)
+            .is_none()
+        {
             return;
         }
+
         self.setup_new_encryption_keys_handler();
         self.imp().is_encrypted.set(true);
         self.notify("encrypted");
@@ -1779,5 +1748,35 @@ impl Room {
     /// Get a `Pill` representing this `Room`.
     pub fn to_pill(&self) -> Pill {
         Pill::for_room(self)
+    }
+}
+
+/// Whether the given event can count as an unread message.
+///
+/// This follows the algorithm in [MSC2654], excluding events that we don't
+/// show in the timeline.
+///
+/// [MSC2654]: https://github.com/matrix-org/matrix-spec-proposals/pull/2654
+fn count_as_unread(event: &AnySyncTimelineEvent) -> bool {
+    match event {
+        AnySyncTimelineEvent::MessageLike(message_event) => match message_event {
+            AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(message)) => {
+                if matches!(message.content.msgtype, MessageType::Notice(_)) {
+                    return false;
+                }
+
+                if matches!(message.content.relates_to, Some(Relation::Replacement(_))) {
+                    return false;
+                }
+
+                true
+            }
+            AnySyncMessageLikeEvent::Sticker(SyncMessageLikeEvent::Original(_)) => true,
+            _ => false,
+        },
+        AnySyncTimelineEvent::State(AnySyncStateEvent::RoomTombstone(
+            SyncStateEvent::Original(_),
+        )) => true,
+        _ => false,
     }
 }

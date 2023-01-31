@@ -4,14 +4,12 @@ use gtk::{glib, glib::clone, CompositeTemplate};
 use log::{error, warn};
 use matrix_sdk::event_handler::EventHandlerDropGuard;
 use ruma::{
-    api::client::push::{set_pushrule_enabled, RuleKind},
+    api::client::push::{set_pushrule_enabled, RuleKind, RuleScope},
     events::push_rules::{PushRulesEvent, PushRulesEventContent},
-    push::Ruleset,
+    push::{PredefinedOverrideRuleId, Ruleset},
 };
 
 use crate::{session::UserExt, spawn, spawn_tokio, toast, Session};
-
-const MASTER_RULE_ID: &str = ".m.rule.master";
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -210,13 +208,16 @@ impl NotificationsPage {
 
     /// Update the page for the given ruleset.
     fn update_page(&self, rules: Ruleset) {
-        let account_enabled =
-            if let Some(rule) = rules.override_.iter().find(|r| r.rule_id == MASTER_RULE_ID) {
-                !rule.enabled
-            } else {
-                warn!("Could not find `.m.rule.master` push rule, using the default rule instead.");
-                true
-            };
+        let account_enabled = if let Some(rule) = rules
+            .override_
+            .iter()
+            .find(|r| r.rule_id == PredefinedOverrideRuleId::Master.as_str())
+        {
+            !rule.enabled
+        } else {
+            warn!("Could not find `.m.rule.master` push rule, using the default rule instead.");
+            true
+        };
         self.set_account_enabled(account_enabled);
     }
 
@@ -267,9 +268,9 @@ impl NotificationsPage {
         };
 
         let request = set_pushrule_enabled::v3::Request::new(
-            "global",
+            RuleScope::Global,
             RuleKind::Override,
-            MASTER_RULE_ID,
+            PredefinedOverrideRuleId::Master.to_string(),
             !enabled,
         );
 
@@ -278,7 +279,10 @@ impl NotificationsPage {
         match handle.await.unwrap() {
             Ok(_) => {}
             Err(error) => {
-                error!("Could not update `{MASTER_RULE_ID}` push rule: {error}");
+                error!(
+                    "Could not update `{}` push rule: {error}",
+                    PredefinedOverrideRuleId::Master
+                );
 
                 let msg = if enabled {
                     gettext("Could not enable account notifications")

@@ -9,6 +9,7 @@ pub enum PlaceholderKind {
     #[default]
     Spinner = 0,
     Typing = 1,
+    TimelineStart = 2,
 }
 
 mod imp {
@@ -75,6 +76,12 @@ impl TimelinePlaceholder {
     pub fn typing() -> Self {
         glib::Object::builder()
             .property("kind", &PlaceholderKind::Typing)
+            .build()
+    }
+
+    pub fn timeline_start() -> Self {
+        glib::Object::builder()
+            .property("kind", &PlaceholderKind::TimelineStart)
             .build()
     }
 

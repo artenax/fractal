@@ -28,9 +28,7 @@ use matrix_sdk::{
     attachment::{AttachmentInfo, BaseFileInfo, BaseImageInfo},
     ruma::{
         events::{
-            room::message::{
-                EmoteMessageEventContent, FormattedBody, MessageType, TextMessageEventContent,
-            },
+            room::message::{EmoteMessageEventContent, FormattedBody, MessageType},
             AnySyncMessageLikeEvent, AnySyncTimelineEvent, SyncMessageLikeEvent,
         },
         EventId,
@@ -52,7 +50,9 @@ use crate::{
     i18n::gettext_f,
     session::{
         content::{room_details, MarkdownPopover, RoomDetails},
-        room::{Room, RoomAction, RoomType, SupportedEvent, Timeline, TimelineItem, TimelineState},
+        room::{
+            Event, EventKey, Room, RoomAction, RoomType, Timeline, TimelineItem, TimelineState,
+        },
         user::UserExt,
     },
     spawn, spawn_tokio, toast,
@@ -129,7 +129,7 @@ mod imp {
         #[template_child]
         pub related_event_content: TemplateChild<MessageContent>,
         pub related_event_type: Cell<RelatedEventType>,
-        pub related_event: RefCell<Option<SupportedEvent>>,
+        pub related_event: RefCell<Option<Event>>,
     }
 
     #[glib::object_subclass]
@@ -222,7 +222,7 @@ mod imp {
                 {
                     if let Some(event) = widget
                         .room()
-                        .and_then(|room| room.timeline().event_by_id(&event_id))
+                        .and_then(|room| room.timeline().event_by_key(&EventKey::EventId(event_id)))
                         .and_then(|event| event.downcast().ok())
                     {
                         widget.set_reply_to(event);
@@ -259,7 +259,7 @@ mod imp {
                     glib::ParamSpecEnum::builder("related-event-type", RelatedEventType::default())
                         .read_only()
                         .build(),
-                    glib::ParamSpecObject::builder::<SupportedEvent>("related-event")
+                    glib::ParamSpecObject::builder::<Event>("related-event")
                         .read_only()
                         .build(),
                 ]
@@ -318,7 +318,7 @@ mod imp {
                         .model()
                         .and_then(|model| model.item(pos))
                         .as_ref()
-                        .and_then(|o| o.downcast_ref::<SupportedEvent>())
+                        .and_then(|o| o.downcast_ref::<Event>())
                     {
                         if let Some(room) = obj.room() {
                             room.session().show_media(event);
@@ -597,12 +597,19 @@ impl RoomHistory {
     }
 
     /// The related event of the composer.
-    pub fn related_event(&self) -> Option<SupportedEvent> {
+    pub fn related_event(&self) -> Option<Event> {
         self.imp().related_event.borrow().clone()
     }
 
     /// Set the related event of the composer.
-    fn set_related_event(&self, event: Option<SupportedEvent>) {
+    fn set_related_event(&self, event: Option<Event>) {
+        // We shouldn't reply to events that are not sent yet.
+        if let Some(event) = &event {
+            if event.event_id().is_none() {
+                return;
+            }
+        }
+
         let prev_event = self.related_event();
 
         if prev_event == event {
@@ -610,10 +617,10 @@ impl RoomHistory {
         }
 
         if let Some(event) = &prev_event {
-            self.set_event_highlight(&event.event_id(), false);
+            self.set_event_highlight(&event.event_id().unwrap(), false);
         }
         if let Some(event) = &event {
-            self.set_event_highlight(&event.event_id(), true);
+            self.set_event_highlight(&event.event_id().unwrap(), true);
         }
 
         self.imp().related_event.replace(event);
@@ -625,7 +632,7 @@ impl RoomHistory {
         self.set_related_event_type(RelatedEventType::default());
     }
 
-    pub fn set_reply_to(&self, event: SupportedEvent) {
+    pub fn set_reply_to(&self, event: Event) {
         let imp = self.imp();
         imp.related_event_header
             .set_widgets(vec![Pill::for_user(event.sender().upcast_ref())]);
@@ -700,34 +707,31 @@ impl RoomHistory {
             })
             .into()
         } else {
-            let msg_type = MessageType::Text(if let Some(html_body) = html_body {
-                TextMessageEventContent::html(plain_body, html_body)
+            let mut content = if let Some(html_body) = html_body {
+                RoomMessageEventContent::text_html(plain_body, html_body)
             } else {
-                TextMessageEventContent::plain(plain_body)
-            });
+                RoomMessageEventContent::text_plain(plain_body)
+            };
 
             if self.related_event_type() == RelatedEventType::Reply {
-                // TODO: Use replacement event.
-                let related_event = self.related_event().unwrap().matrix_event();
+                let related_event = self
+                    .related_event()
+                    .unwrap()
+                    .raw()
+                    .unwrap()
+                    .deserialize()
+                    .unwrap();
                 if let AnySyncTimelineEvent::MessageLike(AnySyncMessageLikeEvent::RoomMessage(
                     SyncMessageLikeEvent::Original(related_message_event),
                 )) = related_event
                 {
                     let full_related_message_event = related_message_event
                         .into_full_event(self.room().unwrap().room_id().to_owned());
-                    RoomMessageEventContent::reply(
-                        msg_type,
-                        &full_related_message_event,
-                        ForwardThread::Yes,
-                    )
-                } else {
-                    // The message was redacted after being selected so ignore
-                    // the reply.
-                    msg_type.into()
+                    content = content.make_reply_to(&full_related_message_event, ForwardThread::Yes)
                 }
-            } else {
-                msg_type.into()
             }
+
+            content
         };
 
         self.room().unwrap().send_room_message_event(content);
@@ -845,11 +849,7 @@ impl RoomHistory {
 
             let obj_weak = self.downgrade();
             spawn!(async move {
-                loop {
-                    if !room.timeline().load().await {
-                        break;
-                    }
-                }
+                room.timeline().load().await;
 
                 // Remove the task
                 if let Some(obj) = obj_weak.upgrade() {
@@ -1202,18 +1202,18 @@ impl RoomHistory {
     fn handle_related_event_click(&self, n_pressed: i32) {
         if n_pressed == 1 {
             if let Some(related_event) = &*self.imp().related_event.borrow() {
-                self.scroll_to_event(&related_event.event_id());
+                self.scroll_to_event(&related_event.key());
             }
         }
     }
 
-    fn scroll_to_event(&self, event_id: &EventId) {
+    fn scroll_to_event(&self, key: &EventKey) {
         let room = match self.room() {
             Some(room) => room,
             None => return,
         };
 
-        if let Some(pos) = room.timeline().find_event_position(event_id) {
+        if let Some(pos) = room.timeline().find_event_position(key) {
             let pos = pos as u32;
             let _ = self
                 .imp()
@@ -1229,8 +1229,8 @@ impl RoomHistory {
                 .first_child()
                 .and_then(|w| w.downcast::<ItemRow>().ok())
                 .and_then(|row| row.item())
-                .and_then(|item| item.downcast::<SupportedEvent>().ok())
-                .filter(|event| event.event_id() == event_id)
+                .and_then(|item| item.downcast::<Event>().ok())
+                .filter(|event| event.event_id().as_deref() == Some(event_id))
                 .is_some()
             {
                 if highlight && !widget.has_css_class("highlight") {

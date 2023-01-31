@@ -1,5 +1,6 @@
 use gettextrs::gettext;
 use gtk::{glib, prelude::*, subclass::prelude::*};
+use ruma::MilliSecondsSinceUnixEpoch;
 
 use super::{TimelineItem, TimelineItemImpl};
 
@@ -68,6 +69,19 @@ glib::wrapper! {
 impl TimelineDayDivider {
     pub fn new(date: glib::DateTime) -> Self {
         glib::Object::builder().property("date", &date).build()
+    }
+
+    /// Creates a new `TimelineDayDivider` for the given timestamp.
+    ///
+    /// If the timestamp is out of range for `glib::DateTime` (later than the
+    /// end of year 9999), this fallbacks to creating a divider with the
+    /// current local time.
+    ///
+    /// Panics if an error occurred when accessing the current local time.
+    pub fn with_timestamp(timestamp: MilliSecondsSinceUnixEpoch) -> Self {
+        let date = glib::DateTime::from_unix_utc(timestamp.as_secs().into())
+            .expect("The day divider timestamp should be before year 10,000");
+        Self::new(date)
     }
 
     /// The date of this divider.

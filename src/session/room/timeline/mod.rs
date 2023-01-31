@@ -4,27 +4,27 @@ mod timeline_new_messages_divider;
 mod timeline_placeholder;
 
 use std::{
-    collections::{HashMap, HashSet, VecDeque},
-    pin::Pin,
+    collections::{HashMap, VecDeque},
     sync::Arc,
 };
 
-use futures::{lock::Mutex, pin_mut, Stream, StreamExt};
+use futures::StreamExt;
+use futures_signals::signal_vec::{SignalVecExt, VecDiff};
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{error, warn};
 use matrix_sdk::{
-    deserialized_responses::SyncTimelineEvent,
-    ruma::{EventId, OwnedEventId, OwnedTransactionId, TransactionId},
+    room::timeline::{PaginationOptions, Timeline as SdkTimeline, TimelineItem as SdkTimelineItem},
+    ruma::OwnedEventId,
     Error as MatrixError,
 };
+use ruma::events::AnySyncTimelineEvent;
 pub use timeline_day_divider::TimelineDayDivider;
 pub use timeline_item::{TimelineItem, TimelineItemExt, TimelineItemImpl};
 pub use timeline_new_messages_divider::TimelineNewMessagesDivider;
 pub use timeline_placeholder::{PlaceholderKind, TimelinePlaceholder};
-use tokio::task::JoinHandle;
 
-use super::{Event, Room, SupportedEvent, UnsupportedEvent};
-use crate::{prelude::*, spawn_tokio};
+use super::{Event, EventKey, Room};
+use crate::{spawn, spawn_tokio};
 
 #[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
@@ -38,35 +38,26 @@ pub enum TimelineState {
     Complete,
 }
 
-const MAX_BATCH_SIZE: usize = 20;
-type BackwardStream =
-    Pin<Box<dyn Stream<Item = Vec<matrix_sdk::Result<SyncTimelineEvent>>> + 'static + Send>>;
+const MAX_BATCH_SIZE: u16 = 20;
 
 mod imp {
     use std::cell::{Cell, RefCell};
 
     use glib::object::WeakRef;
-    use once_cell::sync::Lazy;
+    use once_cell::{sync::Lazy, unsync::OnceCell};
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct Timeline {
         pub room: WeakRef<Room>,
-        /// A store to keep track of related events that aren't known
-        pub relates_to_events: RefCell<HashMap<OwnedEventId, Vec<OwnedEventId>>>,
+        /// The underlying SDK timeline.
+        pub timeline: OnceCell<Arc<SdkTimeline>>,
         /// All events shown in the room history
         pub list: RefCell<VecDeque<TimelineItem>>,
-        /// A Hashmap linking `EventId` to corresponding `Event`
-        pub event_map: RefCell<HashMap<OwnedEventId, Event>>,
-        /// Maps the temporary `EventId` of the pending Event to the real
-        /// `EventId`
-        pub pending_events: RefCell<HashMap<OwnedTransactionId, OwnedEventId>>,
-        /// A Hashset of `EventId`s that where just redacted.
-        pub redacted_events: RefCell<HashSet<OwnedEventId>>,
+        /// A Hashmap linking `EventKey` to corresponding `Event`
+        pub event_map: RefCell<HashMap<EventKey, Event>>,
         pub state: Cell<TimelineState>,
-        pub backward_stream: Arc<Mutex<Option<BackwardStream>>>,
-        pub forward_handle: Arc<Mutex<Option<JoinHandle<()>>>>,
         /// Whether this timeline has a typing row.
         pub has_typing: Cell<bool>,
     }
@@ -120,7 +111,7 @@ mod imp {
         }
 
         fn n_items(&self) -> u32 {
-            let mut len = self.list.borrow().len() as u32;
+            let mut len = self.obj().n_items_in_list();
 
             if self.has_typing.get() {
                 len += 1;
@@ -130,14 +121,16 @@ mod imp {
         }
 
         fn item(&self, position: u32) -> Option<glib::Object> {
-            let position = position as usize;
-            let list = self.list.borrow();
-
-            if self.has_typing.get() && position == list.len() {
+            if self.has_typing.get() && position == self.obj().n_items() {
                 return Some(TimelinePlaceholder::typing().upcast());
             }
 
-            list.get(position).map(|o| o.clone().upcast())
+            self.list
+                .borrow()
+                .iter()
+                .filter(|item| item.is_visible())
+                .nth(position as usize)
+                .map(|o| o.clone().upcast())
         }
     }
 }
@@ -148,89 +141,34 @@ glib::wrapper! {
     /// There is no strict message ordering enforced by the Timeline; items
     /// will be appended/prepended to existing items in the order they are
     /// received by the server.
-    ///
-    /// This struct additionally keeps track of pending events that have yet to
-    /// get an event ID assigned from the server.
     pub struct Timeline(ObjectSubclass<imp::Timeline>)
         @implements gio::ListModel;
 }
 
-// TODO:
-// - [ ] Add and handle AnyEphemeralRoomEvent this includes read recipes
-// - [ ] Add new message divider
 impl Timeline {
     pub fn new(room: &Room) -> Self {
         glib::Object::builder().property("room", &room).build()
     }
 
+    /// The number of visible items in the list.
+    ///
+    /// This is like `n_items` without items not in the list (e.g. the typing
+    /// indicator).
+    fn n_items_in_list(&self) -> u32 {
+        self.imp()
+            .list
+            .borrow()
+            .iter()
+            .filter(|item| item.is_visible())
+            .count() as u32
+    }
+
     fn items_changed(&self, position: u32, removed: u32, added: u32) {
-        let imp = self.imp();
-
-        let last_new_message_date;
-
-        // Insert date divider, this needs to happen before updating the position and
-        // headers
-        let added = {
-            let position = position as usize;
-            let added = added as usize;
-            let mut list = imp.list.borrow_mut();
-
-            let mut previous_timestamp = if position > 0 {
-                list.get(position - 1)
-                    .and_then(|item| item.downcast_ref::<Event>())
-                    .and_then(|event| event.timestamp())
-            } else {
-                None
-            };
-            let mut dividers: Vec<(usize, TimelineDayDivider)> = vec![];
-            let mut index = position;
-            for current in list.range(position..position + added) {
-                if let Some(current_timestamp) = current
-                    .downcast_ref::<Event>()
-                    .and_then(|event| event.timestamp())
-                {
-                    if Some(current_timestamp.ymd()) != previous_timestamp.as_ref().map(|t| t.ymd())
-                    {
-                        dividers.push((index, TimelineDayDivider::new(current_timestamp.clone())));
-                        previous_timestamp = Some(current_timestamp);
-                    }
-                }
-                index += 1;
-            }
-
-            let dividers_len = dividers.len();
-            last_new_message_date = dividers.last().and_then(|(_, divider)| divider.date());
-            for (added, (position, date)) in dividers.into_iter().enumerate() {
-                list.insert(position + added, date.upcast());
-            }
-
-            (added + dividers_len) as u32
-        };
-
-        // Remove first day divider if a new one is added earlier with the same day
-        let removed = {
-            let mut list = imp.list.borrow_mut();
-            if let Some(date) = list
-                .get(position as usize + added as usize)
-                .and_then(|item| item.downcast_ref::<TimelineDayDivider>())
-                .and_then(|divider| divider.date())
-            {
-                if Some(date.ymd()) == last_new_message_date.as_ref().map(|date| date.ymd()) {
-                    list.remove(position as usize + added as usize);
-                    removed + 1
-                } else {
-                    removed
-                }
-            } else {
-                removed
-            }
-        };
-
         // Update the header for events that are allowed to hide the header
         {
             let position = position as usize;
             let added = added as usize;
-            let list = imp.list.borrow();
+            let list = self.imp().list.borrow();
 
             let mut previous_sender = if position > 0 {
                 list.get(position - 1)
@@ -275,469 +213,225 @@ impl Timeline {
             }
         }
 
-        // Add relations to event
-        {
-            let list = imp.list.borrow();
-            let mut relates_to_events = imp.relates_to_events.borrow_mut();
-            let mut redacted_events = imp.redacted_events.borrow_mut();
-
-            for event in list
-                .range(position as usize..(position + added) as usize)
-                .filter_map(|item| item.downcast_ref::<SupportedEvent>())
-            {
-                if let Some(relates_to) = relates_to_events.remove(&event.event_id()) {
-                    let mut replacing_events = vec![];
-                    let mut reactions = vec![];
-
-                    for relation_event_id in relates_to {
-                        let relation = self
-                            .event_by_id(&relation_event_id)
-                            .and_then(|event| event.downcast::<SupportedEvent>().ok())
-                            .expect("Previously known event has disappeared");
-
-                        if relation.is_replacing_event() {
-                            replacing_events.push(relation);
-                        } else if relation.is_reaction() {
-                            reactions.push(relation);
-                        }
-                    }
-
-                    if position != 0 || event.replacing_events().is_empty() {
-                        event.append_replacing_events(replacing_events);
-                    } else {
-                        event.prepend_replacing_events(replacing_events);
-                    }
-                    event.add_reactions(reactions);
-
-                    if event.redacted() {
-                        redacted_events.insert(event.event_id());
-                    }
-                }
-            }
-        }
-
         self.notify("empty");
 
         self.upcast_ref::<gio::ListModel>()
             .items_changed(position, removed, added);
-
-        self.remove_redacted_events();
     }
 
-    fn remove_redacted_events(&self) {
+    /// Update this `Timeline` with the given diff.
+    fn update(&self, diff: VecDiff<Arc<SdkTimelineItem>>) {
         let imp = self.imp();
-        let mut redacted_events_pos = Vec::with_capacity(imp.redacted_events.borrow().len());
+        let list = &imp.list;
 
-        // Find redacted events in the list
-        {
-            let mut redacted_events = imp.redacted_events.borrow_mut();
-            let list = imp.list.borrow();
-            let mut i = list.len();
-            let mut list = list.iter();
-
-            while let Some(item) = list.next_back() {
-                if let Some(event) = item.downcast_ref::<SupportedEvent>() {
-                    if redacted_events.remove(&event.event_id()) {
-                        redacted_events_pos.push(i - 1);
-                    }
-                    if redacted_events.is_empty() {
-                        break;
-                    }
-                }
-                i -= 1;
-            }
-        }
-
-        let mut redacted_events_pos = &mut redacted_events_pos[..];
-        // Sort positions to start from the end so positions are still valid
-        // and to group calls to `items_changed`.
-        redacted_events_pos.sort_unstable_by(|a, b| b.partial_cmp(a).unwrap());
-        while let Some(pos) = redacted_events_pos.first() {
-            let mut pos = pos.to_owned();
-            let mut removed = 1;
-
-            {
-                let mut list = imp.list.borrow_mut();
-                list.remove(pos);
-
-                // Remove all consecutive previous redacted events.
-                while let Some(next_pos) = redacted_events_pos.get(removed) {
-                    if next_pos == &(pos - 1) {
-                        pos -= 1;
-                        removed += 1;
-                        list.remove(pos);
-                    } else {
-                        break;
-                    }
-                }
-                redacted_events_pos = &mut redacted_events_pos[removed..];
-
-                // Remove the day divider before this event if it's not useful anymore.
-                let day_divider_before = pos >= 1
-                    && list
-                        .get(pos - 1)
-                        .filter(|item| item.is::<TimelineDayDivider>())
-                        .is_some();
-                let after = pos == list.len()
-                    || list
-                        .get(pos)
-                        .filter(|item| item.is::<TimelineDayDivider>())
-                        .is_some();
-
-                if day_divider_before && after {
-                    pos -= 1;
-                    removed += 1;
-                    list.remove(pos);
-                }
-            }
-
-            self.upcast_ref::<gio::ListModel>()
-                .items_changed(pos as u32, removed as u32, 0);
-        }
-    }
-
-    fn add_hidden_events(&self, events: Vec<SupportedEvent>, at_front: bool) {
-        let imp = self.imp();
-        let mut relates_to_events = imp.relates_to_events.borrow_mut();
-
-        // Group events by related event
-        let mut new_relations: HashMap<_, Vec<_>> = HashMap::new();
-        for event in events {
-            if let Some(relates_to) = relates_to_events.remove(&event.event_id()) {
-                let mut replacing_events = vec![];
-                let mut reactions = vec![];
-
-                for relation_event_id in relates_to {
-                    let relation = self
-                        .event_by_id(&relation_event_id)
-                        .and_then(|event| event.downcast::<SupportedEvent>().ok())
-                        .expect("Previously known event has disappeared");
-
-                    if relation.is_replacing_event() {
-                        replacing_events.push(relation);
-                    } else if relation.is_reaction() {
-                        reactions.push(relation);
-                    }
-                }
-
-                if !at_front || event.replacing_events().is_empty() {
-                    event.append_replacing_events(replacing_events);
-                } else {
-                    event.prepend_replacing_events(replacing_events);
-                }
-                event.add_reactions(reactions);
-            }
-
-            if let Some(relates_to_event) = event.related_event_id() {
-                let relations = new_relations.entry(relates_to_event).or_default();
-                relations.push(event);
-            }
-        }
-
-        // Handle new relations
-        let mut redacted_events = imp.redacted_events.borrow_mut();
-        for (relates_to_event_id, new_relations) in new_relations {
-            if let Some(relates_to_event) = self.event_by_id(&relates_to_event_id) {
-                // Get the relations in relates_to_event otherwise they will be added in
-                // items_changed and they might not be added at the right place.
-                let mut relations: Vec<_> = relates_to_events
-                    .remove(&relates_to_event_id)
-                    .unwrap_or_default()
+        match diff {
+            VecDiff::Replace { values } => {
+                let removed = self.n_items_in_list();
+                let new_list = values
                     .into_iter()
-                    .map(|event_id| {
-                        self.event_by_id(&event_id)
-                            .and_then(|event| event.downcast::<SupportedEvent>().ok())
-                            .expect("Previously known event has disappeared")
-                    })
-                    .collect();
+                    .map(|item| self.create_item(&item))
+                    .collect::<VecDeque<_>>();
+                let added = new_list.iter().filter(|item| item.is_visible()).count();
 
-                if let Some(relates_to_event) = relates_to_event.downcast_ref::<SupportedEvent>() {
-                    if at_front {
-                        relations.splice(..0, new_relations);
-                    } else {
-                        relations.extend(new_relations);
-                    }
+                *list.borrow_mut() = new_list;
 
-                    let mut replacing_events = vec![];
-                    let mut reactions = vec![];
+                self.items_changed(0, removed, added as u32);
+            }
+            VecDiff::InsertAt { index, value } => {
+                let item = self.create_item(&value);
+                let visible = item.is_visible();
+                list.borrow_mut().insert(index, item);
 
-                    for relation in relations {
-                        if relation.is_replacing_event() {
-                            replacing_events.push(relation);
-                        } else if relation.is_reaction() {
-                            reactions.push(relation);
-                        }
-                    }
-
-                    if !at_front || relates_to_event.replacing_events().is_empty() {
-                        relates_to_event.append_replacing_events(replacing_events);
-                    } else {
-                        relates_to_event.prepend_replacing_events(replacing_events);
-                    }
-                    relates_to_event.add_reactions(reactions);
-
-                    if relates_to_event.redacted() {
-                        redacted_events.insert(relates_to_event.event_id());
-                    }
-                }
-            } else {
-                // Store the new event if the `related_to` event isn't known, we will update the
-                // `relates_to` once the `related_to` event is added to the list
-                let relates_to_event = relates_to_events.entry(relates_to_event_id).or_default();
-
-                let relations_ids: Vec<_> =
-                    new_relations.iter().map(|event| event.event_id()).collect();
-                if at_front {
-                    relates_to_event.splice(..0, relations_ids);
-                } else {
-                    relates_to_event.extend(relations_ids);
+                if visible {
+                    self.items_changed(index as u32, 0, 1);
                 }
             }
+            VecDiff::UpdateAt { index, value } => {
+                let prev_item = list.borrow()[index].clone();
+                let pos = self.find_item_position(&prev_item);
+
+                let changed = if !prev_item.try_update_with(&value) {
+                    self.remove_item(&prev_item);
+                    list.borrow_mut()[index] = self.create_item(&value);
+
+                    true
+                } else {
+                    false
+                };
+
+                let new_item = list.borrow()[index].clone();
+
+                if let Some(pos) = pos {
+                    let pos = pos as u32;
+
+                    if !new_item.is_visible() {
+                        // The item was visible but is not anymore, remove it.
+                        self.items_changed(pos, 1, 0);
+                    } else if changed {
+                        // The item is still visible but has changed.
+                        self.items_changed(pos, 1, 1);
+                    }
+                } else if new_item.is_visible() {
+                    // The item is now visible.
+                    let pos = self.find_item_position(&new_item).unwrap();
+                    self.items_changed(pos as u32, 0, 1);
+                }
+            }
+            VecDiff::Push { value } => {
+                let visible = {
+                    let mut list = list.borrow_mut();
+                    let item = self.create_item(&value);
+                    let visible = item.is_visible();
+                    list.push_back(item);
+                    visible
+                };
+
+                if visible {
+                    self.items_changed(self.n_items_in_list() - 1, 0, 1);
+                }
+            }
+            VecDiff::RemoveAt { index } => {
+                let item = list.borrow().get(index).unwrap().clone();
+                let pos = self.find_item_position(&item);
+                let item = list.borrow_mut().remove(index).unwrap();
+                self.remove_item(&item);
+
+                if let Some(pos) = pos {
+                    self.items_changed(pos as u32, 1, 0);
+                }
+            }
+            VecDiff::Move {
+                old_index,
+                new_index,
+            } => {
+                let item = list.borrow_mut().remove(old_index).unwrap();
+                let visible = item.is_visible();
+                if visible {
+                    self.items_changed(old_index as u32, 1, 0);
+                }
+
+                list.borrow_mut().insert(new_index, item);
+                if visible {
+                    self.items_changed(new_index as u32, 0, 1);
+                }
+            }
+            VecDiff::Pop {} => {
+                let visible = {
+                    let mut list = list.borrow_mut();
+                    let item = list.pop_back().unwrap();
+                    self.remove_item(&item);
+                    item.is_visible()
+                };
+
+                if visible {
+                    self.items_changed(self.n_items_in_list(), 1, 0);
+                }
+            }
+            VecDiff::Clear {} => {
+                self.clear();
+            }
+        }
+    }
+
+    /// Create a `TimelineItem` in this `Timeline` from the given SDK timeline
+    /// item.
+    fn create_item(&self, item: &SdkTimelineItem) -> TimelineItem {
+        let item = TimelineItem::new(item, &self.room());
+
+        if let Some(event) = item.downcast_ref::<Event>() {
+            self.imp()
+                .event_map
+                .borrow_mut()
+                .insert(event.key(), event.clone());
+        }
+
+        item
+    }
+
+    /// Remove the given item from this `Timeline`.
+    fn remove_item(&self, item: &TimelineItem) {
+        if let Some(event) = item.downcast_ref::<Event>() {
+            self.imp().event_map.borrow_mut().remove(&event.key());
+        } else if item
+            .downcast_ref::<TimelinePlaceholder>()
+            .filter(|item| item.kind() == PlaceholderKind::Spinner)
+            .is_some()
+            && self.state() == TimelineState::Loading
+        {
+            self.set_state(TimelineState::Ready)
         }
     }
 
     /// Load events at the start of the timeline.
-    ///
-    /// Returns `true` when no messages were added, but more can be loaded.
-    pub async fn load(&self) -> bool {
-        let imp = self.imp();
-
+    pub async fn load(&self) {
         if matches!(
             self.state(),
             TimelineState::Loading | TimelineState::Complete
         ) {
-            return false;
+            return;
         }
 
         self.set_state(TimelineState::Loading);
-        self.add_loading_spinner();
 
-        let matrix_room = self.room().matrix_room();
-        let timeline_weak = self.downgrade().into();
-        let backward_stream = imp.backward_stream.clone();
-        let forward_handle = imp.forward_handle.clone();
-
-        let handle: tokio::task::JoinHandle<matrix_sdk::Result<_>> = spawn_tokio!(async move {
-            let mut backward_stream_guard = backward_stream.lock().await;
-            let mut forward_handle_guard = forward_handle.lock().await;
-            if backward_stream_guard.is_none() {
-                let (forward_stream, backward_stream) = matrix_room.timeline().await?;
-
-                let forward_handle = tokio::spawn(async move {
-                    handle_forward_stream(timeline_weak, forward_stream).await;
-                });
-
-                if let Some(old_forward_handle) = forward_handle_guard.replace(forward_handle) {
-                    old_forward_handle.abort();
-                }
-
-                backward_stream_guard
-                    .replace(Box::pin(backward_stream.ready_chunks(MAX_BATCH_SIZE)));
-            }
-
-            Ok(backward_stream_guard.as_mut().unwrap().next().await)
+        let matrix_timeline = self.matrix_timeline();
+        let handle = spawn_tokio!(async move {
+            matrix_timeline
+                .paginate_backwards(PaginationOptions::until_num_items(
+                    MAX_BATCH_SIZE,
+                    MAX_BATCH_SIZE,
+                ))
+                .await
         });
 
-        match handle.await.unwrap() {
-            Ok(Some(events)) => {
-                let events: Vec<_> = events
-                    .into_iter()
-                    .filter_map(|event| match event {
-                        Ok(event) => Some(event),
-                        Err(error) => {
-                            error!("Failed to load messages: {}", error);
-                            None
-                        }
-                    })
-                    .collect();
-
-                let deser_events: Vec<_> = events
-                    .iter()
-                    .filter_map(|event| event.event.deserialize().ok())
-                    .collect();
-                let room = self.room();
-                room.session()
-                    .verification_list()
-                    .handle_response_room(&room, deser_events.iter());
-                room.update_latest_unread(deser_events.iter());
-
-                let events: Vec<Event> = events
-                    .into_iter()
-                    .map(|event| Event::new(event, &room))
-                    .collect();
-
-                self.remove_loading_spinner();
-                if events.is_empty() {
-                    self.set_state(TimelineState::Error);
-                    return false;
-                }
-
-                self.set_state(TimelineState::Ready);
-                !self.prepend(events)
-            }
-            Ok(None) => {
-                self.remove_loading_spinner();
-                self.set_state(TimelineState::Complete);
-                false
-            }
-            Err(error) => {
-                error!("Failed to load timeline: {}", error);
-                self.set_state(TimelineState::Error);
-                self.remove_loading_spinner();
-                false
-            }
+        if let Err(error) = handle.await.unwrap() {
+            error!("Failed to load timeline: {error}");
+            self.set_state(TimelineState::Error);
         }
     }
 
-    async fn clear(&self) {
+    fn clear(&self) {
         let imp = self.imp();
-        // Remove backward stream so that we create new streams
-        let mut backward_stream = imp.backward_stream.lock().await;
-        backward_stream.take();
 
-        let mut forward_handle = imp.forward_handle.lock().await;
-        if let Some(forward_handle) = forward_handle.take() {
-            forward_handle.abort();
-        }
-
-        let length = imp.list.borrow().len();
-        imp.relates_to_events.replace(HashMap::new());
-        imp.list.replace(VecDeque::new());
-        imp.event_map.replace(HashMap::new());
-        imp.pending_events.replace(HashMap::new());
-        imp.redacted_events.replace(HashSet::new());
+        let count = self.n_items_in_list();
+        imp.list.take();
+        imp.event_map.take();
         self.set_state(TimelineState::Initial);
 
         self.notify("empty");
         self.upcast_ref::<gio::ListModel>()
-            .items_changed(0, length as u32, 0);
+            .items_changed(0, count, 0);
     }
 
-    /// Append the new events
-    pub fn append(&self, batch: Vec<Event>) {
-        let imp = self.imp();
-
-        if batch.is_empty() {
-            return;
-        }
-        let mut added = batch.len();
-
-        let index = {
-            let index = {
-                let mut list = imp.list.borrow_mut();
-                // Extend the size of the list so that rust doesn't need to reallocate memory
-                // multiple times
-                list.reserve(batch.len());
-
-                list.len()
-            };
-
-            let mut pending_events = imp.pending_events.borrow_mut();
-            let mut hidden_events = vec![];
-
-            for event in batch.into_iter() {
-                if let Some(event_id) = event
-                    .downcast_ref::<UnsupportedEvent>()
-                    .and_then(|event| event.event_id())
-                {
-                    imp.event_map.borrow_mut().insert(event_id, event);
-                    added -= 1;
-                } else if let Ok(event) = event.downcast::<SupportedEvent>() {
-                    let event_id = event.event_id();
-
-                    if event.counts_as_unread() {
-                        event.sender().set_latest_activity(
-                            event
-                                .origin_server_ts()
-                                .map(|ts| ts.0.into())
-                                .unwrap_or_default(),
-                        );
-                    }
-
-                    if let Some(pending_id) = event
-                        .transaction_id()
-                        .and_then(|txn_id| pending_events.remove(&txn_id))
-                    {
-                        let mut event_map = imp.event_map.borrow_mut();
-
-                        if let Some(pending_event) = event_map.remove(&pending_id) {
-                            pending_event.set_pure_event(event.pure_event());
-                            event_map.insert(event_id, pending_event);
-                        };
-                        added -= 1;
-                    } else {
-                        imp.event_map
-                            .borrow_mut()
-                            .insert(event_id, event.clone().upcast());
-                        if event.is_hidden_event() {
-                            hidden_events.push(event);
-                            added -= 1;
-                        } else {
-                            imp.list.borrow_mut().push_back(event.upcast());
-                        }
-                    }
-                } else {
-                    added -= 1;
-                }
-            }
-
-            self.add_hidden_events(hidden_events, false);
-
-            index
-        };
-
-        self.items_changed(index as u32, 0, added as u32);
-    }
-
-    /// Append an event that wasn't yet fully sent and received via a sync
-    pub fn append_pending(&self, txn_id: &TransactionId, event: SupportedEvent) {
-        let imp = self.imp();
-
-        imp.event_map
-            .borrow_mut()
-            .insert(event.event_id(), event.clone().upcast());
-
-        imp.pending_events
-            .borrow_mut()
-            .insert(txn_id.to_owned(), event.event_id());
-
-        let index = {
-            let mut list = imp.list.borrow_mut();
-            let index = list.len();
-
-            if event.is_hidden_event() {
-                self.add_hidden_events(vec![event], false);
-                None
-            } else {
-                list.push_back(event.upcast());
-                Some(index)
-            }
-        };
-
-        if let Some(index) = index {
-            self.items_changed(index as u32, 0, 1);
-        }
-    }
-
-    /// Get the event with the given id from the local store.
+    /// Get the event with the given key from this `Timeline`.
     ///
     /// Use this method if you are sure the event has already been received.
     /// Otherwise use `fetch_event_by_id`.
-    pub fn event_by_id(&self, event_id: &EventId) -> Option<Event> {
-        self.imp().event_map.borrow().get(event_id).cloned()
+    pub fn event_by_key(&self, key: &EventKey) -> Option<Event> {
+        self.imp().event_map.borrow().get(key).cloned()
     }
 
-    /// Get the position of the event with the given id in this `Timeline`.
-    pub fn find_event_position(&self, event_id: &EventId) -> Option<usize> {
+    /// Get the position of the given item in this `Timeline`.
+    pub fn find_item_position(&self, item: &TimelineItem) -> Option<usize> {
         self.imp()
             .list
             .borrow()
             .iter()
+            .filter(|item| item.is_visible())
+            .enumerate()
+            .find_map(|(pos, list_item)| (item == list_item).then_some(pos))
+    }
+
+    /// Get the position of the event with the given key in this `Timeline`.
+    pub fn find_event_position(&self, key: &EventKey) -> Option<usize> {
+        self.imp()
+            .list
+            .borrow()
+            .iter()
+            .filter(|item| item.is_visible())
             .enumerate()
             .find_map(|(pos, item)| {
                 item.downcast_ref::<Event>()
-                    .and_then(|event| event.event_id())
-                    .filter(|item_event_id| item_event_id == event_id)
+                    .filter(|event| event.key() == *key)
                     .map(|_| pos)
             })
     }
@@ -749,17 +443,20 @@ impl Timeline {
     ///
     /// Use this method if you are not sure the event has already been received.
     /// Otherwise use `event_by_id`.
-    pub async fn fetch_event_by_id(&self, event_id: &EventId) -> Result<Event, MatrixError> {
-        if let Some(event) = self.event_by_id(event_id) {
-            Ok(event)
+    pub async fn fetch_event_by_id(
+        &self,
+        event_id: OwnedEventId,
+    ) -> Result<AnySyncTimelineEvent, MatrixError> {
+        if let Some(event) = self.event_by_key(&EventKey::EventId(event_id.clone())) {
+            event.raw().unwrap().deserialize().map_err(Into::into)
         } else {
             let room = self.room();
             let matrix_room = room.matrix_room();
-            let event_id_clone = event_id.to_owned();
+            let event_id_clone = event_id.clone();
             let handle =
                 spawn_tokio!(async move { matrix_room.event(event_id_clone.as_ref()).await });
             match handle.await.unwrap() {
-                Ok(room_event) => Ok(Event::new(room_event.into(), &room)),
+                Ok(room_event) => room_event.event.deserialize_as().map_err(Into::into),
                 Err(error) => {
                     // TODO: Retry on connection error?
                     warn!("Could not fetch event {}: {}", event_id, error);
@@ -767,57 +464,6 @@ impl Timeline {
                 }
             }
         }
-    }
-
-    /// Prepends a batch of events.
-    ///
-    /// Returns `true` if new shown events where added to the timeline.
-    pub fn prepend(&self, batch: Vec<Event>) -> bool {
-        let imp = self.imp();
-        let mut added = batch.len();
-
-        {
-            let mut hidden_events: Vec<_> = vec![];
-            // Extend the size of the list so that rust doesn't need to reallocate memory
-            // multiple times
-            imp.list.borrow_mut().reserve(added);
-
-            for event in batch {
-                if let Some(event_id) = event
-                    .downcast_ref::<UnsupportedEvent>()
-                    .and_then(|event| event.event_id())
-                {
-                    imp.event_map.borrow_mut().insert(event_id, event);
-                    added -= 1;
-                } else if let Ok(event) = event.downcast::<SupportedEvent>() {
-                    if event.counts_as_unread() {
-                        event.sender().set_latest_activity(
-                            event
-                                .origin_server_ts()
-                                .map(|ts| ts.0.into())
-                                .unwrap_or_default(),
-                        );
-                    }
-
-                    imp.event_map
-                        .borrow_mut()
-                        .insert(event.event_id(), event.clone().upcast());
-
-                    if event.is_hidden_event() {
-                        hidden_events.push(event);
-                        added -= 1;
-                    } else {
-                        imp.list.borrow_mut().push_front(event.upcast());
-                    }
-                } else {
-                    added -= 1;
-                }
-            }
-            self.add_hidden_events(hidden_events, true);
-        }
-
-        self.items_changed(0, 0, added as u32);
-        added > 0
     }
 
     /// Set the room containing this timeline.
@@ -833,11 +479,48 @@ impl Timeline {
                 }),
             );
         }
+
+        spawn!(clone!(@weak self as obj => async move {
+            obj.setup_timeline().await;
+        }));
+    }
+
+    /// Setup the underlying SDK timeline.
+    async fn setup_timeline(&self) {
+        let room = self.room();
+        let room_id = room.room_id().to_owned();
+        let matrix_room = room.matrix_room();
+
+        let matrix_timeline = spawn_tokio!(async move { Arc::new(matrix_room.timeline().await) })
+            .await
+            .unwrap();
+
+        self.imp().timeline.set(matrix_timeline.clone()).unwrap();
+
+        let (mut sender, mut receiver) = futures::channel::mpsc::channel(100);
+        let fut = matrix_timeline.signal().for_each(move |diff| {
+            if let Err(error) = sender.try_send(diff) {
+                error!("Error sending diff from timeline for room {room_id}: {error}");
+                panic!();
+            }
+
+            async {}
+        });
+        spawn_tokio!(fut);
+
+        while let Some(diff) = receiver.next().await {
+            self.update(diff)
+        }
     }
 
     /// The room containing this timeline.
     pub fn room(&self) -> Room {
         self.imp().room.upgrade().unwrap()
+    }
+
+    /// The underlying SDK timeline.
+    pub fn matrix_timeline(&self) -> Arc<SdkTimeline> {
+        self.imp().timeline.get().unwrap().clone()
     }
 
     fn set_state(&self, state: TimelineState) {
@@ -859,22 +542,7 @@ impl Timeline {
 
     /// Whether the timeline is empty.
     pub fn is_empty(&self) -> bool {
-        let imp = self.imp();
-        imp.list.borrow().is_empty()
-            || (imp.list.borrow().len() == 1 && self.state() == TimelineState::Loading)
-    }
-
-    fn add_loading_spinner(&self) {
-        self.imp()
-            .list
-            .borrow_mut()
-            .push_front(TimelinePlaceholder::spinner().upcast());
-        self.upcast_ref::<gio::ListModel>().items_changed(0, 0, 1);
-    }
-
-    fn remove_loading_spinner(&self) {
-        self.imp().list.borrow_mut().pop_front();
-        self.upcast_ref::<gio::ListModel>().items_changed(0, 1, 0);
+        self.n_items() == 0
     }
 
     fn has_typing_row(&self) -> bool {
@@ -900,72 +568,4 @@ impl Timeline {
         self.imp().has_typing.set(false);
         self.upcast_ref::<gio::ListModel>().items_changed(pos, 1, 0);
     }
-
-    /// Remove the given event from the timeline.
-    ///
-    /// This should be used when the source of an `Event` changes and it should
-    /// be hidden now.
-    pub fn remove_event(&self, event_id: &EventId) {
-        if let Some(index) = self.find_event_position(event_id) {
-            self.imp().list.borrow_mut().remove(index);
-
-            self.items_changed(index as u32, 1, 0);
-        }
-    }
-
-    /// Replace the supported event with the given ID with the given unsupported
-    /// event in this timeline.
-    ///
-    /// This should be used when the source of a `SupportedEvent` changes, and
-    /// the new source fails to deserialize.
-    pub fn replace_supported_event(&self, event_id: OwnedEventId, event: UnsupportedEvent) {
-        self.remove_event(&event_id);
-
-        self.imp()
-            .event_map
-            .borrow_mut()
-            .insert(event_id, event.upcast());
-    }
-}
-
-async fn handle_forward_stream(
-    timeline: glib::SendWeakRef<Timeline>,
-    stream: impl Stream<Item = SyncTimelineEvent>,
-) {
-    let stream = stream.ready_chunks(MAX_BATCH_SIZE);
-    pin_mut!(stream);
-
-    while let Some(events) = stream.next().await {
-        let timeline = timeline.clone();
-        let (sender, receiver) = futures::channel::oneshot::channel();
-        let ctx = glib::MainContext::default();
-        ctx.spawn(async move {
-            let result = if let Some(timeline) = timeline.upgrade() {
-                let events: Vec<_> = events
-                    .into_iter()
-                    .map(|event| Event::new(event, &timeline.room()))
-                    .collect();
-
-                timeline.append(events);
-
-                true
-            } else {
-                false
-            };
-            sender.send(result).unwrap();
-        });
-
-        if !receiver.await.unwrap() {
-            break;
-        }
-    }
-
-    let ctx = glib::MainContext::default();
-    ctx.spawn(async move {
-        crate::spawn!(async move {
-            if let Some(timeline) = timeline.upgrade() {
-                timeline.clear().await;
-            };
-        });
-    });
 }

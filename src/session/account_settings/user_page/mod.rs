@@ -260,7 +260,7 @@ impl UserPage {
         let handle = spawn_tokio!(async move {
             client_clone
                 .media()
-                .upload(&mime.parse().unwrap(), &data)
+                .upload(&mime.parse().unwrap(), data)
                 .await
         });
 

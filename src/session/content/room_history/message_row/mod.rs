@@ -17,7 +17,7 @@ use gtk::{
 
 pub use self::content::ContentFormat;
 use self::{content::MessageContent, reaction_list::MessageReactionList};
-use crate::{components::Avatar, prelude::*, session::room::SupportedEvent};
+use crate::{components::Avatar, prelude::*, session::room::Event};
 
 mod imp {
     use std::cell::RefCell;
@@ -44,7 +44,7 @@ mod imp {
         pub reactions: TemplateChild<MessageReactionList>,
         pub source_changed_handler: RefCell<Option<SignalHandlerId>>,
         pub bindings: RefCell<Vec<glib::Binding>>,
-        pub event: RefCell<Option<SupportedEvent>>,
+        pub event: RefCell<Option<Event>>,
     }
 
     #[glib::object_subclass]
@@ -143,7 +143,7 @@ impl MessageRow {
         self.imp().content.set_format(format);
     }
 
-    pub fn set_event(&self, event: SupportedEvent) {
+    pub fn set_event(&self, event: Event) {
         let imp = self.imp();
         // Remove signals and bindings from the previous event
         if let Some(event) = imp.event.take() {
@@ -193,7 +193,7 @@ impl MessageRow {
         imp.event.replace(Some(event));
     }
 
-    fn update_content(&self, event: &SupportedEvent) {
+    fn update_content(&self, event: &Event) {
         self.imp().content.update_for_event(event);
     }
 

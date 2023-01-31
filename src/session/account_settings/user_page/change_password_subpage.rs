@@ -8,8 +8,11 @@ use log::error;
 use matrix_sdk::{
     ruma::{
         api::{
-            client::{account::change_password, error::ErrorKind},
-            error::{FromHttpResponseError, ServerError},
+            client::{
+                account::change_password,
+                error::{Error as ClientApiError, ErrorBody, ErrorKind},
+            },
+            error::FromHttpResponseError,
         },
         assign,
     },
@@ -269,10 +272,10 @@ impl ChangePasswordSubpage {
                     if let Some(auth) = auth_data {
                         let auth = Some(auth.as_matrix_auth_data());
                         let request =
-                            assign!(change_password::v3::Request::new(&password), { auth });
+                            assign!(change_password::v3::Request::new(password.into()), { auth });
                         client.send(request, None).await.map_err(Into::into)
                     } else {
-                        let request = change_password::v3::Request::new(&password);
+                        let request = change_password::v3::Request::new(password.into());
                         client.send(request, None).await.map_err(Into::into)
                     }
                 }
@@ -289,11 +292,18 @@ impl ChangePasswordSubpage {
             Err(err) => match err {
                 AuthError::UserCancelled => {}
                 AuthError::ServerResponse(error)
-                    if matches!(error.as_ref(), MatrixError::Http(HttpError::Api(
-                    FromHttpResponseError::Server(ServerError::Known(RumaApiError::ClientApi(
-                        error,
-                    ))),
-                )) if error.kind == ErrorKind::WeakPassword) =>
+                    if matches!(
+                        error.as_ref(),
+                        MatrixError::Http(HttpError::Api(FromHttpResponseError::Server(
+                            RumaApiError::ClientApi(ClientApiError {
+                                body: ErrorBody::Standard {
+                                    kind: ErrorKind::WeakPassword,
+                                    ..
+                                },
+                                ..
+                            },)
+                        )),)
+                    ) =>
                 {
                     error!("Weak password: {:?}", error);
                     toast!(self, gettext("Password rejected for being too weak"));
