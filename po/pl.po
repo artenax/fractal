@@ -1,16 +1,16 @@
 # Polish translation for fractal.
-# Copyright © 2018-2022 the fractal authors.
+# Copyright © 2018-2023 the fractal authors.
 # This file is distributed under the same license as the fractal package.
 # Marek Jędrzejewski <kontakt@marekjedrzejewski.pl>, 2018.
-# Piotr Drąg <piotrdrag@gmail.com>, 2018-2022.
-# Aviary.pl <community-poland@mozilla.org>, 2018-2022.
+# Piotr Drąg <piotrdrag@gmail.com>, 2018-2023.
+# Aviary.pl <community-poland@mozilla.org>, 2018-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-11-08 14:28+0000\n"
-"PO-Revision-Date: 2022-11-13 13:28+0100\n"
+"POT-Creation-Date: 2023-01-11 17:04+0000\n"
+"PO-Revision-Date: 2023-02-05 14:29+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -71,6 +71,10 @@ msgstr "Ustawienia sesji"
 #: data/org.gnome.Fractal.gschema.xml.in:24
 msgid "Serialized list of settings per session"
 msgstr "Uszeregowana lista ustawień na sesję"
+
+#: data/org.gnome.Fractal.gschema.xml.in:28
+msgid "Current session"
+msgstr "Obecna sesja"
 
 #: data/org.gnome.Fractal.metainfo.xml.in.in:8
 msgid "Matrix group messaging app"
@@ -144,7 +148,7 @@ msgstr ""
 "Aby potwierdzić chęć dezaktywacji tego konta, proszę wpisać identyfikator "
 "użytkownika Matrix:"
 
-#: data/resources/ui/account-settings-device-row.ui:59
+#: data/resources/ui/account-settings-device-row.ui:63
 #: src/session/content/verification/identity_verification_widget.rs:529
 #: src/session/content/verification/identity_verification_widget.rs:534
 #: src/session/content/verification/identity_verification_widget.rs:537
@@ -735,7 +739,7 @@ msgstr "Dołączenie do pokoju"
 msgid "Enter a room ID, room alias, or permalink."
 msgstr "Proszę podać identyfikator pokoju, alias pokoju lub trwały odnośnik."
 
-#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:712
+#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:710
 msgid "_Join"
 msgstr "_Dołącz"
 
@@ -1044,8 +1048,8 @@ msgstr "© 2017-2022 Zespół programu Fractal"
 msgid "translator-credits"
 msgstr ""
 "Marek Jędrzejewski <kontakt@marekjedrzejewski.pl>, 2018\n"
-"Piotr Drąg <piotrdrag@gmail.com>, 2018-2022\n"
-"Aviary.pl <community-poland@mozilla.org>, 2018-2022"
+"Piotr Drąg <piotrdrag@gmail.com>, 2018-2023\n"
+"Aviary.pl <community-poland@mozilla.org>, 2018-2023"
 
 #. This can't be added via the builder
 #: src/application.rs:209
@@ -1101,11 +1105,11 @@ msgstr "Pomyślnie usunięto sesję."
 msgid "Could not remove session from secret storage"
 msgstr "Nie można usunąć sesji z przechowalni haseł"
 
-#: src/greeter.rs:82 src/login/mod.rs:674 src/window.rs:365
+#: src/greeter.rs:82 src/login/mod.rs:683 src/window.rs:391
 msgid "No network connection"
 msgstr "Brak połączenia z siecią"
 
-#: src/greeter.rs:87 src/login/mod.rs:679 src/window.rs:369
+#: src/greeter.rs:87 src/login/mod.rs:688 src/window.rs:395
 msgid "No Internet connection"
 msgstr "Brak połączenia z Internetem"
 
@@ -1129,36 +1133,37 @@ msgstr "Adres URL serwera domowego Matrix, na przykład {address}"
 msgid "Connecting to {domain_name}"
 msgstr "Łączenie z domeną {domain_name}"
 
-#: src/login/mod.rs:600
+#: src/login/mod.rs:609
 msgid "Unable to store session"
 msgstr "Nie można przechować sesji"
 
-#: src/secret.rs:56
+#: src/secret.rs:57
 msgid "The secret storage file is corrupted."
 msgstr "Plik przechowalni haseł jest uszkodzony."
 
-#: src/secret.rs:60
+#: src/secret.rs:61
 msgid "Could not access the secret storage file location."
 msgstr "Nie można uzyskać dostępu do położenia pliku przechowalni haseł."
 
-#: src/secret.rs:63
+#: src/secret.rs:64
 msgid "An unknown error occurred when accessing the secret storage file."
 msgstr ""
 "Wystąpił nieznany błąd podczas uzyskiwania dostępu do położenia pliku "
 "przechowalni haseł."
 
-#: src/secret.rs:66
+#: src/secret.rs:67
 msgid "The secret storage file has been changed by another process."
 msgstr "Plik przechowalni haseł został zmieniony przez inny proces."
 
-#: src/secret.rs:69 src/secret.rs:95
+#: src/secret.rs:70
 msgid ""
-"An unknown error occurred when interacting with the D-Bus Secret Service."
+"An unknown error occurred when interacting with the D-Bus Secret Portal "
+"backend."
 msgstr ""
-"Wystąpił nieznany błąd podczas współdziałania z usługą Secret Service na "
+"Wystąpił nieznany błąd podczas współdziałania z mechanizmem portalu haseł na "
 "magistrali D-Bus."
 
-#: src/secret.rs:72
+#: src/secret.rs:73
 msgid ""
 "The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1166,7 +1171,7 @@ msgstr ""
 "Żądanie do portalu haseł Flatpak zostało anulowane. Należy się upewnić, że "
 "zaakceptowano prośbę o dostęp do niego."
 
-#: src/secret.rs:75
+#: src/secret.rs:76
 msgid ""
 "The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
 "installed, and it is at least at version 1.5.0."
@@ -1174,11 +1179,17 @@ msgstr ""
 "Portal haseł Flatpak jest niedostępny. Należy się upewnić, że zainstalowano "
 "xdg-desktop-portal w wersji co najmniej 1.5.0."
 
-#: src/secret.rs:85
+#: src/secret.rs:79
+msgid "The Flatpak Secret Portal provided a key that is too weak to be secure."
+msgstr ""
+"Portal haseł Flatpak dostarczył klucz, który jest za słaby, aby był "
+"bezpieczny."
+
+#: src/secret.rs:91
 msgid "The item was deleted."
 msgstr "Element został usunięty."
 
-#: src/secret.rs:88
+#: src/secret.rs:94
 msgid ""
 "The request to the D-Bus Secret Service was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1186,7 +1197,7 @@ msgstr ""
 "Żądanie do usługi Secret Service na magistrali D-Bus zostało anulowane. "
 "Należy się upewnić, że zaakceptowano prośbę o dostęp do niej."
 
-#: src/secret.rs:91
+#: src/secret.rs:97
 msgid ""
 "Could not access the default collection. Make sure a keyring was created and "
 "set as default."
@@ -1194,41 +1205,50 @@ msgstr ""
 "Nie można uzyskać dostępu do domyślnej kolekcji. Należy się upewnić, że "
 "utworzono bazę kluczy i ustawiono ją jako domyślną."
 
-#: src/secret.rs:135
+#: src/secret.rs:101
+msgid ""
+"An unknown error occurred when interacting with the D-Bus Secret Service."
+msgstr ""
+"Wystąpił nieznany błąd podczas współdziałania z usługą Secret Service na "
+"magistrali D-Bus."
+
+#: src/secret.rs:141
 msgid "Malformed homeserver in stored session"
 msgstr "Błędnie sformatowany serwer domowy w przechowanej sesji"
 
-#: src/secret.rs:142
+#: src/secret.rs:148
 msgid "Could not find homeserver in stored session"
 msgstr "Nie można odnaleźć serwera domowego w przechowanej sesji"
 
-#: src/secret.rs:156
+#: src/secret.rs:162
 msgid "Malformed user ID in stored session"
 msgstr "Błędnie sformatowany identyfikator użytkownika w przechowanej sesji"
 
-#: src/secret.rs:163
+#: src/secret.rs:169
 msgid "Could not find user ID in stored session"
 msgstr "Nie można odnaleźć identyfikatora użytkownika w przechowanej sesji"
 
-#: src/secret.rs:172
+#: src/secret.rs:178
 msgid "Could not find device ID in stored session"
 msgstr "Nie można odnaleźć identyfikatora urządzenia w przechowanej sesji"
 
-#: src/secret.rs:181
+#: src/secret.rs:187
 msgid "Could not find database path in stored session"
 msgstr "Nie można odnaleźć ścieżki do bazy danych w przechowanej sesji"
 
-#: src/secret.rs:192
+#: src/secret.rs:198
 msgid "Malformed secret in stored session"
 msgstr "Błędnie sformatowane hasło w przechowanej sesji"
 
-#: src/secret.rs:200
+#: src/secret.rs:206
 msgid "Could not get secret in stored session"
 msgstr "Nie można uzyskać hasła z przechowanej sesji"
 
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:310
+#: src/secret.rs:315 src/secret.rs:355
 msgid "Fractal: Matrix credentials for {user_id}"
 msgstr "Fractal: dane uwierzytelniania Matrix dla użytkownika {user_id}"
 
@@ -1559,7 +1579,7 @@ msgstr "Członkowie pokoju"
 msgid "Invite new Members"
 msgstr "Zaproś nowych członków"
 
-#: src/session/content/room_history/item_row.rs:288
+#: src/session/content/room_history/item_row.rs:295
 msgid "New Messages"
 msgstr "Nowe wiadomości"
 
@@ -1978,11 +1998,11 @@ msgstr "Anulowano uwierzytelnianie wymagane do utworzenia kluczy szyfrowania."
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Wystąpił błąd podczas tworzenia kluczy szyfrowania."
 
-#: src/session/mod.rs:710
+#: src/session/mod.rs:708
 msgid "_View"
 msgstr "_Wyświetl"
 
-#: src/session/mod.rs:756
+#: src/session/mod.rs:754
 msgid "Failed to logout the session."
 msgstr "Wylogowanie sesji się nie powiodło."
 
@@ -2238,25 +2258,25 @@ msgstr "Odkrywaj"
 msgid "Forget Room"
 msgstr "Zapomnij pokój"
 
-#: src/session/verification/identity_verification.rs:634
+#: src/session/verification/identity_verification.rs:637
 msgid "You cancelled the verification process."
 msgstr "Anulowano proces weryfikacji."
 
-#: src/session/verification/identity_verification.rs:636
+#: src/session/verification/identity_verification.rs:639
 msgid "The verification process failed because it reached a timeout."
 msgstr ""
 "Proces weryfikacji się nie powiódł, ponieważ osiągnął ograniczenie czasu "
 "oczekiwania."
 
-#: src/session/verification/identity_verification.rs:639
+#: src/session/verification/identity_verification.rs:642
 msgid "You accepted the request from an other session."
 msgstr "Przyjęto prośbę z innej sesji."
 
-#: src/session/verification/identity_verification.rs:642
+#: src/session/verification/identity_verification.rs:645
 msgid "The emoji did not match."
 msgstr "Emoji się różnią."
 
-#: src/session/verification/identity_verification.rs:651
+#: src/session/verification/identity_verification.rs:654
 msgid "An unknown error occurred during the verification process."
 msgstr "Wystąpił nieznany błąd podczas procesu weryfikacji."
 
@@ -2377,6 +2397,6 @@ msgstr "Użytkownik {user} wysłał prośbę o weryfikację."
 msgid "{user} sent a sticker."
 msgstr "Użytkownik {user} wysłał naklejkę."
 
-#: src/window.rs:245
+#: src/window.rs:271
 msgid "Failed to restore previous sessions"
 msgstr "Przywrócenie poprzednich sesji się nie powiodło"
