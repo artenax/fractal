@@ -7,7 +7,10 @@
   <name xml:lang="en">Fractal</name>
   <shortdesc xml:lang="en">Group messaging app</shortdesc>
   <description>Fractal is a messaging app for collaborative group communication, build on top of the decentralized and secure Matrix protocol.</description>
+
   <programming-language>Rust</programming-language>
+  <platform>GTK 4</platform>
+  <platform>Libadwaita</platform>
 
   <maintainer>
     <foaf:Person>
