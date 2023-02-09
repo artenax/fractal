@@ -9,6 +9,7 @@ data/resources/ui/account-settings-change-password-subpage.ui
 data/resources/ui/account-settings-deactivate-account-subpage.ui
 data/resources/ui/account-settings-device-row.ui
 data/resources/ui/account-settings-devices-page.ui
+data/resources/ui/account-settings-log-out-subpage.ui
 data/resources/ui/account-settings-import-export-keys-subpage.ui
 data/resources/ui/account-settings-notifications-page.ui
 data/resources/ui/account-settings-user-page.ui

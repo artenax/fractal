@@ -110,7 +110,7 @@ mod imp {
                 .connect_clicked(clone!(@weak obj => move |_| {
                     match &obj.is_current_device() {
                         false=> obj.delete(),
-                        true => obj.confirm_logout()
+                        true => obj.activate_action("account-settings.logout", None).unwrap()
                     }
                 }));
 
@@ -213,35 +213,6 @@ impl DeviceRow {
                 obj.imp().delete_logout_button.set_loading(false);
             }));
         }
-    }
-
-    fn confirm_logout(&self) {
-        self.imp().delete_logout_button.set_loading(true);
-
-        let window: Option<gtk::Window> = self.root().and_then(|root| root.downcast().ok());
-        let dialog = gtk::MessageDialog::new(window.as_ref(), gtk::DialogFlags::MODAL, gtk::MessageType::Info, gtk::ButtonsType::OkCancel, &gettext("Fractal doesn't support online backup of room encryption keys so you might lose access to your encrypted message history. It is recommended to backup your encryption keys before proceeding."));
-        dialog.show();
-        dialog.connect_response(
-            clone!(@weak self as obj, @weak dialog => move |_, response| {
-                match &response {
-                    gtk::ResponseType::Ok => {
-                        obj.logout();
-                    }
-                    _ => {
-                        obj.imp().delete_logout_button.set_loading(false);
-                    }
-                }
-                dialog.destroy();
-            }),
-        );
-    }
-
-    fn logout(&self) {
-        spawn!(clone!(@weak self as obj => async move {
-            if let Some(device) = obj.device() {
-                device.session().logout(true).await;
-            }
-        }));
     }
 }
 

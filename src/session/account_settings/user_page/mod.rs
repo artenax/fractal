@@ -12,9 +12,11 @@ use matrix_sdk::ruma::{api::client::discovery::get_capabilities, MxcUri, OwnedMx
 
 mod change_password_subpage;
 mod deactivate_account_subpage;
+mod log_out_subpage;
 
 use change_password_subpage::ChangePasswordSubpage;
 use deactivate_account_subpage::DeactivateAccountSubpage;
+use log_out_subpage::LogOutSubpage;
 
 use crate::{
     components::{ActionButton, ActionState, ButtonRow, EditableAvatar},
@@ -52,6 +54,8 @@ mod imp {
         pub session_id: TemplateChild<gtk::Label>,
         #[template_child]
         pub deactivate_account_subpage: TemplateChild<DeactivateAccountSubpage>,
+        #[template_child]
+        pub log_out_subpage: TemplateChild<LogOutSubpage>,
         pub changing_avatar_to: RefCell<Option<OwnedMxcUri>>,
         pub removing_avatar: Cell<bool>,
         pub changing_display_name_to: RefCell<Option<String>>,
@@ -434,5 +438,14 @@ impl UserPage {
             .and_then(|root| root.downcast_ref::<adw::PreferencesWindow>())
             .unwrap()
             .present_subpage(&*self.imp().deactivate_account_subpage);
+    }
+
+    #[template_callback]
+    pub fn show_log_out_page(&self) {
+        self.root()
+            .as_ref()
+            .and_then(|root| root.downcast_ref::<adw::PreferencesWindow>())
+            .unwrap()
+            .present_subpage(&*self.imp().log_out_subpage);
     }
 }

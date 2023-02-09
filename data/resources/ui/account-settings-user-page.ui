@@ -120,6 +120,20 @@
             <style>
               <class name="error"/>
             </style>
+            <property name="title" translatable="yes">Log Out</property>
+            <property name="to-subpage">true</property>
+            <signal name="activated" handler="show_log_out_page" swapped="yes"/>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <child>
+          <object class="ComponentsButtonRow">
+            <style>
+              <class name="error"/>
+            </style>
             <property name="title" translatable="yes">Deactivate Account</property>
             <property name="to-subpage">true</property>
             <signal name="activated" handler="show_deactivate_account" swapped="yes"/>
@@ -132,6 +146,9 @@
     <property name="session" bind-source="UserPage" bind-property="session" bind-flags="sync-create"/>
   </object>
   <object class="DeactivateAccountSubpage" id="deactivate_account_subpage">
+    <property name="session" bind-source="UserPage" bind-property="session" bind-flags="sync-create"/>
+  </object>
+  <object class="LogOutSubpage" id="log_out_subpage">
     <property name="session" bind-source="UserPage" bind-property="session" bind-flags="sync-create"/>
   </object>
 </interface>

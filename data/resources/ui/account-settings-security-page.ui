@@ -11,7 +11,7 @@
           <object class="ComponentsButtonRow">
             <property name="title" translatable="yes">Export Room Encryption Keys</property>
             <property name="to-subpage">true</property>
-            <signal name="activated" handler="handle_export_keys" swapped="yes"/>
+            <signal name="activated" handler="show_export_keys_page" swapped="yes"/>
           </object>
         </child>
         <child>

@@ -28,6 +28,10 @@ mod imp {
     pub struct AccountSettings {
         pub session: WeakRef<Session>,
         pub session_handler: RefCell<Option<glib::SignalHandlerId>>,
+        #[template_child]
+        pub user_page: TemplateChild<UserPage>,
+        #[template_child]
+        pub security_page: TemplateChild<SecurityPage>,
     }
 
     #[glib::object_subclass]
@@ -45,6 +49,14 @@ mod imp {
 
             klass.install_action("account-settings.close", None, |obj, _, _| {
                 obj.close();
+            });
+
+            klass.install_action("account-settings.logout", None, |obj, _, _| {
+                obj.imp().user_page.show_log_out_page();
+            });
+
+            klass.install_action("account-settings.export_keys", None, |obj, _, _| {
+                obj.imp().security_page.show_export_keys_page();
             });
 
             klass.install_action("win.add-toast", Some("s"), |obj, _, message| {

@@ -98,7 +98,7 @@ impl SecurityPage {
     }
 
     #[template_callback]
-    fn handle_export_keys(&self) {
+    pub fn show_export_keys_page(&self) {
         let subpage = &*self.imp().import_export_keys_subpage;
         subpage.set_mode(KeysSubpageMode::Export);
         self.root()
