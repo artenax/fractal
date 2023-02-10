@@ -1,5 +1,4 @@
 mod event;
-mod event_actions;
 mod highlight_flags;
 mod member;
 mod member_list;
@@ -49,7 +48,6 @@ use ruma::events::{
 
 pub use self::{
     event::*,
-    event_actions::{EventActions, EventTexture},
     highlight_flags::HighlightFlags,
     member::{Member, Membership},
     member_list::MemberList,

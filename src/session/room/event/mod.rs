@@ -12,6 +12,9 @@ use matrix_sdk::{
 };
 use ruma::{events::AnySyncTimelineEvent, serde::Raw, OwnedTransactionId};
 
+mod event_actions;
+
+pub use self::event_actions::{EventActions, EventTexture};
 use super::{
     timeline::{TimelineItem, TimelineItemImpl},
     Member, ReactionList, Room,

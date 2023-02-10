@@ -84,7 +84,7 @@ src/session/content/room_history/verification_info_bar.rs
 src/session/content/verification/identity_verification_widget.rs
 src/session/content/verification/session_verification.rs
 src/session/mod.rs
-src/session/room/event_actions.rs
+src/session/room/event/event_actions.rs
 src/session/room/member.rs
 src/session/room/member_role.rs
 src/session/room/mod.rs
