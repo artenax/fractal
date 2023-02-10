@@ -730,7 +730,6 @@ impl Session {
 
     pub async fn logout(&self, cleanup: bool) {
         let stack = &self.imp().stack;
-        self.emit_by_name::<()>("logged-out", &[]);
 
         debug!("The session is about to be logged out");
 
@@ -763,7 +762,8 @@ impl Session {
     /// This should only be called if the session has been logged out without
     /// `Session::logout`.
     pub fn handle_logged_out(&self) {
-        self.emit_by_name::<()>("logged-out", &[]);
+        // TODO: Show error screen. See: https://gitlab.gnome.org/GNOME/fractal/-/issues/901
+
         spawn!(
             glib::PRIORITY_LOW,
             clone!(@strong self as obj => async move {
@@ -804,6 +804,8 @@ impl Session {
         }
 
         self.clear_notifications();
+
+        self.emit_by_name::<()>("logged-out", &[]);
 
         debug!("The logged out session was cleaned up");
     }
