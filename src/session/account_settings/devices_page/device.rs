@@ -160,17 +160,11 @@ impl Device {
         let dialog = AuthDialog::new(transient_for, &session);
 
         dialog
-            .authenticate(move |client, auth_data| {
+            .authenticate(move |client, auth| {
                 let device_id = device_id.clone();
                 async move {
-                    if let Some(auth) = auth_data {
-                        let auth = Some(auth.as_matrix_auth_data());
-                        let request = assign!(delete_device::v3::Request::new(device_id), { auth });
-                        client.send(request, None).await.map_err(Into::into)
-                    } else {
-                        let request = delete_device::v3::Request::new(device_id);
-                        client.send(request, None).await.map_err(Into::into)
-                    }
+                    let request = assign!(delete_device::v3::Request::new(device_id), { auth });
+                    client.send(request, None).await.map_err(Into::into)
                 }
             })
             .await?;

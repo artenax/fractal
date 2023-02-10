@@ -9,62 +9,18 @@ use gtk::{
     CompositeTemplate,
 };
 use matrix_sdk::{
-    ruma::{
-        api::client::{
-            error::StandardErrorBody,
-            uiaa::{
-                AuthData as MatrixAuthData, AuthType,
-                FallbackAcknowledgement as MatrixFallbackAcknowledgement,
-                Password as MatrixPassword, UserIdentifier,
-            },
-        },
-        assign,
+    ruma::api::client::{
+        error::StandardErrorBody,
+        uiaa::{AuthData, AuthType, FallbackAcknowledgement, Password, UserIdentifier},
     },
     Error, RumaApiError,
 };
+use ruma::assign;
 
 use crate::{
     session::{Session, UserExt},
     spawn_tokio,
 };
-
-pub struct Password {
-    pub user_id: String,
-    pub password: String,
-    pub session: Option<String>,
-}
-
-pub struct FallbackAcknowledgement {
-    pub session: String,
-}
-
-// FIXME: we can't move the ruma AuthData between threads
-// because it's not owned data and doesn't live long enough.
-// Therefore we have our own AuthData.
-pub enum AuthData {
-    Password(Password),
-    FallbackAcknowledgement(FallbackAcknowledgement),
-}
-
-impl AuthData {
-    pub fn as_matrix_auth_data(&self) -> MatrixAuthData {
-        match self {
-            AuthData::Password(Password {
-                user_id,
-                password,
-                session,
-            }) => MatrixAuthData::Password(assign!(MatrixPassword::new(
-                                UserIdentifier::UserIdOrLocalpart(user_id.clone()),
-                                password.clone(),
-                            ), { session: session.clone() })),
-            AuthData::FallbackAcknowledgement(FallbackAcknowledgement { session }) => {
-                MatrixAuthData::FallbackAcknowledgement(MatrixFallbackAcknowledgement::new(
-                    session.clone(),
-                ))
-            }
-        }
-    }
-}
 
 #[derive(Debug)]
 pub enum AuthError {
@@ -306,11 +262,12 @@ impl AuthDialog {
         let user_id = self.session().user().unwrap().user_id().to_string();
         let password = self.imp().password.text().to_string();
 
-        Ok(AuthData::Password(Password {
-            user_id,
-            password,
-            session,
-        }))
+        let data = assign!(
+            Password::new(UserIdentifier::UserIdOrLocalpart(user_id), password),
+            { session }
+        );
+
+        Ok(AuthData::Password(data))
     }
 
     /// Performs a web-based fallback for the given stage.
@@ -327,9 +284,9 @@ impl AuthDialog {
         self.setup_fallback_page(homeserver.as_str(), stage.as_ref(), &session);
         self.show_and_wait_for_response().await?;
 
-        Ok(AuthData::FallbackAcknowledgement(FallbackAcknowledgement {
-            session,
-        }))
+        Ok(AuthData::FallbackAcknowledgement(
+            FallbackAcknowledgement::new(session),
+        ))
     }
 
     /// Lets the user complete the current stage.

@@ -311,13 +311,8 @@ impl SessionVerification {
             let dialog = AuthDialog::new(obj.parent_window().as_ref(), &obj.session());
 
             let result = dialog
-            .authenticate(move |client, auth_data| async move {
-                if let Some(auth) = auth_data {
-                    let auth = Some(auth.as_matrix_auth_data());
-                    client.encryption().bootstrap_cross_signing(auth).await
-                } else {
-                    client.encryption().bootstrap_cross_signing(None).await
-                }
+            .authenticate(move |client, auth| async move {
+                client.encryption().bootstrap_cross_signing(auth).await
             })
             .await;
 

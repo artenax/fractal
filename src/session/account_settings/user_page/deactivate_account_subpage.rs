@@ -160,15 +160,9 @@ impl DeactivateAccountSubpage {
         );
 
         let result = dialog
-            .authenticate(move |client, auth_data| async move {
-                if let Some(auth) = auth_data {
-                    let auth = Some(auth.as_matrix_auth_data());
-                    let request = assign!(deactivate::v3::Request::new(), { auth });
-                    client.send(request, None).await.map_err(Into::into)
-                } else {
-                    let request = deactivate::v3::Request::new();
-                    client.send(request, None).await.map_err(Into::into)
-                }
+            .authenticate(move |client, auth| async move {
+                let request = assign!(deactivate::v3::Request::new(), { auth });
+                client.send(request, None).await.map_err(Into::into)
             })
             .await;
 

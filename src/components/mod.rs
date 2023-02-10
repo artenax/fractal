@@ -24,7 +24,7 @@ mod video_player_renderer;
 pub use self::{
     action_button::{ActionButton, ActionState},
     audio_player::AudioPlayer,
-    auth_dialog::{AuthData, AuthDialog, AuthError},
+    auth_dialog::{AuthDialog, AuthError},
     avatar::Avatar,
     badge::Badge,
     button_row::ButtonRow,

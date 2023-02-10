@@ -266,18 +266,12 @@ impl ChangePasswordSubpage {
         );
 
         let result = dialog
-            .authenticate(move |client, auth_data| {
+            .authenticate(move |client, auth| {
                 let password = password.clone();
                 async move {
-                    if let Some(auth) = auth_data {
-                        let auth = Some(auth.as_matrix_auth_data());
-                        let request =
-                            assign!(change_password::v3::Request::new(password.into()), { auth });
-                        client.send(request, None).await.map_err(Into::into)
-                    } else {
-                        let request = change_password::v3::Request::new(password.into());
-                        client.send(request, None).await.map_err(Into::into)
-                    }
+                    let request =
+                        assign!(change_password::v3::Request::new(password.into()), { auth });
+                    client.send(request, None).await.map_err(Into::into)
                 }
             })
             .await;
