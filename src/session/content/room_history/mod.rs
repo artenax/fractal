@@ -49,7 +49,7 @@ use crate::{
     components::{CustomEntry, DragOverlay, LabelWithWidgets, Pill, ReactionChooser, RoomTitle},
     i18n::gettext_f,
     session::{
-        content::{room_details, MarkdownPopover, RoomDetails},
+        content::{room_details, RoomDetails},
         room::{
             Event, EventKey, Room, RoomAction, RoomType, Timeline, TimelineItem, TimelineState,
         },
@@ -113,8 +113,6 @@ mod imp {
         #[template_child]
         pub message_entry: TemplateChild<sourceview::View>,
         #[template_child]
-        pub markdown_button: TemplateChild<gtk::MenuButton>,
-        #[template_child]
         pub loading: TemplateChild<gtk::Spinner>,
         #[template_child]
         pub error: TemplateChild<adw::StatusPage>,
@@ -141,7 +139,6 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             CustomEntry::static_type();
             ItemRow::static_type();
-            MarkdownPopover::static_type();
             VerificationInfoBar::static_type();
             Timeline::static_type();
             Self::bind_template(klass);
@@ -208,6 +205,8 @@ mod imp {
                     }
                 }));
             });
+
+            klass.install_property_action("room-history.markdown", "markdown-enabled");
 
             klass.install_action(
                 "room-history.clear-related-event",
@@ -572,11 +571,6 @@ impl RoomHistory {
         let imp = self.imp();
 
         imp.md_enabled.set(enabled);
-        imp.markdown_button.set_icon_name(if enabled {
-            "format-indent-more-symbolic"
-        } else {
-            "format-justify-left-symbolic"
-        });
 
         self.notify("markdown-enabled");
     }

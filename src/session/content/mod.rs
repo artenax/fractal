@@ -1,6 +1,5 @@
 mod explore;
 mod invite;
-mod markdown_popover;
 mod room_details;
 mod room_history;
 pub mod verification;
@@ -9,8 +8,8 @@ use adw::subclass::prelude::*;
 use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
 
 use self::{
-    explore::Explore, invite::Invite, markdown_popover::MarkdownPopover, room_details::RoomDetails,
-    room_history::RoomHistory, verification::IdentityVerificationWidget,
+    explore::Explore, invite::Invite, room_details::RoomDetails, room_history::RoomHistory,
+    verification::IdentityVerificationWidget,
 };
 use crate::session::{
     room::{Room, RoomType},

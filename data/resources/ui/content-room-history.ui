@@ -33,9 +33,8 @@
         <attribute name="icon">map-marker-symbolic</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_Attachment</attribute>
-        <attribute name="action">room-history.select-file</attribute>
-        <attribute name="icon">mail-attachment-symbolic</attribute>
+        <attribute name="label" translatable="yes">_Markdown</attribute>
+        <attribute name="action">room-history.markdown</attribute>
       </item>
     </section>
   </menu>
@@ -291,17 +290,22 @@
                       <class name="toolbar"/>
                     </style>
                     <child>
-                      <object class="GtkMenuButton" id="markdown_button">
+                      <object class="GtkButton">
                         <property name="valign">end</property>
-                        <property name="direction">up</property>
-                        <property name="icon-name">format-justify-left-symbolic</property>
-                        <property name="popover">
-                          <object class="MarkdownPopover">
-                            <property name="markdown-enabled" bind-source="ContentRoomHistory" bind-property="markdown-enabled" bind-flags="sync-create | bidirectional"/>
-                          </object>
-                        </property>
+                        <property name="icon-name">mail-attachment-symbolic</property>
+                        <property name="action-name">room-history.select-file</property>
                         <accessibility>
-                          <property name="label" translatable="yes">Enable Markdown Formatting</property>
+                          <property name="label" translatable="yes">Browse Attachment</property>
+                        </accessibility>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="valign">end</property>
+                        <property name="icon-name">emoji-people-symbolic</property>
+                        <property name="action-name">room-history.open-emoji</property>
+                        <accessibility>
+                          <property name="label" translatable="yes">Open Emoji Picker</property>
                         </accessibility>
                       </object>
                     </child>
@@ -328,16 +332,6 @@
                             </property>
                           </object>
                         </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
-                        <property name="valign">end</property>
-                        <property name="icon-name">emoji-people-symbolic</property>
-                        <property name="action-name">room-history.open-emoji</property>
-                        <accessibility>
-                          <property name="label" translatable="yes">Open Emoji Picker</property>
-                        </accessibility>
                       </object>
                     </child>
                     <child>
