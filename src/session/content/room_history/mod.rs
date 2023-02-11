@@ -913,21 +913,26 @@ impl RoomHistory {
 
     async fn send_location(&self) -> ashpd::Result<()> {
         if let Some(room) = self.room() {
-            let proxy = LocationProxy::new().await?;
-            let identifier = WindowIdentifier::default();
+            let handle = spawn_tokio!(async move {
+                let proxy = LocationProxy::new().await?;
+                let identifier = WindowIdentifier::default();
 
-            let session = proxy
-                .create_session(Some(0), Some(0), Some(Accuracy::Exact))
-                .await?;
+                let session = proxy
+                    .create_session(Some(0), Some(0), Some(Accuracy::Exact))
+                    .await?;
 
-            // We want to be listening for new locations whenever the session is up
-            // otherwise we might lose the first response and will have to wait for a future
-            // update by geoclue
-            let (_, location) = futures::try_join!(
-                proxy.start(&session, &identifier).into_future(),
-                proxy.receive_location_updated().into_future()
-            )?;
+                // We want to be listening for new locations whenever the session is up
+                // otherwise we might lose the first response and will have to wait for a future
+                // update by geoclue
+                let (_, location) = futures::try_join!(
+                    proxy.start(&session, &identifier).into_future(),
+                    proxy.receive_location_updated().into_future()
+                )?;
 
+                ashpd::Result::Ok(location)
+            });
+
+            let location = handle.await.unwrap()?;
             let geo_uri = GeoUri::builder()
                 .latitude(location.latitude())
                 .longitude(location.longitude())
