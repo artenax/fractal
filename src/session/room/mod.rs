@@ -40,6 +40,7 @@ use matrix_sdk::{
     DisplayName, Result as MatrixResult,
 };
 use ruma::events::{
+    receipt::ReceiptThread,
     room::message::{MessageType, Relation},
     typing::TypingEventContent,
     AnyMessageLikeEventContent, AnySyncMessageLikeEvent, SyncEphemeralRoomEvent,
@@ -733,7 +734,7 @@ impl Room {
                 let user_id = obj.session().user().unwrap().user_id();
                 let matrix_room = obj.matrix_room();
 
-                let handle = spawn_tokio!(async move { matrix_room.user_read_receipt(&user_id).await });
+                let handle = spawn_tokio!(async move { matrix_room.user_read_receipt(ReceiptThread::Unthreaded, &user_id).await });
 
                 match handle.await.unwrap() {
                     Ok(Some((event_id, _))) => {

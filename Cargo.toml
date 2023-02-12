@@ -82,8 +82,8 @@ package = "libshumate"
 version = "0.2.0"
 
 [dependencies.matrix-sdk]
-git = "https://github.com/zecakeh/matrix-rust-sdk.git"
-rev = "6d32f3ce38387ef4662bfada7f7262617b40d68c"
+git = "https://github.com/matrix-org/matrix-rust-sdk.git"
+rev = "0d4fac59622eee3867a371575e2e4cdfc9b61179"
 features = [
     "socks",
     "sso-login",
@@ -94,13 +94,12 @@ features = [
 ]
 
 [dependencies.matrix-sdk-sled]
-git = "https://github.com/zecakeh/matrix-rust-sdk.git"
-rev = "6d32f3ce38387ef4662bfada7f7262617b40d68c"
+git = "https://github.com/matrix-org/matrix-rust-sdk.git"
+rev = "0d4fac59622eee3867a371575e2e4cdfc9b61179"
 features = ["crypto-store"]
 
 [dependencies.ruma]
-git = "https://github.com/ruma/ruma"
-rev = "00045e559f864eabff08295d603f7b3238288b6f"
+version = "0.8.1"
 features = ["unstable-unspecified", "client-api-c", "unstable-sanitize"]
 
 [patch.crates-io.x25519-dalek]
