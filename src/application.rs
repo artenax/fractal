@@ -188,7 +188,7 @@ impl Application {
             .version(config::VERSION)
             .transient_for(&self.get_main_window())
             .modal(true)
-            .copyright(&gettext("© 2017-2022 The Fractal Team"))
+            .copyright(&gettext("© 2017-2023 The Fractal Team"))
             .developers(vec![
                 "Alejandro Domínguez".to_string(),
                 "Alexandre Franke".to_string(),
