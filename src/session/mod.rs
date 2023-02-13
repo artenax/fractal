@@ -146,7 +146,7 @@ mod imp {
             klass.install_action("session.logout", None, move |session, _, _| {
                 spawn!(clone!(@weak session => async move {
                     session.imp().logout_on_dispose.set(false);
-                    session.logout(true).await
+                    session.logout().await
                 }));
             });
 
@@ -308,7 +308,7 @@ mod imp {
             }
 
             if self.logout_on_dispose.get() {
-                glib::MainContext::default().block_on(obj.logout(true));
+                glib::MainContext::default().block_on(obj.logout());
             }
 
             if let Some(handler_id) = self.window_active_handler_id.take() {
@@ -728,7 +728,7 @@ impl Session {
         }
     }
 
-    pub async fn logout(&self, cleanup: bool) {
+    pub async fn logout(&self) {
         let stack = &self.imp().stack;
 
         debug!("The session is about to be logged out");
@@ -745,11 +745,7 @@ impl Session {
         });
 
         match handle.await.unwrap() {
-            Ok(_) => {
-                if cleanup {
-                    self.cleanup_session().await
-                }
-            }
+            Ok(_) => self.cleanup_session().await,
             Err(error) => {
                 error!("Couldn’t logout the session {}", error);
                 toast!(self, gettext("Failed to logout the session."));
