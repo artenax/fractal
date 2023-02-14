@@ -612,10 +612,15 @@ typing-bar avatar {
 
 .room-details-name:disabled {
   font-size: 2em;
+  filter: opacity(1);
 }
 
 .room-details-topic:not(:disabled) {
   min-height: 102px;
+}
+
+.room-details-topic:disabled {
+  filter: opacity(1);
 }
 
 .cutout-button {
