@@ -2,26 +2,25 @@
 # Copyright (C) 2021 fractal's COPYRIGHT HOLDER
 # This file is distributed under the same license as the fractal package.
 # Yaron Shahrabani <sh.yaron@gmail.com>, 2021.
-# Yosef Or Boczko <yoseforb@gmail.com>, 2022.
+# Yosef Or Boczko <yoseforb@gmail.com>, 2022-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-04-19 08:32+0000\n"
-"PO-Revision-Date: 2022-04-19 15:56+0300\n"
-"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
-"Language-Team: Hebrew <GNOME Hebrew Translation Project>\n"
+"POT-Creation-Date: 2023-02-13 16:44+0000\n"
+"PO-Revision-Date: 2023-02-14 10:11+0200\n"
+"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
-"2 : 3);\n"
-"X-Generator: Poedit 3.0.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: Gtranslator 42.0\n"
 
 #: data/org.gnome.Fractal.desktop.in.in:3
-#: data/org.gnome.Fractal.metainfo.xml.in.in:9
+#: data/org.gnome.Fractal.metainfo.xml.in.in:7
 msgid "Fractal"
 msgstr "פרקטל"
 
@@ -62,15 +61,23 @@ msgstr "הפעלת עיצוב Markdown"
 msgid "Whether messages should be processed as markdown when sending them"
 msgstr "Whether messages should be processed as markdown when sending them"
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:8
-msgid "Julian Sparber"
-msgstr "Julian Sparber"
+#: data/org.gnome.Fractal.gschema.xml.in:23
+msgid "Session settings"
+msgstr "הגדרות הפעלה"
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:10
+#: data/org.gnome.Fractal.gschema.xml.in:24
+msgid "Serialized list of settings per session"
+msgstr "Serialized list of settings per session"
+
+#: data/org.gnome.Fractal.gschema.xml.in:28
+msgid "Current session"
+msgstr "הפעלה נוכחית"
+
+#: data/org.gnome.Fractal.metainfo.xml.in.in:8
 msgid "Matrix group messaging app"
 msgstr "יישומון התכתבות קבוצתית ב־Matrix"
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:12
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
 msgid ""
 "Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
 "is optimized for collaboration in large groups, such as free software "
@@ -79,42 +86,68 @@ msgstr ""
 "פרקטל הוא יישום התכתבות דרך Matrix עבור GNOME שנכתב ב־Rust. המנשק שלו מותאם "
 "להשתתפות בקבוצות גדולות, כגון מיזמי תכנה חופשית."
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:9
-#: data/resources/ui/account-settings-user-page.ui:54
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:183
+msgid "The Fractal Team"
+msgstr "צוות פרקטל"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:12
+#: data/resources/ui/account-settings-user-page.ui:62
 msgid "Change Password"
 msgstr "החלפת ססמה"
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:76
+#: data/resources/ui/account-settings-change-password-subpage.ui:60
+msgid "Changing your password will log you out of your other sessions."
+msgstr "שינוי הססמה שלך תנתק אותך מההפעלות האחרות שלך."
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:71
+msgid ""
+"Fractal’s support for encryption is unstable so you might lose access to "
+"your encrypted message history. It is recommended to backup your encryption "
+"keys before proceeding."
+msgstr ""
+"תמיכת פרקטל בהצפנה אינה יציבה, לכן יתכן ותאבדנה לך היסטוריית הודעות מוצפנות. "
+"מומלץ לגבות את מפתחות ההצפנות שלך לפני המשך התהליך."
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:94
 msgid "New Password"
 msgstr "ססמה חדשה"
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:81
+#: data/resources/ui/account-settings-change-password-subpage.ui:134
 msgid "Confirm New Password"
 msgstr "אימות הססמה החדשה"
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:94
+#: data/resources/ui/account-settings-change-password-subpage.ui:164
 #: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
-#: src/session/content/room_history/verification_info_bar.rs:181
+#: src/session/content/room_history/verification_info_bar.rs:175
 msgid "Continue"
 msgstr "המשך"
 
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:9
-#: data/resources/ui/account-settings-user-page.ui:115
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:12
+#: data/resources/ui/account-settings-user-page.ui:123
 msgid "Deactivate Account"
 msgstr "השבתת חשבון"
 
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:79
-#: data/resources/ui/account-settings-user-page.ui:80
-msgid "Matrix User ID"
-msgstr "מזהה משתמש Matrix"
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:60
+msgid ""
+"Deactivating your account means you will lose access to all your messages, "
+"contacts, files, and more, forever."
+msgstr ""
+"משמעות השבתת החשבון שלך היא שכל ההודעות, אנשי הקשר, הקבצים שלך ועוד יאבדו "
+"לצמיתות."
 
-#: data/resources/ui/account-settings-device-row.ui:59
-#: src/session/content/verification/identity_verification_widget.rs:494
-#: src/session/content/verification/identity_verification_widget.rs:499
-#: src/session/content/verification/identity_verification_widget.rs:503
-#: src/session/content/verification/identity_verification_widget.rs:523
-#: src/session/content/verification/identity_verification_widget.rs:526
-#: src/session/content/verification/identity_verification_widget.rs:530
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:71
+msgid ""
+"To confirm that you really want to deactivate this account, type in your "
+"Matrix user ID:"
+msgstr "כדי לאשר את ביטול החשבון עליך להקליד את מזהה משתמש Matrix שלך:"
+
+#: data/resources/ui/account-settings-device-row.ui:63
+#: src/session/content/verification/identity_verification_widget.rs:529
+#: src/session/content/verification/identity_verification_widget.rs:534
+#: src/session/content/verification/identity_verification_widget.rs:537
+#: src/session/content/verification/identity_verification_widget.rs:554
+#: src/session/content/verification/identity_verification_widget.rs:558
+#: src/session/content/verification/identity_verification_widget.rs:562
 msgid "Verify Session"
 msgstr "אימות הפעלה"
 
@@ -132,8 +165,34 @@ msgstr "הפעלה נוכחית"
 msgid "Other Active Sessions"
 msgstr "הפעלות פעילות אחרות"
 
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:80
+#: data/resources/ui/session-verification.ui:290
+msgid "Passphrase"
+msgstr "מילת צופן"
+
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:97
+#, fuzzy
+#| msgid "Confirm New Password"
+msgid "Confirm Passphrase"
+msgstr "אימות הססמה החדשה"
+
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:132
+msgid "Choose…"
+msgstr "בחירה…"
+
+#: data/resources/ui/account-settings-notifications-page.ui:5
+msgid "Notifications"
+msgstr "התראות"
+
+#: data/resources/ui/account-settings-notifications-page.ui:11
+msgid "Enable for this account"
+msgstr "לאפשר לחשבון זה"
+
+#: data/resources/ui/account-settings-notifications-page.ui:34
+msgid "Enable for this session"
+msgstr "לאפשר להפעלה זו"
+
 #: data/resources/ui/account-settings-user-page.ui:5
-#: data/resources/ui/content-room-details.ui:9
 msgid "General"
 msgstr "כללי"
 
@@ -141,17 +200,39 @@ msgstr "כללי"
 msgid "Name"
 msgstr "שם"
 
-#: data/resources/ui/account-settings-user-page.ui:63
+#: data/resources/ui/account-settings-user-page.ui:71
 msgid "Advanced Information"
 msgstr "פרטים מתקדמים"
 
-#: data/resources/ui/account-settings-user-page.ui:66
+#: data/resources/ui/account-settings-user-page.ui:74
 msgid "Homeserver"
 msgstr "שרת ביתי"
 
-#: data/resources/ui/account-settings-user-page.ui:94
+#: data/resources/ui/account-settings-user-page.ui:88
+msgid "Matrix User ID"
+msgstr "מזהה משתמש Matrix"
+
+#: data/resources/ui/account-settings-user-page.ui:102
 msgid "Session ID"
 msgstr "מזהה הפעלה"
+
+#: data/resources/ui/account-settings-security-page.ui:5
+msgid "Security"
+msgstr "אבטחה"
+
+#: data/resources/ui/account-settings-security-page.ui:9
+msgid "Room Encryption Keys"
+msgstr "מפתחות הצפנת חדר"
+
+#: data/resources/ui/account-settings-security-page.ui:12
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:210
+msgid "Export Room Encryption Keys"
+msgstr "ייבוא מפתחות הצפנת חדר"
+
+#: data/resources/ui/account-settings-security-page.ui:19
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:220
+msgid "Import Room Encryption Keys"
+msgstr "ייצוא מפתחות הצפנת חדר"
 
 #: data/resources/ui/account-settings.ui:4
 msgid "Account Settings"
@@ -159,6 +240,7 @@ msgstr "הגדרות חשבון"
 
 #: data/resources/ui/attachment-dialog.ui:14
 #: data/resources/ui/content-invite-subpage.ui:12
+#: data/resources/ui/join-room-dialog.ui:9
 #: data/resources/ui/room-creation.ui:16
 msgid "_Cancel"
 msgstr "_ביטול"
@@ -166,10 +248,6 @@ msgstr "_ביטול"
 #: data/resources/ui/attachment-dialog.ui:21
 msgid "_Send"
 msgstr "_שליחה"
-
-#: data/resources/ui/attachment-dialog.ui:36
-msgid "No Preview Available"
-msgstr "אין תצוגה מקדימה זמינה"
 
 #: data/resources/ui/components-auth-dialog.ui:20
 msgid "Authentication"
@@ -190,15 +268,16 @@ msgid "Authenticate via Browser"
 msgstr "אימות באמצעות הדפדפן"
 
 #: data/resources/ui/components-auth-dialog.ui:113
-#: data/resources/ui/identity-verification-widget.ui:449
-#: src/components/editable_avatar.rs:344
-#: src/session/content/room_history/verification_info_bar.rs:182
-#: src/session/room/event_actions.rs:210
+#: data/resources/ui/identity-verification-widget.ui:452
+#: src/components/editable_avatar.rs:318
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:266
+#: src/session/content/room_history/verification_info_bar.rs:176
+#: src/session/room/event_actions.rs:308
 msgid "Cancel"
 msgstr "ביטול"
 
 #: data/resources/ui/components-auth-dialog.ui:118
-#: data/resources/ui/identity-verification-widget.ui:439
+#: data/resources/ui/identity-verification-widget.ui:442
 msgid "Confirm"
 msgstr "אישור"
 
@@ -206,11 +285,15 @@ msgstr "אישור"
 msgid "Try again"
 msgstr "ניסיון חוזר"
 
-#: data/resources/ui/content-explore.ui:64
+#: data/resources/ui/content-explore-servers-popover.ui:35
+msgid "Add server…"
+msgstr "הוספת שרת…"
+
+#: data/resources/ui/content-explore.ui:71
 msgid "No rooms matching the search were found"
 msgstr "לא נמצאו חדרים המתאימים לחיפוש"
 
-#: data/resources/ui/content-explore.ui:96
+#: data/resources/ui/content-explore.ui:97
 msgid "Room List"
 msgstr "רשימת חדרים"
 
@@ -218,20 +301,33 @@ msgstr "רשימת חדרים"
 msgid "I_nvite"
 msgstr "_הזמנה"
 
-#: data/resources/ui/content-invite-subpage.ui:87
+#: data/resources/ui/content-invite-subpage.ui:85
+msgid "Search"
+msgstr "חיפוש"
+
+#: data/resources/ui/content-invite-subpage.ui:86
 msgid "Search for users to invite them to this room."
 msgstr "חיפוש משתמשים על מנת להזמין אותם לחדר זה."
 
-#: data/resources/ui/content-invite-subpage.ui:123
+#: data/resources/ui/content-invite-subpage.ui:115
+msgid "No Users Found"
+msgstr "לא נמצאו משתמשים"
+
+#: data/resources/ui/content-invite-subpage.ui:116
 msgid "No users matching the search were found."
 msgstr "לא נמצאו משתמשים המתאימים לחיפוש."
 
-#: data/resources/ui/content-invite-subpage.ui:132
-msgid "An error occurred while searching for matches"
-msgstr "ארעה שגיאה במהלך החיפוש עבור התאמות"
+#: data/resources/ui/content-invite-subpage.ui:122
+msgid "Error"
+msgstr "שגיאה"
+
+#: data/resources/ui/content-invite-subpage.ui:123
+msgid "An error occurred while searching for matches."
+msgstr "ארעה שגיאה במהלך החיפוש עבור התאמות."
 
 #: data/resources/ui/content-invite.ui:26
 #: data/resources/ui/content-invite.ui:51
+#: data/resources/ui/content-member-page.ui:69
 msgid "Invite"
 msgstr "הזמנה"
 
@@ -243,51 +339,32 @@ msgstr "_דחייה"
 msgid "_Accept"
 msgstr "_קבלה"
 
-#: data/resources/ui/content-markdown-popover.ui:17
-msgid "_Markdown"
-msgstr "_Markdown"
+#: data/resources/ui/content-member-page.ui:19
+msgid "Search for Room Members"
+msgstr "חיפוש אחר חברים בחדר"
 
-#: data/resources/ui/content-markdown-popover.ui:37
-msgid "> quote"
-msgstr "> ציטוט"
-
-#: data/resources/ui/content-markdown-popover.ui:46
-msgid "**bold**"
-msgstr "**מודגש**"
-
-#: data/resources/ui/content-markdown-popover.ui:59
-msgid "`code`"
-msgstr "`קוד`"
-
-#: data/resources/ui/content-markdown-popover.ui:69
-msgid "*italic*"
-msgstr "*נטוי*"
-
-#: data/resources/ui/content-member-page.ui:5
-msgid "Members"
-msgstr "חברים"
-
-#: data/resources/ui/content-member-page.ui:24
-msgid "Invite new member"
-msgstr "הזמנת חבר חדש"
-
-#: data/resources/ui/content-member-page.ui:33
+#: data/resources/ui/content-member-page.ui:35
+#: data/resources/ui/content-member-page.ui:39
 msgid "Search for room members"
 msgstr "חיפוש אחר חברים בחדר"
 
-#: data/resources/ui/content-message-file.ui:21
-msgid "Open"
-msgstr "פתיחה"
-
-#: data/resources/ui/content-message-file.ui:28
-#: src/session/room/event_actions.rs:209
+#: data/resources/ui/content-message-file.ui:25
+#: src/session/room/event_actions.rs:307
 msgid "Save"
 msgstr "שמירה"
 
 #: data/resources/ui/content-room-details.ui:4
-#: src/session/content/room_details/mod.rs:250
+#: src/session/content/room_details/mod.rs:200
 msgid "Room Details"
 msgstr "פרטי החדר"
+
+#: data/resources/ui/content-room-details-general-page.ui:102
+msgid "Description"
+msgstr "תיאור"
+
+#: data/resources/ui/content-room-details-general-page.ui:150
+msgid "Members"
+msgstr "חברים"
 
 #: data/resources/ui/content-room-history.ui:6
 msgid "Room _Details"
@@ -297,82 +374,84 @@ msgstr "פרטי ה_חדר"
 msgid "_Invite New Member"
 msgstr "ה_זמנת חבר חדש"
 
-#: data/resources/ui/content-room-history.ui:18 data/resources/ui/sidebar.ui:62
+#: data/resources/ui/content-room-history.ui:16
+msgid "Room _Permalink"
+msgstr "_קישור קבוע לחדר"
+
+#: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:62
 msgid "_Leave Room"
 msgstr "י_ציאה מהחדר"
 
-#: data/resources/ui/content-room-history.ui:27
+#: data/resources/ui/content-room-history.ui:31
 msgid "_Location"
 msgstr "_מיקום"
 
-#: data/resources/ui/content-room-history.ui:32
-msgid "_Attachment"
-msgstr "_צרופה"
+#: data/resources/ui/content-room-history.ui:36
+msgid "_Markdown"
+msgstr "_Markdown"
 
-#: data/resources/ui/content-room-history.ui:56
+#: data/resources/ui/content-room-history.ui:59
 msgid "Back"
 msgstr "חזרה"
 
-#: data/resources/ui/content-room-history.ui:81
+#: data/resources/ui/content-room-history.ui:84
 msgid "Room Settings"
 msgstr "הגדרות החדר"
 
-#: data/resources/ui/content-room-history.ui:89
+#: data/resources/ui/content-room-history.ui:92
 msgid "Toggle Room History Search"
 msgstr "החלפת מצב חיפוש בהיסטוריית חדר"
 
-#: data/resources/ui/content-room-history.ui:107
+#: data/resources/ui/content-room-history.ui:110
 msgid "Room History Search"
 msgstr "חיפוש בהיסטוריית החדר"
 
-#: data/resources/ui/content-room-history.ui:144
+#: data/resources/ui/content-room-history.ui:145
 msgid "Unable to load room"
 msgstr "לא ניתן לטעון את החדר"
 
-#: data/resources/ui/content-room-history.ui:145
+#: data/resources/ui/content-room-history.ui:146
 msgid "Check your network connection."
 msgstr "יש לבדוק את חיבור הרשת שלך."
 
-#: data/resources/ui/content-room-history.ui:148
+#: data/resources/ui/content-room-history.ui:149
 msgid "Try Again"
 msgstr "ניסיון חוזר"
 
-#: data/resources/ui/content-room-history.ui:173
+#: data/resources/ui/content-room-history.ui:174
 msgid "Scroll to bottom"
 msgstr "גלילה למטה"
 
-#: data/resources/ui/content-room-history.ui:185
+#: data/resources/ui/content-room-history.ui:186
 msgid "Drop Here to Send"
 msgstr "גרירה לכאן לשליחה"
 
-#: data/resources/ui/content-room-history.ui:206
+#: data/resources/ui/content-room-history.ui:207
 msgid "Room History"
 msgstr "היסטוריית חדר"
 
-#: data/resources/ui/content-room-history.ui:244
-msgid "Enable Markdown Formatting"
-msgstr "הפעלת עיצוב Markdown"
-
-#: data/resources/ui/content-room-history.ui:265
-msgid "Message Entry"
-msgstr "כתיבת הודעה"
-
-#: data/resources/ui/content-room-history.ui:280
+#: data/resources/ui/content-room-history.ui:298
 #, fuzzy
-#| msgctxt "shortcut window"
-#| msgid "Open main menu"
-msgid "Open Message Menu"
-msgstr "פתיחת התפריט הראשי"
+#| msgid "_Attachment"
+msgid "Browse Attachment"
+msgstr "_צרופה"
 
-#: data/resources/ui/content-room-history.ui:290
+#: data/resources/ui/content-room-history.ui:308
 msgid "Open Emoji Picker"
 msgstr "פתיחת בוחר אמוג׳י"
 
-#: data/resources/ui/content-room-history.ui:305
-#, fuzzy
-#| msgid "New Messages"
+#: data/resources/ui/content-room-history.ui:329
+msgid "Message Entry"
+msgstr "כתיבת הודעה"
+
+#: data/resources/ui/content-room-history.ui:344
+# msgctxt "shortcut window"
+msgid "Open Message Menu"
+msgstr "פתיחת תפריט הודעה"
+
+#: data/resources/ui/content-room-history.ui:359
 msgid "Send Message"
-msgstr "הודעות חדשות"
+msgstr "שליחת הודעה"
 
 #: data/resources/ui/content-state-creation.ui:19
 msgid "Previous room"
@@ -458,45 +537,61 @@ msgid ""
 "details."
 msgstr ""
 
-#: data/resources/ui/event-menu.ui:11
+#. Translators: In this string, 'Reply' is a verb.
+#: data/resources/ui/event-menu.ui:12
 msgid "_Reply"
 msgstr "לה_שיב"
 
-#: data/resources/ui/event-menu.ui:16
+#. Translators: In this string, 'Edit' is a verb.
+#: data/resources/ui/event-menu.ui:18
 msgid "_Edit"
 msgstr "_עריכה"
 
-#: data/resources/ui/event-menu.ui:21 data/resources/ui/event-menu.ui:86
+#. Translators: In this string, 'Forward' is a verb.
+#: data/resources/ui/event-menu.ui:24 data/resources/ui/event-menu.ui:115
 msgid "_Forward"
 msgstr "_קדימה"
 
-#: data/resources/ui/event-menu.ui:28 data/resources/ui/event-menu.ui:93
+#: data/resources/ui/event-menu.ui:31 data/resources/ui/event-menu.ui:122
 msgid "_Select"
 msgstr "_בחירה"
 
-#: data/resources/ui/event-menu.ui:35 data/resources/ui/event-menu.ui:100
+#: data/resources/ui/event-menu.ui:38 data/resources/ui/event-menu.ui:129
 msgid "_Copy Text"
 msgstr "_העתקת טקסט"
 
-#: data/resources/ui/event-menu.ui:41 data/resources/ui/event-menu.ui:72
-msgid "_Copy Image"
-msgstr "הע_תקת תמונה"
+#: data/resources/ui/event-menu.ui:44
+msgid "_Copy Thumbnail"
+msgstr "_העתקת תמונה ממוזערת"
 
-#: data/resources/ui/event-menu.ui:46 data/resources/ui/event-menu.ui:77
+#: data/resources/ui/event-menu.ui:49 data/resources/ui/event-menu.ui:90
 msgid "S_ave Image"
 msgstr "_שמירת תמונה"
 
-#: data/resources/ui/event-menu.ui:51 data/resources/ui/event-menu.ui:106
+#: data/resources/ui/event-menu.ui:54 data/resources/ui/event-menu.ui:95
+msgid "S_ave Video"
+msgstr "_שמירת סרטון"
+
+#: data/resources/ui/event-menu.ui:59 data/resources/ui/event-menu.ui:100
+msgid "S_ave Audio"
+msgstr "שמירת _שמע"
+
+#: data/resources/ui/event-menu.ui:64 data/resources/ui/event-menu.ui:105
+#: data/resources/ui/event-menu.ui:135
 msgid "_Permalink"
 msgstr "_קישור קבוע"
 
-#: data/resources/ui/event-menu.ui:56 data/resources/ui/event-menu.ui:111
+#: data/resources/ui/event-menu.ui:69 data/resources/ui/event-menu.ui:140
 msgid "_View Source"
 msgstr "הצגת מ_קור"
 
-#: data/resources/ui/event-menu.ui:63 data/resources/ui/event-menu.ui:118
+#: data/resources/ui/event-menu.ui:76 data/resources/ui/event-menu.ui:147
 msgid "Re_move"
 msgstr "ה_סרה"
+
+#: data/resources/ui/event-menu.ui:85
+msgid "_Copy Image"
+msgstr "הע_תקת תמונה"
 
 #: data/resources/ui/event-source-dialog.ui:5
 msgid "Event Source"
@@ -509,35 +604,35 @@ msgid ""
 msgstr ""
 
 #. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:83
+#: data/resources/ui/greeter.ui:101
 msgid "Welcome to Fractal"
 msgstr "ברוך בואך לפרקטל"
 
-#: data/resources/ui/greeter.ui:108
+#: data/resources/ui/greeter.ui:126
 msgid "_Log in"
 msgstr "_כניסה"
 
-#: data/resources/ui/greeter.ui:118
+#: data/resources/ui/greeter.ui:136
 msgid "_Create Account"
 msgstr "י_צירת חשבון"
 
 #: data/resources/ui/identity-verification-widget.ui:46
-#: src/session/content/room_history/verification_info_bar.rs:177
+#: src/session/content/room_history/verification_info_bar.rs:171
 msgid "Decline"
 msgstr "סירוב"
 
 #: data/resources/ui/identity-verification-widget.ui:56
-#: src/session/content/room_history/verification_info_bar.rs:176
+#: src/session/content/room_history/verification_info_bar.rs:170
 msgid "Verify"
 msgstr "אימות"
 
 #: data/resources/ui/identity-verification-widget.ui:109
-#: data/resources/ui/identity-verification-widget.ui:210
+#: data/resources/ui/identity-verification-widget.ui:213
 msgid "Can’t scan QR code?"
 msgstr "אין באפשרותך לסרוק קוד QR?"
 
 #: data/resources/ui/identity-verification-widget.ui:117
-#: data/resources/ui/identity-verification-widget.ui:227
+#: data/resources/ui/identity-verification-widget.ui:230
 msgid "Compare Emoji"
 msgstr "השוואת רגשון"
 
@@ -545,31 +640,81 @@ msgstr "השוואת רגשון"
 msgid "Scan Complete"
 msgstr "סריקה הושלמה"
 
-#: data/resources/ui/identity-verification-widget.ui:219
+#: data/resources/ui/identity-verification-widget.ui:222
 msgid "Scan QR code with this session"
 msgstr "סריקת קוד QR עם הפעלה זו"
 
-#: data/resources/ui/identity-verification-widget.ui:287
+#: data/resources/ui/identity-verification-widget.ui:290
 msgid "Do Not Match"
-msgstr ""
+msgstr "לא להתאים"
 
-#: data/resources/ui/identity-verification-widget.ui:297
+#: data/resources/ui/identity-verification-widget.ui:300
 msgid "Match"
-msgstr ""
+msgstr "התאמה"
 
-#: data/resources/ui/identity-verification-widget.ui:347
+#: data/resources/ui/identity-verification-widget.ui:350
 msgid "Done"
 msgstr "בוצע"
 
-#: data/resources/ui/identity-verification-widget.ui:416
+#: data/resources/ui/identity-verification-widget.ui:419
 msgid "Confirm Scan"
+msgstr "סריקת אימות"
+
+#: data/resources/ui/identity-verification-widget.ui:482
+msgid "Missing Cross-Signing Keys"
 msgstr ""
 
+#: data/resources/ui/identity-verification-widget.ui:500
+msgid ""
+"Even though the verification was successful, the other device didn’t send us "
+"the necessary keys:"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:518
+msgid "User-signing key"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:538
+msgid "Self-signing key"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:557
+msgid "You can wait a bit longer, or choose one of the following options:"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:578
+msgid "Verify your session with another device"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:601
+msgid "Reset cross-signing on your other device and retry verification"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:624
+msgid ""
+"Verify this session without another device, or reset cross-signing on this "
+"device"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:633
+msgid "Restart verification"
+msgstr ""
+
+#: data/resources/ui/join-room-dialog.ui:4
+msgid "Join a Room"
+msgstr "הצטרפות לחדר"
+
+#: data/resources/ui/join-room-dialog.ui:5
+msgid "Enter a room ID, room alias, or permalink."
+msgstr "יש להזין מזהה חדר, כינוי חדר או קישור קבוע."
+
+#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:710
+msgid "_Join"
+msgstr "ה_צטרפות"
+
 #: data/resources/ui/login-advanced-dialog.ui:5
-#, fuzzy
-#| msgid "Homeserver"
 msgid "Homeserver Discovery"
-msgstr "שרת ביתי"
+msgstr "גילוי שרת ביתי"
 
 #: data/resources/ui/login-advanced-dialog.ui:14
 msgid ""
@@ -583,29 +728,38 @@ msgstr ""
 msgid "_Auto-discovery"
 msgstr ""
 
-#: data/resources/ui/login.ui:23
-msgid "_Next"
-msgstr "ה_בא"
+#. Translators: As in 'Advanced Settings'.
+#: data/resources/ui/login-homeserver-page.ui:59
+msgid "Advanced…"
+msgstr "מתקדם…"
 
-#: data/resources/ui/login.ui:130 src/login/mod.rs:341
+#: data/resources/ui/login-method-page.ui:37 src/login/homeserver_page.rs:112
 msgid "Homeserver URL"
 msgstr "כתובת השרת הביתי"
 
-#: data/resources/ui/login.ui:153
+#: data/resources/ui/login-method-page.ui:60
 msgid "Matrix Username"
 msgstr "משתמש Matrix"
 
-#: data/resources/ui/login.ui:165
+#: data/resources/ui/login-method-page.ui:72
 msgid "Password"
 msgstr "ססמה"
 
-#: data/resources/ui/login.ui:171
+#: data/resources/ui/login-method-page.ui:78
 msgid "_Forgot Password?"
 msgstr "_שכחת ססמה?"
 
-#: data/resources/ui/login.ui:216
+#: data/resources/ui/login-method-page.ui:100
+msgid "More SSO Providers"
+msgstr "ספקי SSO נוספים"
+
+#: data/resources/ui/login-sso-page.ui:21
 msgid "Please follow the steps in the browser."
-msgstr ""
+msgstr "נא לעקוב אחר הצעדים בדפדפן."
+
+#: data/resources/ui/login.ui:23
+msgid "_Next"
+msgstr "ה_בא"
 
 #: data/resources/ui/member-menu.ui:6
 msgid "_Verify"
@@ -653,93 +807,89 @@ msgstr "_ציבורי"
 msgid "Room Address"
 msgstr "כתובת חדר"
 
-#: data/resources/ui/session-verification.ui:49
-#: src/session/content/verification/identity_verification_widget.rs:538
+#: data/resources/ui/session-verification.ui:59
+#: src/session/content/verification/identity_verification_widget.rs:571
 msgid "Get Another Device"
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:60
-#: src/session/content/verification/identity_verification_widget.rs:540
+#: data/resources/ui/session-verification.ui:70
+#: src/session/content/verification/identity_verification_widget.rs:573
 msgid "Accept the verification request from another session or device."
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:73
+#: data/resources/ui/session-verification.ui:83
 msgid "No other devices logged into this account?"
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:81
-#: data/resources/ui/session-verification.ui:176
+#: data/resources/ui/session-verification.ui:91
+#: data/resources/ui/session-verification.ui:186
 msgid "Recovery"
 msgstr "שחזור"
 
-#: data/resources/ui/session-verification.ui:91
-#: src/session/content/verification/session_verification.rs:240
+#: data/resources/ui/session-verification.ui:101
+#: src/session/content/verification/session_verification.rs:249
 msgid "Reset"
 msgstr "איפוס"
 
-#: data/resources/ui/session-verification.ui:128
+#: data/resources/ui/session-verification.ui:138
 msgid "Setup Encryption Identity"
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:139
+#: data/resources/ui/session-verification.ui:149
 msgid ""
 "You need to setup an encryption identity, since this is the first time you "
 "logged into your account."
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:147
+#: data/resources/ui/session-verification.ui:157
 msgid "Setup"
-msgstr ""
+msgstr "הקמה"
 
-#: data/resources/ui/session-verification.ui:187
+#: data/resources/ui/session-verification.ui:197
 msgid ""
 "Without another device you need a recovery passphrase or key to access your "
 "messages"
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:195
-#: data/resources/ui/session-verification.ui:250
+#: data/resources/ui/session-verification.ui:205
+#: data/resources/ui/session-verification.ui:260
 msgid "Recovery Passphrase"
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:204
-#: data/resources/ui/session-verification.ui:314
+#: data/resources/ui/session-verification.ui:214
+#: data/resources/ui/session-verification.ui:324
 msgid "Recovery Key"
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:213
+#: data/resources/ui/session-verification.ui:223
 msgid ""
 "If you don’t have any of these you can reset your identity, but be aware "
 "this makes your old messages inaccessible forever."
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:222
+#: data/resources/ui/session-verification.ui:232
 msgid "Reset Identity"
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:261
+#: data/resources/ui/session-verification.ui:271
 msgid ""
 "Your Recovery Passphrase was set up when you first created this account."
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:269
+#: data/resources/ui/session-verification.ui:279
 msgid "If you opted for a Recovery Key instead go back and choose that option."
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:280
-msgid "Passphrase"
-msgstr ""
-
-#: data/resources/ui/session-verification.ui:285
-#: data/resources/ui/session-verification.ui:350
+#: data/resources/ui/session-verification.ui:295
+#: data/resources/ui/session-verification.ui:360
 msgid "Next"
 msgstr "הבא"
 
-#: data/resources/ui/session-verification.ui:325
+#: data/resources/ui/session-verification.ui:335
 msgid "Your Recovery Key was set up when you first created this account."
 msgstr ""
 
-#: data/resources/ui/session-verification.ui:333
+#: data/resources/ui/session-verification.ui:343
 msgid ""
 "If you opted for a Recovery Passphrase instead go back and choose that "
 "option."
@@ -774,9 +924,9 @@ msgstr "סגירת חדר"
 msgid "_New Room"
 msgstr "חדר _חדש"
 
-#: data/resources/ui/sidebar.ui:12
-msgid "_Preferences"
-msgstr "_העדפות"
+#: data/resources/ui/sidebar.ui:10
+msgid "_Join Room"
+msgstr "ה_צטרפות לחדר"
 
 #: data/resources/ui/sidebar.ui:16
 msgid "_Keyboard Shortcuts"
@@ -787,20 +937,20 @@ msgid "_About Fractal"
 msgstr "_על פרקטל"
 
 #: data/resources/ui/sidebar.ui:40
-msgid "Mark as _Favorite"
-msgstr "סימון כ_מועדף"
+msgid "Move to _Favorites"
+msgstr "העברה ל_מועדפים"
 
 #: data/resources/ui/sidebar.ui:45
-msgid "Unmark as _Favorite"
-msgstr "ביטול זימון כ_מועדף"
+msgid "Move to _Rooms"
+msgstr "העברה ל_חדרים"
 
 #: data/resources/ui/sidebar.ui:50
-msgid "Mark as Low _Priority"
-msgstr "סימון ב_עדיפות נמוכה"
+msgid "Move to _People"
+msgstr "העברה ל_אנשים"
 
 #: data/resources/ui/sidebar.ui:55
-msgid "Unmark as Low _Priority"
-msgstr "ביטול סימון בע_דיפות נמוכה"
+msgid "Move to Low _Priority"
+msgstr "העברה ל_עדיפות נמוכה"
 
 #: data/resources/ui/sidebar.ui:67
 msgid "Re_join Room"
@@ -808,237 +958,303 @@ msgstr "הצטרפות מ_חדש לחדר"
 
 #: data/resources/ui/sidebar.ui:72
 msgid "_Forget Room"
-msgstr ""
+msgstr "_לשכוח חדר"
 
-#: data/resources/ui/sidebar.ui:94
-#, fuzzy
-#| msgid "Deactivate Account"
+#: data/resources/ui/sidebar.ui:91
 msgid "Switch Accounts"
-msgstr "השבתת חשבון"
+msgstr "החלפת חשבון"
 
-#: data/resources/ui/sidebar.ui:116
-#, fuzzy
-#| msgid "Account Settings"
+#: data/resources/ui/sidebar.ui:113
 msgid "App Settings Menu"
-msgstr "הגדרות חשבון"
+msgstr "תפריט הגדרות יישום"
 
-#: data/resources/ui/sidebar.ui:126
+#: data/resources/ui/sidebar.ui:123
 #, fuzzy
 #| msgid "Room search"
 msgid "Toggle Room Search"
 msgstr "חיפוש חדרים"
 
-#: data/resources/ui/sidebar.ui:138
-#, fuzzy
-#| msgid "Room search"
+#: data/resources/ui/sidebar.ui:135
 msgid "Room Search"
-msgstr "חיפוש חדרים"
+msgstr "חיפוש חדר"
 
-#: data/resources/ui/sidebar.ui:139
-#, fuzzy
-#| msgid "Search for room members"
+#: data/resources/ui/sidebar.ui:136
 msgid "Search for a room"
-msgstr "חיפוש אחר חברים בחדר"
+msgstr "חיפוש אחר חדר"
 
-#: data/resources/ui/sidebar.ui:155
+#: data/resources/ui/sidebar.ui:146
+msgid "Offline"
+msgstr "לא מקוון"
+
+#: data/resources/ui/sidebar.ui:166
 msgid "Sidebar"
 msgstr "סרגל צד"
 
-#: data/resources/ui/sidebar.ui:156
+#: data/resources/ui/sidebar.ui:167
 msgid "Allows to navigate between rooms"
-msgstr ""
+msgstr "לאפשר ניווט בין חדרים"
 
 #: data/resources/ui/qr-code-scanner.ui:21
 msgid "Unable to connect to Camera"
 msgstr "לא ניתן להתחבר למצלמה"
 
-#: src/application.rs:167
-msgid "Learn more about Fractal"
-msgstr "מידע נוסף על פרקטל"
-
-#: src/application.rs:171
-msgid "A Matrix client for GNOME"
-msgstr "לקוח Matrix עבור GNOME"
-
-#: src/application.rs:172
+#: src/application.rs:191
 msgid "© 2017-2022 The Fractal Team"
-msgstr ""
+msgstr "‏© 2017-2022 צוות פרקטל"
 
-#: src/application.rs:186
+#: src/application.rs:205
 msgid "translator-credits"
 msgstr "ירון שהרבני <sh.yaron@gmail.com>"
 
 #. This can't be added via the builder
-#: src/application.rs:190
+#: src/application.rs:209
 msgid "Name by"
 msgstr "השם מאת"
 
-#: src/components/editable_avatar.rs:334
-#, fuzzy
-#| msgid "Choose Provider"
+#: src/components/editable_avatar.rs:308
 msgid "Choose Avatar"
-msgstr "בחירת ספק"
+msgstr "בחירת תמונה אישית"
 
-#: src/components/editable_avatar.rs:343
+#: src/components/editable_avatar.rs:317
 msgid "Choose"
-msgstr ""
+msgstr "בחירה"
 
-#: src/components/editable_avatar.rs:366
+#: src/components/editable_avatar.rs:338
 msgid "The chosen file is not an image"
-msgstr ""
+msgstr "הקובץ הנבחר אינו תמונה"
 
-#: src/components/editable_avatar.rs:374
+#: src/components/editable_avatar.rs:344
 msgid "Could not determine the type of the chosen file"
-msgstr ""
+msgstr "לא ניתן לקבוע את סוג הקובץ שנבחר"
 
-#: src/components/editable_avatar.rs:383
+#: src/components/editable_avatar.rs:349
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:282
 msgid "No file was chosen"
+msgstr "לא נבחר קובץ"
+
+#: src/components/location_viewer.rs:137
+msgid "Location at latitude {latitude} and longitude {longitude}"
 msgstr ""
 
-#: src/error_page.rs:108
+#: src/components/media_content_viewer.rs:167
+msgid "Image not Viewable"
+msgstr "התמונה לא ניתנת להצגה"
+
+#: src/components/media_content_viewer.rs:168
+msgid "Audio Clip not Playable"
+msgstr ""
+
+#: src/components/media_content_viewer.rs:169
+msgid "Video not Playable"
+msgstr "סרטון לא ניתן לנגינה"
+
+#: src/components/media_content_viewer.rs:170
+msgid "File not Viewable"
+msgstr "קובץ לא ניתן הלצגה"
+
+#: src/error_page.rs:111
 msgid "Session removed successfully."
-msgstr ""
+msgstr "הפעלה הוסרה בהצלחה."
 
-#: src/error_page.rs:120
+#: src/error_page.rs:119
 msgid "Could not remove session from secret storage"
-msgstr ""
+msgstr "לא ניתן להסיר את ההפעלה מאחסון מאובטח"
 
-#: src/login/mod.rs:336
+#: src/greeter.rs:82 src/login/mod.rs:683 src/window.rs:391
+msgid "No network connection"
+msgstr "אין חיבור לרשת"
+
+#: src/greeter.rs:87 src/login/mod.rs:688 src/window.rs:395
+msgid "No Internet connection"
+msgstr "אין חיבור לרשת"
+
+#: src/login/homeserver_page.rs:107
 msgid "Domain Name"
 msgstr "שם תחום"
 
-#: src/login/mod.rs:338
+#: src/login/homeserver_page.rs:109
 msgid "The domain of your Matrix homeserver, for example gnome.org"
-msgstr ""
+msgstr "התחום של שרת Matrix שלך, לדוגמה gnome.org"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/login/mod.rs:345
+#: src/login/homeserver_page.rs:116
 msgid "The URL of your Matrix homeserver, for example {address}"
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/login/mod.rs:471
+#: src/login/method_page.rs:159
 msgid "Connecting to {domain_name}"
+msgstr "מתחבר אל {domain_name}"
+
+#: src/login/mod.rs:609
+msgid "Unable to store session"
+msgstr "לא ניתן לאחסן את ההפעלה"
+
+#: src/secret.rs:57
+msgid "The secret storage file is corrupted."
+msgstr "קובץ האחסון המאובטח פגום."
+
+#: src/secret.rs:61
+msgid "Could not access the secret storage file location."
+msgstr "לא ניתן למיקום קובץ האחסון המאובטח."
+
+#: src/secret.rs:64
+msgid "An unknown error occurred when accessing the secret storage file."
 msgstr ""
 
-#: src/secret.rs:52
-#, fuzzy
-#| msgid "Could not download the file"
-msgid "Could not unlock the secret storage"
-msgstr "לא ניתן להוריד את הקובץ"
-
-#: src/secret.rs:55 src/secret.rs:59
-msgid "An unknown error occurred when interacting with the secret storage"
+#: src/secret.rs:67
+msgid "The secret storage file has been changed by another process."
 msgstr ""
 
-#: src/secret.rs:88
+#: src/secret.rs:70
+msgid ""
+"An unknown error occurred when interacting with the D-Bus Secret Portal "
+"backend."
+msgstr ""
+
+#: src/secret.rs:73
+msgid ""
+"The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
+"any prompt asking to access it."
+msgstr ""
+
+#: src/secret.rs:76
+msgid ""
+"The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
+"installed, and it is at least at version 1.5.0."
+msgstr ""
+
+#: src/secret.rs:79
+msgid "The Flatpak Secret Portal provided a key that is too weak to be secure."
+msgstr ""
+
+#: src/secret.rs:91
+msgid "The item was deleted."
+msgstr "הפריט נמחק."
+
+#: src/secret.rs:94
+msgid ""
+"The request to the D-Bus Secret Service was cancelled. Make sure to accept "
+"any prompt asking to access it."
+msgstr ""
+
+#: src/secret.rs:97
+msgid ""
+"Could not access the default collection. Make sure a keyring was created and "
+"set as default."
+msgstr ""
+
+#: src/secret.rs:101
+msgid ""
+"An unknown error occurred when interacting with the D-Bus Secret Service."
+msgstr ""
+
+#: src/secret.rs:141
 msgid "Malformed homeserver in stored session"
 msgstr ""
 
-#: src/secret.rs:95
+#: src/secret.rs:148
 msgid "Could not find homeserver in stored session"
 msgstr ""
 
-#: src/secret.rs:109
+#: src/secret.rs:162
 msgid "Malformed user ID in stored session"
 msgstr ""
 
-#: src/secret.rs:116
+#: src/secret.rs:169
 msgid "Could not find user ID in stored session"
 msgstr ""
 
-#: src/secret.rs:125
+#: src/secret.rs:178
 msgid "Could not find device ID in stored session"
 msgstr ""
 
-#: src/secret.rs:134
+#: src/secret.rs:187
 msgid "Could not find database path in stored session"
 msgstr ""
 
-#: src/secret.rs:145
+#: src/secret.rs:198
 msgid "Malformed secret in stored session"
 msgstr ""
 
-#: src/secret.rs:152
-msgid "No secret in stored session"
-msgstr ""
-
-#: src/secret.rs:159
+#: src/secret.rs:206
 msgid "Could not get secret in stored session"
 msgstr ""
 
-#. Translators: Do NOT translate the content between '{' and '}', this is a variable
-#. name.
-#: src/secret.rs:272
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/secret.rs:315 src/secret.rs:355
 msgid "Fractal: Matrix credentials for {user_id}"
 msgstr ""
 
-#: src/session/account_settings/devices_page/device_list.rs:147
+#: src/session/account_settings/devices_page/device_list.rs:134
 msgid "Failed to load connected device."
 msgstr ""
 
-#: src/session/account_settings/devices_page/device_list.rs:192
+#: src/session/account_settings/devices_page/device_list.rs:180
 msgid "Failed to load the list of connected devices."
 msgstr ""
 
-#: src/session/account_settings/devices_page/device_row.rs:110
+#: src/session/account_settings/devices_page/device_row.rs:101
 #, fuzzy
 #| msgid "Delete Message"
 msgid "Disconnect Session"
 msgstr "מחיקת הודעה"
 
-#: src/session/account_settings/devices_page/device_row.rs:112
+#: src/session/account_settings/devices_page/device_row.rs:103
 msgid "Log Out"
 msgstr "יציאה"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/account_settings/devices_page/device_row.rs:216
+#: src/session/account_settings/devices_page/device_row.rs:209
 msgid "Failed to disconnect device “{device_name}”"
 msgstr ""
 
-#: src/session/account_settings/devices_page/device_row.rs:230
+#: src/session/account_settings/devices_page/device_row.rs:222
 msgid ""
-"Fractal’s support for encryption is unstable so you might lose access to "
-"your encrypted message history. It is recommended to backup your encryption "
-"keys from another Matrix client before proceeding."
+"Fractal doesn't support online backup of room encryption keys so you might "
+"lose access to your encrypted message history. It is recommended to backup "
+"your encryption keys before proceeding."
 msgstr ""
 
 #. Translators: Time in 24h format
-#: src/session/account_settings/devices_page/device_row.rs:288
+#: src/session/account_settings/devices_page/device_row.rs:280
 msgid "Last seen at %H:%M"
 msgstr ""
 
 #. Translators: Time in 12h format
-#: src/session/account_settings/devices_page/device_row.rs:291
+#: src/session/account_settings/devices_page/device_row.rs:283
 msgid "Last seen at %l:%M %p"
 msgstr ""
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:300
+#: src/session/account_settings/devices_page/device_row.rs:292
 #, no-c-format
 msgid "Last seen Yesterday at %H:%M"
 msgstr ""
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:305
+#: src/session/account_settings/devices_page/device_row.rs:297
 #, no-c-format
 msgid "Last seen Yesterday at %l:%M %p"
 msgstr ""
 
 #. Translators: this is the name of the week day followed by
 #. a time in 24h format. i.e. "Last seen Monday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:314
+#: src/session/account_settings/devices_page/device_row.rs:306
 #, no-c-format
 msgid "Last seen %A at %H:%M"
 msgstr ""
 
 #. Translators: this is the week day name followed by
 #. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:319
+#: src/session/account_settings/devices_page/device_row.rs:311
 #, no-c-format
 msgid "Last seen %A at %l:%M %p"
 msgstr ""
@@ -1046,7 +1262,7 @@ msgstr ""
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 24h format i.e. "Last seen February 3 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:327
+#: src/session/account_settings/devices_page/device_row.rs:319
 #, no-c-format
 msgid "Last seen %B %-e at %H:%M"
 msgstr ""
@@ -1054,7 +1270,7 @@ msgstr ""
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 12h format i.e. "Last seen February 3 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:333
+#: src/session/account_settings/devices_page/device_row.rs:325
 #, no-c-format
 msgid "Last seen %B %-e at %l:%M %p"
 msgstr ""
@@ -1062,7 +1278,7 @@ msgstr ""
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:340
+#: src/session/account_settings/devices_page/device_row.rs:332
 #, no-c-format
 msgid "Last seen %B %-e %Y at %H:%M"
 msgstr ""
@@ -1070,229 +1286,350 @@ msgstr ""
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:346
+#: src/session/account_settings/devices_page/device_row.rs:338
 #, no-c-format
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr ""
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:217
+#: src/session/account_settings/notifications_page.rs:174
+#: src/session/account_settings/notifications_page.rs:187
+msgid "Could not load notifications settings. Try again later"
+msgstr ""
+
+#: src/session/account_settings/notifications_page.rs:288
+#, fuzzy
+#| msgid "Couldn’t delete the account"
+msgid "Could not enable account notifications"
+msgstr "לא ניתן למחוק את החשבון"
+
+#: src/session/account_settings/notifications_page.rs:290
+#, fuzzy
+#| msgid "Couldn’t delete the account"
+msgid "Could not disable account notifications"
+msgstr "לא ניתן למחוק את החשבון"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:212
+msgid ""
+"Exporting your room encryption keys allows you to make a backup to be able "
+"to decrypt your messages in end-to-end encrypted rooms on another device or "
+"with another Matrix client."
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:215
+msgid ""
+"The backup must be stored in a safe place and must be protected with a "
+"strong passphrase that will be used to encrypt the data."
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:218
+msgid "Export Keys"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:222
+msgid ""
+"Importing your room encryption keys allows you to decrypt your messages in "
+"end-to-end encrypted rooms with a previous backup from a Matrix client."
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:225
+msgid "Enter the passphrase provided when the backup file was created."
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:228
+msgid "Import Keys"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:245
+msgid "Save Encryption Keys To…"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:250
+msgid "Import Encryption Keys From…"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:265
+#, fuzzy
+#| msgid "_Select"
+msgid "Select"
+msgstr "_בחירה"
+
+#. Translators: Do no translate "fractal" as it is the application
+#. name.
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:274
+msgid "fractal-encryption-keys"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:307
+#, fuzzy
+#| msgid "The passwords do not match."
+msgid "Passphrases do not match"
+msgstr "הססמאות אינן תואמות."
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:381
+msgid "Room encryption keys exported successfully"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:386
+#, fuzzy
+#| msgid "No room description"
+msgid "Imported 1 room encryption key"
+msgid_plural "Imported {n} room encryption keys"
+msgstr[0] "אין תיאור לחדר"
+msgstr[1] "אין תיאור לחדר"
+msgstr[2] "אין תיאור לחדר"
+msgstr[3] "אין תיאור לחדר"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:399
+#, fuzzy
+#| msgid "Couldn’t delete the account"
+msgid "Could not export the keys"
+msgstr "לא ניתן למחוק את החשבון"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:409
+msgid "The passphrase doesn't match the one used to export the keys."
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:413
+#, fuzzy
+#| msgid "Couldn’t delete the account"
+msgid "Could not import the keys"
+msgstr "לא ניתן למחוק את החשבון"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:181
 msgid "Password must be at least 8 characters long"
 msgstr ""
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:220
+#: src/session/account_settings/user_page/change_password_subpage.rs:184
 msgid "Password must have at least one lower-case letter"
 msgstr ""
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:224
+#: src/session/account_settings/user_page/change_password_subpage.rs:188
 msgid "Password must have at least one upper-case letter"
 msgstr ""
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:227
+#: src/session/account_settings/user_page/change_password_subpage.rs:191
 msgid "Password must have at least one digit"
 msgstr ""
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:229
+#: src/session/account_settings/user_page/change_password_subpage.rs:193
 msgid "Password must have at least one symbol"
 msgstr ""
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:255
+#: src/session/account_settings/user_page/change_password_subpage.rs:223
 #, fuzzy
 #| msgid "The passwords do not match."
 msgid "Passwords do not match"
 msgstr "הססמאות אינן תואמות."
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:313
+#: src/session/account_settings/user_page/change_password_subpage.rs:287
 msgid "Password changed successfully"
 msgstr ""
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:329
+#: src/session/account_settings/user_page/change_password_subpage.rs:309
 msgid "Password rejected for being too weak"
 msgstr ""
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:336
+#: src/session/account_settings/user_page/change_password_subpage.rs:313
 #, fuzzy
 #| msgid "Couldn’t change the password"
 msgid "Could not change password"
 msgstr "לא ניתן להחליף את הססמה"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:200
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:178
 msgid "Account successfully deactivated"
 msgstr "החשבון הושבת בהצלחה"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:210
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:186
 #, fuzzy
 #| msgid "Couldn’t delete the account"
 msgid "Could not deactivate account"
 msgstr "לא ניתן למחוק את החשבון"
 
-#: src/session/account_settings/user_page/mod.rs:227
+#: src/session/account_settings/user_page/mod.rs:211
 msgid "Avatar removed successfully"
 msgstr "התמונה הייצוגית הוסרה בהצלחה"
 
-#: src/session/account_settings/user_page/mod.rs:245
+#: src/session/account_settings/user_page/mod.rs:226
 msgid "Avatar changed successfully"
 msgstr "התמונה הייצוגית הוחלפה בהצלחה"
 
-#: src/session/account_settings/user_page/mod.rs:291
-#, fuzzy
-#| msgid "Could not download the file"
+#: src/session/account_settings/user_page/mod.rs:271
 msgid "Could not upload avatar"
-msgstr "לא ניתן להוריד את הקובץ"
+msgstr "לא ניתן להעלות תמונה אישית"
 
-#: src/session/account_settings/user_page/mod.rs:316
-#, fuzzy
-#| msgid "Couldn’t change the password"
+#: src/session/account_settings/user_page/mod.rs:293
 msgid "Could not change avatar"
-msgstr "לא ניתן להחליף את הססמה"
+msgstr "לא ניתן לשנות תמונה אישית"
 
-#: src/session/account_settings/user_page/mod.rs:348
-#, fuzzy
-#| msgid "Could not retrieve file URI"
+#: src/session/account_settings/user_page/mod.rs:322
 msgid "Could not remove avatar"
-msgstr "לא ניתן לקבל את כתובת הקובץ"
+msgstr "לא ניתן למחוק תמונה אישית"
 
-#: src/session/account_settings/user_page/mod.rs:397
+#: src/session/account_settings/user_page/mod.rs:355
 msgid "Name changed successfully"
 msgstr "השם הוחלף בהצלחה"
 
-#: src/session/account_settings/user_page/mod.rs:436
+#: src/session/account_settings/user_page/mod.rs:386
 msgid "Could not change display name"
 msgstr "לא ניתן להחליף את שם התצוגה"
 
-#: src/session/content/explore/public_room_row.rs:222
+#: src/session/content/explore/public_room_row.rs:211
 msgid "View"
-msgstr ""
+msgstr "הצגה"
 
-#: src/session/content/explore/public_room_row.rs:224
+#: src/session/content/explore/public_room_row.rs:213
 msgid "Join"
 msgstr "הצטרפות"
 
-#: src/session/content/invite.rs:136
-#, fuzzy
-#| msgid "<widget> invited you"
+#: src/session/content/invite.rs:115
 msgid "{user} invited you"
-msgstr "הוזמנת על ידי <widget>"
+msgstr "הוזמנת על ידי {user}"
 
-#: src/session/content/room_details/member_page/mod.rs:237
-#, fuzzy
-#| msgid "Members"
-msgid "1 Member"
-msgid_plural "{n} Members"
-msgstr[0] "חברים"
-msgstr[1] "חברים"
-msgstr[2] "חברים"
-msgstr[3] "חברים"
-
-#: src/session/content/room_details/member_page/mod.rs:296
-#, fuzzy
-#| msgid "Invite"
-msgid "1 Invited"
-msgid_plural "{n} Invited"
-msgstr[0] "הזמנה"
-msgstr[1] "הזמנה"
-msgstr[2] "הזמנה"
-msgstr[3] "הזמנה"
-
-#: src/session/content/room_details/mod.rs:169
-#, fuzzy
-#| msgid "Details"
+#: src/session/content/room_details/general_page/mod.rs:167
 msgid "Save Details"
-msgstr "פרטים"
+msgstr "שמירת פרטים"
 
-#: src/session/content/room_details/mod.rs:170
-#, fuzzy
-#| msgid "Details"
+#: src/session/content/room_details/general_page/mod.rs:168
 msgid "Edit Details"
-msgstr "פרטים"
+msgstr "עריכת פרטים"
 
-#: src/session/content/room_details/mod.rs:213
-#, fuzzy
-#| msgid "Choose Provider"
+#: src/session/content/room_details/general_page/mod.rs:224
 msgid "Choose avatar"
-msgstr "בחירת ספק"
+msgstr "בחירת תמונה אישית"
 
-#: src/session/content/room_details/mod.rs:244
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:287
+msgid "Member"
+msgstr "חבר"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:288
+#: src/session/room/member.rs:47
+#, fuzzy
+msgid "Banned"
+msgstr "הורחקת"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:290
+#: src/session/room/member.rs:46 src/session/sidebar/category_type.rs:30
+#, fuzzy
+msgid "Invited"
+msgstr "הוזמנת"
+
+#: src/session/content/room_details/member_page/mod.rs:290
 #, fuzzy
 #| msgid "Invite New Member"
+msgid "Invited Room Members"
+msgstr "הזמנת חברים חדשים"
+
+#: src/session/content/room_details/member_page/mod.rs:291
+msgid "Banned Room Members"
+msgstr "חברי חדר מורחקים"
+
+#: src/session/content/room_details/member_page/mod.rs:292
+#: src/session/content/room_details/mod.rs:216
+msgid "Room Members"
+msgstr "חברי חדר"
+
+#: src/session/content/room_details/mod.rs:232
 msgid "Invite new Members"
 msgstr "הזמנת חברים חדשים"
 
-#: src/session/content/room_history/item_row.rs:253
+#: src/session/content/room_history/item_row.rs:299
+msgid "This is the start of the visible history"
+msgstr "זוהי תחילתה של ההיסטוריה הניתן לצפייה"
+
+#: src/session/content/room_history/item_row.rs:314
 msgid "New Messages"
 msgstr "הודעות חדשות"
 
-#: src/session/content/room_history/message_row/audio.rs:245
-#: src/session/content/room_history/message_row/audio.rs:249
-#, fuzzy
-#| msgid "Could not retrieve file URI"
+#: src/session/content/room_history/message_row/audio.rs:228
+#: src/session/content/room_history/message_row/audio.rs:232
 msgid "Could not retrieve audio file"
-msgstr "לא ניתן לקבל את כתובת הקובץ"
+msgstr "לא ניתן לקבל את קובץ השמע"
 
-#: src/session/content/room_history/message_row/audio.rs:262
+#: src/session/content/room_history/message_row/audio.rs:245
 msgid "Error reading audio file"
-msgstr ""
+msgstr "שגיאה בקריאת קובץ השמע"
 
-#: src/session/content/room_history/message_row/location.rs:111
-msgid "Location at latitude {latitude} and longitude {longitude}"
-msgstr ""
-
-#: src/session/content/room_history/message_row/media.rs:445
-#: src/session/media_viewer.rs:244
-msgid "Image file not supported"
-msgstr ""
-
-#: src/session/content/room_history/message_row/media.rs:484
-#: src/session/content/room_history/message_row/media.rs:489
-#, fuzzy
-#| msgid "Could not retrieve file URI"
-msgid "Could not retrieve media"
-msgstr "לא ניתן לקבל את כתובת הקובץ"
-
-#: src/session/content/room_history/message_row/mod.rs:380
+#: src/session/content/room_history/message_row/content.rs:345
 msgid "Identity verification was started"
 msgstr ""
 
-#: src/session/content/room_history/message_row/mod.rs:393
-#: src/session/content/room_history/message_row/mod.rs:440
+#: src/session/content/room_history/message_row/content.rs:358
+#: src/session/content/room_history/message_row/content.rs:394
 msgid "Unsupported event"
+msgstr "אירוע לא נתמך"
+
+#: src/session/content/room_history/message_row/content.rs:382
+msgid ""
+"Unable to decrypt this message, decryption will be retried once the keys are "
+"available."
 msgstr ""
 
-#: src/session/content/room_history/message_row/mod.rs:418
-msgid "Fractal couldn’t decrypt this message."
+#: src/session/content/room_history/message_row/location.rs:98
+msgid "Location is invalid and cannot be displayed"
 msgstr ""
 
-#: src/session/content/room_history/message_row/mod.rs:429
-#, fuzzy
-#| msgid "This message has no source."
-msgid "This message was removed."
-msgstr "להודעה הזאת אין מקור."
+#: src/session/content/room_history/message_row/media.rs:428
+msgid "Image file not supported"
+msgstr ""
 
-#: src/session/content/room_history/mod.rs:160
+#: src/session/content/room_history/message_row/media.rs:467
+#: src/session/content/room_history/message_row/media.rs:472
+msgid "Could not retrieve media"
+msgstr "לא ניתן לקבל את המדיה"
+
+#: src/session/content/room_history/mod.rs:194
 msgid "The location request has been cancelled."
-msgstr ""
+msgstr "בקשת המיקום בוטלה."
 
-#: src/session/content/room_history/mod.rs:164
+#: src/session/content/room_history/mod.rs:198
 msgid "Failed to retrieve current location."
-msgstr ""
+msgstr "אירעה שגיאה בקבלת המיקום הנוכחי."
 
-#. TODO Get the actual name of the file by reading
-#. the text/plain mime type.
-#: src/session/content/room_history/mod.rs:412
-#: src/session/content/room_history/mod.rs:786
-#, fuzzy
-#| msgid "Images"
-msgid "Image"
-msgstr "תמונות"
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name. In this string, 'Reply' is a noun.
+#: src/session/content/room_history/mod.rs:636
+msgid "Reply to {user}"
+msgstr "לענות למשתמש {user}"
 
-#: src/session/content/room_history/mod.rs:844
+#: src/session/content/room_history/mod.rs:749
+#: src/session/room/event_actions.rs:106
+msgid "Permalink copied to clipboard"
+msgstr "הקישור הקבוע הועתק ללוח הגזירים"
+
+#: src/session/content/room_history/mod.rs:753
+#: src/session/room/event_actions.rs:110
+msgid "Failed to copy the permalink"
+msgstr "אירעה שגיאה בהעתקת הקישור הקבוע"
+
+#: src/session/content/room_history/mod.rs:938
+msgid "Your Location"
+msgstr "המיקום שלך"
+
+#: src/session/content/room_history/mod.rs:948
 msgid "User Location {geo_uri} at {iso8601_datetime}"
+msgstr "מיקום המשתמש {geo_uri} בתאריך {iso8601_datetime}"
+
+#: src/session/content/room_history/mod.rs:1081
+msgid "Error reading file"
+msgstr "שגיאה בעת קריאת קובץ"
+
+#: src/session/content/room_history/mod.rs:1107
+msgid "Error getting file from drop"
 msgstr ""
 
-#: src/session/content/room_history/state_row/creation.rs:62
+#: src/session/content/room_history/mod.rs:1139
+msgid "Error getting image from clipboard"
+msgstr "שגיאה בקבלת תמונה מלוח הגזירים"
+
+#: src/session/content/room_history/mod.rs:1156
+msgid "Error getting file from clipboard"
+msgstr "שגיאה בקבלת קובץ מלוח הגזירים"
+
+#: src/session/content/room_history/state_row/creation.rs:68
 msgid "This is the continuation of an upgraded room."
 msgstr ""
 
-#: src/session/content/room_history/state_row/creation.rs:68
+#: src/session/content/room_history/state_row/creation.rs:73
 msgid "This is the beginning of this room."
 msgstr ""
 
@@ -1300,62 +1637,86 @@ msgstr ""
 msgid "This room is encrypted from this point on."
 msgstr ""
 
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:94
-msgid "{previous_user_name} removed their display name."
-msgstr ""
-
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:101
-msgid "{previous_user_name} changed their display name to {new_user_name}."
-msgstr ""
-
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:110
-msgid "{user_id} set their display name to {new_user_name}."
-msgstr ""
-
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:125
-msgid "{user} set their avatar."
-msgstr ""
-
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:132
-msgid "{user} removed their avatar."
-msgstr ""
-
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:139
-msgid "{user} changed their avatar."
-msgstr ""
-
-#. Translators: Do NOT translate the content between '{' and '}', this
-#. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:150
-msgid "{user} joined this room."
-msgstr ""
-
-#. Translators: Do NOT translate the content between '{' and '}', this is
-#. a variable name.
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/room_history/state_row/mod.rs:156
-#: src/session/content/room_history/state_row/mod.rs:237
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#: src/session/content/room_history/state_row/mod.rs:85
+#: src/session/content/room_history/state_row/mod.rs:200
 #, fuzzy
 #| msgid "Search for users to invite them to this room."
 msgid "{user} was invited to this room."
 msgstr "חיפוש משתמשים על מנת להזמין אותם לחדר זה."
 
+#: src/session/content/room_history/state_row/mod.rs:97
+msgid "An unsupported state event was received."
+msgstr ""
+
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:164
+#. We don't know what changed so fall back to the membership.
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:172
+#: src/session/content/room_history/state_row/mod.rs:328
+msgid "{user} joined this room."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:177
+msgid "{user} left the room."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:182
+msgid "{user} was banned."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:188
+msgid "{user} was unbanned."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and
+#. '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:194
+msgid "{user} was kicked out of the room."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#: src/session/content/room_history/state_row/mod.rs:206
+#, fuzzy
+#| msgid "Search for users to invite them to this room."
+msgid "{user} was kicked out of the room and banned."
+msgstr "חיפוש משתמשים על מנת להזמין אותם לחדר זה."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:212
+#, fuzzy
+#| msgid "Search for users to invite them to this room."
+msgid "{user} accepted the invite."
+msgstr "חיפוש משתמשים על מנת להזמין אותם לחדר זה."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:218
+msgid "{user} rejected the invite."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:224
+msgid "The invitation for {user} has been revoked."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:233
 #, fuzzy
 #| msgid "Search for users to invite them to this room."
 msgid "{user} requested to be invited to this room."
@@ -1363,123 +1724,163 @@ msgstr "חיפוש משתמשים על מנת להזמין אותם לחדר ז�
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:177
-msgid "{user} rejected the invite."
-msgstr ""
+#: src/session/content/room_history/state_row/mod.rs:240
+#, fuzzy
+#| msgid "Search for users to invite them to this room."
+msgid "{user} retracted their request to be invited to this room."
+msgstr "חיפוש משתמשים על מנת להזמין אותם לחדר זה."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:184
-msgid "The invitation for {user} has been revoked."
-msgstr ""
+#: src/session/content/room_history/state_row/mod.rs:246
+#, fuzzy
+#| msgid "Search for users to invite them to this room."
+msgid "{user}’s request to be invited to this room was denied."
+msgstr "חיפוש משתמשים על מנת להזמין אותם לחדר זה."
 
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:195
-msgid "{user} was unbanned."
-msgstr ""
-
-#. Translators: Do NOT translate the content between '{' and '}',
-#. this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:206
-msgid "{user} left the room."
-msgstr ""
-
-#. Translators: Do NOT translate the content between '{' and
-#. '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:211
-msgid "{user} was kicked out of the room."
-msgstr ""
-
-#. Translators: Do NOT translate the content between '{' and '}', this is
-#. a variable name.
-#: src/session/content/room_history/state_row/mod.rs:220
-msgid "{user} was banned."
-msgstr ""
-
-#: src/session/content/room_history/state_row/mod.rs:225
+#: src/session/content/room_history/state_row/mod.rs:254
 msgid "An unsupported room member event was received."
 msgstr ""
 
-#: src/session/content/room_history/state_row/mod.rs:246
-msgid "An unsupported state event was received."
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:276
+msgid "{previous_user_name} removed their display name."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:283
+msgid "{previous_user_name} changed their display name to {new_user_name}."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:294
+msgid "{user_id} set their display name to {new_user_name}."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:306
+msgid "{user} set their avatar."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:313
+msgid "{user} removed their avatar."
+msgstr ""
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:320
+msgid "{user} changed their avatar."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/room_history/verification_info_bar.rs:170
+#: src/session/content/room_history/typing_row.rs:209
+#, fuzzy
+#| msgid "<b>{}</b> is typing…"
+#| msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+msgid "<b>{user}</b> is typing…"
+msgstr "הקלדה אצל <b>{}</b>…"
+
+#. Translators: Do NOT translate the content between '{' and '}', these are
+#. variable names.
+#: src/session/content/room_history/typing_row.rs:219
+#, fuzzy
+#| msgid "<b>{}</b> is typing…"
+#| msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+msgid "<b>{user1}</b> and <b>{user2}</b> are typing…"
+msgstr "הקלדה אצל <b>{}</b>…"
+
+#. Translators: Do NOT translate the content between '{' and '}', these are
+#. variable names.
+#: src/session/content/room_history/typing_row.rs:226
+msgid "<b>{user1}</b>, <b>{user2}</b> and 1 other are typing…"
+msgid_plural "<b>{user1}</b>, <b>{user2}</b> and {n} others are typing…"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/verification_info_bar.rs:164
 msgid "{user_name} wants to be verified"
 msgstr ""
 
-#: src/session/content/room_history/verification_info_bar.rs:180
+#: src/session/content/room_history/verification_info_bar.rs:174
 msgid "Verification in progress"
 msgstr "מתבצע אימות"
 
-#: src/session/content/verification/identity_verification_widget.rs:493
-#: src/session/content/verification/identity_verification_widget.rs:522
+#: src/session/content/verification/identity_verification_widget.rs:528
+#: src/session/content/verification/identity_verification_widget.rs:553
 msgid "Verify the new session from the current session."
 msgstr "לאמת את ההפעלה החדשה מההפעלה הנוכחית."
 
-#: src/session/content/verification/identity_verification_widget.rs:496
+#: src/session/content/verification/identity_verification_widget.rs:531
 msgid "Scan the QR code from another session logged into this account."
 msgstr ""
 
-#: src/session/content/verification/identity_verification_widget.rs:498
-#: src/session/content/verification/identity_verification_widget.rs:525
+#: src/session/content/verification/identity_verification_widget.rs:533
+#: src/session/content/verification/identity_verification_widget.rs:557
 msgid ""
 "You scanned the QR code successfully. You may need to confirm the "
 "verification from the other session."
 msgstr ""
 
-#: src/session/content/verification/identity_verification_widget.rs:502
+#: src/session/content/verification/identity_verification_widget.rs:536
 msgid "Scan this QR code from the other session."
 msgstr ""
 
-#: src/session/content/verification/identity_verification_widget.rs:505
-#: src/session/content/verification/identity_verification_widget.rs:532
+#: src/session/content/verification/identity_verification_widget.rs:539
+#: src/session/content/verification/identity_verification_widget.rs:564
 msgid "Check if the same emoji appear in the same order on the other device."
 msgstr ""
 
-#: src/session/content/verification/identity_verification_widget.rs:507
-#: src/session/content/verification/identity_verification_widget.rs:534
+#: src/session/content/verification/identity_verification_widget.rs:541
+#: src/session/content/verification/identity_verification_widget.rs:566
 msgid "Request Complete"
 msgstr "הבקשה הושלמה"
 
-#: src/session/content/verification/identity_verification_widget.rs:509
+#: src/session/content/verification/identity_verification_widget.rs:543
 msgid "This session is ready to send and receive secure messages."
 msgstr ""
 
-#: src/session/content/verification/identity_verification_widget.rs:511
+#: src/session/content/verification/identity_verification_widget.rs:545
 msgid "Get Started"
 msgstr ""
 
-#: src/session/content/verification/identity_verification_widget.rs:513
-#: src/session/content/verification/identity_verification_widget.rs:543
-msgid "Does the other session show a confirmation shield?"
+#: src/session/content/verification/identity_verification_widget.rs:547
+#: src/session/content/verification/identity_verification_widget.rs:576
+msgid "Does the other session show a confirmation?"
 msgstr ""
 
-#: src/session/content/verification/identity_verification_widget.rs:519
+#: src/session/content/verification/identity_verification_widget.rs:551
 msgid "Login Request From Another Session"
 msgstr ""
 
-#: src/session/content/verification/identity_verification_widget.rs:524
-msgid ""
-"Scan the QR code from this session from another session logged into this "
-"account."
-msgstr ""
+#: src/session/content/verification/identity_verification_widget.rs:556
+#, fuzzy
+#| msgid "Scan QR code with this session"
+msgid "Scan the QR code displayed by the other session."
+msgstr "סריקת קוד QR עם הפעלה זו"
 
-#: src/session/content/verification/identity_verification_widget.rs:528
+#: src/session/content/verification/identity_verification_widget.rs:560
 msgid "Scan this QR code from the newly logged in session."
 msgstr ""
 
-#: src/session/content/verification/identity_verification_widget.rs:536
+#: src/session/content/verification/identity_verification_widget.rs:568
 msgid "The new session is now ready to send and receive secure messages."
 msgstr ""
 
-#: src/session/content/verification/identity_verification_widget.rs:548
-#: src/session/content/verification/identity_verification_widget.rs:554
-#: src/session/content/verification/identity_verification_widget.rs:564
-#: src/session/content/verification/identity_verification_widget.rs:571
+#: src/session/content/verification/identity_verification_widget.rs:581
+#: src/session/content/verification/identity_verification_widget.rs:588
+#: src/session/content/verification/identity_verification_widget.rs:599
+#: src/session/content/verification/identity_verification_widget.rs:606
 #, fuzzy
 #| msgid "Notification sounds"
 msgid "Verification Request"
@@ -1487,7 +1888,7 @@ msgstr "צלילי התראות"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:553
+#: src/session/content/verification/identity_verification_widget.rs:586
 msgid ""
 "{user} asked to be verified. Verifying a user increases the security of the "
 "conversation."
@@ -1495,13 +1896,13 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:558
+#: src/session/content/verification/identity_verification_widget.rs:592
 msgid "Scan the QR code shown on the device of {user}."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:563
+#: src/session/content/verification/identity_verification_widget.rs:597
 msgid ""
 "You scanned the QR code successfully. {user} may need to confirm the "
 "verification."
@@ -1509,25 +1910,25 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:568
+#: src/session/content/verification/identity_verification_widget.rs:603
 msgid "Ask {user} to scan this QR code from their session."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:575
+#: src/session/content/verification/identity_verification_widget.rs:610
 msgid ""
 "Ask {user} if they see the following emoji appear in the same order on their "
 "screen."
 msgstr ""
 
-#: src/session/content/verification/identity_verification_widget.rs:578
+#: src/session/content/verification/identity_verification_widget.rs:614
 msgid "Verification Complete"
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:581
+#: src/session/content/verification/identity_verification_widget.rs:617
 msgid ""
 "{user} is verified and you can now be sure that your communication will be "
 "private."
@@ -1535,64 +1936,92 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:585
+#: src/session/content/verification/identity_verification_widget.rs:621
 msgid "Waiting for {user}"
 msgstr "בהמתנה ל־{user}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:591
+#: src/session/content/verification/identity_verification_widget.rs:627
 msgid "Ask {user} to accept the verification request."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:597
-msgid "Does {user} see a confirmation shield on their session?"
+#: src/session/content/verification/identity_verification_widget.rs:633
+msgid "Does {user} see a confirmation on their session?"
 msgstr ""
 
-#: src/session/content/verification/session_verification.rs:237
+#. Translators: This is the tooltip when a signing key was received.
+#: src/session/content/verification/identity_verification_widget.rs:749
+msgid "Received"
+msgstr ""
+
+#. Translators: This is the tooltip when a signing key is missing.
+#: src/session/content/verification/identity_verification_widget.rs:755
+msgid "Missing"
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:246
 msgid ""
 "If you lost access to all other sessions you can create a new crypto "
 "identity. Be careful because this will reset all verified users and make "
 "previously encrypted conversations unreadable."
 msgstr ""
 
-#: src/session/content/verification/session_verification.rs:320
+#: src/session/content/verification/session_verification.rs:329
 msgid "You cancelled the authentication needed to create the encryption keys."
 msgstr ""
 
-#: src/session/content/verification/session_verification.rs:324
+#: src/session/content/verification/session_verification.rs:333
 msgid "An error occurred during the creation of the encryption keys."
 msgstr ""
 
-#: src/session/media_viewer.rs:251
-#, fuzzy
-#| msgid "Could not retrieve file URI"
-msgid "Could not retrieve image"
-msgstr "לא ניתן לקבל את כתובת הקובץ"
+#: src/session/mod.rs:708
+msgid "_View"
+msgstr ""
 
-#: src/session/media_viewer.rs:288
-#, fuzzy
-#| msgid "Could not retrieve file URI"
-msgid "Could not retrieve video"
-msgstr "לא ניתן לקבל את כתובת הקובץ"
-
-#: src/session/mod.rs:463
-#, fuzzy
-#| msgid "Delete the corrupted session"
-msgid "Unable to store session"
-msgstr "מחיקת ההפעלה הפגומה"
-
-#: src/session/mod.rs:760
+#: src/session/mod.rs:754
 msgid "Failed to logout the session."
 msgstr ""
 
-#: src/session/room/event_actions.rs:205
+#: src/session/room/event_actions.rs:199 src/session/room/event_actions.rs:223
+msgid "Message copied to clipboard"
+msgstr ""
+
+#: src/session/room/event_actions.rs:239
+#, fuzzy
+#| msgid "Image from Clipboard"
+msgid "Image copied to clipboard"
+msgstr "תמונה מלוח הגזירים"
+
+#: src/session/room/event_actions.rs:243
+msgid "Thumbnail copied to clipboard"
+msgstr ""
+
+#: src/session/room/event_actions.rs:304
 #, fuzzy
 #| msgid "Save"
 msgid "Save File"
 msgstr "שמירה"
+
+#: src/session/room/member.rs:44
+msgid "Left"
+msgstr ""
+
+#: src/session/room/member.rs:45
+#, fuzzy
+#| msgid "Join"
+msgid "Joined"
+msgstr "הצטרפות"
+
+#: src/session/room/member.rs:48
+msgid "Knocked"
+msgstr ""
+
+#: src/session/room/member.rs:49
+msgid "Custom"
+msgstr ""
 
 #: src/session/room/member_role.rs:48
 msgid "Admin"
@@ -1607,42 +2036,53 @@ msgid "Normal user"
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:427
+#: src/session/room/mod.rs:391
 #, fuzzy
 #| msgid "Unable to load room"
 msgid "Failed to forget {room}."
 msgstr "לא ניתן לטעון את החדר"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:574
+#: src/session/room/mod.rs:645
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr ""
 
-#: src/session/room/mod.rs:869
+#: src/session/room/mod.rs:984
 msgid "Unknown"
 msgstr "לא ידוע"
 
+#. Translators: This is the name of a room that is empty but had another user before.
+#. Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:1012
+msgid "Empty Room (was {user})"
+msgstr ""
+
+#. Translators: This is the name of a room without other users.
+#: src/session/room/mod.rs:1014
+msgid "Empty Room"
+msgstr ""
+
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1282
+#: src/session/room/mod.rs:1387
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1316
+#: src/session/room/mod.rs:1416
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1486
+#: src/session/room/mod.rs:1614
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1494
+#: src/session/room/mod.rs:1626
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -1652,97 +2092,106 @@ msgstr[2] ""
 msgstr[3] ""
 
 #. Translators: This is a date format in the day divider without the year
-#: src/session/room/timeline/timeline_day_divider.rs:106
+#: src/session/room/timeline/timeline_day_divider.rs:111
 #, fuzzy
 #| msgid "%B %e"
 msgid "%A, %B %e"
 msgstr "‫%e ב%B"
 
 #. Translators: This is a date format in the day divider with the year
-#: src/session/room/timeline/timeline_day_divider.rs:109
+#: src/session/room/timeline/timeline_day_divider.rs:114
 #, fuzzy
 #| msgid "%B %e, %Y"
 msgid "%A, %B %e, %Y"
 msgstr "‫%e ב%B, %Y"
 
-#: src/session/room_creation/mod.rs:278
+#: src/session/room_creation/mod.rs:253
 msgid "The address is already taken."
 msgstr ""
 
-#: src/session/room_creation/mod.rs:301
-msgid "Too long. Use a shorter name."
-msgstr "ארוך מדי. יש להשתמש בשם קצר יותר."
-
-#: src/session/room_creation/mod.rs:329
+#: src/session/room_creation/mod.rs:281
 #, fuzzy
 #| msgid "Can’t login, try again"
 msgid "Can’t contain “:”"
 msgstr "לא ניתן להיכנס, נא לנסות שוב"
 
-#: src/session/room_creation/mod.rs:334
+#: src/session/room_creation/mod.rs:285
 #, fuzzy
 #| msgid "Can’t login, try again"
 msgid "Can’t contain “#”"
 msgstr "לא ניתן להיכנס, נא לנסות שוב"
 
-#: src/session/room_creation/mod.rs:339
+#: src/session/room_creation/mod.rs:289
 msgid "Too long. Use a shorter address."
 msgstr "ארוכה מדי. יש להשתמש בכתובת קצרה יותר."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room_list.rs:326
+#: src/session/room_list.rs:311
 msgid "Failed to join room {room_name}. Try again later."
 msgstr "ההצטרפות לחדר {room_name} נכשלה. נא לנסות שוב בהמשך."
 
-#: src/session/sidebar/category_row.rs:161
+#: src/session/sidebar/category_row.rs:157
 #, fuzzy
 #| msgid "Join Room"
 msgid "Join Room as Favorite"
 msgstr "הצטרפות לחדר"
 
-#: src/session/sidebar/category_row.rs:162
+#: src/session/sidebar/category_row.rs:158
 msgid "Join Room"
 msgstr "הצטרפות לחדר"
 
-#: src/session/sidebar/category_row.rs:163
+#: src/session/sidebar/category_row.rs:159
 msgid "Join Room as Low Priority"
 msgstr "הצטרפות לחדר כעדיפות נמוכה"
 
-#: src/session/sidebar/category_row.rs:164
-#, fuzzy
-#| msgid "Reject"
+#: src/session/sidebar/category_row.rs:160
 msgid "Reject Invite"
-msgstr "דחייה"
+msgstr "דחיית הזמנה"
 
-#: src/session/sidebar/category_row.rs:168
-msgid "Unmark as Favorite"
-msgstr ""
+#: src/session/sidebar/category_row.rs:161
+#, fuzzy
+#| msgid "Join Room"
+msgid "Join Room as People"
+msgstr "הצטרפות לחדר"
 
-#: src/session/sidebar/category_row.rs:169
-#: src/session/sidebar/category_row.rs:175
-msgid "Mark as Low Priority"
-msgstr ""
+#: src/session/sidebar/category_row.rs:165
+#: src/session/sidebar/category_row.rs:180
+#: src/session/sidebar/category_row.rs:194
+msgid "Move to Rooms"
+msgstr "העברה לחדרים"
 
-#: src/session/sidebar/category_row.rs:170
-#: src/session/sidebar/category_row.rs:176
-#: src/session/sidebar/category_row.rs:182
+#: src/session/sidebar/category_row.rs:166
+#: src/session/sidebar/category_row.rs:173
+#: src/session/sidebar/category_row.rs:195
+#, fuzzy
+#| msgid "Low Priority"
+msgid "Move to Low Priority"
+msgstr "עדיפות נמוכה"
+
+#: src/session/sidebar/category_row.rs:167
+#: src/session/sidebar/category_row.rs:174
+#: src/session/sidebar/category_row.rs:181
+#: src/session/sidebar/category_row.rs:196
 msgid "Leave Room"
 msgstr "יציאה מהחדר"
 
-#: src/session/sidebar/category_row.rs:174
-#: src/session/sidebar/category_row.rs:180
-#, fuzzy
-#| msgid "Favorites"
-msgid "Mark as Favorite"
-msgstr "מועדפים"
-
-#: src/session/sidebar/category_row.rs:181
-msgid "Unmark as Low Priority"
+#: src/session/sidebar/category_row.rs:168
+#: src/session/sidebar/category_row.rs:175
+#: src/session/sidebar/category_row.rs:182
+msgid "Move to People"
 msgstr ""
+
+#: src/session/sidebar/category_row.rs:172
+#: src/session/sidebar/category_row.rs:179
+#: src/session/sidebar/category_row.rs:193
+msgid "Move to Favorites"
+msgstr "העברה למועדפים"
 
 #: src/session/sidebar/category_row.rs:186
-msgid "Rejoin Room as Favorite"
-msgstr ""
+#, fuzzy
+#| msgid "Join Room"
+msgid "Rejoin Room as Favorites"
+msgstr "הצטרפות לחדר"
 
 #: src/session/sidebar/category_row.rs:187
 #, fuzzy
@@ -1754,98 +2203,98 @@ msgstr "הצטרפות לחדר"
 msgid "Rejoin Room as Low Priority"
 msgstr ""
 
-#: src/session/sidebar/category_type.rs:31
+#: src/session/sidebar/category_row.rs:189
+#, fuzzy
+#| msgid "Join Room"
+msgid "Rejoin Room as People"
+msgstr "הצטרפות לחדר"
+
+#: src/session/sidebar/category_type.rs:29
 #, fuzzy
 #| msgid "Notifications"
 msgid "Verifications"
 msgstr "התראות"
 
-#: src/session/sidebar/category_type.rs:32
-#, fuzzy
-#| msgid "Invite"
-msgid "Invited"
-msgstr "הזמנה"
-
-#: src/session/sidebar/category_type.rs:33
-#, fuzzy
-#| msgid "Favorites"
-msgid "Favorite"
+#: src/session/sidebar/category_type.rs:31
+msgid "Favorites"
 msgstr "מועדפים"
 
-#: src/session/sidebar/category_type.rs:34
+#: src/session/sidebar/category_type.rs:32
 msgid "Rooms"
 msgstr "חדרים"
 
-#: src/session/sidebar/category_type.rs:35
+#: src/session/sidebar/category_type.rs:33
 msgid "Low Priority"
 msgstr "עדיפות נמוכה"
 
-#: src/session/sidebar/category_type.rs:36
+#: src/session/sidebar/category_type.rs:34
 msgid "Historical"
-msgstr ""
+msgstr "היסטורי"
 
 #. Translators: This shouldn't ever be visible to the user,
-#: src/session/sidebar/category_type.rs:38
+#: src/session/sidebar/category_type.rs:36
 msgid "Outdated"
-msgstr ""
+msgstr "מיושן"
 
-#: src/session/sidebar/category_type.rs:39
+#: src/session/sidebar/category_type.rs:37
 msgid "Spaces"
-msgstr ""
+msgstr "רווחים"
 
-#: src/session/sidebar/entry_type.rs:21
+#: src/session/sidebar/category_type.rs:38
+msgid "People"
+msgstr "אנשים"
+
+#: src/session/sidebar/entry_type.rs:18
 msgid "Explore"
-msgstr ""
+msgstr "חשיפה"
 
-#: src/session/sidebar/entry_type.rs:22
-#, fuzzy
-#| msgid "New Room"
+#: src/session/sidebar/entry_type.rs:19
 msgid "Forget Room"
-msgstr "חדר חדש"
+msgstr "לשכוח חדר"
 
-#: src/session/verification/identity_verification.rs:680
+#: src/session/verification/identity_verification.rs:637
 msgid "You cancelled the verification process."
 msgstr ""
 
-#: src/session/verification/identity_verification.rs:682
+#: src/session/verification/identity_verification.rs:639
 msgid "The verification process failed because it reached a timeout."
 msgstr ""
 
-#: src/session/verification/identity_verification.rs:685
+#: src/session/verification/identity_verification.rs:642
 msgid "You accepted the request from an other session."
 msgstr ""
 
-#: src/session/verification/identity_verification.rs:688
+#: src/session/verification/identity_verification.rs:645
 #, fuzzy
 #| msgid "The passwords do not match."
 msgid "The emoji did not match."
 msgstr "הססמאות אינן תואמות."
 
-#: src/session/verification/identity_verification.rs:697
+#: src/session/verification/identity_verification.rs:654
 msgid "An unknown error occurred during the verification process."
 msgstr ""
 
-#: src/user_facing_error.rs:23
+#: src/user_facing_error.rs:26
 msgid "The connection timed out. Try again later."
 msgstr ""
 
-#: src/user_facing_error.rs:25
+#: src/user_facing_error.rs:28
 msgid "Unable to connect to the homeserver."
 msgstr ""
 
-#: src/user_facing_error.rs:30
+#: src/user_facing_error.rs:38
 #, fuzzy
 #| msgid "Invalid username or password"
 msgid "The provided username or password is invalid."
 msgstr "שם משתמש או ססמה שגויים"
 
-#: src/user_facing_error.rs:31
+#: src/user_facing_error.rs:39
 msgid "The account is deactivated."
 msgstr "החשבון מושבת."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name.
-#: src/user_facing_error.rs:38
+#: src/user_facing_error.rs:46
 msgid "You exceeded the homeserver’s rate limit, retry in 1 second."
 msgid_plural "You exceeded the homeserver’s rate limit, retry in {n} seconds."
 msgstr[0] ""
@@ -1853,63 +2302,185 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: src/user_facing_error.rs:44
+#: src/user_facing_error.rs:52
 msgid "You exceeded the homeserver’s rate limit, try again later."
 msgstr ""
 
-#: src/user_facing_error.rs:54
+#: src/user_facing_error.rs:62
 msgid "An unknown connection error occurred."
 msgstr ""
 
-#: src/user_facing_error.rs:62
+#: src/user_facing_error.rs:70
 #, fuzzy
 #| msgid "Couldn’t delete the account"
 msgid "Could not decrypt the event"
 msgstr "לא ניתן למחוק את החשבון"
 
-#: src/user_facing_error.rs:64 src/user_facing_error.rs:84
+#: src/user_facing_error.rs:72 src/user_facing_error.rs:92
 msgid "An unknown error occurred."
 msgstr ""
 
-#: src/user_facing_error.rs:71
+#: src/user_facing_error.rs:79
 #, fuzzy
 #| msgid "Could not download the file"
 msgid "Could not open the store."
 msgstr "לא ניתן להוריד את הקובץ"
 
-#: src/user_facing_error.rs:78
+#: src/user_facing_error.rs:86
 msgid "This is not a valid URL"
 msgstr ""
 
-#: src/user_facing_error.rs:80
+#: src/user_facing_error.rs:88
 msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
 msgstr ""
 
 #. Translators: Default name for image files.
-#: src/utils.rs:190
+#: src/utils/media.rs:50
 msgid "image"
 msgstr "תמונה"
 
 #. Translators: Default name for video files.
-#: src/utils.rs:192
-#, fuzzy
-#| msgid "videos"
+#: src/utils/media.rs:52
 msgid "video"
-msgstr "סרטונים"
+msgstr "סרט"
 
 #. Translators: Default name for audio files.
-#: src/utils.rs:194
+#: src/utils/media.rs:54
 msgid "audio"
-msgstr ""
+msgstr "שמע"
 
 #. Translators: Default name for files.
-#: src/utils.rs:196
+#: src/utils/media.rs:56
 msgid "file"
+msgstr "קובץ"
+
+#: src/utils/matrix.rs:89
+msgid "{user} sent an audio file."
 msgstr ""
 
-#: src/window.rs:204
+#: src/utils/matrix.rs:92 src/utils/matrix.rs:105 src/utils/matrix.rs:109
+#: src/utils/matrix.rs:113
+msgid "{user}: {message}"
+msgstr ""
+
+#: src/utils/matrix.rs:96
+#, fuzzy
+#| msgid "Select a file"
+msgid "{user} sent a file."
+msgstr "בחירת קובץ"
+
+#: src/utils/matrix.rs:99
+msgid "{user} sent an image."
+msgstr ""
+
+#: src/utils/matrix.rs:102
+#, fuzzy
+#| msgid "Search for users to invite them to this room."
+msgid "{user} sent their location."
+msgstr "חיפוש משתמשים על מנת להזמין אותם לחדר זה."
+
+#: src/utils/matrix.rs:117
+#, fuzzy
+#| msgid "<widget> invited you"
+msgid "{user} sent a video."
+msgstr "הוזמנת על ידי <widget>"
+
+#: src/utils/matrix.rs:120
+#, fuzzy
+#| msgid "Notification sounds"
+msgid "{user} sent a verification request."
+msgstr "צלילי התראות"
+
+#: src/utils/matrix.rs:129
+msgid "{user} sent a sticker."
+msgstr ""
+
+#: src/window.rs:271
 msgid "Failed to restore previous sessions"
 msgstr ""
+
+#~ msgid "Julian Sparber"
+#~ msgstr "Julian Sparber"
+
+#~ msgid "No Preview Available"
+#~ msgstr "אין תצוגה מקדימה זמינה"
+
+#~ msgid "> quote"
+#~ msgstr "> ציטוט"
+
+#~ msgid "**bold**"
+#~ msgstr "**מודגש**"
+
+#~ msgid "`code`"
+#~ msgstr "`קוד`"
+
+#~ msgid "*italic*"
+#~ msgstr "*נטוי*"
+
+#~ msgid "Invite new member"
+#~ msgstr "הזמנת חבר חדש"
+
+#~ msgid "Open"
+#~ msgstr "פתיחה"
+
+#~ msgid "Enable Markdown Formatting"
+#~ msgstr "הפעלת עיצוב Markdown"
+
+#~ msgid "_Preferences"
+#~ msgstr "_העדפות"
+
+#~ msgid "Unmark as _Favorite"
+#~ msgstr "ביטול זימון כ_מועדף"
+
+#~ msgid "Unmark as Low _Priority"
+#~ msgstr "ביטול סימון בע_דיפות נמוכה"
+
+#~ msgid "Learn more about Fractal"
+#~ msgstr "מידע נוסף על פרקטל"
+
+#~ msgid "A Matrix client for GNOME"
+#~ msgstr "לקוח Matrix עבור GNOME"
+
+#, fuzzy
+#~| msgid "Members"
+#~ msgid "1 Member"
+#~ msgid_plural "{n} Members"
+#~ msgstr[0] "חברים"
+#~ msgstr[1] "חברים"
+#~ msgstr[2] "חברים"
+#~ msgstr[3] "חברים"
+
+#, fuzzy
+#~| msgid "Invite"
+#~ msgid "1 Invited"
+#~ msgid_plural "{n} Invited"
+#~ msgstr[0] "הזמנה"
+#~ msgstr[1] "הזמנה"
+#~ msgstr[2] "הזמנה"
+#~ msgstr[3] "הזמנה"
+
+#, fuzzy
+#~| msgid "This message has no source."
+#~ msgid "This message was removed."
+#~ msgstr "להודעה הזאת אין מקור."
+
+#, fuzzy
+#~| msgid "Images"
+#~ msgid "Image"
+#~ msgstr "תמונות"
+
+#, fuzzy
+#~| msgid "Could not retrieve file URI"
+#~ msgid "Could not retrieve image"
+#~ msgstr "לא ניתן לקבל את כתובת הקובץ"
+
+#, fuzzy
+#~| msgid "Could not retrieve file URI"
+#~ msgid "Could not retrieve video"
+#~ msgstr "לא ניתן לקבל את כתובת הקובץ"
+
+#~ msgid "Too long. Use a shorter name."
+#~ msgstr "ארוך מדי. יש להשתמש בשם קצר יותר."
 
 #~ msgid "Retry"
 #~ msgstr "ניסיון חוזר"
@@ -2011,17 +2582,6 @@ msgstr ""
 #~ msgid "Device ID"
 #~ msgstr "מזהה מכשיר"
 
-#~ msgid ""
-#~ "Deactivating your account means that you will lose all your messages, "
-#~ "contacts, and files."
-#~ msgstr ""
-#~ "משמעות השבתת החשבון שלך היא שכל ההודעות, אנשי הקשר והקבצים שלך יאבדו."
-
-#~ msgid ""
-#~ "To confirm that you really want to deactivate this account type in your "
-#~ "password:"
-#~ msgstr "כדי לאשר את ביטול החשבון עליך להקליד את הססמה שלך:"
-
 #~ msgid "Also erase all messages"
 #~ msgstr "למחוק גם את כל ההודעות"
 
@@ -2111,9 +2671,6 @@ msgstr ""
 #~ msgid "Open With…"
 #~ msgstr "לפתוח עם…"
 
-#~ msgid "Save Video As…"
-#~ msgstr "שמירת סרטון בשם…"
-
 #~ msgid "Copy Selection"
 #~ msgstr "העתקת הבחירה"
 
@@ -2134,9 +2691,6 @@ msgstr ""
 
 #~ msgid "Type in your room topic"
 #~ msgstr "נא להקליד את נושא החדר שלך"
-
-#~ msgid "No room description"
-#~ msgstr "אין תיאור לחדר"
 
 #~ msgid "For all messages"
 #~ msgstr "לכל ההודעות"
@@ -2188,9 +2742,6 @@ msgstr ""
 
 #~ msgid "Select a new avatar"
 #~ msgstr "נא לבחור תמונה ייצוגית חדשה"
-
-#~ msgid "Select a file"
-#~ msgstr "בחירת קובץ"
 
 #~ msgid "Couldn’t save file"
 #~ msgstr "לא ניתן לשמור קובץ"
@@ -2250,18 +2801,8 @@ msgstr ""
 #~ msgid "Several users are typing…"
 #~ msgstr "כמה משתמשים מקלידים…"
 
-#~ msgid "<b>{}</b> is typing…"
-#~ msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
-#~ msgstr[0] "הקלדה אצל <b>{}</b>…"
-#~ msgstr[1] "הקלדה אצל <b>{}</b> וגם <b>{}</b>…"
-#~ msgstr[2] "הקלדה אצל <b>{}</b> וגם <b>{}</b>…"
-#~ msgstr[3] "הקלדה אצל <b>{}</b> וגם <b>{}</b>…"
-
 #~ msgid "Syncing, this could take a while"
 #~ msgstr "מתבצע סנכרון, עלול לארוך זמן מה"
-
-#~ msgid "Error deleting message"
-#~ msgstr "שגיאה במחיקת הודעה"
 
 #~ msgid "Can’t join the room, try again."
 #~ msgstr "לא ניתן להצטרף לחדר, נא לנסות שוב."
@@ -2296,9 +2837,6 @@ msgstr ""
 
 #~ msgid "© 2017–2020 Daniel García Moreno, et al."
 #~ msgstr "© 2017–2020 דניאל גרסיה מורנו ואחרים."
-
-#~ msgid "Image from Clipboard"
-#~ msgstr "תמונה מלוח הגזירים"
 
 #~ msgid "Invite to {name}"
 #~ msgstr "הזמנה אל {name}"
