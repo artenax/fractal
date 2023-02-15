@@ -123,7 +123,7 @@ glib::wrapper! {
 
 impl CameraPaintable {
     pub async fn new<F: AsRawFd>(fd: F, streams: Vec<camera::Stream>) -> Self {
-        let self_: Self = glib::Object::new(&[]);
+        let self_: Self = glib::Object::new();
 
         self_.set_pipewire_fd(fd, streams).await;
         self_

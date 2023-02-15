@@ -110,7 +110,7 @@ mod imp {
                     glib::ParamSpecObject::builder::<Room>("room")
                         .construct_only()
                         .build(),
-                    glib::ParamSpecEnum::builder("visible-page", PageName::default())
+                    glib::ParamSpecEnum::builder::<PageName>("visible-page")
                         .explicit_notify()
                         .build(),
                 ]

@@ -34,7 +34,7 @@ impl Camera {
     /// Create a new `Camera`. You should consider using `Camera::default()` to
     /// get a shared Object
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub async fn has_camera(&self) -> Result<bool, ashpd::Error> {

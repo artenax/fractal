@@ -73,7 +73,7 @@ mod imp {
             let target = adw::CallbackAnimationTarget::new(clone!(@weak obj => move |_| {
                 obj.queue_draw();
             }));
-            let animation = adw::TimedAnimation::new(&*obj, 0.0, 1.0, ANIMATION_DURATION, &target);
+            let animation = adw::TimedAnimation::new(&*obj, 0.0, 1.0, ANIMATION_DURATION, target);
 
             animation.set_easing(adw::Easing::EaseOutQuart);
             animation.connect_done(clone!(@weak obj => move |_| {
@@ -175,7 +175,7 @@ glib::wrapper! {
 
 impl ScaleRevealer {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Whether the child is revealed or not.

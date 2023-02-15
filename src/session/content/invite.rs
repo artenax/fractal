@@ -127,7 +127,7 @@ glib::wrapper! {
 
 impl Invite {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Whether a compact view is used.

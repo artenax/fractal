@@ -69,7 +69,7 @@ mod imp {
                     glib::ParamSpecBoolean::builder("has-selected")
                         .read_only()
                         .build(),
-                    glib::ParamSpecEnum::builder("state", InviteeListState::default())
+                    glib::ParamSpecEnum::builder::<InviteeListState>("state")
                         .read_only()
                         .build(),
                 ]

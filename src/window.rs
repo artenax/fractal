@@ -374,7 +374,7 @@ impl Window {
     }
 
     /// This appends a new toast to the list
-    pub fn add_toast(&self, toast: &adw::Toast) {
+    pub fn add_toast(&self, toast: adw::Toast) {
         self.imp().toast_overlay.add_toast(toast);
     }
 

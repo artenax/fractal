@@ -89,7 +89,7 @@ glib::wrapper! {
 
 impl LoginHomeserverPage {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Whether homeserver auto-discovery is enabled.

@@ -117,7 +117,7 @@ glib::wrapper! {
 impl VideoPlayer {
     /// Create a new video player.
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The `GstPlay` for the video.

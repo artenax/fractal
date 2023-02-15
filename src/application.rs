@@ -180,7 +180,7 @@ impl Application {
         let dialog = adw::AboutWindow::builder()
             .application_name("Fractal")
             .application_icon(config::APP_ID)
-            .developer_name(&gettext("The Fractal Team"))
+            .developer_name(gettext("The Fractal Team"))
             .license_type(gtk::License::Gpl30)
             .website("https://gitlab.gnome.org/GNOME/fractal/")
             .issue_url("https://gitlab.gnome.org/GNOME/fractal/-/issues")
@@ -188,7 +188,7 @@ impl Application {
             .version(config::VERSION)
             .transient_for(&self.get_main_window())
             .modal(true)
-            .copyright(&gettext("© 2017-2023 The Fractal Team"))
+            .copyright(gettext("© 2017-2023 The Fractal Team"))
             .developers(vec![
                 "Alejandro Domínguez".to_string(),
                 "Alexandre Franke".to_string(),
@@ -202,7 +202,7 @@ impl Application {
                 "Saurav Sachidanand".to_string(),
             ])
             .designers(vec!["Tobias Bernard".to_string()])
-            .translator_credits(&gettext("translator-credits"))
+            .translator_credits(gettext("translator-credits"))
             .build();
 
         // This can't be added via the builder

@@ -35,11 +35,9 @@ mod imp {
     impl ObjectImpl for TimelinePlaceholder {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecEnum::builder("kind", PlaceholderKind::default())
-                        .construct_only()
-                        .build(),
-                ]
+                vec![glib::ParamSpecEnum::builder::<PlaceholderKind>("kind")
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -70,7 +68,7 @@ glib::wrapper! {
 
 impl TimelinePlaceholder {
     pub fn spinner() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn typing() -> Self {

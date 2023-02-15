@@ -249,7 +249,7 @@ impl UserPage {
         let client = self.session().unwrap().client();
         let mime = file
             .query_info_future(
-                &gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                 gio::FileQueryInfoFlags::NONE,
                 glib::PRIORITY_LOW,
             )

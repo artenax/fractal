@@ -88,7 +88,7 @@ mod imp {
 
             self.gesture
                 .set_propagation_phase(gtk::PropagationPhase::Capture);
-            obj.add_controller(&self.gesture);
+            obj.add_controller(self.gesture.clone());
         }
     }
 
@@ -105,7 +105,7 @@ glib::wrapper! {
 
 impl MembershipSubpageRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The item of this row.

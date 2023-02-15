@@ -57,7 +57,7 @@ glib::wrapper! {
 
 impl ReactionList {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The user of the parent session.

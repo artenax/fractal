@@ -102,7 +102,7 @@ mod imp {
                         .maximum(POWER_LEVEL_MAX)
                         .read_only()
                         .build(),
-                    glib::ParamSpecEnum::builder("membership", Membership::default())
+                    glib::ParamSpecEnum::builder::<Membership>("membership")
                         .read_only()
                         .build(),
                     glib::ParamSpecUInt64::builder("latest-activity")
@@ -180,7 +180,7 @@ impl Member {
 
     /// This member's membership state.
     pub fn membership(&self) -> Membership {
-        let imp = imp::Member::from_instance(self);
+        let imp = self.imp();
         imp.membership.get()
     }
 
@@ -189,7 +189,7 @@ impl Member {
         if self.membership() == membership {
             return;
         }
-        let imp = imp::Member::from_instance(self);
+        let imp = self.imp();
         imp.membership.replace(membership);
         self.notify("membership");
     }

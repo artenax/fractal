@@ -108,7 +108,7 @@ glib::wrapper! {
 
 impl AccountSwitcher {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Set the model containing the stack pages for each logged in account.

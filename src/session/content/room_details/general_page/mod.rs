@@ -196,7 +196,7 @@ impl GeneralPage {
 
             let room = this.room();
 
-            let room_name = imp.room_name_entry.buffer().text();
+            let room_name = imp.room_name_entry.buffer().text().to_string();
             let topic_buffer = imp.room_topic_text_view.buffer();
             let topic = topic_buffer.text(&topic_buffer.start_iter(), &topic_buffer.end_iter(), true);
             room.store_room_name(room_name);

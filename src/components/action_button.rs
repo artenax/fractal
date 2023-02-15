@@ -87,7 +87,7 @@ mod imp {
                     glib::ParamSpecString::builder("icon-name")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecEnum::builder("state", ActionState::default())
+                    glib::ParamSpecEnum::builder::<ActionState>("state")
                         .explicit_notify()
                         .build(),
                     glib::ParamSpecOverride::for_interface::<gtk::Actionable>("action-name"),
@@ -155,7 +155,7 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl ActionButton {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The icon used in the default state.

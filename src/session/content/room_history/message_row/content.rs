@@ -63,11 +63,9 @@ mod imp {
     impl ObjectImpl for MessageContent {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecEnum::builder("format", ContentFormat::default())
-                        .explicit_notify()
-                        .build(),
-                ]
+                vec![glib::ParamSpecEnum::builder::<ContentFormat>("format")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -99,7 +97,7 @@ glib::wrapper! {
 
 impl MessageContent {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The displayed format of the message.

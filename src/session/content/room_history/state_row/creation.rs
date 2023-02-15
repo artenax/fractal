@@ -45,7 +45,7 @@ glib::wrapper! {
 
 impl StateCreation {
     pub fn new(event: &FullStateEventContent<RoomCreateEventContent>) -> Self {
-        let obj: Self = glib::Object::new(&[]);
+        let obj: Self = glib::Object::new();
         obj.set_event(event);
         obj
     }

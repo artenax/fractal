@@ -78,7 +78,7 @@ glib::wrapper! {
 impl MessageLocation {
     /// Create a new location message.
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn set_geo_uri(&self, uri: &str, format: ContentFormat) {

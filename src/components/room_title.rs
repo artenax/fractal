@@ -90,7 +90,7 @@ glib::wrapper! {
 
 impl RoomTitle {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Set the title of the room.

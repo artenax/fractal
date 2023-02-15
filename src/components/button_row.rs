@@ -98,7 +98,7 @@ glib::wrapper! {
 
 impl ButtonRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Whether activating this button opens a subpage.

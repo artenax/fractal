@@ -148,8 +148,8 @@ mod imp {
                 ))
                 .build();
             let filter = gtk::EveryFilter::new();
-            filter.append(&joined);
-            filter.append(&not_user);
+            filter.append(joined);
+            filter.append(not_user);
             let first_model = gtk::FilterListModel::builder().filter(&filter).build();
 
             // Sort the members list by activity, then display name.
@@ -162,8 +162,8 @@ mod imp {
                 .expression(Member::this_expression("display-name"))
                 .build();
             let sorter = gtk::MultiSorter::new();
-            sorter.append(&activity);
-            sorter.append(&display_name);
+            sorter.append(activity);
+            sorter.append(display_name);
             let second_model = gtk::SortListModel::builder()
                 .sorter(&sorter)
                 .model(&first_model)
@@ -209,7 +209,6 @@ mod imp {
                     imp.buffer_handler.replace(Some((buffer, handler_id)));
 
                     let key_events = gtk::EventControllerKey::new();
-                    view.add_controller(&key_events);
                     key_events.connect_key_pressed(clone!(@weak obj => @default-return glib::signal::Inhibit(false), move |_, key, _, modifier| {
                         if modifier.is_empty() {
                             if obj.is_visible() {
@@ -251,6 +250,8 @@ mod imp {
                         glib::signal::Inhibit(false)
                     }));
 
+                    view.add_controller(key_events);
+
                     // Close popup when the entry is not focused.
                     view.connect_has_focus_notify(clone!(@weak obj => move |view| {
                         if !view.has_focus() && obj.get_visible() {
@@ -281,7 +282,7 @@ glib::wrapper! {
 
 impl CompletionPopover {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The parent `GtkTextView` to autocomplete.

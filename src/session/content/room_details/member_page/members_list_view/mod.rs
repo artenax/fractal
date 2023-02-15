@@ -98,7 +98,7 @@ impl MembersListView {
 
         self.imp()
             .members_list_view
-            .set_model(Some(&gtk::NoSelection::new(model)));
+            .set_model(Some(&gtk::NoSelection::new(model.cloned())));
 
         self.imp().model.set(model);
         self.notify("model");

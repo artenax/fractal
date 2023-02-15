@@ -106,7 +106,7 @@ mod imp {
                     glib::ParamSpecObject::builder::<MemberMenu>("member-menu")
                         .read_only()
                         .build(),
-                    glib::ParamSpecEnum::builder("state", Membership::default())
+                    glib::ParamSpecEnum::builder::<Membership>("state")
                         .explicit_notify()
                         .build(),
                 ]
@@ -192,7 +192,7 @@ impl MemberPage {
         // Sort the members list by power level, then display name.
         let sorter = gtk::MultiSorter::new();
         sorter.append(
-            &gtk::NumericSorter::builder()
+            gtk::NumericSorter::builder()
                 .expression(&gtk::PropertyExpression::new(
                     Member::static_type(),
                     gtk::Expression::NONE,
@@ -202,19 +202,17 @@ impl MemberPage {
                 .build(),
         );
 
-        sorter.append(&gtk::StringSorter::new(Some(
-            &gtk::PropertyExpression::new(
-                Member::static_type(),
-                gtk::Expression::NONE,
-                "display-name",
-            ),
-        )));
+        sorter.append(gtk::StringSorter::new(Some(gtk::PropertyExpression::new(
+            Member::static_type(),
+            gtk::Expression::NONE,
+            "display-name",
+        ))));
 
-        let members = gtk::SortListModel::new(Some(room.members()), Some(&sorter));
+        let members = gtk::SortListModel::new(Some(room.members().clone()), Some(sorter));
 
-        let joined_members = self.build_filtered_list(&members, Membership::Join);
-        let invited_members = self.build_filtered_list(&members, Membership::Invite);
-        let banned_members = self.build_filtered_list(&members, Membership::Ban);
+        let joined_members = self.build_filtered_list(members.clone(), Membership::Join);
+        let invited_members = self.build_filtered_list(members.clone(), Membership::Invite);
+        let banned_members = self.build_filtered_list(members, Membership::Ban);
 
         let main_list = ExtraLists::new(
             &joined_members,
@@ -308,7 +306,7 @@ impl MemberPage {
 
     fn build_filtered_list(
         &self,
-        model: &impl IsA<gio::ListModel>,
+        model: impl IsA<gio::ListModel>,
         state: Membership,
     ) -> gio::ListModel {
         let membership_expression = gtk::PropertyExpression::new(
@@ -350,10 +348,10 @@ impl MemberPage {
 
         let filter = gtk::EveryFilter::new();
 
-        filter.append(&membership_filter);
-        filter.append(&search_filter);
+        filter.append(membership_filter);
+        filter.append(search_filter);
 
-        let filter_model = gtk::FilterListModel::new(Some(model), Some(&filter));
+        let filter_model = gtk::FilterListModel::new(Some(model), Some(filter));
         filter_model.upcast()
     }
 

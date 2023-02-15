@@ -94,7 +94,7 @@ glib::wrapper! {
 
 impl Avatar {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Set the size of the Avatar.

@@ -52,9 +52,12 @@ mod imp {
                         .construct()
                         .build(),
                     glib::ParamSpecString::builder("label").read_only().build(),
-                    glib::ParamSpecEnum::builder("show-label-for-category", CategoryType::None)
-                        .explicit_notify()
-                        .build(),
+                    glib::ParamSpecEnum::builder_with_default(
+                        "show-label-for-category",
+                        CategoryType::None,
+                    )
+                    .explicit_notify()
+                    .build(),
                 ]
             });
 

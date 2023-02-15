@@ -194,10 +194,10 @@ mod imp {
                     glib::ParamSpecObject::builder::<Session>("session")
                         .construct_only()
                         .build(),
-                    glib::ParamSpecEnum::builder("state", State::default())
+                    glib::ParamSpecEnum::builder::<State>("state")
                         .construct_only()
                         .build(),
-                    glib::ParamSpecEnum::builder("mode", Mode::default())
+                    glib::ParamSpecEnum::builder::<Mode>("mode")
                         .read_only()
                         .build(),
                     glib::ParamSpecFlags::builder::<SupportedMethods>("supported-methods")

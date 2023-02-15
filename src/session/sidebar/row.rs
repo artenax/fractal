@@ -96,7 +96,7 @@ mod imp {
                     obj.drop_end(v)
                 }),
             );
-            obj.add_controller(&drop);
+            obj.add_controller(drop);
         }
     }
 

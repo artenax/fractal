@@ -80,7 +80,7 @@ glib::wrapper! {
 
 impl ErrorPage {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn display_secret_error(&self, message: &str, item: Option<oo7::Item>) {

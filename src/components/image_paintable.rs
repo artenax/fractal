@@ -170,7 +170,7 @@ impl ImagePaintable {
         reader: R,
         format: Option<ImageFormat>,
     ) -> Result<Self, Box<dyn std::error::Error>> {
-        let obj = glib::Object::new::<Self>(&[]);
+        let obj = glib::Object::new::<Self>();
 
         let mut reader = image::io::Reader::new(reader);
 

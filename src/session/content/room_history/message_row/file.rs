@@ -85,7 +85,7 @@ glib::wrapper! {
 
 impl MessageFile {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Set the filename of the file.

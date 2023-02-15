@@ -74,7 +74,7 @@ glib::wrapper! {
 
 impl MemberMenu {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The member to apply actions to.

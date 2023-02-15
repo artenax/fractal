@@ -61,7 +61,7 @@ glib::wrapper! {
 
 impl VideoPlayerRenderer {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The GdkPaintable to render the video into.

@@ -65,7 +65,7 @@ glib::wrapper! {
 
 impl Greeter {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn default_widget(&self) -> gtk::Widget {

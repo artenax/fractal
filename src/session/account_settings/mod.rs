@@ -62,7 +62,7 @@ mod imp {
             klass.install_action("win.add-toast", Some("s"), |obj, _, message| {
                 if let Some(message) = message.and_then(String::from_variant) {
                     let toast = adw::Toast::new(&message);
-                    obj.add_toast(&toast);
+                    obj.add_toast(toast);
                 }
             });
 

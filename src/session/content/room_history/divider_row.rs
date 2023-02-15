@@ -65,7 +65,7 @@ glib::wrapper! {
 
 impl DividerRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn with_label(label: String) -> Self {

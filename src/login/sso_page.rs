@@ -1,4 +1,4 @@
-use adw::{prelude::*, subclass::prelude::BinImpl};
+use adw::subclass::prelude::BinImpl;
 use gtk::{self, glib, subclass::prelude::*, CompositeTemplate};
 
 mod imp {
@@ -40,6 +40,6 @@ glib::wrapper! {
 
 impl LoginSsoPage {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 }

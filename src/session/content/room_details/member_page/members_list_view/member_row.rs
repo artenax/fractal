@@ -94,7 +94,7 @@ glib::wrapper! {
 
 impl MemberRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The member displayed by this row.

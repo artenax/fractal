@@ -183,7 +183,7 @@ impl Explore {
         if let Some(ref session) = session {
             let public_room_list = PublicRoomList::new(session);
             imp.listview
-                .set_model(Some(&gtk::NoSelection::new(Some(&public_room_list))));
+                .set_model(Some(&gtk::NoSelection::new(Some(public_room_list.clone()))));
 
             public_room_list.connect_notify_local(
                 Some("loading"),

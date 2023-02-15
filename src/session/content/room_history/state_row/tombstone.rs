@@ -42,7 +42,7 @@ glib::wrapper! {
 
 impl StateTombstone {
     pub fn new(event: &FullStateEventContent<RoomTombstoneEventContent>) -> Self {
-        let obj: Self = glib::Object::new(&[]);
+        let obj: Self = glib::Object::new();
         obj.set_event(event);
         obj
     }

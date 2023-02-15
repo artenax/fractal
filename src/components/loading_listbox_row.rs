@@ -111,7 +111,7 @@ glib::wrapper! {
 
 impl LoadingListBoxRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Whether to show the loading spinner.

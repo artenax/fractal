@@ -81,7 +81,7 @@ glib::wrapper! {
 
 impl SpinnerButton {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Set the text of the button.

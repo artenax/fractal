@@ -118,7 +118,7 @@ glib::wrapper! {
 
 impl LoginMethodPage {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The homeserver to log into.

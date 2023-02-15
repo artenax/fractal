@@ -148,7 +148,7 @@ mod imp {
                     glib::ParamSpecUInt64::builder("notification-count")
                         .read_only()
                         .build(),
-                    glib::ParamSpecEnum::builder("category", RoomType::default())
+                    glib::ParamSpecEnum::builder::<RoomType>("category")
                         .explicit_notify()
                         .build(),
                     glib::ParamSpecString::builder("topic")

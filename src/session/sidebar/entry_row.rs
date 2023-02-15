@@ -69,7 +69,7 @@ glib::wrapper! {
 
 impl EntryRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The entry of this row.

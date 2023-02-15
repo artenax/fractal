@@ -157,10 +157,10 @@ macro_rules! _add_toast {
         use gtk::prelude::WidgetExt;
         if let Some(root) = $widget.root() {
             if let Some(window) = root.downcast_ref::<$crate::Window>() {
-                window.add_toast($toast.as_ref());
+                window.add_toast($toast);
             } else if let Some(window) = root.downcast_ref::<adw::PreferencesWindow>() {
                 use adw::prelude::PreferencesWindowExt;
-                window.add_toast($toast.as_ref());
+                window.add_toast($toast);
             } else {
                 panic!("Trying to display a toast when the parent doesn't support it");
             }

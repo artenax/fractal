@@ -59,7 +59,7 @@ mod imp {
             match pspec.name() {
                 "title" => obj.set_title(value.get().unwrap()),
                 "child" => obj.set_child(value.get().ok().as_ref()),
-                "drop-target" => obj.set_drop_target(&value.get().unwrap()),
+                "drop-target" => obj.set_drop_target(value.get().unwrap()),
                 _ => unimplemented!(),
             };
         }
@@ -95,7 +95,7 @@ glib::wrapper! {
 
 impl DragOverlay {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The title of this `DragOverlay`.
@@ -124,7 +124,7 @@ impl DragOverlay {
     }
 
     /// Set the [`gtk::DropTarget`] of this `DragOverlay`.
-    pub fn set_drop_target(&self, drop_target: &gtk::DropTarget) {
+    pub fn set_drop_target(&self, drop_target: gtk::DropTarget) {
         let imp = self.imp();
 
         if let Some(target) = imp.drop_target.borrow_mut().take() {
@@ -142,8 +142,8 @@ impl DragOverlay {
         );
         imp.handler_id.replace(Some(handler_id));
 
-        self.add_controller(drop_target);
-        imp.drop_target.replace(Some(drop_target.clone()));
+        self.add_controller(drop_target.clone());
+        imp.drop_target.replace(Some(drop_target));
         self.notify("drop-target");
     }
 }

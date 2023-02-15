@@ -73,7 +73,7 @@ glib::wrapper! {
 
 impl VerificationRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The identity verification represented by this row.

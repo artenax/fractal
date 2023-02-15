@@ -33,7 +33,7 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecEnum::builder("type", CategoryType::default())
+                    glib::ParamSpecEnum::builder::<CategoryType>("type")
                         .construct_only()
                         .build(),
                     glib::ParamSpecString::builder("display-name")
@@ -146,13 +146,13 @@ impl Category {
                     .filter(|r| CategoryType::from(r.category()) == type_)
                     .is_some()
             });
-            let filter_model = gtk::FilterListModel::new(Some(&model), Some(&filter));
+            let filter_model = gtk::FilterListModel::new(Some(model), Some(filter));
 
             let sorter = gtk::NumericSorter::builder()
                 .expression(Room::this_expression("latest-unread"))
                 .sort_order(gtk::SortType::Descending)
                 .build();
-            let sort_model = gtk::SortListModel::new(Some(&filter_model), Some(&sorter));
+            let sort_model = gtk::SortListModel::new(Some(filter_model), Some(sorter));
             sort_model.upcast()
         } else {
             model

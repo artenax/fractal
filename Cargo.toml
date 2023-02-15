@@ -38,18 +38,18 @@ futures = "0.3"
 rand = "0.8"
 indexmap = "1.6.2"
 qrcode = "0.12.0"
-ashpd = { version = "0.4.0-alpha.2", default-features = false, features = [
+ashpd = { version = "0.4.0-alpha.4", default-features = false, features = [
     "gtk4",
     "pipewire",
     "tracing",
     "tokio",
 ] }
-gst = { version = "0.19.1", package = "gstreamer" }
-gst_base = { version = "0.19.1", package = "gstreamer-base" }
-gst_video = { version = "0.19.0", package = "gstreamer-video" }
-gst_play = { version = "0.19.0", package = "gstreamer-play" }
-gst_gtk = { version = "0.9.0", package = "gst-plugin-gtk4" }
-gst_pbutils = { version = "0.19.0", package = "gstreamer-pbutils" }
+gst = { version = "0.20.2", package = "gstreamer" }
+gst_base = { version = "0.20.0", package = "gstreamer-base" }
+gst_video = { version = "0.20.2", package = "gstreamer-video" }
+gst_play = { version = "0.20.2", package = "gstreamer-play" }
+gst_gtk = { version = "0.10.3", package = "gst-plugin-gtk4" }
+gst_pbutils = { version = "0.20.0", package = "gstreamer-pbutils" }
 image = "0.24"
 regex = "1.5.4"
 mime_guess = "2.0.3"
@@ -65,21 +65,21 @@ futures-signals = { version = "0.3.30", default-features = false }
 
 [dependencies.sourceview]
 package = "sourceview5"
-version = "0.5.0"
+version = "0.6.0"
 
 [dependencies.gtk]
 package = "gtk4"
-version = "0.5.0"
+version = "0.6.2"
 features = ["v4_6"]
 
 [dependencies.adw]
 package = "libadwaita"
-version = "0.2.0"
-features = ["v1_2"]
+version = "0.3.1"
+features = ["v1_3"]
 
 [dependencies.shumate]
 package = "libshumate"
-version = "0.2.0"
+version = "0.3.0"
 
 [dependencies.matrix-sdk]
 git = "https://github.com/matrix-org/matrix-rust-sdk.git"

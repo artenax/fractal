@@ -136,7 +136,7 @@ glib::wrapper! {
 impl QRCode {
     /// Creates a new [`QRCode`].
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Creates a new [`QRCode`] with a QR code generated from `bytes`.

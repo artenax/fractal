@@ -68,7 +68,7 @@ glib::wrapper! {
 
 impl TypingList {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn members(&self) -> Vec<Member> {

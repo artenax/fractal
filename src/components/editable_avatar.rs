@@ -90,7 +90,7 @@ mod imp {
                     glib::ParamSpecBoolean::builder("editable")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecEnum::builder("edit-state", ActionState::default())
+                    glib::ParamSpecEnum::builder::<ActionState>("edit-state")
                         .explicit_notify()
                         .build(),
                     glib::ParamSpecBoolean::builder("edit-sensitive")
@@ -101,7 +101,7 @@ mod imp {
                     glib::ParamSpecBoolean::builder("removable")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecEnum::builder("remove-state", ActionState::default())
+                    glib::ParamSpecEnum::builder::<ActionState>("remove-state")
                         .explicit_notify()
                         .build(),
                     glib::ParamSpecBoolean::builder("remove-sensitive")
@@ -169,7 +169,7 @@ glib::wrapper! {
 
 impl EditableAvatar {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The Avatar to display.
@@ -305,7 +305,7 @@ impl EditableAvatar {
         image_filter.add_mime_type("image/*");
 
         let dialog = gtk::FileChooserNative::builder()
-            .title(&gettext("Choose Avatar"))
+            .title(gettext("Choose Avatar"))
             .modal(true)
             .transient_for(
                 self.root()
@@ -314,8 +314,8 @@ impl EditableAvatar {
                     .unwrap(),
             )
             .action(gtk::FileChooserAction::Open)
-            .accept_label(&gettext("Choose"))
-            .cancel_label(&gettext("Cancel"))
+            .accept_label(gettext("Choose"))
+            .cancel_label(gettext("Cancel"))
             .filter(&image_filter)
             .build();
 
@@ -323,7 +323,7 @@ impl EditableAvatar {
             if let Some(file) = dialog.file() {
                 if let Some(content_type) = file
                     .query_info_future(
-                        &gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                        gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                         gio::FileQueryInfoFlags::NONE,
                         glib::PRIORITY_LOW,
                     )

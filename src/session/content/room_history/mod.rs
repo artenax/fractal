@@ -253,7 +253,7 @@ mod imp {
                     glib::ParamSpecBoolean::builder("sticky")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecEnum::builder("related-event-type", RelatedEventType::default())
+                    glib::ParamSpecEnum::builder::<RelatedEventType>("related-event-type")
                         .read_only()
                         .build(),
                     glib::ParamSpecObject::builder::<Event>("related-event")
@@ -348,7 +348,6 @@ mod imp {
             }));
 
             let key_events = gtk::EventControllerKey::new();
-            self.message_entry.add_controller(&key_events);
             self.message_entry
                 .connect_paste_clipboard(clone!(@weak obj => move |entry| {
                     let formats = obj.clipboard().formats();
@@ -386,6 +385,7 @@ mod imp {
                     Inhibit(false)
                 }
             }));
+            self.message_entry.add_controller(key_events);
 
             let buffer = self
                 .message_entry
@@ -443,7 +443,7 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl RoomHistory {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Whether a compact view is used.
@@ -521,7 +521,7 @@ impl RoomHistory {
         // TODO: use gtk::MultiSelection to allow selection
         let model = room
             .as_ref()
-            .map(|room| gtk::NoSelection::new(Some(room.timeline())));
+            .map(|room| gtk::NoSelection::new(Some(room.timeline().clone())));
 
         imp.listview.set_model(model.as_ref());
         imp.is_loading.set(false);
@@ -998,9 +998,9 @@ impl RoomHistory {
 
     async fn send_file(&self, file: gio::File) {
         let attributes: &[&str] = &[
-            *gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-            *gio::FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
-            *gio::FILE_ATTRIBUTE_STANDARD_SIZE,
+            gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+            gio::FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
+            gio::FILE_ATTRIBUTE_STANDARD_SIZE,
         ];
 
         // Read mime type.
@@ -1068,7 +1068,7 @@ impl RoomHistory {
     }
 
     fn setup_drop_target(&self) {
-        let imp = imp::RoomHistory::from_instance(self);
+        let imp = self.imp();
 
         let target = gtk::DropTarget::new(
             gio::File::static_type(),
@@ -1097,7 +1097,7 @@ impl RoomHistory {
             }),
         );
 
-        imp.drag_overlay.set_drop_target(&target);
+        imp.drag_overlay.set_drop_target(target);
     }
 
     async fn read_clipboard(&self) {

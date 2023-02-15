@@ -58,7 +58,7 @@ glib::wrapper! {
 
 impl StateRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn update_with_other_state(&self, other_state: &OtherState) {

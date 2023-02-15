@@ -67,7 +67,7 @@ glib::wrapper! {
 
 impl QrCodeScanner {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn stop(&self) {

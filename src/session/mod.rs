@@ -329,7 +329,7 @@ glib::wrapper! {
 
 impl Session {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn session_id(&self) -> Option<&str> {
@@ -714,7 +714,7 @@ impl Session {
         }));
 
         dialog.set_transient_for(self.parent_window().as_ref());
-        if dialog.run_future().await == "join" {
+        if dialog.choose_future().await == "join" {
             let (room_id, via) = match parse_room(&entry.text()) {
                 Some(room) => room,
                 None => return,

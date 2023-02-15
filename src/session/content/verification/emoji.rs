@@ -1,5 +1,5 @@
 use adw::subclass::prelude::*;
-use gtk::{glib, prelude::*, CompositeTemplate};
+use gtk::{glib, CompositeTemplate};
 
 mod imp {
     use glib::subclass::InitializingObject;
@@ -43,7 +43,7 @@ glib::wrapper! {
 
 impl Emoji {
     pub fn new(symbol: &str, name: &str) -> Self {
-        let obj: Self = glib::Object::new(&[]);
+        let obj: Self = glib::Object::new();
 
         obj.set_emoji(symbol, name);
         obj

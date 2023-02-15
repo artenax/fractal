@@ -120,7 +120,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecEnum::builder("brand", IdpBrand::default())
+                    glib::ParamSpecEnum::builder::<IdpBrand>("brand")
                         .construct_only()
                         .build(),
                     glib::ParamSpecString::builder("id")

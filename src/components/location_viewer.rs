@@ -69,7 +69,7 @@ mod imp {
             self.marker.set_child(Some(&*self.marker_img));
 
             let registry = shumate::MapSourceRegistry::with_defaults();
-            let source = registry.by_id(&shumate::MAP_SOURCE_OSM_MAPNIK).unwrap();
+            let source = registry.by_id(shumate::MAP_SOURCE_OSM_MAPNIK).unwrap();
             self.map.set_map_source(Some(&source));
 
             let viewport = self.map.viewport().unwrap();
@@ -97,7 +97,7 @@ glib::wrapper! {
 impl LocationViewer {
     /// Create a new location message.
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Whether to display this location in a compact format.

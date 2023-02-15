@@ -83,7 +83,7 @@ mod imp {
                     glib::ParamSpecString::builder("file-path")
                         .read_only()
                         .build(),
-                    glib::ParamSpecEnum::builder("mode", KeysSubpageMode::default())
+                    glib::ParamSpecEnum::builder::<KeysSubpageMode>("mode")
                         .explicit_notify()
                         .build(),
                 ]
@@ -262,8 +262,8 @@ impl ImportExportKeysSubpage {
                     .unwrap(),
             )
             .action(action)
-            .accept_label(&gettext("Select"))
-            .cancel_label(&gettext("Cancel"))
+            .accept_label(gettext("Select"))
+            .cancel_label(gettext("Cancel"))
             .build();
 
         if let Some(file) = self.file_path() {

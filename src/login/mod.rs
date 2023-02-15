@@ -181,7 +181,7 @@ glib::wrapper! {
 
 impl Login {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     fn parent_window(&self) -> Window {

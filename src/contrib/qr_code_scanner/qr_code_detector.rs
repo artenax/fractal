@@ -129,7 +129,7 @@ unsafe impl Sync for QrCodeDetector {}
 
 impl QrCodeDetector {
     pub fn new(sender: Sender<Action>) -> Self {
-        let sink = glib::Object::new::<Self>(&[]);
+        let sink = glib::Object::new::<Self>();
         sink.imp().sender.lock().unwrap().replace(sender);
         sink
     }

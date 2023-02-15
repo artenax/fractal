@@ -109,7 +109,7 @@ mod imp {
                         .default_value(-1)
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecEnum::builder("state", MediaState::default())
+                    glib::ParamSpecEnum::builder::<MediaState>("state")
                         .explicit_notify()
                         .build(),
                     glib::ParamSpecBoolean::builder("compact")
@@ -239,7 +239,7 @@ glib::wrapper! {
 impl MessageMedia {
     /// Create a new media message.
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     #[template_callback]

@@ -77,7 +77,7 @@ mod imp {
                         .construct_only()
                         .build(),
                     glib::ParamSpecBoolean::builder("empty").read_only().build(),
-                    glib::ParamSpecEnum::builder("state", TimelineState::default())
+                    glib::ParamSpecEnum::builder::<TimelineState>("state")
                         .read_only()
                         .build(),
                 ]

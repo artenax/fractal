@@ -232,7 +232,7 @@ impl InviteSubpage {
                 .build();
 
             imp.list_view
-                .set_model(Some(&gtk::NoSelection::new(Some(&user_list))));
+                .set_model(Some(&gtk::NoSelection::new(Some(user_list))));
         } else {
             imp.list_view.set_model(gtk::SelectionModel::NONE);
         }

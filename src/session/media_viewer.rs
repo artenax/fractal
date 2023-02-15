@@ -120,7 +120,7 @@ mod imp {
 
                 obj.queue_draw();
             }));
-            let animation = adw::TimedAnimation::new(&*obj, 0.0, 1.0, ANIMATION_DURATION, &target);
+            let animation = adw::TimedAnimation::new(&*obj, 0.0, 1.0, ANIMATION_DURATION, target);
             self.animation.set(animation).unwrap();
 
             let swipe_tracker = adw::SwipeTracker::new(&*obj);
@@ -144,7 +144,7 @@ mod imp {
                         swipe_progress,
                         0.0,
                         CANCEL_SWIPE_ANIMATION_DURATION,
-                        &target,
+                        target,
                     );
                     animation.set_easing(adw::Easing::EaseOutCubic);
                     animation.connect_done(clone!(@weak obj => move |_| {
@@ -222,8 +222,8 @@ mod imp {
             self.swipe_progress.get()
         }
 
-        fn snap_points(&self) -> &[f64] {
-            &[-1.0, 0.0, 1.0]
+        fn snap_points(&self) -> Vec<f64> {
+            vec![-1.0, 0.0, 1.0]
         }
 
         fn swipe_area(&self, _: adw::NavigationDirection, _: bool) -> gdk::Rectangle {
@@ -240,7 +240,7 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl MediaViewer {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Reveal this widget by transitioning from `source_widget`.

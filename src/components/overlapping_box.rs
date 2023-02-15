@@ -173,7 +173,7 @@ glib::wrapper! {
 impl OverlappingBox {
     /// Create an empty `OverlappingBox`.
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The size by which the widgets overlap.

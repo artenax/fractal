@@ -118,7 +118,7 @@ mod imp {
             drag.connect_drag_end(clone!(@weak obj => move |_, _, _| {
                 obj.drag_end();
             }));
-            obj.add_controller(&drag);
+            obj.add_controller(drag);
         }
 
         fn dispose(&self) {
@@ -157,7 +157,7 @@ glib::wrapper! {
 
 impl RoomRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The room represented by this row.

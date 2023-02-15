@@ -73,7 +73,7 @@ glib::wrapper! {
 
 impl Badge {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The power level this badge displays.

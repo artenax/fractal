@@ -28,7 +28,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecEnum::builder("state", Membership::default())
+                    glib::ParamSpecEnum::builder::<Membership>("state")
                         .construct_only()
                         .build(),
                     glib::ParamSpecObject::builder::<gio::ListModel>("model")

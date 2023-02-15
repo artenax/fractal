@@ -108,7 +108,7 @@ glib::wrapper! {
 
 impl PublicRoomRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The public room displayed by this row.

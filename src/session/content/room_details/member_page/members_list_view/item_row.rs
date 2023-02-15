@@ -59,7 +59,7 @@ glib::wrapper! {
 
 impl ItemRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The item represented by this row.

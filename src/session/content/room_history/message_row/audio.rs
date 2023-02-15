@@ -58,7 +58,7 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecString::builder("body").read_only().build(),
-                    glib::ParamSpecEnum::builder("state", MediaState::default())
+                    glib::ParamSpecEnum::builder::<MediaState>("state")
                         .explicit_notify()
                         .build(),
                     glib::ParamSpecBoolean::builder("compact")
@@ -103,7 +103,7 @@ glib::wrapper! {
 impl MessageAudio {
     /// Create a new audio message.
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The body of the audio message.

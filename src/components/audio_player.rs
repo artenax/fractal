@@ -87,7 +87,7 @@ glib::wrapper! {
 impl AudioPlayer {
     /// Create a new audio player.
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The media file that is playing.

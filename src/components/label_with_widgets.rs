@@ -171,7 +171,7 @@ glib::wrapper! {
 impl LabelWithWidgets {
     /// Create an empty `LabelWithWidget`.
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Create a `LabelWithWidget` with the given label and widgets.

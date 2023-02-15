@@ -141,9 +141,12 @@ mod imp {
                     glib::ParamSpecObject::builder::<glib::Object>("selected-item")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecEnum::builder("drop-source-type", CategoryType::None)
-                        .read_only()
-                        .build(),
+                    glib::ParamSpecEnum::builder_with_default(
+                        "drop-source-type",
+                        CategoryType::None,
+                    )
+                    .read_only()
+                    .build(),
                 ]
             });
 
@@ -267,7 +270,7 @@ glib::wrapper! {
 
 impl Sidebar {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Whether a compact view is used.
@@ -311,7 +314,7 @@ impl Sidebar {
                 .build(),
         ));
 
-        let tree_model = gtk::TreeListModel::new(&item_list, false, true, |item| {
+        let tree_model = gtk::TreeListModel::new(item_list, false, true, |item| {
             item.clone().downcast::<gio::ListModel>().ok()
         });
 
@@ -328,12 +331,11 @@ impl Sidebar {
             .expression(&room_expression)
             .ignore_case(true)
             .build();
-        let filter_model = gtk::FilterListModel::new(Some(&tree_model), Some(&filter));
-
         imp.room_search_entry
             .bind_property("text", &filter, "search")
             .flags(glib::BindingFlags::SYNC_CREATE)
             .build();
+        let filter_model = gtk::FilterListModel::new(Some(tree_model), Some(filter));
 
         let selection = Selection::new(Some(&filter_model));
         self.bind_property("selected-item", &selection, "selected-item")

@@ -100,7 +100,7 @@ glib::wrapper! {
 
 impl TypingRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The list of members that are currently typing.

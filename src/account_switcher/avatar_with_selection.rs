@@ -84,7 +84,7 @@ glib::wrapper! {
 
 impl AvatarWithSelection {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Set whether this avatar is selected.

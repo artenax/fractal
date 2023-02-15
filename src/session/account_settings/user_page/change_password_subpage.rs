@@ -99,13 +99,13 @@ mod imp {
             self.password_progress.set_min_value(0.0);
             self.password_progress.set_max_value(5.0);
             self.password_progress
-                .add_offset_value(&gtk::LEVEL_BAR_OFFSET_LOW, 1.0);
+                .add_offset_value(gtk::LEVEL_BAR_OFFSET_LOW, 1.0);
             self.password_progress.add_offset_value("step2", 2.0);
             self.password_progress.add_offset_value("step3", 3.0);
             self.password_progress
-                .add_offset_value(&gtk::LEVEL_BAR_OFFSET_HIGH, 4.0);
+                .add_offset_value(gtk::LEVEL_BAR_OFFSET_HIGH, 4.0);
             self.password_progress
-                .add_offset_value(&gtk::LEVEL_BAR_OFFSET_FULL, 5.0);
+                .add_offset_value(gtk::LEVEL_BAR_OFFSET_FULL, 5.0);
 
             self.password.connect_changed(clone!(@weak obj => move|_| {
                 obj.validate_password();

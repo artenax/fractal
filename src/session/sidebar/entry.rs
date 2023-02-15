@@ -24,7 +24,7 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecEnum::builder("type", EntryType::default())
+                    glib::ParamSpecEnum::builder::<EntryType>("type")
                         .construct_only()
                         .build(),
                     glib::ParamSpecString::builder("display-name")

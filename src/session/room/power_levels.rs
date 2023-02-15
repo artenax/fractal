@@ -64,7 +64,7 @@ glib::wrapper! {
 
 impl PowerLevels {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// The source of the power levels information.

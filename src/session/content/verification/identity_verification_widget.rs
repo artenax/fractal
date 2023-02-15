@@ -464,9 +464,9 @@ impl IdentityVerificationWidget {
                                 .spacing(24)
                                 .css_classes(vec!["emoji".to_string()])
                                 .build();
-                            container.append(&gtk::Label::builder().label(&a.to_string()).build());
-                            container.append(&gtk::Label::builder().label(&b.to_string()).build());
-                            container.append(&gtk::Label::builder().label(&c.to_string()).build());
+                            container.append(&gtk::Label::builder().label(a.to_string()).build());
+                            container.append(&gtk::Label::builder().label(b.to_string()).build());
+                            container.append(&gtk::Label::builder().label(c.to_string()).build());
                             imp.emoji_row_1.append(&container);
                         }
                     }

@@ -38,9 +38,12 @@ mod imp {
                     glib::ParamSpecObject::builder::<VerificationList>("verification-list")
                         .construct_only()
                         .build(),
-                    glib::ParamSpecEnum::builder("show-all-for-category", CategoryType::None)
-                        .explicit_notify()
-                        .build(),
+                    glib::ParamSpecEnum::builder_with_default(
+                        "show-all-for-category",
+                        CategoryType::None,
+                    )
+                    .explicit_notify()
+                    .build(),
                 ]
             });
 

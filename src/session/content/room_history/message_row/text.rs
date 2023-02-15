@@ -57,7 +57,7 @@ glib::wrapper! {
 impl MessageText {
     /// Creates a text widget.
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Display the given plain text.

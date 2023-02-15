@@ -116,7 +116,7 @@ glib::wrapper! {
 
 impl MessageRow {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Whether this item should show its header.
