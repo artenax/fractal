@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-02-14 09:16+0000\n"
-"PO-Revision-Date: 2023-02-14 19:57+0200\n"
+"POT-Creation-Date: 2023-02-15 09:07+0000\n"
+"PO-Revision-Date: 2023-02-15 17:05+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -176,15 +176,10 @@ msgid "Other Active Sessions"
 msgstr "Інші активні сеанси"
 
 #: data/resources/ui/account-settings-log-out-subpage.ui:12
-#| msgid "Login Request From Another Session"
 msgid "Log Out of this Session"
 msgstr "Вийти з цього сеансу"
 
 #: data/resources/ui/account-settings-log-out-subpage.ui:60
-#| msgid ""
-#| "Fractal doesn't support online backup of room encryption keys so you "
-#| "might lose access to your encrypted message history. It is recommended to "
-#| "backup your encryption keys before proceeding."
 msgid ""
 "Fractal doesn’t support online backup of room encryption keys so you might "
 "lose access to your encrypted message history."
@@ -196,11 +191,10 @@ msgstr ""
 #: data/resources/ui/account-settings-log-out-subpage.ui:71
 msgid "It is recommended to backup your encryption keys before proceeding."
 msgstr ""
-"Перш ніж продовжувати, "
-"рекомендуємо створити резервну копію ваших ключів шифрування."
+"Перш ніж продовжувати, рекомендуємо створити резервну копію ваших ключів "
+"шифрування."
 
 #: data/resources/ui/account-settings-log-out-subpage.ui:85
-#| msgid "Room Encryption Keys"
 msgid "Backup Encryption Keys"
 msgstr "Створити резервну копію ключів шифрування"
 
@@ -1067,8 +1061,9 @@ msgid "Unable to connect to Camera"
 msgstr "Не вдалося встановити з'єднання з «Камерою»"
 
 #: src/application.rs:191
-msgid "© 2017-2022 The Fractal Team"
-msgstr "© Команда «Фрактал», 2017-2022"
+#| msgid "© 2017-2022 The Fractal Team"
+msgid "© 2017-2023 The Fractal Team"
+msgstr "© Команда «Фрактал», 2017-2023"
 
 #: src/application.rs:205
 msgid "translator-credits"
