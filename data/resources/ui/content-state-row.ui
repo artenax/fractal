@@ -3,16 +3,20 @@
   <template class="ContentStateRow" parent="AdwBin">
     <property name="child">
       <object class="GtkBox">
-        <property name="spacing">6</property>
+        <property name="spacing">2</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="AdwBin" id="content" />
         </child>
-        <child type="end">
-          <object class="GtkLabel" id="timestamp">
-            <style>
-              <class name="timestamp"/>
-            </style>
+        <child>
+          <object class="ContentReadReceiptsList" id="read_receipts">
+            <binding name="visible">
+              <closure type="gboolean" function="invert_boolean">
+                <lookup name="is-empty" type="ReadReceipts">
+                  <lookup name="list">read_receipts</lookup>
+                </lookup>
+              </closure>
+            </binding>
           </object>
         </child>
       </object>

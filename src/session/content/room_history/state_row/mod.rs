@@ -8,27 +8,29 @@ use log::warn;
 use matrix_sdk::{
     room::timeline::{
         AnyOtherFullStateEventContent, MemberProfileChange, MembershipChange, OtherState,
-        RoomMembershipChange,
+        RoomMembershipChange, TimelineItemContent,
     },
     ruma::events::room::member::MembershipState,
 };
 use ruma::{events::FullStateEventContent, UserId};
 
 use self::{creation::StateCreation, tombstone::StateTombstone};
-use crate::gettext_f;
+use super::ReadReceiptsList;
+use crate::{gettext_f, prelude::*, session::Event};
 
 mod imp {
     use glib::subclass::InitializingObject;
 
     use super::*;
+    use crate::utils::template_callbacks::TemplateCallbacks;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/content-state-row.ui")]
     pub struct StateRow {
         #[template_child]
-        pub timestamp: TemplateChild<gtk::Label>,
-        #[template_child]
         pub content: TemplateChild<adw::Bin>,
+        #[template_child]
+        pub read_receipts: TemplateChild<ReadReceiptsList>,
     }
 
     #[glib::object_subclass]
@@ -39,6 +41,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            TemplateCallbacks::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -61,7 +64,28 @@ impl StateRow {
         glib::Object::new()
     }
 
-    pub fn update_with_other_state(&self, other_state: &OtherState) {
+    pub fn content(&self) -> &adw::Bin {
+        &self.imp().content
+    }
+
+    pub fn set_event(&self, event: &Event) {
+        match event.content() {
+            TimelineItemContent::MembershipChange(membership_change) => {
+                self.update_with_membership_change(&membership_change, &event.sender_id())
+            }
+            TimelineItemContent::ProfileChange(profile_change) => {
+                self.update_with_profile_change(&profile_change, &event.sender().display_name())
+            }
+            TimelineItemContent::OtherState(other_state) => {
+                self.update_with_other_state(&other_state)
+            }
+            _ => unreachable!(),
+        }
+
+        self.imp().read_receipts.set_list(event.read_receipts());
+    }
+
+    fn update_with_other_state(&self, other_state: &OtherState) {
         let widget = match other_state.content() {
             AnyOtherFullStateEventContent::RoomCreate(content) => {
                 WidgetType::Creation(StateCreation::new(content))
@@ -98,20 +122,21 @@ impl StateRow {
             }
         };
 
+        let content = self.content();
         match widget {
             WidgetType::Text(message) => {
-                if let Some(Ok(child)) = self.child().map(|w| w.downcast::<gtk::Label>()) {
+                if let Some(Ok(child)) = content.child().map(|w| w.downcast::<gtk::Label>()) {
                     child.set_text(&message);
                 } else {
-                    self.set_child(Some(&text(message)));
+                    content.set_child(Some(&text(message)));
                 };
             }
-            WidgetType::Creation(widget) => self.set_child(Some(&widget)),
-            WidgetType::Tombstone(widget) => self.set_child(Some(&widget)),
+            WidgetType::Creation(widget) => content.set_child(Some(&widget)),
+            WidgetType::Tombstone(widget) => content.set_child(Some(&widget)),
         }
     }
 
-    pub fn update_with_membership_change(
+    fn update_with_membership_change(
         &self,
         membership_change: &RoomMembershipChange,
         sender: &UserId,
@@ -255,18 +280,15 @@ impl StateRow {
             }
         };
 
-        if let Some(Ok(child)) = self.child().map(|w| w.downcast::<gtk::Label>()) {
+        let content = self.content();
+        if let Some(Ok(child)) = content.child().map(|w| w.downcast::<gtk::Label>()) {
             child.set_text(&message);
         } else {
-            self.set_child(Some(&text(message)));
+            content.set_child(Some(&text(message)));
         };
     }
 
-    pub fn update_with_profile_change(
-        &self,
-        profile_change: &MemberProfileChange,
-        display_name: &str,
-    ) {
+    fn update_with_profile_change(&self, profile_change: &MemberProfileChange, display_name: &str) {
         let message = if let Some(displayname) = profile_change.displayname_change() {
             if let Some(prev_name) = &displayname.old {
                 if displayname.new.is_none() {
@@ -328,10 +350,11 @@ impl StateRow {
             gettext_f("{user} joined this room.", &[("user", display_name)])
         };
 
-        if let Some(Ok(child)) = self.child().map(|w| w.downcast::<gtk::Label>()) {
+        let content = self.content();
+        if let Some(Ok(child)) = content.child().map(|w| w.downcast::<gtk::Label>()) {
             child.set_text(&message);
         } else {
-            self.set_child(Some(&text(message)));
+            content.set_child(Some(&text(message)));
         };
     }
 }

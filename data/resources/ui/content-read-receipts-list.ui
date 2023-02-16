@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ContentReadReceiptsList" parent="AdwBin">
+    <child>
+      <object class="GtkBox">
+        <property name="halign">end</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkLabel" id="label">
+            <style>
+              <class name="caption"/>
+              <class name="dim-label"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="OverlappingBox" id="overlapping_box">
+            <property name="overlap">8</property>
+            <property name="max-children">10</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

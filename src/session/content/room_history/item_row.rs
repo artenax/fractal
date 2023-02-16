@@ -13,7 +13,6 @@ use crate::{
             Event, EventActions, EventTexture, PlaceholderKind, TimelineDayDivider, TimelineItem,
             TimelineNewMessagesDivider, TimelinePlaceholder,
         },
-        UserExt,
     },
 };
 
@@ -326,7 +325,9 @@ impl ItemRow {
 
     fn set_event_widget(&self, event: &Event) {
         match event.content() {
-            TimelineItemContent::MembershipChange(membership_change) => {
+            TimelineItemContent::MembershipChange(_)
+            | TimelineItemContent::ProfileChange(_)
+            | TimelineItemContent::OtherState(_) => {
                 let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<StateRow>())
                 {
                     child
@@ -335,29 +336,7 @@ impl ItemRow {
                     self.set_child(Some(&child));
                     child
                 };
-                child.update_with_membership_change(&membership_change, &event.sender_id());
-            }
-            TimelineItemContent::ProfileChange(profile_change) => {
-                let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<StateRow>())
-                {
-                    child
-                } else {
-                    let child = StateRow::new();
-                    self.set_child(Some(&child));
-                    child
-                };
-                child.update_with_profile_change(&profile_change, &event.sender().display_name());
-            }
-            TimelineItemContent::OtherState(state) => {
-                let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<StateRow>())
-                {
-                    child
-                } else {
-                    let child = StateRow::new();
-                    self.set_child(Some(&child));
-                    child
-                };
-                child.update_with_other_state(&state);
+                child.set_event(event);
             }
             _ => {
                 let child =

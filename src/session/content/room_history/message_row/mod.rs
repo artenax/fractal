@@ -18,6 +18,7 @@ use matrix_sdk::{room::timeline::TimelineItemContent, ruma::events::room::messag
 
 pub use self::content::ContentFormat;
 use self::{content::MessageContent, media::MessageMedia, reaction_list::MessageReactionList};
+use super::ReadReceiptsList;
 use crate::{components::Avatar, prelude::*, session::room::Event};
 
 mod imp {
@@ -27,6 +28,7 @@ mod imp {
     use once_cell::sync::Lazy;
 
     use super::*;
+    use crate::utils::template_callbacks::TemplateCallbacks;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/content-message-row.ui")]
@@ -43,6 +45,8 @@ mod imp {
         pub content: TemplateChild<MessageContent>,
         #[template_child]
         pub reactions: TemplateChild<MessageReactionList>,
+        #[template_child]
+        pub read_receipts: TemplateChild<ReadReceiptsList>,
         pub source_changed_handler: RefCell<Option<SignalHandlerId>>,
         pub bindings: RefCell<Vec<glib::Binding>>,
         pub event: RefCell<Option<Event>>,
@@ -56,6 +60,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            TemplateCallbacks::bind_template_callbacks(klass);
 
             klass.install_action("message-row.show-media", None, move |obj, _, _| {
                 obj.show_media();
@@ -195,6 +200,7 @@ impl MessageRow {
         self.update_content(&event);
 
         imp.reactions.set_reaction_list(event.reactions());
+        imp.read_receipts.set_list(event.read_receipts());
         imp.event.replace(Some(event));
     }
 

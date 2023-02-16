@@ -15,11 +15,13 @@ use ruma::{events::AnySyncTimelineEvent, serde::Raw, OwnedTransactionId};
 mod event_actions;
 mod reaction_group;
 mod reaction_list;
+mod read_receipts;
 
 pub use self::{
     event_actions::{EventActions, EventTexture},
     reaction_group::ReactionGroup,
     reaction_list::ReactionList,
+    read_receipts::ReadReceipts,
 };
 use super::{
     timeline::{TimelineItem, TimelineItemImpl},
@@ -60,7 +62,11 @@ mod imp {
         /// The room containing this `Event`.
         pub room: WeakRef<Room>,
 
+        /// The reactions on this event.
         pub reactions: ReactionList,
+
+        /// The read receipts on this event.
+        pub read_receipts: ReadReceipts,
     }
 
     #[glib::object_subclass]
@@ -229,6 +235,7 @@ impl Event {
         imp.room.set(Some(&room));
         imp.reactions
             .set_user(room.session().user().unwrap().clone());
+        imp.read_receipts.set_room(&room);
     }
 
     /// The underlying SDK timeline item of this `Event`.
@@ -243,6 +250,11 @@ impl Event {
         imp.reactions.update(
             item.as_remote()
                 .map(|i| i.reactions().clone())
+                .unwrap_or_default(),
+        );
+        imp.read_receipts.update(
+            item.as_remote()
+                .map(|i| i.read_receipts().clone())
                 .unwrap_or_default(),
         );
         imp.item.replace(Some(item));
@@ -352,6 +364,11 @@ impl Event {
     /// The reactions to this event.
     pub fn reactions(&self) -> &ReactionList {
         &self.imp().reactions
+    }
+
+    /// The read receipts on this event.
+    pub fn read_receipts(&self) -> &ReadReceipts {
+        &self.imp().read_receipts
     }
 
     /// Get the ID of the event this `Event` replies to, if any.

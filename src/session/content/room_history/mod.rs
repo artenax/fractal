@@ -3,6 +3,7 @@ mod completion;
 mod divider_row;
 mod item_row;
 mod message_row;
+mod read_receipts_list;
 mod state_row;
 mod typing_row;
 mod verification_info_bar;
@@ -42,8 +43,8 @@ use sourceview::prelude::*;
 
 use self::{
     attachment_dialog::AttachmentDialog, completion::CompletionPopover, divider_row::DividerRow,
-    item_row::ItemRow, message_row::content::MessageContent, state_row::StateRow,
-    typing_row::TypingRow, verification_info_bar::VerificationInfoBar,
+    item_row::ItemRow, message_row::content::MessageContent, read_receipts_list::ReadReceiptsList,
+    state_row::StateRow, typing_row::TypingRow, verification_info_bar::VerificationInfoBar,
 };
 use crate::{
     components::{CustomEntry, DragOverlay, LabelWithWidgets, Pill, ReactionChooser, RoomTitle},
