@@ -8,6 +8,7 @@ use crate::{
     i18n::{gettext_f, ngettext_f},
     prelude::*,
     session::room::TypingList,
+    utils::BoundObjectWeakRef,
 };
 
 mod imp {
@@ -26,7 +27,7 @@ mod imp {
         #[template_child]
         pub label: TemplateChild<gtk::Label>,
         /// The list of members that are currently typing.
-        pub list: RefCell<Option<(TypingList, glib::SignalHandlerId)>>,
+        pub bound_list: RefCell<Option<BoundObjectWeakRef<TypingList>>>,
         /// The current avatars that are displayed.
         pub avatars: RefCell<Vec<Avatar>>,
     }
@@ -82,8 +83,8 @@ mod imp {
         }
 
         fn dispose(&self) {
-            if let Some((list, handler_id)) = self.list.take() {
-                list.disconnect(handler_id);
+            if let Some(bound_list) = self.bound_list.take() {
+                bound_list.disconnect_signals();
             }
         }
     }
@@ -106,34 +107,37 @@ impl TypingRow {
     /// The list of members that are currently typing.
     pub fn list(&self) -> Option<TypingList> {
         self.imp()
-            .list
+            .bound_list
             .borrow()
             .as_ref()
-            .map(|(list, _)| list.clone())
+            .and_then(|bound_list| bound_list.obj())
     }
 
     /// Set the list of members that are currently typing.
-    pub fn set_list(&self, list: Option<TypingList>) {
-        if self.list() == list {
+    pub fn set_list(&self, list: Option<&TypingList>) {
+        if self.list().as_ref() == list {
             return;
         }
 
         let imp = self.imp();
         let prev_is_empty = self.is_empty();
 
-        if let Some((list, handler_id)) = imp.list.take() {
-            list.disconnect(handler_id);
+        if let Some(bound_list) = imp.bound_list.take() {
+            bound_list.disconnect_signals();
         }
 
         if let Some(list) = list {
-            let handler_id = list.connect_items_changed(
+            let items_changed_handler_id = list.connect_items_changed(
                 clone!(@weak self as obj => move |list, _pos, removed, added| {
                     obj.update(list, removed, added);
                 }),
             );
 
-            imp.list.replace(Some((list.clone(), handler_id)));
-            self.update(&list, 1, 1);
+            imp.bound_list.replace(Some(BoundObjectWeakRef::new(
+                list,
+                vec![items_changed_handler_id],
+            )));
+            self.update(list, 1, 1);
         }
 
         if prev_is_empty != self.is_empty() {
@@ -145,12 +149,7 @@ impl TypingRow {
 
     /// Whether the list is empty.
     pub fn is_empty(&self) -> bool {
-        self.imp()
-            .list
-            .borrow()
-            .as_ref()
-            .filter(|(list, _)| !list.is_empty())
-            .is_none()
+        self.list().filter(|list| !list.is_empty()).is_none()
     }
 
     pub fn update(&self, list: &TypingList, removed: u32, added: u32) {

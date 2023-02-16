@@ -145,3 +145,46 @@ pub static EMOJI_REGEX: Lazy<Regex> = Lazy::new(|| {
     )
     .unwrap()
 });
+
+/// Wrapper to manage a bound object.
+///
+/// This keeps a weak reference to the object.
+#[derive(Debug)]
+pub struct BoundObjectWeakRef<T: glib::ObjectType> {
+    weak_obj: glib::WeakRef<T>,
+    signal_handler_ids: Vec<glib::SignalHandlerId>,
+}
+
+impl<T: glib::ObjectType> BoundObjectWeakRef<T> {
+    /// Creates a new `BoundObjectWeakRef` with the given object and signal
+    /// handlers IDs.
+    pub fn new(obj: &T, signal_handler_ids: Vec<glib::SignalHandlerId>) -> Self {
+        let weak_obj = glib::WeakRef::new();
+        weak_obj.set(Some(obj));
+        Self {
+            weak_obj,
+            signal_handler_ids,
+        }
+    }
+
+    /// Get a strong reference to the object.
+    pub fn obj(&self) -> Option<T> {
+        self.weak_obj.upgrade()
+    }
+
+    /// Add `SignalHandlerId`s to this `BoundObjectWeakRef`.
+    pub fn add_signal_handler_ids(&mut self, signal_handler_ids: Vec<glib::SignalHandlerId>) {
+        self.signal_handler_ids.extend(signal_handler_ids);
+    }
+
+    /// Disconnect the signal handlers.
+    ///
+    /// This is a no-op if the weak reference to the object can't be upgraded.
+    pub fn disconnect_signals(self) {
+        if let Some(obj) = self.weak_obj.upgrade() {
+            for signal_handler_id in self.signal_handler_ids {
+                obj.disconnect(signal_handler_id)
+            }
+        }
+    }
+}

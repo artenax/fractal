@@ -287,7 +287,8 @@ impl ItemRow {
                         child.set_list(
                             self.room_history()
                                 .room()
-                                .map(|room| room.typing_list().clone()),
+                                .as_ref()
+                                .map(|room| room.typing_list()),
                         );
                     }
                     PlaceholderKind::TimelineStart => {
