@@ -85,32 +85,6 @@
                 </accessibility>
               </object>
             </child>
-            <child type="end">
-              <object class="GtkToggleButton" id="search_content_button">
-                <property name="icon-name">system-search-symbolic</property>
-                <accessibility>
-                  <property name="label" translatable="yes">Toggle Room History Search</property>
-                </accessibility>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkSearchBar" id="room_search">
-            <property name="search-mode-enabled" bind-source="search_content_button" bind-property="active"/>
-            <property name="child">
-              <object class="AdwClamp">
-                <property name="hexpand">True</property>
-                <property name="maximum-size">750</property>
-                <property name="tightening-threshold">550</property>
-                <child>
-                  <object class="GtkSearchEntry"/>
-                </child>
-                <accessibility>
-                  <property name="label" translatable="yes">Room History Search</property>
-                </accessibility>
-              </object>
-            </property>
           </object>
         </child>
         <child>
