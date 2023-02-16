@@ -13,11 +13,17 @@ use matrix_sdk::{
 use ruma::{events::AnySyncTimelineEvent, serde::Raw, OwnedTransactionId};
 
 mod event_actions;
+mod reaction_group;
+mod reaction_list;
 
-pub use self::event_actions::{EventActions, EventTexture};
+pub use self::{
+    event_actions::{EventActions, EventTexture},
+    reaction_group::ReactionGroup,
+    reaction_list::ReactionList,
+};
 use super::{
     timeline::{TimelineItem, TimelineItemImpl},
-    Member, ReactionList, Room,
+    Member, Room,
 };
 use crate::{
     spawn_tokio,

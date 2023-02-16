@@ -4,8 +4,6 @@ mod member;
 mod member_list;
 mod member_role;
 mod power_levels;
-mod reaction_group;
-mod reaction_list;
 mod room_type;
 mod timeline;
 mod typing_list;
@@ -53,8 +51,6 @@ pub use self::{
     member_list::MemberList,
     member_role::MemberRole,
     power_levels::{PowerLevel, PowerLevels, RoomAction, POWER_LEVEL_MAX, POWER_LEVEL_MIN},
-    reaction_group::ReactionGroup,
-    reaction_list::ReactionList,
     room_type::RoomType,
     timeline::*,
     typing_list::TypingList,
