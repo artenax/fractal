@@ -1,11 +1,14 @@
-use gtk::{gdk, glib, prelude::*, subclass::prelude::*};
+use gtk::{gdk, gio, glib, glib::clone, prelude::*, subclass::prelude::*};
+
+use crate::utils::BoundObjectWeakRef;
+
+pub type CreateWidgetFromObjectFn = dyn Fn(&glib::Object) -> gtk::Widget + 'static;
 
 mod imp {
     use std::cell::{Cell, RefCell};
 
     use super::*;
 
-    #[derive(Debug)]
     pub struct OverlappingBox {
         /// The child widgets.
         pub widgets: RefCell<Vec<gtk::Widget>>,
@@ -13,11 +16,23 @@ mod imp {
         /// The size of the widgets.
         pub widgets_sizes: RefCell<Vec<(i32, i32)>>,
 
+        /// The maximum number of children to display.
+        ///
+        /// `0` means that all children are displayed.
+        pub max_children: Cell<u32>,
+
         /// The size by which the widgets overlap.
         pub overlap: Cell<u32>,
 
         /// The orientation of the box.
         pub orientation: Cell<gtk::Orientation>,
+
+        /// The list model that is bound, if any.
+        pub bound_model: RefCell<Option<BoundObjectWeakRef<gio::ListModel>>>,
+
+        /// The method used to create widgets from the items of the list model,
+        /// if any.
+        pub create_widget_func: RefCell<Option<Box<CreateWidgetFromObjectFn>>>,
     }
 
     impl Default for OverlappingBox {
@@ -25,8 +40,11 @@ mod imp {
             Self {
                 widgets: Default::default(),
                 widgets_sizes: Default::default(),
+                max_children: Default::default(),
                 overlap: Default::default(),
                 orientation: gtk::Orientation::Horizontal.into(),
+                bound_model: Default::default(),
+                create_widget_func: Default::default(),
             }
         }
     }
@@ -44,6 +62,9 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
+                    glib::ParamSpecUInt::builder("max-children")
+                        .explicit_notify()
+                        .build(),
                     glib::ParamSpecUInt::builder("overlap")
                         .explicit_notify()
                         .build(),
@@ -58,6 +79,7 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
+                "max-children" => obj.set_max_children(value.get().unwrap()),
                 "overlap" => obj.set_overlap(value.get().unwrap()),
                 "orientation" => obj.set_orientation(value.get().unwrap()),
                 _ => unimplemented!(),
@@ -68,6 +90,7 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
+                "max-children" => obj.max_children().to_value(),
                 "overlap" => obj.overlap().to_value(),
                 "orientation" => obj.orientation().to_value(),
                 _ => unimplemented!(),
@@ -77,6 +100,10 @@ mod imp {
         fn dispose(&self) {
             for widget in self.widgets.borrow().iter() {
                 widget.unparent();
+            }
+
+            if let Some(bound_model) = self.bound_model.take() {
+                bound_model.disconnect_signals()
             }
         }
     }
@@ -148,15 +175,7 @@ mod imp {
         }
     }
 
-    impl BuildableImpl for OverlappingBox {
-        fn add_child(&self, builder: &gtk::Builder, child: &glib::Object, type_: Option<&str>) {
-            if let Some(child) = child.downcast_ref::<gtk::Widget>() {
-                self.obj().append(child);
-            } else {
-                self.parent_add_child(builder, child, type_)
-            }
-        }
-    }
+    impl BuildableImpl for OverlappingBox {}
 
     impl OrientableImpl for OverlappingBox {}
 }
@@ -174,6 +193,44 @@ impl OverlappingBox {
     /// Create an empty `OverlappingBox`.
     pub fn new() -> Self {
         glib::Object::new()
+    }
+
+    /// The maximum number of children to display.
+    ///
+    /// `0` means that all children are displayed.
+    pub fn max_children(&self) -> u32 {
+        self.imp().max_children.get()
+    }
+
+    /// Set the maximum number of children to display.
+    pub fn set_max_children(&self, max_children: u32) {
+        let old_max_children = self.max_children();
+
+        if old_max_children == max_children {
+            return;
+        }
+
+        let imp = self.imp();
+        imp.max_children.set(max_children);
+        self.notify("max-children");
+
+        if max_children != 0 && self.children_nb() > max_children as usize {
+            // We have more children than we should, remove them.
+            let children = imp.widgets.borrow_mut().split_off(max_children as usize);
+            for widget in children {
+                widget.unparent()
+            }
+        } else if max_children == 0 || (old_max_children != 0 && max_children > old_max_children) {
+            let Some(model) = imp.bound_model.borrow().as_ref().and_then(|s| s.obj()) else {
+                return;
+            };
+
+            let diff = model.n_items() - old_max_children;
+            if diff > 0 {
+                // We could have more children, create them.
+                self.handle_items_changed(&model, old_max_children, 0, diff);
+            }
+        }
     }
 
     /// The size by which the widgets overlap.
@@ -208,49 +265,91 @@ impl OverlappingBox {
         self.queue_resize();
     }
 
-    /// The children of this box.
-    pub fn children(&self) -> Vec<gtk::Widget> {
-        self.imp().widgets.borrow().to_owned()
+    /// The number of children in this box.
+    pub fn children_nb(&self) -> usize {
+        self.imp().widgets.borrow().len()
     }
 
-    /// Add a child at the end of this box.
-    pub fn append<P: IsA<gtk::Widget>>(&self, child: &P) {
-        self.imp().widgets.borrow_mut().push(child.clone().upcast());
-        child.set_parent(self);
-        self.queue_resize();
-    }
+    /// Bind a `ListModel` to this box.
+    ///
+    /// The contents of the box are cleared and then filled with widgets that
+    /// represent items from the model. The box is updated whenever the model
+    /// changes. If the model is `None`, the box is left empty.
+    pub fn bind_model<P: Fn(&glib::Object) -> gtk::Widget + 'static>(
+        &self,
+        model: Option<&impl glib::IsA<gio::ListModel>>,
+        create_widget_func: P,
+    ) {
+        let imp = self.imp();
 
-    /// Add a child at the beginning of this box.
-    pub fn prepend<P: IsA<gtk::Widget>>(&self, child: &P) {
-        self.imp()
-            .widgets
-            .borrow_mut()
-            .insert(0, child.clone().upcast());
-        child.set_parent(self);
-        self.queue_resize();
-    }
-
-    /// Remove the child at the given index.
-    pub fn remove(&self, index: usize) {
-        let child = self.imp().widgets.borrow_mut().remove(index);
-        child.unparent();
-        self.queue_resize();
-    }
-
-    /// Only keep the first `len` children and drop the rest.
-    pub fn truncate_children(&self, len: usize) {
-        let children = self.imp().widgets.borrow_mut().split_off(len);
-        for child in children {
-            child.unparent();
+        if let Some(bound_model) = imp.bound_model.take() {
+            bound_model.disconnect_signals()
         }
-        self.queue_resize();
-    }
-
-    /// Remove all the children of this box.
-    pub fn remove_all(&self) {
         for child in self.imp().widgets.take() {
             child.unparent();
         }
+        imp.create_widget_func.take();
+
+        let Some(model) = model else {
+            return;
+        };
+
+        let signal_handler_id = model.connect_items_changed(
+            clone!(@weak self as obj => move |model, position, removed, added| {
+                obj.handle_items_changed(model, position, removed, added)
+            }),
+        );
+
+        imp.bound_model.replace(Some(BoundObjectWeakRef::new(
+            model.upcast_ref(),
+            vec![signal_handler_id],
+        )));
+
+        imp.create_widget_func
+            .replace(Some(Box::new(create_widget_func)));
+
+        self.handle_items_changed(model, 0, 0, model.n_items())
+    }
+
+    fn handle_items_changed(
+        &self,
+        model: &impl glib::IsA<gio::ListModel>,
+        position: u32,
+        mut removed: u32,
+        added: u32,
+    ) {
+        let max_children = self.max_children();
+        if max_children != 0 && position >= max_children {
+            // No changes here.
+            return;
+        }
+
+        let imp = self.imp();
+        let mut widgets = imp.widgets.borrow_mut();
+        let create_widget_func_option = imp.create_widget_func.borrow();
+        let create_widget_func = create_widget_func_option.as_ref().unwrap();
+
+        while removed > 0 {
+            if position as usize >= widgets.len() {
+                break;
+            }
+
+            let widget = widgets.remove(position as usize);
+            widget.unparent();
+            removed -= 1;
+        }
+
+        for i in position..(position + added) {
+            if max_children != 0 && i >= max_children {
+                break;
+            }
+
+            let item = model.item(i).unwrap();
+            let widget = create_widget_func(&item);
+            widget.set_parent(self);
+            widgets.insert(i as usize, widget)
+        }
+
         self.queue_resize();
     }
 }

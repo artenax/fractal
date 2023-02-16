@@ -11,6 +11,7 @@
             <child>
               <object class="OverlappingBox" id="avatar_box">
                 <property name="overlap">16</property>
+                <property name="max-children">10</property>
               </object>
             </child>
             <child>

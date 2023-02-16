@@ -1,5 +1,3 @@
-use std::cmp::Ordering;
-
 use adw::subclass::prelude::*;
 use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
 
@@ -7,7 +5,7 @@ use crate::{
     components::{Avatar, OverlappingBox},
     i18n::{gettext_f, ngettext_f},
     prelude::*,
-    session::room::TypingList,
+    session::room::{Member, TypingList},
     utils::BoundObjectWeakRef,
 };
 
@@ -28,8 +26,6 @@ mod imp {
         pub label: TemplateChild<gtk::Label>,
         /// The list of members that are currently typing.
         pub bound_list: RefCell<Option<BoundObjectWeakRef<TypingList>>>,
-        /// The current avatars that are displayed.
-        pub avatars: RefCell<Vec<Avatar>>,
     }
 
     #[glib::object_subclass]
@@ -129,15 +125,27 @@ impl TypingRow {
         if let Some(list) = list {
             let items_changed_handler_id = list.connect_items_changed(
                 clone!(@weak self as obj => move |list, _pos, removed, added| {
-                    obj.update(list, removed, added);
+                    obj.update_label(list, removed, added);
                 }),
             );
+            let is_empty_notify_handler_id = list.connect_notify_local(
+                Some("is-empty"),
+                clone!(@weak self as obj => move |_, _| obj.notify("is-empty")),
+            );
+
+            imp.avatar_box.bind_model(Some(list), |item| {
+                let avatar_item = item.downcast_ref::<Member>().unwrap().avatar().clone();
+                let avatar = Avatar::new();
+                avatar.set_item(Some(avatar_item));
+                avatar.set_size(30);
+                avatar.upcast()
+            });
 
             imp.bound_list.replace(Some(BoundObjectWeakRef::new(
                 list,
-                vec![items_changed_handler_id],
+                vec![items_changed_handler_id, is_empty_notify_handler_id],
             )));
-            self.update(list, 1, 1);
+            self.update_label(list, 1, 1);
         }
 
         if prev_is_empty != self.is_empty() {
@@ -152,54 +160,15 @@ impl TypingRow {
         self.list().filter(|list| !list.is_empty()).is_none()
     }
 
-    pub fn update(&self, list: &TypingList, removed: u32, added: u32) {
+    pub fn update_label(&self, list: &TypingList, removed: u32, added: u32) {
         if removed == 0 && added == 0 {
-            // Nothing changed;
+            // Nothing changes.
             return;
         }
 
-        let len = list.n_items();
-
-        if len == 0 {
-            self.notify("is-empty");
-            return;
-        }
-
-        // Update label and avatars
         let imp = self.imp();
+        let len = list.n_items();
         let members = list.members();
-
-        {
-            // Show 10 avatars max.
-            let len = len.min(10) as usize;
-
-            let mut avatars = imp.avatars.borrow_mut();
-            let avatars_len = avatars.len();
-
-            match len.cmp(&avatars_len) {
-                Ordering::Less => {
-                    imp.avatar_box.truncate_children(len);
-                }
-                Ordering::Equal => {}
-                Ordering::Greater => {
-                    avatars.reserve_exact(10 - avatars_len);
-                }
-            }
-
-            for (i, member) in members.iter().enumerate().take(len) {
-                let item = member.avatar().clone();
-
-                if let Some(avatar) = avatars.get(i) {
-                    avatar.set_item(Some(item));
-                } else {
-                    let avatar = Avatar::new();
-                    avatar.set_item(Some(item));
-                    avatar.set_size(30);
-                    imp.avatar_box.append(&avatar);
-                    avatars.push(avatar);
-                }
-            }
-        }
 
         let label = if len == 1 {
             let user = members[0].display_name();
@@ -230,9 +199,5 @@ impl TypingRow {
             }
         };
         imp.label.set_label(&label);
-
-        if removed == 0 && added == len {
-            self.notify("is-empty");
-        }
     }
 }

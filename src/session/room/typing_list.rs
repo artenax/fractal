@@ -3,16 +3,28 @@ use gtk::{gio, glib, prelude::*, subclass::prelude::*};
 use super::Member;
 
 mod imp {
-    use std::cell::RefCell;
+    use std::cell::{Cell, RefCell};
 
     use once_cell::sync::Lazy;
 
     use super::*;
 
-    #[derive(Debug, Default)]
+    #[derive(Debug)]
     pub struct TypingList {
         /// The list of members currently typing.
         pub members: RefCell<Vec<Member>>,
+
+        /// Whether this list is empty.
+        pub is_empty: Cell<bool>,
+    }
+
+    impl Default for TypingList {
+        fn default() -> Self {
+            Self {
+                members: Default::default(),
+                is_empty: Cell::new(true),
+            }
+        }
     }
 
     #[glib::object_subclass]
@@ -75,13 +87,27 @@ impl TypingList {
         self.imp().members.borrow().clone()
     }
 
+    /// Set whether the list is empty.
+    fn set_is_empty(&self, empty: bool) {
+        self.imp().is_empty.set(empty);
+        self.notify("is-empty");
+    }
+
     /// Whether the list is empty.
     pub fn is_empty(&self) -> bool {
-        self.n_items() == 0
+        self.imp().is_empty.get()
     }
 
     pub fn update(&self, new_members: Vec<Member>) {
         let prev_is_empty = self.is_empty();
+
+        if new_members.is_empty() {
+            if !prev_is_empty {
+                self.set_is_empty(true);
+            }
+
+            return;
+        }
 
         let (removed, added) = {
             let mut members = self.imp().members.borrow_mut();
@@ -93,8 +119,8 @@ impl TypingList {
 
         self.items_changed(0, removed, added);
 
-        if prev_is_empty != self.is_empty() {
-            self.notify("is-empty");
+        if prev_is_empty {
+            self.set_is_empty(false);
         }
     }
 }
