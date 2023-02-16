@@ -121,7 +121,7 @@ mod imp {
         }
 
         fn item(&self, position: u32) -> Option<glib::Object> {
-            if self.has_typing.get() && position == self.obj().n_items() {
+            if self.has_typing.get() && position == self.obj().n_items_in_list() {
                 return Some(TimelinePlaceholder::typing().upcast());
             }
 
