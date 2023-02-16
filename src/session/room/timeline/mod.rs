@@ -8,8 +8,8 @@ use std::{
     sync::Arc,
 };
 
+use eyeball_im::VectorDiff;
 use futures::StreamExt;
-use futures_signals::signal_vec::{SignalVecExt, VecDiff};
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{error, warn};
 use matrix_sdk::{
@@ -173,24 +173,73 @@ impl Timeline {
     }
 
     /// Update this `Timeline` with the given diff.
-    fn update(&self, diff: VecDiff<Arc<SdkTimelineItem>>) {
+    fn update(&self, diff: VectorDiff<Arc<SdkTimelineItem>>) {
         let imp = self.imp();
         let list = &imp.list;
 
         match diff {
-            VecDiff::Replace { values } => {
-                let removed = self.n_items_in_list();
+            VectorDiff::Append { values } => {
+                let pos = self.n_items_in_list();
                 let new_list = values
                     .into_iter()
                     .map(|item| self.create_item(&item))
                     .collect::<VecDeque<_>>();
                 let added = new_list.iter().filter(|item| item.is_visible()).count();
 
-                *list.borrow_mut() = new_list;
+                list.borrow_mut().extend(new_list);
 
-                self.items_changed(0, removed, added as u32);
+                self.items_changed(pos, 0, added as u32);
             }
-            VecDiff::InsertAt { index, value } => {
+            VectorDiff::Clear => {
+                self.clear();
+            }
+            VectorDiff::PushFront { value } => {
+                let visible = {
+                    let item = self.create_item(&value);
+                    let visible = item.is_visible();
+                    list.borrow_mut().push_front(item);
+                    visible
+                };
+
+                if visible {
+                    self.items_changed(0, 0, 1);
+                }
+            }
+            VectorDiff::PushBack { value } => {
+                let visible = {
+                    let item = self.create_item(&value);
+                    let visible = item.is_visible();
+                    list.borrow_mut().push_back(item);
+                    visible
+                };
+
+                if visible {
+                    self.items_changed(self.n_items_in_list() - 1, 0, 1);
+                }
+            }
+            VectorDiff::PopFront => {
+                let visible = {
+                    let item = list.borrow_mut().pop_front().unwrap();
+                    self.remove_item(&item);
+                    item.is_visible()
+                };
+
+                if visible {
+                    self.items_changed(0, 1, 0);
+                }
+            }
+            VectorDiff::PopBack => {
+                let visible = {
+                    let item = list.borrow_mut().pop_back().unwrap();
+                    self.remove_item(&item);
+                    item.is_visible()
+                };
+
+                if visible {
+                    self.items_changed(self.n_items_in_list(), 1, 0);
+                }
+            }
+            VectorDiff::Insert { index, value } => {
                 let item = self.create_item(&value);
                 let visible = item.is_visible();
                 list.borrow_mut().insert(index, item);
@@ -199,7 +248,7 @@ impl Timeline {
                     self.items_changed(index as u32, 0, 1);
                 }
             }
-            VecDiff::UpdateAt { index, value } => {
+            VectorDiff::Set { index, value } => {
                 let prev_item = list.borrow()[index].clone();
                 let prev_can_hide_header = prev_item.can_hide_header();
                 let pos = self.find_item_position(&prev_item);
@@ -232,20 +281,7 @@ impl Timeline {
                     self.items_changed(pos as u32, 0, 1);
                 }
             }
-            VecDiff::Push { value } => {
-                let visible = {
-                    let mut list = list.borrow_mut();
-                    let item = self.create_item(&value);
-                    let visible = item.is_visible();
-                    list.push_back(item);
-                    visible
-                };
-
-                if visible {
-                    self.items_changed(self.n_items_in_list() - 1, 0, 1);
-                }
-            }
-            VecDiff::RemoveAt { index } => {
+            VectorDiff::Remove { index } => {
                 let item = list.borrow().get(index).unwrap().clone();
                 let pos = self.find_item_position(&item);
                 let item = list.borrow_mut().remove(index).unwrap();
@@ -255,35 +291,17 @@ impl Timeline {
                     self.items_changed(pos as u32, 1, 0);
                 }
             }
-            VecDiff::Move {
-                old_index,
-                new_index,
-            } => {
-                let item = list.borrow_mut().remove(old_index).unwrap();
-                let visible = item.is_visible();
-                if visible {
-                    self.items_changed(old_index as u32, 1, 0);
-                }
+            VectorDiff::Reset { values } => {
+                let removed = self.n_items_in_list();
+                let new_list = values
+                    .into_iter()
+                    .map(|item| self.create_item(&item))
+                    .collect::<VecDeque<_>>();
+                let added = new_list.iter().filter(|item| item.is_visible()).count();
 
-                list.borrow_mut().insert(new_index, item);
-                if visible {
-                    self.items_changed(new_index as u32, 0, 1);
-                }
-            }
-            VecDiff::Pop {} => {
-                let visible = {
-                    let mut list = list.borrow_mut();
-                    let item = list.pop_back().unwrap();
-                    self.remove_item(&item);
-                    item.is_visible()
-                };
+                *list.borrow_mut() = new_list;
 
-                if visible {
-                    self.items_changed(self.n_items_in_list(), 1, 0);
-                }
-            }
-            VecDiff::Clear {} => {
-                self.clear();
+                self.items_changed(0, removed, added as u32);
             }
         }
     }
@@ -483,7 +501,13 @@ impl Timeline {
         self.imp().timeline.set(matrix_timeline.clone()).unwrap();
 
         let (mut sender, mut receiver) = futures::channel::mpsc::channel(100);
-        let fut = matrix_timeline.signal().for_each(move |diff| {
+        let (values, timeline_stream) = matrix_timeline.subscribe().await;
+
+        if !values.is_empty() {
+            self.update(VectorDiff::Append { values });
+        }
+
+        let fut = timeline_stream.for_each(move |diff| {
             if let Err(error) = sender.try_send(diff) {
                 error!("Error sending diff from timeline for room {room_id}: {error}");
                 panic!();
@@ -494,7 +518,7 @@ impl Timeline {
         spawn_tokio!(fut);
 
         while let Some(diff) = receiver.next().await {
-            self.update(diff)
+            self.update(diff);
         }
     }
 

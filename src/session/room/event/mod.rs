@@ -200,14 +200,14 @@ impl Event {
     pub fn try_update_with(&self, item: &EventTimelineItem) -> bool {
         match self.key() {
             EventKey::TransactionId(txn_id) => match item {
-                EventTimelineItem::Local(local_event) if local_event.transaction_id == txn_id => {
+                EventTimelineItem::Local(local_event) if local_event.transaction_id() == txn_id => {
                     self.set_item(item.clone());
                     return true;
                 }
                 _ => {}
             },
             EventKey::EventId(event_id) => match item {
-                EventTimelineItem::Remote(remote_event) if remote_event.event_id == event_id => {
+                EventTimelineItem::Remote(remote_event) if remote_event.event_id() == event_id => {
                     self.set_item(item.clone());
                     return true;
                 }
@@ -272,9 +272,9 @@ impl Event {
     pub fn key(&self) -> EventKey {
         match self.imp().item.borrow().as_ref().unwrap() {
             EventTimelineItem::Local(event) => {
-                EventKey::TransactionId(event.transaction_id.clone())
+                EventKey::TransactionId(event.transaction_id().to_owned())
             }
-            EventTimelineItem::Remote(event) => EventKey::EventId(event.event_id.clone()),
+            EventTimelineItem::Remote(event) => EventKey::EventId(event.event_id().to_owned()),
         }
     }
 
