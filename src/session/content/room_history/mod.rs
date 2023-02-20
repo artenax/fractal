@@ -8,7 +8,7 @@ mod state_row;
 mod typing_row;
 mod verification_info_bar;
 
-use std::str::FromStr;
+use std::{str::FromStr, time::Duration};
 
 use adw::subclass::prelude::*;
 use ashpd::{
@@ -35,9 +35,14 @@ use matrix_sdk::{
         EventId,
     },
 };
-use ruma::events::{
-    room::message::{ForwardThread, LocationMessageEventContent, RoomMessageEventContent},
-    AnyMessageLikeEventContent,
+use ruma::{
+    api::client::receipt::create_receipt::v3::ReceiptType,
+    events::{
+        receipt::ReceiptThread,
+        room::message::{ForwardThread, LocationMessageEventContent, RoomMessageEventContent},
+        AnyMessageLikeEventContent,
+    },
+    OwnedEventId,
 };
 use sourceview::prelude::*;
 
@@ -60,6 +65,11 @@ use crate::{
         template_callbacks::TemplateCallbacks,
     },
 };
+
+/// The time to wait before considering that scrolling has ended.
+const SCROLL_TIMEOUT: Duration = Duration::from_millis(500);
+/// The time to wait before considering that messages on a screen where read.
+const READ_TIMEOUT: Duration = Duration::from_secs(10);
 
 #[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(i32)]
@@ -127,6 +137,8 @@ mod imp {
         pub related_event_content: TemplateChild<MessageContent>,
         pub related_event_type: Cell<RelatedEventType>,
         pub related_event: RefCell<Option<Event>>,
+        pub scroll_timeout: RefCell<Option<glib::SourceId>>,
+        pub read_timeout: RefCell<Option<glib::SourceId>>,
     }
 
     #[glib::object_subclass]
@@ -316,6 +328,8 @@ mod imp {
             adj.connect_value_changed(clone!(@weak obj => move |adj| {
                 let imp = obj.imp();
 
+                obj.trigger_read_receipts_update();
+
                 let is_at_bottom = adj.value() + adj.page_size() == adj.upper();
                 if imp.is_auto_scrolling.get() {
                     if is_at_bottom {
@@ -486,6 +500,13 @@ impl RoomHistory {
             self.clear_related_event();
         }
 
+        if let Some(source_id) = imp.scroll_timeout.take() {
+            source_id.remove();
+        }
+        if let Some(source_id) = imp.read_timeout.take() {
+            source_id.remove();
+        }
+
         if let Some(ref room) = room {
             let timeline = room.timeline();
 
@@ -514,6 +535,8 @@ impl RoomHistory {
             imp.state_timeline_handler.replace(Some(handler_id));
 
             timeline.remove_empty_typing_row();
+            self.trigger_read_receipts_update();
+
             room.load_members();
             self.init_invite_action(room);
             self.scroll_down();
@@ -1237,6 +1260,128 @@ impl RoomHistory {
     fn send_typing_notification(&self, typing: bool) {
         if let Some(room) = self.room() {
             room.send_typing_notification(typing);
+        }
+    }
+
+    /// Trigger the process to update read receipts.
+    fn trigger_read_receipts_update(&self) {
+        let Some(room) = self.room() else {
+            return;
+        };
+
+        let timeline = room.timeline();
+        if !timeline.is_empty() {
+            let imp = self.imp();
+
+            if let Some(source_id) = imp.scroll_timeout.take() {
+                source_id.remove();
+            }
+            if let Some(source_id) = imp.read_timeout.take() {
+                source_id.remove();
+            }
+
+            // Only send read receipt when scrolling stopped.
+            imp.scroll_timeout
+                .replace(Some(glib::timeout_add_local_once(
+                    SCROLL_TIMEOUT,
+                    clone!(@weak self as obj => move || {
+                        obj.update_read_receipts();
+                    }),
+                )));
+        }
+    }
+
+    /// Update the read receipts.
+    fn update_read_receipts(&self) {
+        let imp = self.imp();
+        imp.scroll_timeout.take();
+
+        if let Some(source_id) = imp.read_timeout.take() {
+            source_id.remove();
+        }
+
+        imp.read_timeout.replace(Some(glib::timeout_add_local_once(
+            READ_TIMEOUT,
+            clone!(@weak self as obj => move || {
+                obj.update_read_marker();
+            }),
+        )));
+
+        let last_event_id = self.last_visible_event_id();
+
+        if let Some(event_id) = last_event_id {
+            spawn!(clone!(@weak self as obj => async move {
+                obj.send_receipt(ReceiptType::Read, event_id).await;
+            }));
+        }
+    }
+
+    /// Update the read marker.
+    fn update_read_marker(&self) {
+        let imp = self.imp();
+        imp.read_timeout.take();
+
+        let last_event_id = self.last_visible_event_id();
+
+        if let Some(event_id) = last_event_id {
+            spawn!(clone!(@weak self as obj => async move {
+                obj.send_receipt(ReceiptType::FullyRead, event_id).await;
+            }));
+        }
+    }
+
+    /// Get the ID of the last visible event in the room history.
+    fn last_visible_event_id(&self) -> Option<OwnedEventId> {
+        let listview = &*self.imp().listview;
+        let mut child = listview.last_child();
+        // The visible part of the listview spans between 0 and max.
+        let max = listview.height() as f64;
+
+        while let Some(item) = child {
+            // Vertical position of the top of the item.
+            let (_, top_pos) = item.translate_coordinates(listview, 0.0, 0.0).unwrap();
+            // Vertical position of the bottom of the item.
+            let (_, bottom_pos) = item
+                .translate_coordinates(listview, 0.0, item.height() as f64)
+                .unwrap();
+
+            let top_in_view = top_pos > 0.0 && top_pos <= max;
+            let bottom_in_view = bottom_pos > 0.0 && bottom_pos <= max;
+            // If a message is too big and takes more space than the current view.
+            let content_in_view = top_pos <= max && bottom_pos > 0.0;
+            if top_in_view || bottom_in_view || content_in_view {
+                if let Some(event_id) = item
+                    .first_child()
+                    .and_then(|child| child.downcast::<ItemRow>().ok())
+                    .and_then(|row| row.item())
+                    .and_then(|item| item.downcast::<Event>().ok())
+                    .and_then(|event| event.event_id())
+                {
+                    return Some(event_id);
+                }
+            }
+
+            child = item.prev_sibling();
+        }
+
+        None
+    }
+
+    /// Send the given receipt.
+    async fn send_receipt(&self, receipt_type: ReceiptType, event_id: OwnedEventId) {
+        let Some(room) = self.room() else {
+            return;
+        };
+
+        let matrix_timeline = room.timeline().matrix_timeline();
+        let handle = spawn_tokio!(async move {
+            matrix_timeline
+                .send_single_receipt(receipt_type, ReceiptThread::Unthreaded, event_id)
+                .await
+        });
+
+        if let Err(error) = handle.await.unwrap() {
+            error!("Failed to send read receipt: {error}");
         }
     }
 }
