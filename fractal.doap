@@ -24,4 +24,10 @@
       <gnome:userid>afranke</gnome:userid>
     </foaf:Person>
   </maintainer>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Kévin Commaille</foaf:name>
+      <gnome:userid>kcommaille</gnome:userid>
+    </foaf:Person>
+  </maintainer>
 </Project>
