@@ -12,7 +12,7 @@ use std::thread;
 
 use crate::types::Room;
 use crate::types::RoomList;
-use failure::Error;
+use anyhow::Error;
 use fractal_api::identifiers::{DeviceId, UserId};
 use std::collections::HashMap;
 use std::hash::Hash;

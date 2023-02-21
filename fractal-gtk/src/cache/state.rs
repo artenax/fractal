@@ -4,8 +4,8 @@ use mdl::Model;
 use mdl::Store;
 use serde::{Deserialize, Serialize};
 
-use failure::err_msg;
-use failure::Error;
+use anyhow::anyhow;
+use anyhow::Error;
 
 use std::cell::RefCell;
 use std::fs::remove_dir_all;
@@ -127,8 +127,8 @@ impl FCache {
         guard.take();
 
         let fname = cache_dir_path(None, "cache.mdl")
-            .or_else(|_| Err(err_msg("Can't remove cache file")))?;
-        remove_dir_all(fname).or_else(|_| Err(err_msg("Can't remove cache file")))
+            .or_else(|_| Err(anyhow!("Can't remove cache file")))?;
+        remove_dir_all(fname).or_else(|_| Err(anyhow!("Can't remove cache file")))
     }
 
     #[allow(dead_code)]

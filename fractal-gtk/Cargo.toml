@@ -6,11 +6,11 @@ workspace = "../"
 edition = "2018"
 
 [dependencies]
+anyhow = "1.0.32"
 clap = "2.33.0"
 comrak = "0.7.0"
 directories = "2.0.2"
 dirs = "2.0.2"
-failure = "0.1.6"
 fragile = "1.0.0"
 gspell = "0.4.0"
 gdk = "0.12.1"

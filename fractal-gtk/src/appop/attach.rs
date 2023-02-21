@@ -6,7 +6,7 @@ use std::io::prelude::*;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
-use failure::Error;
+use anyhow::Error;
 
 use gtk::prelude::*;
 
