@@ -577,7 +577,7 @@ dependencies = [
 
 [[package]]
 name = "fractal-gtk"
-version = "4.4.0"
+version = "4.4.2-beta"
 dependencies = [
  "anyhow",
  "cairo-rs",
