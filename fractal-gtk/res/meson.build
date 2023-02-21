@@ -2,7 +2,7 @@ subdir('icons')
 
 desktop_conf = configuration_data()
 desktop_conf.set('icon', application_id)
-desktop_file = i18n.merge_file ('desktop-file',
+desktop_file = i18n.merge_file (
   type: 'desktop',
   input: configure_file(
     input: files('org.gnome.Fractal.desktop.in.in'),
@@ -28,7 +28,7 @@ endif
 
 metainfo_conf = configuration_data()
 metainfo_conf.set('appid', application_id)
-metainfo_file = i18n.merge_file ('metainfo-file',
+metainfo_file = i18n.merge_file (
   input: configure_file(
     input: files('org.gnome.Fractal.metainfo.xml.in.in'),
     output: 'org.gnome.Fractal.metainfo.xml.in',
