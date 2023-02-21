@@ -9,7 +9,7 @@ variables:
     BUNDLE: "org.gnome.FractalDevel.flatpak"
     MANIFEST_PATH: "flatpak/org.gnome.Fractal.json"
     FLATPAK_MODULE: "fractal"
-    FLATPAK_IMAGE: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:3.36"
+    FLATPAK_IMAGE: "quay.io/gnome_infrastructure/gnome-runtime-images:gnome-43"
 
 .flatpak_cache_template: &flatpak_cache
     cache:
