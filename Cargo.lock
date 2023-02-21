@@ -577,7 +577,7 @@ dependencies = [
 
 [[package]]
 name = "fractal-gtk"
-version = "4.4.2-beta"
+version = "4.4.2-beta1"
 dependencies = [
  "anyhow",
  "cairo-rs",
@@ -619,7 +619,7 @@ dependencies = [
 
 [[package]]
 name = "fractal-matrix-api"
-version = "4.4.0"
+version = "4.4.2-beta1"
 dependencies = [
  "gio",
  "reqwest",
