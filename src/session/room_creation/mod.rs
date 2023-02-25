@@ -1,6 +1,6 @@
-use adw::subclass::prelude::*;
+use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
-use gtk::{gdk, glib, glib::clone, prelude::*, CompositeTemplate};
+use gtk::{gdk, glib, glib::clone, CompositeTemplate};
 use log::error;
 use matrix_sdk::{
     ruma::{
@@ -14,6 +14,11 @@ use matrix_sdk::{
         assign,
     },
     HttpError, RumaApiError,
+};
+use ruma::{
+    events::{room::encryption::RoomEncryptionEventContent, EmptyStateKey, InitialStateEvent},
+    serde::Raw,
+    uint, EventEncryptionAlgorithm,
 };
 
 use crate::{
@@ -35,31 +40,27 @@ mod imp {
     pub struct RoomCreation {
         pub session: WeakRef<Session>,
         #[template_child]
-        pub content: TemplateChild<gtk::ListBox>,
+        pub toast_overlay: TemplateChild<adw::ToastOverlay>,
         #[template_child]
         pub create_button: TemplateChild<SpinnerButton>,
         #[template_child]
-        pub cancel_button: TemplateChild<gtk::Button>,
+        pub content: TemplateChild<gtk::Box>,
         #[template_child]
-        pub room_name: TemplateChild<gtk::Entry>,
+        pub room_name: TemplateChild<adw::EntryRow>,
         #[template_child]
-        pub private_button: TemplateChild<gtk::ToggleButton>,
+        pub room_topic: TemplateChild<adw::EntryRow>,
+        #[template_child]
+        pub visibility_private: TemplateChild<gtk::CheckButton>,
+        #[template_child]
+        pub encryption: TemplateChild<gtk::Switch>,
         #[template_child]
         pub room_address: TemplateChild<gtk::Entry>,
         #[template_child]
-        pub room_name_error_revealer: TemplateChild<gtk::Revealer>,
-        #[template_child]
-        pub room_name_error: TemplateChild<gtk::Label>,
+        pub server_name: TemplateChild<gtk::Label>,
         #[template_child]
         pub room_address_error_revealer: TemplateChild<gtk::Revealer>,
         #[template_child]
         pub room_address_error: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub server_name: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub error_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub error_label_revealer: TemplateChild<gtk::Revealer>,
     }
 
     #[glib::object_subclass]
@@ -70,12 +71,13 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
 
             klass.add_binding(
                 gdk::Key::Escape,
                 gdk::ModifierType::empty(),
                 |obj, _| {
-                    obj.cancel();
+                    obj.close();
                     true
                 },
                 None,
@@ -112,26 +114,6 @@ mod imp {
                 _ => unimplemented!(),
             }
         }
-
-        fn constructed(&self) {
-            self.parent_constructed();
-            let obj = self.obj();
-
-            self.cancel_button
-                .connect_clicked(clone!(@weak obj => move |_| {
-                    obj.cancel();
-                }));
-
-            self.create_button
-                .connect_clicked(clone!(@weak obj => move |_| {
-                    obj.create_room();
-                }));
-
-            self.room_address
-                .connect_text_notify(clone!(@weak obj = > move |_| {
-                    obj.validate_input();
-                }));
-        }
     }
 
     impl WidgetImpl for RoomCreation {}
@@ -145,6 +127,7 @@ glib::wrapper! {
         @extends gtk::Widget, gtk::Window, adw::Window, @implements gtk::Accessible;
 }
 
+#[gtk::template_callbacks]
 impl RoomCreation {
     pub fn new(parent_window: Option<&impl IsA<gtk::Window>>, session: &Session) -> Self {
         glib::Object::builder()
@@ -159,87 +142,106 @@ impl RoomCreation {
     }
 
     /// Set the current session.
-    pub fn set_session(&self, session: Option<Session>) {
+    pub fn set_session(&self, session: Option<&Session>) {
         let imp = self.imp();
 
-        if self.session() == session {
+        if self.session().as_ref() == session {
             return;
         }
 
         if let Some(user) = session.as_ref().and_then(|session| session.user()) {
             imp.server_name
-                .set_label(&[":", user.user_id().server_name().as_str()].concat());
+                .set_label(&format!(":{}", user.user_id().server_name()));
         }
 
-        imp.session.set(session.as_ref());
+        imp.session.set(session);
         self.notify("session");
     }
 
-    fn create_room(&self) -> Option<()> {
+    /// Create the room, if it is allowed.
+    #[template_callback]
+    fn create_room(&self) {
         let imp = self.imp();
+
+        if !self.can_create_room() {
+            return;
+        }
 
         imp.create_button.set_loading(true);
         imp.content.set_sensitive(false);
-        imp.cancel_button.set_sensitive(false);
-        imp.error_label_revealer.set_reveal_child(false);
 
-        let client = self.session()?.client();
-
-        let room_name = imp.room_name.text().to_string();
-
-        let visibility = if imp.private_button.is_active() {
-            Visibility::Private
-        } else {
-            Visibility::Public
+        let Some(session) = self.session() else {
+            return;
         };
+        let client = session.client();
 
-        let room_address = if !imp.private_button.is_active() {
-            Some(format!("#{}", imp.room_address.text().as_str()))
-        } else {
-            None
-        };
+        let name = Some(imp.room_name.text().to_string());
+        let topic = Some(imp.room_topic.text().to_string()).filter(|s| !s.is_empty());
 
-        let handle = spawn_tokio!(async move {
-            let request = assign!(create_room::v3::Request::new(),
+        let mut request = assign!(
+            create_room::v3::Request::new(),
             {
-                name: Some(room_name),
-                visibility,
-                room_alias_name: room_address
-            });
-            client.create_room(request).await
-        });
+                name,
+                topic,
+            }
+        );
+
+        if imp.visibility_private.is_active() {
+            // The room is private.
+            request.visibility = Visibility::Private;
+
+            if imp.encryption.is_active() {
+                let content = assign!(
+                    RoomEncryptionEventContent::new(EventEncryptionAlgorithm::MegolmV1AesSha2),
+                    {
+                        // Values from the recommended defaults of the spec.
+                        rotation_period_ms: Some(uint!(604800000)),
+                        rotation_period_msgs: Some(uint!(100)),
+                    }
+                );
+                let event = InitialStateEvent {
+                    content,
+                    state_key: EmptyStateKey,
+                };
+                let raw_event = Raw::new(&event).unwrap().cast();
+                request.initial_state = vec![raw_event];
+            }
+        } else {
+            // The room is public.
+            request.visibility = Visibility::Public;
+            request.room_alias_name = Some(imp.room_address.text().to_string());
+        };
+
+        let handle = spawn_tokio!(async move { client.create_room(request).await });
 
         spawn!(
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
-                        Ok(matrix_room) => {
-                            if let Some(session) = obj.session() {
-                                let room = session.room_list().get_wait(matrix_room.room_id()).await;
-                                session.select_room(room);
-                            }
-                            obj.close();
-                        },
-                        Err(error) => {
-                            error!("Couldn’t create a new room: {}", error);
-                            obj.handle_error(error);
-                        },
+                    Ok(matrix_room) => {
+                        if let Some(session) = obj.session() {
+                            let room = session.room_list().get_wait(matrix_room.room_id()).await;
+                            session.select_room(room);
+                        }
+                        obj.close();
+                    },
+                    Err(error) => {
+                        error!("Couldn’t create a new room: {error}");
+                        obj.handle_error(error);
+                    },
                 };
             })
         );
-
-        None
     }
 
-    /// Display the error that occurred during creation
+    /// Display the error that occurred during creation.
     fn handle_error(&self, error: HttpError) {
         let imp = self.imp();
 
         imp.create_button.set_loading(false);
         imp.content.set_sensitive(true);
-        imp.cancel_button.set_sensitive(true);
 
-        // Treat the room address already taken error special
+        // Handle the room address already taken error.
         if let HttpError::Api(FromHttpResponseError::Server(RumaApiError::ClientApi(
             ClientApiError {
                 body: ErrorBody::Standard { kind, .. },
@@ -257,59 +259,71 @@ impl RoomCreation {
             }
         }
 
-        imp.error_label.set_label(&error.to_user_facing());
-
-        imp.error_label_revealer.set_reveal_child(true);
+        imp.toast_overlay
+            .add_toast(adw::Toast::new(&error.to_user_facing()));
     }
 
-    fn validate_input(&self) {
+    /// Check whether a room can be created with the current input.
+    ///
+    /// This will also change the UI elements to reflect why the room can't be
+    /// created.
+    fn can_create_room(&self) -> bool {
         let imp = self.imp();
+        let mut can_create = true;
 
-        // Validate room address
+        if imp.room_name.text().is_empty() {
+            can_create = false;
+        }
 
-        // Only public rooms have a address
-        if imp.private_button.is_active() {
-            imp.create_button.set_sensitive(false);
-            return;
+        // Only public rooms have an address.
+        if imp.visibility_private.is_active() {
+            return can_create;
         }
 
         let room_address = imp.room_address.text();
 
         // We don't allow #, : in the room address
-        let (is_address_valid, has_error) = if room_address.find(':').is_some() {
+        let address_has_error = if room_address.contains(':') {
             imp.room_address_error
                 .set_text(&gettext("Can’t contain “:”"));
-            (false, true)
-        } else if room_address.find('#').is_some() {
+            can_create = false;
+            true
+        } else if room_address.contains('#') {
             imp.room_address_error
                 .set_text(&gettext("Can’t contain “#”"));
-            (false, true)
+            can_create = false;
+            true
         } else if room_address.len() > MAX_BYTES {
             imp.room_address_error
                 .set_text(&gettext("Too long. Use a shorter address."));
-            (false, true)
+            can_create = false;
+            true
         } else if room_address.is_empty() {
-            (false, false)
+            can_create = false;
+            false
         } else {
-            (true, false)
+            false
         };
 
         // TODO: should we immediately check if the address is available, like element
         // is doing?
 
-        if has_error {
+        if address_has_error {
             imp.room_address.add_css_class("error");
         } else {
             imp.room_address.remove_css_class("error");
         }
+        imp.room_address_error_revealer
+            .set_reveal_child(address_has_error);
 
-        imp.room_address_error_revealer.set_reveal_child(has_error);
-        imp.create_button.set_sensitive(is_address_valid);
+        can_create
     }
 
-    fn cancel(&self) {
-        if self.imp().cancel_button.is_sensitive() {
-            self.close();
-        }
+    /// Validate the form and change the corresponding UI elements.
+    #[template_callback]
+    fn validate_form(&self) {
+        self.imp()
+            .create_button
+            .set_sensitive(self.can_create_room());
     }
 }

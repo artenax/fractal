@@ -31,7 +31,7 @@ listview.content row:last-child {
 	border-bottom-width: 0px;
 }
 
-headerbar .suggested-action {
+headerbar .suggested-action, .standalone-button {
   min-width: 70px;
 }
 
