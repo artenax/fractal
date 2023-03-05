@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-01-11 17:04+0000\n"
-"PO-Revision-Date: 2023-02-05 14:29+0100\n"
+"POT-Creation-Date: 2023-02-16 18:07+0000\n"
+"PO-Revision-Date: 2023-03-05 16:10+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -123,12 +123,13 @@ msgstr "Potwierdzenie nowego hasła"
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:164
 #: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
+#: data/resources/ui/account-settings-log-out-subpage.ui:94
 #: src/session/content/room_history/verification_info_bar.rs:175
 msgid "Continue"
 msgstr "Kontynuuj"
 
 #: data/resources/ui/account-settings-deactivate-account-subpage.ui:12
-#: data/resources/ui/account-settings-user-page.ui:123
+#: data/resources/ui/account-settings-user-page.ui:137
 msgid "Deactivate Account"
 msgstr "Dezaktywuj konto"
 
@@ -171,6 +172,29 @@ msgstr "Obecna sesja"
 #: data/resources/ui/account-settings-devices-page.ui:28
 msgid "Other Active Sessions"
 msgstr "Pozostałe aktywne sesje"
+
+#: data/resources/ui/account-settings-log-out-subpage.ui:12
+msgid "Log Out of this Session"
+msgstr "Wylogowanie z tej sesji"
+
+#: data/resources/ui/account-settings-log-out-subpage.ui:60
+msgid ""
+"Fractal doesn’t support online backup of room encryption keys so you might "
+"lose access to your encrypted message history."
+msgstr ""
+"Fractal nie obsługuje przechowywania kopii zapasowej kluczy szyfrowania "
+"pokojów w Internecie, więc można utracić dostęp do historii zaszyfrowanych "
+"wiadomości."
+
+#: data/resources/ui/account-settings-log-out-subpage.ui:71
+msgid "It is recommended to backup your encryption keys before proceeding."
+msgstr ""
+"Przed kontynuowaniem zalecane jest wykonanie kopii zapasowej kluczy "
+"szyfrowania."
+
+#: data/resources/ui/account-settings-log-out-subpage.ui:85
+msgid "Backup Encryption Keys"
+msgstr "Wykonaj kopię zapasową kluczy szyfrowania"
 
 #: data/resources/ui/account-settings-import-export-keys-subpage.ui:80
 #: data/resources/ui/session-verification.ui:290
@@ -220,6 +244,11 @@ msgstr "Identyfikator użytkownika Matrix"
 #: data/resources/ui/account-settings-user-page.ui:102
 msgid "Session ID"
 msgstr "Identyfikator sesji"
+
+#: data/resources/ui/account-settings-user-page.ui:123
+#: src/session/account_settings/devices_page/device_row.rs:103
+msgid "Log Out"
+msgstr "Wyloguj się"
 
 #: data/resources/ui/account-settings-security-page.ui:5
 msgid "Security"
@@ -279,7 +308,7 @@ msgstr "Uwierzytelnij przez przeglądarkę"
 #: src/components/editable_avatar.rs:318
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:266
 #: src/session/content/room_history/verification_info_bar.rs:176
-#: src/session/room/event_actions.rs:295
+#: src/session/room/event/event_actions.rs:308
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -346,26 +375,6 @@ msgstr "_Odrzuć"
 msgid "_Accept"
 msgstr "_Przyjmij"
 
-#: data/resources/ui/content-markdown-popover.ui:17
-msgid "_Markdown"
-msgstr "Formatowanie _Markdown"
-
-#: data/resources/ui/content-markdown-popover.ui:37
-msgid "> quote"
-msgstr "> cytat"
-
-#: data/resources/ui/content-markdown-popover.ui:46
-msgid "**bold**"
-msgstr "**pogrubienie**"
-
-#: data/resources/ui/content-markdown-popover.ui:59
-msgid "`code`"
-msgstr "`kod`"
-
-#: data/resources/ui/content-markdown-popover.ui:69
-msgid "*italic*"
-msgstr "*pochylenie*"
-
 #: data/resources/ui/content-member-page.ui:19
 msgid "Search for Room Members"
 msgstr "Wyszukiwanie członków pokoju"
@@ -376,7 +385,7 @@ msgid "Search for room members"
 msgstr "Wyszukiwanie członków pokoju"
 
 #: data/resources/ui/content-message-file.ui:25
-#: src/session/room/event_actions.rs:294
+#: src/session/room/event/event_actions.rs:307
 msgid "Save"
 msgstr "Zapisz"
 
@@ -414,66 +423,58 @@ msgid "_Location"
 msgstr "_Położenie"
 
 #: data/resources/ui/content-room-history.ui:36
-msgid "_Attachment"
-msgstr "_Załącznik"
+msgid "_Markdown"
+msgstr "Formatowanie _Markdown"
 
-#: data/resources/ui/content-room-history.ui:60
+#: data/resources/ui/content-room-history.ui:59
 msgid "Back"
 msgstr "Wstecz"
 
-#: data/resources/ui/content-room-history.ui:85
+#: data/resources/ui/content-room-history.ui:84
 msgid "Room Settings"
 msgstr "Ustawienia pokoju"
 
-#: data/resources/ui/content-room-history.ui:93
-msgid "Toggle Room History Search"
-msgstr "Przełącz przeszukiwanie historii pokoju"
-
-#: data/resources/ui/content-room-history.ui:111
-msgid "Room History Search"
-msgstr "Przeszukiwanie historii pokoju"
-
-#: data/resources/ui/content-room-history.ui:146
+#: data/resources/ui/content-room-history.ui:119
 msgid "Unable to load room"
 msgstr "Nie można wczytać pokoju"
 
-#: data/resources/ui/content-room-history.ui:147
+#: data/resources/ui/content-room-history.ui:120
 msgid "Check your network connection."
 msgstr "Proszę sprawdzić połączenie z siecią."
 
-#: data/resources/ui/content-room-history.ui:150
+#: data/resources/ui/content-room-history.ui:123
 msgid "Try Again"
 msgstr "Spróbuj ponownie"
 
-#: data/resources/ui/content-room-history.ui:175
+#: data/resources/ui/content-room-history.ui:148
 msgid "Scroll to bottom"
 msgstr "Przewiń na dół"
 
-#: data/resources/ui/content-room-history.ui:187
+#: data/resources/ui/content-room-history.ui:160
 msgid "Drop Here to Send"
 msgstr "Przeciągnięcie tutaj wyśle"
 
-#: data/resources/ui/content-room-history.ui:208
+#: data/resources/ui/content-room-history.ui:180
 msgid "Room History"
 msgstr "Historia pokoju"
 
-#: data/resources/ui/content-room-history.ui:304
-msgid "Enable Markdown Formatting"
-msgstr "Formatowanie Markdown"
+#: data/resources/ui/content-room-history.ui:271
+msgid "Browse Attachment"
+msgstr "Przeglądaj załącznik"
 
-#: data/resources/ui/content-room-history.ui:325
-msgid "Message Entry"
-msgstr "Pole wpisywania wiadomości"
-
-#: data/resources/ui/content-room-history.ui:339
+#: data/resources/ui/content-room-history.ui:281
 msgid "Open Emoji Picker"
 msgstr "Otwórz wybór emoji"
 
-#: data/resources/ui/content-room-history.ui:350
+#: data/resources/ui/content-room-history.ui:302
+msgid "Message Entry"
+msgstr "Pole wpisywania wiadomości"
+
+#: data/resources/ui/content-room-history.ui:317
 msgid "Open Message Menu"
 msgstr "Otwórz menu wiadomości"
 
-#: data/resources/ui/content-room-history.ui:365
+#: data/resources/ui/content-room-history.ui:332
 msgid "Send Message"
 msgstr "Wyślij wiadomość"
 
@@ -739,7 +740,7 @@ msgstr "Dołączenie do pokoju"
 msgid "Enter a room ID, room alias, or permalink."
 msgstr "Proszę podać identyfikator pokoju, alias pokoju lub trwały odnośnik."
 
-#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:710
+#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:712
 msgid "_Join"
 msgstr "_Dołącz"
 
@@ -1041,8 +1042,8 @@ msgid "Unable to connect to Camera"
 msgstr "Nie można połączyć się z aparatem"
 
 #: src/application.rs:191
-msgid "© 2017-2022 The Fractal Team"
-msgstr "© 2017-2022 Zespół programu Fractal"
+msgid "© 2017-2023 The Fractal Team"
+msgstr "© 2017-2023 Zespół programu Fractal"
 
 #: src/application.rs:205
 msgid "translator-credits"
@@ -1264,60 +1265,45 @@ msgstr "Wczytanie listy połączonych urządzeń się nie powiodło."
 msgid "Disconnect Session"
 msgstr "Rozłącz sesję"
 
-#: src/session/account_settings/devices_page/device_row.rs:103
-msgid "Log Out"
-msgstr "Wyloguj się"
-
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
 #: src/session/account_settings/devices_page/device_row.rs:209
 msgid "Failed to disconnect device “{device_name}”"
 msgstr "Rozłączenie urządzenia „{device_name}” się nie powiodło"
 
-#: src/session/account_settings/devices_page/device_row.rs:222
-msgid ""
-"Fractal doesn't support online backup of room encryption keys so you might "
-"lose access to your encrypted message history. It is recommended to backup "
-"your encryption keys before proceeding."
-msgstr ""
-"Fractal nie obsługuje przechowywania kopii zapasowej kluczy szyfrowania "
-"pokojów w Internecie, więc można utracić dostęp do historii zaszyfrowanych "
-"wiadomości. Przed kontynuowaniem zalecane jest wykonanie kopii zapasowej "
-"kluczy szyfrowania."
-
 #. Translators: Time in 24h format
-#: src/session/account_settings/devices_page/device_row.rs:280
+#: src/session/account_settings/devices_page/device_row.rs:251
 msgid "Last seen at %H:%M"
 msgstr "Ostatnio widziano o %H∶%M"
 
 #. Translators: Time in 12h format
-#: src/session/account_settings/devices_page/device_row.rs:283
+#: src/session/account_settings/devices_page/device_row.rs:254
 msgid "Last seen at %l:%M %p"
 msgstr "Ostatnio widziano o %l∶%M %p"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:292
+#: src/session/account_settings/devices_page/device_row.rs:263
 #, no-c-format
 msgid "Last seen Yesterday at %H:%M"
 msgstr "Ostatnio widziano wczoraj o %H∶%M"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:297
+#: src/session/account_settings/devices_page/device_row.rs:268
 #, no-c-format
 msgid "Last seen Yesterday at %l:%M %p"
 msgstr "Ostatnio widziano wczoraj o %l∶%M %p"
 
 #. Translators: this is the name of the week day followed by
 #. a time in 24h format. i.e. "Last seen Monday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:306
+#: src/session/account_settings/devices_page/device_row.rs:277
 #, no-c-format
 msgid "Last seen %A at %H:%M"
 msgstr "Ostatnio widziano: %A o %H∶%M"
 
 #. Translators: this is the week day name followed by
 #. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:311
+#: src/session/account_settings/devices_page/device_row.rs:282
 #, no-c-format
 msgid "Last seen %A at %l:%M %p"
 msgstr "Ostatnio widziano: %A o %l∶%M %p"
@@ -1325,7 +1311,7 @@ msgstr "Ostatnio widziano: %A o %l∶%M %p"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 24h format i.e. "Last seen February 3 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:319
+#: src/session/account_settings/devices_page/device_row.rs:290
 #, no-c-format
 msgid "Last seen %B %-e at %H:%M"
 msgstr "Ostatnio widziano %-d %B o %H∶%M"
@@ -1333,7 +1319,7 @@ msgstr "Ostatnio widziano %-d %B o %H∶%M"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 12h format i.e. "Last seen February 3 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:325
+#: src/session/account_settings/devices_page/device_row.rs:296
 #, no-c-format
 msgid "Last seen %B %-e at %l:%M %p"
 msgstr "Ostatnio widziano %-d %B o %l∶%M %p"
@@ -1341,7 +1327,7 @@ msgstr "Ostatnio widziano %-d %B o %l∶%M %p"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:332
+#: src/session/account_settings/devices_page/device_row.rs:303
 #, no-c-format
 msgid "Last seen %B %-e %Y at %H:%M"
 msgstr "Ostatnio widziano %-d %B %Y o %H∶%M"
@@ -1349,22 +1335,22 @@ msgstr "Ostatnio widziano %-d %B %Y o %H∶%M"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:338
+#: src/session/account_settings/devices_page/device_row.rs:309
 #, no-c-format
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "Ostatnio widziano %-d %B %Y o %l∶%M %p"
 
-#: src/session/account_settings/notifications_page.rs:176
-#: src/session/account_settings/notifications_page.rs:189
+#: src/session/account_settings/notifications_page.rs:174
+#: src/session/account_settings/notifications_page.rs:187
 msgid "Could not load notifications settings. Try again later"
 msgstr ""
 "Nie można wczytać ustawień powiadomień. Proszę spróbować ponownie później"
 
-#: src/session/account_settings/notifications_page.rs:284
+#: src/session/account_settings/notifications_page.rs:288
 msgid "Could not enable account notifications"
 msgstr "Nie można włączyć powiadomień konta"
 
-#: src/session/account_settings/notifications_page.rs:286
+#: src/session/account_settings/notifications_page.rs:290
 msgid "Could not disable account notifications"
 msgstr "Nie można wyłączyć powiadomień konta"
 
@@ -1452,75 +1438,75 @@ msgstr "Hasło nie zgadza się z hasłem użytym do wyeksportowania kluczy."
 msgid "Could not import the keys"
 msgstr "Nie można zaimportować kluczy"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:178
+#: src/session/account_settings/user_page/change_password_subpage.rs:181
 msgid "Password must be at least 8 characters long"
 msgstr "Hasło musi mieć co najmniej 8 znaków"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:181
+#: src/session/account_settings/user_page/change_password_subpage.rs:184
 msgid "Password must have at least one lower-case letter"
 msgstr "Hasło musi mieć co najmniej jedną małą literę"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:185
+#: src/session/account_settings/user_page/change_password_subpage.rs:188
 msgid "Password must have at least one upper-case letter"
 msgstr "Hasło musi mieć co najmniej jedną wielką literę"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:188
+#: src/session/account_settings/user_page/change_password_subpage.rs:191
 msgid "Password must have at least one digit"
 msgstr "Hasło musi mieć co najmniej jedną cyfrę"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:190
+#: src/session/account_settings/user_page/change_password_subpage.rs:193
 msgid "Password must have at least one symbol"
 msgstr "Hasło musi mieć co najmniej jeden symbol"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:220
+#: src/session/account_settings/user_page/change_password_subpage.rs:223
 msgid "Passwords do not match"
 msgstr "Hasła się nie zgadzają"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:284
+#: src/session/account_settings/user_page/change_password_subpage.rs:281
 msgid "Password changed successfully"
 msgstr "Pomyślnie zmieniono hasło"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:299
+#: src/session/account_settings/user_page/change_password_subpage.rs:303
 msgid "Password rejected for being too weak"
 msgstr "Hasło zostało odrzucone z powodu niskiej jakości"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:303
+#: src/session/account_settings/user_page/change_password_subpage.rs:307
 msgid "Could not change password"
 msgstr "Nie można zmienić hasła"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:178
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:172
 msgid "Account successfully deactivated"
 msgstr "Pomyślnie zdezaktywowano konto"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:186
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:180
 msgid "Could not deactivate account"
 msgstr "Nie można zdezaktywować konta"
 
-#: src/session/account_settings/user_page/mod.rs:211
+#: src/session/account_settings/user_page/mod.rs:215
 msgid "Avatar removed successfully"
 msgstr "Pomyślnie usunięto awatar"
 
-#: src/session/account_settings/user_page/mod.rs:226
+#: src/session/account_settings/user_page/mod.rs:230
 msgid "Avatar changed successfully"
 msgstr "Pomyślnie zmieniono awatar"
 
-#: src/session/account_settings/user_page/mod.rs:271
+#: src/session/account_settings/user_page/mod.rs:275
 msgid "Could not upload avatar"
 msgstr "Nie można przesłać awatara"
 
-#: src/session/account_settings/user_page/mod.rs:293
+#: src/session/account_settings/user_page/mod.rs:297
 msgid "Could not change avatar"
 msgstr "Nie można zmienić awatara"
 
-#: src/session/account_settings/user_page/mod.rs:322
+#: src/session/account_settings/user_page/mod.rs:326
 msgid "Could not remove avatar"
 msgstr "Nie można usunąć awatara"
 
-#: src/session/account_settings/user_page/mod.rs:355
+#: src/session/account_settings/user_page/mod.rs:359
 msgid "Name changed successfully"
 msgstr "Pomyślnie zmieniono nazwę"
 
-#: src/session/account_settings/user_page/mod.rs:386
+#: src/session/account_settings/user_page/mod.rs:390
 msgid "Could not change display name"
 msgstr "Nie można zmienić wyświetlanej nazwy"
 
@@ -1579,7 +1565,11 @@ msgstr "Członkowie pokoju"
 msgid "Invite new Members"
 msgstr "Zaproś nowych członków"
 
-#: src/session/content/room_history/item_row.rs:295
+#: src/session/content/room_history/item_row.rs:299
+msgid "This is the start of the visible history"
+msgstr "To początek widocznej historii"
+
+#: src/session/content/room_history/item_row.rs:314
 msgid "New Messages"
 msgstr "Nowe wiadomości"
 
@@ -1592,16 +1582,16 @@ msgstr "Nie można odebrać pliku dźwiękowego"
 msgid "Error reading audio file"
 msgstr "Błąd podczas odczytywania pliku dźwiękowego"
 
-#: src/session/content/room_history/message_row/content.rs:300
+#: src/session/content/room_history/message_row/content.rs:345
 msgid "Identity verification was started"
 msgstr "Rozpoczęto weryfikację tożsamości"
 
-#: src/session/content/room_history/message_row/content.rs:313
-#: src/session/content/room_history/message_row/content.rs:360
+#: src/session/content/room_history/message_row/content.rs:358
+#: src/session/content/room_history/message_row/content.rs:394
 msgid "Unsupported event"
 msgstr "Nieobsługiwane wydarzenie"
 
-#: src/session/content/room_history/message_row/content.rs:337
+#: src/session/content/room_history/message_row/content.rs:382
 msgid ""
 "Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
@@ -1609,92 +1599,182 @@ msgstr ""
 "Nie można odszyfrować tej wiadomości. Próba zostanie ponowiona, kiedy klucze "
 "będą dostępne."
 
-#: src/session/content/room_history/message_row/content.rs:348
-msgid "This message was removed."
-msgstr "Ta wiadomość została usunięta."
-
 #: src/session/content/room_history/message_row/location.rs:98
 msgid "Location is invalid and cannot be displayed"
 msgstr "Położenie jest nieprawidłowe i nie można go wyświetlić"
 
-#: src/session/content/room_history/message_row/media.rs:428
+#: src/session/content/room_history/message_row/media.rs:436
 msgid "Image file not supported"
 msgstr "Plik obrazu jest nieobsługiwany"
 
-#: src/session/content/room_history/message_row/media.rs:467
-#: src/session/content/room_history/message_row/media.rs:472
+#: src/session/content/room_history/message_row/media.rs:475
+#: src/session/content/room_history/message_row/media.rs:480
 msgid "Could not retrieve media"
 msgstr "Nie można odebrać multimediów"
 
-#: src/session/content/room_history/mod.rs:197
+#: src/session/content/room_history/mod.rs:192
 msgid "The location request has been cancelled."
 msgstr "Prośba o udostępnienie położenia została anulowana."
 
-#: src/session/content/room_history/mod.rs:201
+#: src/session/content/room_history/mod.rs:196
 msgid "Failed to retrieve current location."
 msgstr "Ustalenie obecnego położenia się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/content/room_history/mod.rs:635
+#: src/session/content/room_history/mod.rs:620
 msgid "Reply to {user}"
 msgstr "Odpowiedź do użytkownika {user}"
 
-#: src/session/content/room_history/mod.rs:751
-#: src/session/room/event_actions.rs:106
+#: src/session/content/room_history/mod.rs:733
+#: src/session/room/event/event_actions.rs:106
 msgid "Permalink copied to clipboard"
 msgstr "Skopiowano trwały odnośnik do schowka"
 
-#: src/session/content/room_history/mod.rs:755
-#: src/session/room/event_actions.rs:110
+#: src/session/content/room_history/mod.rs:737
+#: src/session/room/event/event_actions.rs:110
 msgid "Failed to copy the permalink"
 msgstr "Skopiowanie trwałego odnośnika się nie powiodło"
 
-#: src/session/content/room_history/mod.rs:931
+#: src/session/content/room_history/mod.rs:922
 msgid "Your Location"
 msgstr "Położenie użytkownika"
 
-#: src/session/content/room_history/mod.rs:941
+#: src/session/content/room_history/mod.rs:932
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Położenie użytkownika {geo_uri} w dniu {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:1074
+#: src/session/content/room_history/mod.rs:1065
 msgid "Error reading file"
 msgstr "Błąd podczas odczytywania pliku"
 
-#: src/session/content/room_history/mod.rs:1100
+#: src/session/content/room_history/mod.rs:1091
 msgid "Error getting file from drop"
 msgstr "Błąd podczas uzyskiwania pliku z przeciągnięcia"
 
-#: src/session/content/room_history/mod.rs:1132
+#: src/session/content/room_history/mod.rs:1123
 msgid "Error getting image from clipboard"
 msgstr "Błąd podczas uzyskiwania obrazu ze schowka"
 
-#: src/session/content/room_history/mod.rs:1149
+#: src/session/content/room_history/mod.rs:1140
 msgid "Error getting file from clipboard"
 msgstr "Błąd podczas uzyskiwania pliku ze schowka"
 
-#: src/session/content/room_history/state_row/creation.rs:61
+#: src/session/content/room_history/state_row/creation.rs:68
 msgid "This is the continuation of an upgraded room."
 msgstr "To kontynuacja zaktualizowanego pokoju."
 
-#: src/session/content/room_history/state_row/creation.rs:66
+#: src/session/content/room_history/state_row/creation.rs:73
 msgid "This is the beginning of this room."
 msgstr "To początek tego pokoju."
 
-#: src/session/content/room_history/state_row/mod.rs:66
+#: src/session/content/room_history/state_row/mod.rs:70
 msgid "This room is encrypted from this point on."
 msgstr "Ten pokój jest zaszyfrowany od tego miejsca."
 
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#: src/session/content/room_history/state_row/mod.rs:85
+#: src/session/content/room_history/state_row/mod.rs:200
+msgid "{user} was invited to this room."
+msgstr "Użytkownik {user} został zaproszony do tego pokoju."
+
+#: src/session/content/room_history/state_row/mod.rs:97
+msgid "An unsupported state event was received."
+msgstr "Odebrano nieobsługiwane wydarzenie stanu."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#. We don't know what changed so fall back to the membership.
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:172
+#: src/session/content/room_history/state_row/mod.rs:328
+msgid "{user} joined this room."
+msgstr "Użytkownik {user} dołączył do tego pokoju."
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:177
+msgid "{user} left the room."
+msgstr "Użytkownik {user} opuścił pokój."
+
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:85
+#: src/session/content/room_history/state_row/mod.rs:182
+msgid "{user} was banned."
+msgstr "Użytkownik {user} został wykluczony."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:188
+msgid "{user} was unbanned."
+msgstr "Wykluczenie użytkownika {user} zostało cofnięte."
+
+#. Translators: Do NOT translate the content between '{' and
+#. '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:194
+msgid "{user} was kicked out of the room."
+msgstr "Użytkownik {user} został wyrzucony z pokoju."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#: src/session/content/room_history/state_row/mod.rs:206
+msgid "{user} was kicked out of the room and banned."
+msgstr "Użytkownik {user} został wyrzucony i wykluczony z pokoju."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:212
+msgid "{user} accepted the invite."
+msgstr "Użytkownik {user} przyjął zaproszenie."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:218
+msgid "{user} rejected the invite."
+msgstr "Użytkownik {user} odrzucił zaproszenie."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:224
+msgid "The invitation for {user} has been revoked."
+msgstr "Zaproszenie użytkownika {user} zostało odwołane."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:233
+msgid "{user} requested to be invited to this room."
+msgstr "Użytkownik {user} poprosił o zaproszenie do tego pokoju."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:240
+msgid "{user} retracted their request to be invited to this room."
+msgstr "Użytkownik {user} wycofał prośbę o zaproszenie do tego pokoju."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:246
+msgid "{user}’s request to be invited to this room was denied."
+msgstr ""
+"Prośba użytkownika {user} o zaproszenie do tego pokoju została odrzucona."
+
+#: src/session/content/room_history/state_row/mod.rs:254
+msgid "An unsupported room member event was received."
+msgstr "Odebrano nieobsługiwane wydarzenie członka pokoju."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:276
 msgid "{previous_user_name} removed their display name."
 msgstr "Użytkownik {previous_user_name} usunął swoją wyświetlaną nazwę."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:92
+#: src/session/content/room_history/state_row/mod.rs:283
 msgid "{previous_user_name} changed their display name to {new_user_name}."
 msgstr ""
 "Użytkownik {previous_user_name} zmienił swoją wyświetlaną nazwę na "
@@ -1702,93 +1782,28 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:101
+#: src/session/content/room_history/state_row/mod.rs:294
 msgid "{user_id} set their display name to {new_user_name}."
 msgstr ""
 "Użytkownik {user_id} ustawił swoją wyświetlaną nazwę na {new_user_name}."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:114
+#: src/session/content/room_history/state_row/mod.rs:306
 msgid "{user} set their avatar."
 msgstr "Użytkownik {user} ustawił swój awatar."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:121
+#: src/session/content/room_history/state_row/mod.rs:313
 msgid "{user} removed their avatar."
 msgstr "Użytkownik {user} usunął swój awatar."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:128
+#: src/session/content/room_history/state_row/mod.rs:320
 msgid "{user} changed their avatar."
 msgstr "Użytkownik {user} zmienił swój awatar."
-
-#. Translators: Do NOT translate the content between '{' and '}', this
-#. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:139
-msgid "{user} joined this room."
-msgstr "Użytkownik {user} dołączył do tego pokoju."
-
-#. Translators: Do NOT translate the content between '{' and '}', this is
-#. a variable name.
-#. Translators: Do NOT translate the content between '{' and '}', this is a
-#. variable name.
-#: src/session/content/room_history/state_row/mod.rs:145
-#: src/session/content/room_history/state_row/mod.rs:222
-msgid "{user} was invited to this room."
-msgstr "Użytkownik {user} został zaproszony do tego pokoju."
-
-#. Translators: Do NOT translate the content between '{' and '}', this
-#. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:153
-msgid "{user} requested to be invited to this room."
-msgstr "Użytkownik {user} poprosił o zaproszenie do tego pokoju."
-
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:164
-msgid "{user} rejected the invite."
-msgstr "Użytkownik {user} odrzucił zaproszenie."
-
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:171
-msgid "The invitation for {user} has been revoked."
-msgstr "Zaproszenie użytkownika {user} zostało odwołane."
-
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:180
-msgid "{user} was unbanned."
-msgstr "Wykluczenie użytkownika {user} zostało cofnięte."
-
-#. Translators: Do NOT translate the content between '{' and '}',
-#. this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:191
-msgid "{user} left the room."
-msgstr "Użytkownik {user} opuścił pokój."
-
-#. Translators: Do NOT translate the content between '{' and
-#. '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:196
-msgid "{user} was kicked out of the room."
-msgstr "Użytkownik {user} został wyrzucony z pokoju."
-
-#. Translators: Do NOT translate the content between '{' and '}', this is
-#. a variable name.
-#: src/session/content/room_history/state_row/mod.rs:205
-msgid "{user} was banned."
-msgstr "Użytkownik {user} został wykluczony."
-
-#: src/session/content/room_history/state_row/mod.rs:210
-msgid "An unsupported room member event was received."
-msgstr "Odebrano nieobsługiwane wydarzenie członka pokoju."
-
-#: src/session/content/room_history/state_row/mod.rs:231
-msgid "An unsupported state event was received."
-msgstr "Odebrano nieobsługiwane wydarzenie stanu."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
@@ -1990,35 +2005,36 @@ msgstr ""
 "wszystkich zweryfikowanych użytkowników i spowoduje, że poprzednio "
 "zaszyfrowane rozmowy będą nieczytelne."
 
-#: src/session/content/verification/session_verification.rs:329
+#: src/session/content/verification/session_verification.rs:324
 msgid "You cancelled the authentication needed to create the encryption keys."
 msgstr "Anulowano uwierzytelnianie wymagane do utworzenia kluczy szyfrowania."
 
-#: src/session/content/verification/session_verification.rs:333
+#: src/session/content/verification/session_verification.rs:328
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Wystąpił błąd podczas tworzenia kluczy szyfrowania."
 
-#: src/session/mod.rs:708
+#: src/session/mod.rs:710
 msgid "_View"
 msgstr "_Wyświetl"
 
-#: src/session/mod.rs:754
+#: src/session/mod.rs:751
 msgid "Failed to logout the session."
 msgstr "Wylogowanie sesji się nie powiodło."
 
-#: src/session/room/event_actions.rs:188 src/session/room/event_actions.rs:210
+#: src/session/room/event/event_actions.rs:199
+#: src/session/room/event/event_actions.rs:223
 msgid "Message copied to clipboard"
 msgstr "Skopiowano wiadomość do schowka"
 
-#: src/session/room/event_actions.rs:226
+#: src/session/room/event/event_actions.rs:239
 msgid "Image copied to clipboard"
 msgstr "Skopiowano obraz do schowka"
 
-#: src/session/room/event_actions.rs:230
+#: src/session/room/event/event_actions.rs:243
 msgid "Thumbnail copied to clipboard"
 msgstr "Skopiowano miniaturę do schowka"
 
-#: src/session/room/event_actions.rs:291
+#: src/session/room/event/event_actions.rs:304
 msgid "Save File"
 msgstr "Zapis pliku"
 
@@ -2051,35 +2067,35 @@ msgid "Normal user"
 msgstr "Zwykły użytkownik"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:386
+#: src/session/room/mod.rs:389
 msgid "Failed to forget {room}."
 msgstr "Zapomnienie pokoju {room} się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:640
+#: src/session/room/mod.rs:643
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr ""
 "Przeniesienie pokoju {room} z kategorii {previous_category} do "
 "{new_category} się nie powiodło."
 
-#: src/session/room/mod.rs:977
+#: src/session/room/mod.rs:982
 msgid "Unknown"
 msgstr "Nieznane"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:1005
+#: src/session/room/mod.rs:1010
 msgid "Empty Room (was {user})"
 msgstr "Pusty pokój (wcześniej: {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:1007
+#: src/session/room/mod.rs:1012
 msgid "Empty Room"
 msgstr "Pusty pokój"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1428
+#: src/session/room/mod.rs:1385
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 "Przyjęcie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -2087,7 +2103,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1457
+#: src/session/room/mod.rs:1414
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 "Odrzucenie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -2095,7 +2111,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1656
+#: src/session/room/mod.rs:1612
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr ""
 "Zaproszenie użytkownika {user} do pokoju {room} się nie powiodło. Proszę "
@@ -2103,7 +2119,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1668
+#: src/session/room/mod.rs:1624
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -2118,28 +2134,28 @@ msgstr[2] ""
 "powiodło. Proszę spróbować ponownie później."
 
 #. Translators: This is a date format in the day divider without the year
-#: src/session/room/timeline/timeline_day_divider.rs:97
+#: src/session/room/timeline/timeline_day_divider.rs:111
 msgid "%A, %B %e"
 msgstr "%A, %-d %B"
 
 #. Translators: This is a date format in the day divider with the year
-#: src/session/room/timeline/timeline_day_divider.rs:100
+#: src/session/room/timeline/timeline_day_divider.rs:114
 msgid "%A, %B %e, %Y"
 msgstr "%A, %-d %B %Y"
 
-#: src/session/room_creation/mod.rs:250
+#: src/session/room_creation/mod.rs:253
 msgid "The address is already taken."
 msgstr "Adres jest już zajęty."
 
-#: src/session/room_creation/mod.rs:278
+#: src/session/room_creation/mod.rs:281
 msgid "Can’t contain “:”"
 msgstr "Nie może zawierać znaku „:”"
 
-#: src/session/room_creation/mod.rs:282
+#: src/session/room_creation/mod.rs:285
 msgid "Can’t contain “#”"
 msgstr "Nie może zawierać znaku „#”"
 
-#: src/session/room_creation/mod.rs:286
+#: src/session/room_creation/mod.rs:289
 msgid "Too long. Use a shorter address."
 msgstr "Za długi. Należy użyć krótszego adresu."
 
@@ -2280,26 +2296,26 @@ msgstr "Emoji się różnią."
 msgid "An unknown error occurred during the verification process."
 msgstr "Wystąpił nieznany błąd podczas procesu weryfikacji."
 
-#: src/user_facing_error.rs:23
+#: src/user_facing_error.rs:26
 msgid "The connection timed out. Try again later."
 msgstr ""
 "Połączenie przekroczyło czas oczekiwania. Proszę spróbować ponownie później."
 
-#: src/user_facing_error.rs:25
+#: src/user_facing_error.rs:28
 msgid "Unable to connect to the homeserver."
 msgstr "Nie można połączyć się z serwerem domowym."
 
-#: src/user_facing_error.rs:32
+#: src/user_facing_error.rs:38
 msgid "The provided username or password is invalid."
 msgstr "Nieprawidłowa nazwa użytkownika lub hasło."
 
-#: src/user_facing_error.rs:33
+#: src/user_facing_error.rs:39
 msgid "The account is deactivated."
 msgstr "Konto jest zdezaktywowane."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name.
-#: src/user_facing_error.rs:40
+#: src/user_facing_error.rs:46
 msgid "You exceeded the homeserver’s rate limit, retry in 1 second."
 msgid_plural "You exceeded the homeserver’s rate limit, retry in {n} seconds."
 msgstr[0] ""
@@ -2312,33 +2328,33 @@ msgstr[2] ""
 "Przekroczono ograniczenie częstotliwości serwera domowego, proszę spróbować "
 "ponownie za {n} sekund."
 
-#: src/user_facing_error.rs:46
+#: src/user_facing_error.rs:52
 msgid "You exceeded the homeserver’s rate limit, try again later."
 msgstr ""
 "Przekroczono ograniczenie częstotliwości serwera domowego, proszę spróbować "
 "ponownie później."
 
-#: src/user_facing_error.rs:56
+#: src/user_facing_error.rs:62
 msgid "An unknown connection error occurred."
 msgstr "Wystąpił nieznany błąd połączenia."
 
-#: src/user_facing_error.rs:64
+#: src/user_facing_error.rs:70
 msgid "Could not decrypt the event"
 msgstr "Nie można odszyfrować wydarzenia"
 
-#: src/user_facing_error.rs:66 src/user_facing_error.rs:86
+#: src/user_facing_error.rs:72 src/user_facing_error.rs:92
 msgid "An unknown error occurred."
 msgstr "Wystąpił nieznany błąd."
 
-#: src/user_facing_error.rs:73
+#: src/user_facing_error.rs:79
 msgid "Could not open the store."
 msgstr "Nie można otworzyć przechowalni."
 
-#: src/user_facing_error.rs:80
+#: src/user_facing_error.rs:86
 msgid "This is not a valid URL"
 msgstr "To nieprawidłowy adres URL"
 
-#: src/user_facing_error.rs:82
+#: src/user_facing_error.rs:88
 msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
 msgstr ""
 "Automatyczne wykrycie serwera domowego się nie powiodło. Należy spróbować "
@@ -2364,36 +2380,36 @@ msgstr "dźwięk"
 msgid "file"
 msgstr "plik"
 
-#: src/utils/matrix.rs:100
+#: src/utils/matrix.rs:89
 msgid "{user} sent an audio file."
 msgstr "Użytkownik {user} wysłał plik dźwiękowy."
 
-#: src/utils/matrix.rs:103 src/utils/matrix.rs:116 src/utils/matrix.rs:120
-#: src/utils/matrix.rs:124
+#: src/utils/matrix.rs:92 src/utils/matrix.rs:105 src/utils/matrix.rs:109
+#: src/utils/matrix.rs:113
 msgid "{user}: {message}"
 msgstr "{user}: {message}"
 
-#: src/utils/matrix.rs:107
+#: src/utils/matrix.rs:96
 msgid "{user} sent a file."
 msgstr "Użytkownik {user} wysłał plik."
 
-#: src/utils/matrix.rs:110
+#: src/utils/matrix.rs:99
 msgid "{user} sent an image."
 msgstr "Użytkownik {user} wysłał obraz."
 
-#: src/utils/matrix.rs:113
+#: src/utils/matrix.rs:102
 msgid "{user} sent their location."
 msgstr "Użytkownik {user} wysłał swoje położenie."
 
-#: src/utils/matrix.rs:128
+#: src/utils/matrix.rs:117
 msgid "{user} sent a video."
 msgstr "Użytkownik {user} wysłał film."
 
-#: src/utils/matrix.rs:131
+#: src/utils/matrix.rs:120
 msgid "{user} sent a verification request."
 msgstr "Użytkownik {user} wysłał prośbę o weryfikację."
 
-#: src/utils/matrix.rs:140
+#: src/utils/matrix.rs:129
 msgid "{user} sent a sticker."
 msgstr "Użytkownik {user} wysłał naklejkę."
 
