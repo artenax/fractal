@@ -498,6 +498,65 @@ check_resources() {
     fi
 }
 
+# Install cargo-sort with cargo.
+install_cargo_sort() {
+    echo -e "$Installing cargo-sort…"
+    cargo install cargo-sort
+    if ! cargo-sort --version >/dev/null 2>&1; then
+        echo -e "$Failed to install cargo-sort"
+        exit 2
+    fi
+}
+
+# Run cargo-sort to check if Cargo.toml is sorted.
+run_cargo_sort() {
+    if ! cargo-sort --version >/dev/null 2>&1; then
+        if [[ $force_install -eq 1 ]]; then
+            install_cargo_sort
+        elif [ ! -t 1 ]; then
+            echo "Unable to check Cargo.toml sorting, because cargo-sort could not be run"
+            exit 2
+        else
+            echo "Cargo-sort is needed to check the sorting in Cargo.toml, but it isn’t available"
+            echo ""
+            echo "y: Install cargo-sort via cargo"
+            echo "N: Don't install cargo-sort and abort checks"
+            echo ""
+            while true; do
+                echo -n "Install cargo-sort? [y/N]: "; read yn < /dev/tty
+                case $yn in
+                    [Yy]* ) 
+                        install_cargo_sort
+                        break
+                        ;;
+                    [Nn]* | "" )
+                        exit 2
+                        ;;
+                    * ) 
+                        echo $invalid
+                        ;;
+                esac
+            done
+        fi
+    fi
+
+    echo -e "$Checking Cargo.toml sorting…"
+
+    if [[ $verbose -eq 1 ]]; then
+        echo ""
+        cargo-sort --version
+        echo ""
+    fi
+
+    if ! cargo-sort --check --grouped --order package,lib,profile,features,dependencies,target,dev-dependencies,build-dependencies; then
+        echo -e "  Cargo.toml sorting result: $fail"
+        echo "Please fix the Cargo.toml file, either manually or by running: cargo-sort --grouped --order package,lib,profile,features,dependencies,target,dev-dependencies,build-dependencies"
+        exit 1
+    else
+        echo -e "  Cargo.toml sorting result: $ok"
+    fi
+}
+
 # Check arguments
 while [[ "$1" ]]; do case $1 in
     -s | --git-staged )
@@ -546,4 +605,6 @@ if [[ $git_staged -eq 1 ]]; then
 else
    check_resources
 fi
+echo ""
+run_cargo_sort
 echo ""
