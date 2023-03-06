@@ -4,7 +4,6 @@ use gettextrs::gettext;
 use gio::{ApplicationFlags, Settings};
 use glib::{clone, WeakRef};
 use gtk::{gio, glib, prelude::*, subclass::prelude::*};
-use gtk_macros::action;
 use log::{debug, info};
 use ruma::{OwnedRoomId, RoomId};
 
@@ -107,42 +106,42 @@ impl Application {
     }
 
     fn setup_gactions(&self) {
-        // Quit
-        action!(
-            self,
-            "quit",
-            clone!(@weak self as app => move |_, _| {
-                // This is needed to trigger the delete event
-                // and saving the window state
-                app.get_main_window().close();
-                app.quit();
-            })
-        );
-
-        // About
-        action!(
-            self,
-            "about",
-            clone!(@weak self as app => move |_, _| {
-                app.show_about_dialog();
-            })
-        );
-
-        action!(
-            self,
-            "new-session",
-            clone!(@weak self as app => move |_, _| {
-                app.get_main_window().switch_to_greeter_page();
-            })
-        );
-
-        action!(
-            self,
-            "show-login",
-            clone!(@weak self as app => move |_, _| {
-                app.get_main_window().switch_to_login_page();
-            })
-        );
+        self.add_action_entries([
+            // Quit
+            gio::ActionEntry::builder("quit")
+                .activate(|app: &Application, _, _| {
+                    // This is needed to trigger the delete event
+                    // and saving the window state
+                    app.get_main_window().close();
+                    app.quit();
+                })
+                .build(),
+            // About
+            gio::ActionEntry::builder("about")
+                .activate(|app: &Application, _, _| {
+                    app.show_about_dialog();
+                })
+                .build(),
+            gio::ActionEntry::builder("new-session")
+                .activate(|app: &Application, _, _| {
+                    app.get_main_window().switch_to_greeter_page();
+                })
+                .build(),
+            gio::ActionEntry::builder("show-login")
+                .activate(|app: &Application, _, _| {
+                    app.get_main_window().switch_to_login_page();
+                })
+                .build(),
+            gio::ActionEntry::builder("show-room")
+                .parameter_type(Some(&AppShowRoomPayload::static_variant_type()))
+                .activate(|app: &Application, _, v| {
+                    if let Some(payload) = v.and_then(|v| v.get::<AppShowRoomPayload>()) {
+                        app.get_main_window()
+                            .show_room(&payload.session_id, &payload.room_id);
+                    }
+                })
+                .build(),
+        ]);
 
         let show_sessions_action = gio::SimpleAction::new("show-sessions", None);
         show_sessions_action.connect_activate(clone!(@weak self as app => move |_, _| {
@@ -157,17 +156,6 @@ impl Application {
             }),
         );
         show_sessions_action.set_enabled(win.has_sessions());
-
-        action!(
-            self,
-            "show-room",
-            Some(&AppShowRoomPayload::static_variant_type()),
-            clone!(@weak self as app => move |_, v| {
-                if let Some(payload) = v.and_then(|v| v.get::<AppShowRoomPayload>()) {
-                    app.get_main_window().show_room(&payload.session_id, &payload.room_id);
-                }
-            })
-        );
     }
 
     /// Sets up keyboard shortcuts for application and window actions.

@@ -77,26 +77,30 @@ where
         };
         let action_group = gio::SimpleActionGroup::new();
 
-        // View Event Source
-        gtk_macros::action!(
-            &action_group,
-            "view-source",
-            clone!(@weak self as widget, @weak event => move |_, _| {
-                let window = widget.root().unwrap().downcast().unwrap();
-                let dialog = EventSourceDialog::new(&window, &event);
-                dialog.show();
-            })
-        );
+        if event.raw().is_some() {
+            action_group.add_action_entries([
+                // View Event Source
+                gio::ActionEntry::builder("view-source")
+                    .activate(clone!(@weak self as widget, @weak event => move |_, _, _| {
+                        let window = widget.root().unwrap().downcast().unwrap();
+                        let dialog = EventSourceDialog::new(&window, &event);
+                        dialog.show();
+                    }))
+                    .build(),
+            ]);
+        }
 
-        // Create a permalink
-        if event.event_id().is_some() {
-            gtk_macros::action!(
-                &action_group,
-                "permalink",
-                clone!(@weak self as widget, @weak event => move |_, _| {
-                    let matrix_room = event.room().matrix_room();
-                    let event_id = event.event_id().unwrap();
-                    spawn!(clone!(@weak widget => async move {
+        if let Some(event) = event
+            .downcast_ref::<Event>()
+            .filter(|event| event.event_id().is_some())
+        {
+            action_group.add_action_entries([
+                // Create a permalink
+                gio::ActionEntry::builder("permalink")
+                    .activate(clone!(@weak self as widget, @weak event => move |_, _, _| {
+                        let matrix_room = event.room().matrix_room();
+                        let event_id = event.event_id().unwrap();
+                        spawn!(clone!(@weak widget => async move {
                             let handle = spawn_tokio!(async move {
                                 matrix_room.matrix_to_event_permalink(event_id).await
                             });
@@ -112,14 +116,10 @@ where
                             }
                         })
                     );
-                })
-            );
-        }
+                }))
+                .build()
+            ]);
 
-        if let Some(event) = event
-            .downcast_ref::<Event>()
-            .filter(|event| event.event_id().is_some())
-        {
             if let TimelineItemContent::Message(message) = event.content() {
                 let user_id = event
                     .room()
@@ -137,147 +137,143 @@ where
                         .min_level_for_room_action(&RoomAction::Redact)
                         <= user.power_level()
                 {
-                    gtk_macros::action!(
-                        &action_group,
-                        "remove",
-                        clone!(@weak event, => move |_, _| {
+                    action_group.add_action_entries([gio::ActionEntry::builder("remove")
+                        .activate(clone!(@weak event, => move |_, _, _| {
                             if let Some(event_id) = event.event_id() {
                                 event.room().redact(event_id, None);
                             }
-                        })
-                    );
+                        }))
+                        .build()]);
                 }
 
-                // Send/redact a reaction
-                gtk_macros::action!(
-                    &action_group,
-                    "toggle-reaction",
-                    Some(&String::static_variant_type()),
-                    clone!(@weak event => move |_, variant| {
-                        let key: String = variant.unwrap().get().unwrap();
-                        let room = event.room();
+                action_group.add_action_entries([
+                    // Send/redact a reaction
+                    gio::ActionEntry::builder("toggle-reaction")
+                        .parameter_type(Some(&String::static_variant_type()))
+                        .activate(clone!(@weak event => move |_, _, variant| {
+                            let key: String = variant.unwrap().get().unwrap();
+                            let room = event.room();
 
-                        let reaction_group = event.reactions().reaction_group_by_key(&key);
+                            let reaction_group = event.reactions().reaction_group_by_key(&key);
 
-                        if let Some(reaction_key) = reaction_group.and_then(|group| group.user_reaction_event_key()) {
-                            // The user already sent that reaction, redact it if it has been sent.
-                            if let EventKey::EventId(reaction_id) = reaction_key {
-                                room.redact(reaction_id, None);
+                            if let Some(reaction_key) = reaction_group.and_then(|group| group.user_reaction_event_key()) {
+                                // The user already sent that reaction, redact it if it has been sent.
+                                if let EventKey::EventId(reaction_id) = reaction_key {
+                                    room.redact(reaction_id, None);
+                                }
+                            } else if let Some(event_id) = event.event_id() {
+                                // The user didn't send that reaction, send it.
+                                room.send_reaction(key, event_id);
                             }
-                        } else if let Some(event_id) = event.event_id() {
-                            // The user didn't send that reaction, send it.
-                            room.send_reaction(key, event_id);
-                        }
-                    })
-                );
-
-                // Reply
-                gtk_macros::action!(
-                    &action_group,
-                    "reply",
-                    None,
-                    clone!(@weak event, @weak self as widget => move |_, _| {
-                        if let Some(event_id) = event.event_id() {
-                            let _ = widget.activate_action(
-                                "room-history.reply",
-                                Some(&event_id.as_str().to_variant())
-                            );
-                        }
-                    })
-                );
+                        }))
+                        .build(),
+                    // Reply
+                    gio::ActionEntry::builder("reply")
+                        .activate(clone!(@weak event, @weak self as widget => move |_, _, _| {
+                            if let Some(event_id) = event.event_id() {
+                                let _ = widget.activate_action(
+                                    "room-history.reply",
+                                    Some(&event_id.as_str().to_variant())
+                                );
+                            }
+                        }))
+                    .build()
+                ]);
 
                 match message.msgtype() {
-                    // Copy Text-Message
                     MessageType::Text(text_message) => {
+                        // Copy text message.
                         let body = text_message.body.clone();
 
-                        gtk_macros::action!(
-                            &action_group,
-                            "copy-text",
-                            clone!(@weak self as widget => move |_, _| {
+                        action_group.add_action_entries([gio::ActionEntry::builder("copy-text")
+                            .activate(clone!(@weak self as widget => move |_, _, _| {
                                 widget.clipboard().set_text(&body);
                                 toast!(widget, gettext("Message copied to clipboard"));
-                            })
-                        );
+                            }))
+                            .build()]);
                     }
                     MessageType::File(_) => {
-                        // Save message's file
-                        gtk_macros::action!(
-                            &action_group,
-                            "file-save",
-                            clone!(@weak self as widget, @weak event => move |_, _| {
-                            widget.save_event_file(event);
-                            })
-                        );
+                        // Save message's file.
+                        action_group.add_action_entries([gio::ActionEntry::builder("file-save")
+                            .activate(clone!(@weak self as widget, @weak event => move |_, _, _| {
+                                widget.save_event_file(event);
+                            }))
+                            .build()]);
                     }
                     MessageType::Emote(message) => {
+                        // Copy text message.
                         let message = message.clone();
 
-                        gtk_macros::action!(
-                            &action_group,
-                            "copy-text",
-                            clone!(@weak self as widget, @weak event => move |_, _| {
+                        action_group.add_action_entries([gio::ActionEntry::builder("copy-text")
+                            .activate(clone!(@weak self as widget, @weak event => move |_, _, _| {
                                 let display_name = event.sender().display_name();
-                                let message = display_name + " " + &message.body;
+                                let message = format!("{display_name} {}", message.body);
                                 widget.clipboard().set_text(&message);
                                 toast!(widget, gettext("Message copied to clipboard"));
-                            })
-                        );
+                            }))
+                            .build()]);
                     }
+                    MessageType::Notice(message) => {
+                        // Copy text message.
+                        let body = message.body.clone();
 
+                        action_group.add_action_entries([gio::ActionEntry::builder("copy-text")
+                            .activate(clone!(@weak self as widget => move |_, _, _| {
+                                widget.clipboard().set_text(&body);
+                                toast!(widget, gettext("Message copied to clipboard"));
+                            }))
+                            .build()]);
+                    }
                     MessageType::Image(_) => {
-                        // Copy the texture to the clipboard.
-                        gtk_macros::action!(
-                            &action_group,
-                            "copy-image",
-                            clone!(@weak self as widget, @weak event => move |_, _| {
-                                let texture = widget.texture().expect("A widget with an image should have a texture");
+                        action_group.add_action_entries([
+                            // Copy the texture to the clipboard.
+                            gio::ActionEntry::builder("copy-image")
+                                .activate(clone!(@weak self as widget, @weak event => move |_, _, _| {
+                                    let texture = widget.texture().expect("A widget with an image should have a texture");
 
-                                match texture {
-                                    EventTexture::Original(texture) => {
-                                        widget.clipboard().set_texture(&texture);
-                                        toast!(widget, gettext("Image copied to clipboard"));
+                                    match texture {
+                                        EventTexture::Original(texture) => {
+                                            widget.clipboard().set_texture(&texture);
+                                            toast!(widget, gettext("Image copied to clipboard"));
+                                        }
+                                        EventTexture::Thumbnail(texture) => {
+                                            widget.clipboard().set_texture(&texture);
+                                            toast!(widget, gettext("Thumbnail copied to clipboard"));
+                                        }
                                     }
-                                    EventTexture::Thumbnail(texture) => {
-                                        widget.clipboard().set_texture(&texture);
-                                        toast!(widget, gettext("Thumbnail copied to clipboard"));
-                                    }
-                                }
-                            })
-                        );
-
-                        // Save the image to a file.
-                        gtk_macros::action!(
-                            &action_group,
-                            "save-image",
-                            clone!(@weak self as widget, @weak event => move |_, _| {
-                                widget.save_event_file(event);
-                            })
-                        );
+                                })
+                            ).build(),
+                            // Save the image to a file.
+                            gio::ActionEntry::builder("save-image")
+                                .activate(clone!(@weak self as widget, @weak event => move |_, _, _| {
+                                    widget.save_event_file(event);
+                                })
+                            ).build()
+                        ]);
                     }
                     MessageType::Video(_) => {
-                        gtk_macros::action!(
-                            &action_group,
-                            "save-video",
-                            clone!(@weak self as widget, @weak event => move |_, _| {
+                        // Save the video to a file.
+                        action_group.add_action_entries([gio::ActionEntry::builder("save-video")
+                            .activate(clone!(@weak self as widget, @weak event => move |_, _, _| {
                                 widget.save_event_file(event);
-                            })
-                        );
+                            }))
+                            .build()]);
                     }
                     MessageType::Audio(_) => {
-                        gtk_macros::action!(
-                            &action_group,
-                            "save-audio",
-                            clone!(@weak self as widget, @weak event => move |_, _| {
+                        // Save the audio to a file.
+                        action_group.add_action_entries([gio::ActionEntry::builder("save-audio")
+                            .activate(clone!(@weak self as widget, @weak event => move |_, _, _| {
                                 widget.save_event_file(event);
-                            })
-                        );
+                            }))
+                            .build()]);
                     }
                     _ => {}
                 }
             }
         }
+
         self.insert_action_group("event", Some(&action_group));
+
         Some(action_group)
     }
 
