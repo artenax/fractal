@@ -319,35 +319,38 @@ impl EditableAvatar {
             .filter(&image_filter)
             .build();
 
-        if dialog.run_future().await == gtk::ResponseType::Accept {
-            if let Some(file) = dialog.file() {
-                if let Some(content_type) = file
-                    .query_info_future(
-                        gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-                        gio::FileQueryInfoFlags::NONE,
-                        glib::PRIORITY_LOW,
-                    )
-                    .await
-                    .ok()
-                    .and_then(|info| info.content_type())
-                {
-                    if gio::content_type_is_a(&content_type, "image/*") {
-                        self.emit_by_name::<()>("edit-avatar", &[&file]);
-                    } else {
-                        error!("The chosen file is not an image");
-                        toast!(self, gettext("The chosen file is not an image"));
-                    }
-                } else {
-                    error!("Could not get the content type of the file");
-                    toast!(
-                        self,
-                        gettext("Could not determine the type of the chosen file")
-                    );
-                }
+        if dialog.run_future().await != gtk::ResponseType::Accept {
+            return;
+        }
+
+        let Some(file) = dialog.file() else {
+            error!("No file chosen");
+            toast!(self, gettext("No file was chosen"));
+            return;
+        };
+
+        if let Some(content_type) = file
+            .query_info_future(
+                gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                gio::FileQueryInfoFlags::NONE,
+                glib::PRIORITY_LOW,
+            )
+            .await
+            .ok()
+            .and_then(|info| info.content_type())
+        {
+            if gio::content_type_is_a(&content_type, "image/*") {
+                self.emit_by_name::<()>("edit-avatar", &[&file]);
             } else {
-                error!("No file chosen");
-                toast!(self, gettext("No file was chosen"));
+                error!("The chosen file is not an image");
+                toast!(self, gettext("The chosen file is not an image"));
             }
+        } else {
+            error!("Could not get the content type of the file");
+            toast!(
+                self,
+                gettext("Could not determine the type of the chosen file")
+            );
         }
     }
 

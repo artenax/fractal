@@ -99,26 +99,28 @@ impl ErrorPage {
     }
 
     async fn remove_secret_error_session(&self) {
-        if let Some(item) = self.imp().secret_item.take() {
-            match item.delete().await {
-                Ok(_) => {
-                    self.action_set_enabled("error-page.remove-secret-error-session", false);
-                    if let Some(window) = self
-                        .root()
-                        .as_ref()
-                        .and_then(|root| root.downcast_ref::<Window>())
-                    {
-                        toast!(self, gettext("Session removed successfully."));
-                        window.restore_sessions().await;
-                    }
+        let Some(item) = self.imp().secret_item.take() else {
+            return;
+        };
+
+        match item.delete().await {
+            Ok(_) => {
+                self.action_set_enabled("error-page.remove-secret-error-session", false);
+                if let Some(window) = self
+                    .root()
+                    .as_ref()
+                    .and_then(|root| root.downcast_ref::<Window>())
+                {
+                    toast!(self, gettext("Session removed successfully."));
+                    window.restore_sessions().await;
                 }
-                Err(err) => {
-                    error!("Could not remove session from secret storage: {:?}", err);
-                    toast!(
-                        self,
-                        gettext("Could not remove session from secret storage")
-                    );
-                }
+            }
+            Err(err) => {
+                error!("Could not remove session from secret storage: {:?}", err);
+                toast!(
+                    self,
+                    gettext("Could not remove session from secret storage")
+                );
             }
         }
     }

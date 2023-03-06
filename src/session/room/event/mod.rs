@@ -404,91 +404,93 @@ impl Event {
     /// Returns `Err` if an error occurred while fetching the content. Panics on
     /// an incompatible event.
     pub async fn get_media_content(&self) -> Result<(String, String, Vec<u8>), matrix_sdk::Error> {
-        if let TimelineItemContent::Message(message) = self.content() {
-            let media = self.room().session().client().media();
-            match message.msgtype() {
-                MessageType::File(content) => {
-                    let content = content.clone();
-                    let uid = media_type_uid(content.source());
-                    let filename = content
-                        .filename
-                        .as_ref()
-                        .filter(|name| !name.is_empty())
-                        .or(Some(&content.body))
-                        .filter(|name| !name.is_empty())
-                        .cloned()
-                        .unwrap_or_else(|| {
-                            filename_for_mime(
-                                content
-                                    .info
-                                    .as_ref()
-                                    .and_then(|info| info.mimetype.as_deref()),
-                                None,
-                            )
-                        });
-                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
-                    let data = handle.await.unwrap()?.unwrap();
-                    return Ok((uid, filename, data));
-                }
-                MessageType::Image(content) => {
-                    let content = content.clone();
-                    let uid = media_type_uid(content.source());
-                    let filename = if content.body.is_empty() {
-                        filename_for_mime(
-                            content
-                                .info
-                                .as_ref()
-                                .and_then(|info| info.mimetype.as_deref()),
-                            Some(mime::IMAGE),
-                        )
-                    } else {
-                        content.body.clone()
-                    };
-                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
-                    let data = handle.await.unwrap()?.unwrap();
-                    return Ok((uid, filename, data));
-                }
-                MessageType::Video(content) => {
-                    let content = content.clone();
-                    let uid = media_type_uid(content.source());
-                    let filename = if content.body.is_empty() {
-                        filename_for_mime(
-                            content
-                                .info
-                                .as_ref()
-                                .and_then(|info| info.mimetype.as_deref()),
-                            Some(mime::VIDEO),
-                        )
-                    } else {
-                        content.body.clone()
-                    };
-                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
-                    let data = handle.await.unwrap()?.unwrap();
-                    return Ok((uid, filename, data));
-                }
-                MessageType::Audio(content) => {
-                    let content = content.clone();
-                    let uid = media_type_uid(content.source());
-                    let filename = if content.body.is_empty() {
-                        filename_for_mime(
-                            content
-                                .info
-                                .as_ref()
-                                .and_then(|info| info.mimetype.as_deref()),
-                            Some(mime::AUDIO),
-                        )
-                    } else {
-                        content.body.clone()
-                    };
-                    let handle = spawn_tokio!(async move { media.get_file(content, true).await });
-                    let data = handle.await.unwrap()?.unwrap();
-                    return Ok((uid, filename, data));
-                }
-                _ => {}
-            };
+        let TimelineItemContent::Message(message) = self.content() else {
+            panic!("Trying to get the media content of an event of incompatible type");
         };
 
-        panic!("Trying to get the media content of an event of incompatible type");
+        let media = self.room().session().client().media();
+        match message.msgtype() {
+            MessageType::File(content) => {
+                let content = content.clone();
+                let uid = media_type_uid(content.source());
+                let filename = content
+                    .filename
+                    .as_ref()
+                    .filter(|name| !name.is_empty())
+                    .or(Some(&content.body))
+                    .filter(|name| !name.is_empty())
+                    .cloned()
+                    .unwrap_or_else(|| {
+                        filename_for_mime(
+                            content
+                                .info
+                                .as_ref()
+                                .and_then(|info| info.mimetype.as_deref()),
+                            None,
+                        )
+                    });
+                let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+                let data = handle.await.unwrap()?.unwrap();
+                Ok((uid, filename, data))
+            }
+            MessageType::Image(content) => {
+                let content = content.clone();
+                let uid = media_type_uid(content.source());
+                let filename = if content.body.is_empty() {
+                    filename_for_mime(
+                        content
+                            .info
+                            .as_ref()
+                            .and_then(|info| info.mimetype.as_deref()),
+                        Some(mime::IMAGE),
+                    )
+                } else {
+                    content.body.clone()
+                };
+                let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+                let data = handle.await.unwrap()?.unwrap();
+                Ok((uid, filename, data))
+            }
+            MessageType::Video(content) => {
+                let content = content.clone();
+                let uid = media_type_uid(content.source());
+                let filename = if content.body.is_empty() {
+                    filename_for_mime(
+                        content
+                            .info
+                            .as_ref()
+                            .and_then(|info| info.mimetype.as_deref()),
+                        Some(mime::VIDEO),
+                    )
+                } else {
+                    content.body.clone()
+                };
+                let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+                let data = handle.await.unwrap()?.unwrap();
+                Ok((uid, filename, data))
+            }
+            MessageType::Audio(content) => {
+                let content = content.clone();
+                let uid = media_type_uid(content.source());
+                let filename = if content.body.is_empty() {
+                    filename_for_mime(
+                        content
+                            .info
+                            .as_ref()
+                            .and_then(|info| info.mimetype.as_deref()),
+                        Some(mime::AUDIO),
+                    )
+                } else {
+                    content.body.clone()
+                };
+                let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+                let data = handle.await.unwrap()?.unwrap();
+                Ok((uid, filename, data))
+            }
+            _ => {
+                panic!("Trying to get the media content of an event of incompatible type");
+            }
+        }
     }
 
     /// Whether this `Event` is considered a message.

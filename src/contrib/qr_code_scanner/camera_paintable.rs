@@ -89,30 +89,33 @@ mod imp {
         fn snapshot(&self, snapshot: &gdk::Snapshot, width: f64, height: f64) {
             let snapshot = snapshot.downcast_ref::<gtk::Snapshot>().unwrap();
 
-            if let Some(image) = self.sink_paintable.borrow().as_ref() {
-                // Transformation to avoid stretching the camera. We translate and scale the
-                // image.
-                let aspect = width / height.max(std::f64::EPSILON); // Do not divide by zero.
-                let image_aspect = image.intrinsic_aspect_ratio();
+            let paintable = self.sink_paintable.borrow();
+            let Some(image) = paintable.as_ref() else {
+                return;
+            };
 
-                if image_aspect == 0.0 {
-                    image.snapshot(snapshot, width, height);
-                    return;
-                };
+            // Transformation to avoid stretching the camera. We translate and scale the
+            // image.
+            let aspect = width / height.max(std::f64::EPSILON); // Do not divide by zero.
+            let image_aspect = image.intrinsic_aspect_ratio();
 
-                let (new_width, new_height) = match aspect <= image_aspect {
-                    true => (height * image_aspect, height), // Mobile view
-                    false => (width, width / image_aspect),  // Landscape
-                };
+            if image_aspect == 0.0 {
+                image.snapshot(snapshot, width, height);
+                return;
+            };
 
-                let p = graphene::Point::new(
-                    ((width - new_width) / 2.0) as f32,
-                    ((height - new_height) / 2.0) as f32,
-                );
-                snapshot.translate(&p);
+            let (new_width, new_height) = match aspect <= image_aspect {
+                true => (height * image_aspect, height), // Mobile view
+                false => (width, width / image_aspect),  // Landscape
+            };
 
-                image.snapshot(snapshot, new_width, new_height);
-            }
+            let p = graphene::Point::new(
+                ((width - new_width) / 2.0) as f32,
+                ((height - new_height) / 2.0) as f32,
+            );
+            snapshot.translate(&p);
+
+            image.snapshot(snapshot, new_width, new_height);
         }
     }
 }

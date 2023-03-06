@@ -96,63 +96,62 @@ mod imp {
         fn menu_opened(&self) {
             let obj = self.obj();
 
-            if let Some(event) = obj.item().and_then(|item| item.downcast::<Event>().ok()) {
-                let room_history = obj.room_history();
-                let popover = room_history.item_context_menu().to_owned();
-                room_history.set_sticky(false);
-
-                if let Some(list_item) = obj.parent() {
-                    list_item.add_css_class("has-open-popup");
-
-                    let cell: Rc<RefCell<Option<glib::signal::SignalHandlerId>>> =
-                        Rc::new(RefCell::new(None));
-                    let signal_id = popover.connect_closed(
-                        clone!(@weak list_item, @strong cell, @weak room_history => move |popover| {
-                            room_history.enable_sticky_mode();
-
-                            list_item.remove_css_class("has-open-popup");
-
-                            if let Some(signal_id) = cell.take() {
-                                popover.disconnect(signal_id);
-                            }
-                        }),
-                    );
-
-                    cell.replace(Some(signal_id));
-                }
-
-                if let Some(event) = event
-                    .downcast_ref::<Event>()
-                    .filter(|event| event.is_message())
-                {
-                    let menu_model = Self::Type::event_message_menu_model();
-                    let reaction_chooser = room_history.item_reaction_chooser();
-                    if popover.menu_model().as_ref() != Some(menu_model) {
-                        popover.set_menu_model(Some(menu_model));
-                        popover.add_child(reaction_chooser, "reaction-chooser");
-                    }
-
-                    reaction_chooser.set_reactions(Some(event.reactions().to_owned()));
-
-                    // Open emoji chooser
-                    let more_reactions = gio::SimpleAction::new("more-reactions", None);
-                    more_reactions.connect_activate(
-                        clone!(@weak obj, @weak popover => move |_, _| {
-                            obj.show_emoji_chooser(&popover);
-                        }),
-                    );
-                    obj.action_group().unwrap().add_action(&more_reactions);
-                } else {
-                    let menu_model = Self::Type::event_state_menu_model();
-                    if popover.menu_model().as_ref() != Some(menu_model) {
-                        popover.set_menu_model(Some(menu_model));
-                    }
-                }
-
-                obj.set_popover(Some(popover));
-            } else {
+            let Some(event) = obj.item().and_then(|item| item.downcast::<Event>().ok()) else {
                 obj.set_popover(None);
+                return;
+            };
+
+            let room_history = obj.room_history();
+            let popover = room_history.item_context_menu().to_owned();
+            room_history.set_sticky(false);
+
+            if let Some(list_item) = obj.parent() {
+                list_item.add_css_class("has-open-popup");
+
+                let cell: Rc<RefCell<Option<glib::signal::SignalHandlerId>>> =
+                    Rc::new(RefCell::new(None));
+                let signal_id = popover.connect_closed(
+                    clone!(@weak list_item, @strong cell, @weak room_history => move |popover| {
+                        room_history.enable_sticky_mode();
+
+                        list_item.remove_css_class("has-open-popup");
+
+                        if let Some(signal_id) = cell.take() {
+                            popover.disconnect(signal_id);
+                        }
+                    }),
+                );
+
+                cell.replace(Some(signal_id));
             }
+
+            if let Some(event) = event
+                .downcast_ref::<Event>()
+                .filter(|event| event.is_message())
+            {
+                let menu_model = Self::Type::event_message_menu_model();
+                let reaction_chooser = room_history.item_reaction_chooser();
+                if popover.menu_model().as_ref() != Some(menu_model) {
+                    popover.set_menu_model(Some(menu_model));
+                    popover.add_child(reaction_chooser, "reaction-chooser");
+                }
+
+                reaction_chooser.set_reactions(Some(event.reactions().to_owned()));
+
+                // Open emoji chooser
+                let more_reactions = gio::SimpleAction::new("more-reactions", None);
+                more_reactions.connect_activate(clone!(@weak obj, @weak popover => move |_, _| {
+                    obj.show_emoji_chooser(&popover);
+                }));
+                obj.action_group().unwrap().add_action(&more_reactions);
+            } else {
+                let menu_model = Self::Type::event_state_menu_model();
+                if popover.menu_model().as_ref() != Some(menu_model) {
+                    popover.set_menu_model(Some(menu_model));
+                }
+            }
+
+            obj.set_popover(Some(popover));
         }
     }
 }

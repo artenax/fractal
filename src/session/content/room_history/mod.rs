@@ -890,60 +890,63 @@ impl RoomHistory {
     }
 
     async fn send_location(&self) -> ashpd::Result<()> {
-        if let Some(room) = self.room() {
-            let handle = spawn_tokio!(async move {
-                let proxy = LocationProxy::new().await?;
-                let identifier = WindowIdentifier::default();
+        let Some(room) = self.room() else {
+            return Ok(());
+        };
 
-                let session = proxy
-                    .create_session(Some(0), Some(0), Some(Accuracy::Exact))
-                    .await?;
+        let handle = spawn_tokio!(async move {
+            let proxy = LocationProxy::new().await?;
+            let identifier = WindowIdentifier::default();
 
-                // We want to be listening for new locations whenever the session is up
-                // otherwise we might lose the first response and will have to wait for a future
-                // update by geoclue
-                let (_, location) = futures::try_join!(
-                    proxy.start(&session, &identifier).into_future(),
-                    proxy.receive_location_updated().into_future()
-                )?;
+            let session = proxy
+                .create_session(Some(0), Some(0), Some(Accuracy::Exact))
+                .await?;
 
-                ashpd::Result::Ok(location)
-            });
+            // We want to be listening for new locations whenever the session is up
+            // otherwise we might lose the first response and will have to wait for a future
+            // update by geoclue
+            let (_, location) = futures::try_join!(
+                proxy.start(&session, &identifier).into_future(),
+                proxy.receive_location_updated().into_future()
+            )?;
 
-            let location = handle.await.unwrap()?;
-            let geo_uri = GeoUri::builder()
-                .latitude(location.latitude())
-                .longitude(location.longitude())
-                .build()
-                .expect("Got invalid coordinates from ashpd");
+            ashpd::Result::Ok(location)
+        });
 
-            let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
-            let dialog =
-                AttachmentDialog::for_location(&window, &gettext("Your Location"), &geo_uri);
-            if dialog.run_future().await != gtk::ResponseType::Ok {
-                return Ok(());
-            }
+        let location = handle.await.unwrap()?;
+        let geo_uri = GeoUri::builder()
+            .latitude(location.latitude())
+            .longitude(location.longitude())
+            .build()
+            .expect("Got invalid coordinates from ashpd");
 
-            let geo_uri_string = geo_uri.to_string();
-            let iso8601_datetime =
-                glib::DateTime::from_unix_local(location.timestamp().as_secs() as i64)
-                    .expect("Valid location timestamp");
-            let location_body = gettext_f(
-                "User Location {geo_uri} at {iso8601_datetime}",
-                &[
-                    ("geo_uri", &geo_uri_string),
-                    (
-                        "iso8601_datetime",
-                        iso8601_datetime.format_iso8601().unwrap().as_str(),
-                    ),
-                ],
-            );
-            room.send_room_message_event(AnyMessageLikeEventContent::RoomMessage(
-                RoomMessageEventContent::new(MessageType::Location(
-                    LocationMessageEventContent::new(location_body, geo_uri_string),
-                )),
-            ));
+        let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
+        let dialog = AttachmentDialog::for_location(&window, &gettext("Your Location"), &geo_uri);
+        if dialog.run_future().await != gtk::ResponseType::Ok {
+            return Ok(());
         }
+
+        let geo_uri_string = geo_uri.to_string();
+        let iso8601_datetime =
+            glib::DateTime::from_unix_local(location.timestamp().as_secs() as i64)
+                .expect("Valid location timestamp");
+        let location_body = gettext_f(
+            "User Location {geo_uri} at {iso8601_datetime}",
+            &[
+                ("geo_uri", &geo_uri_string),
+                (
+                    "iso8601_datetime",
+                    iso8601_datetime.format_iso8601().unwrap().as_str(),
+                ),
+            ],
+        );
+        room.send_room_message_event(AnyMessageLikeEventContent::RoomMessage(
+            RoomMessageEventContent::new(MessageType::Location(LocationMessageEventContent::new(
+                location_body,
+                geo_uri_string,
+            ))),
+        ));
+
         Ok(())
     }
 
@@ -956,17 +959,19 @@ impl RoomHistory {
             return;
         }
 
-        if let Some(room) = self.room() {
-            let bytes = image.save_to_png_bytes();
-            let info = AttachmentInfo::Image(BaseImageInfo {
-                width: Some((image.width() as u32).into()),
-                height: Some((image.height() as u32).into()),
-                size: Some((bytes.len() as u32).into()),
-                blurhash: None,
-            });
+        let Some(room) = self.room() else {
+            return;
+        };
 
-            room.send_attachment(bytes.to_vec(), mime::IMAGE_PNG, &filename, info);
-        }
+        let bytes = image.save_to_png_bytes();
+        let info = AttachmentInfo::Image(BaseImageInfo {
+            width: Some((image.width() as u32).into()),
+            height: Some((image.height() as u32).into()),
+            size: Some((bytes.len() as u32).into()),
+            blurhash: None,
+        });
+
+        room.send_attachment(bytes.to_vec(), mime::IMAGE_PNG, &filename, info);
     }
 
     pub fn select_file(&self) {

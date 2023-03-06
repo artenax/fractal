@@ -141,20 +141,22 @@ impl ExploreServersPopover {
     }
 
     pub fn init(&self) {
-        if let Some(session) = &self.session() {
-            let imp = self.imp();
-            let server_list = ServerList::new(session);
+        let Some(session) = &self.session() else {
+            return;
+        };
 
-            imp.listbox.bind_model(Some(&server_list), |obj| {
-                ExploreServerRow::new(obj.downcast_ref::<Server>().unwrap()).upcast()
-            });
+        let imp = self.imp();
+        let server_list = ServerList::new(session);
 
-            // Select the first server by default.
-            imp.listbox.select_row(imp.listbox.row_at_index(0).as_ref());
+        imp.listbox.bind_model(Some(&server_list), |obj| {
+            ExploreServerRow::new(obj.downcast_ref::<Server>().unwrap()).upcast()
+        });
 
-            imp.server_list.replace(Some(server_list));
-            self.notify("server-list");
-        }
+        // Select the first server by default.
+        imp.listbox.select_row(imp.listbox.row_at_index(0).as_ref());
+
+        imp.server_list.replace(Some(server_list));
+        self.notify("server-list");
     }
 
     /// The server list.
@@ -199,32 +201,35 @@ impl ExploreServersPopover {
         if !self.can_add_server() {
             return;
         }
+        let Some(server_list) = self.server_list() else {
+            return;
+        };
 
-        if let Some(server_list) = self.server_list() {
-            let imp = self.imp();
+        let imp = self.imp();
 
-            let server = imp.server_entry.text();
-            imp.server_entry.set_text("");
+        let server = imp.server_entry.text();
+        imp.server_entry.set_text("");
 
-            server_list.add_custom_matrix_server(server.into());
-            imp.listbox.select_row(
-                imp.listbox
-                    .row_at_index(server_list.n_items() as i32 - 1)
-                    .as_ref(),
-            );
-        }
+        server_list.add_custom_matrix_server(server.into());
+        imp.listbox.select_row(
+            imp.listbox
+                .row_at_index(server_list.n_items() as i32 - 1)
+                .as_ref(),
+        );
     }
 
     fn remove_server(&self, server: &str) {
-        if let Some(server_list) = self.server_list() {
-            let imp = self.imp();
+        let Some(server_list) = self.server_list() else {
+            return;
+        };
 
-            // If the selected server is gonna be removed, select the first one.
-            if self.selected_server().unwrap().server() == Some(server) {
-                imp.listbox.select_row(imp.listbox.row_at_index(0).as_ref());
-            }
+        let imp = self.imp();
 
-            server_list.remove_custom_matrix_server(server);
+        // If the selected server is gonna be removed, select the first one.
+        if self.selected_server().unwrap().server() == Some(server) {
+            imp.listbox.select_row(imp.listbox.row_at_index(0).as_ref());
         }
+
+        server_list.remove_custom_matrix_server(server);
     }
 }

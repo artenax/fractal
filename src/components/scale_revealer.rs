@@ -99,15 +99,18 @@ mod imp {
     impl WidgetImpl for ScaleRevealer {
         fn snapshot(&self, snapshot: &gtk::Snapshot) {
             let obj = self.obj();
-            if let Some(child) = obj.child() {
-                let progress = self.animation.get().unwrap().value();
-                if progress == 1.0 {
-                    // The transition progress is at 100%, so just show the child
-                    obj.snapshot_child(&child, snapshot);
-                    return;
-                }
+            let Some(child) = obj.child() else {
+                return;
+            };
 
-                let source_bounds = self
+            let progress = self.animation.get().unwrap().value();
+            if progress == 1.0 {
+                // The transition progress is at 100%, so just show the child
+                obj.snapshot_child(&child, snapshot);
+                return;
+            }
+
+            let source_bounds = self
                     .source_widget
                     .upgrade()
                     .and_then(|s| s.compute_bounds(&*obj))
@@ -117,50 +120,47 @@ mod imp {
                         );
                         graphene::Rect::new(0.0, 0.0, 100.0, 100.0)
                     });
-                let rev_progress = (1.0 - progress).abs();
+            let rev_progress = (1.0 - progress).abs();
 
-                let x_scale = source_bounds.width() / obj.width() as f32;
-                let y_scale = source_bounds.height() / obj.height() as f32;
+            let x_scale = source_bounds.width() / obj.width() as f32;
+            let y_scale = source_bounds.height() / obj.height() as f32;
 
-                let x_scale = 1.0 + (x_scale - 1.0) * rev_progress as f32;
-                let y_scale = 1.0 + (y_scale - 1.0) * rev_progress as f32;
+            let x_scale = 1.0 + (x_scale - 1.0) * rev_progress as f32;
+            let y_scale = 1.0 + (y_scale - 1.0) * rev_progress as f32;
 
-                let x = source_bounds.x() * rev_progress as f32;
-                let y = source_bounds.y() * rev_progress as f32;
+            let x = source_bounds.x() * rev_progress as f32;
+            let y = source_bounds.y() * rev_progress as f32;
 
-                snapshot.translate(&graphene::Point::new(x, y));
-                snapshot.scale(x_scale, y_scale);
+            snapshot.translate(&graphene::Point::new(x, y));
+            snapshot.scale(x_scale, y_scale);
 
-                let source_widget_texture_ref = self.source_widget_texture.borrow();
+            let source_widget_texture_ref = self.source_widget_texture.borrow();
 
-                if let Some(source_widget_texture) = source_widget_texture_ref.as_ref() {
-                    if progress > 0.0 {
-                        // We're in the middle of the cross fade transition, so...
-                        // do the cross fade transition.
-                        snapshot.push_cross_fade(progress);
+            if let Some(source_widget_texture) = source_widget_texture_ref.as_ref() {
+                if progress > 0.0 {
+                    // We're in the middle of the cross fade transition, so...
+                    // do the cross fade transition.
+                    snapshot.push_cross_fade(progress);
 
-                        source_widget_texture.snapshot(
-                            snapshot,
-                            obj.width() as f64,
-                            obj.height() as f64,
-                        );
-                        snapshot.pop();
-
-                        obj.snapshot_child(&child, snapshot);
-                        snapshot.pop();
-                    } else if progress <= 0.0 {
-                        source_widget_texture.snapshot(
-                            snapshot,
-                            obj.width() as f64,
-                            obj.height() as f64,
-                        );
-                    }
-                } else {
-                    log::warn!(
-                        "The source widget texture is None, using child snapshot as fallback"
+                    source_widget_texture.snapshot(
+                        snapshot,
+                        obj.width() as f64,
+                        obj.height() as f64,
                     );
+                    snapshot.pop();
+
                     obj.snapshot_child(&child, snapshot);
+                    snapshot.pop();
+                } else if progress <= 0.0 {
+                    source_widget_texture.snapshot(
+                        snapshot,
+                        obj.width() as f64,
+                        obj.height() as f64,
+                    );
                 }
+            } else {
+                log::warn!("The source widget texture is None, using child snapshot as fallback");
+                obj.snapshot_child(&child, snapshot);
             }
         }
     }

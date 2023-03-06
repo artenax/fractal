@@ -81,58 +81,54 @@ pub fn validate_password(password: &str) -> PasswordValidity {
 ///
 /// If it's a media message, this will return a localized body.
 pub fn get_event_body(event: &AnySyncTimelineEvent, sender_name: &str) -> Option<String> {
-    if let AnySyncTimelineEvent::MessageLike(event) = event {
-        match event.original_content()? {
-            AnyMessageLikeEventContent::RoomMessage(message) => {
-                let body = match message.msgtype {
-                    MessageType::Audio(_) => {
-                        gettext_f("{user} sent an audio file.", &[("user", sender_name)])
-                    }
-                    MessageType::Emote(content) => gettext_f(
-                        "{user}: {message}",
-                        &[("user", sender_name), ("message", &content.body)],
-                    ),
-                    MessageType::File(_) => {
-                        gettext_f("{user} sent a file.", &[("user", sender_name)])
-                    }
-                    MessageType::Image(_) => {
-                        gettext_f("{user} sent an image.", &[("user", sender_name)])
-                    }
-                    MessageType::Location(_) => {
-                        gettext_f("{user} sent their location.", &[("user", sender_name)])
-                    }
-                    MessageType::Notice(content) => gettext_f(
-                        "{user}: {message}",
-                        &[("user", sender_name), ("message", &content.body)],
-                    ),
-                    MessageType::ServerNotice(content) => gettext_f(
-                        "{user}: {message}",
-                        &[("user", sender_name), ("message", &content.body)],
-                    ),
-                    MessageType::Text(content) => gettext_f(
-                        "{user}: {message}",
-                        &[("user", sender_name), ("message", &content.body)],
-                    ),
-                    MessageType::Video(_) => {
-                        gettext_f("{user} sent a video.", &[("user", sender_name)])
-                    }
-                    MessageType::VerificationRequest(_) => gettext_f(
-                        "{user} sent a verification request.",
-                        &[("user", sender_name)],
-                    ),
-                    _ => unimplemented!(),
-                };
-                return Some(body);
-            }
-            AnyMessageLikeEventContent::Sticker(_) => {
-                return Some(gettext_f(
-                    "{user} sent a sticker.",
-                    &[("user", sender_name)],
-                ));
-            }
-            _ => {}
-        }
-    }
+    let AnySyncTimelineEvent::MessageLike(event) = event else {
+        return None;
+    };
 
-    None
+    match event.original_content()? {
+        AnyMessageLikeEventContent::RoomMessage(message) => {
+            let body = match message.msgtype {
+                MessageType::Audio(_) => {
+                    gettext_f("{user} sent an audio file.", &[("user", sender_name)])
+                }
+                MessageType::Emote(content) => gettext_f(
+                    "{user}: {message}",
+                    &[("user", sender_name), ("message", &content.body)],
+                ),
+                MessageType::File(_) => gettext_f("{user} sent a file.", &[("user", sender_name)]),
+                MessageType::Image(_) => {
+                    gettext_f("{user} sent an image.", &[("user", sender_name)])
+                }
+                MessageType::Location(_) => {
+                    gettext_f("{user} sent their location.", &[("user", sender_name)])
+                }
+                MessageType::Notice(content) => gettext_f(
+                    "{user}: {message}",
+                    &[("user", sender_name), ("message", &content.body)],
+                ),
+                MessageType::ServerNotice(content) => gettext_f(
+                    "{user}: {message}",
+                    &[("user", sender_name), ("message", &content.body)],
+                ),
+                MessageType::Text(content) => gettext_f(
+                    "{user}: {message}",
+                    &[("user", sender_name), ("message", &content.body)],
+                ),
+                MessageType::Video(_) => {
+                    gettext_f("{user} sent a video.", &[("user", sender_name)])
+                }
+                MessageType::VerificationRequest(_) => gettext_f(
+                    "{user} sent a verification request.",
+                    &[("user", sender_name)],
+                ),
+                _ => unimplemented!(),
+            };
+            Some(body)
+        }
+        AnyMessageLikeEventContent::Sticker(_) => Some(gettext_f(
+            "{user} sent a sticker.",
+            &[("user", sender_name)],
+        )),
+        _ => None,
+    }
 }

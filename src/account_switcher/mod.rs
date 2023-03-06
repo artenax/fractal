@@ -184,9 +184,7 @@ impl AccountSwitcher {
     fn update_selection(&self, position: u32, n_items: u32) {
         let imp = self.imp();
         let pages = imp.pages.borrow();
-        let pages = if let Some(pages) = &*pages {
-            pages
-        } else {
+        let Some(pages) = &*pages else {
             return;
         };
 

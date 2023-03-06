@@ -139,30 +139,32 @@ impl Avatar {
             return;
         }
 
-        if let Some(url) = self.url() {
-            let client = self.session().client();
-            let needed_size = self.needed_size();
-            let request = MediaRequest {
-                source: MediaSource::Plain(url),
-                format: MediaFormat::Thumbnail(MediaThumbnailSize {
-                    width: needed_size.into(),
-                    height: needed_size.into(),
-                    method: Method::Scale,
-                }),
-            };
-            let handle =
-                spawn_tokio!(async move { client.media().get_media_content(&request, true).await });
+        let Some(url) = self.url() else {
+            return;
+        };
 
-            spawn!(
-                glib::PRIORITY_LOW,
-                clone!(@weak self as obj => async move {
-                    match handle.await.unwrap() {
-                        Ok(data) => obj.set_image_data(Some(data)),
-                        Err(error) => error!("Couldn’t fetch avatar: {}", error),
-                    };
-                })
-            );
-        }
+        let client = self.session().client();
+        let needed_size = self.needed_size();
+        let request = MediaRequest {
+            source: MediaSource::Plain(url),
+            format: MediaFormat::Thumbnail(MediaThumbnailSize {
+                width: needed_size.into(),
+                height: needed_size.into(),
+                method: Method::Scale,
+            }),
+        };
+        let handle =
+            spawn_tokio!(async move { client.media().get_media_content(&request, true).await });
+
+        spawn!(
+            glib::PRIORITY_LOW,
+            clone!(@weak self as obj => async move {
+                match handle.await.unwrap() {
+                    Ok(data) => obj.set_image_data(Some(data)),
+                    Err(error) => error!("Couldn’t fetch avatar: {}", error),
+                };
+            })
+        );
     }
 
     /// Set the display name used for this avatar.

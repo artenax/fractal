@@ -320,74 +320,78 @@ impl MediaViewer {
     fn build(&self) {
         self.imp().media.show_loading();
 
-        if let Some(event) = self.event() {
-            self.set_event_actions(Some(event.upcast_ref()));
-            if let TimelineItemContent::Message(content) = event.content() {
-                match content.msgtype() {
-                    MessageType::Image(image) => {
-                        let image = image.clone();
-                        self.set_body(Some(image.body));
+        let Some(event) = self.event() else {
+            return;
+        };
+        let TimelineItemContent::Message(content) = event.content() else {
+            return;
+        };
 
-                        spawn!(
-                            glib::PRIORITY_LOW,
-                            clone!(@weak self as obj => async move {
-                                let imp = obj.imp();
+        self.set_event_actions(Some(&event));
 
-                                match event.get_media_content().await {
-                                    Ok((_, _, data)) => {
-                                        match ImagePaintable::from_bytes(&glib::Bytes::from(&data), image.info.and_then(|info| info.mimetype).as_deref()) {
-                                            Ok(texture) => {
-                                                imp.media.view_image(&texture);
-                                                return;
-                                            }
-                                            Err(error) => warn!("Could not load GdkTexture from file: {}", error),
-                                        }
+        match content.msgtype() {
+            MessageType::Image(image) => {
+                let image = image.clone();
+                self.set_body(Some(image.body));
+
+                spawn!(
+                    glib::PRIORITY_LOW,
+                    clone!(@weak self as obj => async move {
+                        let imp = obj.imp();
+
+                        match event.get_media_content().await {
+                            Ok((_, _, data)) => {
+                                match ImagePaintable::from_bytes(&glib::Bytes::from(&data), image.info.and_then(|info| info.mimetype).as_deref()) {
+                                    Ok(texture) => {
+                                        imp.media.view_image(&texture);
+                                        return;
                                     }
-                                    Err(error) => warn!("Could not retrieve image file: {}", error),
+                                    Err(error) => warn!("Could not load GdkTexture from file: {}", error),
                                 }
+                            }
+                            Err(error) => warn!("Could not retrieve image file: {}", error),
+                        }
 
-                                imp.media.show_fallback(ContentType::Image);
-                            })
-                        );
-                    }
-                    MessageType::Video(video) => {
-                        self.set_body(Some(video.body.clone()));
-
-                        spawn!(
-                            glib::PRIORITY_LOW,
-                            clone!(@weak self as obj => async move {
-                                let imp = obj.imp();
-
-                                match event.get_media_content().await {
-                                    Ok((uid, filename, data)) => {
-                                        // The GStreamer backend of GtkVideo doesn't work with input streams so
-                                        // we need to store the file.
-                                        // See: https://gitlab.gnome.org/GNOME/gtk/-/issues/4062
-                                        let mut path = cache_dir();
-                                        path.push(format!("{uid}_{filename}"));
-                                        let file = gio::File::for_path(path);
-                                        file.replace_contents(
-                                            &data,
-                                            None,
-                                            false,
-                                            gio::FileCreateFlags::REPLACE_DESTINATION,
-                                            gio::Cancellable::NONE,
-                                        )
-                                        .unwrap();
-
-                                        imp.media.view_file(file);
-                                    }
-                                    Err(error) => {
-                                        warn!("Could not retrieve video file: {}", error);
-                                        imp.media.show_fallback(ContentType::Video);
-                                    }
-                                }
-                            })
-                        );
-                    }
-                    _ => {}
-                }
+                        imp.media.show_fallback(ContentType::Image);
+                    })
+                );
             }
+            MessageType::Video(video) => {
+                self.set_body(Some(video.body.clone()));
+
+                spawn!(
+                    glib::PRIORITY_LOW,
+                    clone!(@weak self as obj => async move {
+                        let imp = obj.imp();
+
+                        match event.get_media_content().await {
+                            Ok((uid, filename, data)) => {
+                                // The GStreamer backend of GtkVideo doesn't work with input streams so
+                                // we need to store the file.
+                                // See: https://gitlab.gnome.org/GNOME/gtk/-/issues/4062
+                                let mut path = cache_dir();
+                                path.push(format!("{uid}_{filename}"));
+                                let file = gio::File::for_path(path);
+                                file.replace_contents(
+                                    &data,
+                                    None,
+                                    false,
+                                    gio::FileCreateFlags::REPLACE_DESTINATION,
+                                    gio::Cancellable::NONE,
+                                )
+                                .unwrap();
+
+                                imp.media.view_file(file);
+                            }
+                            Err(error) => {
+                                warn!("Could not retrieve video file: {}", error);
+                                imp.media.show_fallback(ContentType::Video);
+                            }
+                        }
+                    })
+                );
+            }
+            _ => {}
         }
     }
 

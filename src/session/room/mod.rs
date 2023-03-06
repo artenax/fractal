@@ -705,24 +705,24 @@ impl Room {
     }
 
     fn setup_typing(&self) {
-        if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
-            let room_weak = glib::SendWeakRef::from(self.downgrade());
-            matrix_room.add_event_handler(
-                move |event: SyncEphemeralRoomEvent<TypingEventContent>| {
-                    let room_weak = room_weak.clone();
-                    async move {
-                        let ctx = glib::MainContext::default();
-                        ctx.spawn(async move {
-                            spawn!(async move {
-                                if let Some(obj) = room_weak.upgrade() {
-                                    obj.handle_typing_event(event.content).await
-                                }
-                            });
-                        });
-                    }
-                },
-            );
-        }
+        let MatrixRoom::Joined(matrix_room) = self.matrix_room() else {
+            return;
+        };
+
+        let room_weak = glib::SendWeakRef::from(self.downgrade());
+        matrix_room.add_event_handler(move |event: SyncEphemeralRoomEvent<TypingEventContent>| {
+            let room_weak = room_weak.clone();
+            async move {
+                let ctx = glib::MainContext::default();
+                ctx.spawn(async move {
+                    spawn!(async move {
+                        if let Some(obj) = room_weak.upgrade() {
+                            obj.handle_typing_event(event.content).await
+                        }
+                    });
+                });
+            }
+        });
     }
 
     fn setup_receipts(&self) {
@@ -1300,40 +1300,44 @@ impl Room {
 
     /// Redact `redacted_event_id` in this room because of `reason`.
     pub fn redact(&self, redacted_event_id: OwnedEventId, reason: Option<String>) {
-        if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
-            let handle = spawn_tokio!(async move {
-                matrix_room
-                    .redact(&redacted_event_id, reason.as_deref(), None)
-                    .await
-            });
+        let MatrixRoom::Joined(matrix_room) = self.matrix_room() else {
+            return;
+        };
 
-            spawn!(
-                glib::PRIORITY_DEFAULT_IDLE,
-                clone!(@weak self as obj => async move {
-                    // FIXME: We should retry the request if it fails
-                    match handle.await.unwrap() {
-                            Ok(_) => {},
-                            Err(error) => error!("Couldn’t redact event: {}", error),
-                    };
-                })
-            );
-        }
+        let handle = spawn_tokio!(async move {
+            matrix_room
+                .redact(&redacted_event_id, reason.as_deref(), None)
+                .await
+        });
+
+        spawn!(
+            glib::PRIORITY_DEFAULT_IDLE,
+            clone!(@weak self as obj => async move {
+                // FIXME: We should retry the request if it fails
+                match handle.await.unwrap() {
+                    Ok(_) => {},
+                    Err(error) => error!("Couldn’t redact event: {}", error),
+                };
+            })
+        );
     }
 
     pub fn send_typing_notification(&self, is_typing: bool) {
-        if let MatrixRoom::Joined(matrix_room) = self.matrix_room() {
-            let handle = spawn_tokio!(async move { matrix_room.typing_notice(is_typing).await });
+        let MatrixRoom::Joined(matrix_room) = self.matrix_room() else {
+            return;
+        };
 
-            spawn!(
-                glib::PRIORITY_DEFAULT_IDLE,
-                clone!(@weak self as obj => async move {
-                    match handle.await.unwrap() {
-                        Ok(_) => {},
-                        Err(error) => error!("Couldn’t send typing notification: {error}"),
-                    };
-                })
-            );
-        }
+        let handle = spawn_tokio!(async move { matrix_room.typing_notice(is_typing).await });
+
+        spawn!(
+            glib::PRIORITY_DEFAULT_IDLE,
+            clone!(@weak self as obj => async move {
+                match handle.await.unwrap() {
+                    Ok(_) => {},
+                    Err(error) => error!("Couldn’t send typing notification: {error}"),
+                };
+            })
+        );
     }
 
     /// Creates an expression that is true when the user is allowed the given
@@ -1370,58 +1374,58 @@ impl Room {
     pub async fn accept_invite(&self) -> MatrixResult<()> {
         let matrix_room = self.matrix_room();
 
-        if let MatrixRoom::Invited(matrix_room) = matrix_room {
-            let handle = spawn_tokio!(async move { matrix_room.accept_invitation().await });
-            match handle.await.unwrap() {
-                Ok(_) => Ok(()),
-                Err(error) => {
-                    error!("Accepting invitation failed: {}", error);
-
-                    toast!(
-                        self.session(),
-                        gettext(
-                            // Translators: Do NOT translate the content between '{' and '}', this
-                            // is a variable name.
-                            "Failed to accept invitation for {room}. Try again later.",
-                        ),
-                        @room = self,
-                    );
-
-                    Err(error)
-                }
-            }
-        } else {
+        let MatrixRoom::Invited(matrix_room) = matrix_room else {
             error!("Can’t accept invite, because this room isn’t an invited room");
-            Ok(())
+            return Ok(());
+        };
+
+        let handle = spawn_tokio!(async move { matrix_room.accept_invitation().await });
+        match handle.await.unwrap() {
+            Ok(_) => Ok(()),
+            Err(error) => {
+                error!("Accepting invitation failed: {}", error);
+
+                toast!(
+                    self.session(),
+                    gettext(
+                        // Translators: Do NOT translate the content between '{' and '}', this
+                        // is a variable name.
+                        "Failed to accept invitation for {room}. Try again later.",
+                    ),
+                    @room = self,
+                );
+
+                Err(error)
+            }
         }
     }
 
     pub async fn reject_invite(&self) -> MatrixResult<()> {
         let matrix_room = self.matrix_room();
 
-        if let MatrixRoom::Invited(matrix_room) = matrix_room {
-            let handle = spawn_tokio!(async move { matrix_room.reject_invitation().await });
-            match handle.await.unwrap() {
-                Ok(_) => Ok(()),
-                Err(error) => {
-                    error!("Rejecting invitation failed: {}", error);
-
-                    toast!(
-                        self.session(),
-                        gettext(
-                            // Translators: Do NOT translate the content between '{' and '}', this
-                            // is a variable name.
-                            "Failed to reject invitation for {room}. Try again later.",
-                        ),
-                        @room = self,
-                    );
-
-                    Err(error)
-                }
-            }
-        } else {
+        let MatrixRoom::Invited(matrix_room) = matrix_room else {
             error!("Can’t reject invite, because this room isn’t an invited room");
-            Ok(())
+            return Ok(());
+        };
+
+        let handle = spawn_tokio!(async move { matrix_room.reject_invitation().await });
+        match handle.await.unwrap() {
+            Ok(_) => Ok(()),
+            Err(error) => {
+                error!("Rejecting invitation failed: {}", error);
+
+                toast!(
+                    self.session(),
+                    gettext(
+                        // Translators: Do NOT translate the content between '{' and '}', this
+                        // is a variable name.
+                        "Failed to reject invitation for {room}. Try again later.",
+                    ),
+                    @room = self,
+                );
+
+                Err(error)
+            }
         }
     }
 
@@ -1532,107 +1536,106 @@ impl Room {
         body: &str,
         info: AttachmentInfo,
     ) {
-        let matrix_room = self.matrix_room();
+        let MatrixRoom::Joined(matrix_room) = self.matrix_room() else {
+            return;
+        };
 
-        if let MatrixRoom::Joined(matrix_room) = matrix_room {
-            let body = body.to_string();
-            spawn_tokio!(async move {
-                // Needed to hold the thumbnail data until it is sent.
-                let data_slot;
+        let body = body.to_string();
+        spawn_tokio!(async move {
+            // Needed to hold the thumbnail data until it is sent.
+            let data_slot;
 
-                // The method will filter compatible mime types so we don't need to
-                // since we ignore errors.
-                let thumbnail = match generate_image_thumbnail(&mime, Cursor::new(&bytes), None) {
-                    Ok((data, info)) => {
-                        data_slot = data;
-                        Some(Thumbnail {
-                            data: data_slot,
-                            content_type: mime::IMAGE_JPEG,
-                            info: Some(info),
-                        })
-                    }
-                    _ => None,
-                };
-
-                let config = if let Some(thumbnail) = thumbnail {
-                    AttachmentConfig::with_thumbnail(thumbnail)
-                } else {
-                    AttachmentConfig::new()
+            // The method will filter compatible mime types so we don't need to
+            // since we ignore errors.
+            let thumbnail = match generate_image_thumbnail(&mime, Cursor::new(&bytes), None) {
+                Ok((data, info)) => {
+                    data_slot = data;
+                    Some(Thumbnail {
+                        data: data_slot,
+                        content_type: mime::IMAGE_JPEG,
+                        info: Some(info),
+                    })
                 }
-                .info(info);
+                _ => None,
+            };
 
-                matrix_room
-                    // TODO This should be added to pending messages instead of
-                    // sending it directly.
-                    .send_attachment(&body, &mime, bytes, config)
-                    .await
-                    .unwrap();
-            });
-        }
+            let config = if let Some(thumbnail) = thumbnail {
+                AttachmentConfig::with_thumbnail(thumbnail)
+            } else {
+                AttachmentConfig::new()
+            }
+            .info(info);
+
+            matrix_room
+                // TODO This should be added to pending messages instead of
+                // sending it directly.
+                .send_attachment(&body, &mime, bytes, config)
+                .await
+                .unwrap();
+        });
     }
 
     pub async fn invite(&self, users: &[User]) {
-        let matrix_room = self.matrix_room();
+        let MatrixRoom::Joined(matrix_room) = self.matrix_room() else {
+            error!("Can’t invite users, because this room isn’t a joined room");
+            return;
+        };
         let user_ids: Vec<OwnedUserId> = users.iter().map(|user| user.user_id()).collect();
 
-        if let MatrixRoom::Joined(matrix_room) = matrix_room {
-            let handle = spawn_tokio!(async move {
-                let invitiations = user_ids
-                    .iter()
-                    .map(|user_id| matrix_room.invite_user_by_id(user_id));
-                futures::future::join_all(invitiations).await
-            });
+        let handle = spawn_tokio!(async move {
+            let invitiations = user_ids
+                .iter()
+                .map(|user_id| matrix_room.invite_user_by_id(user_id));
+            futures::future::join_all(invitiations).await
+        });
 
-            let mut failed_invites: Vec<User> = Vec::new();
-            for (index, result) in handle.await.unwrap().iter().enumerate() {
-                match result {
-                    Ok(_) => {}
-                    Err(error) => {
-                        error!(
-                            "Failed to invite user with id {}: {}",
-                            users[index].user_id(),
-                            error
-                        );
-                        failed_invites.push(users[index].clone());
-                    }
+        let mut failed_invites: Vec<User> = Vec::new();
+        for (index, result) in handle.await.unwrap().iter().enumerate() {
+            match result {
+                Ok(_) => {}
+                Err(error) => {
+                    error!(
+                        "Failed to invite user with id {}: {}",
+                        users[index].user_id(),
+                        error
+                    );
+                    failed_invites.push(users[index].clone());
                 }
             }
+        }
 
-            if !failed_invites.is_empty() {
-                let no_failed = failed_invites.len();
-                let first_failed = failed_invites.first().unwrap();
+        if !failed_invites.is_empty() {
+            let no_failed = failed_invites.len();
+            let first_failed = failed_invites.first().unwrap();
 
-                // TODO: should we show all the failed users?
-                if no_failed == 1 {
-                    toast!(
-                        self.session(),
-                        gettext(
-                            // Translators: Do NOT translate the content between '{' and '}', this
-                            // is a variable name.
-                            "Failed to invite {user} to {room}. Try again later.",
-                        ),
-                        @user = first_failed,
-                        @room = self,
-                    );
-                } else {
-                    let n = (no_failed - 1) as u32;
-                    toast!(
-                        self.session(),
-                        ngettext(
-                            // Translators: Do NOT translate the content between '{' and '}', this
-                            // is a variable name.
-                            "Failed to invite {user} and 1 other user to {room}. Try again later.",
-                            "Failed to invite {user} and {n} other users to {room}. Try again later.",
-                            n,
-                        ),
-                        @user = first_failed,
-                        @room = self,
-                        n = n.to_string(),
-                    );
-                };
-            }
-        } else {
-            error!("Can’t invite users, because this room isn’t a joined room");
+            // TODO: should we show all the failed users?
+            if no_failed == 1 {
+                toast!(
+                    self.session(),
+                    gettext(
+                        // Translators: Do NOT translate the content between '{' and '}', this
+                        // is a variable name.
+                        "Failed to invite {user} to {room}. Try again later.",
+                    ),
+                    @user = first_failed,
+                    @room = self,
+                );
+            } else {
+                let n = (no_failed - 1) as u32;
+                toast!(
+                    self.session(),
+                    ngettext(
+                        // Translators: Do NOT translate the content between '{' and '}', this
+                        // is a variable name.
+                        "Failed to invite {user} and 1 other user to {room}. Try again later.",
+                        "Failed to invite {user} and {n} other users to {room}. Try again later.",
+                        n,
+                    ),
+                    @user = first_failed,
+                    @room = self,
+                    n = n.to_string(),
+                );
+            };
         }
     }
 

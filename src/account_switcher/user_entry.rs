@@ -117,13 +117,15 @@ impl UserEntryRow {
 
     #[template_callback]
     pub fn show_account_settings(&self) {
-        if let Some(session) = self.session() {
-            self.activate_action("account-switcher.close", None)
-                .unwrap();
-            session
-                .activate_action("session.open-account-settings", None)
-                .unwrap();
-        }
+        let Some(session) = self.session() else {
+            return;
+        };
+
+        self.activate_action("account-switcher.close", None)
+            .unwrap();
+        session
+            .activate_action("session.open-account-settings", None)
+            .unwrap();
     }
 
     /// The session this entry represents.

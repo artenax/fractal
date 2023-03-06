@@ -414,74 +414,76 @@ impl IdentityVerificationWidget {
     }
 
     fn update_view(&self) {
+        let Some(request) = self.request() else {
+            return;
+        };
         let imp = self.imp();
-        if let Some(request) = self.request() {
-            match request.state() {
-                VerificationState::Requested => {
-                    imp.main_stack.set_visible_child_name("accept-request");
+
+        match request.state() {
+            VerificationState::Requested => {
+                imp.main_stack.set_visible_child_name("accept-request");
+            }
+            VerificationState::RequestSend => {
+                imp.main_stack
+                    .set_visible_child_name("wait-for-other-party");
+            }
+            VerificationState::QrV1Show => {
+                if let Some(qrcode) = request.qr_code() {
+                    imp.qrcode.set_qrcode(qrcode.clone());
+                    imp.main_stack.set_visible_child_name("qrcode");
+                } else {
+                    warn!("Failed to get qrcode for QrVerification");
+                    request.start_sas();
                 }
-                VerificationState::RequestSend => {
-                    imp.main_stack
-                        .set_visible_child_name("wait-for-other-party");
-                }
-                VerificationState::QrV1Show => {
-                    if let Some(qrcode) = request.qr_code() {
-                        imp.qrcode.set_qrcode(qrcode.clone());
-                        imp.main_stack.set_visible_child_name("qrcode");
-                    } else {
-                        warn!("Failed to get qrcode for QrVerification");
-                        request.start_sas();
-                    }
-                }
-                VerificationState::QrV1Scan => {
-                    self.start_scanning();
-                }
-                VerificationState::QrV1Scanned => {
-                    imp.main_stack
-                        .set_visible_child_name("confirm-scanned-qr-code");
-                }
-                VerificationState::SasV1 => {
-                    self.clean_emoji();
-                    match request.sas_data().unwrap() {
-                        SasData::Emoji(emoji) => {
-                            let emoji_i18n = sas_emoji_i18n();
-                            for (index, emoji) in emoji.iter().enumerate() {
-                                let emoji_name = emoji_i18n
-                                    .get(emoji.description)
-                                    .map(String::as_str)
-                                    .unwrap_or(emoji.description);
-                                if index < 4 {
-                                    imp.emoji_row_1
-                                        .append(&Emoji::new(emoji.symbol, emoji_name));
-                                } else {
-                                    imp.emoji_row_2
-                                        .append(&Emoji::new(emoji.symbol, emoji_name));
-                                }
+            }
+            VerificationState::QrV1Scan => {
+                self.start_scanning();
+            }
+            VerificationState::QrV1Scanned => {
+                imp.main_stack
+                    .set_visible_child_name("confirm-scanned-qr-code");
+            }
+            VerificationState::SasV1 => {
+                self.clean_emoji();
+                match request.sas_data().unwrap() {
+                    SasData::Emoji(emoji) => {
+                        let emoji_i18n = sas_emoji_i18n();
+                        for (index, emoji) in emoji.iter().enumerate() {
+                            let emoji_name = emoji_i18n
+                                .get(emoji.description)
+                                .map(String::as_str)
+                                .unwrap_or(emoji.description);
+                            if index < 4 {
+                                imp.emoji_row_1
+                                    .append(&Emoji::new(emoji.symbol, emoji_name));
+                            } else {
+                                imp.emoji_row_2
+                                    .append(&Emoji::new(emoji.symbol, emoji_name));
                             }
                         }
-                        SasData::Decimal((a, b, c)) => {
-                            let container = gtk::Box::builder()
-                                .spacing(24)
-                                .css_classes(vec!["emoji".to_string()])
-                                .build();
-                            container.append(&gtk::Label::builder().label(a.to_string()).build());
-                            container.append(&gtk::Label::builder().label(b.to_string()).build());
-                            container.append(&gtk::Label::builder().label(c.to_string()).build());
-                            imp.emoji_row_1.append(&container);
-                        }
                     }
-                    imp.main_stack.set_visible_child_name("emoji");
+                    SasData::Decimal((a, b, c)) => {
+                        let container = gtk::Box::builder()
+                            .spacing(24)
+                            .css_classes(vec!["emoji".to_string()])
+                            .build();
+                        container.append(&gtk::Label::builder().label(a.to_string()).build());
+                        container.append(&gtk::Label::builder().label(b.to_string()).build());
+                        container.append(&gtk::Label::builder().label(c.to_string()).build());
+                        imp.emoji_row_1.append(&container);
+                    }
                 }
-                VerificationState::Completed => {
-                    spawn!(clone!(@weak self as obj => async move {
-                        obj.handle_completed().await;
-                    }));
-                }
-                VerificationState::Cancelled
-                | VerificationState::Dismissed
-                | VerificationState::Error
-                | VerificationState::Passive => {}
+                imp.main_stack.set_visible_child_name("emoji");
             }
+            VerificationState::Completed => {
+                spawn!(clone!(@weak self as obj => async move {
+                    obj.handle_completed().await;
+                }));
+            }
+            VerificationState::Cancelled
+            | VerificationState::Dismissed
+            | VerificationState::Error
+            | VerificationState::Passive => {}
         }
     }
 

@@ -272,14 +272,16 @@ impl InviteSubpage {
     }
 
     fn remove_user_pill(&self, user: &Invitee) {
-        if let Some(anchor) = user.take_anchor() {
-            if !anchor.is_deleted() {
-                let text_buffer = &self.imp().text_buffer;
-                let mut start_iter = text_buffer.iter_at_child_anchor(&anchor);
-                let mut end_iter = start_iter;
-                end_iter.forward_char();
-                text_buffer.delete(&mut start_iter, &mut end_iter);
-            }
+        let Some(anchor) = user.take_anchor() else {
+            return;
+        };
+
+        if !anchor.is_deleted() {
+            let text_buffer = &self.imp().text_buffer;
+            let mut start_iter = text_buffer.iter_at_child_anchor(&anchor);
+            let mut end_iter = start_iter;
+            end_iter.forward_char();
+            text_buffer.delete(&mut start_iter, &mut end_iter);
         }
     }
 
@@ -297,20 +299,24 @@ impl InviteSubpage {
 
     fn invite(&self) {
         self.imp().invite_button.set_loading(true);
-        if let Some(room) = self.room() {
-            if let Some(user_list) = self.invitee_list() {
-                let invitees: Vec<User> = user_list
-                    .invitees()
-                    .into_iter()
-                    .map(glib::object::Cast::upcast)
-                    .collect();
-                spawn!(clone!(@weak self as obj => async move {
-                    room.invite(invitees.as_slice()).await;
-                    obj.close();
-                    obj.imp().invite_button.set_loading(false);
-                }));
-            }
-        }
+
+        let Some(room) = self.room() else {
+            return;
+        };
+        let Some(user_list) = self.invitee_list() else {
+            return;
+        };
+
+        let invitees: Vec<User> = user_list
+            .invitees()
+            .into_iter()
+            .map(glib::object::Cast::upcast)
+            .collect();
+        spawn!(clone!(@weak self as obj => async move {
+            room.invite(invitees.as_slice()).await;
+            obj.close();
+            obj.imp().invite_button.set_loading(false);
+        }));
     }
 
     fn update_view(&self) {

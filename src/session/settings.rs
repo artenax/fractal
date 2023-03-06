@@ -186,29 +186,31 @@ impl SessionSettings {
 
     pub fn delete_settings(&self) {
         let app_settings = Application::default().settings();
-        if let Ok(sessions) =
+        let Ok(sessions) =
             serde_json::from_str::<Vec<StoredSessionSettings>>(&app_settings.string("sessions"))
-        {
-            let session_id = self.session_id();
-            let mut found = false;
-            let sessions = sessions
-                .into_iter()
-                .filter(|settings| {
-                    if settings.session_id == session_id {
-                        found = true;
-                        false
-                    } else {
-                        true
-                    }
-                })
-                .collect::<Vec<_>>();
+        else {
+            return;
+        };
 
-            if found {
-                if let Err(error) =
-                    app_settings.set_string("sessions", &serde_json::to_string(&sessions).unwrap())
-                {
-                    log::error!("Error deleting settings for session: {error}");
+        let session_id = self.session_id();
+        let mut found = false;
+        let sessions = sessions
+            .into_iter()
+            .filter(|settings| {
+                if settings.session_id == session_id {
+                    found = true;
+                    false
+                } else {
+                    true
                 }
+            })
+            .collect::<Vec<_>>();
+
+        if found {
+            if let Err(error) =
+                app_settings.set_string("sessions", &serde_json::to_string(&sessions).unwrap())
+            {
+                error!("Error deleting settings for session: {error}");
             }
         }
     }
