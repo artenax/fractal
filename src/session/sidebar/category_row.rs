@@ -100,7 +100,7 @@ glib::wrapper! {
 impl CategoryRow {
     pub fn new() -> Self {
         glib::Object::builder()
-            .property("show-label-for-category", &CategoryType::None)
+            .property("show-label-for-category", CategoryType::None)
             .build()
     }
 

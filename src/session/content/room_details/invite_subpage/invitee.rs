@@ -81,8 +81,8 @@ impl Invitee {
     ) -> Self {
         let obj: Self = glib::Object::builder()
             .property("session", session)
-            .property("user-id", &user_id.as_str())
-            .property("display-name", &display_name)
+            .property("user-id", user_id.as_str())
+            .property("display-name", display_name)
             .build();
         // FIXME: we should make the avatar_url settable as property
         obj.set_avatar_url(avatar_url.map(std::borrow::ToOwned::to_owned));

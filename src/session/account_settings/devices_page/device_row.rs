@@ -133,7 +133,7 @@ impl DeviceRow {
     pub fn new(device: &Device, is_current_device: bool) -> Self {
         glib::Object::builder()
             .property("device", device)
-            .property("is-current-device", &is_current_device)
+            .property("is-current-device", is_current_device)
             .build()
     }
 

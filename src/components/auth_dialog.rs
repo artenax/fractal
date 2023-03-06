@@ -157,7 +157,7 @@ glib::wrapper! {
 impl AuthDialog {
     pub fn new(transient_for: Option<&impl IsA<gtk::Window>>, session: &Session) -> Self {
         glib::Object::builder()
-            .property("transient-for", &transient_for)
+            .property("transient-for", transient_for)
             .property("session", session)
             .build()
     }

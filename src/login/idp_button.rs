@@ -207,7 +207,7 @@ impl IdpButton {
 
         Some(
             glib::Object::builder()
-                .property("brand", &gidp)
+                .property("brand", gidp)
                 .property("id", &idp.id)
                 .build(),
         )

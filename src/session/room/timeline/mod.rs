@@ -147,7 +147,7 @@ glib::wrapper! {
 
 impl Timeline {
     pub fn new(room: &Room) -> Self {
-        glib::Object::builder().property("room", &room).build()
+        glib::Object::builder().property("room", room).build()
     }
 
     /// The number of visible items in the list.

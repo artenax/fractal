@@ -130,7 +130,7 @@ impl User {
     pub fn new(session: &Session, user_id: &UserId) -> Self {
         glib::Object::builder()
             .property("session", session)
-            .property("user-id", &user_id.as_str())
+            .property("user-id", user_id.as_str())
             .build()
     }
 

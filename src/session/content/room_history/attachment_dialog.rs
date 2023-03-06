@@ -59,7 +59,7 @@ impl AttachmentDialog {
     pub fn for_image(transient_for: &gtk::Window, title: &str, image: &gdk::Texture) -> Self {
         let obj: Self = glib::Object::builder()
             .property("transient-for", transient_for)
-            .property("title", &title)
+            .property("title", title)
             .build();
         obj.imp().media.view_image(image);
         obj.imp().send_button.grab_focus();
@@ -69,7 +69,7 @@ impl AttachmentDialog {
     pub fn for_file(transient_for: &gtk::Window, title: &str, file: &gio::File) -> Self {
         let obj: Self = glib::Object::builder()
             .property("transient-for", transient_for)
-            .property("title", &title)
+            .property("title", title)
             .build();
         obj.imp().media.view_file(file.to_owned());
         obj.imp().send_button.grab_focus();
@@ -83,7 +83,7 @@ impl AttachmentDialog {
     ) -> Self {
         let obj: Self = glib::Object::builder()
             .property("transient-for", transient_for)
-            .property("title", &title)
+            .property("title", title)
             .build();
         obj.imp().media.view_location(geo_uri);
         obj.imp().send_button.grab_focus();

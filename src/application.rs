@@ -92,9 +92,9 @@ glib::wrapper! {
 impl Application {
     pub fn new() -> Self {
         glib::Object::builder()
-            .property("application-id", &Some(config::APP_ID))
-            .property("flags", &ApplicationFlags::default())
-            .property("resource-base-path", &Some("/org/gnome/Fractal/"))
+            .property("application-id", Some(config::APP_ID))
+            .property("flags", ApplicationFlags::default())
+            .property("resource-base-path", Some("/org/gnome/Fractal/"))
             .build()
     }
 

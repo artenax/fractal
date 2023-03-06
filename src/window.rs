@@ -173,8 +173,8 @@ glib::wrapper! {
 impl Window {
     pub fn new(app: &Application) -> Self {
         glib::Object::builder()
-            .property("application", &Some(app))
-            .property("icon-name", &Some(APP_ID))
+            .property("application", Some(app))
+            .property("icon-name", Some(APP_ID))
             .build()
     }
 
@@ -326,7 +326,7 @@ impl Window {
         let is_maximized = settings.boolean("is-maximized");
 
         self.set_default_size(width, height);
-        self.set_property("maximized", &is_maximized);
+        self.set_property("maximized", is_maximized);
     }
 
     /// Change the default widget of the window based on the visible child.

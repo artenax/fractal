@@ -83,7 +83,7 @@ glib::wrapper! {
 impl ReactionGroup {
     pub fn new(key: &str, user: &User) -> Self {
         glib::Object::builder()
-            .property("key", &key)
+            .property("key", key)
             .property("user", user)
             .build()
     }

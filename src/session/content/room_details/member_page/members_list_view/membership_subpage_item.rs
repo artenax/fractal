@@ -69,7 +69,7 @@ glib::wrapper! {
 impl MembershipSubpageItem {
     pub fn new(state: Membership, model: &impl IsA<gio::ListModel>) -> Self {
         glib::Object::builder()
-            .property("state", &state)
+            .property("state", state)
             .property("model", model)
             .build()
     }

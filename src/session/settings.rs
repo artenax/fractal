@@ -103,7 +103,7 @@ glib::wrapper! {
 impl SessionSettings {
     pub fn new(session_id: &str) -> Self {
         glib::Object::builder()
-            .property("session-id", &session_id)
+            .property("session-id", session_id)
             .build()
     }
 

@@ -148,7 +148,7 @@ glib::wrapper! {
 impl RoomCreation {
     pub fn new(parent_window: Option<&impl IsA<gtk::Window>>, session: &Session) -> Self {
         glib::Object::builder()
-            .property("transient-for", &parent_window)
+            .property("transient-for", parent_window)
             .property("session", session)
             .build()
     }

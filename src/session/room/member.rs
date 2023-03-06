@@ -144,7 +144,7 @@ impl Member {
         let session = room.session();
         glib::Object::builder()
             .property("session", &session)
-            .property("user-id", &user_id.as_str())
+            .property("user-id", user_id.as_str())
             .build()
     }
 

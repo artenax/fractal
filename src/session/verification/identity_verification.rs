@@ -316,7 +316,7 @@ glib::wrapper! {
 impl IdentityVerification {
     fn for_error(session: &Session, user: &User, start_time: &glib::DateTime) -> Self {
         glib::Object::builder()
-            .property("state", &State::Error)
+            .property("state", State::Error)
             .property("session", session)
             .property("user", user)
             .property("start-time", start_time)
@@ -331,10 +331,10 @@ impl IdentityVerification {
         start_time: &glib::DateTime,
     ) -> Self {
         glib::Object::builder()
-            .property("flow-id", &flow_id)
+            .property("flow-id", flow_id)
             .property("session", session)
             .property("user", user)
-            .property("supported-methods", &SupportedMethods::with_camera(true))
+            .property("supported-methods", SupportedMethods::with_camera(true))
             .property("start-time", start_time)
             .build()
     }
@@ -366,9 +366,9 @@ impl IdentityVerification {
             match handle.await.unwrap() {
                 Ok(request) => {
                     let obj = glib::Object::builder()
-                        .property("state", &State::RequestSend)
-                        .property("supported-methods", &supported_methods)
-                        .property("flow-id", &request.flow_id())
+                        .property("state", State::RequestSend)
+                        .property("supported-methods", supported_methods)
+                        .property("flow-id", request.flow_id())
                         .property("session", session)
                         .property("user", user)
                         .property("start-time", &glib::DateTime::now_local().unwrap())

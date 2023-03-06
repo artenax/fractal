@@ -84,9 +84,9 @@ glib::wrapper! {
 impl Server {
     pub fn with_default_server(name: &str) -> Self {
         glib::Object::builder()
-            .property("name", &name)
-            .property("network", &"matrix")
-            .property("deletable", &false)
+            .property("name", name)
+            .property("network", "matrix")
+            .property("deletable", false)
             .build()
     }
 
@@ -95,16 +95,16 @@ impl Server {
         glib::Object::builder()
             .property("name", &name)
             .property("network", &instance.instance_id)
-            .property("deletable", &false)
+            .property("deletable", false)
             .build()
     }
 
     pub fn with_custom_matrix_server(server: &str) -> Self {
         glib::Object::builder()
-            .property("name", &server)
-            .property("network", &"matrix")
-            .property("server", &server)
-            .property("deletable", &true)
+            .property("name", server)
+            .property("network", "matrix")
+            .property("server", server)
+            .property("deletable", true)
             .build()
     }
 

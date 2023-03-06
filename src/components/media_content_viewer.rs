@@ -114,7 +114,7 @@ glib::wrapper! {
 impl MediaContentViewer {
     pub fn new(autoplay: bool) -> Self {
         glib::Object::builder()
-            .property("autoplay", &autoplay)
+            .property("autoplay", autoplay)
             .build()
     }
 

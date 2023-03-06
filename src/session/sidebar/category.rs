@@ -115,7 +115,7 @@ glib::wrapper! {
 impl Category {
     pub fn new(type_: CategoryType, model: &impl IsA<gio::ListModel>) -> Self {
         glib::Object::builder()
-            .property("type", &type_)
+            .property("type", type_)
             .property("model", model)
             .build()
     }

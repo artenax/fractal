@@ -176,7 +176,7 @@ impl LabelWithWidgets {
 
     /// Create a `LabelWithWidget` with the given label and widgets.
     pub fn with_label_and_widgets<P: IsA<gtk::Widget>>(label: &str, widgets: Vec<P>) -> Self {
-        let obj: Self = glib::Object::builder().property("label", &label).build();
+        let obj: Self = glib::Object::builder().property("label", label).build();
         // FIXME: use a property for widgets
         obj.set_widgets(widgets);
         obj

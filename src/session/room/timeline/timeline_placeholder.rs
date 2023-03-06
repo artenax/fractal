@@ -73,13 +73,13 @@ impl TimelinePlaceholder {
 
     pub fn typing() -> Self {
         glib::Object::builder()
-            .property("kind", &PlaceholderKind::Typing)
+            .property("kind", PlaceholderKind::Typing)
             .build()
     }
 
     pub fn timeline_start() -> Self {
         glib::Object::builder()
-            .property("kind", &PlaceholderKind::TimelineStart)
+            .property("kind", PlaceholderKind::TimelineStart)
             .build()
     }
 

@@ -82,7 +82,7 @@ glib::wrapper! {
 
 impl Entry {
     pub fn new(type_: EntryType) -> Self {
-        glib::Object::builder().property("type", &type_).build()
+        glib::Object::builder().property("type", type_).build()
     }
 
     /// The type of this entry.
