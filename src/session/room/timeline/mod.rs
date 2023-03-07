@@ -164,54 +164,7 @@ impl Timeline {
     }
 
     fn items_changed(&self, position: u32, removed: u32, added: u32) {
-        // Update the header for events that are allowed to hide the header
-        {
-            let position = position as usize;
-            let added = added as usize;
-            let list = self.imp().list.borrow();
-
-            let mut previous_sender = if position > 0 {
-                list.get(position - 1)
-                    .filter(|item| item.can_hide_header())
-                    .and_then(|item| item.event_sender())
-            } else {
-                None
-            };
-
-            for current in list.range(position..position + added) {
-                let current_sender = current.event_sender();
-
-                if !current.can_hide_header() {
-                    current.set_show_header(false);
-                    previous_sender = None;
-                } else if current_sender != previous_sender {
-                    current.set_show_header(true);
-                    previous_sender = current_sender;
-                } else {
-                    current.set_show_header(false);
-                }
-            }
-
-            // Update the events after the new events
-            for next in list.range((position + added)..) {
-                // After an event with non hideable header the visibility for headers will be
-                // correct
-                if !next.can_hide_header() {
-                    break;
-                }
-
-                // Once the sender changes we can be sure that the visibility for headers will
-                // be correct
-                if next.event_sender() != previous_sender {
-                    next.set_show_header(true);
-                    break;
-                }
-
-                // The `next` has the same sender as the `current`, therefore we don't show the
-                // header and we need to check the event after `next`
-                next.set_show_header(false);
-            }
-        }
+        self.update_items_headers(position as usize, (position + added) as usize);
 
         self.notify("empty");
 
@@ -248,6 +201,7 @@ impl Timeline {
             }
             VecDiff::UpdateAt { index, value } => {
                 let prev_item = list.borrow()[index].clone();
+                let prev_can_hide_header = prev_item.can_hide_header();
                 let pos = self.find_item_position(&prev_item);
 
                 let changed = if !prev_item.try_update_with(&value) {
@@ -262,14 +216,15 @@ impl Timeline {
                 let new_item = list.borrow()[index].clone();
 
                 if let Some(pos) = pos {
-                    let pos = pos as u32;
-
                     if !new_item.is_visible() {
                         // The item was visible but is not anymore, remove it.
-                        self.items_changed(pos, 1, 0);
+                        self.items_changed(pos as u32, 1, 0);
                     } else if changed {
                         // The item is still visible but has changed.
-                        self.items_changed(pos, 1, 1);
+                        self.items_changed(pos as u32, 1, 1);
+                    } else if prev_can_hide_header != new_item.can_hide_header() {
+                        // The item's header visibility might have changed.
+                        self.update_items_headers(pos, pos + 1);
                     }
                 } else if new_item.is_visible() {
                     // The item is now visible.
@@ -329,6 +284,36 @@ impl Timeline {
             }
             VecDiff::Clear {} => {
                 self.clear();
+            }
+        }
+    }
+
+    /// Update the items headers when the events have changed in the given range
+    /// (exclusive).
+    fn update_items_headers(&self, from: usize, mut to: usize) {
+        let list = self.imp().list.borrow();
+
+        let mut previous_sender = if from > 0 {
+            list.get(from - 1)
+                .filter(|item| item.can_hide_header())
+                .and_then(|item| item.event_sender())
+        } else {
+            None
+        };
+
+        // Update the headers of changed events plus the first event after them.
+        to = list.len().min(to + 1);
+        for current in list.range(from..to) {
+            let current_sender = current.event_sender();
+
+            if !current.can_hide_header() {
+                current.set_show_header(false);
+                previous_sender = None;
+            } else if current_sender != previous_sender {
+                current.set_show_header(true);
+                previous_sender = current_sender;
+            } else {
+                current.set_show_header(false);
             }
         }
     }
