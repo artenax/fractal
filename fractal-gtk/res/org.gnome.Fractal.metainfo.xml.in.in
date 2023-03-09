@@ -18,7 +18,7 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="4.4.2-beta2" type="development" date="2023-02-21" urgency="high">
+    <release version="4.4.2" type="stable" date="2023-03-09" urgency="high">
       <description>
         <p>
           This is a maintenance release that fixes the compilation of 4.4 with recent libraries and
