@@ -24,6 +24,7 @@ data/resources/ui/content-invite-subpage.ui
 data/resources/ui/content-invite.ui
 data/resources/ui/content-member-page.ui
 data/resources/ui/content-message-file.ui
+data/resources/ui/content-message-row.ui
 data/resources/ui/content-room-details.ui
 data/resources/ui/content-room-details-general-page.ui
 data/resources/ui/content-room-history.ui

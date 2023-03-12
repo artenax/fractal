@@ -75,24 +75,33 @@ mod imp {
     impl ObjectImpl for MessageRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoolean::builder("show-header")
-                    .explicit_notify()
-                    .build()]
+                vec![
+                    glib::ParamSpecBoolean::builder("show-header")
+                        .explicit_notify()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Event>("event")
+                        .explicit_notify()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
         }
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
             match pspec.name() {
-                "show-header" => self.obj().set_show_header(value.get().unwrap()),
+                "show-header" => obj.set_show_header(value.get().unwrap()),
+                "event" => obj.set_event(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
             match pspec.name() {
-                "show-header" => self.obj().show_header().to_value(),
+                "show-header" => obj.show_header().to_value(),
+                "event" => obj.event().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -153,6 +162,10 @@ impl MessageRow {
         self.imp().content.set_format(format);
     }
 
+    pub fn event(&self) -> Option<Event> {
+        self.imp().event.borrow().clone()
+    }
+
     pub fn set_event(&self, event: Event) {
         let imp = self.imp();
         // Remove signals and bindings from the previous event
@@ -202,6 +215,7 @@ impl MessageRow {
         imp.reactions.set_reaction_list(event.reactions());
         imp.read_receipts.set_list(event.read_receipts());
         imp.event.replace(Some(event));
+        self.notify("event");
     }
 
     fn update_content(&self, event: &Event) {

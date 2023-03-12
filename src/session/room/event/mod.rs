@@ -91,6 +91,9 @@ mod imp {
                     glib::ParamSpecObject::builder::<ReactionList>("reactions")
                         .read_only()
                         .build(),
+                    glib::ParamSpecBoolean::builder("is-edited")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -120,6 +123,7 @@ mod imp {
                 "room" => obj.room().to_value(),
                 "time" => obj.time().to_value(),
                 "reactions" => obj.reactions().to_value(),
+                "is-edited" => obj.is_edited().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -245,6 +249,7 @@ impl Event {
 
     /// Set the underlying SDK timeline item of this `Event`.
     pub fn set_item(&self, item: EventTimelineItem) {
+        let was_edited = self.is_edited();
         let imp = self.imp();
 
         imp.reactions.update(
@@ -260,6 +265,9 @@ impl Event {
         imp.item.replace(Some(item));
 
         self.notify("source");
+        if self.is_edited() != was_edited {
+            self.notify("is-edited");
+        }
     }
 
     /// The raw JSON source for this `Event`, if it has been echoed back
@@ -359,6 +367,19 @@ impl Event {
     /// The content to display for this `Event`.
     pub fn content(&self) -> TimelineItemContent {
         self.imp().item.borrow().as_ref().unwrap().content().clone()
+    }
+
+    /// Whether this `Event` was edited.
+    pub fn is_edited(&self) -> bool {
+        let item_ref = self.imp().item.borrow();
+        let Some(item)= item_ref.as_ref() else {
+            return false;
+        };
+
+        match item.content() {
+            TimelineItemContent::Message(msg) => msg.is_edited(),
+            _ => false,
+        }
     }
 
     /// The reactions to this event.

@@ -41,12 +41,31 @@
               </object>
             </child>
             <child>
-              <object class="ContentMessageContent" id="content">
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <style>
-                  <class name="event-content"/>
-                </style>
+              <object class="GtkBox">
+                <property name="spacing">10</property>
+                <child>
+                  <object class="ContentMessageContent" id="content">
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="event-content"/>
+                    </style>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkImage">
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                    <property name="icon-name">document-edit-symbolic</property>
+                    <property name="tooltip-text" translatable="yes">Edited</property>
+                    <binding name="visible">
+                      <lookup name="is-edited" type="RoomEvent">
+                        <lookup name="event">ContentMessageRow</lookup>
+                      </lookup>
+                    </binding>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
