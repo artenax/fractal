@@ -121,16 +121,7 @@ mod imp {
         }
 
         fn item(&self, position: u32) -> Option<glib::Object> {
-            if self.has_typing.get() && position == self.obj().n_items_in_list() {
-                return Some(TimelinePlaceholder::typing().upcast());
-            }
-
-            self.list
-                .borrow()
-                .iter()
-                .filter(|item| item.is_visible())
-                .nth(position as usize)
-                .map(|o| o.clone().upcast())
+            self.obj().item(position).map(|i| i.upcast())
         }
     }
 }
@@ -163,8 +154,23 @@ impl Timeline {
             .count() as u32
     }
 
+    fn item(&self, position: u32) -> Option<TimelineItem> {
+        let imp = self.imp();
+
+        if imp.has_typing.get() && position == self.n_items_in_list() {
+            return Some(TimelinePlaceholder::typing().upcast());
+        }
+
+        imp.list
+            .borrow()
+            .iter()
+            .filter(|item| item.is_visible())
+            .nth(position as usize)
+            .cloned()
+    }
+
     fn items_changed(&self, position: u32, removed: u32, added: u32) {
-        self.update_items_headers(position as usize, (position + added) as usize);
+        self.update_items_headers(position, added.max(1));
 
         self.notify("empty");
 
@@ -194,46 +200,36 @@ impl Timeline {
                 self.clear();
             }
             VectorDiff::PushFront { value } => {
-                let visible = {
-                    let item = self.create_item(&value);
-                    let visible = item.is_visible();
-                    list.borrow_mut().push_front(item);
-                    visible
-                };
+                let item = self.create_item(&value);
+                let visible = item.is_visible();
+                list.borrow_mut().push_front(item);
 
                 if visible {
                     self.items_changed(0, 0, 1);
                 }
             }
             VectorDiff::PushBack { value } => {
-                let visible = {
-                    let item = self.create_item(&value);
-                    let visible = item.is_visible();
-                    list.borrow_mut().push_back(item);
-                    visible
-                };
+                let item = self.create_item(&value);
+                let visible = item.is_visible();
+                list.borrow_mut().push_back(item);
 
                 if visible {
                     self.items_changed(self.n_items_in_list() - 1, 0, 1);
                 }
             }
             VectorDiff::PopFront => {
-                let visible = {
-                    let item = list.borrow_mut().pop_front().unwrap();
-                    self.remove_item(&item);
-                    item.is_visible()
-                };
+                let item = list.borrow_mut().pop_front().unwrap();
+                self.remove_item(&item);
+                let visible = item.is_visible();
 
                 if visible {
                     self.items_changed(0, 1, 0);
                 }
             }
             VectorDiff::PopBack => {
-                let visible = {
-                    let item = list.borrow_mut().pop_back().unwrap();
-                    self.remove_item(&item);
-                    item.is_visible()
-                };
+                let item = list.borrow_mut().pop_back().unwrap();
+                self.remove_item(&item);
+                let visible = item.is_visible();
 
                 if visible {
                     self.items_changed(self.n_items_in_list(), 1, 0);
@@ -241,11 +237,10 @@ impl Timeline {
             }
             VectorDiff::Insert { index, value } => {
                 let item = self.create_item(&value);
-                let visible = item.is_visible();
-                list.borrow_mut().insert(index, item);
+                list.borrow_mut().insert(index, item.clone());
 
-                if visible {
-                    self.items_changed(index as u32, 0, 1);
+                if let Some(pos) = self.find_item_position(&item) {
+                    self.items_changed(pos, 0, 1);
                 }
             }
             VectorDiff::Set { index, value } => {
@@ -267,18 +262,18 @@ impl Timeline {
                 if let Some(pos) = pos {
                     if !new_item.is_visible() {
                         // The item was visible but is not anymore, remove it.
-                        self.items_changed(pos as u32, 1, 0);
+                        self.items_changed(pos, 1, 0);
                     } else if changed {
                         // The item is still visible but has changed.
-                        self.items_changed(pos as u32, 1, 1);
+                        self.items_changed(pos, 1, 1);
                     } else if prev_can_hide_header != new_item.can_hide_header() {
                         // The item's header visibility might have changed.
-                        self.update_items_headers(pos, pos + 1);
+                        self.update_items_headers(pos, 1);
                     }
                 } else if new_item.is_visible() {
                     // The item is now visible.
                     let pos = self.find_item_position(&new_item).unwrap();
-                    self.items_changed(pos as u32, 0, 1);
+                    self.items_changed(pos, 0, 1);
                 }
             }
             VectorDiff::Remove { index } => {
@@ -288,7 +283,7 @@ impl Timeline {
                 self.remove_item(&item);
 
                 if let Some(pos) = pos {
-                    self.items_changed(pos as u32, 1, 0);
+                    self.items_changed(pos, 1, 0);
                 }
             }
             VectorDiff::Reset { values } => {
@@ -306,13 +301,10 @@ impl Timeline {
         }
     }
 
-    /// Update the items headers when the events have changed in the given range
-    /// (exclusive).
-    fn update_items_headers(&self, from: usize, mut to: usize) {
-        let list = self.imp().list.borrow();
-
-        let mut previous_sender = if from > 0 {
-            list.get(from - 1)
+    /// Update `nb` items' headers starting at `pos`.
+    fn update_items_headers(&self, pos: u32, nb: u32) {
+        let mut previous_sender = if pos > 0 {
+            self.item(pos - 1)
                 .filter(|item| item.can_hide_header())
                 .and_then(|item| item.event_sender())
         } else {
@@ -320,8 +312,11 @@ impl Timeline {
         };
 
         // Update the headers of changed events plus the first event after them.
-        to = list.len().min(to + 1);
-        for current in list.range(from..to) {
+        for current_pos in pos..pos + nb + 1 {
+            let Some(current) = self.item(current_pos) else {
+                break;
+            };
+
             let current_sender = current.event_sender();
 
             if !current.can_hide_header() {
@@ -414,14 +409,14 @@ impl Timeline {
     }
 
     /// Get the position of the given item in this `Timeline`.
-    pub fn find_item_position(&self, item: &TimelineItem) -> Option<usize> {
+    pub fn find_item_position(&self, item: &TimelineItem) -> Option<u32> {
         self.imp()
             .list
             .borrow()
             .iter()
             .filter(|item| item.is_visible())
             .enumerate()
-            .find_map(|(pos, list_item)| (item == list_item).then_some(pos))
+            .find_map(|(pos, list_item)| (item == list_item).then_some(pos as u32))
     }
 
     /// Get the position of the event with the given key in this `Timeline`.
