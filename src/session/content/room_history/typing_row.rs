@@ -125,7 +125,9 @@ impl TypingRow {
         if let Some(list) = list {
             let items_changed_handler_id = list.connect_items_changed(
                 clone!(@weak self as obj => move |list, _pos, removed, added| {
-                    obj.update_label(list, removed, added);
+                    if removed != 0 || added != 0 {
+                        obj.update_label(list);
+                    }
                 }),
             );
             let is_empty_notify_handler_id = list.connect_notify_local(
@@ -145,7 +147,7 @@ impl TypingRow {
                 list,
                 vec![items_changed_handler_id, is_empty_notify_handler_id],
             )));
-            self.update_label(list, 1, 1);
+            self.update_label(list);
         }
 
         if prev_is_empty != self.is_empty() {
@@ -160,14 +162,14 @@ impl TypingRow {
         self.list().filter(|list| !list.is_empty()).is_none()
     }
 
-    pub fn update_label(&self, list: &TypingList, removed: u32, added: u32) {
-        if removed == 0 && added == 0 {
-            // Nothing changes.
+    fn update_label(&self, list: &TypingList) {
+        let len = list.n_items();
+        if len == 0 {
+            // Don't update anything, the `is-empty` property should trigger a revealer
+            // animation.
             return;
         }
 
-        let imp = self.imp();
-        let len = list.n_items();
         let members = list.members();
 
         let label = if len == 1 {
@@ -198,6 +200,6 @@ impl TypingRow {
                 )
             }
         };
-        imp.label.set_label(&label);
+        self.imp().label.set_label(&label);
     }
 }
