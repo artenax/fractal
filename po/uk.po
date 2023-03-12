@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-03-07 10:59+0000\n"
-"PO-Revision-Date: 2023-03-07 20:49+0200\n"
+"POT-Creation-Date: 2023-03-12 16:48+0000\n"
+"PO-Revision-Date: 2023-03-12 19:30+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -390,6 +390,11 @@ msgstr "Пошук учасників в кімнаті"
 #: src/session/room/event/event_actions.rs:303
 msgid "Save"
 msgstr "Зберегти"
+
+#: data/resources/ui/content-message-row.ui:61
+#| msgid "_Edit"
+msgid "Edited"
+msgstr "Змінено"
 
 #: data/resources/ui/content-room-details.ui:4
 #: src/session/content/room_details/mod.rs:200
@@ -821,7 +826,6 @@ msgid "_Kick"
 msgstr "Ви_кинути"
 
 #: data/resources/ui/room-creation.ui:49
-#| msgid "_New Room"
 msgid "New Room"
 msgstr "Нова кімната"
 
@@ -834,7 +838,6 @@ msgid "Room Visibility"
 msgstr "Видимість кімнати"
 
 #: data/resources/ui/room-creation.ui:84
-#| msgid "_Private"
 msgid "Private"
 msgstr "Приватна"
 
@@ -843,7 +846,6 @@ msgid "Only invited people can join this room"
 msgstr "До цієї кімнати можуть долучатися лише запрошені люди"
 
 #: data/resources/ui/room-creation.ui:98
-#| msgid "P_ublic"
 msgid "Public"
 msgstr "Відкрита"
 
@@ -860,25 +862,21 @@ msgid "Cannot be disabled later"
 msgstr "Не можна вимикати пізніше"
 
 #: data/resources/ui/room-creation.ui:136
-#| msgid ""
-#| "Fractal doesn’t support online backup of room encryption keys so you "
-#| "might lose access to your encrypted message history."
 msgid ""
 "Fractal does not support online backup for encryption keys yet, so you will "
 "need to back them up manually or your message history will be lost if you "
 "lose access to all your sessions."
 msgstr ""
 "У «Фракталі» не передбачено підтримки інтерактивного резервного копіювання "
-"ключів шифрування кімнати, тому вам доведеться робити їхні резервні копії"
-" вручну, інакше ви втратите ваш журнал повідомлень, якщо втратите доступ до"
-" усіх ваших сеансів."
+"ключів шифрування кімнати, тому вам доведеться робити їхні резервні копії "
+"вручну, інакше ви втратите ваш журнал повідомлень, якщо втратите доступ до "
+"усіх ваших сеансів."
 
 #: data/resources/ui/room-creation.ui:150
 msgid "Room Address"
 msgstr "Адреса кімнати"
 
 #: data/resources/ui/room-creation.ui:200
-#| msgid "Create new Room"
 msgid "_Create Room"
 msgstr "С_творити кімнату"
 
@@ -1854,19 +1852,19 @@ msgstr "{user} змінено аватар."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/room_history/typing_row.rs:177
+#: src/session/content/room_history/typing_row.rs:183
 msgid "<b>{user}</b> is typing…"
 msgstr "<b>{user}</b> вводить повідомлення…"
 
 #. Translators: Do NOT translate the content between '{' and '}', these are
 #. variable names.
-#: src/session/content/room_history/typing_row.rs:187
+#: src/session/content/room_history/typing_row.rs:193
 msgid "<b>{user1}</b> and <b>{user2}</b> are typing…"
 msgstr "<b>{user1}</b> і <b>{user2}</b> вводять повідомлення…"
 
 #. Translators: Do NOT translate the content between '{' and '}', these are
 #. variable names.
-#: src/session/content/room_history/typing_row.rs:194
+#: src/session/content/room_history/typing_row.rs:200
 msgid "<b>{user1}</b>, <b>{user2}</b> and 1 other are typing…"
 msgid_plural "<b>{user1}</b>, <b>{user2}</b> and {n} others are typing…"
 msgstr[0] "<b>{user1}</b>, <b>{user2}</b> та {n} інший вводять повідомлення…"
