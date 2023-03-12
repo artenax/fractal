@@ -58,7 +58,16 @@ mod imp {
         }
     }
 
-    impl TimelineItemImpl for TimelinePlaceholder {}
+    impl TimelineItemImpl for TimelinePlaceholder {
+        fn id(&self) -> String {
+            match self.obj().kind() {
+                PlaceholderKind::Spinner => "TimelinePlaceholder::Spinner",
+                PlaceholderKind::Typing => "TimelinePlaceholder::Typing",
+                PlaceholderKind::TimelineStart => "TimelinePlaceholder::TimelineStart",
+            }
+            .to_owned()
+        }
+    }
 }
 
 glib::wrapper! {

@@ -16,7 +16,12 @@ mod imp {
     }
 
     impl ObjectImpl for TimelineNewMessagesDivider {}
-    impl TimelineItemImpl for TimelineNewMessagesDivider {}
+
+    impl TimelineItemImpl for TimelineNewMessagesDivider {
+        fn id(&self) -> String {
+            "TimelineNewMessagesDivider".to_owned()
+        }
+    }
 }
 
 glib::wrapper! {

@@ -1,3 +1,5 @@
+use std::fmt;
+
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use matrix_sdk::{
     media::MediaEventContent,
@@ -40,6 +42,15 @@ pub enum EventKey {
 
     /// This is the remote echo of the event, the key is its event ID.
     EventId(OwnedEventId),
+}
+
+impl fmt::Display for EventKey {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            EventKey::TransactionId(txn_id) => write!(f, "transaction_id:{txn_id}"),
+            EventKey::EventId(event_id) => write!(f, "event_id:{event_id}"),
+        }
+    }
 }
 
 #[derive(Clone, Debug, glib::Boxed)]
@@ -130,6 +141,10 @@ mod imp {
     }
 
     impl TimelineItemImpl for Event {
+        fn id(&self) -> String {
+            format!("Event::{}", self.obj().key())
+        }
+
         fn is_visible(&self) -> bool {
             match self.obj().content() {
                 TimelineItemContent::Message(message) => matches!(

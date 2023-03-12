@@ -58,7 +58,17 @@ mod imp {
         }
     }
 
-    impl TimelineItemImpl for TimelineDayDivider {}
+    impl TimelineItemImpl for TimelineDayDivider {
+        fn id(&self) -> String {
+            format!(
+                "TimelineDayDivider::{}",
+                self.obj()
+                    .date()
+                    .map(|d| d.format("%F").unwrap())
+                    .unwrap_or_default()
+            )
+        }
+    }
 }
 
 glib::wrapper! {

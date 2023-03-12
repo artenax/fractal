@@ -17,6 +17,7 @@ mod imp {
     #[repr(C)]
     pub struct TimelineItemClass {
         pub parent_class: glib::object::ObjectClass,
+        pub id: fn(&super::TimelineItem) -> String,
         pub is_visible: fn(&super::TimelineItem) -> bool,
         pub selectable: fn(&super::TimelineItem) -> bool,
         pub can_hide_header: fn(&super::TimelineItem) -> bool,
@@ -25,6 +26,11 @@ mod imp {
 
     unsafe impl ClassStruct for TimelineItemClass {
         type Type = TimelineItem;
+    }
+
+    pub(super) fn timeline_item_id(this: &super::TimelineItem) -> String {
+        let klass = this.class();
+        (klass.as_ref().id)(this)
     }
 
     pub(super) fn timeline_item_is_visible(this: &super::TimelineItem) -> bool {
@@ -161,6 +167,11 @@ impl TimelineItem {
 /// To override the behavior of these methods, override the corresponding method
 /// of `TimelineItemImpl`.
 pub trait TimelineItemExt: 'static {
+    /// A unique ID for this `TimelineItem`.
+    ///
+    /// For debugging purposes.
+    fn id(&self) -> String;
+
     /// Whether this `TimelineItem` is visible.
     ///
     /// Defaults to `true`.
@@ -191,6 +202,10 @@ pub trait TimelineItemExt: 'static {
 }
 
 impl<O: IsA<TimelineItem>> TimelineItemExt for O {
+    fn id(&self) -> String {
+        imp::timeline_item_id(self.upcast_ref())
+    }
+
     fn is_visible(&self) -> bool {
         imp::timeline_item_is_visible(self.upcast_ref())
     }
@@ -229,6 +244,8 @@ impl<O: IsA<TimelineItem>> TimelineItemExt for O {
 /// Overriding a method from this Trait overrides also its behavior in
 /// `TimelineItemExt`.
 pub trait TimelineItemImpl: ObjectImpl {
+    fn id(&self) -> String;
+
     fn is_visible(&self) -> bool {
         true
     }
@@ -257,6 +274,7 @@ where
 
         let klass = class.as_mut();
 
+        klass.id = id_trampoline::<T>;
         klass.is_visible = is_visible_trampoline::<T>;
         klass.selectable = selectable_trampoline::<T>;
         klass.can_hide_header = can_hide_header_trampoline::<T>;
@@ -265,6 +283,15 @@ where
 }
 
 // Virtual method implementation trampolines.
+fn id_trampoline<T>(this: &TimelineItem) -> String
+where
+    T: ObjectSubclass + TimelineItemImpl,
+    T::Type: IsA<TimelineItem>,
+{
+    let this = this.downcast_ref::<T::Type>().unwrap();
+    this.imp().id()
+}
+
 fn is_visible_trampoline<T>(this: &TimelineItem) -> bool
 where
     T: ObjectSubclass + TimelineItemImpl,
