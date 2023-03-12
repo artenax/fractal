@@ -159,7 +159,11 @@ impl TypingRow {
 
     /// Whether the list is empty.
     pub fn is_empty(&self) -> bool {
-        self.list().filter(|list| !list.is_empty()).is_none()
+        let Some(list) = self.list() else {
+            return true;
+        };
+
+        list.is_empty()
     }
 
     fn update_label(&self, list: &TypingList) {
