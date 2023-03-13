@@ -215,20 +215,8 @@ mod imp {
                 "notification-count" => obj.notification_count().to_value(),
                 "latest-unread" => obj.latest_unread().to_value(),
                 "latest-read" => obj.latest_read().to_value(),
-                "predecessor" => obj.predecessor().map_or_else(
-                    || {
-                        let none: Option<&str> = None;
-                        none.to_value()
-                    },
-                    |id| id.as_ref().to_value(),
-                ),
-                "successor" => obj.successor().map_or_else(
-                    || {
-                        let none: Option<&str> = None;
-                        none.to_value()
-                    },
-                    |id| id.as_ref().to_value(),
-                ),
+                "predecessor" => obj.predecessor().map(|id| id.as_str()).to_value(),
+                "successor" => obj.successor().map(|id| id.as_str()).to_value(),
                 "verification" => obj.verification().to_value(),
                 "encrypted" => obj.is_encrypted().to_value(),
                 "typing-list" => obj.typing_list().to_value(),

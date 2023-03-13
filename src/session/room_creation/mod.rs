@@ -15,11 +15,7 @@ use matrix_sdk::{
     },
     HttpError, RumaApiError,
 };
-use ruma::{
-    events::{room::encryption::RoomEncryptionEventContent, EmptyStateKey, InitialStateEvent},
-    serde::Raw,
-    uint, EventEncryptionAlgorithm,
-};
+use ruma::events::{room::encryption::RoomEncryptionEventContent, InitialStateEvent};
 
 use crate::{
     components::SpinnerButton,
@@ -191,20 +187,9 @@ impl RoomCreation {
             request.visibility = Visibility::Private;
 
             if imp.encryption.is_active() {
-                let content = assign!(
-                    RoomEncryptionEventContent::new(EventEncryptionAlgorithm::MegolmV1AesSha2),
-                    {
-                        // Values from the recommended defaults of the spec.
-                        rotation_period_ms: Some(uint!(604800000)),
-                        rotation_period_msgs: Some(uint!(100)),
-                    }
-                );
-                let event = InitialStateEvent {
-                    content,
-                    state_key: EmptyStateKey,
-                };
-                let raw_event = Raw::new(&event).unwrap().cast();
-                request.initial_state = vec![raw_event];
+                let event =
+                    InitialStateEvent::new(RoomEncryptionEventContent::with_recommended_defaults());
+                request.initial_state = vec![event.to_raw_any()];
             }
         } else {
             // The room is public.

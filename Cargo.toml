@@ -75,7 +75,7 @@ features = ["v4_6"]
 
 [dependencies.matrix-sdk]
 git = "https://github.com/matrix-org/matrix-rust-sdk.git"
-rev = "2f974c11f775a4e940e5765893f2585f801b5c00"
+rev = "a8204987be9a2696be183c3954a8569fa2141661"
 features = [
     "socks",
     "sso-login",
@@ -87,11 +87,13 @@ features = [
 
 [dependencies.matrix-sdk-sled]
 git = "https://github.com/matrix-org/matrix-rust-sdk.git"
-rev = "2f974c11f775a4e940e5765893f2585f801b5c00"
+rev = "a8204987be9a2696be183c3954a8569fa2141661"
 features = ["crypto-store"]
 
 [dependencies.ruma]
-version = "0.8.2"
+# version = "0.8.2"
+git = "https://github.com/ruma/ruma.git"
+rev = "8eea3e05490fa9a318f9ed66c3a75272e6ef0ee5"
 features = ["unstable-unspecified", "client-api-c", "unstable-sanitize"]
 
 [dependencies.shumate]
