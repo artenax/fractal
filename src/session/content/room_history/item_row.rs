@@ -28,7 +28,7 @@ mod imp {
         pub room_history: WeakRef<RoomHistory>,
         pub item: RefCell<Option<TimelineItem>>,
         pub action_group: RefCell<Option<gio::SimpleActionGroup>>,
-        pub notify_handler: RefCell<Option<SignalHandlerId>>,
+        pub notify_handlers: RefCell<Vec<SignalHandlerId>>,
         pub binding: RefCell<Option<glib::Binding>>,
         pub reaction_chooser: RefCell<Option<ReactionChooser>>,
         pub emoji_chooser: RefCell<Option<gtk::EmojiChooser>>,
@@ -74,6 +74,14 @@ mod imp {
             }
         }
 
+        fn constructed(&self) {
+            self.parent_constructed();
+
+            self.obj().connect_parent_notify(|obj| {
+                obj.update_highlight();
+            });
+        }
+
         fn dispose(&self) {
             if let Some(event) = self
                 .item
@@ -81,9 +89,13 @@ mod imp {
                 .as_ref()
                 .and_then(|item| item.downcast_ref::<Event>())
             {
-                if let Some(handler) = self.notify_handler.borrow_mut().take() {
+                let handlers = self.notify_handlers.take();
+
+                for handler in handlers {
                     event.disconnect(handler);
                 }
+            } else if let Some(binding) = self.binding.take() {
+                binding.unbind();
             }
         }
     }
@@ -210,21 +222,30 @@ impl ItemRow {
             .as_ref()
             .and_then(|item| item.downcast_ref::<Event>())
         {
-            if let Some(handler) = imp.notify_handler.borrow_mut().take() {
+            let handlers = imp.notify_handlers.take();
+
+            for handler in handlers {
                 event.disconnect(handler);
             }
-        } else if let Some(binding) = imp.binding.borrow_mut().take() {
+        } else if let Some(binding) = imp.binding.take() {
             binding.unbind()
         }
 
         if let Some(ref item) = item {
             if let Some(event) = item.downcast_ref::<Event>() {
-                let notify_handler =
+                let source_notify_handler =
                     event.connect_source_notify(clone!(@weak self as obj => move |event| {
                         obj.set_event_widget(event);
                         obj.set_action_group(obj.set_event_actions(Some(event.upcast_ref())));
                     }));
-                imp.notify_handler.replace(Some(notify_handler));
+                let is_highlighted_notify_handler = event.connect_notify_local(
+                    Some("is-highlighted"),
+                    clone!(@weak self as obj => move |_, _| {
+                        obj.update_highlight();
+                    }),
+                );
+                imp.notify_handlers
+                    .replace(vec![source_notify_handler, is_highlighted_notify_handler]);
 
                 self.set_event_widget(event);
                 self.set_action_group(self.set_event_actions(Some(event.upcast_ref())));
@@ -321,6 +342,8 @@ impl ItemRow {
             }
         }
         imp.item.replace(item);
+
+        self.update_highlight();
     }
 
     fn set_event_widget(&self, event: &Event) {
@@ -350,6 +373,21 @@ impl ItemRow {
                 child.set_event(event.clone());
             }
         }
+    }
+
+    /// Update the highlight state of this row.
+    fn update_highlight(&self) {
+        let Some(parent) = self.parent() else {
+            return;
+        };
+
+        let item_ref = self.imp().item.borrow();
+        if let Some(event) = item_ref.as_ref().and_then(|i| i.downcast_ref::<Event>()) {
+            if event.is_highlighted() {
+                return parent.add_css_class("highlight");
+            }
+        }
+        parent.remove_css_class("highlight");
     }
 
     fn show_emoji_chooser(&self, popover: &gtk::PopoverMenu) {

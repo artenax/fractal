@@ -105,6 +105,9 @@ mod imp {
                     glib::ParamSpecBoolean::builder("is-edited")
                         .read_only()
                         .build(),
+                    glib::ParamSpecBoolean::builder("is-highlighted")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -135,6 +138,7 @@ mod imp {
                 "time" => obj.time().to_value(),
                 "reactions" => obj.reactions().to_value(),
                 "is-edited" => obj.is_edited().to_value(),
+                "is-highlighted" => obj.is_highlighted().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -265,6 +269,7 @@ impl Event {
     /// Set the underlying SDK timeline item of this `Event`.
     pub fn set_item(&self, item: EventTimelineItem) {
         let was_edited = self.is_edited();
+        let was_highlighted = self.is_highlighted();
         let imp = self.imp();
 
         imp.reactions.update(
@@ -282,6 +287,9 @@ impl Event {
         self.notify("source");
         if self.is_edited() != was_edited {
             self.notify("is-edited");
+        }
+        if self.is_highlighted() != was_highlighted {
+            self.notify("is-highlighted");
         }
     }
 
@@ -387,7 +395,7 @@ impl Event {
     /// Whether this `Event` was edited.
     pub fn is_edited(&self) -> bool {
         let item_ref = self.imp().item.borrow();
-        let Some(item)= item_ref.as_ref() else {
+        let Some(item) = item_ref.as_ref() else {
             return false;
         };
 
@@ -395,6 +403,16 @@ impl Event {
             TimelineItemContent::Message(msg) => msg.is_edited(),
             _ => false,
         }
+    }
+
+    /// Whether this `Event` should be highlighted.
+    pub fn is_highlighted(&self) -> bool {
+        let item_ref = self.imp().item.borrow();
+        let Some(item) = item_ref.as_ref().and_then(|i| i.as_remote()) else {
+            return false;
+        };
+
+        item.is_highlighted()
     }
 
     /// The reactions to this event.

@@ -393,7 +393,7 @@ login {
 }
 
 .room-history row.highlight {
-  background-color: alpha(@accent_bg_color, .1);
+  background-color: alpha(@accent_bg_color, .2);
 }
 
 .room-history .event-content .emoji {
