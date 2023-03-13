@@ -1839,7 +1839,7 @@ msgstr "<b>{user}</b> schreibt gerade …"
 #. variable names.
 #: src/session/content/room_history/typing_row.rs:219
 msgid "<b>{user1}</b> and <b>{user2}</b> are typing…"
-msgstr "<b>{user1}</b> und <b>{user2} schreiben gerade …"
+msgstr "<b>{user1}</b> und <b>{user2}</b> schreiben gerade …"
 
 #. Translators: Do NOT translate the content between '{' and '}', these are
 #. variable names.
