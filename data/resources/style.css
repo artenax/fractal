@@ -388,6 +388,10 @@ login {
   margin-right: 46px;
 }
 
+.room-history row.selected {
+  background-color: alpha(currentColor, 0.1);
+}
+
 .room-history row.highlight {
   background-color: alpha(@accent_bg_color, .1);
 }

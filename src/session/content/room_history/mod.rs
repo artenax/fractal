@@ -596,10 +596,10 @@ impl RoomHistory {
         }
 
         if let Some(event) = &prev_event {
-            self.set_event_highlight(&event.event_id().unwrap(), false);
+            self.set_event_selected(&event.event_id().unwrap(), false);
         }
         if let Some(event) = &event {
-            self.set_event_highlight(&event.event_id().unwrap(), true);
+            self.set_event_selected(&event.event_id().unwrap(), true);
         }
 
         self.imp().related_event.replace(event);
@@ -1211,7 +1211,7 @@ impl RoomHistory {
         }
     }
 
-    fn set_event_highlight(&self, event_id: &EventId, highlight: bool) {
+    fn set_event_selected(&self, event_id: &EventId, selected: bool) {
         let mut child = self.imp().listview.first_child();
         while let Some(widget) = child {
             if widget
@@ -1222,10 +1222,10 @@ impl RoomHistory {
                 .filter(|event| event.event_id().as_deref() == Some(event_id))
                 .is_some()
             {
-                if highlight && !widget.has_css_class("highlight") {
-                    widget.add_css_class("highlight");
-                } else if !highlight && widget.has_css_class("highlight") {
-                    widget.remove_css_class("highlight");
+                if selected {
+                    widget.add_css_class("selected");
+                } else {
+                    widget.remove_css_class("selected");
                 }
 
                 break;
