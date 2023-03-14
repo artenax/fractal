@@ -1,15 +1,15 @@
 # Hungarian translation for fractal.
-# Copyright (C) 2019, 2020, 2021 Free Software Foundation, Inc.
+# Copyright (C) 2019, 2020, 2021, 2022, 2023 Free Software Foundation, Inc.
 # This file is distributed under the same license as the fractal package.
 #
-# Balázs Meskó <mesko.balazs at fsf dot hu>, 2019.
-# Balázs Úr <ur.balazs at fsf dot hu>, 2019, 2020, 2021.
+# Balázs Meskó <mesko.balazs at fsf dot hu>, 2019, 2022.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2019, 2020, 2021, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2021-02-05 12:39+0000\n"
-"PO-Revision-Date: 2021-02-14 01:42+0100\n"
+"POT-Creation-Date: 2023-03-12 16:48+0000\n"
+"PO-Revision-Date: 2023-03-15 00:02+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -17,96 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 22.08.2\n"
 
-#: fractal-gtk/res/gtk/help-overlay.ui:13
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Általános"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:18
-msgctxt "shortcut window"
-msgid "Close the active room"
-msgstr "Az aktív szoba bezárása"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:25
-msgctxt "shortcut window"
-msgid "Open main menu"
-msgstr "Főmenü megnyitása"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:32
-msgctxt "shortcut window"
-msgid "Open / close the room sidebar search"
-msgstr "A szoba oldalsáv keresés megnyitása / bezárása"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:39
-msgctxt "shortcut window"
-msgid "Open the previous room in the list"
-msgstr "Az előző szoba megnyitása a listáról"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:46
-msgctxt "shortcut window"
-msgid "Open the next room in the list"
-msgstr "A következő szoba megnyitása a listáról"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:53
-msgctxt "shortcut window"
-msgid "Open the previous room with unread messages in the list"
-msgstr "Az olvasatlan üzenetekkel rendelkező előző szoba megnyitása a listáról"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:60
-msgctxt "shortcut window"
-msgid "Open the next room with unread messages in the list"
-msgstr ""
-"Az olvasatlan üzenetekkel rendelkező következő szoba megnyitása a listáról"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:67
-msgctxt "shortcut window"
-msgid "Open the first room of the list"
-msgstr "A lista első szobájának megnyitása"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:74
-msgctxt "shortcut window"
-msgid "Open the last room of the list"
-msgstr "A lista utolsó szobájának megnyitása"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:81
-msgctxt "shortcut window"
-msgid "View older messages"
-msgstr "Régebbi üzenetek megtekintése"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:88
-msgctxt "shortcut window"
-msgid "View newer messages"
-msgstr "Újabb üzenetek megtekintése"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:94
-msgctxt "shortcut window"
-msgid "Keyboard Shortcuts"
-msgstr "Gyorsbillentyűk"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:101
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "Kilépés"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:110
-msgctxt "shortcut message"
-msgid "Composing a new message"
-msgstr "Új üzenet írása"
-
-#: fractal-gtk/res/gtk/help-overlay.ui:115
-msgctxt "shortcut message"
-msgid "Write on a new line"
-msgstr "Írás új sorban"
-
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:3
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:5
-#: fractal-gtk/res/ui/login_flow.ui:19 fractal-gtk/src/appop/mod.rs:170
+#: data/org.gnome.Fractal.desktop.in.in:3
+#: data/org.gnome.Fractal.metainfo.xml.in.in:7
 msgid "Fractal"
 msgstr "Fractal"
 
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:4
+#: data/org.gnome.Fractal.desktop.in.in:4
 msgid ""
 "Fractal is a decentralized, secure messaging client for collaborative group "
 "communication."
@@ -114,61 +32,55 @@ msgstr ""
 "A Fractal egy decentralizált, biztonságos üzenetküldő kliens együttműködő "
 "csoportos kommunikációhoz."
 
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:5
+#: data/org.gnome.Fractal.desktop.in.in:5
 msgid "Fractal group messaging"
 msgstr "Fractal csoportos üzenetküldés"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:14
-#| msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;"
+#: data/org.gnome.Fractal.desktop.in.in:14
 msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
 msgstr "Matrix;matrix.org;csevegés;irc;kommunikáció;beszélgetés;riot;element;"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:13
-msgid "Type of password and token storage"
-msgstr "A jelszó- és tokentároló típusa"
+#: data/org.gnome.Fractal.gschema.xml.in:6
+msgid "Window width"
+msgstr "Ablak szélessége"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:14
-msgid "Type of password and token storage, default value is: Secret Service"
-msgstr "A jelszó- és tokentároló típusa, alapértelmezett érték: Secret Service"
+#: data/org.gnome.Fractal.gschema.xml.in:10
+msgid "Window height"
+msgstr "Ablak magassága"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:21
-msgid "If markdown sending is active"
-msgstr "Aktív-e a markdown küldés"
+#: data/org.gnome.Fractal.gschema.xml.in:14
+#| msgid "Whether the main window is maximized on startup"
+msgid "Window maximized state"
+msgstr "Az ablak maximalizált állapota"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:22
-msgid "Whether support for sending markdown messages is on"
-msgstr "A markdown üzenetek küldésének támogatása be van-e kapcsolva"
+#: data/org.gnome.Fractal.gschema.xml.in:18
+msgid "Enable markdown formatting"
+msgstr "Markdown formázás engedélyezése"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:29
-msgid "X position of the main window on startup"
-msgstr "A főablak X-pozíciója indításkor"
+#: data/org.gnome.Fractal.gschema.xml.in:19
+msgid "Whether messages should be processed as markdown when sending them"
+msgstr "Az üzenetek Markdownként legyenek-e feldolgozva az elküldésükkor"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:34
-msgid "Y position of the main window on startup"
-msgstr "A főablak Y-pozíciója indításkor"
+#: data/org.gnome.Fractal.gschema.xml.in:23
+#| msgid "Account Settings"
+msgid "Session settings"
+msgstr "Munkamenet beállításai"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:39
-msgid "Width of the main window on startup"
-msgstr "A főablak szélessége indításkor"
+#: data/org.gnome.Fractal.gschema.xml.in:24
+msgid "Serialized list of settings per session"
+msgstr "Munkamenetenkénti beállítások sorosított listája"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:44
-msgid "Height of the main window on startup"
-msgstr "A főablak magassága indításkor"
+#: data/org.gnome.Fractal.gschema.xml.in:28
+#| msgid "Current _Password"
+msgid "Current session"
+msgstr "Jelenlegi munkamenet"
 
-#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:49
-msgid "Whether the main window is maximized on startup"
-msgstr "A főablak teljes méretben induljon-e"
-
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:8
-msgid "Daniel García Moreno"
-msgstr "Daniel García Moreno"
-
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:9
+#: data/org.gnome.Fractal.metainfo.xml.in.in:8
 msgid "Matrix group messaging app"
 msgstr "Matrix csoportos üzenetküldő alkalmazás"
 
-#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:11
+#: data/org.gnome.Fractal.metainfo.xml.in.in:10
 msgid ""
 "Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
 "is optimized for collaboration in large groups, such as free software "
@@ -178,934 +90,2360 @@ msgstr ""
 "nagy csoportok közti együttműködésre lett optimalizálva, mint például a "
 "szabad szoftveres projektek."
 
-#: fractal-gtk/res/ui/account_settings.ui:14 fractal-gtk/res/ui/main_menu.ui:94
-msgid "Account Settings"
-msgstr "Fiókbeállítások"
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:171
+#| msgid "Fractal"
+msgid "The Fractal Team"
+msgstr "A Fractal csapata"
 
-#: fractal-gtk/res/ui/account_settings.ui:30
-#: fractal-gtk/res/ui/main_window.ui:217 fractal-gtk/res/ui/main_window.ui:454
-#: fractal-gtk/res/ui/media_viewer.ui:36 fractal-gtk/res/ui/room_settings.ui:30
-msgid "Back"
-msgstr "Vissza"
+#: data/resources/ui/account-settings-change-password-subpage.ui:12
+#: data/resources/ui/account-settings-user-page.ui:62
+#| msgid "_New Password"
+msgid "Change Password"
+msgstr "Jelszó megváltoztatása"
 
-#: fractal-gtk/res/ui/account_settings.ui:92
-msgid "Other people can find you by searching for any of these identifiers."
-msgstr "Mások ezen azonosítók egyikének keresésével találhatják meg Önt."
+#: data/resources/ui/account-settings-change-password-subpage.ui:60
+msgid "Changing your password will log you out of your other sessions."
+msgstr "A jelszó megváltoztatásával ki fog jelentkezni a többi munkamenetből."
 
-#: fractal-gtk/res/ui/account_settings.ui:115
-msgid "Name"
-msgstr "Név"
-
-#: fractal-gtk/res/ui/account_settings.ui:138
-msgid "Type in your name"
-msgstr "Írja be a nevét"
-
-#: fractal-gtk/res/ui/account_settings.ui:167
-msgid "Email"
-msgstr "E-mail"
-
-#: fractal-gtk/res/ui/account_settings.ui:196
-msgid "Phone"
-msgstr "Telefon"
-
-#: fractal-gtk/res/ui/account_settings.ui:225
-msgid "Password"
-msgstr "Jelszó"
-
-#: fractal-gtk/res/ui/account_settings.ui:287
-msgid "Advanced Information"
-msgstr "Speciális információk"
-
-#: fractal-gtk/res/ui/account_settings.ui:312
-msgid "Homeserver"
-msgstr "Gazdakiszolgáló"
-
-#: fractal-gtk/res/ui/account_settings.ui:341
-msgid "Matrix ID"
-msgstr "Matrix-azonosító"
-
-#: fractal-gtk/res/ui/account_settings.ui:370
-msgid "Device ID"
-msgstr "Eszközazonosító"
-
-#: fractal-gtk/res/ui/account_settings.ui:410
-#: fractal-gtk/res/ui/account_settings.ui:466
-msgid "Deactivate Account"
-msgstr "Fiók deaktiválása"
-
-#: fractal-gtk/res/ui/account_settings.ui:431
+#: data/resources/ui/account-settings-change-password-subpage.ui:71
 msgid ""
-"Deactivating your account means that you will lose all your messages, "
-"contacts, and files."
+"Fractal’s support for encryption is unstable so you might lose access to "
+"your encrypted message history. It is recommended to backup your encryption "
+"keys before proceeding."
 msgstr ""
-"A fiók deaktiválása azt jelenti, hogy elveszíti az összes üzenetét, "
-"névjegyét és fájlját."
-
-#: fractal-gtk/res/ui/account_settings.ui:441
-msgid ""
-"To confirm that you really want to deactivate this account type in your "
-"password:"
-msgstr ""
-"Annak megerősítéséhez, hogy valóban deaktiválni szeretné ezt a fiókot, írja "
-"be a jelszavát:"
-
-#: fractal-gtk/res/ui/account_settings.ui:456
-msgid "Also erase all messages"
-msgstr "Az összes üzenet törlése"
-
-#: fractal-gtk/res/ui/account_settings.ui:523
-msgid "Check your email"
-msgstr "Nézze meg az e-mailjét"
-
-#: fractal-gtk/res/ui/account_settings.ui:526
-#: fractal-gtk/res/ui/direct_chat.ui:83 fractal-gtk/res/ui/invite_user.ui:84
-#: fractal-gtk/res/ui/join_room.ui:71 fractal-gtk/res/ui/leave_room.ui:31
-#: fractal-gtk/res/ui/new_room.ui:24 fractal-gtk/src/appop/account.rs:87
-#: fractal-gtk/src/appop/account.rs:143 fractal-gtk/src/ui/attach.rs:41
-msgid "Cancel"
-msgstr "Mégse"
-
-#: fractal-gtk/res/ui/account_settings.ui:534
-msgid "Apply"
-msgstr "Alkalmaz"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:8
-msgid "Room Directory"
-msgstr "Szobajegyzék"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:12
-msgid "Join Room"
-msgstr "Csatlakozás szobához"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:18
-msgid "New Room"
-msgstr "Új szoba"
-
-#: fractal-gtk/res/ui/add_room_menu.ui:22
-msgid "New Direct Chat"
-msgstr "Új közvetlen csevegés"
-
-#: fractal-gtk/res/ui/audio_player.ui:34 fractal-gtk/res/ui/audio_player.ui:45
-msgid "Play"
-msgstr "Lejátszás"
-
-#: fractal-gtk/res/ui/direct_chat.ui:80
-msgid "New direct chat"
-msgstr "Új közvetlen csevegés"
-
-#: fractal-gtk/res/ui/direct_chat.ui:91
-msgid "Start chat"
-msgstr "Csevegés indítása"
-
-#: fractal-gtk/res/ui/invite.ui:18
-msgid "Invitation"
-msgstr "Meghívás"
-
-#: fractal-gtk/res/ui/invite.ui:32
-msgid "Reject"
-msgstr "Elutasítás"
-
-#: fractal-gtk/res/ui/invite.ui:40
-msgid "Accept"
-msgstr "Elfogadás"
-
-#: fractal-gtk/res/ui/invite_user.ui:81 fractal-gtk/res/ui/invite_user.ui:92
-#: fractal-gtk/src/ui/invite.rs:133
-msgid "Invite"
-msgstr "Meghívás"
-
-#: fractal-gtk/res/ui/join_room.ui:34
-msgid "ID or Alias"
-msgstr "Azonosító vagy álnév"
-
-#: fractal-gtk/res/ui/join_room.ui:68
-msgid "Join room"
-msgstr "Csatlakozás szobához"
-
-#: fractal-gtk/res/ui/join_room.ui:79 fractal-gtk/src/ui/directory.rs:245
-msgid "Join"
-msgstr "Csatlakozás"
-
-#: fractal-gtk/res/ui/kicked_room.ui:29 fractal-gtk/res/ui/msg_src_window.ui:32
-msgid "Close"
-msgstr "Bezárás"
-
-#: fractal-gtk/res/ui/leave_room.ui:18
-msgid "Leave?"
-msgstr "Kilép?"
-
-#: fractal-gtk/res/ui/leave_room.ui:19
-msgid ""
-"Once you leave, you won’t be able to interact with people in the room "
-"anymore."
-msgstr ""
-"Ha kilép, akkor többé nem fog tudni kapcsolatba lépni a szobában lévő "
-"emberekkel."
-
-#: fractal-gtk/res/ui/leave_room.ui:39
-msgid "Leave room"
-msgstr "Szoba elhagyása"
-
-#: fractal-gtk/res/ui/login_flow.ui:29
-msgid "Welcome to Fractal"
-msgstr "Üdvözli a Fractal"
-
-#: fractal-gtk/res/ui/login_flow.ui:42 fractal-gtk/res/ui/login_flow.ui:211
-msgid "_Log In"
-msgstr "_Bejelentkezés"
-
-#: fractal-gtk/res/ui/login_flow.ui:55
-msgid "_Create Account"
-msgstr "_Fiók létrehozása"
-
-#: fractal-gtk/res/ui/login_flow.ui:84
-msgid "Choose Provider"
-msgstr "Szolgáltató választása"
-
-#: fractal-gtk/res/ui/login_flow.ui:107
-msgid "_Next"
-msgstr "_Következő"
-
-#: fractal-gtk/res/ui/login_flow.ui:125
-msgid "What is your Provider?"
-msgstr "Mi a szolgáltatója?"
-
-#: fractal-gtk/res/ui/login_flow.ui:146
-msgid "Matrix provider domain, e.g. myserver.co"
-msgstr "Matrix szolgáltató tartomány, például myserver.co"
-
-#: fractal-gtk/res/ui/login_flow.ui:161
-msgid "The domain may not be empty."
-msgstr "A tartomány nem lehet üres."
-
-#: fractal-gtk/res/ui/login_flow.ui:188
-msgid "Log In"
-msgstr "Bejelentkezés"
-
-#: fractal-gtk/res/ui/login_flow.ui:236
-msgid "_User ID"
-msgstr "_Felhasználó-azonosító"
-
-#: fractal-gtk/res/ui/login_flow.ui:252
-msgid "_Password"
-msgstr "_Jelszó"
-
-#: fractal-gtk/res/ui/login_flow.ui:284
-msgid "User name, email, or phone number"
-msgstr "Felhasználónév, e-mail vagy telefonszám"
-
-#: fractal-gtk/res/ui/login_flow.ui:317
-msgid "_Forgot Password?"
-msgstr "_Elfelejtette a jelszavát?"
-
-#: fractal-gtk/res/ui/login_flow.ui:335
-msgid "Invalid username or password"
-msgstr "Érvénytelen felhasználónév vagy jelszó"
-
-#: fractal-gtk/res/ui/main_menu.ui:103
-msgid "Log Out"
-msgstr "Kijelentkezés"
-
-#: fractal-gtk/res/ui/main_menu.ui:120
-msgid "Keyboard _Shortcuts"
-msgstr "Gyorsbillentyű_k"
-
-#: fractal-gtk/res/ui/main_menu.ui:129
-msgid "_About Fractal"
-msgstr "A Fractal _névjegye"
-
-#: fractal-gtk/res/ui/main_window.ui:56
-msgid "User"
-msgstr "Felhasználó"
-
-#: fractal-gtk/res/ui/main_window.ui:82
-msgid "Add"
-msgstr "Hozzáadás"
-
-#: fractal-gtk/res/ui/main_window.ui:111
-msgid "Room search"
-msgstr "Szoba keresése"
-
-#: fractal-gtk/res/ui/main_window.ui:282
-msgid "Room Menu"
-msgstr "Szoba menü"
-
-#: fractal-gtk/res/ui/main_window.ui:349
-#| msgid "No room selected"
-msgid "No Room Selected"
-msgstr "Nincs szoba kiválasztva"
-
-#: fractal-gtk/res/ui/main_window.ui:350
-#| msgid "Join a room to start chatting"
-msgid "Join a room to start chatting."
-msgstr "Csatlakozzon egy szobához a csevegés elkezdéséhez."
-
-#: fractal-gtk/res/ui/main_window.ui:354
-msgid "No room"
-msgstr "Nincs szoba"
-
-#: fractal-gtk/res/ui/main_window.ui:494
-#: fractal-gtk/res/ui/server_chooser_menu.ui:51
-#: fractal-gtk/src/ui/connect/directory.rs:117
-msgid "Default Matrix Server"
-msgstr "Alapértelmezett Matrix-kiszolgáló"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:23
-msgid "Markdown"
-msgstr "Markdown"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:52
-msgid "> quote"
-msgstr "> idézet"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:63
-msgid "**bold**"
-msgstr "**félkövér**"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:78
-msgid "`code`"
-msgstr "`kód`"
-
-#: fractal-gtk/res/ui/markdown_popover.ui:90
-msgid "*italic*"
-msgstr "*dőlt*"
-
-#: fractal-gtk/res/ui/media_viewer.ui:63
-msgid "Toggle fullscreen"
-msgstr "Teljes képernyő be/ki"
-
-#: fractal-gtk/res/ui/media_viewer.ui:226
-msgid "Loading more media"
-msgstr "További média betöltése"
-
-#: fractal-gtk/res/ui/message_menu.ui:22
-msgid "Reply"
-msgstr "Válasz"
-
-#: fractal-gtk/res/ui/message_menu.ui:29
-msgid "Open With…"
-msgstr "Megnyitás ezzel…"
-
-#: fractal-gtk/res/ui/message_menu.ui:37
-msgid "Save Image As…"
-msgstr "Kép mentése másként…"
-
-#: fractal-gtk/res/ui/message_menu.ui:45
-msgid "Save Video As…"
-msgstr "Videó mentése másként…"
-
-#: fractal-gtk/res/ui/message_menu.ui:53
-msgid "Copy Image"
-msgstr "Kép másolása"
-
-#: fractal-gtk/res/ui/message_menu.ui:61
-msgid "Copy Selection"
-msgstr "Kijelölés másolása"
-
-#: fractal-gtk/res/ui/message_menu.ui:69
-msgid "Copy Text"
-msgstr "Szöveg másolása"
-
-#: fractal-gtk/res/ui/message_menu.ui:79
-msgid "View Source"
-msgstr "Forrás megtekintése"
-
-#: fractal-gtk/res/ui/message_menu.ui:94
-msgid "Delete Message"
-msgstr "Üzenet törlése"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:21
-msgid "Message Source"
-msgstr "Üzenet forrása"
-
-#: fractal-gtk/res/ui/msg_src_window.ui:24
-msgid "Copy To Clipboard"
-msgstr "Másolás a vágólapra"
-
-#: fractal-gtk/res/ui/new_room.ui:21
-msgid "Create new room"
-msgstr "Új szoba létrehozása"
-
-#: fractal-gtk/res/ui/new_room.ui:32
-msgid "Create"
-msgstr "Létrehozás"
-
-#: fractal-gtk/res/ui/new_room.ui:71
-msgid "Room name"
-msgstr "Szoba neve"
-
-#: fractal-gtk/res/ui/new_room.ui:100
-msgid "Visibility"
-msgstr "Láthatóság"
-
-#: fractal-gtk/res/ui/new_room.ui:114
-msgid "Private"
-msgstr "Privát"
-
-#: fractal-gtk/res/ui/new_room.ui:125
-msgid "Public"
-msgstr "Nyilvános"
-
-#: fractal-gtk/res/ui/password_dialog.ui:22
-#: fractal-gtk/src/widgets/file_dialog.rs:12
-#: fractal-gtk/src/widgets/file_dialog.rs:33
-msgid "_Cancel"
-msgstr "_Mégse"
-
-#: fractal-gtk/res/ui/password_dialog.ui:35
-msgid "Ch_ange"
-msgstr "Mó_dosítás"
-
-#: fractal-gtk/res/ui/password_dialog.ui:125
-msgid "The passwords do not match."
-msgstr "A jelszavak nem egyeznek."
-
-#: fractal-gtk/res/ui/password_dialog.ui:143
-msgid "_Verify New Password"
-msgstr "Új j_elszó ellenőrzése"
-
-#: fractal-gtk/res/ui/password_dialog.ui:160
-msgid "_New Password"
-msgstr "Új _jelszó"
-
-#: fractal-gtk/res/ui/password_dialog.ui:204
-msgid "Current _Password"
-msgstr "Jele_nlegi jelszó"
-
-#: fractal-gtk/res/ui/room_menu.ui:8
-msgid "Room Details"
-msgstr "Szoba részletei"
-
-#: fractal-gtk/res/ui/room_menu.ui:12
-msgid "Invite to This Room"
-msgstr "Meghívás ebbe a szobába"
-
-#: fractal-gtk/res/ui/room_menu.ui:18
-msgid "Leave Room"
-msgstr "Szoba elhagyása"
-
-#: fractal-gtk/res/ui/room_settings.ui:14
-msgid "Details"
-msgstr "Részletek"
-
-#: fractal-gtk/res/ui/room_settings.ui:112
-msgid "Unknown"
-msgstr "Ismeretlen"
-
-#: fractal-gtk/res/ui/room_settings.ui:133
-msgid "Add name"
-msgstr "Név hozzáadása"
-
-#: fractal-gtk/res/ui/room_settings.ui:160
-msgid "Add topic"
-msgstr "Téma hozzáadása"
-
-#: fractal-gtk/res/ui/room_settings.ui:179
-msgid "Type in your room topic"
-msgstr "Írja be a szoba témáját"
-
-#: fractal-gtk/res/ui/room_settings.ui:202
-msgid "No room description"
-msgstr "Nincs szobaleírás"
-
-#: fractal-gtk/res/ui/room_settings.ui:230
-msgid "Notifications"
-msgstr "Értesítések"
-
-#: fractal-gtk/res/ui/room_settings.ui:258
-msgid "Notification sounds"
-msgstr "Értesítési hangok"
-
-#: fractal-gtk/res/ui/room_settings.ui:290
-msgid "For all messages"
-msgstr "Az összes üzenetnél"
-
-#: fractal-gtk/res/ui/room_settings.ui:322
-msgid "Only for mentions"
-msgstr "Csak az említéseknél"
-
-#: fractal-gtk/res/ui/room_settings.ui:352
-msgid "Shared Media"
-msgstr "Megosztott média"
-
-#: fractal-gtk/res/ui/room_settings.ui:394
-msgid "photos"
-msgstr "fényképek"
-
-#: fractal-gtk/res/ui/room_settings.ui:424
-msgid "videos"
-msgstr "videók"
-
-#: fractal-gtk/res/ui/room_settings.ui:454
-msgid "documents"
-msgstr "dokumentumok"
-
-#: fractal-gtk/res/ui/room_settings.ui:475
-msgid "New members can see"
-msgstr "Az új tagok láthatják"
-
-#: fractal-gtk/res/ui/room_settings.ui:507
-msgid "All room history"
-msgstr "Összes szobaelőzmény"
-
-#: fractal-gtk/res/ui/room_settings.ui:539
-msgid "History after they were invited"
-msgstr "Előzmények a meghívás óta"
-
-#: fractal-gtk/res/ui/room_settings.ui:569
-msgid "Room Visibility"
-msgstr "Szoba láthatósága"
-
-#: fractal-gtk/res/ui/room_settings.ui:604
-msgid "Allow guests"
-msgstr "Vendégek engedélyezése"
-
-#: fractal-gtk/res/ui/room_settings.ui:635
-msgid "Allow joining without invite"
-msgstr "Meghívás nélküli csatlakozás engedélyezése"
-
-#: fractal-gtk/res/ui/room_settings.ui:666
-msgid "Publish in room directory"
-msgstr "Közzététel a szobajegyzékben"
-
-#: fractal-gtk/res/ui/room_settings.ui:695
-msgid "Join addresses"
-msgstr "Csatlakozási címek"
-
-#: fractal-gtk/res/ui/room_settings.ui:749
-msgid "members"
-msgstr "tagok"
-
-#: fractal-gtk/res/ui/room_settings.ui:761
-msgid "Invite New Member"
-msgstr "Új tag meghívása"
-
-#: fractal-gtk/res/ui/room_settings.ui:786
-msgid "Search for room members"
-msgstr "Szobatagok keresése"
-
-#: fractal-gtk/res/ui/scroll_widget.ui:63
-msgid "Scroll to bottom"
-msgstr "Görgetés az aljára"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:30
-msgid "Show rooms from:"
-msgstr "Szobák megjelenítése innen:"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:65
-msgid "Your homeserver"
-msgstr "Az Ön gazdakiszolgálója"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:93
-msgid "Other Protocol"
-msgstr "Egyéb protokoll"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:139
-msgid "Other Homeserver"
-msgstr "Egyéb gazdakiszolgáló"
-
-#: fractal-gtk/res/ui/server_chooser_menu.ui:156
-msgid "Homeserver URL"
-msgstr "Gazdakiszolgáló URL"
-
-#: fractal-gtk/src/actions/account_settings.rs:31
-#: fractal-gtk/src/actions/room_settings.rs:37
-msgid "Images"
-msgstr "Képek"
-
-#: fractal-gtk/src/actions/account_settings.rs:32
-#: fractal-gtk/src/actions/room_settings.rs:39
-msgid "Select a new avatar"
-msgstr "Válasszon új avatárt"
-
-#: fractal-gtk/src/actions/global.rs:320
-msgid "Select a file"
-msgstr "Válasszon fájlt"
-
-#: fractal-gtk/src/actions/message.rs:57
-msgid "This message has no source."
-msgstr "Ennek az üzenetnek nincs forrása."
-
-#: fractal-gtk/src/actions/message.rs:131
-#: fractal-gtk/src/actions/message.rs:162
-msgid "Could not download the file"
-msgstr "Nem sikerült letölteni a fájlt"
-
-#: fractal-gtk/src/actions/message.rs:138
-msgid "Couldn’t save file"
-msgstr "Nem sikerült menteni a fájlt"
-
-#: fractal-gtk/src/actions/room_settings.rs:53
-msgid "Couldn’t open file"
-msgstr "Nem sikerült megnyitni a fájlt"
-
-#: fractal-gtk/src/appop/account.rs:65
-msgid "The validation code is not correct."
-msgstr "Az ellenőrzőkód helytelen."
-
-#: fractal-gtk/src/appop/account.rs:73
-msgid "Enter the code received via SMS"
-msgstr "Adja meg az SMS-ben kapott kódot"
-
-#: fractal-gtk/src/appop/account.rs:88 fractal-gtk/src/appop/account.rs:144
+"A Fractal titkosítási támogatása instabil, így előfordulhat, hogy elveszíti a"
+" titkosított üzenetek előzményeihez való hozzáférést. Ajánlott biztonsági"
+" mentést készíteni a titkosítási kulcsokról, mielőtt folytatná."
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:94
+#| msgid "_New Password"
+msgid "New Password"
+msgstr "Új jelszó"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:134
+#| msgid "_New Password"
+msgid "Confirm New Password"
+msgstr "Új jelszó megerősítése"
+
+#: data/resources/ui/account-settings-change-password-subpage.ui:164
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
+#: data/resources/ui/account-settings-log-out-subpage.ui:94
+#: src/session/content/room_history/verification_info_bar.rs:175
 msgid "Continue"
 msgstr "Folytatás"
 
-#: fractal-gtk/src/appop/account.rs:134
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:12
+#: data/resources/ui/account-settings-user-page.ui:137
+msgid "Deactivate Account"
+msgstr "Fiók deaktiválása"
+
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:60
+#| msgid ""
+#| "Deactivating your account means that you will lose all your messages, "
+#| "contacts, and files."
 msgid ""
-"In order to add this email address, go to your inbox and follow the link you "
-"received. Once you’ve done that, click Continue."
+"Deactivating your account means you will lose access to all your messages, "
+"contacts, files, and more, forever."
 msgstr ""
-"Az e-mail cím hozzáadásához menjen a bejövő üzeneteihez, és kövesse a kapott "
-"hivatkozást. Ha végzett, kattintson a Folytatás gombra."
+"A fiók deaktiválása azt jelenti, hogy örökre elveszíti a hozzáférést az"
+" összes üzenethez, névjegyhez, fájlhoz és egyebekhez."
 
-#: fractal-gtk/src/appop/account.rs:348
-msgid "Are you sure you want to delete your account?"
-msgstr "Biztosan törölni szeretné a fiókját?"
-
-#: fractal-gtk/src/appop/mod.rs:176
-msgid "Fractal [{}]"
-msgstr "Fractal [{}]"
-
-#: fractal-gtk/src/appop/notify.rs:18
-msgid "An audio file has been added to the conversation."
-msgstr "Egy hangfájl hozzá lett adva a beszélgetéshez."
-
-#: fractal-gtk/src/appop/notify.rs:19
-msgid "An image has been added to the conversation."
-msgstr "Egy kép hozzá lett adva a beszélgetéshez."
-
-#: fractal-gtk/src/appop/notify.rs:20
-msgid "A video has been added to the conversation."
-msgstr "Egy videó hozzá lett adva a beszélgetéshez."
-
-#: fractal-gtk/src/appop/notify.rs:21
-msgid "A file has been added to the conversation."
-msgstr "Egy fájl hozzá lett adva a beszélgetéshez."
-
-#: fractal-gtk/src/appop/notify.rs:26
-msgid " (direct message)"
-msgstr " (közvetlen üzenet)"
-
-#: fractal-gtk/src/appop/room.rs:352
-msgid "Leave {room_name}?"
-msgstr "Kilép a(z) {room_name} szobából?"
-
-#: fractal-gtk/src/appop/room.rs:539
-msgid "The room ID is malformed"
-msgstr "A szoba azonosítója helytelenül formázott"
-
-#: fractal-gtk/src/appop/room.rs:607
-msgid "EMPTY ROOM"
-msgstr "ÜRES SZOBA"
-
-#: fractal-gtk/src/appop/room.rs:609
-msgid "{m1} and {m2}"
-msgstr "{m1} és {m2}"
-
-#: fractal-gtk/src/appop/room.rs:610
-msgid "{m1} and Others"
-msgstr "{m1} és mások"
-
-#: fractal-gtk/src/appop/room.rs:710
-msgid "Several users are typing…"
-msgstr "Több felhasználó is gépel…"
-
-#: fractal-gtk/src/appop/room.rs:713
-msgid "<b>{}</b> is typing…"
-msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
-msgstr[0] "<b>{}</b> gépel…"
-msgstr[1] "<b>{}</b> és <b>{}</b> gépel…"
-
-#: fractal-gtk/src/appop/sync.rs:24
-msgid "Syncing, this could take a while"
-msgstr "Szinkronizálás, ez eltarthat egy ideig"
-
-#: fractal-gtk/src/backend/directory.rs:35
-#: fractal-gtk/src/backend/directory.rs:81
-msgid "Error searching for rooms"
-msgstr "Hiba a szobák keresésekor"
-
-#: fractal-gtk/src/backend/register.rs:42
-msgid "Can’t login, try again"
-msgstr "Nem lehet bejelentkezni, próbálja újra"
-
-#: fractal-gtk/src/backend/room.rs:403
-msgid "Error deleting message"
-msgstr "Hiba az üzenet törlésekor"
-
-#: fractal-gtk/src/backend/room.rs:443
-msgid "Can’t join the room, try again."
-msgstr "Nem lehet csatlakozni a szobához, próbálja újra."
-
-#: fractal-gtk/src/backend/room.rs:675 fractal-gtk/src/backend/room.rs:727
-msgid "Can’t create the room, try again"
-msgstr "A szoba nem hozható létre, próbálja újra"
-
-#: fractal-gtk/src/backend/user.rs:113
-msgid "Sorry, account settings can’t be loaded."
-msgstr "Elnézést, a fiók beállításait nem sikerült betölteni."
-
-#: fractal-gtk/src/backend/user.rs:141
-msgid "Email is already in use"
-msgstr "Az e-mail cím már használatban van"
-
-#: fractal-gtk/src/backend/user.rs:144
-msgid "Please enter a valid email address."
-msgstr "Adjon meg egy érvényes e-mail címet."
-
-#: fractal-gtk/src/backend/user.rs:147
-msgid "Couldn’t add the email address."
-msgstr "Nem sikerült hozzáadni az e-mail címet."
-
-#: fractal-gtk/src/backend/user.rs:184
-msgid "Phone number is already in use"
-msgstr "A telefonszám már használatban van"
-
-#: fractal-gtk/src/backend/user.rs:188
+#: data/resources/ui/account-settings-deactivate-account-subpage.ui:71
+#| msgid ""
+#| "To confirm that you really want to deactivate this account type in your "
+#| "password:"
 msgid ""
-"Please enter your phone number in the format: \n"
-" + your country code and your phone number."
+"To confirm that you really want to deactivate this account, type in your "
+"Matrix user ID:"
 msgstr ""
-"Adja meg a telefonszámát a következő formátumban: \n"
-" + országkód és a telefonszáma."
+"Annak megerősítéséhez, hogy valóban deaktiválni szeretné ezt a fiókot, írja "
+"be a Matrix-felhasználóazonosítóját:"
 
-#: fractal-gtk/src/backend/user.rs:192
-msgid "Couldn’t add the phone number."
-msgstr "Nem sikerült hozzáadni a telefonszámot."
+#: data/resources/ui/account-settings-device-row.ui:63
+#: src/session/content/verification/identity_verification_widget.rs:531
+#: src/session/content/verification/identity_verification_widget.rs:536
+#: src/session/content/verification/identity_verification_widget.rs:539
+#: src/session/content/verification/identity_verification_widget.rs:556
+#: src/session/content/verification/identity_verification_widget.rs:560
+#: src/session/content/verification/identity_verification_widget.rs:564
+#| msgid "_Verify New Password"
+msgid "Verify Session"
+msgstr "Munkamenet ellenőrzése"
 
-#: fractal-gtk/src/backend/user.rs:330
-msgid "Couldn’t change the password"
-msgstr "Nem sikerült megváltoztatni a jelszót"
+#: data/resources/ui/account-settings-devices-page.ui:5
+msgid "Sessions"
+msgstr "Munkamenetek"
 
-#: fractal-gtk/src/backend/user.rs:383
-msgid "Couldn’t delete the account"
-msgstr "Nem sikerült törölni a fiókot"
+#: data/resources/ui/account-settings-devices-page.ui:9
+#: data/resources/ui/account-settings-devices-page.ui:13
+#| msgid "Current _Password"
+msgid "Current Session"
+msgstr "Jelenlegi munkamenet"
 
-#: fractal-gtk/src/ui/about.rs:12
-msgid "A Matrix.org client for GNOME"
-msgstr "Egy Matrix.org kliens a GNOME-hoz"
+#: data/resources/ui/account-settings-devices-page.ui:24
+#: data/resources/ui/account-settings-devices-page.ui:28
+msgid "Other Active Sessions"
+msgstr "Más aktív munkamenetek"
 
-#: fractal-gtk/src/ui/about.rs:14
-msgid "© 2017–2020 Daniel García Moreno, et al."
-msgstr "© 2017–2020 Daniel García Moreno, et al."
+#: data/resources/ui/account-settings-log-out-subpage.ui:12
+msgid "Log Out of this Session"
+msgstr "Kijelentkezés ebből a munkamenetből"
 
-#: fractal-gtk/src/ui/about.rs:21
-msgid "Learn more about Fractal"
-msgstr "Tudjon meg többet a Fractalról"
-
-#: fractal-gtk/src/ui/about.rs:22
-msgid "translator-credits"
-msgstr "Meskó Balázs <mesko.balazs at fsf dot hu>"
-
-#: fractal-gtk/src/ui/about.rs:37
-msgid "Name by"
-msgstr "Elnevezés:"
-
-#: fractal-gtk/src/ui/attach.rs:26
-msgid "Image from Clipboard"
-msgstr "Kép a vágólapról"
-
-#: fractal-gtk/src/ui/attach.rs:42
-msgid "Send"
-msgstr "Küldés"
-
-#. Filename for the attached image
-#: fractal-gtk/src/ui/attach.rs:90
-msgid "image"
-msgstr "kép"
-
-#: fractal-gtk/src/ui/invite.rs:131
-msgid "Invite to {name}"
-msgstr "Meghívás ide: {name}"
-
-#: fractal-gtk/src/ui/invite.rs:183
-msgid "Join {room_name}?"
-msgstr "Csatlakozik ide: {room_name}?"
-
-#: fractal-gtk/src/ui/invite.rs:187
+#: data/resources/ui/account-settings-log-out-subpage.ui:60
 msgid ""
-"You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</b>"
+"Fractal doesn’t support online backup of room encryption keys so you might "
+"lose access to your encrypted message history."
 msgstr ""
-"<b>{sender_name}</b> meghívta, hogy csatlakozzon a(z) <b>{room_name}</b> "
-"szobához"
 
-#: fractal-gtk/src/ui/invite.rs:192
-msgid "You’ve been invited to join <b>{room_name}</b>"
-msgstr "Meghívták, hogy csatlakozzon a(z) <b>{room_name}</b> szobához"
+#: data/resources/ui/account-settings-log-out-subpage.ui:71
+msgid "It is recommended to backup your encryption keys before proceeding."
+msgstr ""
 
-#: fractal-gtk/src/ui/mod.rs:77
-msgid "You don’t have permission to post to this room"
-msgstr "Nincs jogosultsága üzenetet küldeni ebbe a szobába"
+#: data/resources/ui/account-settings-log-out-subpage.ui:85
+msgid "Backup Encryption Keys"
+msgstr ""
 
-#: fractal-gtk/src/ui/mod.rs:159
-msgid "OK"
-msgstr "Rendben"
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:80
+#: data/resources/ui/session-verification.ui:290
+msgid "Passphrase"
+msgstr ""
 
-#: fractal-gtk/src/ui/room_settings.rs:264
-msgid "Room · {} member"
-msgid_plural "Room · {} members"
-msgstr[0] "Szoba · {} tag"
-msgstr[1] "Szoba · {} tag"
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:97
+msgid "Confirm Passphrase"
+msgstr ""
 
-#: fractal-gtk/src/ui/room_settings.rs:699
-msgid "{} member"
-msgid_plural "{} members"
-msgstr[0] "{} tag"
-msgstr[1] "{} tag"
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:132
+msgid "Choose…"
+msgstr ""
 
-#: fractal-gtk/src/widgets/file_dialog.rs:8
-msgid "Save media as"
-msgstr "Média mentése másként"
+#: data/resources/ui/account-settings-notifications-page.ui:5
+msgid "Notifications"
+msgstr "Értesítések"
 
-#: fractal-gtk/src/widgets/file_dialog.rs:11
-msgid "_Save"
-msgstr "_Mentés"
+#: data/resources/ui/account-settings-notifications-page.ui:11
+msgid "Enable for this account"
+msgstr ""
 
-#: fractal-gtk/src/widgets/file_dialog.rs:32
-msgid "_Select"
-msgstr "_Kiválasztás"
+#: data/resources/ui/account-settings-notifications-page.ui:34
+msgid "Enable for this session"
+msgstr ""
 
-#: fractal-gtk/src/widgets/inline_player.rs:513
-msgid "Could not retrieve file URI"
-msgstr "Nem sikerült lekérni a fájl URI-t"
+#: data/resources/ui/account-settings-user-page.ui:5
+#| msgctxt "shortcut window"
+#| msgid "General"
+msgid "General"
+msgstr "Általános"
 
-#: fractal-gtk/src/widgets/kicked_dialog.rs:46
-msgid "You have been kicked from {}"
-msgstr "Kirúgták innen: {}"
+#: data/resources/ui/account-settings-user-page.ui:38
+#: data/resources/ui/room-creation.ui:66
+msgid "Name"
+msgstr "Név"
 
-#: fractal-gtk/src/widgets/kicked_dialog.rs:50
+#: data/resources/ui/account-settings-user-page.ui:71
+msgid "Advanced Information"
+msgstr "Speciális információk"
+
+#: data/resources/ui/account-settings-user-page.ui:74
+msgid "Homeserver"
+msgstr "Gazdakiszolgáló"
+
+#: data/resources/ui/account-settings-user-page.ui:88
+#| msgid "Matrix ID"
+msgid "Matrix User ID"
+msgstr "Matrix-felhasználóazonosító"
+
+#: data/resources/ui/account-settings-user-page.ui:102
+msgid "Session ID"
+msgstr "Munkamenet-azonosító"
+
+#: data/resources/ui/account-settings-user-page.ui:123
+#: src/session/account_settings/devices_page/device_row.rs:103
+msgid "Log Out"
+msgstr "Kijelentkezés"
+
+#: data/resources/ui/account-settings-security-page.ui:5
+msgid "Security"
+msgstr "Biztonság"
+
+#: data/resources/ui/account-settings-security-page.ui:9
+msgid "Room Encryption Keys"
+msgstr "Szoba titkosítási kulcsai"
+
+#: data/resources/ui/account-settings-security-page.ui:12
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:210
+msgid "Export Room Encryption Keys"
+msgstr "Szoba titkosítási kulcsainak exportálása"
+
+#: data/resources/ui/account-settings-security-page.ui:19
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:220
+msgid "Import Room Encryption Keys"
+msgstr "Szoba titkosítási kulcsainak importálása"
+
+#: data/resources/ui/account-settings.ui:4
+msgid "Account Settings"
+msgstr "Fiókbeállítások"
+
+#: data/resources/ui/attachment-dialog.ui:14
+#: data/resources/ui/content-invite-subpage.ui:12
+#: data/resources/ui/join-room-dialog.ui:9
+msgid "_Cancel"
+msgstr "_Mégse"
+
+#: data/resources/ui/attachment-dialog.ui:21
+#| msgid "Send"
+msgid "_Send"
+msgstr "_Küldés"
+
+#: data/resources/ui/components-auth-dialog.ui:20
+msgid "Authentication"
+msgstr "Hitelesítés"
+
+#: data/resources/ui/components-auth-dialog.ui:43
+msgid "Please authenticate the operation with your password"
+msgstr "Hitelesítse a műveletet a jelszavával"
+
+#: data/resources/ui/components-auth-dialog.ui:70
 msgid ""
-"Kicked by: {}\n"
-" “{}”"
+"Please authenticate the operation via the browser and once completed press "
+"confirm."
 msgstr ""
-"Kirúgta: {}\n"
-" „{}”"
+"Hitelesítse a műveletet a böngésző segítségével és ha végzett, nyomja meg a "
+"megerősítést."
 
-#: fractal-gtk/src/widgets/login.rs:95
-msgid "Malformed server URL"
-msgstr "Helytelenül formázott kiszolgáló URL"
+#: data/resources/ui/components-auth-dialog.ui:80
+msgid "Authenticate via Browser"
+msgstr "Hitelesítés böngésző segítségével"
 
-#: fractal-gtk/src/widgets/media_viewer.rs:1026
-msgid "Error while loading previous media"
-msgstr "Hiba az előző média betöltésekor"
+#: data/resources/ui/components-auth-dialog.ui:113
+#: data/resources/ui/identity-verification-widget.ui:452
+#: src/components/editable_avatar.rs:318
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:266
+#: src/session/content/room_history/verification_info_bar.rs:176
+#: src/session/room/event/event_actions.rs:304
+msgid "Cancel"
+msgstr "Mégse"
 
-#: fractal-gtk/src/widgets/members_list.rs:50
-msgid "No matching members found"
-msgstr "Nem találhatóak megfelelő tagok"
+#: data/resources/ui/components-auth-dialog.ui:118
+#: data/resources/ui/identity-verification-widget.ui:442
+msgid "Confirm"
+msgstr "Megerősítés"
 
-#: fractal-gtk/src/widgets/members_list.rs:146
-msgid "Admin"
-msgstr "Adminisztrátor"
+#: data/resources/ui/components-loading-listbox-row.ui:32
+msgid "Try again"
+msgstr "Próbálja újra"
 
-#: fractal-gtk/src/widgets/members_list.rs:147
-msgid "Moderator"
-msgstr "Moderátor"
+#: data/resources/ui/content-explore-servers-popover.ui:35
+msgid "Add server…"
+msgstr "Kiszolgáló hozzáadása…"
 
-#: fractal-gtk/src/widgets/members_list.rs:148
-msgid "Privileged"
-msgstr "Kiváltságos"
+#: data/resources/ui/content-explore.ui:71
+#| msgid "No matching members found"
+msgid "No rooms matching the search were found"
+msgstr "Nem találhatók a keresésnek megfelelő szobák"
 
-#: fractal-gtk/src/widgets/message.rs:471
-#, c-format
-msgid "Last edited %c"
-msgstr "Utoljára szerkesztett %c"
+#: data/resources/ui/content-explore.ui:97
+#| msgid "Rooms"
+msgid "Room List"
+msgstr "Szobalista"
 
-#: fractal-gtk/src/widgets/message.rs:665
-#: fractal-gtk/src/widgets/message.rs:832
+#: data/resources/ui/content-invite-subpage.ui:18
+#| msgid "Invite"
+msgid "I_nvite"
+msgstr "_Meghívás"
+
+#: data/resources/ui/content-invite-subpage.ui:85
+msgid "Search"
+msgstr "Keresés"
+
+#: data/resources/ui/content-invite-subpage.ui:86
+msgid "Search for users to invite them to this room."
+msgstr "Felhasználók keresése a szobába történő meghívásukhoz."
+
+#: data/resources/ui/content-invite-subpage.ui:115
+msgid "No Users Found"
+msgstr "Nem találhatók felhasználók"
+
+#: data/resources/ui/content-invite-subpage.ui:116
+#| msgid "No matching members found"
+msgid "No users matching the search were found."
+msgstr "Nem találhatók a keresésnek megfelelő felhasználók."
+
+#: data/resources/ui/content-invite-subpage.ui:122
+msgid "Error"
+msgstr "Hiba"
+
+#: data/resources/ui/content-invite-subpage.ui:123
+msgid "An error occurred while searching for matches."
+msgstr "Hiba történt a találatok keresése során."
+
+#: data/resources/ui/content-invite.ui:26
+#: data/resources/ui/content-invite.ui:51
+#: data/resources/ui/content-member-page.ui:69
+msgid "Invite"
+msgstr "Meghívás"
+
+#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:33
+#| msgid "Reject"
+msgid "_Reject"
+msgstr "El_utasítás"
+
+#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:28
+#| msgid "Accept"
+msgid "_Accept"
+msgstr "El_fogadás"
+
+#: data/resources/ui/content-member-page.ui:19
+#| msgid "Search for room members"
+msgid "Search for Room Members"
+msgstr "Szobatagok keresése"
+
+#: data/resources/ui/content-member-page.ui:35
+#: data/resources/ui/content-member-page.ui:39
+msgid "Search for room members"
+msgstr "Szobatagok keresése"
+
+#: data/resources/ui/content-message-file.ui:25
+#: src/session/room/event/event_actions.rs:303
 msgid "Save"
 msgstr "Mentés"
 
-#: fractal-gtk/src/widgets/message.rs:847
-msgid "Open"
-msgstr "Megnyitás"
+#: data/resources/ui/content-message-row.ui:61
+msgid "Edited"
+msgstr "Szerkesztve"
 
-#. Use 12h time format (AM/PM)
-#: fractal-gtk/src/widgets/message.rs:990
-msgid "%l∶%M %p"
-msgstr "%H:%M"
+#: data/resources/ui/content-room-details.ui:4
+#: src/session/content/room_details/mod.rs:200
+msgid "Room Details"
+msgstr "Szoba részletei"
 
-#. Use 24 time format
-#: fractal-gtk/src/widgets/message.rs:993
-msgid "%R"
-msgstr "%R"
+#: data/resources/ui/content-room-details-general-page.ui:102
+#| msgid "No room description"
+msgid "Description"
+msgstr "Leírás"
 
-#: fractal-gtk/src/widgets/room_history.rs:108
+#: data/resources/ui/content-room-details-general-page.ui:150
+#| msgid "members"
+msgid "Members"
+msgstr "Tagok"
+
+#: data/resources/ui/content-room-history.ui:6
+#| msgid "Room Details"
+msgid "Room _Details"
+msgstr "Szoba _részletei"
+
+#: data/resources/ui/content-room-history.ui:11
+#| msgid "Invite New Member"
+msgid "_Invite New Member"
+msgstr "Új tag _meghívása"
+
+#: data/resources/ui/content-room-history.ui:16
+msgid "Room _Permalink"
+msgstr "Szoba á_llandó hivatkozása"
+
+#: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:62
+#| msgid "Leave Room"
+msgid "_Leave Room"
+msgstr "Szoba el_hagyása"
+
+#: data/resources/ui/content-room-history.ui:31
+#| msgid "Notifications"
+msgid "_Location"
+msgstr "_Hely"
+
+#: data/resources/ui/content-room-history.ui:36
+#| msgid "Markdown"
+msgid "_Markdown"
+msgstr "_Markdown"
+
+#: data/resources/ui/content-room-history.ui:59
+msgid "Back"
+msgstr "Vissza"
+
+#: data/resources/ui/content-room-history.ui:84
+#| msgid "Room Details"
+msgid "Room Settings"
+msgstr "Szoba beállításai"
+
+#: data/resources/ui/content-room-history.ui:119
+msgid "Unable to load room"
+msgstr "A szoba nem tölthető be"
+
+#: data/resources/ui/content-room-history.ui:120
+msgid "Check your network connection."
+msgstr "Ellenőrizze a hálózati kapcsolatot."
+
+#: data/resources/ui/content-room-history.ui:123
+msgid "Try Again"
+msgstr "Próbálja újra"
+
+#: data/resources/ui/content-room-history.ui:148
+msgid "Scroll to bottom"
+msgstr "Görgetés az aljára"
+
+#: data/resources/ui/content-room-history.ui:160
+msgid "Drop Here to Send"
+msgstr "Ejtse ide a küldéshez"
+
+#: data/resources/ui/content-room-history.ui:180
+#| msgid "Room Directory"
+msgid "Room History"
+msgstr "Szobaelőzmények"
+
+#: data/resources/ui/content-room-history.ui:271
+msgid "Browse Attachment"
+msgstr "Melléklet tallózása"
+
+#: data/resources/ui/content-room-history.ui:281
+msgid "Open Emoji Picker"
+msgstr "Emodzsiválasztó megnyitása"
+
+#: data/resources/ui/content-room-history.ui:302
+#| msgid "Message Source"
+msgid "Message Entry"
+msgstr "Üzenetbevitel"
+
+#: data/resources/ui/content-room-history.ui:317
+#| msgctxt "shortcut window"
+#| msgid "Open main menu"
+msgid "Open Message Menu"
+msgstr "Üzenetmenü megnyitása"
+
+#: data/resources/ui/content-room-history.ui:332
+#| msgid "New Messages"
+msgid "Send Message"
+msgstr "Üzenet küldése"
+
+#: data/resources/ui/content-state-creation.ui:19
+#| msgid "Leave room"
+msgid "Previous room"
+msgstr "Előző szoba"
+
+#: data/resources/ui/content-state-tombstone.ui:14
+msgid "There is a newer version of this room."
+msgstr "Ez a szoba újabb verziója."
+
+#: data/resources/ui/content-state-tombstone.ui:19
+msgid "Go there"
+msgstr "Ugrás oda"
+
+#: data/resources/ui/content.ui:36
+msgid "No Room Selected"
+msgstr "Nincs szoba kiválasztva"
+
+#: data/resources/ui/content.ui:37
+msgid "Join a room to start chatting."
+msgstr "Csatlakozzon egy szobához a csevegés elkezdéséhez."
+
+#: data/resources/ui/error-page.ui:40
+msgid ""
+"It seems like one of the Fractal sessions stored in the Secret Service is "
+"corrupted. If you know how to fix it you should do so."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:51
+msgid ""
+"Alternatively, we could disconnect this session for you. This means you will "
+"have to login again and you will lose access to your encrypted messages, "
+"unless you have a session open in another client or you have already backed "
+"up your encryption keys."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:74
+msgid "Clicking this button might disconnect more than one session!"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:86
+msgid "Disconnect the corrupted session"
+msgstr "A sérült munkamenet leválasztása"
+
+#: data/resources/ui/error-page.ui:109
+msgid ""
+"Fractal relies on a Secret Service Provider to manage your sensitive session "
+"information and an error occurred while we were trying to store or get your "
+"session."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:124
+msgid ""
+"Here are a few things that might help you fix issues with the Secret Service:"
+msgstr ""
+
+#: data/resources/ui/error-page.ui:147
+msgid ""
+"Make sure you have a Secret Service Provider installed, like gnome-keyring."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:172
+msgid "Check that you have a default keyring and that it is unlocked."
+msgstr ""
+
+#: data/resources/ui/error-page.ui:187
+msgid ""
+"Check the application logs and your distribution’s documentation for more "
+"details."
+msgstr ""
+
+#. Translators: In this string, 'Reply' is a verb.
+#: data/resources/ui/event-menu.ui:12
+#| msgid "Reply"
+msgid "_Reply"
+msgstr "_Válasz"
+
+#. Translators: In this string, 'Edit' is a verb.
+#: data/resources/ui/event-menu.ui:18
+msgid "_Edit"
+msgstr "Sz_erkesztés"
+
+#. Translators: In this string, 'Forward' is a verb.
+#: data/resources/ui/event-menu.ui:24 data/resources/ui/event-menu.ui:115
+msgid "_Forward"
+msgstr "_Tovább"
+
+#: data/resources/ui/event-menu.ui:31 data/resources/ui/event-menu.ui:122
+msgid "_Select"
+msgstr "_Kiválasztás"
+
+#: data/resources/ui/event-menu.ui:38 data/resources/ui/event-menu.ui:129
+#| msgid "Copy Text"
+msgid "_Copy Text"
+msgstr "Szöveg _másolása"
+
+#: data/resources/ui/event-menu.ui:44
+msgid "_Copy Thumbnail"
+msgstr "Bélyegkép _másolása"
+
+#: data/resources/ui/event-menu.ui:49 data/resources/ui/event-menu.ui:90
+#| msgid "Save Image As…"
+msgid "S_ave Image"
+msgstr "Kép me_ntése"
+
+#: data/resources/ui/event-menu.ui:54 data/resources/ui/event-menu.ui:95
+#| msgid "Save Video As…"
+msgid "S_ave Video"
+msgstr "_Videó mentése"
+
+#: data/resources/ui/event-menu.ui:59 data/resources/ui/event-menu.ui:100
+msgid "S_ave Audio"
+msgstr "_Hang mentése"
+
+#: data/resources/ui/event-menu.ui:64 data/resources/ui/event-menu.ui:105
+#: data/resources/ui/event-menu.ui:135
+msgid "_Permalink"
+msgstr "Á_llandó hivatkozás"
+
+#: data/resources/ui/event-menu.ui:69 data/resources/ui/event-menu.ui:140
+#| msgid "View Source"
+msgid "_View Source"
+msgstr "_Forrás megtekintése"
+
+#: data/resources/ui/event-menu.ui:76 data/resources/ui/event-menu.ui:147
+msgid "Re_move"
+msgstr "El_távolítás"
+
+#: data/resources/ui/event-menu.ui:85
+#| msgid "Copy Image"
+msgid "_Copy Image"
+msgstr "_Kép másolása"
+
+#: data/resources/ui/event-source-dialog.ui:5
+#| msgid "View Source"
+msgid "Event Source"
+msgstr "Esemény forrása"
+
+#: data/resources/ui/greeter.ui:43
+msgid ""
+"You are running an early stage development version. Be aware it is a work in "
+"progress and far from complete yet."
+msgstr ""
+"Egy korai állapotú fejlesztői verziót használ. Vegye figyelembe, hogy ez egy "
+"folyamatban lévő munka, és még közel sem teljes."
+
+#. Fractal is the application name and shouldn't be translated
+#: data/resources/ui/greeter.ui:101
+msgid "Welcome to Fractal"
+msgstr "Üdvözli a Fractal"
+
+#: data/resources/ui/greeter.ui:126
+#| msgid "_Log In"
+msgid "_Log in"
+msgstr "_Bejelentkezés"
+
+#: data/resources/ui/greeter.ui:136
+msgid "_Create Account"
+msgstr "_Fiók létrehozása"
+
+#: data/resources/ui/identity-verification-widget.ui:46
+#: src/session/content/room_history/verification_info_bar.rs:171
+msgid "Decline"
+msgstr "Elutasítás"
+
+#: data/resources/ui/identity-verification-widget.ui:56
+#: src/session/content/room_history/verification_info_bar.rs:170
+msgid "Verify"
+msgstr "Ellenőrzés"
+
+#: data/resources/ui/identity-verification-widget.ui:109
+#: data/resources/ui/identity-verification-widget.ui:213
+msgid "Can’t scan QR code?"
+msgstr "Nem tudja leolvasni a QR-kódot?"
+
+#: data/resources/ui/identity-verification-widget.ui:117
+#: data/resources/ui/identity-verification-widget.ui:230
+msgid "Compare Emoji"
+msgstr "Emodzsik összehasonlítása"
+
+#: data/resources/ui/identity-verification-widget.ui:144
+msgid "Scan Complete"
+msgstr "Beolvasás kész"
+
+#: data/resources/ui/identity-verification-widget.ui:222
+msgid "Scan QR code with this session"
+msgstr "QR-kód beolvasása ezzel a munkamenettel"
+
+#: data/resources/ui/identity-verification-widget.ui:290
+msgid "Do Not Match"
+msgstr "Nem egyeznek"
+
+#: data/resources/ui/identity-verification-widget.ui:300
+msgid "Match"
+msgstr "Egyeznek"
+
+#: data/resources/ui/identity-verification-widget.ui:350
+msgid "Done"
+msgstr "Kész"
+
+#: data/resources/ui/identity-verification-widget.ui:419
+msgid "Confirm Scan"
+msgstr "Beolvasás megerősítése"
+
+#: data/resources/ui/identity-verification-widget.ui:482
+msgid "Missing Cross-Signing Keys"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:500
+msgid ""
+"Even though the verification was successful, the other device didn’t send us "
+"the necessary keys:"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:518
+msgid "User-signing key"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:538
+msgid "Self-signing key"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:557
+msgid "You can wait a bit longer, or choose one of the following options:"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:578
+msgid "Verify your session with another device"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:601
+msgid "Reset cross-signing on your other device and retry verification"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:624
+msgid ""
+"Verify this session without another device, or reset cross-signing on this "
+"device"
+msgstr ""
+
+#: data/resources/ui/identity-verification-widget.ui:633
+#| msgid "Notifications"
+msgid "Restart verification"
+msgstr "Ellenőrzés újraindítása"
+
+#: data/resources/ui/join-room-dialog.ui:4
+#| msgid "Join Room"
+msgid "Join a Room"
+msgstr "Csatlakozás szobához"
+
+#: data/resources/ui/join-room-dialog.ui:5
+msgid "Enter a room ID, room alias, or permalink."
+msgstr ""
+
+#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:712
+#| msgid "Join"
+msgid "_Join"
+msgstr "_Csatlakozás"
+
+#: data/resources/ui/login-advanced-dialog.ui:5
+#| msgid "Homeserver"
+msgid "Homeserver Discovery"
+msgstr "Gazdakiszolgáló felkutatása"
+
+#: data/resources/ui/login-advanced-dialog.ui:14
+msgid ""
+"Auto-discovery, also known as “well-known lookup”, allows to discover the "
+"URL of a Matrix homeserver from a domain name. This should only be disabled "
+"if your homeserver doesn’t support auto-discovery or if you want to provide "
+"the URL yourself."
+msgstr ""
+
+#: data/resources/ui/login-advanced-dialog.ui:17
+msgid "_Auto-discovery"
+msgstr "_Automatikus felkutatás"
+
+#. Translators: As in 'Advanced Settings'.
+#: data/resources/ui/login-homeserver-page.ui:59
+msgid "Advanced…"
+msgstr "Speciális…"
+
+#: data/resources/ui/login-method-page.ui:37 src/login/homeserver_page.rs:112
+msgid "Homeserver URL"
+msgstr "Gazdakiszolgáló webcíme"
+
+#: data/resources/ui/login-method-page.ui:60
+msgid "Matrix Username"
+msgstr "Matrix-felhasználónév"
+
+#: data/resources/ui/login-method-page.ui:72
+msgid "Password"
+msgstr "Jelszó"
+
+#: data/resources/ui/login-method-page.ui:78
+msgid "_Forgot Password?"
+msgstr "_Elfelejtette a jelszavát?"
+
+#: data/resources/ui/login-method-page.ui:100
+#| msgid "Choose Provider"
+msgid "More SSO Providers"
+msgstr "További SSO-szolgáltatók"
+
+#: data/resources/ui/login-sso-page.ui:21
+msgid "Please follow the steps in the browser."
+msgstr "Kövesse a lépéseket a böngészőben."
+
+#: data/resources/ui/login.ui:23
+msgid "_Next"
+msgstr "_Következő"
+
+#: data/resources/ui/member-menu.ui:6
+msgid "_Verify"
+msgstr "_Ellenőrzés"
+
+#: data/resources/ui/member-menu.ui:14
+msgid "Make _Mod"
+msgstr "_Moderátorrá tétel"
+
+#: data/resources/ui/member-menu.ui:20
+#| msgid "Admin"
+msgid "Make _Admin"
+msgstr "_Adminisztrátorrá tétel"
+
+#: data/resources/ui/member-menu.ui:26
+msgid "_Kick"
+msgstr "_Kirúgás"
+
+#: data/resources/ui/room-creation.ui:49
+msgid "New Room"
+msgstr "Új szoba"
+
+#: data/resources/ui/room-creation.ui:73
+msgid "Topic (Optional)"
+msgstr "Téma (elhagyható)"
+
+#: data/resources/ui/room-creation.ui:81
+msgid "Room Visibility"
+msgstr "Szoba láthatósága"
+
+#: data/resources/ui/room-creation.ui:84
+msgid "Private"
+msgstr "Személyes"
+
+#: data/resources/ui/room-creation.ui:85
+msgid "Only invited people can join this room"
+msgstr "Csak meghívott személyek csatlakozhatnak ehhez a szobához"
+
+#: data/resources/ui/room-creation.ui:98
+msgid "Public"
+msgstr "Nyilvános"
+
+#: data/resources/ui/room-creation.ui:99
+msgid "Anyone can find and join this room"
+msgstr ""
+
+#: data/resources/ui/room-creation.ui:117
+msgid "End-to-End Encryption"
+msgstr ""
+
+#: data/resources/ui/room-creation.ui:118
+msgid "Cannot be disabled later"
+msgstr ""
+
+#: data/resources/ui/room-creation.ui:136
+msgid ""
+"Fractal does not support online backup for encryption keys yet, so you will "
+"need to back them up manually or your message history will be lost if you "
+"lose access to all your sessions."
+msgstr ""
+
+#: data/resources/ui/room-creation.ui:150
+#| msgid "Join addresses"
+msgid "Room Address"
+msgstr "Szoba címe"
+
+#: data/resources/ui/room-creation.ui:200
+#| msgid "Create new room"
+msgid "_Create Room"
+msgstr "Szoba _létrehozása"
+
+#: data/resources/ui/session-verification.ui:59
+#: src/session/content/verification/identity_verification_widget.rs:573
+msgid "Get Another Device"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:70
+#: src/session/content/verification/identity_verification_widget.rs:575
+msgid "Accept the verification request from another session or device."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:83
+msgid "No other devices logged into this account?"
+msgstr "Nincsenek más eszközök bejelentkezve ebbe a fiókba?"
+
+#: data/resources/ui/session-verification.ui:91
+#: data/resources/ui/session-verification.ui:186
+msgid "Recovery"
+msgstr "Helyreállítás"
+
+#: data/resources/ui/session-verification.ui:101
+#: src/session/content/verification/session_verification.rs:249
+msgid "Reset"
+msgstr "Visszaállítás"
+
+#: data/resources/ui/session-verification.ui:138
+msgid "Setup Encryption Identity"
+msgstr "Titkosítási személyazonosság beállítása"
+
+#: data/resources/ui/session-verification.ui:149
+msgid ""
+"You need to setup an encryption identity, since this is the first time you "
+"logged into your account."
+msgstr ""
+"Be kell állítania egy titkosítási személyazonosságot, mivel ez az első "
+"alkalom, hogy bejelentkezett a fiókjába."
+
+#: data/resources/ui/session-verification.ui:157
+msgid "Setup"
+msgstr "Beállítás"
+
+#: data/resources/ui/session-verification.ui:197
+msgid ""
+"Without another device you need a recovery passphrase or key to access your "
+"messages"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:205
+#: data/resources/ui/session-verification.ui:260
+msgid "Recovery Passphrase"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:214
+#: data/resources/ui/session-verification.ui:324
+msgid "Recovery Key"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:223
+msgid ""
+"If you don’t have any of these you can reset your identity, but be aware "
+"this makes your old messages inaccessible forever."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:232
+msgid "Reset Identity"
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:271
+msgid ""
+"Your Recovery Passphrase was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:279
+msgid "If you opted for a Recovery Key instead go back and choose that option."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:295
+#: data/resources/ui/session-verification.ui:360
+#| msgid "_Next"
+msgid "Next"
+msgstr "Következő"
+
+#: data/resources/ui/session-verification.ui:335
+msgid "Your Recovery Key was set up when you first created this account."
+msgstr ""
+
+#: data/resources/ui/session-verification.ui:343
+msgid ""
+"If you opted for a Recovery Passphrase instead go back and choose that "
+"option."
+msgstr ""
+
+#: data/resources/ui/shortcuts.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Általános"
+
+#: data/resources/ui/shortcuts.ui:14
+#| msgctxt "shortcut window"
+#| msgid "Keyboard Shortcuts"
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Gyorsbillentyűk megjelenítése"
+
+#: data/resources/ui/shortcuts.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Kilépés"
+
+#: data/resources/ui/shortcuts.ui:26
+#| msgid "Search for room members"
+msgctxt "shortcut window"
+msgid "Search Room List"
+msgstr "Szobalista keresése"
+
+#: data/resources/ui/shortcuts.ui:32
+#| msgid "New Room"
+msgctxt "shortcut window"
+msgid "Close Room"
+msgstr "Szoba bezárása"
+
+#: data/resources/ui/sidebar.ui:6
+#| msgid "New Room"
+msgid "_New Room"
+msgstr "Ú_j szoba"
+
+#: data/resources/ui/sidebar.ui:10
+#| msgid "Join Room"
+msgid "_Join Room"
+msgstr "_Csatlakozás szobához"
+
+#: data/resources/ui/sidebar.ui:16
+#| msgctxt "shortcut window"
+#| msgid "Keyboard Shortcuts"
+msgid "_Keyboard Shortcuts"
+msgstr "_Gyorsbillentyűk"
+
+#: data/resources/ui/sidebar.ui:20
+msgid "_About Fractal"
+msgstr "A Fractal _névjegye"
+
+#: data/resources/ui/sidebar.ui:40
+#| msgid "Favorites"
+msgid "Move to _Favorites"
+msgstr "Áthelyezés a _kedvencekbe"
+
+#: data/resources/ui/sidebar.ui:45
+#| msgid "Invite to This Room"
+msgid "Move to _Rooms"
+msgstr "Áthelyezés _szobákba"
+
+#: data/resources/ui/sidebar.ui:50
+msgid "Move to _People"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:55
+msgid "Move to Low _Priority"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:67
+#| msgid "Join Room"
+msgid "Re_join Room"
+msgstr "Újra_csatlakozás a szobához"
+
+#: data/resources/ui/sidebar.ui:72
+#| msgid "New Room"
+msgid "_Forget Room"
+msgstr "Szoba _elfelejtése"
+
+#: data/resources/ui/sidebar.ui:91
+#| msgid "Deactivate Account"
+msgid "Switch Accounts"
+msgstr "Fiókok átváltása"
+
+#: data/resources/ui/sidebar.ui:113
+#| msgid "Account Settings"
+msgid "App Settings Menu"
+msgstr "Alkalmazásbeállítások menü"
+
+#: data/resources/ui/sidebar.ui:123
+#| msgid "Room search"
+msgid "Toggle Room Search"
+msgstr "Szoba keresésének be- és kikapcsolása"
+
+#: data/resources/ui/sidebar.ui:135
+#| msgid "Room search"
+msgid "Room Search"
+msgstr "Szoba keresése"
+
+#: data/resources/ui/sidebar.ui:136
+#| msgid "Search for room members"
+msgid "Search for a room"
+msgstr "Szoba keresése"
+
+#: data/resources/ui/sidebar.ui:146
+msgid "Offline"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:166
+msgid "Sidebar"
+msgstr ""
+
+#: data/resources/ui/sidebar.ui:167
+msgid "Allows to navigate between rooms"
+msgstr ""
+
+#: data/resources/ui/qr-code-scanner.ui:21
+msgid "Unable to connect to Camera"
+msgstr ""
+
+#: src/application.rs:179
+msgid "© 2017-2023 The Fractal Team"
+msgstr "© 2017-2023 A Fractal csapata"
+
+#: src/application.rs:193
+msgid "translator-credits"
+msgstr ""
+"Meskó Balázs <mesko.balazs at fsf dot hu>, 2019, 2023.\n"
+"Úr Balázs <ur.balazs at fsf dot hu>, 2019, 2020, 2021, 2023."
+
+#. This can't be added via the builder
+#: src/application.rs:197
+msgid "Name by"
+msgstr "Elnevezés:"
+
+#: src/components/editable_avatar.rs:308
+#| msgid "Choose Provider"
+msgid "Choose Avatar"
+msgstr "Profilkép kiválasztása"
+
+#: src/components/editable_avatar.rs:317
+msgid "Choose"
+msgstr "Kiválasztás"
+
+#: src/components/editable_avatar.rs:328
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:282
+msgid "No file was chosen"
+msgstr "Nem lett fájl kiválasztva"
+
+#: src/components/editable_avatar.rs:346
+msgid "The chosen file is not an image"
+msgstr "A kiválasztott fájl nem kép"
+
+#: src/components/editable_avatar.rs:352
+msgid "Could not determine the type of the chosen file"
+msgstr "Nem sikerült meghatározni a kiválasztott fájl típusát"
+
+#: src/components/location_viewer.rs:137
+msgid "Location at latitude {latitude} and longitude {longitude}"
+msgstr ""
+
+#: src/components/media_content_viewer.rs:167
+msgid "Image not Viewable"
+msgstr ""
+
+#: src/components/media_content_viewer.rs:168
+msgid "Audio Clip not Playable"
+msgstr ""
+
+#: src/components/media_content_viewer.rs:169
+msgid "Video not Playable"
+msgstr ""
+
+#: src/components/media_content_viewer.rs:170
+msgid "File not Viewable"
+msgstr ""
+
+#: src/error_page.rs:114
+msgid "Session removed successfully."
+msgstr ""
+
+#: src/error_page.rs:122
+msgid "Could not remove session from secret storage"
+msgstr ""
+
+#: src/greeter.rs:82 src/login/mod.rs:683 src/window.rs:391
+msgid "No network connection"
+msgstr ""
+
+#: src/greeter.rs:87 src/login/mod.rs:688 src/window.rs:395
+msgid "No Internet connection"
+msgstr ""
+
+#: src/login/homeserver_page.rs:107
+msgid "Domain Name"
+msgstr ""
+
+#: src/login/homeserver_page.rs:109
+msgid "The domain of your Matrix homeserver, for example gnome.org"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/login/homeserver_page.rs:116
+msgid "The URL of your Matrix homeserver, for example {address}"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable
+#. name.
+#: src/login/method_page.rs:159
+msgid "Connecting to {domain_name}"
+msgstr ""
+
+#: src/login/mod.rs:609
+msgid "Unable to store session"
+msgstr ""
+
+#: src/secret.rs:57
+msgid "The secret storage file is corrupted."
+msgstr ""
+
+#: src/secret.rs:61
+msgid "Could not access the secret storage file location."
+msgstr ""
+
+#: src/secret.rs:64
+msgid "An unknown error occurred when accessing the secret storage file."
+msgstr ""
+
+#: src/secret.rs:67
+msgid "The secret storage file has been changed by another process."
+msgstr ""
+
+#: src/secret.rs:70
+msgid ""
+"An unknown error occurred when interacting with the D-Bus Secret Portal "
+"backend."
+msgstr ""
+
+#: src/secret.rs:73
+msgid ""
+"The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
+"any prompt asking to access it."
+msgstr ""
+
+#: src/secret.rs:76
+msgid ""
+"The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
+"installed, and it is at least at version 1.5.0."
+msgstr ""
+
+#: src/secret.rs:79
+msgid "The Flatpak Secret Portal provided a key that is too weak to be secure."
+msgstr ""
+
+#: src/secret.rs:91
+msgid "The item was deleted."
+msgstr ""
+
+#: src/secret.rs:94
+msgid ""
+"The request to the D-Bus Secret Service was cancelled. Make sure to accept "
+"any prompt asking to access it."
+msgstr ""
+
+#: src/secret.rs:97
+msgid ""
+"Could not access the default collection. Make sure a keyring was created and "
+"set as default."
+msgstr ""
+
+#: src/secret.rs:101
+msgid ""
+"An unknown error occurred when interacting with the D-Bus Secret Service."
+msgstr ""
+
+#: src/secret.rs:141
+msgid "Malformed homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:148
+msgid "Could not find homeserver in stored session"
+msgstr ""
+
+#: src/secret.rs:162
+msgid "Malformed user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:169
+msgid "Could not find user ID in stored session"
+msgstr ""
+
+#: src/secret.rs:178
+msgid "Could not find device ID in stored session"
+msgstr ""
+
+#: src/secret.rs:187
+msgid "Could not find database path in stored session"
+msgstr ""
+
+#: src/secret.rs:198
+msgid "Malformed secret in stored session"
+msgstr ""
+
+#: src/secret.rs:206
+msgid "Could not get secret in stored session"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/secret.rs:315 src/secret.rs:355
+msgid "Fractal: Matrix credentials for {user_id}"
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:134
+msgid "Failed to load connected device."
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_list.rs:180
+msgid "Failed to load the list of connected devices."
+msgstr ""
+
+#: src/session/account_settings/devices_page/device_row.rs:101
+msgid "Disconnect Session"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/account_settings/devices_page/device_row.rs:212
+msgid "Failed to disconnect device “{device_name}”"
+msgstr ""
+
+#. Translators: Time in 24h format
+#: src/session/account_settings/devices_page/device_row.rs:253
+msgid "Last seen at %H:%M"
+msgstr ""
+
+#. Translators: Time in 12h format
+#: src/session/account_settings/devices_page/device_row.rs:256
+msgid "Last seen at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:265
+#, no-c-format
+msgid "Last seen Yesterday at %H:%M"
+msgstr ""
+
+#. Translators: this is the word Yesterday followed by
+#. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:270
+#, no-c-format
+msgid "Last seen Yesterday at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the name of the week day followed by
+#. a time in 24h format. i.e. "Last seen Monday at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:279
+#, no-c-format
+msgid "Last seen %A at %H:%M"
+msgstr ""
+
+#. Translators: this is the week day name followed by
+#. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:284
+#, no-c-format
+msgid "Last seen %A at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 24h format i.e. "Last seen February 3 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:292
+#, no-c-format
+msgid "Last seen %B %-e at %H:%M"
+msgstr ""
+
+#. Translators: this is the day of the month followed
+#. by the abbreviated month name followed by a time in
+#. 12h format i.e. "Last seen February 3 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:298
+#, no-c-format
+msgid "Last seen %B %-e at %l:%M %p"
+msgstr ""
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
+#: src/session/account_settings/devices_page/device_row.rs:305
+#, no-c-format
+msgid "Last seen %B %-e %Y at %H:%M"
+msgstr ""
+
+#. Translators: this is the day number followed
+#. by the abbreviated month name followed by the year followed
+#. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
+#: src/session/account_settings/devices_page/device_row.rs:311
+#, no-c-format
+msgid "Last seen %B %-e %Y at %l:%M %p"
+msgstr ""
+
+#: src/session/account_settings/notifications_page.rs:174
+#: src/session/account_settings/notifications_page.rs:187
+msgid "Could not load notifications settings. Try again later"
+msgstr ""
+
+#: src/session/account_settings/notifications_page.rs:288
+msgid "Could not enable account notifications"
+msgstr ""
+
+#: src/session/account_settings/notifications_page.rs:290
+msgid "Could not disable account notifications"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:212
+msgid ""
+"Exporting your room encryption keys allows you to make a backup to be able "
+"to decrypt your messages in end-to-end encrypted rooms on another device or "
+"with another Matrix client."
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:215
+msgid ""
+"The backup must be stored in a safe place and must be protected with a "
+"strong passphrase that will be used to encrypt the data."
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:218
+msgid "Export Keys"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:222
+msgid ""
+"Importing your room encryption keys allows you to decrypt your messages in "
+"end-to-end encrypted rooms with a previous backup from a Matrix client."
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:225
+msgid "Enter the passphrase provided when the backup file was created."
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:228
+msgid "Import Keys"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:245
+msgid "Save Encryption Keys To…"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:250
+msgid "Import Encryption Keys From…"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:265
+#| msgid "_Select"
+msgid "Select"
+msgstr "Kiválasztás"
+
+#. Translators: Do no translate "fractal" as it is the application
+#. name.
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:274
+msgid "fractal-encryption-keys"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:307
+#| msgid "The passwords do not match."
+msgid "Passphrases do not match"
+msgstr "A jelmondatok nem egyeznek"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:381
+msgid "Room encryption keys exported successfully"
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:386
+#| msgid "No room description"
+msgid "Imported 1 room encryption key"
+msgid_plural "Imported {n} room encryption keys"
+msgstr[0] "1 szobatitkosítási kulcs importálva"
+msgstr[1] "{n} szobatitkosítási kulcs importálva"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:399
+#| msgid "Could not save the file"
+msgid "Could not export the keys"
+msgstr "Nem sikerült exportálni a kulcsokat"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:409
+msgid "The passphrase doesn't match the one used to export the keys."
+msgstr ""
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:413
+#| msgid "Could not save the file"
+msgid "Could not import the keys"
+msgstr "Nem sikerült importálni a kulcsokat"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:181
+msgid "Password must be at least 8 characters long"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:184
+msgid "Password must have at least one lower-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:188
+msgid "Password must have at least one upper-case letter"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:191
+msgid "Password must have at least one digit"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:193
+msgid "Password must have at least one symbol"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:223
+#| msgid "The passwords do not match."
+msgid "Passwords do not match"
+msgstr "A jelszavak nem egyeznek"
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:281
+msgid "Password changed successfully"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:303
+msgid "Password rejected for being too weak"
+msgstr ""
+
+#: src/session/account_settings/user_page/change_password_subpage.rs:307
+#| msgid "Couldn’t change the password"
+msgid "Could not change password"
+msgstr "Nem sikerült megváltoztatni a jelszót"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:172
+msgid "Account successfully deactivated"
+msgstr "A fiók sikeresen deaktiválva"
+
+#: src/session/account_settings/user_page/deactivate_account_subpage.rs:180
+#| msgid "Couldn’t delete the account"
+msgid "Could not deactivate account"
+msgstr "Nem sikerült deaktiválni a fiókot"
+
+#: src/session/account_settings/user_page/mod.rs:215
+msgid "Avatar removed successfully"
+msgstr "A profilkép sikeresen eltávolítva"
+
+#: src/session/account_settings/user_page/mod.rs:230
+msgid "Avatar changed successfully"
+msgstr "A profilkép sikeresen megváltoztatva"
+
+#: src/session/account_settings/user_page/mod.rs:275
+#| msgid "Could not download the file"
+msgid "Could not upload avatar"
+msgstr "Nem sikerült feltölteni a profilképet"
+
+#: src/session/account_settings/user_page/mod.rs:297
+#| msgid "Couldn’t change the password"
+msgid "Could not change avatar"
+msgstr "Nem sikerült megváltoztatni a profilképet"
+
+#: src/session/account_settings/user_page/mod.rs:326
+#| msgid "Could not save the file"
+msgid "Could not remove avatar"
+msgstr "Nem sikerült eltávolítani a profilképet"
+
+#: src/session/account_settings/user_page/mod.rs:359
+msgid "Name changed successfully"
+msgstr "A név sikeresen megváltoztatva"
+
+#: src/session/account_settings/user_page/mod.rs:390
+#| msgid "Could not save the file"
+msgid "Could not change display name"
+msgstr "Nem sikerült megváltoztatni a megjelenített nevet"
+
+#: src/session/content/explore/public_room_row.rs:211
+msgid "View"
+msgstr "Nézet"
+
+#: src/session/content/explore/public_room_row.rs:213
+msgid "Join"
+msgstr "Csatlakozás"
+
+#: src/session/content/invite.rs:115
+msgid "{user} invited you"
+msgstr "{user} meghívta Önt"
+
+#: src/session/content/room_details/general_page/mod.rs:167
+#| msgid "Details"
+msgid "Save Details"
+msgstr "Részletek mentése"
+
+#: src/session/content/room_details/general_page/mod.rs:168
+#| msgid "Details"
+msgid "Edit Details"
+msgstr "Részletek szerkesztése"
+
+#: src/session/content/room_details/general_page/mod.rs:224
+#| msgid "Choose Provider"
+msgid "Choose avatar"
+msgstr "Profilkép kiválasztása"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:287
+#| msgid "members"
+msgid "Member"
+msgstr "Tag"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:288
+#: src/session/room/member.rs:47
+msgid "Banned"
+msgstr "Kitiltott"
+
+#: src/session/content/room_details/invite_subpage/invitee_list.rs:290
+#: src/session/room/member.rs:46 src/session/sidebar/category_type.rs:30
+#| msgid "Invite"
+msgid "Invited"
+msgstr "Meghívott"
+
+#: src/session/content/room_details/member_page/mod.rs:288
+#| msgid "Invite New Member"
+msgid "Invited Room Members"
+msgstr "Meghívott szobatagok"
+
+#: src/session/content/room_details/member_page/mod.rs:289
+msgid "Banned Room Members"
+msgstr "Kitiltott szobatagok"
+
+#: src/session/content/room_details/member_page/mod.rs:290
+#: src/session/content/room_details/mod.rs:216
+#| msgid "members"
+msgid "Room Members"
+msgstr "Szobatagok"
+
+#: src/session/content/room_details/mod.rs:232
+#| msgid "Invite New Member"
+msgid "Invite new Members"
+msgstr "Új tagok meghívása"
+
+#: src/session/content/room_history/item_row.rs:298
+msgid "This is the start of the visible history"
+msgstr "Ez a látható előzmények kezdete"
+
+#: src/session/content/room_history/item_row.rs:313
 msgid "New Messages"
 msgstr "Új üzenetek"
 
+#: src/session/content/room_history/message_row/audio.rs:228
+#: src/session/content/room_history/message_row/audio.rs:232
+#| msgid "Could not retrieve file URI"
+msgid "Could not retrieve audio file"
+msgstr "Nem sikerült lekérni a hangfájlt"
+
+#: src/session/content/room_history/message_row/audio.rs:245
+#| msgid "Error sending message"
+msgid "Error reading audio file"
+msgstr "Hiba a hangfájl olvasásakor"
+
+#: src/session/content/room_history/message_row/content.rs:343
+msgid "Identity verification was started"
+msgstr ""
+
+#: src/session/content/room_history/message_row/content.rs:356
+#: src/session/content/room_history/message_row/content.rs:392
+msgid "Unsupported event"
+msgstr ""
+
+#: src/session/content/room_history/message_row/content.rs:380
+msgid ""
+"Unable to decrypt this message, decryption will be retried once the keys are "
+"available."
+msgstr ""
+
+#: src/session/content/room_history/message_row/location.rs:98
+msgid "Location is invalid and cannot be displayed"
+msgstr ""
+
+#: src/session/content/room_history/message_row/media.rs:436
+msgid "Image file not supported"
+msgstr ""
+
+#: src/session/content/room_history/message_row/media.rs:475
+#: src/session/content/room_history/message_row/media.rs:480
+#| msgid "Could not retrieve file URI"
+msgid "Could not retrieve media"
+msgstr "Nem sikerült lekérni a médiát"
+
+#: src/session/content/room_history/mod.rs:193
+msgid "The location request has been cancelled."
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:197
+msgid "Failed to retrieve current location."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name. In this string, 'Reply' is a noun.
+#: src/session/content/room_history/mod.rs:621
+msgid "Reply to {user}"
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:734
+#: src/session/room/event/event_actions.rs:110
+msgid "Permalink copied to clipboard"
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:738
+#: src/session/room/event/event_actions.rs:114
+msgid "Failed to copy the permalink"
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:925
+msgid "Your Location"
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:935
+msgid "User Location {geo_uri} at {iso8601_datetime}"
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:1071
+#| msgid "Uploading file."
+msgid "Error reading file"
+msgstr "Hiba a fájl olvasásakor"
+
+#: src/session/content/room_history/mod.rs:1097
+#| msgid "Error searching for rooms"
+msgid "Error getting file from drop"
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:1129
+#| msgid "Image from Clipboard"
+msgid "Error getting image from clipboard"
+msgstr ""
+
+#: src/session/content/room_history/mod.rs:1146
+#| msgid "Image from Clipboard"
+msgid "Error getting file from clipboard"
+msgstr ""
+
+#: src/session/content/room_history/state_row/creation.rs:68
+msgid "This is the continuation of an upgraded room."
+msgstr ""
+
+#: src/session/content/room_history/state_row/creation.rs:73
+msgid "This is the beginning of this room."
+msgstr ""
+
+#: src/session/content/room_history/state_row/mod.rs:94
+msgid "This room is encrypted from this point on."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#: src/session/content/room_history/state_row/mod.rs:109
+#: src/session/content/room_history/state_row/mod.rs:225
+#| msgid "Invite to This Room"
+msgid "{user} was invited to this room."
+msgstr "{user} meg lett hívva ebbe a szobába."
+
+#: src/session/content/room_history/state_row/mod.rs:121
+msgid "An unsupported state event was received."
+msgstr "Nem támogatott állapotesemény érkezett."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#. We don't know what changed so fall back to the membership.
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:197
+#: src/session/content/room_history/state_row/mod.rs:350
+msgid "{user} joined this room."
+msgstr "{user} csatlakozott ehhez a szobához."
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:202
+msgid "{user} left the room."
+msgstr "{user} elhagyta a szobát."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:207
+msgid "{user} was banned."
+msgstr "{user} ki lett tiltva."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:213
+msgid "{user} was unbanned."
+msgstr "{user} kitiltása meg lett szüntetve."
+
+#. Translators: Do NOT translate the content between '{' and
+#. '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:219
+msgid "{user} was kicked out of the room."
+msgstr "{user} ki lett rúgva a szobából."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is
+#. a variable name.
+#: src/session/content/room_history/state_row/mod.rs:231
+msgid "{user} was kicked out of the room and banned."
+msgstr "{user} ki lett rúgva a szobából és ki lett tiltva."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:237
+msgid "{user} accepted the invite."
+msgstr "{user} elfogadta a meghívást."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:243
+msgid "{user} rejected the invite."
+msgstr "{user} elutasította a meghívást."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:249
+msgid "The invitation for {user} has been revoked."
+msgstr "{user} meghívása vissza lett vonva."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:258
+msgid "{user} requested to be invited to this room."
+msgstr "{user} azt kérte, hogy hívják meg ebbe a szobába."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:265
+msgid "{user} retracted their request to be invited to this room."
+msgstr "{user} visszavonta azon kérését, hogy hívják meg ebbe a szobába."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:271
+msgid "{user}’s request to be invited to this room was denied."
+msgstr "{user} azon kérése, hogy hívják meg ebbe a szobába, meg lett tagadva."
+
+#: src/session/content/room_history/state_row/mod.rs:279
+msgid "An unsupported room member event was received."
+msgstr "Nem támogatott szobatagesemény érkezett."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:298
+msgid "{previous_user_name} removed their display name."
+msgstr "{previous_user_name} eltávolította a megjelenített nevét."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:305
+msgid "{previous_user_name} changed their display name to {new_user_name}."
+msgstr ""
+"{previous_user_name} megváltoztatta a megjelenített nevét erre:"
+" {new_user_name}."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:316
+msgid "{user_id} set their display name to {new_user_name}."
+msgstr "{user_id} beállította a megjelenített nevét erre: {new_user_name}."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:328
+msgid "{user} set their avatar."
+msgstr "{user} beállította a profilképét."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:335
+msgid "{user} removed their avatar."
+msgstr "{user} eltávolította a profilképét."
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/content/room_history/state_row/mod.rs:342
+msgid "{user} changed their avatar."
+msgstr "{user} megváltoztatta a profilképét."
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/typing_row.rs:183
+#| msgid "<b>{}</b> is typing…"
+#| msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+msgid "<b>{user}</b> is typing…"
+msgstr "<b>{user}</b> gépel…"
+
+#. Translators: Do NOT translate the content between '{' and '}', these are
+#. variable names.
+#: src/session/content/room_history/typing_row.rs:193
+#| msgid "<b>{}</b> is typing…"
+#| msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+msgid "<b>{user1}</b> and <b>{user2}</b> are typing…"
+msgstr "<b>{user1}</b> és <b>{user2}</b> gépel…"
+
+#. Translators: Do NOT translate the content between '{' and '}', these are
+#. variable names.
+#: src/session/content/room_history/typing_row.rs:200
+msgid "<b>{user1}</b>, <b>{user2}</b> and 1 other are typing…"
+msgid_plural "<b>{user1}</b>, <b>{user2}</b> and {n} others are typing…"
+msgstr[0] "<b>{user1}</b>, <b>{user2}</b> és további 1 gépel…"
+msgstr[1] "<b>{user1}</b>, <b>{user2}</b> és további {n} gépel…"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/room_history/verification_info_bar.rs:164
+msgid "{user_name} wants to be verified"
+msgstr ""
+
+#: src/session/content/room_history/verification_info_bar.rs:174
+msgid "Verification in progress"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:530
+#: src/session/content/verification/identity_verification_widget.rs:555
+msgid "Verify the new session from the current session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:533
+msgid "Scan the QR code from another session logged into this account."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:535
+#: src/session/content/verification/identity_verification_widget.rs:559
+msgid ""
+"You scanned the QR code successfully. You may need to confirm the "
+"verification from the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:538
+msgid "Scan this QR code from the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:541
+#: src/session/content/verification/identity_verification_widget.rs:566
+msgid "Check if the same emoji appear in the same order on the other device."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:543
+#: src/session/content/verification/identity_verification_widget.rs:568
+msgid "Request Complete"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:545
+msgid "This session is ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:547
+msgid "Get Started"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:549
+#: src/session/content/verification/identity_verification_widget.rs:578
+msgid "Does the other session show a confirmation?"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:553
+msgid "Login Request From Another Session"
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:558
+msgid "Scan the QR code displayed by the other session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:562
+msgid "Scan this QR code from the newly logged in session."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:570
+msgid "The new session is now ready to send and receive secure messages."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:583
+#: src/session/content/verification/identity_verification_widget.rs:590
+#: src/session/content/verification/identity_verification_widget.rs:601
+#: src/session/content/verification/identity_verification_widget.rs:608
+#| msgid "Notification sounds"
+msgid "Verification Request"
+msgstr "Ellenőrzési kérés"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:588
+msgid ""
+"{user} asked to be verified. Verifying a user increases the security of the "
+"conversation."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:594
+msgid "Scan the QR code shown on the device of {user}."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:599
+msgid ""
+"You scanned the QR code successfully. {user} may need to confirm the "
+"verification."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:605
+msgid "Ask {user} to scan this QR code from their session."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:612
+msgid ""
+"Ask {user} if they see the following emoji appear in the same order on their "
+"screen."
+msgstr ""
+
+#: src/session/content/verification/identity_verification_widget.rs:616
+msgid "Verification Complete"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:619
+msgid ""
+"{user} is verified and you can now be sure that your communication will be "
+"private."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:623
+msgid "Waiting for {user}"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:629
+msgid "Ask {user} to accept the verification request."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/content/verification/identity_verification_widget.rs:635
+msgid "Does {user} see a confirmation on their session?"
+msgstr ""
+
+#. Translators: This is the tooltip when a signing key was received.
+#: src/session/content/verification/identity_verification_widget.rs:751
+msgid "Received"
+msgstr ""
+
+#. Translators: This is the tooltip when a signing key is missing.
+#: src/session/content/verification/identity_verification_widget.rs:757
+msgid "Missing"
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:246
+msgid ""
+"If you lost access to all other sessions you can create a new crypto "
+"identity. Be careful because this will reset all verified users and make "
+"previously encrypted conversations unreadable."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:324
+msgid "You cancelled the authentication needed to create the encryption keys."
+msgstr ""
+
+#: src/session/content/verification/session_verification.rs:328
+msgid "An error occurred during the creation of the encryption keys."
+msgstr ""
+
+#: src/session/mod.rs:710
+msgid "_View"
+msgstr "_Nézet"
+
+#: src/session/mod.rs:751
+msgid "Failed to logout the session."
+msgstr "Nem sikerült kijelentkeztetni a munkamenetet."
+
+#: src/session/room/event/event_actions.rs:191
+#: src/session/room/event/event_actions.rs:212
+#: src/session/room/event/event_actions.rs:223
+msgid "Message copied to clipboard"
+msgstr "Az üzenet a vágólapra másolva"
+
+#: src/session/room/event/event_actions.rs:237
+#| msgid "Image from Clipboard"
+msgid "Image copied to clipboard"
+msgstr "A kép a vágólapra másolva"
+
+#: src/session/room/event/event_actions.rs:241
+msgid "Thumbnail copied to clipboard"
+msgstr "A bélyegkép a vágólapra másolva"
+
+#: src/session/room/event/event_actions.rs:300
+#| msgid "Save"
+msgid "Save File"
+msgstr "Fájl mentése"
+
+#: src/session/room/member.rs:44
+msgid "Left"
+msgstr "Bal"
+
+#: src/session/room/member.rs:45
+#| msgid "Join"
+msgid "Joined"
+msgstr "Csatlakozott"
+
+#: src/session/room/member.rs:48
+msgid "Knocked"
+msgstr ""
+
+#: src/session/room/member.rs:49
+msgid "Custom"
+msgstr "Egyéni"
+
+#: src/session/room/member_role.rs:48
+msgid "Admin"
+msgstr "Adminisztrátor"
+
+#: src/session/room/member_role.rs:49
+msgid "Moderator"
+msgstr "Moderátor"
+
+#: src/session/room/member_role.rs:50
+msgid "Normal user"
+msgstr "Normál felhasználó"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:385
+msgid "Failed to forget {room}."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:639
+msgid "Failed to move {room} from {previous_category} to {new_category}."
+msgstr ""
+
+#: src/session/room/mod.rs:978
+msgid "Unknown"
+msgstr "Ismeretlen"
+
+#. Translators: This is the name of a room that is empty but had another user before.
+#. Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room/mod.rs:1006
+msgid "Empty Room (was {user})"
+msgstr ""
+
+#. Translators: This is the name of a room without other users.
+#: src/session/room/mod.rs:1008
+msgid "Empty Room"
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1389
+msgid "Failed to accept invitation for {room}. Try again later."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1418
+msgid "Failed to reject invitation for {room}. Try again later."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1614
+msgid "Failed to invite {user} to {room}. Try again later."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/room/mod.rs:1626
+msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
+msgid_plural ""
+"Failed to invite {user} and {n} other users to {room}. Try again later."
+msgstr[0] ""
+msgstr[1] ""
+
 #. Translators: This is a date format in the day divider without the year
-#: fractal-gtk/src/widgets/room_history.rs:798
-msgid "%B %e"
-msgstr "%B %-e."
+#: src/session/room/timeline/timeline_day_divider.rs:111
+#| msgid "%B %e"
+msgid "%A, %B %e"
+msgstr "%B %-e., %A"
 
 #. Translators: This is a date format in the day divider with the year
-#: fractal-gtk/src/widgets/room_history.rs:801
-msgid "%B %e, %Y"
-msgstr "%Y. %B %-e."
+#: src/session/room/timeline/timeline_day_divider.rs:114
+#| msgid "%B %e, %Y"
+msgid "%A, %B %e, %Y"
+msgstr "%Y. %B %-e., %A"
 
-#: fractal-gtk/src/widgets/roomlist.rs:480
-msgid "Invites"
-msgstr "Meghívások"
+#: src/session/room_creation/mod.rs:255
+msgid "The address is already taken."
+msgstr ""
 
-#: fractal-gtk/src/widgets/roomlist.rs:481
-msgid "You don’t have any invitations"
-msgstr "Nincsenek meghívásai"
+#: src/session/room_creation/mod.rs:288
+msgid "Can’t contain “:”"
+msgstr ""
 
-#: fractal-gtk/src/widgets/roomlist.rs:485
+#: src/session/room_creation/mod.rs:293
+msgid "Can’t contain “#”"
+msgstr ""
+
+#: src/session/room_creation/mod.rs:298
+msgid "Too long. Use a shorter address."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/room_list.rs:311
+msgid "Failed to join room {room_name}. Try again later."
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:160
+#| msgid "Join Room"
+msgid "Join Room as Favorite"
+msgstr "Csatlakozás szobához kedvencként"
+
+#: src/session/sidebar/category_row.rs:161
+msgid "Join Room"
+msgstr "Csatlakozás szobához"
+
+#: src/session/sidebar/category_row.rs:162
+msgid "Join Room as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:163
+#| msgid "Reject"
+msgid "Reject Invite"
+msgstr "Meghívás elutasítása"
+
+#: src/session/sidebar/category_row.rs:164
+#| msgid "Join Room"
+msgid "Join Room as People"
+msgstr "Csatlakozás szobához emberekként"
+
+#: src/session/sidebar/category_row.rs:168
+#: src/session/sidebar/category_row.rs:183
+#: src/session/sidebar/category_row.rs:197
+#| msgid "Invite to This Room"
+msgid "Move to Rooms"
+msgstr "Áthelyezés szobákba"
+
+#: src/session/sidebar/category_row.rs:169
+#: src/session/sidebar/category_row.rs:176
+#: src/session/sidebar/category_row.rs:198
+msgid "Move to Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:170
+#: src/session/sidebar/category_row.rs:177
+#: src/session/sidebar/category_row.rs:184
+#: src/session/sidebar/category_row.rs:199
+msgid "Leave Room"
+msgstr "Szoba elhagyása"
+
+#: src/session/sidebar/category_row.rs:171
+#: src/session/sidebar/category_row.rs:178
+#: src/session/sidebar/category_row.rs:185
+msgid "Move to People"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:175
+#: src/session/sidebar/category_row.rs:182
+#: src/session/sidebar/category_row.rs:196
+#| msgid "Favorites"
+msgid "Move to Favorites"
+msgstr "Áthelyezés a kedvencekbe"
+
+#: src/session/sidebar/category_row.rs:189
+msgid "Rejoin Room as Favorites"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:190
+#| msgid "Join Room"
+msgid "Rejoin Room"
+msgstr "Újracsatlakozás szobához"
+
+#: src/session/sidebar/category_row.rs:191
+msgid "Rejoin Room as Low Priority"
+msgstr ""
+
+#: src/session/sidebar/category_row.rs:192
+msgid "Rejoin Room as People"
+msgstr ""
+
+#: src/session/sidebar/category_type.rs:29
+#| msgid "Notifications"
+msgid "Verifications"
+msgstr "Ellenőrzések"
+
+#: src/session/sidebar/category_type.rs:31
 msgid "Favorites"
 msgstr "Kedvencek"
 
-#: fractal-gtk/src/widgets/roomlist.rs:486
-msgid "Drag and drop rooms here to add them to your favorites"
-msgstr "Húzzon és ejtsen ide szobákat, hogy hozzáadja a kedvenceihez"
-
-#: fractal-gtk/src/widgets/roomlist.rs:490
+#: src/session/sidebar/category_type.rs:32
 msgid "Rooms"
 msgstr "Szobák"
 
-#: fractal-gtk/src/widgets/roomlist.rs:491
-msgid "You don’t have any rooms yet"
-msgstr "Még nincsenek szobái"
+#: src/session/sidebar/category_type.rs:33
+msgid "Low Priority"
+msgstr "Alacsony prioritás"
 
-#~ msgid "Select room image file"
-#~ msgstr "Válasszon szobaképfájlt"
+#: src/session/sidebar/category_type.rs:34
+msgid "Historical"
+msgstr ""
 
-#~ msgid "Chat"
-#~ msgstr "Csevegés"
+#. Translators: This shouldn't ever be visible to the user,
+#: src/session/sidebar/category_type.rs:36
+msgid "Outdated"
+msgstr "Elavult"
 
-#~ msgid "Directory"
-#~ msgstr "Jegyzék"
+#: src/session/sidebar/category_type.rs:37
+msgid "Spaces"
+msgstr "Terek"
 
-#~ msgid "Loading"
-#~ msgstr "Betöltés"
+#: src/session/sidebar/category_type.rs:38
+msgid "People"
+msgstr "Emberek"
 
-#~ msgid "Private Chat"
-#~ msgstr "Privát csevegés"
+#: src/session/sidebar/entry_type.rs:18
+msgid "Explore"
+msgstr "Felfedezés"
 
-#~ msgid "The identity server is invalid."
-#~ msgstr "A személyazonosság-kiszolgáló érvénytelen."
+#: src/session/sidebar/entry_type.rs:19
+#| msgid "New Room"
+msgid "Forget Room"
+msgstr "Szoba elfelejtése"
 
-#~ msgid "Uploading video."
-#~ msgstr "Videó feltöltése."
+#: src/session/verification/identity_verification.rs:637
+msgid "You cancelled the verification process."
+msgstr ""
 
-#~ msgid "Uploading audio."
-#~ msgstr "Hang feltöltése."
+#: src/session/verification/identity_verification.rs:639
+msgid "The verification process failed because it reached a timeout."
+msgstr ""
 
-#~ msgid "Uploading image."
-#~ msgstr "Kép feltöltése."
+#: src/session/verification/identity_verification.rs:642
+msgid "You accepted the request from an other session."
+msgstr ""
 
-#~ msgid "Uploading file."
-#~ msgstr "Fájl feltöltése."
+#: src/session/verification/identity_verification.rs:645
+#| msgid "The passwords do not match."
+msgid "The emoji did not match."
+msgstr "Az emodzsik nem egyeztek."
 
-#~ msgid "Save as…"
-#~ msgstr "Mentés másként…"
+#: src/session/verification/identity_verification.rs:654
+msgid "An unknown error occurred during the verification process."
+msgstr ""
 
-#~ msgid "Error sending message"
-#~ msgstr "Hiba az üzenet küldésekor"
+#: src/user_facing_error.rs:26
+msgid "The connection timed out. Try again later."
+msgstr ""
 
-#~ msgid "Media is not loaded yet."
-#~ msgstr "A média még nincs betöltve."
+#: src/user_facing_error.rs:28
+msgid "Unable to connect to the homeserver."
+msgstr ""
 
-#~ msgid "Could not save the file"
-#~ msgstr "Nem sikerült elmenteni a fájlt"
+#: src/user_facing_error.rs:38
+#| msgid "The identity server is invalid."
+msgid "The provided username or password is invalid."
+msgstr "A megadott felhasználónév vagy jelszó érvénytelen."
+
+#: src/user_facing_error.rs:39
+msgid "The account is deactivated."
+msgstr ""
+
+#. Translators: Do NOT translate the content between '{' and '}',
+#. this is a variable name.
+#: src/user_facing_error.rs:46
+msgid "You exceeded the homeserver’s rate limit, retry in 1 second."
+msgid_plural "You exceeded the homeserver’s rate limit, retry in {n} seconds."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/user_facing_error.rs:52
+msgid "You exceeded the homeserver’s rate limit, try again later."
+msgstr ""
+
+#: src/user_facing_error.rs:62
+msgid "An unknown connection error occurred."
+msgstr "Ismeretlen kapcsolódási hiba történt."
+
+#: src/user_facing_error.rs:70
+#| msgid "Could not save the file"
+msgid "Could not decrypt the event"
+msgstr "Nem sikerült visszafejteni az eseményt"
+
+#: src/user_facing_error.rs:72 src/user_facing_error.rs:92
+msgid "An unknown error occurred."
+msgstr "Ismeretlen hiba történt."
+
+#: src/user_facing_error.rs:79
+#| msgid "Could not save the file"
+msgid "Could not open the store."
+msgstr "Nem sikerült megnyitni a tárolót."
+
+#: src/user_facing_error.rs:86
+msgid "This is not a valid URL"
+msgstr ""
+
+#: src/user_facing_error.rs:88
+msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
+msgstr ""
+
+#. Translators: Default name for image files.
+#: src/utils/media.rs:50
+msgid "image"
+msgstr "kép"
+
+#. Translators: Default name for video files.
+#: src/utils/media.rs:52
+#| msgid "videos"
+msgid "video"
+msgstr "videó"
+
+#. Translators: Default name for audio files.
+#: src/utils/media.rs:54
+msgid "audio"
+msgstr "hang"
+
+#. Translators: Default name for files.
+#: src/utils/media.rs:56
+msgid "file"
+msgstr "fájl"
+
+#: src/utils/matrix.rs:92
+msgid "{user} sent an audio file."
+msgstr "{user} küldött egy hangfájlt."
+
+#: src/utils/matrix.rs:95 src/utils/matrix.rs:106 src/utils/matrix.rs:110
+#: src/utils/matrix.rs:114
+msgid "{user}: {message}"
+msgstr "{user}: {message}"
+
+#: src/utils/matrix.rs:98
+#| msgid "Select a file"
+msgid "{user} sent a file."
+msgstr "{user} küldött egy fájlt."
+
+#: src/utils/matrix.rs:100
+msgid "{user} sent an image."
+msgstr "{user} küldött egy képet."
+
+#: src/utils/matrix.rs:103
+msgid "{user} sent their location."
+msgstr "{user} elküldte a helyzetét."
+
+#: src/utils/matrix.rs:118
+msgid "{user} sent a video."
+msgstr "{user} küldött egy videót."
+
+#: src/utils/matrix.rs:121
+msgid "{user} sent a verification request."
+msgstr "{user} küldött egy ellenőrzési kérést."
+
+#: src/utils/matrix.rs:129
+msgid "{user} sent a sticker."
+msgstr "{user} küldött egy matricát."
+
+#: src/window.rs:271
+msgid "Failed to restore previous sessions"
+msgstr "Nem sikerült helyreállítani az előző munkameneteket"
