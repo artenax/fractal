@@ -15,7 +15,7 @@
         "--share=network",
         "--share=ipc",
         "--device=dri",
-        "--env=RUST_LOG=fractal=debug",
+        "--env=RUST_LOG=fractal=debug,warn",
         "--env=G_MESSAGES_DEBUG=none",
         "--env=RUST_BACKTRACE=1"
     ],
