@@ -8,12 +8,9 @@ use matrix_sdk::ruma::{
     serde::Raw,
     MilliSecondsSinceUnixEpoch, OwnedUserId, UserId,
 };
+use ruma::events::key::verification::REQUEST_TIMESTAMP_TIMEOUT;
 
-use crate::session::{
-    user::UserExt,
-    verification::{IdentityVerification, VERIFICATION_CREATION_TIMEOUT},
-    Room, Session,
-};
+use crate::session::{user::UserExt, verification::IdentityVerification, Room, Session};
 
 #[derive(Hash, PartialEq, Eq, Debug)]
 pub struct FlowId {
@@ -388,8 +385,8 @@ impl VerificationList {
 fn start_time_from_timestamp(timestamp: &MilliSecondsSinceUnixEpoch) -> Option<glib::DateTime> {
     if let Some(time) = timestamp.to_system_time() {
         if let Ok(duration) = time.elapsed() {
-            if duration > VERIFICATION_CREATION_TIMEOUT {
-                debug!("Received verification event that already timedout");
+            if duration > REQUEST_TIMESTAMP_TIMEOUT {
+                debug!("Received verification event that already timed out");
                 return None;
             }
 

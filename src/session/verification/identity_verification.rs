@@ -18,9 +18,9 @@ use matrix_sdk::{
     Client,
 };
 use qrcode::QrCode;
+use ruma::events::key::verification::{REQUEST_RECEIVED_TIMEOUT, REQUEST_TIMESTAMP_TIMEOUT};
 use tokio::sync::mpsc;
 
-use super::{VERIFICATION_CREATION_TIMEOUT, VERIFICATION_RECEIVE_TIMEOUT};
 use crate::{
     contrib::Camera,
     session::{
@@ -493,11 +493,11 @@ impl IdentityVerification {
             return;
         }
         let difference = Duration::from_secs(difference as u64);
-        let remaining_creation = VERIFICATION_CREATION_TIMEOUT.saturating_sub(difference);
+        let remaining_timestamp = REQUEST_TIMESTAMP_TIMEOUT.saturating_sub(difference);
 
-        let remaining_receive = VERIFICATION_RECEIVE_TIMEOUT.saturating_sub(difference);
+        let remaining_received = REQUEST_RECEIVED_TIMEOUT.saturating_sub(difference);
 
-        let remaining = std::cmp::max(remaining_creation, remaining_receive);
+        let remaining = std::cmp::max(remaining_timestamp, remaining_received);
 
         if remaining.is_zero() {
             self.cancel(false);
