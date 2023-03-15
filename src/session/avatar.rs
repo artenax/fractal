@@ -1,16 +1,11 @@
-use std::path::Path;
-
-use gtk::{gdk, gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::{debug, error, info};
+use gtk::{gdk, glib, glib::clone, prelude::*, subclass::prelude::*};
+use log::error;
 use matrix_sdk::{
     media::{MediaFormat, MediaRequest, MediaThumbnailSize},
-    room::Room as MatrixRoom,
     ruma::{
-        api::client::media::get_content_thumbnail::v3::Method,
-        events::room::{avatar::RoomAvatarEventContent, MediaSource},
-        MxcUri, OwnedMxcUri,
+        api::client::media::get_content_thumbnail::v3::Method, events::room::MediaSource, MxcUri,
+        OwnedMxcUri,
     },
-    Client,
 };
 
 use crate::{
@@ -247,100 +242,5 @@ impl Avatar {
                 None
             }
         }
-    }
-}
-
-/// Uploads the given file and sets the room avatar.
-///
-/// Removes the avatar if `filename` is None.
-pub async fn update_room_avatar_from_file<P>(
-    matrix_client: &Client,
-    matrix_room: &MatrixRoom,
-    filename: Option<&P>,
-) -> Result<Option<OwnedMxcUri>, AvatarError>
-where
-    P: AsRef<Path> + std::fmt::Debug,
-{
-    let joined_room = match matrix_room {
-        MatrixRoom::Joined(joined_room) => joined_room,
-        _ => return Err(AvatarError::NotAMember),
-    };
-
-    let mut content = RoomAvatarEventContent::new();
-
-    let uri = if let Some(filename) = filename {
-        Some(upload_avatar(matrix_client, filename).await?)
-    } else {
-        debug!("Removing room avatar");
-        None
-    };
-    content.url = uri.clone();
-
-    joined_room.send_state_event(content).await?;
-    Ok(uri)
-}
-
-/// Returns the URI of the room avatar after uploading it.
-async fn upload_avatar<P>(matrix_client: &Client, filename: &P) -> Result<OwnedMxcUri, AvatarError>
-where
-    P: AsRef<Path> + std::fmt::Debug,
-{
-    debug!("Getting mime type of file {:?}", filename);
-    let image = tokio::fs::read(filename).await?;
-    let content_type = gio::content_type_guess(Option::<String>::None, &image)
-        .0
-        .to_string();
-
-    info!("Uploading avatar from file {:?}", filename);
-    // TODO: Use blurhash
-    let response = matrix_client
-        .media()
-        .upload(&content_type.parse()?, image)
-        .await?;
-    Ok(response.content_uri)
-}
-
-/// Error occurring when updating an avatar.
-#[derive(Debug)]
-pub enum AvatarError {
-    Filesystem(std::io::Error),
-    Upload(matrix_sdk::Error),
-    NotAMember,
-    UnknownFiletype(mime::FromStrError),
-}
-
-impl std::fmt::Display for AvatarError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use AvatarError::*;
-        match self {
-            Filesystem(e) => write!(f, "Could not open room avatar file: {e}"),
-            Upload(e) => write!(f, "Could not upload room avatar: {e}"),
-            NotAMember => write!(f, "Room avatar can’t be changed when not a member."),
-            UnknownFiletype(e) => write!(f, "Room avatar file has an unknown filetype: {e}"),
-        }
-    }
-}
-
-impl From<std::io::Error> for AvatarError {
-    fn from(err: std::io::Error) -> Self {
-        Self::Filesystem(err)
-    }
-}
-
-impl From<matrix_sdk::Error> for AvatarError {
-    fn from(err: matrix_sdk::Error) -> Self {
-        Self::Upload(err)
-    }
-}
-
-impl From<matrix_sdk::HttpError> for AvatarError {
-    fn from(err: matrix_sdk::HttpError) -> Self {
-        Self::Upload(matrix_sdk::Error::Http(err))
-    }
-}
-
-impl From<mime::FromStrError> for AvatarError {
-    fn from(err: mime::FromStrError) -> Self {
-        Self::UnknownFiletype(err)
     }
 }

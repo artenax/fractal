@@ -11,7 +11,7 @@ mod typing_list;
 use std::{cell::RefCell, io::Cursor, path::PathBuf};
 
 use gettextrs::{gettext, ngettext};
-use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
+use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, info, warn};
 use matrix_sdk::{
     attachment::{generate_image_thumbnail, AttachmentConfig, AttachmentInfo, Thumbnail},
@@ -61,7 +61,6 @@ use crate::{
     gettext_f,
     prelude::*,
     session::{
-        avatar::update_room_avatar_from_file,
         sidebar::{SidebarItem, SidebarItemImpl},
         Avatar, Session, User,
     },
@@ -1337,18 +1336,37 @@ impl Room {
     ///
     /// Removes the avatar if no filename is given.
     pub fn store_avatar(&self, filename: Option<PathBuf>) {
-        let matrix_room = self.matrix_room();
-        let client = self.session().client();
+        let MatrixRoom::Joined(joined_room) = self.matrix_room() else {
+            error!("Cannot change avatar of a room not joined.");
+            return;
+        };
 
         let handle = spawn_tokio!(async move {
-            update_room_avatar_from_file(&client, &matrix_room, filename.as_ref()).await
+            if let Some(filename) = filename {
+                debug!("Getting mime type of file {:?}", filename);
+                let image = tokio::fs::read(filename).await?;
+                let content_type = gio::content_type_guess(Option::<String>::None, &image)
+                    .0
+                    .to_string();
+                joined_room
+                    .upload_avatar(
+                        &content_type
+                            .parse()
+                            .unwrap_or(mime::APPLICATION_OCTET_STREAM),
+                        image,
+                        None,
+                    )
+                    .await
+            } else {
+                joined_room.remove_avatar().await
+            }
         });
 
         spawn!(
             glib::PRIORITY_DEFAULT_IDLE,
             clone!(@weak self as this => async move {
                 match handle.await.unwrap() {
-                    Ok(_avatar_uri) => info!("Successfully updated room avatar"),
+                    Ok(_) => info!("Successfully updated room avatar"),
                     Err(error) => error!("Couldn’t update room avatar: {}", error),
                 };
             })
