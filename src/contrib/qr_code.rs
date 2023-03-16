@@ -77,11 +77,9 @@ pub(crate) mod imp {
                 .for_each(|(y, line)| {
                     line.iter().enumerate().for_each(|(x, is_dark)| {
                         let color = if *is_dark {
-                            obj.style_context().color()
+                            gdk::RGBA::BLACK
                         } else {
-                            obj.style_context()
-                                .lookup_color("background")
-                                .unwrap_or_else(|| gdk::RGBA::new(0.0, 0.0, 0.0, 0.0))
+                            gdk::RGBA::WHITE
                         };
                         let position = graphene::Rect::new(
                             (x as f32) * square_width,
