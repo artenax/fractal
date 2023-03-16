@@ -255,7 +255,7 @@ mod imp {
                     // Close popup when the entry is not focused.
                     view.connect_has_focus_notify(clone!(@weak obj => move |view| {
                         if !view.has_focus() && obj.get_visible() {
-                            obj.hide();
+                            obj.popdown();
                         }
                     }));
                 }
@@ -468,7 +468,7 @@ impl CompletionPopover {
                 self.set_current_word(Some((start, end, term)));
                 self.search_members();
             } else {
-                self.hide();
+                self.popdown();
                 self.select_row_at_index(None);
                 self.set_current_word(None);
             }
@@ -708,7 +708,7 @@ impl CompletionPopover {
 
         let new_len = filtered_members.n_items();
         if new_len == 0 {
-            self.hide();
+            self.popdown();
             self.select_row_at_index(None);
         } else {
             for (idx, row) in imp.rows.iter().enumerate() {
@@ -717,9 +717,9 @@ impl CompletionPopover {
                     .and_then(|obj| obj.downcast::<Member>().ok())
                 {
                     row.set_member(Some(member));
-                    row.show();
+                    row.set_visible(true);
                 } else if row.get_visible() {
-                    row.hide();
+                    row.set_visible(false);
                 } else {
                     // All remaining rows should be hidden too.
                     break;
@@ -748,7 +748,7 @@ impl CompletionPopover {
         {
             self.select_row_at_index(Some(0));
         }
-        self.show()
+        <Self as PopoverExt>::popup(self)
     }
 
     fn update_pointing_to(&self) {
@@ -810,7 +810,7 @@ impl CompletionPopover {
                 let pill = Pill::for_user(member.upcast_ref());
                 view.add_child_at_anchor(&pill, &anchor);
 
-                self.hide();
+                self.popdown();
                 self.select_row_at_index(None);
                 view.grab_focus();
             }
@@ -824,7 +824,7 @@ impl CompletionPopover {
     fn inhibit(&self) {
         if !self.is_inhibited() {
             self.imp().inhibit.set(true);
-            self.hide();
+            self.popdown();
             self.select_row_at_index(None);
         }
     }

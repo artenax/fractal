@@ -170,8 +170,8 @@ impl LoginMethodPage {
         let login_types = match login_types {
             Some(t) => t,
             None => {
-                imp.sso_idp_box.hide();
-                imp.more_sso_option.hide();
+                imp.sso_idp_box.set_visible(false);
+                imp.more_sso_option.set_visible(false);
                 return;
             }
         };

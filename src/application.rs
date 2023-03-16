@@ -44,7 +44,6 @@ mod imp {
             let app = self.obj();
 
             if let Some(window) = self.window.upgrade() {
-                window.show();
                 window.present();
                 return;
             }
@@ -196,7 +195,7 @@ impl Application {
         // This can't be added via the builder
         dialog.add_credit_section(Some(&gettext("Name by")), &["Regina Bíró"]);
 
-        dialog.show();
+        dialog.present();
     }
 
     pub fn run(&self) {

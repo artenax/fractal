@@ -346,7 +346,7 @@ impl GeneralPage {
             imp.room_name_entry.set_sensitive(true);
             imp.room_name_entry.set_width_chars(25);
             imp.room_topic_entry.set_sensitive(true);
-            imp.room_topic_label.show();
+            imp.room_topic_label.set_visible(true);
         } else {
             imp.room_topic_text_view
                 .set_justification(gtk::Justification::Center);
@@ -355,7 +355,7 @@ impl GeneralPage {
             imp.room_name_entry.set_halign(gtk::Align::Fill);
             imp.room_name_entry.set_width_chars(-1);
             imp.room_topic_entry.set_sensitive(false);
-            imp.room_topic_label.hide();
+            imp.room_topic_label.set_visible(false);
         }
     }
 

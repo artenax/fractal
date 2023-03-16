@@ -92,26 +92,27 @@ impl Badge {
         let label: gtk::Label = self.child().unwrap().downcast().unwrap();
         let role = MemberRole::from(power_level);
 
-        match role {
+        let visible = match role {
             MemberRole::ADMIN => {
                 label.set_text(&format!("{role} {power_level}"));
                 self.add_css_class("admin");
                 self.remove_css_class("mod");
-                self.show();
+                true
             }
             MemberRole::MOD => {
                 label.set_text(&format!("{role} {power_level}"));
                 self.add_css_class("mod");
                 self.remove_css_class("admin");
-                self.show();
+                true
             }
             MemberRole::PEASANT if power_level != 0 => {
                 label.set_text(&power_level.to_string());
                 self.remove_css_class("admin");
                 self.remove_css_class("mod");
-                self.show()
+                true
             }
-            _ => self.hide(),
-        }
+            _ => false,
+        };
+        self.set_visible(visible);
     }
 }

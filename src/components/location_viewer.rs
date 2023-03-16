@@ -79,7 +79,7 @@ mod imp {
             self.map.add_overlay_layer(&marker_layer);
 
             // Hide the scale
-            self.map.scale().unwrap().hide();
+            self.map.scale().unwrap().set_visible(false);
             self.parent_constructed();
         }
     }

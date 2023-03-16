@@ -84,7 +84,7 @@ where
                     .activate(clone!(@weak self as widget, @weak event => move |_, _, _| {
                         let window = widget.root().unwrap().downcast().unwrap();
                         let dialog = EventSourceDialog::new(&window, &event);
-                        dialog.show();
+                        dialog.present();
                     }))
                     .build(),
             ]);

@@ -214,7 +214,7 @@ impl ImportExportKeysSubpage {
             imp.instructions.set_label(&gettext(
                 "The backup must be stored in a safe place and must be protected with a strong passphrase that will be used to encrypt the data.",
             ));
-            imp.confirm_passphrase_box.show();
+            imp.confirm_passphrase_box.set_visible(true);
             imp.proceed_button.set_label(&gettext("Export Keys"));
         } else {
             imp.title.set_label(&gettext("Import Room Encryption Keys"));
@@ -224,7 +224,7 @@ impl ImportExportKeysSubpage {
             imp.instructions.set_label(&gettext(
                 "Enter the passphrase provided when the backup file was created.",
             ));
-            imp.confirm_passphrase_box.hide();
+            imp.confirm_passphrase_box.set_visible(false);
             imp.proceed_button.set_label(&gettext("Import Keys"));
         }
 

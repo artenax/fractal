@@ -158,20 +158,22 @@ impl DeviceRow {
             // TODO: Implement verification
             // imp.verify_button.set_visible(!device.is_verified());
 
-            if let Some(last_seen_ip) = device.last_seen_ip() {
+            let last_seen_ip_visible = if let Some(last_seen_ip) = device.last_seen_ip() {
                 imp.last_seen_ip.set_label(last_seen_ip);
-                imp.last_seen_ip.show();
+                true
             } else {
-                imp.last_seen_ip.hide();
-            }
+                false
+            };
+            imp.last_seen_ip.set_visible(last_seen_ip_visible);
 
-            if let Some(last_seen_ts) = device.last_seen_ts() {
+            let last_seen_ts_visible = if let Some(last_seen_ts) = device.last_seen_ts() {
                 let last_seen_ts = format_date_time_as_string(last_seen_ts);
                 imp.last_seen_ts.set_label(&last_seen_ts);
-                imp.last_seen_ts.show();
+                true
             } else {
-                imp.last_seen_ts.hide();
-            }
+                false
+            };
+            imp.last_seen_ts.set_visible(last_seen_ts_visible);
         }
 
         imp.device.replace(device);
@@ -203,7 +205,7 @@ impl DeviceRow {
         spawn!(clone!(@weak self as obj => async move {
             let window: Option<gtk::Window> = obj.root().and_then(|root| root.downcast().ok());
             match device.delete(window.as_ref()).await {
-                Ok(_) => obj.hide(),
+                Ok(_) => obj.set_visible(false),
                 Err(AuthError::UserCancelled) => {},
                 Err(err) => {
                     error!("Failed to disconnect device {}: {err:?}", device.device_id());

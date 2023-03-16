@@ -150,7 +150,7 @@ impl MemberMenu {
         self.imp().destroy_handler.replace(Some(handler));
 
         popover.set_parent(button);
-        popover.show();
+        popover.popup();
     }
 
     fn unparent_popover(&self) {
@@ -172,7 +172,7 @@ impl MemberMenu {
 
         if let Some(button) = popover.parent() {
             if popover.is_visible() {
-                popover.hide();
+                popover.popdown();
             }
             button
                 .downcast::<gtk::ToggleButton>()

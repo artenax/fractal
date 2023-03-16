@@ -686,12 +686,12 @@ impl Session {
 
     fn open_account_settings(&self) {
         let window = AccountSettings::new(self.parent_window().as_ref(), self);
-        window.show();
+        window.present();
     }
 
     fn show_room_creation_dialog(&self) {
         let window = RoomCreation::new(self.parent_window().as_ref(), self);
-        window.show();
+        window.present();
     }
 
     async fn show_join_room_dialog(&self) {

@@ -89,15 +89,15 @@ impl MessageLocation {
         match GeoUri::parse(uri) {
             Ok(geo_uri) => {
                 imp.location.set_location(&geo_uri);
-                imp.overlay_error.hide();
+                imp.overlay_error.set_visible(false);
             }
             Err(error) => {
                 warn!("Encountered invalid geo URI: {}", error);
-                imp.location.hide();
+                imp.location.set_visible(false);
                 imp.overlay_error.set_tooltip_text(Some(&gettext(
                     "Location is invalid and cannot be displayed",
                 )));
-                imp.overlay_error.show();
+                imp.overlay_error.set_visible(true);
             }
         };
 

@@ -49,17 +49,16 @@ impl StateTombstone {
 
     fn set_event(&self, event: &FullStateEventContent<RoomTombstoneEventContent>) {
         let new_room_btn = &self.imp().new_room_btn;
-        match event {
+        let btn_visible = match event {
             FullStateEventContent::Original { content, .. } => {
                 new_room_btn.set_detailed_action_name(&format!(
                     "session.show-room::{}",
                     content.replacement_room
                 ));
-                new_room_btn.show();
+                true
             }
-            FullStateEventContent::Redacted(_) => {
-                new_room_btn.hide();
-            }
-        }
+            FullStateEventContent::Redacted(_) => false,
+        };
+        new_room_btn.set_visible(btn_visible);
     }
 }

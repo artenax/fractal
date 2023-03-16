@@ -300,7 +300,7 @@ impl AuthDialog {
             }
         });
 
-        self.show();
+        self.present();
 
         let result = receiver.await.unwrap();
         self.disconnect(handler_id);
@@ -312,12 +312,13 @@ impl AuthDialog {
     fn show_auth_error(&self, auth_error: &Option<StandardErrorBody>) {
         let imp = self.imp();
 
-        if let Some(auth_error) = auth_error {
+        let visible = if let Some(auth_error) = auth_error {
             imp.error.set_label(&auth_error.message);
-            imp.error.show();
+            true
         } else {
-            imp.error.hide();
-        }
+            false
+        };
+        imp.error.set_visible(visible);
     }
 
     fn setup_fallback_page(&self, homeserver: &str, auth_type: &str, session: &str) {

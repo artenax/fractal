@@ -113,7 +113,7 @@ impl AttachmentDialog {
             }),
         );
 
-        self.show();
+        self.present();
         let res = receiver.await.unwrap();
 
         self.disconnect(handler_id);

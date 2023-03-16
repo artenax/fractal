@@ -106,7 +106,7 @@ impl LoginAdvancedDialog {
             gtk::Inhibit(false)
         });
 
-        self.show();
+        self.present();
         receiver.await.unwrap();
     }
 }

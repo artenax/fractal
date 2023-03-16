@@ -63,11 +63,11 @@ impl StateCreation {
                 "session.show-room::{}",
                 predecessor.room_id.as_str()
             ));
-            imp.previous_room_btn.show();
+            imp.previous_room_btn.set_visible(true);
             imp.description
                 .set_label(&gettext("This is the continuation of an upgraded room."));
         } else {
-            imp.previous_room_btn.hide();
+            imp.previous_room_btn.set_visible(false);
             imp.previous_room_btn.set_action_name(None);
             imp.description
                 .set_label(&gettext("This is the beginning of this room."));

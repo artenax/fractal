@@ -349,7 +349,7 @@ impl UserPage {
 
         entry.remove_css_class("error");
         entry.set_sensitive(true);
-        button.hide();
+        button.set_visible(false);
         button.set_state(ActionState::Confirm);
         toast!(self, gettext("Name changed successfully"));
     }

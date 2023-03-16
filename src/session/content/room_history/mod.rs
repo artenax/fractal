@@ -799,7 +799,7 @@ impl RoomHistory {
         if let Some(room) = self.room() {
             let window = RoomDetails::new(&self.parent_window(), &room);
             window.set_visible_page(page_name);
-            window.show();
+            window.present();
         }
     }
 
@@ -807,13 +807,14 @@ impl RoomHistory {
         let imp = self.imp();
 
         if let Some(room) = &*imp.room.borrow() {
-            if room.category() == RoomType::Left {
+            let menu_visible = if room.category() == RoomType::Left {
                 self.action_set_enabled("room-history.leave", false);
-                imp.room_menu.hide();
+                false
             } else {
                 self.action_set_enabled("room-history.leave", true);
-                imp.room_menu.show();
-            }
+                true
+            };
+            imp.room_menu.set_visible(menu_visible);
         }
     }
 
