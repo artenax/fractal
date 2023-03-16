@@ -12,7 +12,7 @@ use std::{cell::RefCell, io::Cursor};
 
 use gettextrs::{gettext, ngettext};
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::{debug, error, info, warn};
+use log::{debug, error, warn};
 use matrix_sdk::{
     attachment::{generate_image_thumbnail, AttachmentConfig, AttachmentInfo, Thumbnail},
     deserialized_responses::SyncTimelineEvent,
@@ -23,9 +23,7 @@ use matrix_sdk::{
             reaction::ReactionEventContent,
             receipt::{ReceiptEventContent, ReceiptType},
             relation::Annotation,
-            room::{
-                member::MembershipState, name::RoomNameEventContent, topic::RoomTopicEventContent,
-            },
+            room::member::MembershipState,
             room_key::ToDeviceRoomKeyEventContent,
             tag::{TagInfo, TagName},
             AnyRoomAccountDataEvent, AnyStrippedStateEvent, AnySyncStateEvent,
@@ -125,8 +123,9 @@ mod imp {
                     glib::ParamSpecObject::builder::<Session>("session")
                         .construct_only()
                         .build(),
+                    glib::ParamSpecString::builder("name").read_only().build(),
                     glib::ParamSpecString::builder("display-name")
-                        .explicit_notify()
+                        .read_only()
                         .build(),
                     glib::ParamSpecObject::builder::<Member>("inviter")
                         .read_only()
@@ -146,9 +145,7 @@ mod imp {
                     glib::ParamSpecEnum::builder::<RoomType>("category")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecString::builder("topic")
-                        .explicit_notify()
-                        .build(),
+                    glib::ParamSpecString::builder("topic").read_only().build(),
                     glib::ParamSpecUInt64::builder("latest-unread")
                         .read_only()
                         .build(),
@@ -184,13 +181,11 @@ mod imp {
 
             match pspec.name() {
                 "session" => self.session.set(value.get().ok().as_ref()),
-                "display-name" => obj.store_room_name(value.get().unwrap()),
                 "category" => obj.set_category(value.get().unwrap()),
                 "room-id" => self
                     .room_id
                     .set(RoomId::parse(value.get::<&str>().unwrap()).unwrap())
                     .unwrap(),
-                "topic" => obj.store_topic(value.get().unwrap()),
                 "verification" => obj.set_verification(value.get().unwrap()),
                 "encrypted" => obj.set_is_encrypted(value.get().unwrap()),
                 _ => unimplemented!(),
@@ -204,6 +199,7 @@ mod imp {
                 "room-id" => obj.room_id().as_str().to_value(),
                 "session" => obj.session().to_value(),
                 "inviter" => obj.inviter().to_value(),
+                "name" => obj.name().to_value(),
                 "display-name" => obj.display_name().to_value(),
                 "avatar" => obj.avatar().to_value(),
                 "timeline" => self.timeline.get().unwrap().to_value(),
@@ -959,6 +955,14 @@ impl Room {
             .is_none()
     }
 
+    /// The name of this room.
+    ///
+    /// This can be empty, the display name should be used instead in the
+    /// interface.
+    pub fn name(&self) -> Option<String> {
+        self.matrix_room().name()
+    }
+
     /// The display name of this room.
     pub fn display_name(&self) -> String {
         let display_name = self.imp().name.borrow().clone();
@@ -1012,35 +1016,6 @@ impl Room {
             .notification_count
     }
 
-    /// Updates the Matrix room with the given name.
-    pub fn store_room_name(&self, room_name: String) {
-        if self.display_name() == room_name {
-            return;
-        }
-
-        let joined_room = match self.matrix_room() {
-            MatrixRoom::Joined(joined_room) => joined_room,
-            _ => {
-                error!("Room name can’t be changed when not a member.");
-                return;
-            }
-        };
-
-        let name_content = RoomNameEventContent::new(Some(room_name));
-
-        let handle = spawn_tokio!(async move { joined_room.send_state_event(name_content).await });
-
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                match handle.await.unwrap() {
-                    Ok(_room_name) => info!("Successfully updated room name"),
-                    Err(error) => error!("Couldn’t update room name: {}", error),
-                };
-            })
-        );
-    }
-
     /// The Avatar of this room.
     pub fn avatar(&self) -> &Avatar {
         self.imp().avatar.get().unwrap()
@@ -1051,37 +1026,6 @@ impl Room {
         self.matrix_room()
             .topic()
             .filter(|topic| !topic.is_empty() && topic.find(|c: char| !c.is_whitespace()).is_some())
-    }
-
-    /// Updates the Matrix room with the given topic.
-    pub fn store_topic(&self, topic: String) {
-        if self.topic().as_ref() == Some(&topic) {
-            return;
-        }
-
-        let joined_room = match self.matrix_room() {
-            MatrixRoom::Joined(joined_room) => joined_room,
-            _ => {
-                error!("Room topic can’t be changed when not a member.");
-                return;
-            }
-        };
-
-        let handle = spawn_tokio!(async move {
-            joined_room
-                .send_state_event(RoomTopicEventContent::new(topic))
-                .await
-        });
-
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                match handle.await.unwrap() {
-                    Ok(_topic) => info!("Successfully updated room topic"),
-                    Err(error) => error!("Couldn’t update topic: {}", error),
-                };
-            })
-        );
     }
 
     pub fn power_levels(&self) -> PowerLevels {
@@ -1151,6 +1095,7 @@ impl Room {
                         self.avatar().set_url(event.content.url.to_owned());
                     }
                     AnySyncStateEvent::RoomName(_) => {
+                        self.notify("name");
                         // FIXME: this doesn't take into account changes in the calculated name
                         self.load_display_name()
                     }

@@ -16,12 +16,13 @@ use ruma::{
 };
 
 use crate::{
-    components::{CustomEntry, EditableAvatar},
+    components::{CustomEntry, EditableAvatar, SpinnerButton},
     session::{room::RoomAction, Room},
     spawn, spawn_tokio, toast,
     utils::{
+        and_expr,
         media::{get_image_info, load_file},
-        or_expr, OngoingAsyncAction,
+        not_expr, or_expr, OngoingAsyncAction,
     },
 };
 
@@ -40,8 +41,6 @@ mod imp {
         #[template_child]
         pub avatar: TemplateChild<EditableAvatar>,
         #[template_child]
-        pub edit_toggle: TemplateChild<gtk::Button>,
-        #[template_child]
         pub room_name_entry: TemplateChild<gtk::Entry>,
         #[template_child]
         pub room_topic_text_view: TemplateChild<gtk::TextView>,
@@ -50,9 +49,16 @@ mod imp {
         #[template_child]
         pub room_topic_label: TemplateChild<gtk::Label>,
         #[template_child]
+        pub edit_details_btn: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub save_details_btn: TemplateChild<SpinnerButton>,
+        #[template_child]
         pub members_count: TemplateChild<gtk::Label>,
-        pub edit_mode: Cell<bool>,
+        /// Whether edit mode is enabled.
+        pub edit_mode_enabled: Cell<bool>,
         pub changing_avatar: RefCell<Option<OngoingAsyncAction<OwnedMxcUri>>>,
+        pub changing_name: RefCell<Option<OngoingAsyncAction<String>>>,
+        pub changing_topic: RefCell<Option<OngoingAsyncAction<String>>>,
     }
 
     #[glib::object_subclass]
@@ -63,6 +69,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -74,24 +81,35 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::builder::<Room>("room")
-                    .construct_only()
-                    .build()]
+                vec![
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("edit-mode-enabled")
+                        .explicit_notify()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
         }
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
-                "room" => self.obj().set_room(value.get().unwrap()),
+                "room" => obj.set_room(value.get().unwrap()),
+                "edit-mode-enabled" => obj.set_edit_mode_enabled(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "room" => self.room.get().to_value(),
+                "edit-mode-enabled" => obj.edit_mode_enabled().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -101,7 +119,7 @@ mod imp {
             let obj = self.obj();
 
             obj.init_avatar();
-            obj.init_edit_toggle();
+            obj.init_edit_mode();
 
             let members = obj.room().members();
             members.connect_items_changed(clone!(@weak obj => move |members, _, _, _| {
@@ -122,6 +140,7 @@ glib::wrapper! {
         @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
 }
 
+#[gtk::template_callbacks]
 impl GeneralPage {
     pub fn new(room: &Room) -> Self {
         glib::Object::builder().property("room", room).build()
@@ -139,6 +158,18 @@ impl GeneralPage {
             Some("url"),
             clone!(@weak self as obj => move |avatar, _| {
                 obj.avatar_changed(avatar.url());
+            }),
+        );
+        room.connect_notify_local(
+            Some("name"),
+            clone!(@weak self as obj => move |room, _| {
+                obj.name_changed(room.name());
+            }),
+        );
+        room.connect_notify_local(
+            Some("topic"),
+            clone!(@weak self as obj => move |room, _| {
+                obj.topic_changed(room.topic());
             }),
         );
 
@@ -286,47 +317,49 @@ impl GeneralPage {
         }
     }
 
-    fn init_edit_toggle(&self) {
+    /// Whether edit mode is enabled.
+    pub fn edit_mode_enabled(&self) -> bool {
+        self.imp().edit_mode_enabled.get()
+    }
+
+    pub fn set_edit_mode_enabled(&self, enabled: bool) {
+        if self.edit_mode_enabled() == enabled {
+            return;
+        }
+
+        self.enable_details(enabled);
+        self.imp().edit_mode_enabled.set(enabled);
+        self.notify("edit-mode-enabled");
+    }
+
+    fn enable_details(&self, enabled: bool) {
         let imp = self.imp();
-        let edit_toggle = &imp.edit_toggle;
-        let label_enabled = gettext("Save Details");
-        let label_disabled = gettext("Edit Details");
 
-        edit_toggle.set_label(&label_disabled);
-
-        // Save changes of name and topic on toggle button release.
-        edit_toggle.connect_clicked(clone!(@weak self as this => move |button| {
-            let imp = this.imp();
-            if !imp.edit_mode.get() {
-                imp.edit_mode.set(true);
-                button.set_label(&label_enabled);
-                imp.room_topic_text_view.set_justification(gtk::Justification::Left);
-                imp.room_name_entry.set_xalign(0.0);
-                imp.room_name_entry.set_halign(gtk::Align::Center);
-                imp.room_name_entry.set_sensitive(true);
-                imp.room_name_entry.set_width_chars(25);
-                imp.room_topic_entry.set_sensitive(true);
-                imp.room_topic_label.show();
-                return;
-            }
-            imp.edit_mode.set(false);
-            button.set_label(&label_disabled);
-            imp.room_topic_text_view.set_justification(gtk::Justification::Center);
+        if enabled {
+            imp.room_topic_text_view
+                .set_justification(gtk::Justification::Left);
+            imp.room_name_entry.set_xalign(0.0);
+            imp.room_name_entry.set_halign(gtk::Align::Center);
+            imp.room_name_entry.set_sensitive(true);
+            imp.room_name_entry.set_width_chars(25);
+            imp.room_topic_entry.set_sensitive(true);
+            imp.room_topic_label.show();
+        } else {
+            imp.room_topic_text_view
+                .set_justification(gtk::Justification::Center);
             imp.room_name_entry.set_xalign(0.5);
             imp.room_name_entry.set_sensitive(false);
             imp.room_name_entry.set_halign(gtk::Align::Fill);
             imp.room_name_entry.set_width_chars(-1);
             imp.room_topic_entry.set_sensitive(false);
             imp.room_topic_label.hide();
+        }
+    }
 
-            let room = this.room();
+    fn init_edit_mode(&self) {
+        let imp = self.imp();
 
-            let room_name = imp.room_name_entry.buffer().text().to_string();
-            let topic_buffer = imp.room_topic_text_view.buffer();
-            let topic = topic_buffer.text(&topic_buffer.start_iter(), &topic_buffer.end_iter(), true);
-            room.store_room_name(room_name);
-            room.store_topic(topic.to_string());
-        }));
+        self.enable_details(false);
 
         // Hide edit controls when the user is not eligible to perform the actions.
         let room = self.room();
@@ -334,9 +367,170 @@ impl GeneralPage {
             room.new_allowed_expr(RoomAction::StateEvent(StateEventType::RoomName));
         let room_topic_changeable =
             room.new_allowed_expr(RoomAction::StateEvent(StateEventType::RoomTopic));
+        let edit_mode_disabled = not_expr(self.property_expression("edit-mode-enabled"));
 
-        let edit_toggle_visible = or_expr(room_name_changeable, room_topic_changeable);
-        edit_toggle_visible.bind(&edit_toggle.get(), "visible", gtk::Widget::NONE);
+        let details_changeable = or_expr(room_name_changeable, room_topic_changeable);
+        let edit_details_visible = and_expr(edit_mode_disabled, details_changeable);
+
+        edit_details_visible.bind(&*imp.edit_details_btn, "visible", gtk::Widget::NONE);
+    }
+
+    /// Finish the details changes if none are ongoing.
+    fn finish_details_changes(&self) {
+        let imp = self.imp();
+
+        if imp.changing_name.borrow().is_some() {
+            return;
+        }
+        if imp.changing_topic.borrow().is_some() {
+            return;
+        }
+
+        self.set_edit_mode_enabled(false);
+        imp.save_details_btn.set_loading(false);
+    }
+
+    fn name_changed(&self, name: Option<String>) {
+        let imp = self.imp();
+
+        if let Some(action) = imp.changing_name.borrow().as_ref() {
+            if name.as_ref() != action.as_value() {
+                // This is not the change we expected, maybe another device did a change too.
+                // Let's wait for another change.
+                return;
+            }
+        } else {
+            // No action is ongoing, we don't need to do anything.
+            return;
+        };
+
+        toast!(self, gettext("Room name saved successfully"));
+
+        // Reset state.
+        imp.changing_name.take();
+        self.finish_details_changes();
+    }
+
+    fn topic_changed(&self, topic: Option<String>) {
+        let imp = self.imp();
+
+        // It is not possible to remove a topic so we process the empty string as `None`. We need to cancel that here.
+        let topic = topic.unwrap_or_default();
+
+        if let Some(action) = imp.changing_topic.borrow().as_ref() {
+            if Some(&topic) != action.as_value() {
+                // This is not the change we expected, maybe another device did a change too.
+                // Let's wait for another change.
+                return;
+            }
+        } else {
+            // No action is ongoing, we don't need to do anything.
+            return;
+        };
+
+        toast!(self, gettext("Room topic saved successfully"));
+
+        // Reset state.
+        imp.changing_topic.take();
+        self.finish_details_changes();
+    }
+
+    #[template_callback]
+    fn edit_details_clicked(&self) {
+        self.set_edit_mode_enabled(true);
+    }
+
+    #[template_callback]
+    fn save_details_clicked(&self) {
+        self.imp().save_details_btn.set_loading(true);
+        self.enable_details(false);
+
+        spawn!(clone!(@weak self as obj => async move {
+            obj.save_details().await;
+        }));
+        self.set_edit_mode_enabled(false);
+    }
+
+    async fn save_details(&self) {
+        let imp = self.imp();
+        let room = self.room();
+
+        let raw_name = imp.room_name_entry.text().to_string();
+        let trimmed_name = raw_name.trim();
+        let name = if trimmed_name.is_empty() {
+            None
+        } else {
+            Some(trimmed_name.to_owned())
+        };
+
+        let topic_buffer = imp.room_topic_text_view.buffer();
+        let raw_topic = topic_buffer
+            .text(&topic_buffer.start_iter(), &topic_buffer.end_iter(), false)
+            .to_string();
+        let topic = raw_topic.trim().to_owned();
+
+        let name_changed = name != room.name();
+        let topic_changed = topic != room.topic().unwrap_or_default();
+
+        if !name_changed && !topic_changed {
+            return;
+        }
+
+        let MatrixRoom::Joined(matrix_room) = room.matrix_room() else {
+            error!("Cannot change name or topic of room not joined");
+            return;
+        };
+
+        if name_changed {
+            let matrix_room = matrix_room.clone();
+
+            let (action, weak_action) = if let Some(name) = name.clone() {
+                OngoingAsyncAction::set(name)
+            } else {
+                OngoingAsyncAction::remove()
+            };
+            imp.changing_name.replace(Some(action));
+
+            let handle = spawn_tokio!(async move { matrix_room.set_name(name).await });
+
+            // We don't need to handle the success of the request, we should receive the
+            // change via sync.
+            if let Err(error) = handle.await.unwrap() {
+                // Because this action can finish in name_changed, we must only act if this is
+                // still the current action.
+                if weak_action.is_ongoing() {
+                    imp.changing_name.take();
+                    error!("Could not change room name: {error}");
+                    toast!(self, gettext("Could not change room name"));
+                    self.enable_details(true);
+                    imp.save_details_btn.set_loading(false);
+                    return;
+                }
+            }
+        }
+
+        if topic_changed {
+            let matrix_room = matrix_room.clone();
+
+            let (action, weak_action) = OngoingAsyncAction::set(topic.clone());
+            imp.changing_topic.replace(Some(action));
+
+            let handle = spawn_tokio!(async move { matrix_room.set_room_topic(&topic).await });
+
+            // We don't need to handle the success of the request, we should receive the
+            // change via sync.
+            if let Err(error) = handle.await.unwrap() {
+                // Because this action can finish in topic_changed, we must only act if this is
+                // still the current action.
+                if weak_action.is_ongoing() {
+                    imp.changing_topic.take();
+                    error!("Could not change room topic: {error}");
+                    toast!(self, gettext("Could not change room topic"));
+                    self.enable_details(true);
+                    imp.save_details_btn.set_loading(false);
+                }
+            }
+        }
     }
 
     fn member_count_changed(&self, n: u32) {

@@ -93,8 +93,18 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkButton" id="edit_toggle">
+                          <object class="GtkButton" id="edit_details_btn">
                             <property name="halign">center</property>
+                            <property name="label" translatable="yes">Edit Details</property>
+                            <signal name="clicked" handler="edit_details_clicked" swapped="yes"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="SpinnerButton" id="save_details_btn">
+                            <property name="visible" bind-source="ContentRoomDetailsGeneralPage" bind-property="edit-mode-enabled" bind-flags="sync-create"/>
+                            <property name="halign">center</property>
+                            <property name="label" translatable="yes">Save Details</property>
+                            <signal name="clicked" handler="save_details_clicked" swapped="yes"/>
                           </object>
                         </child>
                       </object>
