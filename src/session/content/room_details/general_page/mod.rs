@@ -3,21 +3,30 @@ use std::convert::From;
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{
-    gdk,
-    glib::{self, clone, closure},
+    gio,
+    glib::{self, clone},
     CompositeTemplate,
 };
 use log::error;
-use matrix_sdk::ruma::events::StateEventType;
+use matrix_sdk::room::Room as MatrixRoom;
+use ruma::{
+    assign,
+    events::{room::avatar::ImageInfo, StateEventType},
+    OwnedMxcUri,
+};
 
 use crate::{
-    components::CustomEntry,
-    session::{self, room::RoomAction, Room},
-    utils::{and_expr, or_expr},
+    components::{CustomEntry, EditableAvatar},
+    session::{room::RoomAction, Room},
+    spawn, spawn_tokio, toast,
+    utils::{
+        media::{get_image_info, load_file},
+        or_expr, OngoingAsyncAction,
+    },
 };
 
 mod imp {
-    use std::cell::Cell;
+    use std::cell::{Cell, RefCell};
 
     use glib::subclass::InitializingObject;
     use once_cell::unsync::OnceCell;
@@ -28,11 +37,8 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/content-room-details-general-page.ui")]
     pub struct GeneralPage {
         pub room: OnceCell<Room>,
-        pub avatar_chooser: OnceCell<gtk::FileChooserNative>,
         #[template_child]
-        pub avatar_remove_button: TemplateChild<adw::Bin>,
-        #[template_child]
-        pub avatar_edit_button: TemplateChild<adw::Bin>,
+        pub avatar: TemplateChild<EditableAvatar>,
         #[template_child]
         pub edit_toggle: TemplateChild<gtk::Button>,
         #[template_child]
@@ -46,6 +52,7 @@ mod imp {
         #[template_child]
         pub members_count: TemplateChild<gtk::Label>,
         pub edit_mode: Cell<bool>,
+        pub changing_avatar: RefCell<Option<OngoingAsyncAction<OwnedMxcUri>>>,
     }
 
     #[glib::object_subclass]
@@ -56,13 +63,6 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
-
-            klass.install_action("details.choose-avatar", None, move |widget, _, _| {
-                widget.open_avatar_chooser()
-            });
-            klass.install_action("details.remove-avatar", None, move |widget, _, _| {
-                widget.room().store_avatar(None)
-            });
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -135,30 +135,155 @@ impl GeneralPage {
 
     /// Set the room backing all the details of the preference window.
     fn set_room(&self, room: Room) {
+        room.avatar().connect_notify_local(
+            Some("url"),
+            clone!(@weak self as obj => move |avatar, _| {
+                obj.avatar_changed(avatar.url());
+            }),
+        );
+
         self.imp().room.set(room).expect("Room already initialized");
     }
 
     fn init_avatar(&self) {
-        let imp = self.imp();
-        let avatar_remove_button = &imp.avatar_remove_button;
-        let avatar_edit_button = &imp.avatar_edit_button;
+        let avatar = &*self.imp().avatar;
+        avatar.connect_edit_avatar(clone!(@weak self as obj => move |_, file| {
+            spawn!(
+                clone!(@weak obj => async move {
+                    obj.change_avatar(file).await;
+                })
+            );
+        }));
+        avatar.connect_remove_avatar(clone!(@weak self as obj => move |_| {
+            spawn!(
+                clone!(@weak obj => async move {
+                    obj.remove_avatar().await;
+                })
+            );
+        }));
 
         // Hide avatar controls when the user is not eligible to perform the actions.
         let room = self.room();
-
-        let room_avatar_exists = room
-            .property_expression("avatar")
-            .chain_property::<session::Avatar>("image")
-            .chain_closure::<bool>(closure!(
-                |_: Option<glib::Object>, image: Option<gdk::Paintable>| { image.is_some() }
-            ));
-
         let room_avatar_changeable =
             room.new_allowed_expr(RoomAction::StateEvent(StateEventType::RoomAvatar));
-        let room_avatar_removable = and_expr(&room_avatar_changeable, &room_avatar_exists);
 
-        room_avatar_removable.bind(&avatar_remove_button.get(), "visible", gtk::Widget::NONE);
-        room_avatar_changeable.bind(&avatar_edit_button.get(), "visible", gtk::Widget::NONE);
+        room_avatar_changeable.bind(avatar, "editable", gtk::Widget::NONE);
+    }
+
+    fn avatar_changed(&self, uri: Option<OwnedMxcUri>) {
+        let imp = self.imp();
+
+        if let Some(action) = imp.changing_avatar.borrow().as_ref() {
+            if uri.as_ref() != action.as_value() {
+                // This is not the change we expected, maybe another device did a change too.
+                // Let's wait for another change.
+                return;
+            }
+        } else {
+            // No action is ongoing, we don't need to do anything.
+            return;
+        };
+
+        // Reset the state.
+        imp.changing_avatar.take();
+        imp.avatar.success();
+        if uri.is_none() {
+            toast!(self, gettext("Avatar removed successfully"));
+        } else {
+            toast!(self, gettext("Avatar changed successfully"));
+        }
+    }
+
+    async fn change_avatar(&self, file: gio::File) {
+        let room = self.room();
+        let MatrixRoom::Joined(matrix_room) = room.matrix_room() else {
+            error!("Cannot change avatar of room not joined");
+            return;
+        };
+
+        let imp = self.imp();
+        let avatar = &imp.avatar;
+        avatar.edit_in_progress();
+
+        let (data, info) = match load_file(&file).await {
+            Ok(res) => res,
+            Err(error) => {
+                error!("Could not load room avatar file: {error}");
+                toast!(self, gettext("Could not load file"));
+                avatar.reset();
+                return;
+            }
+        };
+
+        let base_image_info = get_image_info(&file).await;
+        let image_info = assign!(ImageInfo::new(), {
+            width: base_image_info.width,
+            height: base_image_info.height,
+            size: info.size.map(Into::into),
+            mimetype: Some(info.mime.to_string()),
+        });
+
+        let client = room.session().client();
+        let handle = spawn_tokio!(async move { client.media().upload(&info.mime, data).await });
+
+        let uri = match handle.await.unwrap() {
+            Ok(res) => res.content_uri,
+            Err(error) => {
+                error!("Could not upload room avatar: {}", error);
+                toast!(self, gettext("Could not upload avatar"));
+                avatar.reset();
+                return;
+            }
+        };
+
+        let (action, weak_action) = OngoingAsyncAction::set(uri.clone());
+        imp.changing_avatar.replace(Some(action));
+
+        let handle =
+            spawn_tokio!(async move { matrix_room.set_avatar_url(&uri, Some(image_info)).await });
+
+        // We don't need to handle the success of the request, we should receive the
+        // change via sync.
+        if let Err(error) = handle.await.unwrap() {
+            // Because this action can finish in avatar_changed, we must only act if this is
+            // still the current action.
+            if weak_action.is_ongoing() {
+                imp.changing_avatar.take();
+                error!("Could not change room avatar: {error}");
+                toast!(self, gettext("Could not change avatar"));
+                avatar.reset();
+            }
+        }
+    }
+
+    async fn remove_avatar(&self) {
+        let room = self.room();
+        let MatrixRoom::Joined(matrix_room) = room.matrix_room() else {
+            error!("Cannot remove avatar of room not joined");
+            return;
+        };
+
+        let imp = self.imp();
+        let avatar = &*imp.avatar;
+        avatar.removal_in_progress();
+
+        let (action, weak_action) = OngoingAsyncAction::remove();
+        imp.changing_avatar.replace(Some(action));
+
+        let handle = spawn_tokio!(async move { matrix_room.remove_avatar().await });
+
+        // We don't need to handle the success of the request, we should receive the
+        // change via sync.
+        if let Err(error) = handle.await.unwrap() {
+            // Because this action can finish in avatar_changed, we must only act if this is
+            // still the current action.
+            if weak_action.is_ongoing() {
+                imp.changing_avatar.take();
+                error!("Could not remove room avatar: {}", error);
+                toast!(self, gettext("Could not remove avatar"));
+                avatar.reset();
+            }
+        }
     }
 
     fn init_edit_toggle(&self) {
@@ -212,48 +337,6 @@ impl GeneralPage {
 
         let edit_toggle_visible = or_expr(room_name_changeable, room_topic_changeable);
         edit_toggle_visible.bind(&edit_toggle.get(), "visible", gtk::Widget::NONE);
-    }
-
-    fn avatar_chooser(&self) -> Option<&gtk::FileChooserNative> {
-        if let Some(avatar_chooser) = self.imp().avatar_chooser.get() {
-            Some(avatar_chooser)
-        } else {
-            let window = self.root()?.downcast::<adw::Window>().ok()?;
-
-            let avatar_chooser = gtk::FileChooserNative::new(
-                Some(&gettext("Choose avatar")),
-                Some(&window),
-                gtk::FileChooserAction::Open,
-                None,
-                None,
-            );
-            avatar_chooser.connect_response(
-                clone!(@weak self as this => move |chooser, response| {
-                    let file = chooser.file().and_then(|f| f.path());
-                    if let (gtk::ResponseType::Accept, Some(file)) = (response, file) {
-                        log::debug!("Chose file {:?}", file);
-                        this.room().store_avatar(Some(file));
-                    }
-                }),
-            );
-
-            // We must keep a reference to FileChooserNative around as it is not
-            // managed by GTK.
-            self.imp()
-                .avatar_chooser
-                .set(avatar_chooser)
-                .expect("File chooser already initialized");
-
-            self.avatar_chooser()
-        }
-    }
-
-    fn open_avatar_chooser(&self) {
-        if let Some(avatar_chooser) = self.avatar_chooser() {
-            avatar_chooser.show();
-        } else {
-            error!("Failed to create the FileChooserNative");
-        }
     }
 
     fn member_count_changed(&self, n: u32) {

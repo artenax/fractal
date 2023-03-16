@@ -22,54 +22,12 @@
                       <class name="room-details-group"/>
                     </style>
                     <child>
-                      <object class="GtkOverlay">
-                        <property name="halign">center</property>
-                        <child>
-                          <object class="ComponentsAvatar">
-                            <property name="size">128</property>
-                            <binding name="item">
-                              <lookup name="avatar">
-                                <lookup name="room">ContentRoomDetailsGeneralPage</lookup>
-                              </lookup>
-                            </binding>
-                          </object>
-                        </child>
-                        <child type="overlay">
-                          <object class="AdwBin" id="avatar_remove_button">
-                            <style>
-                              <class name="cutout-button"/>
-                            </style>
-                            <property name="halign">end</property>
-                            <property name="valign">start</property>
-                            <child>
-                              <object class="GtkButton">
-                                <property name="icon-name">user-trash-symbolic</property>
-                                <property name="action-name">details.remove-avatar</property>
-                                <style>
-                                  <class name="circular"/>
-                                </style>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child type="overlay">
-                          <object class="AdwBin" id="avatar_edit_button">
-                            <style>
-                              <class name="cutout-button"/>
-                            </style>
-                            <property name="halign">end</property>
-                            <property name="valign">end</property>
-                            <child>
-                              <object class="GtkButton">
-                                <property name="icon-name">document-edit-symbolic</property>
-                                <property name="action-name">details.choose-avatar</property>
-                                <style>
-                                  <class name="circular"/>
-                                </style>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
+                      <object class="ComponentsEditableAvatar" id="avatar">
+                        <binding name="avatar">
+                          <lookup name="avatar">
+                            <lookup name="room">ContentRoomDetailsGeneralPage</lookup>
+                          </lookup>
+                        </binding>
                       </object>
                     </child>
                     <child>
@@ -177,4 +135,3 @@
     </property>
   </template>
 </interface>
-

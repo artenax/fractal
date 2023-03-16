@@ -8,10 +8,10 @@ mod room_type;
 mod timeline;
 mod typing_list;
 
-use std::{cell::RefCell, io::Cursor, path::PathBuf};
+use std::{cell::RefCell, io::Cursor};
 
 use gettextrs::{gettext, ngettext};
-use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
+use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, info, warn};
 use matrix_sdk::{
     attachment::{generate_image_thumbnail, AttachmentConfig, AttachmentInfo, Thumbnail},
@@ -1330,47 +1330,6 @@ impl Room {
         let user_id = session.user().unwrap().user_id();
         let member = self.members().member_by_id(user_id);
         self.power_levels().new_allowed_expr(&member, room_action)
-    }
-
-    /// Uploads the given file to the server and makes it the room avatar.
-    ///
-    /// Removes the avatar if no filename is given.
-    pub fn store_avatar(&self, filename: Option<PathBuf>) {
-        let MatrixRoom::Joined(joined_room) = self.matrix_room() else {
-            error!("Cannot change avatar of a room not joined.");
-            return;
-        };
-
-        let handle = spawn_tokio!(async move {
-            if let Some(filename) = filename {
-                debug!("Getting mime type of file {:?}", filename);
-                let image = tokio::fs::read(filename).await?;
-                let content_type = gio::content_type_guess(Option::<String>::None, &image)
-                    .0
-                    .to_string();
-                joined_room
-                    .upload_avatar(
-                        &content_type
-                            .parse()
-                            .unwrap_or(mime::APPLICATION_OCTET_STREAM),
-                        image,
-                        None,
-                    )
-                    .await
-            } else {
-                joined_room.remove_avatar().await
-            }
-        });
-
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as this => async move {
-                match handle.await.unwrap() {
-                    Ok(_) => info!("Successfully updated room avatar"),
-                    Err(error) => error!("Couldn’t update room avatar: {}", error),
-                };
-            })
-        );
     }
 
     pub async fn accept_invite(&self) -> MatrixResult<()> {

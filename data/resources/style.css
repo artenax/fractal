@@ -163,6 +163,12 @@ entry .inline-pill {
 	margin-bottom: -0.5em;
 }
 
+.cutout-button {
+  background-color: @window_bg_color;
+  border-radius: 9999px;
+  padding: 2px;
+}
+
 
 /* Login */
 
@@ -582,17 +588,8 @@ typing-bar avatar {
 
 /* Room Details */
 
-.room-details-group overlay {
-  margin-bottom: 6px;
-}
-
 .room-details listview {
 	background: transparent;
-}
-
-.room-details-group avatar * {
-  /* Undo non-sensitive style. */
-  filter: none;
 }
 
 .room-details-group entry:disabled {
@@ -625,12 +622,6 @@ typing-bar avatar {
 
 .room-details-topic:disabled {
   filter: opacity(1);
-}
-
-.cutout-button {
-  background-color: @window_bg_color;
-  border-radius: 9999px;
-  padding: 2px;
 }
 
 dragoverlay statuspage {
