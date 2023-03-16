@@ -24,7 +24,7 @@ use gtk::{
     prelude::*,
     CompositeTemplate,
 };
-use log::{error, warn};
+use log::{debug, error, warn};
 use matrix_sdk::{
     attachment::{AttachmentInfo, BaseFileInfo, BaseImageInfo},
     ruma::{
@@ -189,7 +189,9 @@ mod imp {
             });
 
             klass.install_action("room-history.select-file", None, move |widget, _, _| {
-                widget.select_file();
+                spawn!(clone!(@weak widget => async move {
+                    widget.select_file().await;
+                }));
             });
 
             klass.install_action("room-history.open-emoji", None, move |widget, _, _| {
@@ -1006,31 +1008,33 @@ impl RoomHistory {
         room.send_attachment(bytes.to_vec(), mime::IMAGE_PNG, &filename, info);
     }
 
-    pub fn select_file(&self) {
-        let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
-        let dialog = gtk::FileChooserNative::new(
-            None,
-            Some(&window),
-            gtk::FileChooserAction::Open,
-            None,
-            None,
-        );
-        dialog.set_modal(true);
+    pub async fn select_file(&self) {
+        let dialog = gtk::FileDialog::builder()
+            .title(gettext("Select File"))
+            .modal(true)
+            .accept_label(gettext("Select"))
+            .build();
 
-        dialog.connect_response(
-            glib::clone!(@weak self as obj, @strong dialog => move |_, response| {
-                dialog.destroy();
-                if response == gtk::ResponseType::Accept {
-                    let file = dialog.file().unwrap();
-
-                    crate::spawn!(glib::clone!(@weak obj, @strong file => async move {
-                        obj.send_file(file).await;
-                    }));
+        match dialog
+            .open_future(
+                self.root()
+                    .as_ref()
+                    .and_then(|r| r.downcast_ref::<gtk::Window>()),
+            )
+            .await
+        {
+            Ok(file) => {
+                self.send_file(file).await;
+            }
+            Err(error) => {
+                if error.matches(gtk::DialogError::Dismissed) {
+                    debug!("File dialog dismissed by user");
+                } else {
+                    error!("Could not open file: {error:?}");
+                    toast!(self, gettext("Could not open file"));
                 }
-            }),
-        );
-
-        dialog.show();
+            }
+        };
     }
 
     async fn send_file(&self, file: gio::File) {

@@ -8,7 +8,7 @@ use gtk::{
     prelude::*,
     CompositeTemplate,
 };
-use log::error;
+use log::{debug, error};
 
 use super::{ActionButton, ActionState, ImagePaintable};
 use crate::{session::Avatar, spawn, toast, utils::and_expr};
@@ -382,32 +382,38 @@ impl EditableAvatar {
     }
 
     async fn choose_avatar(&self) {
-        let image_filter = gtk::FileFilter::new();
-        image_filter.add_mime_type("image/*");
+        let filters = gio::ListStore::new(gtk::FileFilter::static_type());
 
-        let dialog = gtk::FileChooserNative::builder()
+        let image_filter = gtk::FileFilter::new();
+        image_filter.set_name(Some(&gettext("Images")));
+        image_filter.add_mime_type("image/*");
+        filters.append(&image_filter);
+
+        let dialog = gtk::FileDialog::builder()
             .title(gettext("Choose Avatar"))
             .modal(true)
-            .transient_for(
-                self.root()
-                    .as_ref()
-                    .and_then(|root| root.downcast_ref::<gtk::Window>())
-                    .unwrap(),
-            )
-            .action(gtk::FileChooserAction::Open)
             .accept_label(gettext("Choose"))
-            .cancel_label(gettext("Cancel"))
-            .filter(&image_filter)
+            .filters(&filters)
             .build();
 
-        if dialog.run_future().await != gtk::ResponseType::Accept {
-            return;
-        }
-
-        let Some(file) = dialog.file() else {
-            error!("No file chosen");
-            toast!(self, gettext("No file was chosen"));
-            return;
+        let file = match dialog
+            .open_future(
+                self.root()
+                    .as_ref()
+                    .and_then(|r| r.downcast_ref::<gtk::Window>()),
+            )
+            .await
+        {
+            Ok(file) => file,
+            Err(error) => {
+                if error.matches(gtk::DialogError::Dismissed) {
+                    debug!("File dialog dismissed by user");
+                } else {
+                    error!("Could not open avatar file: {error:?}");
+                    toast!(self, gettext("Could not open avatar file"));
+                }
+                return;
+            }
         };
 
         if let Some(content_type) = file

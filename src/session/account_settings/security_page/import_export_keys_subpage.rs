@@ -5,7 +5,7 @@ use gtk::{
     glib::{self, clone},
     CompositeTemplate,
 };
-use log::error;
+use log::{debug, error};
 use matrix_sdk::encryption::{KeyExportError, RoomKeyImportError};
 
 use crate::{
@@ -240,48 +240,42 @@ impl ImportExportKeysSubpage {
 
     async fn choose_file(&self) {
         let is_export = self.mode() == KeysSubpageMode::Export;
-        let (title, action) = if is_export {
-            (
-                gettext("Save Encryption Keys To…"),
-                gtk::FileChooserAction::Save,
-            )
-        } else {
-            (
-                gettext("Import Encryption Keys From…"),
-                gtk::FileChooserAction::Open,
-            )
-        };
 
-        let dialog = gtk::FileChooserNative::builder()
-            .title(&title)
+        let dialog = gtk::FileDialog::builder()
             .modal(true)
-            .transient_for(
-                self.root()
-                    .as_ref()
-                    .and_then(|root| root.downcast_ref::<gtk::Window>())
-                    .unwrap(),
-            )
-            .action(action)
-            .accept_label(gettext("Select"))
-            .cancel_label(gettext("Cancel"))
+            .accept_label(gettext("Choose"))
             .build();
 
         if let Some(file) = self.file_path() {
-            let _ = dialog.set_file(&file);
+            dialog.set_initial_file(Some(&file));
         } else if is_export {
             // Translators: Do no translate "fractal" as it is the application
             // name.
-            dialog.set_current_name(&format!("{}.txt", gettext("fractal-encryption-keys")));
+            dialog.set_initial_name(Some(&format!("{}.txt", gettext("fractal-encryption-keys"))));
         }
 
-        if dialog.run_future().await == gtk::ResponseType::Accept {
-            if let Some(file) = dialog.file() {
+        let parent_window = self.root().and_then(|r| r.downcast::<gtk::Window>().ok());
+        let res = if is_export {
+            dialog.set_title(&gettext("Save Encryption Keys To…"));
+            dialog.save_future(parent_window.as_ref()).await
+        } else {
+            dialog.set_title(&gettext("Import Encryption Keys From…"));
+            dialog.open_future(parent_window.as_ref()).await
+        };
+
+        match res {
+            Ok(file) => {
                 self.set_file_path(Some(file));
-            } else {
-                error!("No file chosen");
-                toast!(self, gettext("No file was chosen"));
             }
-        }
+            Err(error) => {
+                if error.matches(gtk::DialogError::Dismissed) {
+                    debug!("File dialog dismissed by user");
+                } else {
+                    error!("Could not access file: {error:?}");
+                    toast!(self, gettext("Could not access file"));
+                }
+            }
+        };
     }
 
     fn validate_passphrase_confirmation(&self) {

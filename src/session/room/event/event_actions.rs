@@ -1,6 +1,6 @@
 use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, prelude::*};
-use log::error;
+use log::{debug, error};
 use matrix_sdk::{room::timeline::TimelineItemContent, ruma::events::room::message::MessageType};
 use once_cell::sync::Lazy;
 
@@ -10,7 +10,7 @@ use crate::{
         event_source_dialog::EventSourceDialog,
         room::{Event, EventKey, RoomAction},
     },
-    spawn, spawn_tokio, toast, UserFacingError, Window,
+    spawn, spawn_tokio, toast, UserFacingError,
 };
 
 // This is only safe because the trait `EventActions` can
@@ -282,47 +282,9 @@ where
     /// See [`Event::get_media_content()`] for compatible events.
     /// Panics on an incompatible event.
     fn save_event_file(&self, event: Event) {
-        let window: Window = self.root().unwrap().downcast().unwrap();
-        spawn!(
-            glib::PRIORITY_LOW,
-            clone!(@weak self as obj, @weak window => async move {
-                let (_, filename, data) = match event.get_media_content().await {
-                    Ok(res) => res,
-                    Err(err) => {
-                        error!("Could not get file: {}", err);
-                        toast!(obj, err.to_user_facing());
-
-                        return;
-                    }
-                };
-
-                let dialog = gtk::FileChooserNative::new(
-                    Some(&gettext("Save File")),
-                    Some(&window),
-                    gtk::FileChooserAction::Save,
-                    Some(&gettext("Save")),
-                    Some(&gettext("Cancel")),
-                );
-                dialog.set_current_name(&filename);
-
-                let response = dialog.run_future().await;
-
-                if response == gtk::ResponseType::Accept {
-                    if let Some(file) = dialog.file() {
-                        file.replace_contents(
-                            &data,
-                            None,
-                            false,
-                            gio::FileCreateFlags::REPLACE_DESTINATION,
-                            gio::Cancellable::NONE,
-                        )
-                        .unwrap();
-                    }
-                }
-
-                dialog.destroy();
-            })
-        );
+        spawn!(clone!(@weak self as obj => async move {
+            save_event_file_inner(&obj, event).await;
+        }));
     }
 
     /// Get the texture displayed by this widget, if any.
@@ -336,4 +298,53 @@ pub enum EventTexture {
 
     /// The texture is a thumbnail of the image.
     Thumbnail(gdk::Texture),
+}
+
+async fn save_event_file_inner(obj: &impl IsA<gtk::Widget>, event: Event) {
+    let (_, filename, data) = match event.get_media_content().await {
+        Ok(res) => res,
+        Err(error) => {
+            error!("Could not get event file: {error}");
+            toast!(obj, error.to_user_facing());
+
+            return;
+        }
+    };
+
+    let dialog = gtk::FileDialog::builder()
+        .title(gettext("Save File"))
+        .modal(true)
+        .accept_label(gettext("Save"))
+        .initial_name(filename)
+        .build();
+
+    match dialog
+        .save_future(
+            obj.root()
+                .as_ref()
+                .and_then(|r| r.downcast_ref::<gtk::Window>()),
+        )
+        .await
+    {
+        Ok(file) => {
+            if let Err(error) = file.replace_contents(
+                &data,
+                None,
+                false,
+                gio::FileCreateFlags::REPLACE_DESTINATION,
+                gio::Cancellable::NONE,
+            ) {
+                error!("Could not save file: {error}");
+                toast!(obj, gettext("Could not save file"));
+            }
+        }
+        Err(error) => {
+            if error.matches(gtk::DialogError::Dismissed) {
+                debug!("File dialog dismissed by user");
+            } else {
+                error!("Could not access file: {error}");
+                toast!(obj, gettext("Could not access file"));
+            }
+        }
+    };
 }
