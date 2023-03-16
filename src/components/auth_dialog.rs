@@ -8,6 +8,7 @@ use gtk::{
     prelude::*,
     CompositeTemplate,
 };
+use log::error;
 use matrix_sdk::{
     ruma::api::client::{
         error::StandardErrorBody,
@@ -19,7 +20,7 @@ use ruma::assign;
 
 use crate::{
     session::{Session, UserExt},
-    spawn_tokio,
+    spawn, spawn_tokio,
 };
 
 #[derive(Debug)]
@@ -335,7 +336,12 @@ impl AuthDialog {
         let handler = imp
             .open_browser_btn
             .connect_clicked(clone!(@weak self as obj => move |_| {
-                gtk::show_uri(obj.transient_for().as_ref(), &uri, gdk::CURRENT_TIME);
+                let uri = uri.clone();
+                spawn!(clone!(@weak obj => async move {
+                    if let Err(error) = gtk::UriLauncher::new(&uri).launch_future(obj.transient_for().as_ref()).await {
+                        error!("Could not launch URI: {error}");
+                    }
+                }));
             }));
 
         imp.open_browser_btn_handler.replace(Some(handler));

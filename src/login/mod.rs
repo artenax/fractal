@@ -2,7 +2,7 @@ use std::{ffi::OsStr, fs, path::PathBuf};
 
 use adw::{prelude::*, subclass::prelude::BinImpl};
 use gettextrs::gettext;
-use gtk::{self, gdk, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
+use gtk::{self, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::{error, warn};
 use matrix_sdk::{
     config::{RequestConfig, StoreConfig},
@@ -499,7 +499,14 @@ impl Login {
                 .login_sso(|sso_url| async move {
                     let ctx = glib::MainContext::default();
                     ctx.spawn(async move {
-                        gtk::show_uri(gtk::Window::NONE, &sso_url, gdk::CURRENT_TIME);
+                        spawn!(async move {
+                            if let Err(error) = gtk::UriLauncher::new(&sso_url)
+                                .launch_future(gtk::Window::NONE)
+                                .await
+                            {
+                                error!("Could not launch URI: {error}");
+                            }
+                        });
                     });
                     Ok(())
                 })
