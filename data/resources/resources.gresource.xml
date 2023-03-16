@@ -72,6 +72,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="components-location-viewer.ui">ui/components-location-viewer.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-media-content-viewer.ui">ui/components-media-content-viewer.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-reaction-chooser.ui">ui/components-reaction-chooser.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="components-toastable-window.ui">ui/components-toastable-window.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="components-video-player.ui">ui/components-video-player.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-completion-popover.ui">ui/content-completion-popover.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="content-completion-row.ui">ui/content-completion-row.ui</file>

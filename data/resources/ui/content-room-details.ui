@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="RoomDetails" parent="AdwWindow">
+  <template class="RoomDetails" parent="ToastableWindow">
     <property name="title" translatable="yes">Room Details</property>
     <property name="modal">True</property>
     <property name="destroy_with_parent">True</property>
     <property name="default-width">640</property>
     <property name="default-height">576</property>
-    <property name="content">
+    <property name="child-content">
       <object class="GtkStack" id="main_stack" />
     </property>
     <style>
@@ -14,4 +14,3 @@
     </style>
   </template>
 </interface>
-

@@ -10,7 +10,7 @@ use gtk::{glib, CompositeTemplate};
 use log::warn;
 
 pub use self::{general_page::GeneralPage, invite_subpage::InviteSubpage, member_page::MemberPage};
-use crate::session::Room;
+use crate::{components::ToastableWindow, prelude::*, session::Room};
 
 #[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
@@ -79,7 +79,7 @@ mod imp {
     impl ObjectSubclass for RoomDetails {
         const NAME: &'static str = "RoomDetails";
         type Type = super::RoomDetails;
-        type ParentType = adw::Window;
+        type ParentType = ToastableWindow;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -141,12 +141,13 @@ mod imp {
     impl WidgetImpl for RoomDetails {}
     impl WindowImpl for RoomDetails {}
     impl AdwWindowImpl for RoomDetails {}
+    impl ToastableWindowImpl for RoomDetails {}
 }
 
 glib::wrapper! {
     /// Preference Window to display and update room details.
     pub struct RoomDetails(ObjectSubclass<imp::RoomDetails>)
-        @extends gtk::Widget, gtk::Window, adw::Window, gtk::Root, @implements gtk::Accessible;
+        @extends gtk::Widget, gtk::Window, adw::Window, gtk::Root, ToastableWindow, @implements gtk::Accessible;
 }
 
 impl RoomDetails {

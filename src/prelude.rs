@@ -1,1 +1,4 @@
-pub use crate::session::{room::TimelineItemExt, UserExt};
+pub use crate::{
+    components::{ToastableWindowExt, ToastableWindowImpl},
+    session::{room::TimelineItemExt, UserExt},
+};
