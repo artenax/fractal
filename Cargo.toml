@@ -73,7 +73,7 @@ features = ["v1_3"]
 [dependencies.gtk]
 package = "gtk4"
 version = "0.6"
-features = ["v4_6"]
+features = ["v4_10"]
 
 [dependencies.matrix-sdk]
 git = "https://github.com/matrix-org/matrix-rust-sdk.git"

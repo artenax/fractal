@@ -310,6 +310,13 @@ mod imp {
 
             let factory = gtk::SignalListItemFactory::new();
             factory.connect_setup(clone!(@weak obj => move |_, item| {
+                let item = match item.downcast_ref::<gtk::ListItem>() {
+                    Some(item) => item,
+                    None => {
+                        error!("List item factory did not receive a list item: {item:?}");
+                        return;
+                    }
+                };
                 let row = ItemRow::new(&obj);
                 item.set_child(Some(&row));
                 item.bind_property("item", &row, "item").build();
