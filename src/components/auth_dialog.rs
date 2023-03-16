@@ -151,7 +151,7 @@ mod imp {
 glib::wrapper! {
     /// Dialog to guide the user through an authentication flow.
     pub struct AuthDialog(ObjectSubclass<imp::AuthDialog>)
-        @extends gtk::Widget, adw::Window, gtk::Dialog, gtk::Window, @implements gtk::Accessible;
+        @extends gtk::Widget, adw::Window, gtk::Window, @implements gtk::Accessible;
 }
 
 impl AuthDialog {
