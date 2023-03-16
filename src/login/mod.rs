@@ -61,9 +61,7 @@ mod imp {
         #[template_child]
         pub sso_page: TemplateChild<LoginSsoPage>,
         #[template_child]
-        pub offline_info_bar: TemplateChild<gtk::InfoBar>,
-        #[template_child]
-        pub offline_info_bar_label: TemplateChild<gtk::Label>,
+        pub offline_banner: TemplateChild<adw::Banner>,
         pub prepared_source_id: RefCell<Option<SignalHandlerId>>,
         pub logged_out_source_id: RefCell<Option<SignalHandlerId>>,
         pub ready_source_id: RefCell<Option<SignalHandlerId>>,
@@ -679,17 +677,17 @@ impl Login {
         let monitor = gio::NetworkMonitor::default();
 
         if !monitor.is_network_available() {
-            imp.offline_info_bar_label
-                .set_label(&gettext("No network connection"));
-            imp.offline_info_bar.set_revealed(true);
+            imp.offline_banner
+                .set_title(&gettext("No network connection"));
+            imp.offline_banner.set_revealed(true);
             self.action_set_enabled("login.sso", false);
         } else if monitor.connectivity() < gio::NetworkConnectivity::Full {
-            imp.offline_info_bar_label
-                .set_label(&gettext("No Internet connection"));
-            imp.offline_info_bar.set_revealed(true);
+            imp.offline_banner
+                .set_title(&gettext("No Internet connection"));
+            imp.offline_banner.set_revealed(true);
             self.action_set_enabled("login.sso", true);
         } else {
-            imp.offline_info_bar.set_revealed(false);
+            imp.offline_banner.set_revealed(false);
             self.action_set_enabled("login.sso", true);
         }
 

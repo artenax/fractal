@@ -16,11 +16,9 @@ mod imp {
         #[template_child]
         pub login_button: TemplateChild<gtk::Button>,
         #[template_child]
-        pub development_info_bar: TemplateChild<gtk::InfoBar>,
+        pub development_banner: TemplateChild<adw::Banner>,
         #[template_child]
-        pub offline_info_bar: TemplateChild<gtk::InfoBar>,
-        #[template_child]
-        pub offline_info_bar_label: TemplateChild<gtk::Label>,
+        pub offline_banner: TemplateChild<adw::Banner>,
     }
 
     #[glib::object_subclass]
@@ -77,18 +75,18 @@ impl Greeter {
         let monitor = gio::NetworkMonitor::default();
 
         if !monitor.is_network_available() {
-            imp.development_info_bar.set_revealed(false);
-            imp.offline_info_bar_label
-                .set_label(&gettext("No network connection"));
-            imp.offline_info_bar.set_revealed(true);
+            imp.development_banner.set_revealed(false);
+            imp.offline_banner
+                .set_title(&gettext("No network connection"));
+            imp.offline_banner.set_revealed(true);
         } else if monitor.connectivity() < gio::NetworkConnectivity::Full {
-            imp.development_info_bar.set_revealed(false);
-            imp.offline_info_bar_label
-                .set_label(&gettext("No Internet connection"));
-            imp.offline_info_bar.set_revealed(true);
+            imp.development_banner.set_revealed(false);
+            imp.offline_banner
+                .set_title(&gettext("No Internet connection"));
+            imp.offline_banner.set_revealed(true);
         } else {
-            imp.development_info_bar.set_revealed(true);
-            imp.offline_info_bar.set_revealed(false);
+            imp.development_banner.set_revealed(true);
+            imp.offline_banner.set_revealed(false);
         }
     }
 }

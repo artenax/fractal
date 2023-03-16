@@ -29,41 +29,12 @@
               <object class="GtkBox">
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkInfoBar" id="development_info_bar">
-                    <property name="message-type">warning</property>
-                    <child>
-                      <object class="AdwClamp">
-                        <property name="maximum-size">440</property>
-                        <property name="tightening-threshold">340</property>
-                        <property name="hexpand">true</property>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="justify">center</property>
-                            <property name="wrap">True</property>
-                            <property name="label" translatable="yes">You are running an early stage development version. Be aware it is a work in progress and far from complete yet.</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
+                  <object class="AdwBanner" id="development_banner">
+                    <property name="title" translatable="yes">You are running an early stage development version. Be aware it is a work in progress and far from complete yet.</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkInfoBar" id="offline_info_bar">
-                    <property name="message-type">warning</property>
-                    <child>
-                      <object class="AdwClamp">
-                        <property name="maximum-size">440</property>
-                        <property name="tightening-threshold">340</property>
-                        <property name="hexpand">true</property>
-                        <child>
-                          <object class="GtkLabel" id="offline_info_bar_label">
-                            <property name="justify">center</property>
-                            <property name="wrap">True</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
+                  <object class="AdwBanner" id="offline_banner"/>
                 </child>
                 <child>
                   <object class="AdwClamp">
@@ -154,4 +125,3 @@
     </child>
   </template>
 </interface>
-

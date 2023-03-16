@@ -70,7 +70,7 @@ mod imp {
         #[template_child]
         pub room_row_menu: TemplateChild<gio::MenuModel>,
         #[template_child]
-        pub offline_info_bar: TemplateChild<gtk::InfoBar>,
+        pub offline_banner: TemplateChild<adw::Banner>,
         pub room_row_popover: OnceCell<gtk::PopoverMenu>,
         pub user: RefCell<Option<User>>,
         /// The type of the source that activated drop mode.
@@ -386,12 +386,10 @@ impl Sidebar {
             let handler_id = session.connect_notify_local(
                 Some("offline"),
                 clone!(@weak self as obj => move |session, _| {
-                    obj.imp().offline_info_bar.set_revealed(session.is_offline());
+                    obj.imp().offline_banner.set_revealed(session.is_offline());
                 }),
             );
-            self.imp()
-                .offline_info_bar
-                .set_revealed(session.is_offline());
+            self.imp().offline_banner.set_revealed(session.is_offline());
 
             self.imp().offline_handler_id.replace(Some(handler_id));
         }

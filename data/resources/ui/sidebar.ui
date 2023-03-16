@@ -138,17 +138,8 @@
           </object>
         </child>
         <child>
-          <object class="GtkInfoBar" id="offline_info_bar">
-            <property name="message-type">warning</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="hexpand">True</property>
-                <property name="label" translatable="yes">Offline</property>
-                <style>
-                  <class name="heading"/>
-                </style>
-              </object>
-            </child>
+          <object class="AdwBanner" id="offline_banner">
+            <property name="title" translatable="yes">Offline</property>
           </object>
         </child>
         <child>
