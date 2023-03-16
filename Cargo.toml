@@ -7,6 +7,8 @@ rust-version = "1.65"
 
 [profile.release]
 debug = true
+lto = true
+codegen-units = 1
 
 [profile.dev.package."*"]
 opt-level = 3
