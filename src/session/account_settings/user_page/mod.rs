@@ -8,7 +8,7 @@ use gtk::{
     CompositeTemplate,
 };
 use log::error;
-use matrix_sdk::ruma::{api::client::discovery::get_capabilities, MxcUri, OwnedMxcUri};
+use matrix_sdk::ruma::{api::client::discovery::get_capabilities, OwnedMxcUri};
 
 mod change_password_subpage;
 mod deactivate_account_subpage;
@@ -22,11 +22,11 @@ use crate::{
     components::{ActionButton, ActionState, ButtonRow, EditableAvatar},
     session::{Session, User, UserExt},
     spawn, spawn_tokio, toast,
-    utils::{media::load_file, template_callbacks::TemplateCallbacks},
+    utils::{media::load_file, template_callbacks::TemplateCallbacks, OngoingAsyncAction},
 };
 
 mod imp {
-    use std::cell::{Cell, RefCell};
+    use std::cell::RefCell;
 
     use glib::{subclass::InitializingObject, WeakRef};
 
@@ -56,9 +56,8 @@ mod imp {
         pub deactivate_account_subpage: TemplateChild<DeactivateAccountSubpage>,
         #[template_child]
         pub log_out_subpage: TemplateChild<LogOutSubpage>,
-        pub changing_avatar_to: RefCell<Option<OwnedMxcUri>>,
-        pub removing_avatar: Cell<bool>,
-        pub changing_display_name_to: RefCell<Option<String>>,
+        pub changing_avatar: RefCell<Option<OngoingAsyncAction<OwnedMxcUri>>>,
+        pub changing_display_name: RefCell<Option<OngoingAsyncAction<String>>>,
     }
 
     #[glib::object_subclass]
@@ -150,13 +149,13 @@ impl UserPage {
         self.user().avatar().connect_notify_local(
             Some("url"),
             clone!(@weak self as obj => move |avatar, _| {
-                obj.avatar_changed(avatar.url().as_deref());
+                obj.avatar_changed(avatar.url());
             }),
         );
         self.user().connect_notify_local(
             Some("display-name"),
             clone!(@weak self as obj => move |user, _| {
-                obj.display_name_changed(&user.display_name());
+                obj.display_name_changed(user.display_name());
             }),
         );
 
@@ -204,11 +203,25 @@ impl UserPage {
         }));
     }
 
-    fn avatar_changed(&self, uri: Option<&MxcUri>) {
+    fn avatar_changed(&self, uri: Option<OwnedMxcUri>) {
         let imp = self.imp();
+
+        if let Some(action) = imp.changing_avatar.borrow().as_ref() {
+            if uri.as_ref() != action.as_value() {
+                // This is not the change we expected, maybe another device did a change too.
+                // Let's wait for another change.
+                return;
+            }
+        } else {
+            // No action is ongoing, we don't need to do anything.
+            return;
+        };
+
+        // Reset the state.
+        imp.changing_avatar.take();
+
         let avatar = &*imp.avatar;
-        if uri.is_none() && imp.removing_avatar.get() {
-            imp.removing_avatar.set(false);
+        if uri.is_none() {
             avatar.show_temp_image(false);
             avatar.set_remove_state(ActionState::Success);
             avatar.set_edit_sensitive(true);
@@ -219,22 +232,18 @@ impl UserPage {
                     avatar.set_remove_state(ActionState::Default);
                 }),
             );
-        } else if uri.is_some() {
-            let to_uri = imp.changing_avatar_to.borrow().clone();
-            if to_uri.as_deref() == uri {
-                imp.changing_avatar_to.take();
-                avatar.set_edit_state(ActionState::Success);
-                avatar.show_temp_image(false);
-                avatar.set_temp_image_from_file(None);
-                avatar.set_remove_sensitive(true);
-                toast!(self, gettext("Avatar changed successfully"));
-                glib::timeout_add_local_once(
-                    Duration::from_secs(2),
-                    clone!(@weak avatar => move || {
-                        avatar.set_edit_state(ActionState::Default);
-                    }),
-                );
-            }
+        } else {
+            avatar.set_edit_state(ActionState::Success);
+            avatar.show_temp_image(false);
+            avatar.set_temp_image_from_file(None);
+            avatar.set_remove_sensitive(true);
+            toast!(self, gettext("Avatar changed successfully"));
+            glib::timeout_add_local_once(
+                Duration::from_secs(2),
+                clone!(@weak avatar => move || {
+                    avatar.set_edit_state(ActionState::Default);
+                }),
+            );
         }
     }
 
@@ -267,7 +276,7 @@ impl UserPage {
         let uri = match handle.await.unwrap() {
             Ok(res) => res.content_uri,
             Err(error) => {
-                error!("Could not upload user avatar: {}", error);
+                error!("Could not upload user avatar: {error}");
                 toast!(self, gettext("Could not upload avatar"));
                 avatar.show_temp_image(false);
                 avatar.set_temp_image_from_file(None);
@@ -277,19 +286,29 @@ impl UserPage {
             }
         };
 
-        imp.changing_avatar_to.replace(Some(uri.clone()));
-        let handle = spawn_tokio!(async move { client.account().set_avatar_url(Some(&uri)).await });
+        let (action, weak_action) = OngoingAsyncAction::set(uri.clone());
+        imp.changing_avatar.replace(Some(action));
+
+        let uri_clone = uri.clone();
+        let handle =
+            spawn_tokio!(async move { client.account().set_avatar_url(Some(&uri_clone)).await });
 
         match handle.await.unwrap() {
             Ok(_) => {
-                let to_uri = imp.changing_avatar_to.borrow().clone();
-                if let Some(avatar) = to_uri {
-                    self.user().set_avatar_url(Some(avatar))
+                // If the user is in no rooms, we won't receive the update via sync, so change
+                // the avatar manually if this request succeeds before the avatar is updated.
+                // Because this action can finish in avatar_changed, we must only act if this is
+                // still the current action.
+                if weak_action.is_ongoing() {
+                    self.user().set_avatar_url(Some(uri))
                 }
             }
             Err(error) => {
-                if imp.changing_avatar_to.take().is_some() {
-                    error!("Could not change user avatar: {}", error);
+                // Because this action can finish in avatar_changed, we must only act if this is
+                // still the current action.
+                if weak_action.is_ongoing() {
+                    imp.changing_avatar.take();
+                    error!("Could not change user avatar: {error}");
                     toast!(self, gettext("Could not change avatar"));
                     avatar.show_temp_image(false);
                     avatar.set_temp_image_from_file(None);
@@ -307,17 +326,27 @@ impl UserPage {
         avatar.set_remove_state(ActionState::Loading);
         avatar.set_edit_sensitive(false);
 
+        let (action, weak_action) = OngoingAsyncAction::remove();
+        imp.changing_avatar.replace(Some(action));
+
         let client = self.session().unwrap().client();
         let handle = spawn_tokio!(async move { client.account().set_avatar_url(None).await });
-        imp.removing_avatar.set(true);
 
         match handle.await.unwrap() {
             Ok(_) => {
-                self.user().set_avatar_url(None);
+                // If the user is in no rooms, we won't receive the update via sync, so change
+                // the avatar manually if this request succeeds before the avatar is updated.
+                // Because this action can finish in avatar_changed, we must only act if this is
+                // still the current action.
+                if weak_action.is_ongoing() {
+                    self.user().set_avatar_url(None)
+                }
             }
             Err(error) => {
-                if imp.removing_avatar.get() {
-                    imp.removing_avatar.set(false);
+                // Because this action can finish in avatar_changed, we must only act if this is
+                // still the current action.
+                if weak_action.is_ongoing() {
+                    imp.changing_avatar.take();
                     error!("Couldn’t remove user avatar: {}", error);
                     toast!(self, gettext("Could not remove avatar"));
                     avatar.show_temp_image(false);
@@ -336,24 +365,31 @@ impl UserPage {
         }));
     }
 
-    fn display_name_changed(&self, name: &str) {
+    fn display_name_changed(&self, name: String) {
         let imp = self.imp();
+
+        if let Some(action) = imp.changing_display_name.borrow().as_ref() {
+            if action.as_value() == Some(&name) {
+                // This is not the change we expected, maybe another device did a change too.
+                // Let's wait for another change.
+                return;
+            }
+        } else {
+            // No action is ongoing, we don't need to do anything.
+            return;
+        }
+
+        // Reset state.
+        imp.changing_display_name.take();
+
         let entry = &imp.display_name;
         let button = &imp.display_name_button;
 
-        let to_display_name = imp
-            .changing_display_name_to
-            .borrow()
-            .clone()
-            .unwrap_or_default();
-        if to_display_name == name {
-            imp.changing_display_name_to.take();
-            entry.remove_css_class("error");
-            entry.set_sensitive(true);
-            button.hide();
-            button.set_state(ActionState::Confirm);
-            toast!(self, gettext("Name changed successfully"));
-        }
+        entry.remove_css_class("error");
+        entry.set_sensitive(true);
+        button.hide();
+        button.set_state(ActionState::Confirm);
+        toast!(self, gettext("Name changed successfully"));
     }
 
     async fn change_display_name(&self) {
@@ -364,29 +400,41 @@ impl UserPage {
         entry.set_sensitive(false);
         button.set_state(ActionState::Loading);
 
-        let display_name = entry.text();
-        imp.changing_display_name_to
-            .replace(Some(display_name.to_string()));
+        let display_name = entry.text().trim().to_string();
+
+        let (action, weak_action) = OngoingAsyncAction::set(display_name.clone());
+        imp.changing_display_name.replace(Some(action));
 
         let client = self.session().unwrap().client();
-        let handle =
-            spawn_tokio!(
-                async move { client.account().set_display_name(Some(&display_name)).await }
-            );
+        let display_name_clone = display_name.clone();
+        let handle = spawn_tokio!(async move {
+            client
+                .account()
+                .set_display_name(Some(&display_name_clone))
+                .await
+        });
 
         match handle.await.unwrap() {
             Ok(_) => {
-                let to_display_name = imp.changing_display_name_to.borrow().clone();
-                if let Some(display_name) = to_display_name {
+                // If the user is in no rooms, we won't receive the update via sync, so change
+                // the avatar manually if this request succeeds before the avatar is updated.
+                // Because this action can finish in display_name_changed, we must only act if
+                // this is still the current action.
+                if weak_action.is_ongoing() {
                     self.user().set_display_name(Some(display_name));
                 }
             }
-            Err(err) => {
-                error!("Couldn’t change user display name: {}", err);
-                toast!(self, gettext("Could not change display name"));
-                button.set_state(ActionState::Retry);
-                entry.add_css_class("error");
-                entry.set_sensitive(true);
+            Err(error) => {
+                // Because this action can finish in display_name_changed, we must only act if
+                // this is still the current action.
+                if weak_action.is_ongoing() {
+                    imp.changing_display_name.take();
+                    error!("Could not change user display name: {error}");
+                    toast!(self, gettext("Could not change display name"));
+                    button.set_state(ActionState::Retry);
+                    entry.add_css_class("error");
+                    entry.set_sensitive(true);
+                }
             }
         }
     }
@@ -405,7 +453,7 @@ impl UserPage {
                     Ok(res) => {
                         obj.imp().change_password_group.set_visible(res.capabilities.change_password.enabled);
                     }
-                    Err(error) => error!("Could not get server capabilities: {}", error),
+                    Err(error) => error!("Could not get server capabilities: {error}"),
                 }
             })
         );

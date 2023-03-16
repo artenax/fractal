@@ -7,7 +7,10 @@ pub mod notifications;
 pub mod sourceview;
 pub mod template_callbacks;
 
-use std::path::PathBuf;
+use std::{
+    path::PathBuf,
+    rc::{Rc, Weak},
+};
 
 use futures::{
     future::{self, Either, Future},
@@ -185,6 +188,89 @@ impl<T: glib::ObjectType> BoundObjectWeakRef<T> {
             for signal_handler_id in self.signal_handler_ids {
                 obj.disconnect(signal_handler_id)
             }
+        }
+    }
+}
+
+/// Helper type to keep track of ongoing async actions that can succeed in
+/// different functions.
+///
+/// This type can only have one strong reference and many weak references.
+///
+/// The strong reference should be dropped in the first function where the
+/// action succeeds. Then other functions can drop the weak references when
+/// they can't be upgraded.
+#[derive(Debug)]
+pub struct OngoingAsyncAction<T> {
+    strong: Rc<AsyncAction<T>>,
+}
+
+impl<T> OngoingAsyncAction<T> {
+    /// Create a new async action that sets the given value.
+    ///
+    /// Returns both a strong and a weak reference.
+    pub fn set(value: T) -> (Self, WeakOngoingAsyncAction<T>) {
+        let strong = Rc::new(AsyncAction::Set(value));
+        let weak = Rc::downgrade(&strong);
+        (Self { strong }, WeakOngoingAsyncAction { weak })
+    }
+
+    /// Create a new async action that removes a value.
+    ///
+    /// Returns both a strong and a weak reference.
+    pub fn remove() -> (Self, WeakOngoingAsyncAction<T>) {
+        let strong = Rc::new(AsyncAction::Remove);
+        let weak = Rc::downgrade(&strong);
+        (Self { strong }, WeakOngoingAsyncAction { weak })
+    }
+
+    /// Create a new weak reference to this async action.
+    pub fn downgrade(&self) -> WeakOngoingAsyncAction<T> {
+        let weak = Rc::downgrade(&self.strong);
+        WeakOngoingAsyncAction { weak }
+    }
+
+    /// The inner action.
+    pub fn action(&self) -> &AsyncAction<T> {
+        &self.strong
+    }
+
+    /// Get the inner value, if any.
+    pub fn as_value(&self) -> Option<&T> {
+        self.strong.as_value()
+    }
+}
+
+/// A weak reference to an `OngoingAsyncAction`.
+#[derive(Debug, Clone)]
+pub struct WeakOngoingAsyncAction<T> {
+    weak: Weak<AsyncAction<T>>,
+}
+
+impl<T> WeakOngoingAsyncAction<T> {
+    /// Whether this async action is still ongoing (i.e. whether the strong
+    /// reference still exists).
+    pub fn is_ongoing(&self) -> bool {
+        self.weak.strong_count() > 0
+    }
+}
+
+/// An async action.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum AsyncAction<T> {
+    /// An async action is ongoing to set this value.
+    Set(T),
+
+    /// An async action is ongoing to remove a value.
+    Remove,
+}
+
+impl<T> AsyncAction<T> {
+    /// Get the inner value, if any.
+    pub fn as_value(&self) -> Option<&T> {
+        match self {
+            Self::Set(value) => Some(value),
+            _ => None,
         }
     }
 }
