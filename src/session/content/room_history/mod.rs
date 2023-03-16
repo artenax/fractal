@@ -8,7 +8,7 @@ mod state_row;
 mod typing_row;
 mod verification_info_bar;
 
-use std::{str::FromStr, time::Duration};
+use std::time::Duration;
 
 use adw::subclass::prelude::*;
 use ashpd::{
@@ -61,7 +61,7 @@ use crate::{
     },
     spawn, spawn_tokio, toast,
     utils::{
-        media::{filename_for_mime, get_audio_info, get_image_info, get_video_info},
+        media::{filename_for_mime, get_audio_info, get_image_info, get_video_info, load_file},
         template_callbacks::TemplateCallbacks,
     },
 };
@@ -1026,68 +1026,41 @@ impl RoomHistory {
     }
 
     async fn send_file(&self, file: gio::File) {
-        let attributes: &[&str] = &[
-            gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-            gio::FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
-            gio::FILE_ATTRIBUTE_STANDARD_SIZE,
-        ];
-
-        // Read mime type.
-        let info = file
-            .query_info_future(
-                &attributes.join(","),
-                gio::FileQueryInfoFlags::NONE,
-                glib::PRIORITY_DEFAULT,
-            )
-            .await
-            .ok();
-
-        let mime = info
-            .as_ref()
-            .and_then(|info| info.content_type())
-            .and_then(|content_type| mime::Mime::from_str(&content_type).ok())
-            .unwrap_or(mime::APPLICATION_OCTET_STREAM);
-        let filename = info.as_ref().map(|info| info.display_name()).map_or_else(
-            || filename_for_mime(Some(mime.as_ref()), None),
-            |name| name.to_string(),
-        );
-        let size = info
-            .as_ref()
-            .map(|info| info.size())
-            .filter(|size| *size > 0)
-            .map(|size| (size as u32).into());
-
-        match file.load_contents_future().await {
-            Ok((bytes, _tag)) => {
+        match load_file(&file).await {
+            Ok((bytes, file_info)) => {
                 let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
-                let dialog = AttachmentDialog::for_file(&window, &filename, &file);
+                let dialog = AttachmentDialog::for_file(&window, &file_info.filename, &file);
 
                 if dialog.run_future().await != gtk::ResponseType::Ok {
                     return;
                 }
 
-                if let Some(room) = self.room() {
-                    let info = match mime.type_() {
-                        mime::IMAGE => {
-                            let mut info = get_image_info(&file).await;
-                            info.size = size;
-                            AttachmentInfo::Image(info)
-                        }
-                        mime::VIDEO => {
-                            let mut info = get_video_info(&file).await;
-                            info.size = size;
-                            AttachmentInfo::Video(info)
-                        }
-                        mime::AUDIO => {
-                            let mut info = get_audio_info(&file).await;
-                            info.size = size;
-                            AttachmentInfo::Audio(info)
-                        }
-                        _ => AttachmentInfo::File(BaseFileInfo { size }),
-                    };
+                let Some(room) = self.room() else {
+                    error!("Cannot send file without a room");
+                    return;
+                };
 
-                    room.send_attachment(bytes.clone(), mime.clone(), &filename, info);
-                }
+                let size = file_info.size.map(Into::into);
+                let info = match file_info.mime.type_() {
+                    mime::IMAGE => {
+                        let mut info = get_image_info(&file).await;
+                        info.size = size;
+                        AttachmentInfo::Image(info)
+                    }
+                    mime::VIDEO => {
+                        let mut info = get_video_info(&file).await;
+                        info.size = size;
+                        AttachmentInfo::Video(info)
+                    }
+                    mime::AUDIO => {
+                        let mut info = get_audio_info(&file).await;
+                        info.size = size;
+                        AttachmentInfo::Audio(info)
+                    }
+                    _ => AttachmentInfo::File(BaseFileInfo { size }),
+                };
+
+                room.send_attachment(bytes, file_info.mime, &file_info.filename, info);
             }
             Err(err) => {
                 warn!("Could not read file: {}", err);

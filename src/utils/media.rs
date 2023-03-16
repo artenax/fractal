@@ -1,10 +1,11 @@
 //! Collection of methods for media files.
 
-use std::{cell::Cell, sync::Mutex};
+use std::{cell::Cell, str::FromStr, sync::Mutex};
 
 use gettextrs::gettext;
-use gtk::{gio, prelude::*};
+use gtk::{gio, glib, prelude::*};
 use matrix_sdk::attachment::{BaseAudioInfo, BaseImageInfo, BaseVideoInfo};
+use mime::Mime;
 use ruma::events::room::MediaSource;
 
 /// Get the unique id of the given `MediaSource`.
@@ -59,6 +60,59 @@ pub fn filename_for_mime(mime_type: Option<&str>, fallback: Option<mime::Name>) 
     extension
         .map(|extension| format!("{name}.{extension}"))
         .unwrap_or(name)
+}
+
+/// Information about a file
+pub struct FileInfo {
+    /// The mime type of the file.
+    pub mime: Mime,
+    /// The name of the file.
+    pub filename: String,
+    /// The size of the file in bytes.
+    pub size: Option<u32>,
+}
+
+/// Load a file and return its content and some information
+pub async fn load_file(file: &gio::File) -> Result<(Vec<u8>, FileInfo), glib::Error> {
+    let attributes: &[&str] = &[
+        gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+        gio::FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
+        gio::FILE_ATTRIBUTE_STANDARD_SIZE,
+    ];
+
+    // Read mime type.
+    let info = file
+        .query_info_future(
+            &attributes.join(","),
+            gio::FileQueryInfoFlags::NONE,
+            glib::PRIORITY_DEFAULT,
+        )
+        .await?;
+
+    let mime = info
+        .content_type()
+        .and_then(|content_type| Mime::from_str(&content_type).ok())
+        .unwrap_or(mime::APPLICATION_OCTET_STREAM);
+
+    let filename = info.display_name().to_string();
+
+    let raw_size = info.size();
+    let size = if raw_size >= 0 {
+        Some(raw_size as u32)
+    } else {
+        None
+    };
+
+    let (data, _) = file.load_contents_future().await?;
+
+    Ok((
+        data,
+        FileInfo {
+            mime,
+            filename,
+            size,
+        },
+    ))
 }
 
 pub async fn get_image_info(file: &gio::File) -> BaseImageInfo {

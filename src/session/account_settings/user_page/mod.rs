@@ -22,7 +22,7 @@ use crate::{
     components::{ActionButton, ActionState, ButtonRow, EditableAvatar},
     session::{Session, User, UserExt},
     spawn, spawn_tokio, toast,
-    utils::template_callbacks::TemplateCallbacks,
+    utils::{media::load_file, template_callbacks::TemplateCallbacks},
 };
 
 mod imp {
@@ -246,27 +246,23 @@ impl UserPage {
         avatar.set_edit_state(ActionState::Loading);
         avatar.set_remove_sensitive(false);
 
-        let client = self.session().unwrap().client();
-        let mime = file
-            .query_info_future(
-                gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-                gio::FileQueryInfoFlags::NONE,
-                glib::PRIORITY_LOW,
-            )
-            .await
-            .ok()
-            .and_then(|info| info.content_type())
-            .and_then(|content_type| gio::content_type_get_mime_type(&content_type))
-            .unwrap();
-        let (data, _) = file.load_contents_future().await.unwrap();
+        let (data, info) = match load_file(&file).await {
+            Ok(res) => res,
+            Err(error) => {
+                error!("Could not load user avatar file: {error}");
+                toast!(self, gettext("Could not load file"));
+                avatar.show_temp_image(false);
+                avatar.set_temp_image_from_file(None);
+                avatar.set_edit_state(ActionState::Default);
+                avatar.set_remove_sensitive(true);
+                return;
+            }
+        };
 
+        let client = self.session().unwrap().client();
         let client_clone = client.clone();
-        let handle = spawn_tokio!(async move {
-            client_clone
-                .media()
-                .upload(&mime.parse().unwrap(), data)
-                .await
-        });
+        let handle =
+            spawn_tokio!(async move { client_clone.media().upload(&info.mime, data).await });
 
         let uri = match handle.await.unwrap() {
             Ok(res) => res.content_uri,
