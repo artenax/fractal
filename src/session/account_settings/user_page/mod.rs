@@ -1,5 +1,3 @@
-use std::time::Duration;
-
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{
@@ -219,51 +217,25 @@ impl UserPage {
 
         // Reset the state.
         imp.changing_avatar.take();
-
-        let avatar = &*imp.avatar;
+        imp.avatar.success();
         if uri.is_none() {
-            avatar.show_temp_image(false);
-            avatar.set_remove_state(ActionState::Success);
-            avatar.set_edit_sensitive(true);
             toast!(self, gettext("Avatar removed successfully"));
-            glib::timeout_add_local_once(
-                Duration::from_secs(2),
-                clone!(@weak avatar => move || {
-                    avatar.set_remove_state(ActionState::Default);
-                }),
-            );
         } else {
-            avatar.set_edit_state(ActionState::Success);
-            avatar.show_temp_image(false);
-            avatar.set_temp_image_from_file(None);
-            avatar.set_remove_sensitive(true);
             toast!(self, gettext("Avatar changed successfully"));
-            glib::timeout_add_local_once(
-                Duration::from_secs(2),
-                clone!(@weak avatar => move || {
-                    avatar.set_edit_state(ActionState::Default);
-                }),
-            );
         }
     }
 
     async fn change_avatar(&self, file: gio::File) {
         let imp = self.imp();
         let avatar = &imp.avatar;
-        avatar.set_temp_image_from_file(Some(&file));
-        avatar.show_temp_image(true);
-        avatar.set_edit_state(ActionState::Loading);
-        avatar.set_remove_sensitive(false);
+        avatar.edit_in_progress();
 
         let (data, info) = match load_file(&file).await {
             Ok(res) => res,
             Err(error) => {
                 error!("Could not load user avatar file: {error}");
                 toast!(self, gettext("Could not load file"));
-                avatar.show_temp_image(false);
-                avatar.set_temp_image_from_file(None);
-                avatar.set_edit_state(ActionState::Default);
-                avatar.set_remove_sensitive(true);
+                avatar.reset();
                 return;
             }
         };
@@ -278,10 +250,7 @@ impl UserPage {
             Err(error) => {
                 error!("Could not upload user avatar: {error}");
                 toast!(self, gettext("Could not upload avatar"));
-                avatar.show_temp_image(false);
-                avatar.set_temp_image_from_file(None);
-                avatar.set_edit_state(ActionState::Default);
-                avatar.set_remove_sensitive(true);
+                avatar.reset();
                 return;
             }
         };
@@ -310,10 +279,7 @@ impl UserPage {
                     imp.changing_avatar.take();
                     error!("Could not change user avatar: {error}");
                     toast!(self, gettext("Could not change avatar"));
-                    avatar.show_temp_image(false);
-                    avatar.set_temp_image_from_file(None);
-                    avatar.set_edit_state(ActionState::Default);
-                    avatar.set_remove_sensitive(true);
+                    avatar.reset();
                 }
             }
         }
@@ -322,9 +288,7 @@ impl UserPage {
     async fn remove_avatar(&self) {
         let imp = self.imp();
         let avatar = &*imp.avatar;
-        avatar.show_temp_image(true);
-        avatar.set_remove_state(ActionState::Loading);
-        avatar.set_edit_sensitive(false);
+        avatar.removal_in_progress();
 
         let (action, weak_action) = OngoingAsyncAction::remove();
         imp.changing_avatar.replace(Some(action));
@@ -349,9 +313,7 @@ impl UserPage {
                     imp.changing_avatar.take();
                     error!("Couldn’t remove user avatar: {}", error);
                     toast!(self, gettext("Could not remove avatar"));
-                    avatar.show_temp_image(false);
-                    avatar.set_remove_state(ActionState::Default);
-                    avatar.set_edit_sensitive(true);
+                    avatar.reset();
                 }
             }
         }

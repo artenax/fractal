@@ -16,17 +16,6 @@
               </lookup>
             </binding>
             <property name="editable">true</property>
-            <binding name="removable">
-              <closure type="gboolean" function="object_is_some">
-                <lookup name="image">
-                  <lookup name="avatar">
-                    <lookup name="user">
-                      <lookup name="session">UserPage</lookup>
-                    </lookup>
-                  </lookup>
-                </lookup>
-              </closure>
-            </binding>
           </object>
         </child>
       </object>

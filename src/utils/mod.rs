@@ -27,18 +27,24 @@ use regex::Regex;
 /// Returns an expression that is the and’ed result of the given boolean
 /// expressions.
 #[allow(dead_code)]
-pub fn and_expr<E: AsRef<gtk::Expression>>(a_expr: E, b_expr: E) -> gtk::ClosureExpression {
+pub fn and_expr(
+    a_expr: impl AsRef<gtk::Expression>,
+    b_expr: impl AsRef<gtk::Expression>,
+) -> gtk::ClosureExpression {
     gtk::ClosureExpression::new::<bool>(
-        &[a_expr, b_expr],
+        &[a_expr.as_ref(), b_expr.as_ref()],
         closure!(|_: Option<Object>, a: bool, b: bool| { a && b }),
     )
 }
 
 /// Returns an expression that is the or’ed result of the given boolean
 /// expressions.
-pub fn or_expr<E: AsRef<gtk::Expression>>(a_expr: E, b_expr: E) -> gtk::ClosureExpression {
+pub fn or_expr(
+    a_expr: impl AsRef<gtk::Expression>,
+    b_expr: impl AsRef<gtk::Expression>,
+) -> gtk::ClosureExpression {
     gtk::ClosureExpression::new::<bool>(
-        &[a_expr, b_expr],
+        &[a_expr.as_ref(), b_expr.as_ref()],
         closure!(|_: Option<Object>, a: bool, b: bool| { a || b }),
     )
 }

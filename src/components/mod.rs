@@ -33,7 +33,7 @@ pub use self::{
     context_menu_bin::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl},
     custom_entry::CustomEntry,
     drag_overlay::DragOverlay,
-    editable_avatar::EditableAvatar,
+    editable_avatar::{EditableAvatar, EditableAvatarState},
     image_paintable::ImagePaintable,
     label_with_widgets::{LabelWithWidgets, DEFAULT_PLACEHOLDER},
     loading_listbox_row::LoadingListBoxRow,

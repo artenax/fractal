@@ -40,19 +40,16 @@
           </object>
         </child>
         <child type="overlay">
-          <object class="AdwBin">
+          <object class="AdwBin" id="button_remove_bin">
             <style>
               <class name="cutout-button" />
             </style>
-            <property name="visible" bind-source="ComponentsEditableAvatar" bind-property="removable" bind-flags="sync-create"/>
             <property name="halign">end</property>
             <property name="valign">start</property>
             <child>
               <object class="ComponentsActionButton" id="button_remove">
                 <property name="icon-name">user-trash-symbolic</property>
                 <property name="action-name">editable-avatar.remove-avatar</property>
-                <property name="state" bind-source="ComponentsEditableAvatar" bind-property="remove-state" bind-flags="sync-create"/>
-                <property name="sensitive" bind-source="ComponentsEditableAvatar" bind-property="remove-sensitive" bind-flags="sync-create"/>
               </object>
             </child>
           </object>
@@ -66,11 +63,9 @@
             <property name="halign">end</property>
             <property name="valign">end</property>
             <child>
-              <object class="ComponentsActionButton">
+              <object class="ComponentsActionButton" id="button_edit">
                 <property name="icon-name">document-edit-symbolic</property>
                 <property name="action-name">editable-avatar.edit-avatar</property>
-                <property name="state" bind-source="ComponentsEditableAvatar" bind-property="edit-state" bind-flags="sync-create"/>
-                <property name="sensitive" bind-source="ComponentsEditableAvatar" bind-property="edit-sensitive" bind-flags="sync-create"/>
               </object>
             </child>
           </object>
