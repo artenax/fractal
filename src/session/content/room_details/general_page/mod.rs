@@ -22,7 +22,9 @@ use crate::{
     utils::{
         and_expr,
         media::{get_image_info, load_file},
-        not_expr, or_expr, OngoingAsyncAction,
+        not_expr, or_expr,
+        template_callbacks::TemplateCallbacks,
+        OngoingAsyncAction,
     },
 };
 
@@ -70,6 +72,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
             Self::Type::bind_template_callbacks(klass);
+            TemplateCallbacks::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -414,7 +417,8 @@ impl GeneralPage {
     fn topic_changed(&self, topic: Option<String>) {
         let imp = self.imp();
 
-        // It is not possible to remove a topic so we process the empty string as `None`. We need to cancel that here.
+        // It is not possible to remove a topic so we process the empty string as
+        // `None`. We need to cancel that here.
         let topic = topic.unwrap_or_default();
 
         if let Some(action) = imp.changing_topic.borrow().as_ref() {

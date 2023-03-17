@@ -79,9 +79,11 @@
                                 <property name="buffer">
                                   <object class="GtkTextBuffer" id="room_topic_buffer">
                                     <binding name="text">
-                                      <lookup name="topic">
-                                        <lookup name="room">ContentRoomDetailsGeneralPage</lookup>
-                                      </lookup>
+                                      <closure type="gchararray" function="unwrap_string_or_empty">
+                                        <lookup name="topic">
+                                          <lookup name="room">ContentRoomDetailsGeneralPage</lookup>
+                                        </lookup>
+                                      </closure>
                                     </binding>
                                   </object>
                                 </property>
