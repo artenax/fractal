@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-03-07 10:59+0000\n"
-"PO-Revision-Date: 2023-03-10 16:21+0100\n"
+"POT-Creation-Date: 2023-03-12 16:48+0000\n"
+"PO-Revision-Date: 2023-03-12 18:12+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -384,6 +384,10 @@ msgstr "Sök efter rumsmedlemmar"
 #: src/session/room/event/event_actions.rs:303
 msgid "Save"
 msgstr "Spara"
+
+#: data/resources/ui/content-message-row.ui:61
+msgid "Edited"
+msgstr "Redigerat"
 
 #: data/resources/ui/content-room-details.ui:4
 #: src/session/content/room_details/mod.rs:200
@@ -1824,19 +1828,19 @@ msgstr "{user} har ändrat sin profilbild."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/room_history/typing_row.rs:177
+#: src/session/content/room_history/typing_row.rs:183
 msgid "<b>{user}</b> is typing…"
 msgstr "<b>{user}</b> skriver…"
 
 #. Translators: Do NOT translate the content between '{' and '}', these are
 #. variable names.
-#: src/session/content/room_history/typing_row.rs:187
+#: src/session/content/room_history/typing_row.rs:193
 msgid "<b>{user1}</b> and <b>{user2}</b> are typing…"
 msgstr "<b>{user1}</b> och <b>{user2}</b> skriver…"
 
 #. Translators: Do NOT translate the content between '{' and '}', these are
 #. variable names.
-#: src/session/content/room_history/typing_row.rs:194
+#: src/session/content/room_history/typing_row.rs:200
 msgid "<b>{user1}</b>, <b>{user2}</b> and 1 other are typing…"
 msgid_plural "<b>{user1}</b>, <b>{user2}</b> and {n} others are typing…"
 msgstr[0] "<b>{user1}</b>, <b>{user2}</b> och 1 till skriver…"
