@@ -3,6 +3,11 @@
   <template class="SidebarRoomRow" parent="ContextMenuBin">
     <child>
       <object class="GtkBox">
+        <binding name="tooltip-text">
+          <lookup name="display-name">
+            <lookup name="room">SidebarRoomRow</lookup>
+          </lookup>
+        </binding>
         <property name="spacing">12</property>
         <child>
           <object class="ComponentsAvatar" id="avatar">

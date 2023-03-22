@@ -257,8 +257,8 @@ sidebar-row > * {
   margin-top: 2px;
 }
 
-sidebar-row > * {
-  padding: 9px 9px;
+sidebar-row > * > * {
+  padding: 9px;
 }
 
 sidebar-row:focus > * {
