@@ -26,6 +26,7 @@ dependency('gstreamer-1.0', version: '>= 1.20')
 dependency('gstreamer-base-1.0', version: '>= 1.20')
 dependency('gstreamer-plugins-base-1.0', version: '>= 1.20')
 dependency('gstreamer-video-1.0', version: '>= 1.20')
+dependency('openssl', version: '>= 1.0.1')
 
 glib_compile_resources = find_program('glib-compile-resources', required: true)
 glib_compile_schemas = find_program('glib-compile-schemas', required: true)
