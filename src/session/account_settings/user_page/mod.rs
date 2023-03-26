@@ -311,7 +311,7 @@ impl UserPage {
                 // still the current action.
                 if weak_action.is_ongoing() {
                     imp.changing_avatar.take();
-                    error!("Couldn’t remove user avatar: {}", error);
+                    error!("Couldn’t remove user avatar: {error}");
                     toast!(self, gettext("Could not remove avatar"));
                     avatar.reset();
                 }

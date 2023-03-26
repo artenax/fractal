@@ -156,7 +156,7 @@ impl Avatar {
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
                     Ok(data) => obj.set_image_data(Some(data)),
-                    Err(error) => error!("Couldn’t fetch avatar: {}", error),
+                    Err(error) => error!("Couldn’t fetch avatar: {error}"),
                 };
             })
         );

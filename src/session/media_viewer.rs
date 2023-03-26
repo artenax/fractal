@@ -346,10 +346,10 @@ impl MediaViewer {
                                         imp.media.view_image(&texture);
                                         return;
                                     }
-                                    Err(error) => warn!("Could not load GdkTexture from file: {}", error),
+                                    Err(error) => warn!("Could not load GdkTexture from file: {error}"),
                                 }
                             }
-                            Err(error) => warn!("Could not retrieve image file: {}", error),
+                            Err(error) => warn!("Could not retrieve image file: {error}"),
                         }
 
                         imp.media.show_fallback(ContentType::Image);
@@ -384,7 +384,7 @@ impl MediaViewer {
                                 imp.media.view_file(file);
                             }
                             Err(error) => {
-                                warn!("Could not retrieve video file: {}", error);
+                                warn!("Could not retrieve video file: {error}");
                                 imp.media.show_fallback(ContentType::Video);
                             }
                         }

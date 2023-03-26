@@ -260,7 +260,7 @@ impl Window {
                 }
             }
             Err(error) => {
-                warn!("Failed to restore previous sessions: {:?}", error);
+                warn!("Failed to restore previous sessions: {error}");
 
                 let (message, item) = error.into_parts();
                 self.switch_to_error_page(

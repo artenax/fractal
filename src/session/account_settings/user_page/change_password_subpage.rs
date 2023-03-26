@@ -283,7 +283,7 @@ impl ChangePasswordSubpage {
                 imp.confirm_password.set_text("");
                 self.activate_action("win.close-subpage", None).unwrap();
             }
-            Err(err) => match err {
+            Err(error) => match error {
                 AuthError::UserCancelled => {}
                 AuthError::ServerResponse(error)
                     if matches!(
@@ -299,11 +299,11 @@ impl ChangePasswordSubpage {
                         )),)
                     ) =>
                 {
-                    error!("Weak password: {:?}", error);
+                    error!("Weak password: {error}");
                     toast!(self, gettext("Password rejected for being too weak"));
                 }
                 _ => {
-                    error!("Failed to change the password: {:?}", err);
+                    error!("Failed to change the password: {error:?}");
                     toast!(self, gettext("Could not change password"));
                 }
             },

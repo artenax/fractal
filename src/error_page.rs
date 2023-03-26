@@ -115,8 +115,8 @@ impl ErrorPage {
                     window.restore_sessions().await;
                 }
             }
-            Err(err) => {
-                error!("Could not remove session from secret storage: {:?}", err);
+            Err(error) => {
+                error!("Could not remove session from secret storage: {error}");
                 toast!(
                     self,
                     gettext("Could not remove session from secret storage")

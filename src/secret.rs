@@ -132,11 +132,8 @@ impl StoredSession {
         let homeserver = match attr.get("homeserver") {
             Some(string) => match Url::parse(string) {
                 Ok(homeserver) => homeserver,
-                Err(err) => {
-                    error!(
-                        "Could not parse 'homeserver' attribute in stored session: {:?}",
-                        err
-                    );
+                Err(error) => {
+                    error!("Could not parse 'homeserver' attribute in stored session: {error}");
                     return Err(SecretError::CorruptSession(
                         gettext("Malformed homeserver in stored session"),
                         item,
@@ -153,11 +150,8 @@ impl StoredSession {
         let user_id = match attr.get("user") {
             Some(string) => match UserId::parse(string.as_str()) {
                 Ok(user_id) => user_id,
-                Err(err) => {
-                    error!(
-                        "Could not parse 'user' attribute in stored session: {:?}",
-                        err
-                    );
+                Err(error) => {
+                    error!("Could not parse 'user' attribute in stored session: {error}");
                     return Err(SecretError::CorruptSession(
                         gettext("Malformed user ID in stored session"),
                         item,
@@ -192,16 +186,16 @@ impl StoredSession {
         let secret = match item.secret().await {
             Ok(secret) => match Secret::from_utf8(&secret) {
                 Ok(secret) => secret,
-                Err(err) => {
-                    error!("Could not parse secret in stored session: {:?}", err);
+                Err(error) => {
+                    error!("Could not parse secret in stored session: {error:?}");
                     return Err(SecretError::CorruptSession(
                         gettext("Malformed secret in stored session"),
                         item,
                     ));
                 }
             },
-            Err(err) => {
-                error!("Could not get secret in stored session: {:?}", err);
+            Err(error) => {
+                error!("Could not get secret in stored session: {error}");
                 return Err(SecretError::CorruptSession(
                     gettext("Could not get secret in stored session"),
                     item,

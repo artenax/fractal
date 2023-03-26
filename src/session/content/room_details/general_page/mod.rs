@@ -263,7 +263,7 @@ impl GeneralPage {
         let uri = match handle.await.unwrap() {
             Ok(res) => res.content_uri,
             Err(error) => {
-                error!("Could not upload room avatar: {}", error);
+                error!("Could not upload room avatar: {error}");
                 toast!(self, gettext("Could not upload avatar"));
                 avatar.reset();
                 return;
@@ -313,7 +313,7 @@ impl GeneralPage {
             // still the current action.
             if weak_action.is_ongoing() {
                 imp.changing_avatar.take();
-                error!("Could not remove room avatar: {}", error);
+                error!("Could not remove room avatar: {error}");
                 toast!(self, gettext("Could not remove avatar"));
                 avatar.reset();
             }

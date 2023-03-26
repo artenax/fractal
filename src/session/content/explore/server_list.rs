@@ -127,7 +127,7 @@ impl ServerList {
         match handle.await.unwrap() {
             Ok(response) => self.add_protocols(response),
             Err(error) => {
-                error!("Error loading supported protocols: {}", error);
+                error!("Error loading supported protocols: {error}");
             }
         }
     }

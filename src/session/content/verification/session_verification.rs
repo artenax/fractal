@@ -324,7 +324,7 @@ impl SessionVerification {
                     Some(gettext("You cancelled the authentication needed to create the encryption keys."))
                 },
                 Err(error) => {
-                    error!("Failed to bootstrap cross-signing: {:?}", error);
+                    error!("Failed to bootstrap cross-signing: {error:?}");
                     Some(gettext("An error occurred during the creation of the encryption keys."))
                 },
             };

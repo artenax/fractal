@@ -343,7 +343,7 @@ fn build_content(
                     child.text(gettext("Identity verification was started"), format);
                 }
                 msgtype => {
-                    warn!("Event not supported: {:?}", msgtype);
+                    warn!("Event not supported: {msgtype:?}");
                     let child = if let Some(Ok(child)) =
                         parent.child().map(|w| w.downcast::<MessageText>())
                     {

@@ -207,8 +207,8 @@ impl DeviceRow {
             match device.delete(window.as_ref()).await {
                 Ok(_) => obj.set_visible(false),
                 Err(AuthError::UserCancelled) => {},
-                Err(err) => {
-                    error!("Failed to disconnect device {}: {err:?}", device.device_id());
+                Err(error) => {
+                    error!("Failed to disconnect device {}: {error:?}", device.device_id());
                     let device_name = device.display_name();
                     // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
                     let error_message = gettext_f("Failed to disconnect device “{device_name}”", &[("device_name", device_name)]);

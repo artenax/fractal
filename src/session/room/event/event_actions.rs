@@ -110,7 +110,7 @@ where
                                         toast!(widget, gettext("Permalink copied to clipboard"));
                                     },
                                 Err(error) => {
-                                    error!("Could not get permalink: {}", error);
+                                    error!("Could not get permalink: {error}");
                                     toast!(widget, gettext("Failed to copy the permalink"));
                                 }
                             }

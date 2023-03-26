@@ -92,7 +92,7 @@ impl MessageLocation {
                 imp.overlay_error.set_visible(false);
             }
             Err(error) => {
-                warn!("Encountered invalid geo URI: {}", error);
+                warn!("Encountered invalid geo URI: {error}");
                 imp.location.set_visible(false);
                 imp.overlay_error.set_tooltip_text(Some(&gettext(
                     "Location is invalid and cannot be displayed",

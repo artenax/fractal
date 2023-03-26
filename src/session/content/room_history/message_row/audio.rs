@@ -228,7 +228,7 @@ impl MessageAudio {
                         obj.set_error(gettext("Could not retrieve audio file"));
                     }
                     Err(error) => {
-                        warn!("Could not retrieve audio file: {}", error);
+                        warn!("Could not retrieve audio file: {error}");
                         obj.set_error(gettext("Could not retrieve audio file"));
                     }
                 }
@@ -241,7 +241,7 @@ impl MessageAudio {
 
         media_file.connect_error_notify(clone!(@weak self as obj => move |media_file| {
             if let Some(error) = media_file.error() {
-                warn!("Error reading audio file: {}", error);
+                warn!("Error reading audio file: {error}");
                 obj.set_error(gettext("Error reading audio file"));
             }
         }));

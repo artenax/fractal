@@ -142,7 +142,7 @@ impl User {
         match handle.await.unwrap() {
             Ok(identity) => identity,
             Err(error) => {
-                error!("Failed to find crypto identity: {}", error);
+                error!("Failed to find crypto identity: {error}");
                 None
             }
         }

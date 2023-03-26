@@ -457,7 +457,7 @@ impl Timeline {
                 Ok(room_event) => room_event.event.deserialize_as().map_err(Into::into),
                 Err(error) => {
                     // TODO: Retry on connection error?
-                    warn!("Could not fetch event {}: {}", event_id, error);
+                    warn!("Could not fetch event {event_id}: {error}");
                     Err(error)
                 }
             }

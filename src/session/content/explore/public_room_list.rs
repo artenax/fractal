@@ -287,7 +287,7 @@ impl PublicRoomList {
                      Ok(response) => obj.handle_public_rooms_response(response),
                      Err(error) => {
                         obj.set_request_sent(false);
-                        error!("Error loading public rooms: {}", error)
+                        error!("Error loading public rooms: {error}")
                      },
                     }
                 }

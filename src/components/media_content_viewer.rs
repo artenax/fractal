@@ -235,7 +235,7 @@ impl MediaContentViewer {
                     return;
                 }
                 Err(error) => {
-                    warn!("Could not load GdkTexture from file: {:?}", error);
+                    warn!("Could not load GdkTexture from file: {error}");
                 }
             },
             ContentType::Audio => {

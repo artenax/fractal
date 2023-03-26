@@ -432,7 +432,7 @@ impl MessageMedia {
                                             }
                                         }
                                         Err(error) => {
-                                            warn!("Image file not supported: {}", error);
+                                            warn!("Image file not supported: {error}");
                                             imp.overlay_error.set_tooltip_text(Some(&gettext("Image file not supported")));
                                             obj.set_state(MediaState::Error);
                                         }
@@ -443,7 +443,7 @@ impl MessageMedia {
                                 // we need to store the file.
                                 // See: https://gitlab.gnome.org/GNOME/gtk/-/issues/4062
                                 let mut path = cache_dir();
-                                path.push(format!("{}_{}", id, body.unwrap_or_default()));
+                                path.push(format!("{id}_{}", body.unwrap_or_default()));
                                 let file = gio::File::for_path(path);
                                 file.replace_contents(
                                     &data,
@@ -476,7 +476,7 @@ impl MessageMedia {
                         obj.set_state(MediaState::Error);
                     }
                     Err(error) => {
-                        warn!("Could not retrieve media file: {}", error);
+                        warn!("Could not retrieve media file: {error}");
                         imp.overlay_error.set_tooltip_text(Some(&gettext("Could not retrieve media")));
                         obj.set_state(MediaState::Error);
                     }

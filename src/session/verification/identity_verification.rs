@@ -377,7 +377,7 @@ impl IdentityVerification {
                     return obj;
                 }
                 Err(error) => {
-                    error!("Starting a verification failed: {}", error);
+                    error!("Starting a verification failed: {error}");
                 }
             }
         } else {
@@ -432,7 +432,7 @@ impl IdentityVerification {
                     Ok(result) => obj.set_state(result),
                     Err(error) => {
                         // FIXME: report error to the user
-                        error!("Verification failed: {}", error);
+                        error!("Verification failed: {error}");
                         obj.set_state(State::Error);
                     }
                 }
@@ -550,7 +550,7 @@ impl IdentityVerification {
                 let result = sync_sender.try_send(Message::UserAction(UserAction::Match));
 
                 if let Err(error) = result {
-                    error!("Failed to send message to tokio runtime: {}", error);
+                    error!("Failed to send message to tokio runtime: {error}");
                 }
             }
         }
@@ -562,7 +562,7 @@ impl IdentityVerification {
                 let result = sync_sender.try_send(Message::UserAction(UserAction::NotMatch));
 
                 if let Err(error) = result {
-                    error!("Failed to send message to tokio runtime: {}", error);
+                    error!("Failed to send message to tokio runtime: {error}");
                 }
             }
         }
@@ -574,7 +574,7 @@ impl IdentityVerification {
                 let result = sync_sender.try_send(Message::UserAction(UserAction::ConfirmScanning));
 
                 if let Err(error) = result {
-                    error!("Failed to send message to tokio runtime: {}", error);
+                    error!("Failed to send message to tokio runtime: {error}");
                 }
             }
         }
@@ -702,7 +702,7 @@ impl IdentityVerification {
                 let result = sync_sender.try_send(Message::UserAction(UserAction::StartSas));
 
                 if let Err(error) = result {
-                    error!("Failed to send message to tokio runtime: {}", error);
+                    error!("Failed to send message to tokio runtime: {error}");
                 }
             }
         }
@@ -714,7 +714,7 @@ impl IdentityVerification {
                 sync_sender.try_send(Message::UserAction(UserAction::Scanned(Box::new(data))));
 
             if let Err(error) = result {
-                error!("Failed to send message to tokio runtime: {}", error);
+                error!("Failed to send message to tokio runtime: {error}");
             }
         }
     }
@@ -725,7 +725,7 @@ impl IdentityVerification {
             if let Some(sync_sender) = &*self.imp().sync_sender.borrow() {
                 let result = sync_sender.try_send(Message::UserAction(UserAction::Accept));
                 if let Err(error) = result {
-                    error!("Failed to send message to tokio runtime: {}", error);
+                    error!("Failed to send message to tokio runtime: {error}");
                 }
             }
         }
@@ -739,7 +739,7 @@ impl IdentityVerification {
         if let Some(sync_sender) = &*imp.sync_sender.borrow() {
             let result = sync_sender.try_send(Message::UserAction(UserAction::Cancel));
             if let Err(error) = result {
-                error!("Failed to send message to tokio runtime: {}", error);
+                error!("Failed to send message to tokio runtime: {error}");
             }
         }
     }
@@ -757,7 +757,7 @@ impl IdentityVerification {
         if let Some(sync_sender) = &*self.imp().sync_sender.borrow() {
             let result = sync_sender.try_send(Message::NotifyState);
             if let Err(error) = result {
-                error!("Failed to send message to tokio runtime: {}", error);
+                error!("Failed to send message to tokio runtime: {error}");
             }
         }
     }

@@ -358,7 +358,7 @@ impl Session {
         if let Some(room) = self.room_list().get(room_id) {
             self.select_room(Some(room));
         } else {
-            warn!("A room with id {} couldn't be found", room_id);
+            warn!("A room with id {room_id} couldn't be found");
         }
     }
 
@@ -574,7 +574,7 @@ impl Session {
                     user.set_display_name(res.displayname);
                     user.set_avatar_url(res.avatar_url);
                 }
-                Err(error) => error!("Couldn’t fetch account metadata: {}", error),
+                Err(error) => error!("Couldn’t fetch account metadata: {error}"),
             }
         });
     }
@@ -674,7 +674,7 @@ impl Session {
                 {
                     self.handle_logged_out();
                 }
-                error!("Failed to perform sync: {:?}", error);
+                error!("Failed to perform sync: {error}");
             }
         }
     }
@@ -747,7 +747,7 @@ impl Session {
         match handle.await.unwrap() {
             Ok(_) => self.cleanup_session().await,
             Err(error) => {
-                error!("Couldn’t logout the session {}", error);
+                error!("Couldn’t logout the session: {error}");
                 toast!(self, gettext("Failed to logout the session."));
             }
         }
@@ -789,14 +789,11 @@ impl Session {
         let session_info = info.clone();
         let handle = spawn_tokio!(async move { secret::remove_session(&session_info).await });
         if let Err(error) = handle.await.unwrap() {
-            error!(
-                "Failed to remove credentials from SecretService after logout: {}",
-                error
-            );
+            error!("Failed to remove credentials from SecretService after logout: {error}");
         }
 
         if let Err(error) = fs::remove_dir_all(info.path.clone()) {
-            error!("Failed to remove database after logout: {}", error);
+            error!("Failed to remove database after logout: {error}");
         }
 
         self.clear_notifications();

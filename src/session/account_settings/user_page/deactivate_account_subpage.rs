@@ -175,8 +175,8 @@ impl DeactivateAccountSubpage {
                 self.activate_action("account-settings.close", None)
                     .unwrap();
             }
-            Err(err) => {
-                error!("Failed to deactivate account: {:?}", err);
+            Err(error) => {
+                error!("Failed to deactivate account: {error:?}");
                 toast!(self, gettext("Could not deactivate account"));
             }
         }

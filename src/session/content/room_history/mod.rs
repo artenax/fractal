@@ -203,11 +203,11 @@ mod imp {
                     let toast_error = match widget.send_location().await {
                         // Do nothing if the request was canceled by the user
                         Err(ashpd::Error::Response(ashpd::desktop::ResponseError::Cancelled)) => {
-                            log::error!("Location request was cancelled by the user");
+                            error!("Location request was cancelled by the user");
                             Some(gettext("The location request has been cancelled."))
                         },
-                        Err(err) => {
-                            log::error!("Failed to send location {}", err);
+                        Err(error) => {
+                            error!("Failed to send location {error}");
                             Some(gettext("Failed to retrieve current location."))
                         }
                         _ => None,
@@ -766,7 +766,7 @@ impl RoomHistory {
                     toast!(self, gettext("Permalink copied to clipboard"));
                 }
                 Err(error) => {
-                    error!("Could not get permalink: {}", error);
+                    error!("Could not get permalink: {error}");
                     toast!(self, gettext("Failed to copy the permalink"));
                 }
             }
@@ -1074,8 +1074,8 @@ impl RoomHistory {
 
                 room.send_attachment(bytes, file_info.mime, &file_info.filename, info);
             }
-            Err(err) => {
-                warn!("Could not read file: {}", err);
+            Err(error) => {
+                warn!("Could not read file: {error}");
                 toast!(self, gettext("Error reading file"));
             }
         }

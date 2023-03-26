@@ -129,11 +129,7 @@ pub async fn check_if_reachable(hostname: &impl AsRef<str>) -> bool {
     match monitor.can_reach_future(&address).await {
         Ok(()) => true,
         Err(error) => {
-            log::error!(
-                "Homeserver {} isn't reachable: {}",
-                hostname.as_ref(),
-                error
-            );
+            log::error!("Homeserver {} isn't reachable: {error}", hostname.as_ref());
             false
         }
     }

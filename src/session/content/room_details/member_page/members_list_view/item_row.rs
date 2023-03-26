@@ -101,7 +101,7 @@ impl ItemRow {
 
                 child.set_item(Some(item.clone()));
             } else {
-                unimplemented!("The object {:?} doesn't have a widget implementation", item);
+                unimplemented!("The object {item:?} doesn't have a widget implementation");
             }
         }
 

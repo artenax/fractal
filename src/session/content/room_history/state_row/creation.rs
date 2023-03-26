@@ -59,10 +59,8 @@ impl StateCreation {
         };
 
         if let Some(predecessor) = &predecessor {
-            imp.previous_room_btn.set_detailed_action_name(&format!(
-                "session.show-room::{}",
-                predecessor.room_id.as_str()
-            ));
+            imp.previous_room_btn
+                .set_detailed_action_name(&format!("session.show-room::{}", predecessor.room_id));
             imp.previous_room_btn.set_visible(true);
             imp.description
                 .set_label(&gettext("This is the continuation of an upgraded room."));

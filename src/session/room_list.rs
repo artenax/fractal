@@ -304,7 +304,7 @@ impl RoomList {
                     Ok(matrix_room) => obj.pending_rooms_replace_or_remove(&identifier, matrix_room.room_id()),
                     Err(error) => {
                         obj.pending_rooms_remove(&identifier);
-                        error!("Joining room {} failed: {}", identifier, error);
+                        error!("Joining room {identifier} failed: {error}");
 
                         let error = gettext_f(
                             // Translators: Do NOT translate the content between '{' and '}', this is a variable name.

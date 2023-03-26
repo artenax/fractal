@@ -360,7 +360,7 @@ impl Room {
                         obj.emit_by_name::<()>("room-forgotten", &[]);
                     }
                     Err(error) => {
-                        error!("Couldn’t forget the room: {}", error);
+                        error!("Couldn’t forget the room: {error}");
 
                         toast!(
                             obj.session(),
@@ -613,7 +613,7 @@ impl Room {
                 match handle.await.unwrap() {
                         Ok(_) => {},
                         Err(error) => {
-                            error!("Couldn’t set the room category: {}", error);
+                            error!("Couldn’t set the room category: {error}");
 
                             toast!(
                                 obj.session(),
@@ -719,9 +719,8 @@ impl Room {
                     },
                     Err(error) => {
                         error!(
-                            "Couldn’t get the user’s read receipt for room {}: {}",
+                            "Couldn’t get the user’s read receipt for room {}: {error}",
                             obj.room_id(),
-                            error
                         );
                     }
                     _ => {}
@@ -776,9 +775,8 @@ impl Room {
             }
             Err(error) => {
                 error!(
-                    "Couldn’t get the event of the user’s read receipt for room {}: {}",
+                    "Couldn’t get the event of the user’s read receipt for room {}: {error}",
                     self.room_id(),
-                    error
                 );
             }
         }
@@ -1000,7 +998,7 @@ impl Room {
                         };
                             obj.set_display_name(Some(name))
                     }
-                        Err(error) => error!("Couldn’t fetch display name: {}", error),
+                        Err(error) => error!("Couldn’t fetch display name: {error}"),
                 };
             })
         );
@@ -1164,7 +1162,7 @@ impl Room {
                     },
                     Err(error) => {
                         imp.members_loaded.set(false);
-                        error!("Couldn’t load room members: {}", error)
+                        error!("Couldn’t load room members: {error}")
                     },
                 };
             })
@@ -1179,8 +1177,8 @@ impl Room {
                 .await
             {
                 Ok(state_event) => state_event,
-                Err(e) => {
-                    error!("Initial load of room power levels failed: {}", e);
+                Err(error) => {
+                    error!("Initial load of room power levels failed: {error}");
                     return None;
                 }
             };
@@ -1244,7 +1242,7 @@ impl Room {
                 // FIXME: We should retry the request if it fails
                 match handle.await.unwrap() {
                     Ok(_) => {},
-                    Err(error) => error!("Couldn’t redact event: {}", error),
+                    Err(error) => error!("Couldn’t redact event: {error}"),
                 };
             })
         );
@@ -1289,7 +1287,7 @@ impl Room {
         match handle.await.unwrap() {
             Ok(_) => Ok(()),
             Err(error) => {
-                error!("Accepting invitation failed: {}", error);
+                error!("Accepting invitation failed: {error}");
 
                 toast!(
                     self.session(),
@@ -1318,7 +1316,7 @@ impl Room {
         match handle.await.unwrap() {
             Ok(_) => Ok(()),
             Err(error) => {
-                error!("Rejecting invitation failed: {}", error);
+                error!("Rejecting invitation failed: {error}");
 
                 toast!(
                     self.session(),
@@ -1366,7 +1364,7 @@ impl Room {
                     if let Ok(event) = event.deserialize() {
                         Some(event)
                     } else {
-                        error!("Couldn’t deserialize event: {:?}", event);
+                        error!("Couldn’t deserialize event: {event:?}");
                         None
                     }
                 })
@@ -1501,9 +1499,8 @@ impl Room {
                 Ok(_) => {}
                 Err(error) => {
                     error!(
-                        "Failed to invite user with id {}: {}",
+                        "Failed to invite user with id {}: {error}",
                         users[index].user_id(),
-                        error
                     );
                     failed_invites.push(users[index].clone());
                 }

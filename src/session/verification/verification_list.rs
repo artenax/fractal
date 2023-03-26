@@ -129,7 +129,7 @@ impl VerificationList {
 
     pub fn handle_response_to_device(&self, to_device_events: Vec<Raw<AnyToDeviceEvent>>) {
         for event in to_device_events.iter().filter_map(|e| e.deserialize().ok()) {
-            debug!("Received to-device verification event: {:?}", event);
+            debug!("Received to-device verification event: {event:?}");
             let request = match event {
                 AnyToDeviceEvent::KeyVerificationRequest(e) => {
                     if let Some(request) = self.get_by_id(&e.sender, &e.content.transaction_id) {
@@ -211,7 +211,7 @@ impl VerificationList {
             let request = match message_event {
                 AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(message)) => {
                     if let MessageType::VerificationRequest(request) = &message.content.msgtype {
-                        debug!("Received in-room verification event: {:?}", message);
+                        debug!("Received in-room verification event: {message:?}");
                         // Ignore request that are too old
                         let start_time = if let Some(time) =
                             start_time_from_timestamp(&message.origin_server_ts)
@@ -267,37 +267,37 @@ impl VerificationList {
                 AnySyncMessageLikeEvent::KeyVerificationReady(SyncMessageLikeEvent::Original(
                     e,
                 )) => {
-                    debug!("Received in-room verification event: {:?}", e);
+                    debug!("Received in-room verification event: {e:?}");
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
                 AnySyncMessageLikeEvent::KeyVerificationStart(SyncMessageLikeEvent::Original(
                     e,
                 )) => {
-                    debug!("Received in-room verification event: {:?}", e);
+                    debug!("Received in-room verification event: {e:?}");
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
                 AnySyncMessageLikeEvent::KeyVerificationCancel(SyncMessageLikeEvent::Original(
                     e,
                 )) => {
-                    debug!("Received in-room verification event: {:?}", e);
+                    debug!("Received in-room verification event: {e:?}");
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
                 AnySyncMessageLikeEvent::KeyVerificationAccept(SyncMessageLikeEvent::Original(
                     e,
                 )) => {
-                    debug!("Received in-room verification event: {:?}", e);
+                    debug!("Received in-room verification event: {e:?}");
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
                 AnySyncMessageLikeEvent::KeyVerificationKey(SyncMessageLikeEvent::Original(e)) => {
-                    debug!("Received in-room verification event: {:?}", e);
+                    debug!("Received in-room verification event: {e:?}");
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
                 AnySyncMessageLikeEvent::KeyVerificationMac(SyncMessageLikeEvent::Original(e)) => {
-                    debug!("Received in-room verification event: {:?}", e);
+                    debug!("Received in-room verification event: {e:?}");
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
                 AnySyncMessageLikeEvent::KeyVerificationDone(SyncMessageLikeEvent::Original(e)) => {
-                    debug!("Received in-room verification event: {:?}", e);
+                    debug!("Received in-room verification event: {e:?}");
                     self.get_by_id(&e.sender, &e.content.relates_to.event_id)
                 }
                 _ => {

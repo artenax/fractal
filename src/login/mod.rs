@@ -203,7 +203,7 @@ impl Login {
     pub fn prune_created_client(&self) {
         if let Some(created_client) = self.imp().created_client.take() {
             if let Err(error) = fs::remove_dir_all(created_client.path) {
-                error!("Failed to remove newly-created database: {}", error);
+                error!("Failed to remove newly-created database: {error}");
             }
         }
     }
@@ -384,9 +384,9 @@ impl Login {
             }
             Err(error) => {
                 if autodiscovery {
-                    warn!("Failed to discover homeserver: {}", error);
+                    warn!("Failed to discover homeserver: {error}");
                 } else {
-                    warn!("Failed to check homeserver: {}", error);
+                    warn!("Failed to check homeserver: {error}");
                 }
                 toast!(self, error.to_user_facing());
 
@@ -607,7 +607,7 @@ impl Login {
             let handle = spawn_tokio!(async move { secret::store_session(&session_info).await });
 
             if let Err(error) = handle.await.unwrap() {
-                error!("Couldn't store session: {:?}", error);
+                error!("Couldn't store session: {error}");
 
                 let (message, item) = error.into_parts();
                 self.parent_window().switch_to_error_page(
