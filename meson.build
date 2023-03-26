@@ -9,8 +9,8 @@ gnome = import('gnome')
 
 base_id = 'org.gnome.Fractal'
 
-dependency('glib-2.0', version: '>= 2.66')
-dependency('gio-2.0', version: '>= 2.66')
+dependency('glib-2.0', version: '>= 2.72') # update when changing gtk version
+dependency('gio-2.0', version: '>= 2.72') # always same version as glib
 dependency('gtk4', version: '>= 4.10.0')
 dependency(
   'libadwaita-1', version: '>= 1.3.0',
