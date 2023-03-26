@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-03-26 10:28+0000\n"
-"PO-Revision-Date: 2023-03-26 15:21+0300\n"
+"POT-Creation-Date: 2023-03-26 13:49+0000\n"
+"PO-Revision-Date: 2023-03-26 19:40+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -92,7 +92,7 @@ msgstr ""
 "написана на Rust. Інтерфейс оптимізований для спільної роботи у великих "
 "групах, таких як проекти вільного програмного забезпечення."
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:171
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:170
 msgid "The Fractal Team"
 msgstr "Команда «Фрактал»"
 
@@ -307,10 +307,7 @@ msgstr "Розпізнавання за допомогою браузера"
 
 #: data/resources/ui/components-auth-dialog.ui:113
 #: data/resources/ui/identity-verification-widget.ui:452
-#: src/components/editable_avatar.rs:399
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:266
 #: src/session/content/room_history/verification_info_bar.rs:176
-#: src/session/room/event/event_actions.rs:304
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -387,7 +384,7 @@ msgid "Search for room members"
 msgstr "Пошук учасників в кімнаті"
 
 #: data/resources/ui/content-message-file.ui:25
-#: src/session/room/event/event_actions.rs:303
+#: src/session/room/event/event_actions.rs:317
 msgid "Save"
 msgstr "Зберегти"
 
@@ -638,7 +635,7 @@ msgstr "_Копіювати зображення"
 msgid "Event Source"
 msgstr "Джерело подій"
 
-#: data/resources/ui/greeter.ui:43
+#: data/resources/ui/greeter.ui:33
 msgid ""
 "You are running an early stage development version. Be aware it is a work in "
 "progress and far from complete yet."
@@ -647,15 +644,15 @@ msgstr ""
 "врахувати, що цю роботу ще не завершено, і її результати далекі від повноти."
 
 #. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:101
+#: data/resources/ui/greeter.ui:72
 msgid "Welcome to Fractal"
 msgstr "Вітаємо у «Фракталі»"
 
-#: data/resources/ui/greeter.ui:126
+#: data/resources/ui/greeter.ui:97
 msgid "_Log in"
 msgstr "_Увійти"
 
-#: data/resources/ui/greeter.ui:136
+#: data/resources/ui/greeter.ui:107
 msgid "_Create Account"
 msgstr "С_творити обліковий запис"
 
@@ -1075,15 +1072,15 @@ msgstr "Пошук кімнати"
 msgid "Search for a room"
 msgstr "Пошук кімнати"
 
-#: data/resources/ui/sidebar.ui:146
+#: data/resources/ui/sidebar.ui:142
 msgid "Offline"
 msgstr "Поза мережею"
 
-#: data/resources/ui/sidebar.ui:166
+#: data/resources/ui/sidebar.ui:157
 msgid "Sidebar"
 msgstr "Бічна панель"
 
-#: data/resources/ui/sidebar.ui:167
+#: data/resources/ui/sidebar.ui:158
 msgid "Allows to navigate between rooms"
 msgstr "Дозволяє навігацію між кімнатами"
 
@@ -1091,37 +1088,43 @@ msgstr "Дозволяє навігацію між кімнатами"
 msgid "Unable to connect to Camera"
 msgstr "Не вдалося встановити з'єднання з «Камерою»"
 
-#: src/application.rs:179
+#: src/application.rs:178
 msgid "© 2017-2023 The Fractal Team"
 msgstr "© Команда «Фрактал», 2017-2023"
 
-#: src/application.rs:193
+#: src/application.rs:192
 msgid "translator-credits"
 msgstr "Artem Polishchuk <ego.cordatus@gmail.com>, 2019."
 
 #. This can't be added via the builder
-#: src/application.rs:197
+#: src/application.rs:196
 msgid "Name by"
 msgstr "Авторка назви"
 
-#: src/components/editable_avatar.rs:389
+#: src/components/editable_avatar.rs:388
+#| msgid "Image"
+msgid "Images"
+msgstr "Зображення"
+
+#: src/components/editable_avatar.rs:393
 msgid "Choose Avatar"
 msgstr "Виберіть аватар"
 
-#: src/components/editable_avatar.rs:398
+#: src/components/editable_avatar.rs:395
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:246
 msgid "Choose"
 msgstr "Вибрати"
 
-#: src/components/editable_avatar.rs:409
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:282
-msgid "No file was chosen"
-msgstr "Не вибрано жодного файла"
+#: src/components/editable_avatar.rs:413
+#| msgid "Could not remove avatar"
+msgid "Could not open avatar file"
+msgstr "Не вдалося відкрити файл аватара"
 
-#: src/components/editable_avatar.rs:428
+#: src/components/editable_avatar.rs:434
 msgid "The chosen file is not an image"
 msgstr "Вибраний файл не є файлом зображення"
 
-#: src/components/editable_avatar.rs:434
+#: src/components/editable_avatar.rs:440
 msgid "Could not determine the type of the chosen file"
 msgstr "Не вдалося визначити тип вибраного файла"
 
@@ -1153,11 +1156,11 @@ msgstr "Сеанс успішно вилучено."
 msgid "Could not remove session from secret storage"
 msgstr "Не вдалося вилучити сеанс із зашифрованого сховища"
 
-#: src/greeter.rs:82 src/login/mod.rs:683 src/window.rs:391
+#: src/greeter.rs:80 src/login/mod.rs:688 src/window.rs:389
 msgid "No network connection"
 msgstr "Немає з'єднання з мережею"
 
-#: src/greeter.rs:87 src/login/mod.rs:688 src/window.rs:395
+#: src/greeter.rs:85 src/login/mod.rs:693 src/window.rs:393
 msgid "No Internet connection"
 msgstr "Відсутнє з'єднання з інтернетом"
 
@@ -1181,7 +1184,7 @@ msgstr "Адреса вашого домашнього сервера Matrix, н
 msgid "Connecting to {domain_name}"
 msgstr "Встановлюємо з'єднання із {domain_name}"
 
-#: src/login/mod.rs:609
+#: src/login/mod.rs:614
 msgid "Unable to store session"
 msgstr "Не вдалося зберегти сеанс"
 
@@ -1319,44 +1322,44 @@ msgid "Disconnect Session"
 msgstr "Від'єднати сеанс"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/account_settings/devices_page/device_row.rs:212
+#: src/session/account_settings/devices_page/device_row.rs:214
 msgid "Failed to disconnect device “{device_name}”"
 msgstr "Не вдалося від'єднати пристрій «{device_name}»."
 
 #. Translators: Time in 24h format
-#: src/session/account_settings/devices_page/device_row.rs:253
+#: src/session/account_settings/devices_page/device_row.rs:255
 msgid "Last seen at %H:%M"
 msgstr "Востаннє бачили %H:%M"
 
 #. Translators: Time in 12h format
-#: src/session/account_settings/devices_page/device_row.rs:256
+#: src/session/account_settings/devices_page/device_row.rs:258
 msgid "Last seen at %l:%M %p"
 msgstr "Востаннє бачили %l:%M %p"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:265
+#: src/session/account_settings/devices_page/device_row.rs:267
 #, no-c-format
 msgid "Last seen Yesterday at %H:%M"
 msgstr "Востаннє бачили вчора о %H:%M"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:270
+#: src/session/account_settings/devices_page/device_row.rs:272
 #, no-c-format
 msgid "Last seen Yesterday at %l:%M %p"
 msgstr "Востаннє бачили вчора о %l:%M %p"
 
 #. Translators: this is the name of the week day followed by
 #. a time in 24h format. i.e. "Last seen Monday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:279
+#: src/session/account_settings/devices_page/device_row.rs:281
 #, no-c-format
 msgid "Last seen %A at %H:%M"
 msgstr "Востаннє бачили %A о %H:%M"
 
 #. Translators: this is the week day name followed by
 #. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:284
+#: src/session/account_settings/devices_page/device_row.rs:286
 #, no-c-format
 msgid "Last seen %A at %l:%M %p"
 msgstr "Востаннє бачили %A о %l:%M %p"
@@ -1364,7 +1367,7 @@ msgstr "Востаннє бачили %A о %l:%M %p"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 24h format i.e. "Last seen February 3 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:292
+#: src/session/account_settings/devices_page/device_row.rs:294
 #, no-c-format
 msgid "Last seen %B %-e at %H:%M"
 msgstr "Востаннє бачили %-e %B о %H:%M"
@@ -1372,7 +1375,7 @@ msgstr "Востаннє бачили %-e %B о %H:%M"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 12h format i.e. "Last seen February 3 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:298
+#: src/session/account_settings/devices_page/device_row.rs:300
 #, no-c-format
 msgid "Last seen %B %-e at %l:%M %p"
 msgstr "Востаннє бачили %-e %B о %l:%M %p"
@@ -1380,7 +1383,7 @@ msgstr "Востаннє бачили %-e %B о %l:%M %p"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:305
+#: src/session/account_settings/devices_page/device_row.rs:307
 #, no-c-format
 msgid "Last seen %B %-e %Y at %H:%M"
 msgstr "Востаннє бачили %-e %B %Y о %H:%M"
@@ -1388,7 +1391,7 @@ msgstr "Востаннє бачили %-e %B %Y о %H:%M"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:311
+#: src/session/account_settings/devices_page/device_row.rs:313
 #, no-c-format
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "Востаннє бачили %-e %B %Y о %l:%M %p"
@@ -1447,33 +1450,35 @@ msgstr ""
 msgid "Import Keys"
 msgstr "Імпортувати ключі"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:245
-msgid "Save Encryption Keys To…"
-msgstr "Зберегти ключі шифрування до…"
-
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:250
-msgid "Import Encryption Keys From…"
-msgstr "Імпортувати ключі шифрування з…"
-
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:265
-msgid "Select"
-msgstr "Вибрати"
-
 #. Translators: Do no translate "fractal" as it is the application
 #. name.
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:274
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:254
 msgid "fractal-encryption-keys"
 msgstr "ключі-шифрування-fractal"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:307
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:259
+msgid "Save Encryption Keys To…"
+msgstr "Зберегти ключі шифрування до…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:262
+msgid "Import Encryption Keys From…"
+msgstr "Імпортувати ключі шифрування з…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:275
+#: src/session/room/event/event_actions.rs:346
+#| msgid "Could not load file"
+msgid "Could not access file"
+msgstr "Не вдалося отримати доступ до файла"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:301
 msgid "Passphrases do not match"
 msgstr "Паролі не збігаються"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:381
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:375
 msgid "Room encryption keys exported successfully"
 msgstr "Ключі шифрування кімнати успішно експортовано"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:386
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:380
 msgid "Imported 1 room encryption key"
 msgid_plural "Imported {n} room encryption keys"
 msgstr[0] "Імпортовано {n} ключ шифрування кімнат"
@@ -1481,16 +1486,16 @@ msgstr[1] "Імпортовано {n} ключі шифрування кімна
 msgstr[2] "Імпортовано {n} ключів шифрування кімнат"
 msgstr[3] "Імпортовано {n} ключ шифрування кімнат"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:399
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:393
 msgid "Could not export the keys"
 msgstr "Не вдалося експортувати ключі"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:409
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:403
 msgid "The passphrase doesn't match the one used to export the keys."
 msgstr ""
 "Пароль не збігається із тим, який було використано при експортуванні ключів."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:413
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:407
 msgid "Could not import the keys"
 msgstr "Не вдалося імпортувати ключі"
 
@@ -1550,7 +1555,6 @@ msgstr "Аватар успішно змінено"
 
 #: src/session/account_settings/user_page/mod.rs:237
 #: src/session/content/room_details/general_page/mod.rs:246
-#| msgid "Couldn’t save file"
 msgid "Could not load file"
 msgstr "Не вдалось завантажити файл"
 
@@ -1590,22 +1594,18 @@ msgid "{user} invited you"
 msgstr "{user} запросив/запросила вас"
 
 #: src/session/content/room_details/general_page/mod.rs:410
-#| msgid "Name changed successfully"
 msgid "Room name saved successfully"
 msgstr "Назву кімнати успішно збережено"
 
 #: src/session/content/room_details/general_page/mod.rs:435
-#| msgid "Name changed successfully"
 msgid "Room topic saved successfully"
 msgstr "Тему кімнати успішно збережено"
 
 #: src/session/content/room_details/general_page/mod.rs:508
-#| msgid "Could not change display name"
 msgid "Could not change room name"
 msgstr "Не вдалося змінити назву кімнати"
 
 #: src/session/content/room_details/general_page/mod.rs:532
-#| msgid "Could not change avatar"
 msgid "Could not change room topic"
 msgstr "Не вдалося змінити тему кімнати"
 
@@ -1687,51 +1687,65 @@ msgstr "Підтримки файла зображення не передбач
 msgid "Could not retrieve media"
 msgstr "Не вдалося отримати мультимедійні дані"
 
-#: src/session/content/room_history/mod.rs:205
+#: src/session/content/room_history/mod.rs:207
 msgid "The location request has been cancelled."
 msgstr "Запит щодо визначення розташування було скасовано."
 
-#: src/session/content/room_history/mod.rs:209
+#: src/session/content/room_history/mod.rs:211
 msgid "Failed to retrieve current location."
 msgstr "Не вдалося отримати дані щодо поточного розташування."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/content/room_history/mod.rs:644
+#: src/session/content/room_history/mod.rs:653
 msgid "Reply to {user}"
 msgstr "Відповідь {user}"
 
-#: src/session/content/room_history/mod.rs:757
+#: src/session/content/room_history/mod.rs:766
 #: src/session/room/event/event_actions.rs:110
 msgid "Permalink copied to clipboard"
 msgstr "Стале посилання скопійовано до буфера обміну"
 
-#: src/session/content/room_history/mod.rs:761
+#: src/session/content/room_history/mod.rs:770
 #: src/session/room/event/event_actions.rs:114
 msgid "Failed to copy the permalink"
 msgstr "Не вдалося скопіювати стале посилання"
 
-#: src/session/content/room_history/mod.rs:948
+#: src/session/content/room_history/mod.rs:958
 msgid "Your Location"
 msgstr "Ваше місце перебування"
 
-#: src/session/content/room_history/mod.rs:958
+#: src/session/content/room_history/mod.rs:968
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Розташування користувача {geo_uri} {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:1067
+#: src/session/content/room_history/mod.rs:1013
+#| msgid "Select a file"
+msgid "Select File"
+msgstr "Виберіть файл"
+
+#: src/session/content/room_history/mod.rs:1015
+msgid "Select"
+msgstr "Вибрати"
+
+#: src/session/content/room_history/mod.rs:1034
+#| msgid "Couldn’t open file"
+msgid "Could not open file"
+msgstr "Не вдалося відкрити файл"
+
+#: src/session/content/room_history/mod.rs:1079
 msgid "Error reading file"
 msgstr "Помилка при зчитуванні файла"
 
-#: src/session/content/room_history/mod.rs:1093
+#: src/session/content/room_history/mod.rs:1105
 msgid "Error getting file from drop"
 msgstr "Помилка під час отримання файла зі скидання"
 
-#: src/session/content/room_history/mod.rs:1125
+#: src/session/content/room_history/mod.rs:1137
 msgid "Error getting image from clipboard"
 msgstr "Помилка під час отримання зображення з буфера обміну"
 
-#: src/session/content/room_history/mod.rs:1142
+#: src/session/content/room_history/mod.rs:1154
 msgid "Error getting file from clipboard"
 msgstr "Помилка під час отримання файла з буфера обміну"
 
@@ -2107,9 +2121,14 @@ msgstr "Зображення скопійовано до буфера обмін
 msgid "Thumbnail copied to clipboard"
 msgstr "Мініатюру скопійовано до буфера обміну"
 
-#: src/session/room/event/event_actions.rs:300
+#: src/session/room/event/event_actions.rs:315
 msgid "Save File"
 msgstr "Зберегти файл"
+
+#: src/session/room/event/event_actions.rs:338
+#| msgid "Could not load file"
+msgid "Could not save file"
+msgstr "Не вдалося зберегти файл"
 
 #: src/session/room/member.rs:44
 msgid "Left"
@@ -2484,9 +2503,12 @@ msgstr "Користувачем {user} надіслано запит щодо �
 msgid "{user} sent a sticker."
 msgstr "Користувачем {user} надіслано наліпку."
 
-#: src/window.rs:271
+#: src/window.rs:269
 msgid "Failed to restore previous sessions"
 msgstr "Не вдалося відновити попередні сеанси"
+
+#~ msgid "No file was chosen"
+#~ msgstr "Не вибрано жодного файла"
 
 #~ msgid "Choose avatar"
 #~ msgstr "Виберіть аватар"
@@ -2583,9 +2605,6 @@ msgstr "Не вдалося відновити попередні сеанси"
 
 #~ msgid "Unmark as Low _Priority"
 #~ msgstr "Скасувати позначення як _низькопріоритетної"
-
-#~ msgid "Image"
-#~ msgstr "Зображення"
 
 #~ msgid "Could not retrieve image"
 #~ msgstr "Не вдалося отримати зображення"
@@ -2898,12 +2917,6 @@ msgstr "Не вдалося відновити попередні сеанси"
 
 #~ msgid "Select a new avatar"
 #~ msgstr "Виберіть новий аватар"
-
-#~ msgid "Select a file"
-#~ msgstr "Виберіть файл"
-
-#~ msgid "Couldn’t open file"
-#~ msgstr "Не вдалося відкрити файл"
 
 #~ msgid "The validation code is not correct."
 #~ msgstr "Код перевірки невірний."
