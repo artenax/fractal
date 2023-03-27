@@ -1,5 +1,3 @@
-use std::cmp::max;
-
 use gtk::{glib, glib::clone, pango, prelude::*, subclass::prelude::*};
 
 pub const DEFAULT_PLACEHOLDER: &str = "<widget>";
@@ -108,39 +106,13 @@ mod imp {
 
     impl WidgetImpl for LabelWithWidgets {
         fn measure(&self, orientation: gtk::Orientation, for_size: i32) -> (i32, i32, i32, i32) {
-            let (mut minimum, mut natural, mut minimum_baseline, mut natural_baseline) =
-                if self.label.should_layout() {
-                    self.label.measure(orientation, for_size)
-                } else {
-                    (-1, -1, -1, -1)
-                };
-
-            for child in self.widgets.borrow().iter() {
-                if self.label.should_layout() {
-                    let (child_min, child_nat, child_min_baseline, child_nat_baseline) =
-                        child.measure(orientation, for_size);
-
-                    minimum = max(minimum, child_min);
-                    natural = max(natural, child_nat);
-
-                    if child_min_baseline > -1 {
-                        minimum_baseline = max(minimum_baseline, child_min_baseline);
-                    }
-                    if child_nat_baseline > -1 {
-                        natural_baseline = max(natural_baseline, child_nat_baseline);
-                    }
-                }
-            }
-            (minimum, natural, minimum_baseline, natural_baseline)
+            self.obj().allocate_shapes();
+            self.label.measure(orientation, for_size)
         }
 
         fn size_allocate(&self, width: i32, height: i32, baseline: i32) {
-            let obj = self.obj();
-
-            // The order of the widget allocation is important.
-            obj.allocate_shapes();
             self.label.allocate(width, height, baseline, None);
-            obj.allocate_children();
+            self.obj().allocate_children();
         }
 
         fn request_mode(&self) -> gtk::SizeRequestMode {
