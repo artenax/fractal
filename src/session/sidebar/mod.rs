@@ -112,18 +112,12 @@ mod imp {
                     glib::ParamSpecObject::builder::<glib::Object>("selected-item")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecEnum::builder_with_default(
-                        "drop-source-type",
-                        CategoryType::None,
-                    )
-                    .read_only()
-                    .build(),
-                    glib::ParamSpecEnum::builder_with_default(
-                        "drop-active-target-type",
-                        CategoryType::None,
-                    )
-                    .read_only()
-                    .build(),
+                    glib::ParamSpecEnum::builder::<CategoryType>("drop-source-type")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecEnum::builder::<CategoryType>("drop-active-target-type")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -152,12 +146,12 @@ mod imp {
                 "drop-source-type" => obj
                     .drop_source_type()
                     .map(CategoryType::from)
-                    .unwrap_or(CategoryType::None)
+                    .unwrap_or_default()
                     .to_value(),
                 "drop-active-target-type" => obj
                     .drop_active_target_type()
                     .map(CategoryType::from)
-                    .unwrap_or(CategoryType::None)
+                    .unwrap_or_default()
                     .to_value(),
                 _ => unimplemented!(),
             }

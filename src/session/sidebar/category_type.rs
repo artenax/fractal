@@ -9,11 +9,11 @@ use crate::session::room::RoomType;
 #[repr(i32)]
 #[enum_type(name = "CategoryType")]
 pub enum CategoryType {
+    #[default]
     None = -1,
     VerificationRequest = 0,
     Invited = 1,
     Favorite = 2,
-    #[default]
     Normal = 3,
     LowPriority = 4,
     Left = 5,

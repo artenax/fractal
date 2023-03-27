@@ -369,9 +369,7 @@ impl Row {
             .and_then(|child| child.downcast::<CategoryRow>().ok())
         {
             category_row.set_show_label_for_category(
-                source_type
-                    .map(CategoryType::from)
-                    .unwrap_or(CategoryType::None),
+                source_type.map(CategoryType::from).unwrap_or_default(),
             );
         }
     }

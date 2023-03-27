@@ -53,12 +53,9 @@ mod imp {
                         .construct()
                         .build(),
                     glib::ParamSpecString::builder("label").read_only().build(),
-                    glib::ParamSpecEnum::builder_with_default(
-                        "show-label-for-category",
-                        CategoryType::None,
-                    )
-                    .explicit_notify()
-                    .build(),
+                    glib::ParamSpecEnum::builder::<CategoryType>("show-label-for-category")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -100,9 +97,7 @@ glib::wrapper! {
 
 impl CategoryRow {
     pub fn new() -> Self {
-        glib::Object::builder()
-            .property("show-label-for-category", CategoryType::None)
-            .build()
+        glib::Object::new()
     }
 
     /// The category represented by this row.
