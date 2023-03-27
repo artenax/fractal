@@ -24,10 +24,9 @@ use matrix_sdk::{
             receipt::{ReceiptEventContent, ReceiptType},
             relation::Annotation,
             room::member::MembershipState,
-            room_key::ToDeviceRoomKeyEventContent,
             tag::{TagInfo, TagName},
             AnyRoomAccountDataEvent, AnyStrippedStateEvent, AnySyncStateEvent,
-            AnySyncTimelineEvent, StateEventType, SyncStateEvent, ToDeviceEvent,
+            AnySyncTimelineEvent, StateEventType, SyncStateEvent,
         },
         OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
     },
@@ -224,7 +223,6 @@ mod imp {
                 vec![
                     Signal::builder("order-changed").build(),
                     Signal::builder("room-forgotten").build(),
-                    Signal::builder("new-encryption-keys").build(),
                 ]
             });
             SIGNALS.as_ref()
@@ -1610,44 +1608,8 @@ impl Room {
             return;
         }
 
-        self.setup_new_encryption_keys_handler();
         self.imp().is_encrypted.set(true);
         self.notify("encrypted");
-    }
-
-    fn setup_new_encryption_keys_handler(&self) {
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                let obj_weak = glib::SendWeakRef::from(obj.downgrade());
-                obj.matrix_room().add_event_handler(
-                    move |_: ToDeviceEvent<ToDeviceRoomKeyEventContent>| {
-                        let obj_weak = obj_weak.clone();
-                        async move {
-                            let ctx = glib::MainContext::default();
-                            ctx.spawn(async move {
-                                if let Some(room) = obj_weak.upgrade() {
-                                    room.emit_by_name::<()>("new-encryption-keys", &[]);
-                                }
-                            });
-                        }
-                    },
-                );
-            })
-        );
-    }
-
-    pub fn connect_new_encryption_keys<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> glib::SignalHandlerId {
-        self.connect_local("new-encryption-keys", true, move |values| {
-            let obj = values[0].get::<Self>().unwrap();
-
-            f(&obj);
-
-            None
-        })
     }
 
     /// Get a `Pill` representing this `Room`.
