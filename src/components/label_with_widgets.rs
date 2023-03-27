@@ -1,11 +1,7 @@
 use gtk::{glib, glib::clone, pango, prelude::*, subclass::prelude::*};
 
 pub const DEFAULT_PLACEHOLDER: &str = "<widget>";
-const PANGO_SCALE: i32 = 1024;
 const OBJECT_REPLACEMENT_CHARACTER: &str = "\u{FFFC}";
-fn pango_pixels(d: i32) -> i32 {
-    (d + 512) >> 10
-}
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -259,9 +255,9 @@ impl LabelWithWidgets {
             if let Some((width, height)) = widgets_sizes.get(i) {
                 let logical_rect = pango::Rectangle::new(
                     0,
-                    -(height - (height / 4)) * PANGO_SCALE,
-                    width * PANGO_SCALE,
-                    height * PANGO_SCALE,
+                    -(height - (height / 4)) * pango::SCALE,
+                    width * pango::SCALE,
+                    height * pango::SCALE,
                 );
 
                 let mut shape = pango::AttrShape::new(&logical_rect, &logical_rect);
@@ -293,12 +289,13 @@ impl LabelWithWidgets {
                 {
                     if let Some(widget) = widgets.get(i) {
                         let (width, height) = widgets_sizes[i];
-                        let (_, extents) = run_iter.run_extents();
+                        let (_, mut extents) = run_iter.run_extents();
+                        pango::extents_to_pixels(Some(&mut extents), None);
 
                         let (offset_x, offset_y) = imp.label.layout_offsets();
                         let allocation = gtk::Allocation::new(
-                            pango_pixels(extents.x()) + offset_x,
-                            pango_pixels(extents.y()) + offset_y,
+                            extents.x() + offset_x,
+                            extents.y() + offset_y,
                             width,
                             height,
                         );
