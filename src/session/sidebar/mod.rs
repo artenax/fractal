@@ -12,11 +12,7 @@ mod sidebar_item;
 mod verification_row;
 
 use adw::{prelude::*, subclass::prelude::*};
-use gtk::{
-    gio, glib,
-    glib::{clone, closure},
-    CompositeTemplate,
-};
+use gtk::{gio, glib, glib::clone, CompositeTemplate};
 use log::error;
 
 pub use self::{
@@ -310,14 +306,8 @@ impl Sidebar {
             item.clone().downcast::<gio::ListModel>().ok()
         });
 
-        let room_expression = gtk::ClosureExpression::new::<String>(
-            &[] as &[gtk::Expression],
-            closure!(|row: gtk::TreeListRow| {
-                row.item()
-                    .and_then(|o| o.downcast::<Room>().ok())
-                    .map_or(String::new(), |o| o.display_name())
-            }),
-        );
+        let room_expression =
+            gtk::TreeListRow::this_expression("item").chain_property::<Room>("display-name");
         let filter = gtk::StringFilter::builder()
             .match_mode(gtk::StringFilterMatchMode::Substring)
             .expression(&room_expression)
