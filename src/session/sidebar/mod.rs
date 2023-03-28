@@ -1,6 +1,4 @@
 mod category;
-mod category_row;
-mod category_type;
 mod entry;
 mod entry_row;
 mod entry_type;
@@ -15,17 +13,16 @@ use adw::{prelude::*, subclass::prelude::*};
 use gtk::{gio, glib, glib::clone, CompositeTemplate};
 use log::error;
 
+use self::{
+    category::CategoryRow, entry_row::EntryRow, room_row::RoomRow, row::Row, selection::Selection,
+    verification_row::VerificationRow,
+};
 pub use self::{
-    category::Category,
-    category_type::CategoryType,
+    category::{Category, CategoryType},
     entry::Entry,
     entry_type::EntryType,
     item_list::ItemList,
     sidebar_item::{SidebarItem, SidebarItemExt, SidebarItemImpl},
-};
-use self::{
-    category_row::CategoryRow, entry_row::EntryRow, room_row::RoomRow, row::Row,
-    selection::Selection, verification_row::VerificationRow,
 };
 use crate::{
     components::Avatar,

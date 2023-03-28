@@ -1,6 +1,10 @@
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 
-use super::{CategoryType, SidebarItem, SidebarItemExt, SidebarItemImpl};
+mod category_row;
+mod category_type;
+
+pub use self::{category_row::CategoryRow, category_type::CategoryType};
+use super::{SidebarItem, SidebarItemExt, SidebarItemImpl};
 use crate::session::{
     room::{Room, RoomType},
     room_list::RoomList,

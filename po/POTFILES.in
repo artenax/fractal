@@ -93,8 +93,8 @@ src/session/room/mod.rs
 src/session/room/timeline/timeline_day_divider.rs
 src/session/room_creation/mod.rs
 src/session/room_list.rs
-src/session/sidebar/category_row.rs
-src/session/sidebar/category_type.rs
+src/session/sidebar/category/category_row.rs
+src/session/sidebar/category/category_type.rs
 src/session/sidebar/entry_type.rs
 src/session/verification/identity_verification.rs
 src/user_facing_error.rs
