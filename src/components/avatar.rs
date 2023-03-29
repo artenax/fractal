@@ -142,7 +142,8 @@ impl Avatar {
 
     fn request_custom_avatar(&self) {
         if let Some(item) = &*self.imp().item.borrow() {
-            item.set_needed_size(self.size() as u32);
+            let size = self.size() * self.scale_factor();
+            item.set_needed_size(size as u32);
         }
     }
 }
