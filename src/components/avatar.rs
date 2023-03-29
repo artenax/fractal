@@ -45,6 +45,7 @@ mod imp {
                     glib::ParamSpecInt::builder("size")
                         .minimum(-1)
                         .default_value(-1)
+                        .explicit_notify()
                         .build(),
                 ]
             });
@@ -99,7 +100,17 @@ impl Avatar {
 
     /// Set the size of the Avatar.
     pub fn set_size(&self, size: i32) {
+        if self.size() == size {
+            return;
+        }
+
         self.imp().avatar.set_size(size);
+
+        if self.is_mapped() {
+            self.request_custom_avatar();
+        }
+
+        self.notify("size");
     }
 
     /// Set the Avatar item displayed by this widget.
@@ -131,7 +142,6 @@ impl Avatar {
 
     fn request_custom_avatar(&self) {
         if let Some(item) = &*self.imp().item.borrow() {
-            // FIXME: update on size changes
             item.set_needed_size(self.size() as u32);
         }
     }
