@@ -361,6 +361,14 @@ impl Event {
         self.imp().item.borrow().as_ref().unwrap().timestamp()
     }
 
+    /// The timestamp of this `Event` as a `u64`, if it has been echoed back by
+    /// the server.
+    ///
+    /// Otherwise it's the local time when this event was created.
+    pub fn origin_server_ts_u64(&self) -> u64 {
+        self.origin_server_ts().get().into()
+    }
+
     /// The timestamp of this `Event`.
     pub fn timestamp(&self) -> glib::DateTime {
         let ts = self.origin_server_ts();

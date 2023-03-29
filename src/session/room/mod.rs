@@ -34,11 +34,8 @@ use matrix_sdk::{
     DisplayName, Result as MatrixResult,
 };
 use ruma::events::{
-    receipt::ReceiptThread,
-    room::message::{MessageType, Relation},
-    typing::TypingEventContent,
-    AnyMessageLikeEventContent, AnySyncMessageLikeEvent, SyncEphemeralRoomEvent,
-    SyncMessageLikeEvent,
+    receipt::ReceiptThread, typing::TypingEventContent, AnyMessageLikeEventContent,
+    SyncEphemeralRoomEvent,
 };
 
 pub use self::{
@@ -1111,7 +1108,6 @@ impl Room {
         self.session()
             .verification_list()
             .handle_response_room(self, events.iter());
-        self.update_latest_unread(events.iter());
 
         self.emit_by_name::<()>("order-changed", &[]);
     }
@@ -1124,7 +1120,7 @@ impl Room {
     }
 
     /// Set the timestamp of the room's latest possibly unread event.
-    pub fn set_latest_unread(&self, latest_unread: u64) {
+    fn set_latest_unread(&self, latest_unread: u64) {
         if latest_unread == self.latest_unread() {
             return;
         }
@@ -1555,12 +1551,12 @@ impl Room {
     /// events.
     ///
     /// The events must be in reverse chronological order.
-    pub fn update_latest_unread<'a>(&self, events: impl Iterator<Item = &'a AnySyncTimelineEvent>) {
+    pub fn update_latest_unread<'a>(&self, events: impl IntoIterator<Item = &'a Event>) {
         let mut latest_unread = self.latest_unread();
 
         for event in events {
-            if count_as_unread(event) {
-                latest_unread = latest_unread.max(event.origin_server_ts().get().into());
+            if event.counts_as_unread() {
+                latest_unread = latest_unread.max(event.origin_server_ts_u64());
                 break;
             }
         }
@@ -1615,35 +1611,5 @@ impl Room {
     /// Get a `Pill` representing this `Room`.
     pub fn to_pill(&self) -> Pill {
         Pill::for_room(self)
-    }
-}
-
-/// Whether the given event can count as an unread message.
-///
-/// This follows the algorithm in [MSC2654], excluding events that we don't
-/// show in the timeline.
-///
-/// [MSC2654]: https://github.com/matrix-org/matrix-spec-proposals/pull/2654
-fn count_as_unread(event: &AnySyncTimelineEvent) -> bool {
-    match event {
-        AnySyncTimelineEvent::MessageLike(message_event) => match message_event {
-            AnySyncMessageLikeEvent::RoomMessage(SyncMessageLikeEvent::Original(message)) => {
-                if matches!(message.content.msgtype, MessageType::Notice(_)) {
-                    return false;
-                }
-
-                if matches!(message.content.relates_to, Some(Relation::Replacement(_))) {
-                    return false;
-                }
-
-                true
-            }
-            AnySyncMessageLikeEvent::Sticker(SyncMessageLikeEvent::Original(_)) => true,
-            _ => false,
-        },
-        AnySyncTimelineEvent::State(AnySyncStateEvent::RoomTombstone(
-            SyncStateEvent::Original(_),
-        )) => true,
-        _ => false,
     }
 }

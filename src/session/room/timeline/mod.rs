@@ -182,6 +182,7 @@ impl Timeline {
     fn update(&self, diff: VectorDiff<Arc<SdkTimelineItem>>) {
         let imp = self.imp();
         let list = &imp.list;
+        let room = self.room();
 
         match diff {
             VectorDiff::Append { values } => {
@@ -190,6 +191,12 @@ impl Timeline {
                     .into_iter()
                     .map(|item| self.create_item(&item))
                     .collect::<VecDeque<_>>();
+
+                // Try to update the latest unread message.
+                room.update_latest_unread(
+                    new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
+                );
+
                 let added = new_list.iter().filter(|item| item.is_visible()).count();
 
                 list.borrow_mut().extend(new_list);
@@ -201,6 +208,12 @@ impl Timeline {
             }
             VectorDiff::PushFront { value } => {
                 let item = self.create_item(&value);
+
+                // Try to update the latest unread message.
+                if let Some(event) = item.downcast_ref::<Event>() {
+                    room.update_latest_unread([event]);
+                }
+
                 let visible = item.is_visible();
                 list.borrow_mut().push_front(item);
 
@@ -210,6 +223,12 @@ impl Timeline {
             }
             VectorDiff::PushBack { value } => {
                 let item = self.create_item(&value);
+
+                // Try to update the latest unread message.
+                if let Some(event) = item.downcast_ref::<Event>() {
+                    room.update_latest_unread([event]);
+                }
+
                 let visible = item.is_visible();
                 list.borrow_mut().push_back(item);
 
@@ -237,6 +256,12 @@ impl Timeline {
             }
             VectorDiff::Insert { index, value } => {
                 let item = self.create_item(&value);
+
+                // Try to update the latest unread message.
+                if let Some(event) = item.downcast_ref::<Event>() {
+                    room.update_latest_unread([event]);
+                }
+
                 list.borrow_mut().insert(index, item.clone());
 
                 if let Some(pos) = self.find_item_position(&item) {
@@ -258,6 +283,11 @@ impl Timeline {
                 };
 
                 let new_item = list.borrow()[index].clone();
+
+                // Try to update the latest unread message.
+                if let Some(event) = new_item.downcast_ref::<Event>() {
+                    room.update_latest_unread([event]);
+                }
 
                 if let Some(pos) = pos {
                     if !new_item.is_visible() {
@@ -292,6 +322,12 @@ impl Timeline {
                     .into_iter()
                     .map(|item| self.create_item(&item))
                     .collect::<VecDeque<_>>();
+
+                // Try to update the latest unread message.
+                room.update_latest_unread(
+                    new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
+                );
+
                 let added = new_list.iter().filter(|item| item.is_visible()).count();
 
                 *list.borrow_mut() = new_list;
