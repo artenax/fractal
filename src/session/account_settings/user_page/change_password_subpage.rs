@@ -5,18 +5,9 @@ use gtk::{
     CompositeTemplate,
 };
 use log::error;
-use matrix_sdk::{
-    ruma::{
-        api::{
-            client::{
-                account::change_password,
-                error::{Error as ClientApiError, ErrorBody, ErrorKind},
-            },
-            error::FromHttpResponseError,
-        },
-        assign,
-    },
-    Error as MatrixError, HttpError, RumaApiError,
+use matrix_sdk::ruma::{
+    api::client::{account::change_password, error::ErrorKind},
+    assign,
 };
 
 use crate::{
@@ -286,18 +277,7 @@ impl ChangePasswordSubpage {
             Err(error) => match error {
                 AuthError::UserCancelled => {}
                 AuthError::ServerResponse(error)
-                    if matches!(
-                        error.as_ref(),
-                        MatrixError::Http(HttpError::Api(FromHttpResponseError::Server(
-                            RumaApiError::ClientApi(ClientApiError {
-                                body: ErrorBody::Standard {
-                                    kind: ErrorKind::WeakPassword,
-                                    ..
-                                },
-                                ..
-                            },)
-                        )),)
-                    ) =>
+                    if matches!(error.client_api_error_kind(), Some(ErrorKind::WeakPassword)) =>
                 {
                     error!("Weak password: {error}");
                     toast!(self, gettext("Password rejected for being too weak"));

@@ -4,16 +4,13 @@ use gtk::{gdk, glib, glib::clone, CompositeTemplate};
 use log::error;
 use matrix_sdk::{
     ruma::{
-        api::{
-            client::{
-                error::{Error as ClientApiError, ErrorBody, ErrorKind},
-                room::{create_room, Visibility},
-            },
-            error::FromHttpResponseError,
+        api::client::{
+            error::ErrorKind,
+            room::{create_room, Visibility},
         },
         assign,
     },
-    HttpError, RumaApiError,
+    HttpError,
 };
 use ruma::events::{room::encryption::RoomEncryptionEventContent, InitialStateEvent};
 
@@ -227,13 +224,7 @@ impl RoomCreation {
         imp.content.set_sensitive(true);
 
         // Handle the room address already taken error.
-        if let HttpError::Api(FromHttpResponseError::Server(RumaApiError::ClientApi(
-            ClientApiError {
-                body: ErrorBody::Standard { kind, .. },
-                ..
-            },
-        ))) = &error
-        {
+        if let Some(kind) = error.client_api_error_kind() {
             if *kind == ErrorKind::RoomInUse {
                 imp.room_address.add_css_class("error");
                 imp.room_address_error

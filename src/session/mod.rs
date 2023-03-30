@@ -26,13 +26,10 @@ use matrix_sdk::{
     config::SyncSettings,
     room::Room as MatrixRoom,
     ruma::{
-        api::{
-            client::{
-                error::{Error as ClientApiError, ErrorBody, ErrorKind},
-                filter::{FilterDefinition, LazyLoadOptions, RoomEventFilter, RoomFilter},
-                session::logout,
-            },
-            error::FromHttpResponseError,
+        api::client::{
+            error::ErrorKind,
+            filter::{FilterDefinition, LazyLoadOptions, RoomEventFilter, RoomFilter},
+            session::logout,
         },
         assign,
         events::{
@@ -44,7 +41,7 @@ use matrix_sdk::{
         RoomId, RoomOrAliasId,
     },
     sync::SyncResponse,
-    Client, HttpError, RumaApiError,
+    Client,
 };
 use ruma::{api::client::push::get_notifications::v3::Notification, EventId};
 use tokio::task::JoinHandle;
@@ -661,18 +658,10 @@ impl Session {
                 }
             }
             Err(error) => {
-                if let matrix_sdk::Error::Http(HttpError::Api(FromHttpResponseError::Server(
-                    RumaApiError::ClientApi(ClientApiError {
-                        body:
-                            ErrorBody::Standard {
-                                kind: ErrorKind::UnknownToken { .. },
-                                ..
-                            },
-                        ..
-                    }),
-                ))) = &error
-                {
-                    self.handle_logged_out();
+                if let Some(kind) = error.client_api_error_kind() {
+                    if matches!(kind, ErrorKind::UnknownToken { .. }) {
+                        self.handle_logged_out();
+                    }
                 }
                 error!("Failed to perform sync: {error}");
             }
