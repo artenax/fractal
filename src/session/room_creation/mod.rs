@@ -10,7 +10,7 @@ use matrix_sdk::{
         },
         assign,
     },
-    HttpError,
+    Error,
 };
 use ruma::events::{room::encryption::RoomEncryptionEventContent, InitialStateEvent};
 
@@ -217,7 +217,7 @@ impl RoomCreation {
     }
 
     /// Display the error that occurred during creation.
-    fn handle_error(&self, error: HttpError) {
+    fn handle_error(&self, error: Error) {
         let imp = self.imp();
 
         imp.create_button.set_loading(false);
