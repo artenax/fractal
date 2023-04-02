@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-03-26 10:28+0000\n"
-"PO-Revision-Date: 2023-03-26 14:37+0200\n"
+"POT-Creation-Date: 2023-03-26 13:49+0000\n"
+"PO-Revision-Date: 2023-04-02 13:09+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -90,7 +90,7 @@ msgstr ""
 "w języku Rust. Jego interfejs jest zoptymalizowany do współpracy dużych "
 "grup, takich jak projekty wolnego oprogramowania."
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:171
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:170
 msgid "The Fractal Team"
 msgstr "Zespół programu Fractal"
 
@@ -305,10 +305,7 @@ msgstr "Uwierzytelnij przez przeglądarkę"
 
 #: data/resources/ui/components-auth-dialog.ui:113
 #: data/resources/ui/identity-verification-widget.ui:452
-#: src/components/editable_avatar.rs:399
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:266
 #: src/session/content/room_history/verification_info_bar.rs:176
-#: src/session/room/event/event_actions.rs:304
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -385,7 +382,7 @@ msgid "Search for room members"
 msgstr "Wyszukiwanie członków pokoju"
 
 #: data/resources/ui/content-message-file.ui:25
-#: src/session/room/event/event_actions.rs:303
+#: src/session/room/event/event_actions.rs:317
 msgid "Save"
 msgstr "Zapisz"
 
@@ -633,7 +630,7 @@ msgstr "S_kopiuj obraz"
 msgid "Event Source"
 msgstr "Źródło wydarzenia"
 
-#: data/resources/ui/greeter.ui:43
+#: data/resources/ui/greeter.ui:33
 msgid ""
 "You are running an early stage development version. Be aware it is a work in "
 "progress and far from complete yet."
@@ -642,15 +639,15 @@ msgstr ""
 "wszystkich."
 
 #. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:101
+#: data/resources/ui/greeter.ui:72
 msgid "Welcome to Fractal"
 msgstr "Witamy w programie Fractal"
 
-#: data/resources/ui/greeter.ui:126
+#: data/resources/ui/greeter.ui:97
 msgid "_Log in"
 msgstr "_Zaloguj się"
 
-#: data/resources/ui/greeter.ui:136
+#: data/resources/ui/greeter.ui:107
 msgid "_Create Account"
 msgstr "_Utwórz konto"
 
@@ -1064,15 +1061,15 @@ msgstr "Wyszukiwanie pokojów"
 msgid "Search for a room"
 msgstr "Wyszukiwanie pokoju"
 
-#: data/resources/ui/sidebar.ui:146
+#: data/resources/ui/sidebar.ui:142
 msgid "Offline"
 msgstr "Offline"
 
-#: data/resources/ui/sidebar.ui:166
+#: data/resources/ui/sidebar.ui:157
 msgid "Sidebar"
 msgstr "Panel boczny"
 
-#: data/resources/ui/sidebar.ui:167
+#: data/resources/ui/sidebar.ui:158
 msgid "Allows to navigate between rooms"
 msgstr "Umożliwia przechodzenie między pokojami"
 
@@ -1080,11 +1077,11 @@ msgstr "Umożliwia przechodzenie między pokojami"
 msgid "Unable to connect to Camera"
 msgstr "Nie można połączyć się z aparatem"
 
-#: src/application.rs:179
+#: src/application.rs:178
 msgid "© 2017-2023 The Fractal Team"
 msgstr "© 2017-2023 Zespół programu Fractal"
 
-#: src/application.rs:193
+#: src/application.rs:192
 msgid "translator-credits"
 msgstr ""
 "Marek Jędrzejewski <kontakt@marekjedrzejewski.pl>, 2018\n"
@@ -1092,28 +1089,32 @@ msgstr ""
 "Aviary.pl <community-poland@mozilla.org>, 2018-2023"
 
 #. This can't be added via the builder
-#: src/application.rs:197
+#: src/application.rs:196
 msgid "Name by"
 msgstr "Nazwa"
 
-#: src/components/editable_avatar.rs:389
+#: src/components/editable_avatar.rs:388
+msgid "Images"
+msgstr "Obrazy"
+
+#: src/components/editable_avatar.rs:393
 msgid "Choose Avatar"
 msgstr "Wybór awatara"
 
-#: src/components/editable_avatar.rs:398
+#: src/components/editable_avatar.rs:395
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:246
 msgid "Choose"
 msgstr "Wybierz"
 
-#: src/components/editable_avatar.rs:409
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:282
-msgid "No file was chosen"
-msgstr "Nie wybrano pliku"
+#: src/components/editable_avatar.rs:413
+msgid "Could not open avatar file"
+msgstr "Nie można otworzyć pliku awatara"
 
-#: src/components/editable_avatar.rs:428
+#: src/components/editable_avatar.rs:434
 msgid "The chosen file is not an image"
 msgstr "Wybrany plik nie jest obrazem"
 
-#: src/components/editable_avatar.rs:434
+#: src/components/editable_avatar.rs:440
 msgid "Could not determine the type of the chosen file"
 msgstr "Nie można ustalić typu wybranego pliku"
 
@@ -1145,11 +1146,11 @@ msgstr "Pomyślnie usunięto sesję."
 msgid "Could not remove session from secret storage"
 msgstr "Nie można usunąć sesji z przechowalni haseł"
 
-#: src/greeter.rs:82 src/login/mod.rs:683 src/window.rs:391
+#: src/greeter.rs:80 src/login/mod.rs:688 src/window.rs:389
 msgid "No network connection"
 msgstr "Brak połączenia z siecią"
 
-#: src/greeter.rs:87 src/login/mod.rs:688 src/window.rs:395
+#: src/greeter.rs:85 src/login/mod.rs:693 src/window.rs:393
 msgid "No Internet connection"
 msgstr "Brak połączenia z Internetem"
 
@@ -1173,7 +1174,7 @@ msgstr "Adres URL serwera domowego Matrix, na przykład {address}"
 msgid "Connecting to {domain_name}"
 msgstr "Łączenie z domeną {domain_name}"
 
-#: src/login/mod.rs:609
+#: src/login/mod.rs:614
 msgid "Unable to store session"
 msgstr "Nie można przechować sesji"
 
@@ -1305,44 +1306,44 @@ msgid "Disconnect Session"
 msgstr "Rozłącz sesję"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/account_settings/devices_page/device_row.rs:212
+#: src/session/account_settings/devices_page/device_row.rs:214
 msgid "Failed to disconnect device “{device_name}”"
 msgstr "Rozłączenie urządzenia „{device_name}” się nie powiodło"
 
 #. Translators: Time in 24h format
-#: src/session/account_settings/devices_page/device_row.rs:253
+#: src/session/account_settings/devices_page/device_row.rs:255
 msgid "Last seen at %H:%M"
 msgstr "Ostatnio widziano o %H∶%M"
 
 #. Translators: Time in 12h format
-#: src/session/account_settings/devices_page/device_row.rs:256
+#: src/session/account_settings/devices_page/device_row.rs:258
 msgid "Last seen at %l:%M %p"
 msgstr "Ostatnio widziano o %l∶%M %p"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:265
+#: src/session/account_settings/devices_page/device_row.rs:267
 #, no-c-format
 msgid "Last seen Yesterday at %H:%M"
 msgstr "Ostatnio widziano wczoraj o %H∶%M"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:270
+#: src/session/account_settings/devices_page/device_row.rs:272
 #, no-c-format
 msgid "Last seen Yesterday at %l:%M %p"
 msgstr "Ostatnio widziano wczoraj o %l∶%M %p"
 
 #. Translators: this is the name of the week day followed by
 #. a time in 24h format. i.e. "Last seen Monday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:279
+#: src/session/account_settings/devices_page/device_row.rs:281
 #, no-c-format
 msgid "Last seen %A at %H:%M"
 msgstr "Ostatnio widziano: %A o %H∶%M"
 
 #. Translators: this is the week day name followed by
 #. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:284
+#: src/session/account_settings/devices_page/device_row.rs:286
 #, no-c-format
 msgid "Last seen %A at %l:%M %p"
 msgstr "Ostatnio widziano: %A o %l∶%M %p"
@@ -1350,7 +1351,7 @@ msgstr "Ostatnio widziano: %A o %l∶%M %p"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 24h format i.e. "Last seen February 3 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:292
+#: src/session/account_settings/devices_page/device_row.rs:294
 #, no-c-format
 msgid "Last seen %B %-e at %H:%M"
 msgstr "Ostatnio widziano %-d %B o %H∶%M"
@@ -1358,7 +1359,7 @@ msgstr "Ostatnio widziano %-d %B o %H∶%M"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 12h format i.e. "Last seen February 3 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:298
+#: src/session/account_settings/devices_page/device_row.rs:300
 #, no-c-format
 msgid "Last seen %B %-e at %l:%M %p"
 msgstr "Ostatnio widziano %-d %B o %l∶%M %p"
@@ -1366,7 +1367,7 @@ msgstr "Ostatnio widziano %-d %B o %l∶%M %p"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:305
+#: src/session/account_settings/devices_page/device_row.rs:307
 #, no-c-format
 msgid "Last seen %B %-e %Y at %H:%M"
 msgstr "Ostatnio widziano %-d %B %Y o %H∶%M"
@@ -1374,7 +1375,7 @@ msgstr "Ostatnio widziano %-d %B %Y o %H∶%M"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:311
+#: src/session/account_settings/devices_page/device_row.rs:313
 #, no-c-format
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "Ostatnio widziano %-d %B %Y o %l∶%M %p"
@@ -1432,48 +1433,49 @@ msgstr "Proszę wpisać hasło podane podczas tworzenia pliku kopii zapasowej."
 msgid "Import Keys"
 msgstr "Zaimportuj klucze"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:245
-msgid "Save Encryption Keys To…"
-msgstr "Zapis kluczy szyfrowania w…"
-
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:250
-msgid "Import Encryption Keys From…"
-msgstr "Import kluczy szyfrowania z…"
-
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:265
-msgid "Select"
-msgstr "Wybierz"
-
 #. Translators: Do no translate "fractal" as it is the application
 #. name.
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:274
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:254
 msgid "fractal-encryption-keys"
 msgstr "klucze-szyfrowania-fractal"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:307
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:259
+msgid "Save Encryption Keys To…"
+msgstr "Zapis kluczy szyfrowania w…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:262
+msgid "Import Encryption Keys From…"
+msgstr "Import kluczy szyfrowania z…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:275
+#: src/session/room/event/event_actions.rs:346
+msgid "Could not access file"
+msgstr "Nie można uzyskać dostępu do pliku"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:301
 msgid "Passphrases do not match"
 msgstr "Hasła się nie zgadzają"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:381
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:375
 msgid "Room encryption keys exported successfully"
 msgstr "Pomyślnie wyeksportowano klucze szyfrowania pokoju"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:386
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:380
 msgid "Imported 1 room encryption key"
 msgid_plural "Imported {n} room encryption keys"
 msgstr[0] "Zaimportowano 1 klucz szyfrowania pokoju"
 msgstr[1] "Zaimportowano {n} klucze szyfrowania pokojów"
 msgstr[2] "Zaimportowano {n} kluczy szyfrowania pokojów"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:399
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:393
 msgid "Could not export the keys"
 msgstr "Nie można wyeksportować kluczy"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:409
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:403
 msgid "The passphrase doesn't match the one used to export the keys."
 msgstr "Hasło nie zgadza się z hasłem użytym do wyeksportowania kluczy."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:413
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:407
 msgid "Could not import the keys"
 msgstr "Nie można zaimportować kluczy"
 
@@ -1665,51 +1667,63 @@ msgstr "Plik obrazu jest nieobsługiwany"
 msgid "Could not retrieve media"
 msgstr "Nie można odebrać multimediów"
 
-#: src/session/content/room_history/mod.rs:205
+#: src/session/content/room_history/mod.rs:207
 msgid "The location request has been cancelled."
 msgstr "Prośba o udostępnienie położenia została anulowana."
 
-#: src/session/content/room_history/mod.rs:209
+#: src/session/content/room_history/mod.rs:211
 msgid "Failed to retrieve current location."
 msgstr "Ustalenie obecnego położenia się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/content/room_history/mod.rs:644
+#: src/session/content/room_history/mod.rs:653
 msgid "Reply to {user}"
 msgstr "Odpowiedź do użytkownika {user}"
 
-#: src/session/content/room_history/mod.rs:757
+#: src/session/content/room_history/mod.rs:766
 #: src/session/room/event/event_actions.rs:110
 msgid "Permalink copied to clipboard"
 msgstr "Skopiowano trwały odnośnik do schowka"
 
-#: src/session/content/room_history/mod.rs:761
+#: src/session/content/room_history/mod.rs:770
 #: src/session/room/event/event_actions.rs:114
 msgid "Failed to copy the permalink"
 msgstr "Skopiowanie trwałego odnośnika się nie powiodło"
 
-#: src/session/content/room_history/mod.rs:948
+#: src/session/content/room_history/mod.rs:958
 msgid "Your Location"
 msgstr "Położenie użytkownika"
 
-#: src/session/content/room_history/mod.rs:958
+#: src/session/content/room_history/mod.rs:968
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Położenie użytkownika {geo_uri} w dniu {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:1067
+#: src/session/content/room_history/mod.rs:1013
+msgid "Select File"
+msgstr "Wybór pliku"
+
+#: src/session/content/room_history/mod.rs:1015
+msgid "Select"
+msgstr "Wybierz"
+
+#: src/session/content/room_history/mod.rs:1034
+msgid "Could not open file"
+msgstr "Nie można otworzyć pliku"
+
+#: src/session/content/room_history/mod.rs:1079
 msgid "Error reading file"
 msgstr "Błąd podczas odczytywania pliku"
 
-#: src/session/content/room_history/mod.rs:1093
+#: src/session/content/room_history/mod.rs:1105
 msgid "Error getting file from drop"
 msgstr "Błąd podczas uzyskiwania pliku z przeciągnięcia"
 
-#: src/session/content/room_history/mod.rs:1125
+#: src/session/content/room_history/mod.rs:1137
 msgid "Error getting image from clipboard"
 msgstr "Błąd podczas uzyskiwania obrazu ze schowka"
 
-#: src/session/content/room_history/mod.rs:1142
+#: src/session/content/room_history/mod.rs:1154
 msgid "Error getting file from clipboard"
 msgstr "Błąd podczas uzyskiwania pliku ze schowka"
 
@@ -2088,9 +2102,13 @@ msgstr "Skopiowano obraz do schowka"
 msgid "Thumbnail copied to clipboard"
 msgstr "Skopiowano miniaturę do schowka"
 
-#: src/session/room/event/event_actions.rs:300
+#: src/session/room/event/event_actions.rs:315
 msgid "Save File"
 msgstr "Zapis pliku"
+
+#: src/session/room/event/event_actions.rs:338
+msgid "Could not save file"
+msgstr "Nie można zapisać pliku"
 
 #: src/session/room/member.rs:44
 msgid "Left"
@@ -2467,6 +2485,6 @@ msgstr "Użytkownik {user} wysłał prośbę o weryfikację."
 msgid "{user} sent a sticker."
 msgstr "Użytkownik {user} wysłał naklejkę."
 
-#: src/window.rs:271
+#: src/window.rs:269
 msgid "Failed to restore previous sessions"
 msgstr "Przywrócenie poprzednich sesji się nie powiodło"
