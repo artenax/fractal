@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-03-12 17:25+0000\n"
-"PO-Revision-Date: 2023-03-13 20:10+0300\n"
+"POT-Creation-Date: 2023-03-26 13:49+0000\n"
+"PO-Revision-Date: 2023-03-26 21:06+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -89,12 +89,12 @@ msgstr ""
 "Rust. Интерфейс оптимизирован для совместной работы в больших группах, таких "
 "как проекты свободного программного обеспечения."
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:171
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:170
 msgid "The Fractal Team"
 msgstr "Команда Fractal"
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:12
-#: data/resources/ui/account-settings-user-page.ui:62
+#: data/resources/ui/account-settings-user-page.ui:51
 msgid "Change Password"
 msgstr "Изменить пароль"
 
@@ -128,7 +128,7 @@ msgid "Continue"
 msgstr "Продолжить"
 
 #: data/resources/ui/account-settings-deactivate-account-subpage.ui:12
-#: data/resources/ui/account-settings-user-page.ui:137
+#: data/resources/ui/account-settings-user-page.ui:126
 msgid "Deactivate Account"
 msgstr "Деактивировать учетную запись"
 
@@ -223,28 +223,28 @@ msgstr "Включить для этого сеанса"
 msgid "General"
 msgstr "Общие"
 
-#: data/resources/ui/account-settings-user-page.ui:38
+#: data/resources/ui/account-settings-user-page.ui:27
 #: data/resources/ui/room-creation.ui:66
 msgid "Name"
 msgstr "Имя"
 
-#: data/resources/ui/account-settings-user-page.ui:71
+#: data/resources/ui/account-settings-user-page.ui:60
 msgid "Advanced Information"
 msgstr "Дополнительная информация"
 
-#: data/resources/ui/account-settings-user-page.ui:74
+#: data/resources/ui/account-settings-user-page.ui:63
 msgid "Homeserver"
 msgstr "Домашний сервер"
 
-#: data/resources/ui/account-settings-user-page.ui:88
+#: data/resources/ui/account-settings-user-page.ui:77
 msgid "Matrix User ID"
 msgstr "ID пользователя Matrix"
 
-#: data/resources/ui/account-settings-user-page.ui:102
+#: data/resources/ui/account-settings-user-page.ui:91
 msgid "Session ID"
 msgstr "ID сеанса"
 
-#: data/resources/ui/account-settings-user-page.ui:123
+#: data/resources/ui/account-settings-user-page.ui:112
 #: src/session/account_settings/devices_page/device_row.rs:103
 msgid "Log Out"
 msgstr "Выйти"
@@ -303,10 +303,7 @@ msgstr "Аутентификация через браузер"
 
 #: data/resources/ui/components-auth-dialog.ui:113
 #: data/resources/ui/identity-verification-widget.ui:452
-#: src/components/editable_avatar.rs:318
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:266
 #: src/session/content/room_history/verification_info_bar.rs:176
-#: src/session/room/event/event_actions.rs:304
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -383,7 +380,7 @@ msgid "Search for room members"
 msgstr "Поиск участников комнаты"
 
 #: data/resources/ui/content-message-file.ui:25
-#: src/session/room/event/event_actions.rs:303
+#: src/session/room/event/event_actions.rs:317
 msgid "Save"
 msgstr "Сохранить"
 
@@ -392,15 +389,23 @@ msgid "Edited"
 msgstr "Изменено"
 
 #: data/resources/ui/content-room-details.ui:4
-#: src/session/content/room_details/mod.rs:200
+#: src/session/content/room_details/mod.rs:201
 msgid "Room Details"
 msgstr "Информация о комнате"
 
-#: data/resources/ui/content-room-details-general-page.ui:102
+#: data/resources/ui/content-room-details-general-page.ui:60
 msgid "Description"
 msgstr "Описание"
 
-#: data/resources/ui/content-room-details-general-page.ui:150
+#: data/resources/ui/content-room-details-general-page.ui:100
+msgid "Edit Details"
+msgstr "Редактировать подробности"
+
+#: data/resources/ui/content-room-details-general-page.ui:108
+msgid "Save Details"
+msgstr "Сохранить подробности"
+
+#: data/resources/ui/content-room-details-general-page.ui:120
 msgid "Members"
 msgstr "Участники"
 
@@ -627,7 +632,7 @@ msgstr "_Копировать изображение"
 msgid "Event Source"
 msgstr "Исходный код события"
 
-#: data/resources/ui/greeter.ui:43
+#: data/resources/ui/greeter.ui:33
 msgid ""
 "You are running an early stage development version. Be aware it is a work in "
 "progress and far from complete yet."
@@ -636,15 +641,15 @@ msgstr ""
 "виду, что работа над ней продолжается и она еще далека от завершения."
 
 #. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:101
+#: data/resources/ui/greeter.ui:72
 msgid "Welcome to Fractal"
 msgstr "Добро пожаловать в Fractal"
 
-#: data/resources/ui/greeter.ui:126
+#: data/resources/ui/greeter.ui:97
 msgid "_Log in"
 msgstr "_Войти"
 
-#: data/resources/ui/greeter.ui:136
+#: data/resources/ui/greeter.ui:107
 msgid "_Create Account"
 msgstr "_Создать учетную запись"
 
@@ -1060,15 +1065,15 @@ msgstr "Поиск комнаты"
 msgid "Search for a room"
 msgstr "Поиск в комнате"
 
-#: data/resources/ui/sidebar.ui:146
+#: data/resources/ui/sidebar.ui:142
 msgid "Offline"
 msgstr "Не в сети"
 
-#: data/resources/ui/sidebar.ui:166
+#: data/resources/ui/sidebar.ui:157
 msgid "Sidebar"
 msgstr "Боковая панель"
 
-#: data/resources/ui/sidebar.ui:167
+#: data/resources/ui/sidebar.ui:158
 msgid "Allows to navigate between rooms"
 msgstr "Позволяет перемещаться между комнатами"
 
@@ -1076,39 +1081,43 @@ msgstr "Позволяет перемещаться между комнатам�
 msgid "Unable to connect to Camera"
 msgstr "Невозможно подключиться к камере"
 
-#: src/application.rs:179
+#: src/application.rs:178
 msgid "© 2017-2023 The Fractal Team"
 msgstr "© 2017-2023 Команда Fractal"
 
-#: src/application.rs:193
+#: src/application.rs:192
 msgid "translator-credits"
 msgstr ""
 "Artem Polishchuk <ego.cordatus@gmail.com>, 2018-2019\n"
 "Aleksandr Melman <alexmelman88@gmail.com>, 2022-2023"
 
 #. This can't be added via the builder
-#: src/application.rs:197
+#: src/application.rs:196
 msgid "Name by"
 msgstr "Имя"
 
-#: src/components/editable_avatar.rs:308
+#: src/components/editable_avatar.rs:388
+msgid "Images"
+msgstr "Изображения"
+
+#: src/components/editable_avatar.rs:393
 msgid "Choose Avatar"
 msgstr "Выбрать аватар"
 
-#: src/components/editable_avatar.rs:317
+#: src/components/editable_avatar.rs:395
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:246
 msgid "Choose"
 msgstr "Выбрать"
 
-#: src/components/editable_avatar.rs:328
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:282
-msgid "No file was chosen"
-msgstr "Не был выбран файл"
+#: src/components/editable_avatar.rs:413
+msgid "Could not open avatar file"
+msgstr "Не удалось открыть файл аватара"
 
-#: src/components/editable_avatar.rs:346
+#: src/components/editable_avatar.rs:434
 msgid "The chosen file is not an image"
 msgstr "Выбранный файл не является изображением"
 
-#: src/components/editable_avatar.rs:352
+#: src/components/editable_avatar.rs:440
 msgid "Could not determine the type of the chosen file"
 msgstr "Не удалось определить тип выбранного файла"
 
@@ -1140,11 +1149,11 @@ msgstr "Сеанс успешно удален."
 msgid "Could not remove session from secret storage"
 msgstr "Не удалось удалить сеанс из секретного хранилища"
 
-#: src/greeter.rs:82 src/login/mod.rs:683 src/window.rs:391
+#: src/greeter.rs:80 src/login/mod.rs:688 src/window.rs:389
 msgid "No network connection"
 msgstr "Нет подключения к сети"
 
-#: src/greeter.rs:87 src/login/mod.rs:688 src/window.rs:395
+#: src/greeter.rs:85 src/login/mod.rs:693 src/window.rs:393
 msgid "No Internet connection"
 msgstr "Нет подключения к Интернету"
 
@@ -1168,7 +1177,7 @@ msgstr "URL вашего домашнего сервера Matrix, наприм�
 msgid "Connecting to {domain_name}"
 msgstr "Подключение к {domain_name}"
 
-#: src/login/mod.rs:609
+#: src/login/mod.rs:614
 msgid "Unable to store session"
 msgstr "Невозможно сохранить сеанс"
 
@@ -1297,44 +1306,44 @@ msgid "Disconnect Session"
 msgstr "Отключить сеанс"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/account_settings/devices_page/device_row.rs:212
+#: src/session/account_settings/devices_page/device_row.rs:214
 msgid "Failed to disconnect device “{device_name}”"
 msgstr "Не удалось отключить устройство “{device_name}”"
 
 #. Translators: Time in 24h format
-#: src/session/account_settings/devices_page/device_row.rs:253
+#: src/session/account_settings/devices_page/device_row.rs:255
 msgid "Last seen at %H:%M"
 msgstr "Был(-а) в сети в %H:%M"
 
 #. Translators: Time in 12h format
-#: src/session/account_settings/devices_page/device_row.rs:256
+#: src/session/account_settings/devices_page/device_row.rs:258
 msgid "Last seen at %l:%M %p"
 msgstr "Был(-а) в сети в %l:%M %p"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:265
+#: src/session/account_settings/devices_page/device_row.rs:267
 #, no-c-format
 msgid "Last seen Yesterday at %H:%M"
 msgstr "Был(-а) в сети вчера в %H:%M"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:270
+#: src/session/account_settings/devices_page/device_row.rs:272
 #, no-c-format
 msgid "Last seen Yesterday at %l:%M %p"
 msgstr "Был(-а) в сети вчера в %l:%M %p"
 
 #. Translators: this is the name of the week day followed by
 #. a time in 24h format. i.e. "Last seen Monday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:279
+#: src/session/account_settings/devices_page/device_row.rs:281
 #, no-c-format
 msgid "Last seen %A at %H:%M"
 msgstr "Был(-а) в сети в %A в %H:%M"
 
 #. Translators: this is the week day name followed by
 #. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:284
+#: src/session/account_settings/devices_page/device_row.rs:286
 #, no-c-format
 msgid "Last seen %A at %l:%M %p"
 msgstr "Был(-а) в сети в %A в %l:%M %p"
@@ -1342,7 +1351,7 @@ msgstr "Был(-а) в сети в %A в %l:%M %p"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 24h format i.e. "Last seen February 3 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:292
+#: src/session/account_settings/devices_page/device_row.rs:294
 #, no-c-format
 msgid "Last seen %B %-e at %H:%M"
 msgstr "Был(-а) в сети %-e %b в %H:%M"
@@ -1350,7 +1359,7 @@ msgstr "Был(-а) в сети %-e %b в %H:%M"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 12h format i.e. "Last seen February 3 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:298
+#: src/session/account_settings/devices_page/device_row.rs:300
 #, no-c-format
 msgid "Last seen %B %-e at %l:%M %p"
 msgstr "Был(-а) в сети %-e %b в %l:%M %p"
@@ -1358,7 +1367,7 @@ msgstr "Был(-а) в сети %-e %b в %l:%M %p"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:305
+#: src/session/account_settings/devices_page/device_row.rs:307
 #, no-c-format
 msgid "Last seen %B %-e %Y at %H:%M"
 msgstr "Был(-а) в сети %-e %b %Y в %H:%M"
@@ -1366,7 +1375,7 @@ msgstr "Был(-а) в сети %-e %b %Y в %H:%M"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:311
+#: src/session/account_settings/devices_page/device_row.rs:313
 #, no-c-format
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "Был(-а) в сети %-e %b %Y в %l:%M %p"
@@ -1424,50 +1433,51 @@ msgstr "Введите парольную фразу, указанную при 
 msgid "Import Keys"
 msgstr "Импорт ключей"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:245
-msgid "Save Encryption Keys To…"
-msgstr "Сохранить ключи шифрования в…"
-
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:250
-msgid "Import Encryption Keys From…"
-msgstr "Импортировать ключи шифрования из…"
-
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:265
-msgid "Select"
-msgstr "Выбрать"
-
 #. Translators: Do no translate "fractal" as it is the application
 #. name.
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:274
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:254
 msgid "fractal-encryption-keys"
 msgstr "fractal-encryption-keys"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:307
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:259
+msgid "Save Encryption Keys To…"
+msgstr "Сохранить ключи шифрования в…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:262
+msgid "Import Encryption Keys From…"
+msgstr "Импортировать ключи шифрования из…"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:275
+#: src/session/room/event/event_actions.rs:346
+msgid "Could not access file"
+msgstr "Не удалось получить доступ к файлу"
+
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:301
 msgid "Passphrases do not match"
 msgstr "Парольные фразы не совпадают"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:381
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:375
 msgid "Room encryption keys exported successfully"
 msgstr "Ключи шифрования комнаты успешно экспортированы"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:386
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:380
 msgid "Imported 1 room encryption key"
 msgid_plural "Imported {n} room encryption keys"
 msgstr[0] "Импортирован {n} ключ шифрования комнаты"
 msgstr[1] "Импортировано {n} ключа шифрования комнаты"
 msgstr[2] "Импортировано {n} ключей шифрования комнаты"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:399
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:393
 msgid "Could not export the keys"
 msgstr "Не удалось экспортировать ключи"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:409
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:403
 msgid "The passphrase doesn't match the one used to export the keys."
 msgstr ""
 "Парольная фраза не совпадает с той, которая использовалась для экспорта "
 "ключей."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:413
+#: src/session/account_settings/security_page/import_export_keys_subpage.rs:407
 msgid "Could not import the keys"
 msgstr "Не удалось импортировать ключи"
 
@@ -1515,31 +1525,41 @@ msgstr "Учетная запись успешно деактивирована"
 msgid "Could not deactivate account"
 msgstr "Не удалось деактивировать учетную запись"
 
-#: src/session/account_settings/user_page/mod.rs:215
+#: src/session/account_settings/user_page/mod.rs:222
+#: src/session/content/room_details/general_page/mod.rs:225
 msgid "Avatar removed successfully"
 msgstr "Аватар успешно удален"
 
-#: src/session/account_settings/user_page/mod.rs:230
+#: src/session/account_settings/user_page/mod.rs:224
+#: src/session/content/room_details/general_page/mod.rs:227
 msgid "Avatar changed successfully"
 msgstr "Аватар успешно изменен"
 
-#: src/session/account_settings/user_page/mod.rs:275
+#: src/session/account_settings/user_page/mod.rs:237
+#: src/session/content/room_details/general_page/mod.rs:246
+msgid "Could not load file"
+msgstr "Не удалось загрузить файл"
+
+#: src/session/account_settings/user_page/mod.rs:252
+#: src/session/content/room_details/general_page/mod.rs:267
 msgid "Could not upload avatar"
 msgstr "Не удалось загрузить аватар"
 
-#: src/session/account_settings/user_page/mod.rs:297
+#: src/session/account_settings/user_page/mod.rs:281
+#: src/session/content/room_details/general_page/mod.rs:287
 msgid "Could not change avatar"
 msgstr "Не удалось изменить аватар"
 
-#: src/session/account_settings/user_page/mod.rs:326
+#: src/session/account_settings/user_page/mod.rs:315
+#: src/session/content/room_details/general_page/mod.rs:317
 msgid "Could not remove avatar"
 msgstr "Не удалось удалить аватар"
 
-#: src/session/account_settings/user_page/mod.rs:359
+#: src/session/account_settings/user_page/mod.rs:354
 msgid "Name changed successfully"
 msgstr "Имя успешно изменено"
 
-#: src/session/account_settings/user_page/mod.rs:390
+#: src/session/account_settings/user_page/mod.rs:395
 msgid "Could not change display name"
 msgstr "Не удалось изменить отображаемое имя"
 
@@ -1555,17 +1575,21 @@ msgstr "Присоединиться"
 msgid "{user} invited you"
 msgstr "{user} пригласил(-а) вас"
 
-#: src/session/content/room_details/general_page/mod.rs:167
-msgid "Save Details"
-msgstr "Сохранить подробности"
+#: src/session/content/room_details/general_page/mod.rs:410
+msgid "Room name saved successfully"
+msgstr "Имя комнаты успешно сохранено"
 
-#: src/session/content/room_details/general_page/mod.rs:168
-msgid "Edit Details"
-msgstr "Редактировать подробности"
+#: src/session/content/room_details/general_page/mod.rs:435
+msgid "Room topic saved successfully"
+msgstr "Тема комнаты успешно сохранена"
 
-#: src/session/content/room_details/general_page/mod.rs:224
-msgid "Choose avatar"
-msgstr "Выбрать аватар"
+#: src/session/content/room_details/general_page/mod.rs:508
+msgid "Could not change room name"
+msgstr "Не удалось изменить имя комнаты"
+
+#: src/session/content/room_details/general_page/mod.rs:532
+msgid "Could not change room topic"
+msgstr "Не удалось изменить тему комнаты"
 
 #: src/session/content/room_details/invite_subpage/invitee_list.rs:287
 msgid "Member"
@@ -1590,19 +1614,19 @@ msgid "Banned Room Members"
 msgstr "Заблокированные участники комнаты"
 
 #: src/session/content/room_details/member_page/mod.rs:290
-#: src/session/content/room_details/mod.rs:216
+#: src/session/content/room_details/mod.rs:217
 msgid "Room Members"
 msgstr "Участники комнаты"
 
-#: src/session/content/room_details/mod.rs:232
+#: src/session/content/room_details/mod.rs:233
 msgid "Invite new Members"
 msgstr "Пригласить новых участников"
 
-#: src/session/content/room_history/item_row.rs:298
+#: src/session/content/room_history/item_row.rs:319
 msgid "This is the start of the visible history"
 msgstr "Это начало видимой истории"
 
-#: src/session/content/room_history/item_row.rs:313
+#: src/session/content/room_history/item_row.rs:334
 msgid "New Messages"
 msgstr "Новые сообщения"
 
@@ -1645,51 +1669,63 @@ msgstr "Файл изображения не поддерживается"
 msgid "Could not retrieve media"
 msgstr "Не удалось получить медиафайл"
 
-#: src/session/content/room_history/mod.rs:193
+#: src/session/content/room_history/mod.rs:207
 msgid "The location request has been cancelled."
 msgstr "Запрос местоположения был отменен."
 
-#: src/session/content/room_history/mod.rs:197
+#: src/session/content/room_history/mod.rs:211
 msgid "Failed to retrieve current location."
 msgstr "Не удалось получить текущее местоположение."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/content/room_history/mod.rs:621
+#: src/session/content/room_history/mod.rs:653
 msgid "Reply to {user}"
 msgstr "Ответ для {user}"
 
-#: src/session/content/room_history/mod.rs:734
+#: src/session/content/room_history/mod.rs:766
 #: src/session/room/event/event_actions.rs:110
 msgid "Permalink copied to clipboard"
 msgstr "Постоянная ссылка скопирована в буфер обмена"
 
-#: src/session/content/room_history/mod.rs:738
+#: src/session/content/room_history/mod.rs:770
 #: src/session/room/event/event_actions.rs:114
 msgid "Failed to copy the permalink"
 msgstr "Не удалось скопировать постоянную ссылку"
 
-#: src/session/content/room_history/mod.rs:925
+#: src/session/content/room_history/mod.rs:958
 msgid "Your Location"
 msgstr "Ваше местоположение"
 
-#: src/session/content/room_history/mod.rs:935
+#: src/session/content/room_history/mod.rs:968
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Местоположение пользователя {geo_uri} в {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:1071
+#: src/session/content/room_history/mod.rs:1013
+msgid "Select File"
+msgstr "Выбрать файл"
+
+#: src/session/content/room_history/mod.rs:1015
+msgid "Select"
+msgstr "Выбрать"
+
+#: src/session/content/room_history/mod.rs:1034
+msgid "Could not open file"
+msgstr "Не удалось открыть файл"
+
+#: src/session/content/room_history/mod.rs:1079
 msgid "Error reading file"
 msgstr "Ошибка чтения файла"
 
-#: src/session/content/room_history/mod.rs:1097
+#: src/session/content/room_history/mod.rs:1105
 msgid "Error getting file from drop"
 msgstr "Ошибка получения файла из сброса"
 
-#: src/session/content/room_history/mod.rs:1129
+#: src/session/content/room_history/mod.rs:1137
 msgid "Error getting image from clipboard"
 msgstr "Ошибка получения изображения из буфера обмена"
 
-#: src/session/content/room_history/mod.rs:1146
+#: src/session/content/room_history/mod.rs:1154
 msgid "Error getting file from clipboard"
 msgstr "Ошибка получения файла из буфера обмена"
 
@@ -2062,9 +2098,13 @@ msgstr "Изображение скопировано в буфер обмена
 msgid "Thumbnail copied to clipboard"
 msgstr "Эскиз скопирован в буфер обмена"
 
-#: src/session/room/event/event_actions.rs:300
+#: src/session/room/event/event_actions.rs:315
 msgid "Save File"
 msgstr "Сохранить файл"
+
+#: src/session/room/event/event_actions.rs:338
+msgid "Could not save file"
+msgstr "Не удалось сохранить файл"
 
 #: src/session/room/member.rs:44
 msgid "Left"
@@ -2095,51 +2135,51 @@ msgid "Normal user"
 msgstr "Обычный пользователь"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:385
+#: src/session/room/mod.rs:368
 msgid "Failed to forget {room}."
 msgstr "Не удалось забыть {room}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:639
+#: src/session/room/mod.rs:622
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "Не удалось переместить {room} из {previous_category} в {new_category}."
 
-#: src/session/room/mod.rs:978
+#: src/session/room/mod.rs:969
 msgid "Unknown"
 msgstr "Неизвестно"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:1006
+#: src/session/room/mod.rs:997
 msgid "Empty Room (was {user})"
 msgstr "Пустая комната (был(-а) {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:1008
+#: src/session/room/mod.rs:999
 msgid "Empty Room"
 msgstr "Пустая комната"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1389
+#: src/session/room/mod.rs:1299
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "Не удалось принять приглашение для {room}. Повторите попытку позже."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1418
+#: src/session/room/mod.rs:1328
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr "Не удалось отклонить приглашение для {room}. Повторите попытку позже."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1614
+#: src/session/room/mod.rs:1524
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "Не удалось пригласить {user} в {room}. Повторите попытку позже."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1626
+#: src/session/room/mod.rs:1536
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -2163,19 +2203,19 @@ msgstr "%A, %e %b"
 msgid "%A, %B %e, %Y"
 msgstr "%A, %e %b, %Y"
 
-#: src/session/room_creation/mod.rs:255
+#: src/session/room_creation/mod.rs:240
 msgid "The address is already taken."
 msgstr "Адрес уже занят."
 
-#: src/session/room_creation/mod.rs:288
+#: src/session/room_creation/mod.rs:273
 msgid "Can’t contain “:”"
 msgstr "Не может содержать “:”"
 
-#: src/session/room_creation/mod.rs:293
+#: src/session/room_creation/mod.rs:278
 msgid "Can’t contain “#”"
 msgstr "Не может содержать “#”"
 
-#: src/session/room_creation/mod.rs:298
+#: src/session/room_creation/mod.rs:283
 msgid "Too long. Use a shorter address."
 msgstr "Слишком длинный. Используйте более короткий адрес."
 
@@ -2376,22 +2416,22 @@ msgstr ""
 "Сбой автообнаружения домашнего сервера. Попробуйте ввести полный URL вручную."
 
 #. Translators: Default name for image files.
-#: src/utils/media.rs:50
+#: src/utils/media.rs:51
 msgid "image"
 msgstr "изображение"
 
 #. Translators: Default name for video files.
-#: src/utils/media.rs:52
+#: src/utils/media.rs:53
 msgid "video"
 msgstr "видео"
 
 #. Translators: Default name for audio files.
-#: src/utils/media.rs:54
+#: src/utils/media.rs:55
 msgid "audio"
 msgstr "аудио"
 
 #. Translators: Default name for files.
-#: src/utils/media.rs:56
+#: src/utils/media.rs:57
 msgid "file"
 msgstr "файл"
 
@@ -2428,9 +2468,15 @@ msgstr "{user} отправил(-а) запрос на проверку."
 msgid "{user} sent a sticker."
 msgstr "{user} отправил(-а) стикер."
 
-#: src/window.rs:271
+#: src/window.rs:269
 msgid "Failed to restore previous sessions"
 msgstr "Не удалось восстановить предыдущие сеансы"
+
+#~ msgid "No file was chosen"
+#~ msgstr "Не был выбран файл"
+
+#~ msgid "Choose avatar"
+#~ msgstr "Выбрать аватар"
 
 #~ msgid "Toggle Room History Search"
 #~ msgstr "Переключить поиск по истории комнаты"
