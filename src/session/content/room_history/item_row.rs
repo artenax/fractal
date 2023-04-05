@@ -14,18 +14,19 @@ use crate::{
             TimelineNewMessagesDivider, TimelinePlaceholder,
         },
     },
+    utils::BoundObjectWeakRef,
 };
 
 mod imp {
     use std::{cell::RefCell, rc::Rc};
 
-    use glib::{signal::SignalHandlerId, WeakRef};
+    use glib::signal::SignalHandlerId;
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct ItemRow {
-        pub room_history: WeakRef<RoomHistory>,
+        pub room_history: BoundObjectWeakRef<RoomHistory>,
         pub item: RefCell<Option<TimelineItem>>,
         pub action_group: RefCell<Option<gio::SimpleActionGroup>>,
         pub notify_handlers: RefCell<Vec<SignalHandlerId>>,
@@ -36,9 +37,13 @@ mod imp {
 
     #[glib::object_subclass]
     impl ObjectSubclass for ItemRow {
-        const NAME: &'static str = "ContentItemRow";
+        const NAME: &'static str = "RoomHistoryItemRow";
         type Type = super::ItemRow;
         type ParentType = ContextMenuBin;
+
+        fn class_init(klass: &mut Self::Class) {
+            klass.set_css_name("room-history-row");
+        }
     }
 
     impl ObjectImpl for ItemRow {
@@ -57,9 +62,11 @@ mod imp {
         }
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
-                "item" => self.obj().set_item(value.get().unwrap()),
-                "room-history" => self.room_history.set(value.get().ok().as_ref()),
+                "item" => obj.set_item(value.get().unwrap()),
+                "room-history" => obj.set_room_history(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
@@ -97,6 +104,8 @@ mod imp {
             } else if let Some(binding) = self.binding.take() {
                 binding.unbind();
             }
+
+            self.room_history.disconnect_signals();
         }
     }
 
@@ -116,25 +125,22 @@ mod imp {
             let popover = room_history.item_context_menu().to_owned();
             room_history.set_sticky(false);
 
-            if let Some(list_item) = obj.parent() {
-                list_item.add_css_class("has-open-popup");
+            obj.add_css_class("has-open-popup");
 
-                let cell: Rc<RefCell<Option<glib::signal::SignalHandlerId>>> =
-                    Rc::new(RefCell::new(None));
-                let signal_id = popover.connect_closed(
-                    clone!(@weak list_item, @strong cell, @weak room_history => move |popover| {
-                        room_history.enable_sticky_mode();
+            let cell: Rc<RefCell<Option<glib::signal::SignalHandlerId>>> =
+                Rc::new(RefCell::new(None));
+            let signal_id = popover.connect_closed(
+                clone!(@weak obj, @strong cell, @weak room_history => move |popover| {
+                    room_history.enable_sticky_mode();
 
-                        list_item.remove_css_class("has-open-popup");
+                    obj.remove_css_class("has-open-popup");
 
-                        if let Some(signal_id) = cell.take() {
-                            popover.disconnect(signal_id);
-                        }
-                    }),
-                );
-
-                cell.replace(Some(signal_id));
-            }
+                    if let Some(signal_id) = cell.take() {
+                        popover.disconnect(signal_id);
+                    }
+                }),
+            );
+            cell.replace(Some(signal_id));
 
             if let Some(event) = event
                 .downcast_ref::<Event>()
@@ -176,12 +182,31 @@ impl ItemRow {
     pub fn new(room_history: &RoomHistory) -> Self {
         glib::Object::builder()
             .property("room-history", room_history)
+            .property("focusable", true)
             .build()
     }
 
     /// The ancestor room history of this row.
     pub fn room_history(&self) -> RoomHistory {
-        self.imp().room_history.upgrade().unwrap()
+        self.imp().room_history.obj().unwrap()
+    }
+
+    /// Set the ancestor room history of this row.
+    fn set_room_history(&self, room_history: Option<&RoomHistory>) {
+        let Some(room_history) = room_history else {
+            return;
+        };
+
+        let related_event_handler = room_history.connect_notify_local(
+            Some("related-event"),
+            clone!(@weak self as obj => move |_, _| {
+                obj.update_for_related_event();
+            }),
+        );
+
+        self.imp()
+            .room_history
+            .set(room_history, vec![related_event_handler]);
     }
 
     pub fn action_group(&self) -> Option<gio::SimpleActionGroup> {
@@ -210,11 +235,7 @@ impl ItemRow {
         let imp = self.imp();
 
         // Reinitialize the header.
-        if let Some(list_item) = self.parent() {
-            if list_item.has_css_class("has-header") {
-                list_item.remove_css_class("has-header");
-            }
-        }
+        self.remove_css_class("has-header");
 
         if let Some(event) = imp
             .item
@@ -377,17 +398,14 @@ impl ItemRow {
 
     /// Update the highlight state of this row.
     fn update_highlight(&self) {
-        let Some(parent) = self.parent() else {
-            return;
-        };
-
         let item_ref = self.imp().item.borrow();
         if let Some(event) = item_ref.as_ref().and_then(|i| i.downcast_ref::<Event>()) {
             if event.is_highlighted() {
-                return parent.add_css_class("highlight");
+                self.add_css_class("highlight");
+                return;
             }
         }
-        parent.remove_css_class("highlight");
+        self.remove_css_class("highlight");
     }
 
     fn show_emoji_chooser(&self, popover: &gtk::PopoverMenu) {
@@ -407,6 +425,18 @@ impl ItemRow {
 
         popover.popdown();
         emoji_chooser.popup();
+    }
+
+    /// Update this row for the currently related event.
+    fn update_for_related_event(&self) {
+        let related_event = self.room_history().related_event();
+        let event = self.item().and_then(|item| item.downcast::<Event>().ok());
+
+        if event.is_some() && event == related_event {
+            self.add_css_class("selected");
+        } else {
+            self.remove_css_class("selected");
+        }
     }
 }
 

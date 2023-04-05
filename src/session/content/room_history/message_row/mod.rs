@@ -147,11 +147,11 @@ impl MessageRow {
         imp.avatar.set_visible(visible);
         imp.header.set_visible(visible);
 
-        if let Some(list_item) = self.parent().and_then(|w| w.parent()) {
-            if visible && !list_item.has_css_class("has-header") {
-                list_item.add_css_class("has-header");
-            } else if !visible && list_item.has_css_class("has-header") {
-                list_item.remove_css_class("has-header");
+        if let Some(row) = self.parent() {
+            if visible {
+                row.add_css_class("has-header");
+            } else {
+                row.remove_css_class("has-header");
             }
         }
 

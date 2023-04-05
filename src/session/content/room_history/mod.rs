@@ -627,13 +627,6 @@ impl RoomHistory {
             return;
         }
 
-        if let Some(event) = &prev_event {
-            self.set_event_selected(&event.event_id().unwrap(), false);
-        }
-        if let Some(event) = &event {
-            self.set_event_selected(&event.event_id().unwrap(), true);
-        }
-
         self.imp().related_event.replace(event);
         self.notify("related-event");
     }
@@ -1216,29 +1209,6 @@ impl RoomHistory {
                 .imp()
                 .listview
                 .activate_action("list.scroll-to-item", Some(&pos.to_variant()));
-        }
-    }
-
-    fn set_event_selected(&self, event_id: &EventId, selected: bool) {
-        let mut child = self.imp().listview.first_child();
-        while let Some(widget) = child {
-            if widget
-                .first_child()
-                .and_then(|w| w.downcast::<ItemRow>().ok())
-                .and_then(|row| row.item())
-                .and_then(|item| item.downcast::<Event>().ok())
-                .filter(|event| event.event_id().as_deref() == Some(event_id))
-                .is_some()
-            {
-                if selected {
-                    widget.add_css_class("selected");
-                } else {
-                    widget.remove_css_class("selected");
-                }
-
-                break;
-            }
-            child = widget.next_sibling();
         }
     }
 
