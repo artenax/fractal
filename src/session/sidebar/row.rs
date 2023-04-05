@@ -152,14 +152,6 @@ impl Row {
 
         let mut bindings = vec![];
         if let Some(item) = self.item() {
-            if let Some(list_item) = self.parent() {
-                bindings.push(
-                    item.bind_property("visible", &list_item, "visible")
-                        .flags(glib::BindingFlags::SYNC_CREATE)
-                        .build(),
-                );
-            }
-
             if let Some(category) = item.downcast_ref::<Category>() {
                 let child =
                     if let Some(Ok(child)) = self.child().map(|w| w.downcast::<CategoryRow>()) {
