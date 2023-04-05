@@ -13,8 +13,6 @@ use crate::{
 const MAX_RECEIPTS_SHOWN: u32 = 10;
 
 mod imp {
-    use std::cell::RefCell;
-
     use glib::subclass::InitializingObject;
     use once_cell::sync::Lazy;
 
@@ -29,7 +27,7 @@ mod imp {
         pub overlapping_box: TemplateChild<OverlappingBox>,
 
         /// The read receipts that are bound, if any.
-        pub bound_receipts: RefCell<Option<BoundObjectWeakRef<ReadReceipts>>>,
+        pub bound_receipts: BoundObjectWeakRef<ReadReceipts>,
     }
 
     #[glib::object_subclass]
@@ -68,9 +66,7 @@ mod imp {
         }
 
         fn dispose(&self) {
-            if let Some(bound_receipts) = self.bound_receipts.take() {
-                bound_receipts.disconnect_signals()
-            }
+            self.bound_receipts.disconnect_signals();
         }
     }
 
@@ -91,19 +87,11 @@ impl ReadReceiptsList {
     }
 
     pub fn list(&self) -> Option<ReadReceipts> {
-        self.imp()
-            .bound_receipts
-            .borrow()
-            .as_ref()
-            .and_then(|r| r.obj())
+        self.imp().bound_receipts.obj()
     }
 
     pub fn set_list(&self, read_receipts: &ReadReceipts) {
         let imp = self.imp();
-
-        if let Some(bound_receipts) = imp.bound_receipts.take() {
-            bound_receipts.disconnect_signals();
-        }
 
         imp.overlapping_box.bind_model(Some(read_receipts), |obj| {
             let avatar_item = obj.downcast_ref::<Member>().unwrap().avatar();
@@ -119,10 +107,8 @@ impl ReadReceiptsList {
             }),
         );
 
-        imp.bound_receipts.replace(Some(BoundObjectWeakRef::new(
-            read_receipts,
-            vec![items_changed_handler_id],
-        )));
+        imp.bound_receipts
+            .set(read_receipts, vec![items_changed_handler_id]);
         self.update_label(read_receipts);
         self.notify("list");
     }

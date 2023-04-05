@@ -28,7 +28,7 @@ mod imp {
         pub orientation: Cell<gtk::Orientation>,
 
         /// The list model that is bound, if any.
-        pub bound_model: RefCell<Option<BoundObjectWeakRef<gio::ListModel>>>,
+        pub bound_model: BoundObjectWeakRef<gio::ListModel>,
 
         /// The method used to create widgets from the items of the list model,
         /// if any.
@@ -102,9 +102,7 @@ mod imp {
                 widget.unparent();
             }
 
-            if let Some(bound_model) = self.bound_model.take() {
-                bound_model.disconnect_signals()
-            }
+            self.bound_model.disconnect_signals();
         }
     }
 
@@ -221,7 +219,7 @@ impl OverlappingBox {
                 widget.unparent()
             }
         } else if max_children == 0 || (old_max_children != 0 && max_children > old_max_children) {
-            let Some(model) = imp.bound_model.borrow().as_ref().and_then(|s| s.obj()) else {
+            let Some(model) = imp.bound_model.obj() else {
                 return;
             };
 
@@ -282,10 +280,8 @@ impl OverlappingBox {
     ) {
         let imp = self.imp();
 
-        if let Some(bound_model) = imp.bound_model.take() {
-            bound_model.disconnect_signals()
-        }
-        for child in self.imp().widgets.take() {
+        imp.bound_model.disconnect_signals();
+        for child in imp.widgets.take() {
             child.unparent();
         }
         imp.create_widget_func.take();
@@ -300,10 +296,8 @@ impl OverlappingBox {
             }),
         );
 
-        imp.bound_model.replace(Some(BoundObjectWeakRef::new(
-            model.upcast_ref(),
-            vec![signal_handler_id],
-        )));
+        imp.bound_model
+            .set(model.upcast_ref(), vec![signal_handler_id]);
 
         imp.create_widget_func
             .replace(Some(Box::new(create_widget_func)));

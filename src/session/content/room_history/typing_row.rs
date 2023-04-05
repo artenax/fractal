@@ -10,8 +10,6 @@ use crate::{
 };
 
 mod imp {
-    use std::cell::RefCell;
-
     use glib::subclass::InitializingObject;
     use once_cell::sync::Lazy;
 
@@ -25,7 +23,7 @@ mod imp {
         #[template_child]
         pub label: TemplateChild<gtk::Label>,
         /// The list of members that are currently typing.
-        pub bound_list: RefCell<Option<BoundObjectWeakRef<TypingList>>>,
+        pub bound_list: BoundObjectWeakRef<TypingList>,
     }
 
     #[glib::object_subclass]
@@ -79,9 +77,7 @@ mod imp {
         }
 
         fn dispose(&self) {
-            if let Some(bound_list) = self.bound_list.take() {
-                bound_list.disconnect_signals();
-            }
+            self.bound_list.disconnect_signals();
         }
     }
 
@@ -102,11 +98,7 @@ impl TypingRow {
 
     /// The list of members that are currently typing.
     pub fn list(&self) -> Option<TypingList> {
-        self.imp()
-            .bound_list
-            .borrow()
-            .as_ref()
-            .and_then(|bound_list| bound_list.obj())
+        self.imp().bound_list.obj()
     }
 
     /// Set the list of members that are currently typing.
@@ -118,9 +110,7 @@ impl TypingRow {
         let imp = self.imp();
         let prev_is_empty = self.is_empty();
 
-        if let Some(bound_list) = imp.bound_list.take() {
-            bound_list.disconnect_signals();
-        }
+        imp.bound_list.disconnect_signals();
 
         if let Some(list) = list {
             let items_changed_handler_id = list.connect_items_changed(
@@ -143,10 +133,10 @@ impl TypingRow {
                 avatar.upcast()
             });
 
-            imp.bound_list.replace(Some(BoundObjectWeakRef::new(
+            imp.bound_list.set(
                 list,
                 vec![items_changed_handler_id, is_empty_notify_handler_id],
-            )));
+            );
             self.update_label(list);
         }
 

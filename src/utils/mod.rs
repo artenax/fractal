@@ -8,6 +8,7 @@ pub mod sourceview;
 pub mod template_callbacks;
 
 use std::{
+    cell::RefCell,
     path::PathBuf,
     rc::{Rc, Weak},
 };
@@ -157,19 +158,25 @@ pub static EMOJI_REGEX: Lazy<Regex> = Lazy::new(|| {
 #[derive(Debug)]
 pub struct BoundObjectWeakRef<T: glib::ObjectType> {
     weak_obj: glib::WeakRef<T>,
-    signal_handler_ids: Vec<glib::SignalHandlerId>,
+    signal_handler_ids: RefCell<Vec<glib::SignalHandlerId>>,
 }
 
 impl<T: glib::ObjectType> BoundObjectWeakRef<T> {
-    /// Creates a new `BoundObjectWeakRef` with the given object and signal
-    /// handlers IDs.
-    pub fn new(obj: &T, signal_handler_ids: Vec<glib::SignalHandlerId>) -> Self {
-        let weak_obj = glib::WeakRef::new();
-        weak_obj.set(Some(obj));
-        Self {
-            weak_obj,
-            signal_handler_ids,
-        }
+    /// Creates a new empty `BoundObjectWeakRef` with the given object and
+    /// signal handlers IDs.
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Set the given object and signal handlers IDs.
+    ///
+    /// Calls `disconnect_signals` first to remove the previous weak reference
+    /// and disconnect the previous signal handlers.
+    pub fn set(&self, obj: &T, signal_handler_ids: Vec<glib::SignalHandlerId>) {
+        self.disconnect_signals();
+
+        self.weak_obj.set(Some(obj));
+        self.signal_handler_ids.replace(signal_handler_ids);
     }
 
     /// Get a strong reference to the object.
@@ -179,17 +186,30 @@ impl<T: glib::ObjectType> BoundObjectWeakRef<T> {
 
     /// Add `SignalHandlerId`s to this `BoundObjectWeakRef`.
     pub fn add_signal_handler_ids(&mut self, signal_handler_ids: Vec<glib::SignalHandlerId>) {
-        self.signal_handler_ids.extend(signal_handler_ids);
+        self.signal_handler_ids
+            .borrow_mut()
+            .extend(signal_handler_ids);
     }
 
-    /// Disconnect the signal handlers.
-    ///
-    /// This is a no-op if the weak reference to the object can't be upgraded.
-    pub fn disconnect_signals(self) {
+    /// Disconnect the signal handlers and drop the weak reference.
+    pub fn disconnect_signals(&self) {
+        let signal_handler_ids = self.signal_handler_ids.take();
+
         if let Some(obj) = self.weak_obj.upgrade() {
-            for signal_handler_id in self.signal_handler_ids {
+            for signal_handler_id in signal_handler_ids {
                 obj.disconnect(signal_handler_id)
             }
+        }
+
+        self.weak_obj.set(None);
+    }
+}
+
+impl<T: glib::ObjectType> Default for BoundObjectWeakRef<T> {
+    fn default() -> Self {
+        Self {
+            weak_obj: Default::default(),
+            signal_handler_ids: Default::default(),
         }
     }
 }
