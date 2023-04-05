@@ -338,16 +338,16 @@ impl RoomRow {
     }
 
     fn drag_begin(&self) {
-        self.parent().unwrap().add_css_class("drag");
-        let category = Some(u32::from(self.room().unwrap().category()));
-        self.activate_action("sidebar.set-drop-source-type", Some(&category.to_variant()))
-            .unwrap();
+        let row = self.parent().unwrap().downcast::<Row>().unwrap();
+        row.add_css_class("drag");
+        row.sidebar()
+            .set_drop_source_type(Some(self.room().unwrap().category()));
     }
 
     fn drag_end(&self) {
-        self.activate_action("sidebar.set-drop-source-type", None)
-            .unwrap();
-        self.parent().unwrap().remove_css_class("drag");
+        let row = self.parent().unwrap().downcast::<Row>().unwrap();
+        row.sidebar().set_drop_source_type(None);
+        row.remove_css_class("drag");
     }
 
     fn set_room_as_normal_or_direct(&self) {

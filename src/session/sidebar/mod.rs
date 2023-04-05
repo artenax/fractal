@@ -75,6 +75,8 @@ mod imp {
         pub user: RefCell<Option<User>>,
         /// The type of the source that activated drop mode.
         pub drop_source_type: Cell<Option<RoomType>>,
+        /// The type of the drop target that is currently hovered.
+        pub drop_active_target_type: Cell<Option<RoomType>>,
         pub drop_binding: RefCell<Option<glib::Binding>>,
         pub offline_handler_id: RefCell<Option<SignalHandlerId>>,
     }
@@ -91,34 +93,6 @@ mod imp {
             Avatar::static_type();
             Self::bind_template(klass);
             klass.set_css_name("sidebar");
-
-            klass.install_action(
-                "sidebar.set-drop-source-type",
-                Some("u"),
-                move |obj, _, variant| {
-                    obj.set_drop_source_type(
-                        variant
-                            .and_then(|variant| variant.get::<Option<u32>>().flatten())
-                            .and_then(|u| RoomType::try_from(u).ok()),
-                    );
-                },
-            );
-            klass.install_action("sidebar.update-drop-targets", None, move |obj, _, _| {
-                if obj.drop_source_type().is_some() {
-                    obj.update_drop_targets();
-                }
-            });
-            klass.install_action(
-                "sidebar.set-active-drop-category",
-                Some("mu"),
-                move |obj, _, variant| {
-                    obj.update_active_drop_targets(
-                        variant
-                            .and_then(|variant| variant.get::<Option<u32>>().flatten())
-                            .and_then(|u| RoomType::try_from(u).ok()),
-                    );
-                },
-            );
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -144,6 +118,12 @@ mod imp {
                         .build(),
                     glib::ParamSpecEnum::builder_with_default(
                         "drop-source-type",
+                        CategoryType::None,
+                    )
+                    .read_only()
+                    .build(),
+                    glib::ParamSpecEnum::builder_with_default(
+                        "drop-active-target-type",
                         CategoryType::None,
                     )
                     .read_only()
@@ -175,6 +155,11 @@ mod imp {
                 "selected-item" => obj.selected_item().to_value(),
                 "drop-source-type" => obj
                     .drop_source_type()
+                    .map(CategoryType::from)
+                    .unwrap_or(CategoryType::None)
+                    .to_value(),
+                "drop-active-target-type" => obj
+                    .drop_active_target_type()
                     .map(CategoryType::from)
                     .unwrap_or(CategoryType::None)
                     .to_value(),
@@ -419,94 +404,21 @@ impl Sidebar {
         }
 
         self.notify("drop-source-type");
-        self.update_drop_targets();
     }
 
-    /// Update the disabled or empty state of drop targets.
-    fn update_drop_targets(&self) {
-        let mut child = self.imp().listview.first_child();
-
-        while let Some(widget) = child {
-            if let Some(row) = widget
-                .first_child()
-                .and_then(|widget| widget.downcast::<Row>().ok())
-            {
-                if let Some(source_type) = self.drop_source_type() {
-                    if row
-                        .room_type()
-                        .filter(|row_type| source_type.can_change_to(row_type))
-                        .is_some()
-                    {
-                        row.remove_css_class("drop-disabled");
-
-                        if row
-                            .item()
-                            .and_then(|object| object.downcast::<Category>().ok())
-                            .filter(|category| category.is_empty())
-                            .is_some()
-                        {
-                            row.add_css_class("drop-empty");
-                        } else {
-                            row.remove_css_class("drop-empty");
-                        }
-                    } else {
-                        let is_forget_entry = row
-                            .entry_type()
-                            .filter(|entry_type| entry_type == &EntryType::Forget)
-                            .is_some();
-                        if is_forget_entry && source_type == RoomType::Left {
-                            row.remove_css_class("drop-disabled");
-                        } else {
-                            row.add_css_class("drop-disabled");
-                            row.remove_css_class("drop-empty");
-                        }
-                    }
-                } else {
-                    // Clear style
-                    row.remove_css_class("drop-disabled");
-                    row.remove_css_class("drop-empty");
-                    row.remove_css_class("drop-active");
-                };
-
-                if let Some(category_row) = row
-                    .child()
-                    .and_then(|child| child.downcast::<CategoryRow>().ok())
-                {
-                    category_row.set_show_label_for_category(
-                        self.drop_source_type()
-                            .map(CategoryType::from)
-                            .unwrap_or(CategoryType::None),
-                    );
-                }
-            }
-            child = widget.next_sibling();
-        }
+    /// The type of the drop target that is currently hovered.
+    pub fn drop_active_target_type(&self) -> Option<RoomType> {
+        self.imp().drop_active_target_type.get()
     }
 
-    /// Update the active state of drop targets.
-    fn update_active_drop_targets(&self, target_type: Option<RoomType>) {
-        let mut child = self.imp().listview.first_child();
-
-        while let Some(widget) = child {
-            if let Some((row, row_type)) = widget
-                .first_child()
-                .and_then(|widget| widget.downcast::<Row>().ok())
-                .and_then(|row| {
-                    let row_type = row.room_type()?;
-                    Some((row, row_type))
-                })
-            {
-                if target_type
-                    .filter(|target_type| target_type == &row_type)
-                    .is_some()
-                {
-                    row.add_css_class("drop-active");
-                } else {
-                    row.remove_css_class("drop-active");
-                }
-            }
-            child = widget.next_sibling();
+    /// Set the type of the drop target that is currently hovered.
+    fn set_drop_active_target_type(&self, target_type: Option<RoomType>) {
+        if self.drop_active_target_type() == target_type {
+            return;
         }
+
+        self.imp().drop_active_target_type.set(target_type);
+        self.notify("drop-active-target-type");
     }
 
     pub fn room_row_popover(&self) -> &gtk::PopoverMenu {

@@ -1,26 +1,28 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{gdk, glib, glib::clone};
 
-use super::EntryType;
-use crate::session::{
-    room::{Room, RoomType},
-    sidebar::{
-        Category, CategoryRow, Entry, EntryRow, RoomRow, Sidebar, SidebarItem, VerificationRow,
+use super::{CategoryType, EntryType};
+use crate::{
+    session::{
+        room::{Room, RoomType},
+        sidebar::{
+            Category, CategoryRow, Entry, EntryRow, RoomRow, Sidebar, SidebarItem, VerificationRow,
+        },
+        verification::IdentityVerification,
     },
-    verification::IdentityVerification,
+    utils::BoundObjectWeakRef,
 };
 
 mod imp {
     use std::cell::RefCell;
 
-    use glib::WeakRef;
     use once_cell::sync::Lazy;
 
     use super::*;
 
     #[derive(Debug, Default)]
     pub struct Row {
-        pub sidebar: WeakRef<Sidebar>,
+        pub sidebar: BoundObjectWeakRef<Sidebar>,
         pub list_row: RefCell<Option<gtk::TreeListRow>>,
         pub bindings: RefCell<Vec<glib::Binding>>,
     }
@@ -60,7 +62,7 @@ mod imp {
 
             match pspec.name() {
                 "list-row" => obj.set_list_row(value.get().unwrap()),
-                "sidebar" => self.sidebar.set(value.get().ok().as_ref()),
+                "sidebar" => obj.set_sidebar(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
         }
@@ -98,6 +100,10 @@ mod imp {
             );
             obj.add_controller(drop);
         }
+
+        fn dispose(&self) {
+            self.sidebar.disconnect_signals();
+        }
     }
 
     impl WidgetImpl for Row {}
@@ -119,7 +125,33 @@ impl Row {
 
     /// The ancestor sidebar of this row.
     pub fn sidebar(&self) -> Sidebar {
-        self.imp().sidebar.upgrade().unwrap()
+        self.imp().sidebar.obj().unwrap()
+    }
+
+    /// Set the ancestor sidebar of this row.
+    fn set_sidebar(&self, sidebar: Option<&Sidebar>) {
+        let Some(sidebar) = sidebar else {
+            return;
+        };
+
+        let drop_source_type_handler = sidebar.connect_notify_local(
+            Some("drop-source-type"),
+            clone!(@weak self as obj => move |_, _| {
+                obj.update_for_drop_source_type();
+            }),
+        );
+
+        let drop_active_target_type_handler = sidebar.connect_notify_local(
+            Some("drop-active-target-type"),
+            clone!(@weak self as obj => move |_, _| {
+                obj.update_for_drop_active_target_type();
+            }),
+        );
+
+        self.imp().sidebar.set(
+            sidebar,
+            vec![drop_source_type_handler, drop_active_target_type_handler],
+        );
     }
 
     /// The sidebar item of this row.
@@ -211,8 +243,8 @@ impl Row {
             } else {
                 panic!("Wrong row item: {item:?}");
             }
-            self.activate_action("sidebar.update-drop-targets", None)
-                .unwrap();
+
+            self.update_for_drop_source_type();
         }
 
         imp.bindings.replace(bindings);
@@ -243,6 +275,7 @@ impl Row {
         item.downcast_ref::<Entry>().map(|entry| entry.type_())
     }
 
+    /// Handle the drag-n-drop hovering this row.
     fn drop_accept(&self, drop: &gdk::Drop) -> bool {
         let room = drop
             .drag()
@@ -252,18 +285,14 @@ impl Row {
         if let Some(room) = room {
             if let Some(target_type) = self.room_type() {
                 if room.category().can_change_to(&target_type) {
-                    self.activate_action(
-                        "sidebar.set-active-drop-category",
-                        Some(&Some(u32::from(target_type)).to_variant()),
-                    )
-                    .unwrap();
+                    self.sidebar()
+                        .set_drop_active_target_type(Some(target_type));
                     return true;
                 }
             } else if let Some(entry_type) = self.entry_type() {
                 if room.category() == RoomType::Left && entry_type == EntryType::Forget {
                     self.add_css_class("drop-active");
-                    self.activate_action("sidebar.set-active-drop-category", None)
-                        .unwrap();
+                    self.sidebar().set_drop_active_target_type(None);
                     return true;
                 }
             }
@@ -271,12 +300,13 @@ impl Row {
         false
     }
 
+    /// Handle the drag-n-drop leaving this row.
     fn drop_leave(&self) {
         self.remove_css_class("drop-active");
-        self.activate_action("sidebar.set-active-drop-category", None)
-            .unwrap();
+        self.sidebar().set_drop_active_target_type(None);
     }
 
+    /// Handle the drop on this row.
     fn drop_end(&self, value: &glib::Value) -> bool {
         let mut ret = false;
         if let Ok(room) = value.get::<Room>() {
@@ -292,8 +322,71 @@ impl Row {
                 }
             }
         }
-        self.activate_action("sidebar.set-drop-source-type", None)
-            .unwrap();
+        self.sidebar().set_drop_source_type(None);
         ret
+    }
+
+    /// Update the disabled or empty state of this drop target.
+    fn update_for_drop_source_type(&self) {
+        let source_type = self.sidebar().drop_source_type();
+
+        if let Some(source_type) = source_type {
+            if self
+                .room_type()
+                .map_or(false, |row_type| source_type.can_change_to(&row_type))
+            {
+                self.remove_css_class("drop-disabled");
+
+                if self
+                    .item()
+                    .and_then(|object| object.downcast::<Category>().ok())
+                    .map_or(false, |category| category.is_empty())
+                {
+                    self.add_css_class("drop-empty");
+                } else {
+                    self.remove_css_class("drop-empty");
+                }
+            } else {
+                let is_forget_entry = self
+                    .entry_type()
+                    .map_or(false, |entry_type| entry_type == EntryType::Forget);
+                if is_forget_entry && source_type == RoomType::Left {
+                    self.remove_css_class("drop-disabled");
+                } else {
+                    self.add_css_class("drop-disabled");
+                    self.remove_css_class("drop-empty");
+                }
+            }
+        } else {
+            // Clear style
+            self.remove_css_class("drop-disabled");
+            self.remove_css_class("drop-empty");
+            self.remove_css_class("drop-active");
+        };
+
+        if let Some(category_row) = self
+            .child()
+            .and_then(|child| child.downcast::<CategoryRow>().ok())
+        {
+            category_row.set_show_label_for_category(
+                source_type
+                    .map(CategoryType::from)
+                    .unwrap_or(CategoryType::None),
+            );
+        }
+    }
+
+    /// Update the active state of this drop target.
+    fn update_for_drop_active_target_type(&self) {
+        let Some(room_type) = self.room_type() else {
+            return;
+        };
+        let target_type = self.sidebar().drop_active_target_type();
+
+        if target_type.map_or(false, |target_type| target_type == room_type) {
+            self.add_css_class("drop-active");
+        } else {
+            self.remove_css_class("drop-active");
+        }
     }
 }
