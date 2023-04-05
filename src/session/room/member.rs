@@ -10,7 +10,6 @@ use matrix_sdk::{
         OwnedMxcUri, UserId,
     },
 };
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 use crate::{
     prelude::*,
@@ -23,9 +22,8 @@ use crate::{
     },
 };
 
-#[derive(
-    Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum, IntoPrimitive, TryFromPrimitive,
-)]
+#[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum, glib::Variant)]
+#[variant_enum(repr)]
 #[repr(u32)]
 #[enum_type(name = "Membership")]
 pub enum Membership {

@@ -71,9 +71,7 @@ mod imp {
             });
 
             klass.install_action("members.subpage", Some("u"), move |widget, _, param| {
-                let state = param
-                    .and_then(|variant| variant.get::<u32>())
-                    .and_then(|u| Membership::try_from(u).ok());
+                let state = param.and_then(|variant| variant.get::<Membership>());
 
                 if let Some(state) = state {
                     widget.set_state(state);

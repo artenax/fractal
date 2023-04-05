@@ -79,10 +79,10 @@ mod imp {
                 .connect_released(clone!(@weak obj => move |_, _, _, _| {
                     if let Some(item) = obj.item() {
                         obj.activate_action(
-                                        "members.subpage",
-                                        Some(&(item.state() as u32).to_variant()),
-                                    )
-                                    .unwrap();
+                            "members.subpage",
+                            Some(&item.state().to_variant()),
+                        )
+                        .unwrap();
                     }
                 }));
 
