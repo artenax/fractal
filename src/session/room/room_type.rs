@@ -23,7 +23,7 @@ pub enum RoomType {
 
 impl RoomType {
     /// Check whether this `RoomType` can be changed to `category`.
-    pub fn can_change_to(&self, category: &RoomType) -> bool {
+    pub fn can_change_to(&self, category: RoomType) -> bool {
         match self {
             Self::Invited => {
                 matches!(

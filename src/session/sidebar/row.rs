@@ -284,7 +284,7 @@ impl Row {
             .and_then(|value| value.get::<Room>().ok());
         if let Some(room) = room {
             if let Some(target_type) = self.room_type() {
-                if room.category().can_change_to(&target_type) {
+                if room.category().can_change_to(target_type) {
                     self.sidebar()
                         .set_drop_active_target_type(Some(target_type));
                     return true;
@@ -311,7 +311,7 @@ impl Row {
         let mut ret = false;
         if let Ok(room) = value.get::<Room>() {
             if let Some(target_type) = self.room_type() {
-                if room.category().can_change_to(&target_type) {
+                if room.category().can_change_to(target_type) {
                     room.set_category(target_type);
                     ret = true;
                 }
@@ -333,7 +333,7 @@ impl Row {
         if let Some(source_type) = source_type {
             if self
                 .room_type()
-                .map_or(false, |row_type| source_type.can_change_to(&row_type))
+                .map_or(false, |row_type| source_type.can_change_to(row_type))
             {
                 self.remove_css_class("drop-disabled");
 

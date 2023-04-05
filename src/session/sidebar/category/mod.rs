@@ -102,17 +102,24 @@ mod imp {
         fn update_visibility(&self, for_category: CategoryType) {
             let obj = self.obj();
 
-            obj.set_visible(
-                !obj.is_empty()
-                    || RoomType::try_from(for_category)
+            let visible = if !obj.is_empty() {
+                true
+            } else {
+                let room_types =
+                    RoomType::try_from(for_category)
                         .ok()
-                        .and_then(|room_type| {
+                        .and_then(|source_room_type| {
                             RoomType::try_from(obj.type_())
                                 .ok()
-                                .filter(|category| room_type.can_change_to(category))
-                        })
-                        .is_some(),
-            )
+                                .map(|target_room_type| (source_room_type, target_room_type))
+                        });
+
+                room_types.map_or(false, |(source_room_type, target_room_type)| {
+                    source_room_type.can_change_to(target_room_type)
+                })
+            };
+
+            obj.set_visible(visible)
         }
     }
 }
