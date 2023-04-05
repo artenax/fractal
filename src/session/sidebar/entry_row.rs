@@ -1,6 +1,7 @@
 use adw::subclass::prelude::BinImpl;
 use gtk::{self, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
+use super::EntryType;
 use crate::session::sidebar::Entry;
 
 mod imp {
@@ -24,6 +25,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            klass.set_css_name("entry");
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -81,6 +83,15 @@ impl EntryRow {
     pub fn set_entry(&self, entry: Option<Entry>) {
         if self.entry() == entry {
             return;
+        }
+
+        if entry
+            .as_ref()
+            .map_or(false, |e| e.type_() == EntryType::Forget)
+        {
+            self.add_css_class("forget");
+        } else {
+            self.remove_css_class("forget");
         }
 
         self.imp().entry.replace(entry);

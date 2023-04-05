@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="SidebarEntryRow" parent="AdwBin">
-    <style>
-      <class name="entry-row"/>
-    </style>
     <child>
       <object class="GtkBox">
         <property name="spacing">12</property>
@@ -33,4 +30,3 @@
     </child>
   </template>
 </interface>
-

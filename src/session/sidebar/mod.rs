@@ -198,7 +198,6 @@ mod imp {
                 let row = Row::new(&obj);
                 item.set_child(Some(&row));
                 item.bind_property("item", &row, "list-row").build();
-                row.set_can_focus(false);
             }));
             self.listview.set_factory(Some(&factory));
 
@@ -466,7 +465,7 @@ impl Sidebar {
                     // Clear style
                     row.remove_css_class("drop-disabled");
                     row.remove_css_class("drop-empty");
-                    row.parent().unwrap().remove_css_class("drop-active");
+                    row.remove_css_class("drop-active");
                 };
 
                 if let Some(category_row) = row
@@ -501,9 +500,9 @@ impl Sidebar {
                     .filter(|target_type| target_type == &row_type)
                     .is_some()
                 {
-                    row.parent().unwrap().add_css_class("drop-active");
+                    row.add_css_class("drop-active");
                 } else {
-                    row.parent().unwrap().remove_css_class("drop-active");
+                    row.remove_css_class("drop-active");
                 }
             }
             child = widget.next_sibling();

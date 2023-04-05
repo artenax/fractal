@@ -35,6 +35,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            klass.set_css_name("room");
 
             klass.set_accessible_role(gtk::AccessibleRole::Group);
 

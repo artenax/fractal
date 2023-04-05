@@ -31,6 +31,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            klass.set_css_name("category");
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -143,10 +144,8 @@ impl CategoryRow {
     }
 
     fn set_expanded_accessibility_state(&self, expanded: bool) {
-        if let Some(p) = self.parent() {
-            if let Some(p) = p.parent() {
-                p.update_state(&[accessible::State::Expanded(Some(expanded))])
-            }
+        if let Some(row) = self.parent() {
+            row.update_state(&[accessible::State::Expanded(Some(expanded))]);
         }
     }
 

@@ -111,7 +111,10 @@ glib::wrapper! {
 
 impl Row {
     pub fn new(sidebar: &Sidebar) -> Self {
-        glib::Object::builder().property("sidebar", sidebar).build()
+        glib::Object::builder()
+            .property("sidebar", sidebar)
+            .property("focusable", true)
+            .build()
     }
 
     /// The ancestor sidebar of this row.
@@ -168,10 +171,6 @@ impl Row {
                         .flags(glib::BindingFlags::SYNC_CREATE)
                         .build(),
                 );
-
-                if let Some(list_item) = self.parent() {
-                    list_item.set_css_classes(&["category"]);
-                }
             } else if let Some(room) = item.downcast_ref::<Room>() {
                 let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<RoomRow>()) {
                     child
@@ -182,10 +181,6 @@ impl Row {
                 };
 
                 child.set_room(Some(room.clone()));
-
-                if let Some(list_item) = self.parent() {
-                    list_item.set_css_classes(&["room"]);
-                }
             } else if let Some(entry) = item.downcast_ref::<Entry>() {
                 let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<EntryRow>())
                 {
@@ -201,10 +196,6 @@ impl Row {
                 }
 
                 child.set_entry(Some(entry.clone()));
-
-                if let Some(list_item) = self.parent() {
-                    list_item.set_css_classes(&["entry"]);
-                }
             } else if let Some(verification) = item.downcast_ref::<IdentityVerification>() {
                 let child = if let Some(Ok(child)) =
                     self.child().map(|w| w.downcast::<VerificationRow>())
@@ -217,10 +208,6 @@ impl Row {
                 };
 
                 child.set_identity_verification(Some(verification.clone()));
-
-                if let Some(list_item) = self.parent() {
-                    list_item.set_css_classes(&["room"]);
-                }
             } else {
                 panic!("Wrong row item: {item:?}");
             }
@@ -274,7 +261,7 @@ impl Row {
                 }
             } else if let Some(entry_type) = self.entry_type() {
                 if room.category() == RoomType::Left && entry_type == EntryType::Forget {
-                    self.parent().unwrap().add_css_class("drop-active");
+                    self.add_css_class("drop-active");
                     self.activate_action("sidebar.set-active-drop-category", None)
                         .unwrap();
                     return true;
@@ -285,7 +272,7 @@ impl Row {
     }
 
     fn drop_leave(&self) {
-        self.parent().unwrap().remove_css_class("drop-active");
+        self.remove_css_class("drop-active");
         self.activate_action("sidebar.set-active-drop-category", None)
             .unwrap();
     }
