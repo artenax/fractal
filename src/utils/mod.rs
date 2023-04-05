@@ -1,5 +1,6 @@
 //! Collection of common methods and types.
 
+mod expression_list_model;
 pub mod macros;
 pub mod matrix;
 pub mod media;
@@ -24,6 +25,8 @@ use gtk::{
 use matrix_sdk::ruma::UInt;
 use once_cell::sync::Lazy;
 use regex::Regex;
+
+pub use self::expression_list_model::ExpressionListModel;
 
 /// Returns an expression that is the and’ed result of the given boolean
 /// expressions.
@@ -152,6 +155,65 @@ pub static EMOJI_REGEX: Lazy<Regex> = Lazy::new(|| {
     .unwrap()
 });
 
+/// Inner to manage a bound object.
+#[derive(Debug)]
+pub struct BoundObjectInner<T: glib::ObjectType> {
+    obj: T,
+    signal_handler_ids: Vec<glib::SignalHandlerId>,
+}
+
+/// Wrapper to manage a bound object.
+///
+/// This keeps a strong reference to the object.
+#[derive(Debug)]
+pub struct BoundObject<T: glib::ObjectType> {
+    inner: RefCell<Option<BoundObjectInner<T>>>,
+}
+
+impl<T: glib::ObjectType> BoundObject<T> {
+    /// Creates a new empty `BoundObjectWeakRef`.
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Set the given object and signal handlers IDs.
+    ///
+    /// Calls `disconnect_signals` first to drop the previous strong reference
+    /// and disconnect the previous signal handlers.
+    pub fn set(&self, obj: T, signal_handler_ids: Vec<glib::SignalHandlerId>) {
+        self.disconnect_signals();
+
+        let inner = BoundObjectInner {
+            obj,
+            signal_handler_ids,
+        };
+
+        self.inner.replace(Some(inner));
+    }
+
+    /// Get the object, if any.
+    pub fn obj(&self) -> Option<T> {
+        self.inner.borrow().as_ref().map(|inner| inner.obj.clone())
+    }
+
+    /// Disconnect the signal handlers and drop the strong reference.
+    pub fn disconnect_signals(&self) {
+        if let Some(inner) = self.inner.take() {
+            for signal_handler_id in inner.signal_handler_ids {
+                inner.obj.disconnect(signal_handler_id)
+            }
+        }
+    }
+}
+
+impl<T: glib::ObjectType> Default for BoundObject<T> {
+    fn default() -> Self {
+        Self {
+            inner: Default::default(),
+        }
+    }
+}
+
 /// Wrapper to manage a bound object.
 ///
 /// This keeps a weak reference to the object.
@@ -182,13 +244,6 @@ impl<T: glib::ObjectType> BoundObjectWeakRef<T> {
     /// Get a strong reference to the object.
     pub fn obj(&self) -> Option<T> {
         self.weak_obj.upgrade()
-    }
-
-    /// Add `SignalHandlerId`s to this `BoundObjectWeakRef`.
-    pub fn add_signal_handler_ids(&mut self, signal_handler_ids: Vec<glib::SignalHandlerId>) {
-        self.signal_handler_ids
-            .borrow_mut()
-            .extend(signal_handler_ids);
     }
 
     /// Disconnect the signal handlers and drop the weak reference.

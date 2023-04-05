@@ -216,12 +216,8 @@ mod imp {
         }
 
         fn signals() -> &'static [Signal] {
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![
-                    Signal::builder("order-changed").build(),
-                    Signal::builder("room-forgotten").build(),
-                ]
-            });
+            static SIGNALS: Lazy<Vec<Signal>> =
+                Lazy::new(|| vec![Signal::builder("room-forgotten").build()]);
             SIGNALS.as_ref()
         }
 
@@ -395,7 +391,6 @@ impl Room {
 
         self.imp().category.set(category);
         self.notify("category");
-        self.emit_by_name::<()>("order-changed", &[]);
     }
 
     /// Set the category of this room.
@@ -1108,8 +1103,6 @@ impl Room {
         self.session()
             .verification_list()
             .handle_response_room(self, events.iter());
-
-        self.emit_by_name::<()>("order-changed", &[]);
     }
 
     /// The timestamp of the room's latest possibly unread event.
@@ -1364,14 +1357,6 @@ impl Room {
                 })
                 .collect(),
         )
-    }
-
-    pub fn connect_order_changed<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId {
-        self.connect_local("order-changed", true, move |values| {
-            let obj = values[0].get::<Self>().unwrap();
-            f(&obj);
-            None
-        })
     }
 
     /// Connect to the signal sent when a room was forgotten.

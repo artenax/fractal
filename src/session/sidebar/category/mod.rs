@@ -1,13 +1,23 @@
-use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
+use gtk::{
+    gio, glib,
+    glib::{clone, closure},
+    prelude::*,
+    subclass::prelude::*,
+};
 
+mod category_filter;
 mod category_row;
 mod category_type;
 
+use self::category_filter::CategoryFilter;
 pub use self::{category_row::CategoryRow, category_type::CategoryType};
 use super::{SidebarItem, SidebarItemExt, SidebarItemImpl};
-use crate::session::{
-    room::{Room, RoomType},
-    room_list::RoomList,
+use crate::{
+    session::{
+        room::{Room, RoomType},
+        room_list::RoomList,
+    },
+    utils::ExpressionListModel,
 };
 
 mod imp {
@@ -145,18 +155,25 @@ impl Category {
 
         // Special case room lists so that they are sorted and in the right category
         let model = if model.is::<RoomList>() {
-            let filter = gtk::CustomFilter::new(move |o| {
-                o.downcast_ref::<Room>()
-                    .filter(|r| CategoryType::from(r.category()) == type_)
-                    .is_some()
-            });
-            let filter_model = gtk::FilterListModel::new(Some(model), Some(filter));
+            let room_category_type = Room::this_expression("category")
+                .chain_closure::<CategoryType>(closure!(
+                    |_: Option<glib::Object>, room_type: RoomType| {
+                        CategoryType::from(room_type)
+                    }
+                ));
+            let filter = CategoryFilter::new(&room_category_type, type_);
+            let category_type_expr_model = ExpressionListModel::new(model, room_category_type);
+            let filter_model =
+                gtk::FilterListModel::new(Some(category_type_expr_model), Some(filter));
 
+            let room_latest_unread = Room::this_expression("latest-unread");
             let sorter = gtk::NumericSorter::builder()
-                .expression(Room::this_expression("latest-unread"))
+                .expression(&room_latest_unread)
                 .sort_order(gtk::SortType::Descending)
                 .build();
-            let sort_model = gtk::SortListModel::new(Some(filter_model), Some(sorter));
+            let latest_unread_expr_model =
+                ExpressionListModel::new(filter_model, room_latest_unread);
+            let sort_model = gtk::SortListModel::new(Some(latest_unread_expr_model), Some(sorter));
             sort_model.upcast()
         } else {
             model
