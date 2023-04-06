@@ -30,7 +30,7 @@ yet ready for a release and you can follow along our progress towards it by look
 
 ### Stable version
 
-The current stable version is 4.4.0 (released August 2020).
+The current stable version is 4.4.2 (released March 2023).
 
 Flatpak is the recommended installation method.
 Until our next iteration is ready, you can get the official Fractal Flatpak on Flathub.
