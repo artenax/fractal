@@ -889,9 +889,7 @@ impl Room {
 
         if counts.highlight_count > 0 {
             highlight = HighlightFlags::all();
-        }
-
-        if counts.notification_count > 0 || self.has_unread_messages() {
+        } else if counts.notification_count > 0 || self.has_unread_messages() {
             highlight = HighlightFlags::BOLD;
         }
 
