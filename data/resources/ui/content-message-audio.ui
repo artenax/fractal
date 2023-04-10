@@ -23,9 +23,7 @@
               </object>
             </child>
             <child type="end">
-              <object class="GtkSpinner" id="state_spinner">
-                <property name="spinning">true</property>
-              </object>
+              <object class="Spinner" id="state_spinner"/>
             </child>
             <child type="end">
               <object class="GtkImage" id="state_error">

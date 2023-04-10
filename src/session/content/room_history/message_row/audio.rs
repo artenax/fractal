@@ -10,7 +10,10 @@ use matrix_sdk::{media::MediaEventContent, ruma::events::room::message::AudioMes
 
 use super::{media::MediaState, ContentFormat};
 use crate::{
-    components::AudioPlayer, session::Session, spawn, spawn_tokio, utils::media::media_type_uid,
+    components::{AudioPlayer, Spinner},
+    session::Session,
+    spawn, spawn_tokio,
+    utils::media::media_type_uid,
 };
 
 mod imp {
@@ -33,7 +36,7 @@ mod imp {
         #[template_child]
         pub player: TemplateChild<AudioPlayer>,
         #[template_child]
-        pub state_spinner: TemplateChild<gtk::Spinner>,
+        pub state_spinner: TemplateChild<Spinner>,
         #[template_child]
         pub state_error: TemplateChild<gtk::Image>,
     }
