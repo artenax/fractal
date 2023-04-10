@@ -1,6 +1,8 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, glib::closure_local, prelude::*, CompositeTemplate};
 
+use super::Spinner;
+
 #[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
 #[enum_type(name = "ActionState")]
@@ -54,6 +56,8 @@ mod imp {
         pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
         pub button_default: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub spinner: TemplateChild<Spinner>,
     }
 
     #[glib::object_subclass]

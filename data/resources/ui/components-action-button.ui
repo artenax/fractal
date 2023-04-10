@@ -71,8 +71,7 @@
                 <property name="can-target">false</property>
                 <property name="valign">center</property>
                 <child>
-                  <object class="GtkSpinner">
-                    <property name="spinning">true</property>
+                  <object class="Spinner" id="spinner">
                     <property name="valign">center</property>
                   </object>
                 </child>
