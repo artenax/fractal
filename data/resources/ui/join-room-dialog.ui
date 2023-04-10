@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <object class="AdwMessageDialog" id="dialog">
+  <template class="JoinRoomDialog" parent="AdwMessageDialog">
     <property name="heading" translatable="yes">Join a Room</property>
     <property name="body" translatable="yes">Enter a room ID, room alias, or permalink.</property>
     <property name="default-response">join</property>
@@ -12,7 +12,8 @@
     <property name="extra-child">
       <object class="GtkEntry" id="entry">
         <property name="activates-default">True</property>
+        <signal name="changed" handler="entry_changed" swapped="yes"/>
       </object>
     </property>
-  </object>
+  </template>
 </interface>
