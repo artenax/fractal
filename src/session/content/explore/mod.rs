@@ -13,7 +13,7 @@ pub use self::{
     public_room::PublicRoom, public_room_list::PublicRoomList, public_room_row::PublicRoomRow,
     servers_popover::ExploreServersPopover,
 };
-use crate::session::Session;
+use crate::{components::Spinner, session::Session};
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -31,7 +31,7 @@ mod imp {
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
-        pub spinner: TemplateChild<gtk::Spinner>,
+        pub spinner: TemplateChild<Spinner>,
         #[template_child]
         pub empty_label: TemplateChild<gtk::Label>,
         #[template_child]
