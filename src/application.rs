@@ -69,7 +69,7 @@ mod imp {
                 .unwrap()
                 .set_enabled(monitor.is_network_available());
 
-            app.get_main_window().present();
+            app.main_window().present();
         }
 
         fn startup(&self) {
@@ -96,7 +96,7 @@ impl Application {
             .build()
     }
 
-    fn get_main_window(&self) -> Window {
+    pub fn main_window(&self) -> Window {
         self.imp().window.upgrade().unwrap()
     }
 
@@ -111,7 +111,7 @@ impl Application {
                 .activate(|app: &Application, _, _| {
                     // This is needed to trigger the delete event
                     // and saving the window state
-                    app.get_main_window().close();
+                    app.main_window().close();
                     app.quit();
                 })
                 .build(),
@@ -123,19 +123,19 @@ impl Application {
                 .build(),
             gio::ActionEntry::builder("new-session")
                 .activate(|app: &Application, _, _| {
-                    app.get_main_window().switch_to_greeter_page();
+                    app.main_window().switch_to_greeter_page();
                 })
                 .build(),
             gio::ActionEntry::builder("show-login")
                 .activate(|app: &Application, _, _| {
-                    app.get_main_window().switch_to_login_page();
+                    app.main_window().switch_to_login_page();
                 })
                 .build(),
             gio::ActionEntry::builder("show-room")
                 .parameter_type(Some(&AppShowRoomPayload::static_variant_type()))
                 .activate(|app: &Application, _, v| {
                     if let Some(payload) = v.and_then(|v| v.get::<AppShowRoomPayload>()) {
-                        app.get_main_window()
+                        app.main_window()
                             .show_room(&payload.session_id, &payload.room_id);
                     }
                 })
@@ -144,10 +144,10 @@ impl Application {
 
         let show_sessions_action = gio::SimpleAction::new("show-sessions", None);
         show_sessions_action.connect_activate(clone!(@weak self as app => move |_, _| {
-            app.get_main_window().switch_to_sessions_page();
+            app.main_window().switch_to_sessions_page();
         }));
         self.add_action(&show_sessions_action);
-        let win = self.get_main_window();
+        let win = self.main_window();
         win.connect_notify_local(
             Some("has-sessions"),
             clone!(@weak show_sessions_action => move |win, _| {
@@ -173,7 +173,7 @@ impl Application {
             .issue_url("https://gitlab.gnome.org/GNOME/fractal/-/issues")
             .support_url("https://matrix.to/#/#fractal:gnome.org")
             .version(config::VERSION)
-            .transient_for(&self.get_main_window())
+            .transient_for(&self.main_window())
             .modal(true)
             .copyright(gettext("© 2017-2023 The Fractal Team"))
             .developers(vec![
