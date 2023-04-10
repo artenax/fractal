@@ -79,7 +79,9 @@ mod imp {
 
     impl MessageDialogImpl for JoinRoomDialog {
         fn response(&self, response: &str) {
-            self.obj().join_room();
+            if response == "join" {
+                self.obj().join_room();
+            }
 
             self.parent_response(response)
         }
