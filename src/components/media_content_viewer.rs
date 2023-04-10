@@ -4,7 +4,7 @@ use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, CompositeTemplate};
 use log::warn;
 
-use super::{AudioPlayer, ImagePaintable, LocationViewer};
+use super::{AudioPlayer, ImagePaintable, LocationViewer, Spinner};
 use crate::spawn;
 
 #[derive(Debug, Default, Clone, Copy)]
@@ -57,6 +57,8 @@ mod imp {
         pub viewer: TemplateChild<adw::Bin>,
         #[template_child]
         pub fallback: TemplateChild<adw::StatusPage>,
+        #[template_child]
+        pub spinner: TemplateChild<Spinner>,
     }
 
     #[glib::object_subclass]
