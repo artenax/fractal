@@ -4,7 +4,7 @@ use gtk::{gio, glib, glib::clone};
 use matrix_sdk::room::timeline::TimelineItemContent;
 
 use crate::{
-    components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl, ReactionChooser},
+    components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl, ReactionChooser, Spinner},
     session::{
         content::room_history::{
             message_row::MessageRow, DividerRow, RoomHistory, StateRow, TypingRow,
@@ -295,18 +295,16 @@ impl ItemRow {
                     PlaceholderKind::Spinner => {
                         if self
                             .child()
-                            .filter(|widget| widget.is::<gtk::Spinner>())
+                            .filter(|widget| widget.is::<Spinner>())
                             .is_none()
                         {
                             self.set_popover(None);
                             self.set_action_group(None);
                             self.set_event_actions(None);
 
-                            let spinner = gtk::Spinner::builder()
-                                .spinning(true)
-                                .margin_top(12)
-                                .margin_bottom(12)
-                                .build();
+                            let spinner = Spinner::default();
+                            spinner.set_margin_top(12);
+                            spinner.set_margin_bottom(12);
                             self.set_child(Some(&spinner));
                         }
                     }
