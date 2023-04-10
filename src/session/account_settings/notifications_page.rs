@@ -236,7 +236,7 @@ impl NotificationsPage {
 
         if !enabled {
             if let Some(session) = self.session() {
-                session.clear_notifications();
+                session.notifications().clear();
             }
         }
 
@@ -327,7 +327,7 @@ impl NotificationsPage {
 
         if !enabled {
             if let Some(session) = self.session() {
-                session.clear_notifications();
+                session.notifications().clear();
             }
         }
 
