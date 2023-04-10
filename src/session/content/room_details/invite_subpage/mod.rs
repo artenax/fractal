@@ -10,7 +10,7 @@ use self::{
     invitee_row::InviteeRow,
 };
 use crate::{
-    components::{Pill, SpinnerButton},
+    components::{Pill, Spinner, SpinnerButton},
     session::{Room, User},
     spawn,
 };
@@ -47,7 +47,7 @@ mod imp {
         #[template_child]
         pub error_page: TemplateChild<adw::StatusPage>,
         #[template_child]
-        pub loading_page: TemplateChild<gtk::Spinner>,
+        pub loading_page: TemplateChild<Spinner>,
     }
 
     #[glib::object_subclass]
