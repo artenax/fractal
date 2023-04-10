@@ -18,6 +18,7 @@ mod pill;
 mod reaction_chooser;
 mod room_title;
 mod scale_revealer;
+mod spinner;
 mod spinner_button;
 mod toastable_window;
 mod video_player;
@@ -44,6 +45,7 @@ pub use self::{
     reaction_chooser::ReactionChooser,
     room_title::RoomTitle,
     scale_revealer::ScaleRevealer,
+    spinner::Spinner,
     spinner_button::SpinnerButton,
     toastable_window::{ToastableWindow, ToastableWindowExt, ToastableWindowImpl},
     video_player::VideoPlayer,
