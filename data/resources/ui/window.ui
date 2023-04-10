@@ -26,8 +26,7 @@
                       <object class="AdwBanner" id="offline_banner"/>
                     </child>
                     <child>
-                      <object class="GtkSpinner">
-                        <property name="spinning">True</property>
+                      <object class="Spinner" id="spinner">
                         <property name="valign">center</property>
                         <property name="halign">center</property>
                         <property name="vexpand">True</property>

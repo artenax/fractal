@@ -9,6 +9,7 @@ use ruma::RoomId;
 
 use crate::{
     account_switcher::AccountSwitcher,
+    components::Spinner,
     config::{APP_ID, PROFILE},
     secret, spawn, spawn_tokio, Application, ErrorPage, Greeter, Login, Session,
 };
@@ -38,6 +39,8 @@ mod imp {
         pub toast_overlay: TemplateChild<adw::ToastOverlay>,
         #[template_child]
         pub offline_banner: TemplateChild<adw::Banner>,
+        #[template_child]
+        pub spinner: TemplateChild<Spinner>,
         pub account_switcher: AccountSwitcher,
         pub waiting_sessions: Cell<usize>,
     }
