@@ -1,6 +1,8 @@
 use glib::subclass::Signal;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 
+use super::Spinner;
+
 mod imp {
     use std::cell::Cell;
 
@@ -13,7 +15,7 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/components-loading-listbox-row.ui")]
     pub struct LoadingListBoxRow {
         #[template_child]
-        pub spinner: TemplateChild<gtk::Spinner>,
+        pub spinner: TemplateChild<Spinner>,
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
