@@ -19,7 +19,7 @@ use matrix_sdk::{
 
 use super::ContentFormat;
 use crate::{
-    components::{ImagePaintable, VideoPlayer},
+    components::{ImagePaintable, Spinner, VideoPlayer},
     session::Session,
     spawn, spawn_tokio,
     utils::{cache_dir, media::media_type_uid, uint_to_i32},
@@ -76,7 +76,7 @@ mod imp {
         #[template_child]
         pub overlay_error: TemplateChild<gtk::Image>,
         #[template_child]
-        pub overlay_spinner: TemplateChild<gtk::Spinner>,
+        pub overlay_spinner: TemplateChild<Spinner>,
     }
 
     #[glib::object_subclass]
