@@ -52,7 +52,9 @@ use self::{
     state_row::StateRow, typing_row::TypingRow, verification_info_bar::VerificationInfoBar,
 };
 use crate::{
-    components::{CustomEntry, DragOverlay, LabelWithWidgets, Pill, ReactionChooser, RoomTitle},
+    components::{
+        CustomEntry, DragOverlay, LabelWithWidgets, Pill, ReactionChooser, RoomTitle, Spinner,
+    },
     i18n::gettext_f,
     session::{
         content::{room_details, RoomDetails},
@@ -122,7 +124,7 @@ mod imp {
         #[template_child]
         pub message_entry: TemplateChild<sourceview::View>,
         #[template_child]
-        pub loading: TemplateChild<gtk::Spinner>,
+        pub loading: TemplateChild<Spinner>,
         #[template_child]
         pub error: TemplateChild<adw::StatusPage>,
         #[template_child]

@@ -100,8 +100,7 @@
           <object class="GtkStack" id="stack">
             <property name="transition-type">crossfade</property>
             <child>
-              <object class="GtkSpinner" id="loading">
-                <property name="spinning">True</property>
+              <object class="Spinner" id="loading">
                 <property name="valign">center</property>
                 <property name="halign">center</property>
                 <property name="vexpand">True</property>
