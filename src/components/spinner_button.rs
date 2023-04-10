@@ -1,6 +1,8 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, prelude::*, CompositeTemplate};
 
+use super::Spinner;
+
 mod imp {
     use glib::subclass::InitializingObject;
 
@@ -14,7 +16,7 @@ mod imp {
         #[template_child]
         pub label: TemplateChild<gtk::Label>,
         #[template_child]
-        pub spinner: TemplateChild<gtk::Spinner>,
+        pub spinner: TemplateChild<Spinner>,
     }
 
     #[glib::object_subclass]

@@ -14,8 +14,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkSpinner" id="spinner">
-            <property name="spinning">True</property>
+          <object class="Spinner" id="spinner">
             <property name="valign">center</property>
             <property name="halign">center</property>
           </object>
