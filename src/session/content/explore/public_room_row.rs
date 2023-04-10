@@ -3,7 +3,7 @@ use gettextrs::gettext;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 
 use crate::{
-    components::{Avatar, SpinnerButton},
+    components::{Avatar, Spinner, SpinnerButton},
     session::content::explore::PublicRoom,
 };
 
@@ -190,11 +190,9 @@ impl PublicRoomRow {
 
                 self.update_button(public_room);
             } else if imp.original_child.borrow().is_none() {
-                let spinner = gtk::Spinner::builder()
-                    .spinning(true)
-                    .margin_top(12)
-                    .margin_bottom(12)
-                    .build();
+                let spinner = Spinner::default();
+                spinner.set_margin_top(12);
+                spinner.set_margin_bottom(12);
                 imp.original_child.replace(self.child());
                 self.set_child(Some(&spinner));
             }
