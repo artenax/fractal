@@ -70,10 +70,23 @@ use crate::{
     Window,
 };
 
+/// The state of the session.
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, glib::Enum)]
+#[repr(i32)]
+#[enum_type(name = "SessionState")]
+pub enum SessionState {
+    LoggedOut = -1,
+    #[default]
+    Init = 0,
+    InitialSync = 1,
+    Verification = 2,
+    Ready = 3,
+}
+
 mod imp {
     use std::cell::{Cell, RefCell};
 
-    use glib::subclass::{InitializingObject, Signal};
+    use glib::subclass::InitializingObject;
     use once_cell::{sync::Lazy, unsync::OnceCell};
 
     use super::*;
@@ -96,8 +109,7 @@ mod imp {
         pub client: OnceCell<Client>,
         pub item_list: OnceCell<ItemList>,
         pub user: OnceCell<User>,
-        pub is_loaded: Cell<bool>,
-        pub prepared: Cell<bool>,
+        pub state: Cell<SessionState>,
         pub logout_on_dispose: Cell<bool>,
         pub info: OnceCell<StoredSession>,
         pub sync_tokio_handle: RefCell<Option<JoinHandle<()>>>,
@@ -210,6 +222,9 @@ mod imp {
                     glib::ParamSpecBoolean::builder("offline")
                         .read_only()
                         .build(),
+                    glib::ParamSpecEnum::builder::<SessionState>("state")
+                        .read_only()
+                        .build(),
                 ]
             });
 
@@ -224,18 +239,9 @@ mod imp {
                 "item-list" => obj.item_list().to_value(),
                 "user" => obj.user().to_value(),
                 "offline" => obj.is_offline().to_value(),
+                "state" => obj.state().to_value(),
                 _ => unimplemented!(),
             }
-        }
-
-        fn signals() -> &'static [Signal] {
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![
-                    Signal::builder("ready").build(),
-                    Signal::builder("logged-out").build(),
-                ]
-            });
-            SIGNALS.as_ref()
         }
 
         fn constructed(&self) {
@@ -330,6 +336,25 @@ impl Session {
         self.imp().info.get().map(|info| info.id())
     }
 
+    /// The current state of the session.
+    pub fn state(&self) -> SessionState {
+        self.imp().state.get()
+    }
+
+    /// Set the current state of the session.
+    fn set_state(&self, state: SessionState) {
+        let old_state = self.state();
+
+        if old_state == SessionState::LoggedOut || old_state == state {
+            // The session should be dismissed when it has been logged out, so
+            // we don't accept anymore state changes.
+            return;
+        }
+
+        self.imp().state.set(state);
+        self.notify("state");
+    }
+
     /// The currently selected room, if any.
     pub fn selected_room(&self) -> Option<Room> {
         self.imp()
@@ -383,14 +408,14 @@ impl Session {
         self.setup_direct_room_handler();
         self.setup_room_encrypted_changes();
 
-        self.set_is_prepared(true);
+        self.set_state(SessionState::InitialSync);
         self.sync();
 
         debug!("A new session was prepared");
     }
 
     fn sync(&self) {
-        if !self.is_prepared() || self.is_offline() {
+        if self.state() < SessionState::InitialSync || self.is_offline() {
             return;
         }
 
@@ -443,7 +468,7 @@ impl Session {
         let client = self.client();
         let user_id = self.user().unwrap().user_id();
 
-        self.imp().is_loaded.set(true);
+        self.set_state(SessionState::Verification);
 
         let encryption = client.encryption();
         let need_new_identity = spawn_tokio!(async move {
@@ -509,23 +534,7 @@ impl Session {
             })
             .await;
 
-        self.emit_by_name::<()>("ready", &[]);
-    }
-
-    fn is_loaded(&self) -> bool {
-        self.imp().is_loaded.get()
-    }
-
-    fn set_is_prepared(&self, prepared: bool) {
-        if self.is_prepared() == prepared {
-            return;
-        }
-
-        self.imp().prepared.set(prepared);
-    }
-
-    fn is_prepared(&self) -> bool {
-        self.imp().prepared.get()
+        self.set_state(SessionState::Ready);
     }
 
     /// The current settings for this session.
@@ -623,22 +632,18 @@ impl Session {
     }
 
     pub fn connect_logged_out<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId {
-        self.connect_local("logged-out", true, move |values| {
-            let obj = values[0].get::<Self>().unwrap();
-
-            f(&obj);
-
-            None
+        self.connect_notify_local(Some("state"), move |obj, _| {
+            if obj.state() == SessionState::LoggedOut {
+                f(obj);
+            }
         })
     }
 
     pub fn connect_ready<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId {
-        self.connect_local("ready", true, move |values| {
-            let obj = values[0].get::<Self>().unwrap();
-
-            f(&obj);
-
-            None
+        self.connect_notify_local(Some("state"), move |obj, _| {
+            if obj.state() == SessionState::Ready {
+                f(obj);
+            }
         })
     }
 
@@ -650,7 +655,7 @@ impl Session {
                 self.verification_list()
                     .handle_response_to_device(response.to_device_events);
 
-                if !self.is_loaded() {
+                if self.state() < SessionState::Verification {
                     self.mark_loaded();
                 }
             }
@@ -733,7 +738,7 @@ impl Session {
         let imp = self.imp();
         let info = imp.info.get().unwrap();
 
-        imp.is_loaded.set(false);
+        self.set_state(SessionState::LoggedOut);
 
         if let Some(handle) = imp.sync_tokio_handle.take() {
             handle.abort();
@@ -754,8 +759,6 @@ impl Session {
         }
 
         self.notifications().clear();
-
-        self.emit_by_name::<()>("logged-out", &[]);
 
         debug!("The logged out session was cleaned up");
     }
