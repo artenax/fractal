@@ -1,0 +1,1105 @@
+# Japanese translation for fractal.
+# Copyright (C) 2020 fractal's COPYRIGHT HOLDER
+# This file is distributed under the same license as the fractal package.
+# Yuki Okushi <huyuumi.dev@gmail.com>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: fractal master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
+"POT-Creation-Date: 2020-08-14 21:01+0000\n"
+"PO-Revision-Date: 2020-08-14 21:01+0000\n"
+"Last-Translator: Yuki Okushi <huyuumi.dev@gmail.com>\n"
+"Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:13
+msgctxt "shortcut window"
+msgid "General"
+msgstr "一般"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:18
+msgctxt "shortcut window"
+msgid "Close the active room"
+msgstr "アクティブなルームを閉じる"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:25
+msgctxt "shortcut window"
+msgid "Open main menu"
+msgstr "メインメニューを開く"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:32
+msgctxt "shortcut window"
+msgid "Open / close the room sidebar search"
+msgstr "ルームのサイドバー検索を開く/閉じる"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:39
+msgctxt "shortcut window"
+msgid "Open the previous room in the list"
+msgstr "リスト内の前のルームを開く"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:46
+msgctxt "shortcut window"
+msgid "Open the next room in the list"
+msgstr "リスト内の次のルームを開く"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:53
+msgctxt "shortcut window"
+msgid "Open the previous room with unread messages in the list"
+msgstr "リスト内の未読メッセージがある前のルームを開く"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:60
+msgctxt "shortcut window"
+msgid "Open the next room with unread messages in the list"
+msgstr "リスト内の未読メッセージがある次のルームを開く"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:67
+msgctxt "shortcut window"
+msgid "Open the first room of the list"
+msgstr "リストの最初のルームを開く"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:74
+msgctxt "shortcut window"
+msgid "Open the last room of the list"
+msgstr "リストの最後のルームを開く"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:81
+msgctxt "shortcut window"
+msgid "View older messages"
+msgstr "古いメッセージを見る"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:88
+msgctxt "shortcut window"
+msgid "View newer messages"
+msgstr "新しいメッセージを見る"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:94
+msgctxt "shortcut window"
+msgid "Keyboard Shortcuts"
+msgstr "キーボードショートカット"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:101
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "閉じる"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:110
+msgctxt "shortcut message"
+msgid "Composing a new message"
+msgstr "新しいメッセージを作成"
+
+#: fractal-gtk/res/gtk/help-overlay.ui:115
+msgctxt "shortcut message"
+msgid "Write on a new line"
+msgstr "改行して書き込む"
+
+#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:3
+#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:5
+#: fractal-gtk/res/ui/login_flow.ui:294 fractal-gtk/src/appop/mod.rs:213
+msgid "Fractal"
+msgstr "Fractal"
+
+#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:4
+msgid ""
+"Fractal is a decentralized, secure messaging client for collaborative group "
+"communication."
+msgstr ""
+"Fractal は協力してグループコミュニケーションを行うための、"
+"分散型で安全なメッセージングクライアントです。"
+
+#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:5
+msgid "Fractal group messaging"
+msgstr "Fractal グループメッセージング"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: fractal-gtk/res/org.gnome.Fractal.desktop.in.in:14
+msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;"
+msgstr "Matrix;matrix.org;chat;irc;communications;talk;riot;"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:13
+msgid "Type of password and token storage"
+msgstr "パスワードとトークンストレージの種類"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:14
+msgid "Type of password and token storage, default value is: Secret Service"
+msgstr "パスワードとトークンストレージの種類、デフォルト値: Secret Service"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:21
+msgid "If markdown sending is active"
+msgstr "markdown の送信がアクティブな場合"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:22
+msgid "Whether support for sending markdown messages is on"
+msgstr "markdown メッセージの送信をサポートしているかどうか"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:29
+msgid "X position of the main window on startup"
+msgstr "スタートアップ時のメインウィンドウの X 座標"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:34
+msgid "Y position of the main window on startup"
+msgstr "スタートアップ時のメインウィンドウの Y 座標"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:39
+msgid "Width of the main window on startup"
+msgstr "スタートアップ時のメインウィンドウの幅"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:44
+msgid "Height of the main window on startup"
+msgstr "スタートアップ時のメインウィンドウの高さ"
+
+#: fractal-gtk/res/org.gnome.Fractal.gschema.xml:49
+msgid "Whether the main window is maximized on startup"
+msgstr "スタートアップ時にメインウィンドウを最大化するかどうか"
+
+#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:8
+msgid "Daniel García Moreno"
+msgstr "Daniel García Moreno"
+
+#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:9
+msgid "Matrix group messaging app"
+msgstr "Matrix グループメッセージングアプリケーション"
+
+#: fractal-gtk/res/org.gnome.Fractal.metainfo.xml.in.in:11
+msgid ""
+"Fractal is a Matrix messaging app for GNOME written in Rust. Its interface "
+"is optimized for collaboration in large groups, such as free software "
+"projects."
+msgstr ""
+"Fractal は Rust で書かれた GNOME 用 Matrix メッセージングアプリケーションです。"
+"インターフェースはフリーソフトウェアプロジェクトのような大きなグループでの"
+"協力作業のために最適化されています。"
+
+#: fractal-gtk/res/ui/account_settings.ui:73
+msgid "Other people can find you by searching for any of these identifiers."
+msgstr ""
+"他のユーザーはこれらの識別子のいずれかを検索することで、あなたを見つけることができます。"
+
+#: fractal-gtk/res/ui/account_settings.ui:101
+msgid "Name"
+msgstr "名前"
+
+#: fractal-gtk/res/ui/account_settings.ui:124
+msgid "Type in your name"
+msgstr "名前の種類"
+
+#: fractal-gtk/res/ui/account_settings.ui:153
+msgid "Email"
+msgstr "メール"
+
+#: fractal-gtk/res/ui/account_settings.ui:182
+msgid "Phone"
+msgstr "電話番号"
+
+#: fractal-gtk/res/ui/account_settings.ui:211
+msgid "Password"
+msgstr "パスワード"
+
+#: fractal-gtk/res/ui/account_settings.ui:278
+msgid "Advanced Information"
+msgstr "詳細情報"
+
+#: fractal-gtk/res/ui/account_settings.ui:308
+msgid "Homeserver"
+msgstr "ホームサーバー"
+
+#: fractal-gtk/res/ui/account_settings.ui:337
+msgid "Matrix ID"
+msgstr "Matrix ID"
+
+#: fractal-gtk/res/ui/account_settings.ui:366
+msgid "Device ID"
+msgstr "デバイス ID"
+
+#: fractal-gtk/res/ui/account_settings.ui:421
+#: fractal-gtk/res/ui/account_settings.ui:502
+msgid "Deactivate Account"
+msgstr "アカウントを無効化"
+
+#: fractal-gtk/res/ui/account_settings.ui:447
+msgid ""
+"Deactivating your account means that you will lose all your messages, "
+"contacts, and files."
+msgstr ""
+"アカウントを無効化すると、すべてのメッセージ、連絡先、ファイルを失います。"
+
+#: fractal-gtk/res/ui/account_settings.ui:462
+msgid ""
+"To confirm that you really want to deactivate this account type in your "
+"password:"
+msgstr ""
+"本当にアカウントを無効化するか確認するために、パスワードを入力してください:"
+
+#: fractal-gtk/res/ui/account_settings.ui:487
+msgid "Also erase all messages"
+msgstr "すべてのメッセージも削除"
+
+#: fractal-gtk/res/ui/account_settings.ui:586
+#: fractal-gtk/res/ui/main_menu.ui:109
+msgid "Account Settings"
+msgstr "アカウント設定"
+
+#: fractal-gtk/res/ui/account_settings.ui:602
+#: fractal-gtk/res/ui/main_window.ui:522 fractal-gtk/res/ui/main_window.ui:662
+#: fractal-gtk/res/ui/main_window.ui:762 fractal-gtk/res/ui/media_viewer.ui:236
+#: fractal-gtk/res/ui/room_settings.ui:1034
+msgid "Back"
+msgstr "戻る"
+
+#: fractal-gtk/res/ui/account_settings.ui:623
+msgid "Check your email"
+msgstr "メールを確認"
+
+#: fractal-gtk/res/ui/account_settings.ui:626
+#: fractal-gtk/res/ui/direct_chat.ui:129 fractal-gtk/res/ui/invite_user.ui:129
+#: fractal-gtk/res/ui/join_room.ui:94 fractal-gtk/res/ui/leave_room.ui:32
+#: fractal-gtk/res/ui/new_room.ui:42 fractal-gtk/src/appop/account.rs:95
+#: fractal-gtk/src/appop/account.rs:158 fractal-gtk/src/appop/attach.rs:52
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: fractal-gtk/res/ui/account_settings.ui:634
+msgid "Apply"
+msgstr "適用"
+
+#: fractal-gtk/res/ui/add_room_menu.ui:22
+msgid "Room Directory"
+msgstr "ルームディレクトリ"
+
+#: fractal-gtk/res/ui/add_room_menu.ui:36
+msgid "Join Room"
+msgstr "ルームに参加"
+
+#: fractal-gtk/res/ui/add_room_menu.ui:63
+msgid "New Room"
+msgstr "新しいルーム"
+
+#: fractal-gtk/res/ui/add_room_menu.ui:77
+msgid "New Direct Chat"
+msgstr "新しいダイレクトチャット"
+
+#: fractal-gtk/res/ui/audio_player.ui:34 fractal-gtk/res/ui/audio_player.ui:50
+msgid "Play"
+msgstr "プレイ"
+
+#: fractal-gtk/res/ui/direct_chat.ui:126
+msgid "New direct chat"
+msgstr "新しいダイレクトチャット"
+
+#: fractal-gtk/res/ui/direct_chat.ui:137
+msgid "Start chat"
+msgstr "チャットを始める"
+
+#: fractal-gtk/res/ui/filechooser.ui:61
+msgid "Select room image file"
+msgstr "ルーム用の画像ファイルを選択"
+
+#: fractal-gtk/res/ui/invite.ui:18
+msgid "Invitation"
+msgstr "招待"
+
+#: fractal-gtk/res/ui/invite.ui:33
+msgid "Reject"
+msgstr "拒否"
+
+#: fractal-gtk/res/ui/invite.ui:46
+msgid "Accept"
+msgstr "承諾"
+
+#: fractal-gtk/res/ui/invite_user.ui:126 fractal-gtk/res/ui/invite_user.ui:137
+#: fractal-gtk/src/appop/invite.rs:153
+msgid "Invite"
+msgstr "招待"
+
+#: fractal-gtk/res/ui/join_room.ui:52
+msgid "ID or Alias"
+msgstr "ID またはエイリアス"
+
+#: fractal-gtk/res/ui/join_room.ui:91
+msgid "Join room"
+msgstr "ルームに参加"
+
+#: fractal-gtk/res/ui/join_room.ui:102 fractal-gtk/src/widgets/room.rs:124
+msgid "Join"
+msgstr "参加"
+
+#: fractal-gtk/res/ui/kicked_room.ui:30 fractal-gtk/res/ui/msg_src_window.ui:32
+msgid "Close"
+msgstr "閉じる"
+
+#: fractal-gtk/res/ui/leave_room.ui:18
+msgid "Leave?"
+msgstr "退出しますか？"
+
+#: fractal-gtk/res/ui/leave_room.ui:19
+msgid ""
+"Once you leave, you won’t be able to interact with people in the room "
+"anymore."
+msgstr ""
+"退出すると、ルームにいる人とやりとりできなくなります。"
+
+#: fractal-gtk/res/ui/leave_room.ui:45
+msgid "Leave room"
+msgstr "ルームを退出"
+
+#: fractal-gtk/res/ui/login_flow.ui:33
+msgid "Welcome to Fractal"
+msgstr "Fractal へようこそ"
+
+#: fractal-gtk/res/ui/login_flow.ui:47 fractal-gtk/res/ui/login_flow.ui:371
+msgid "_Log In"
+msgstr "ログイン(_L)"
+
+#: fractal-gtk/res/ui/login_flow.ui:59
+msgid "_Create Account"
+msgstr "アカウントを作成(_C)"
+
+#: fractal-gtk/res/ui/login_flow.ui:95
+msgid "What is your Provider?"
+msgstr "プロバイダは何ですか？"
+
+#: fractal-gtk/res/ui/login_flow.ui:124
+msgid "Matrix provider domain, e.g. myserver.co"
+msgstr "Matrix プロバイダドメイン、例: myserver.co"
+
+#: fractal-gtk/res/ui/login_flow.ui:140
+msgid "The domain may not be empty."
+msgstr "ドメインが空欄かもしれません。"
+
+#: fractal-gtk/res/ui/login_flow.ui:166
+msgid "_User ID"
+msgstr "ユーザー ID(_U)"
+
+#: fractal-gtk/res/ui/login_flow.ui:182
+msgid "_Password"
+msgstr "パスワード(_P)"
+
+#: fractal-gtk/res/ui/login_flow.ui:214
+msgid "User name, email, or phone number"
+msgstr "ユーザーネーム、メールアドレス、または電話番号"
+
+#: fractal-gtk/res/ui/login_flow.ui:247
+msgid "_Forgot Password?"
+msgstr "パスワードをお忘れですか？(_F)"
+
+#: fractal-gtk/res/ui/login_flow.ui:265
+msgid "Invalid username or password"
+msgstr "無効なユーザーネーム、またはパスワード"
+
+#: fractal-gtk/res/ui/login_flow.ui:306
+msgid "Choose Provider"
+msgstr "プロバイダを選択"
+
+#: fractal-gtk/res/ui/login_flow.ui:329
+msgid "_Next"
+msgstr "次へ(_N)"
+
+#: fractal-gtk/res/ui/login_flow.ui:348
+msgid "Log In"
+msgstr "ログイン"
+
+#: fractal-gtk/res/ui/main_menu.ui:123
+msgid "Log Out"
+msgstr "ログアウト"
+
+#: fractal-gtk/res/ui/main_menu.ui:150
+msgid "Keyboard _Shortcuts"
+msgstr "キーボードショートカット(_S)"
+
+#: fractal-gtk/res/ui/main_menu.ui:164
+msgid "_About Fractal"
+msgstr "Fractal について(_A)"
+
+#: fractal-gtk/res/ui/main_window.ui:185
+msgid "No room selected"
+msgstr "ルームが選択されていません"
+
+#: fractal-gtk/res/ui/main_window.ui:200
+msgid "Join a room to start chatting"
+msgstr "ルームに参加してチャットを始める"
+
+#: fractal-gtk/res/ui/main_window.ui:210
+msgid "No room"
+msgstr "ルームがありません"
+
+#: fractal-gtk/res/ui/main_window.ui:291
+msgid "Chat"
+msgstr "チャット"
+
+#: fractal-gtk/res/ui/main_window.ui:343
+msgid "Directory"
+msgstr "ディレクトリ"
+
+#: fractal-gtk/res/ui/main_window.ui:367
+msgid "Loading"
+msgstr "読込中"
+
+#: fractal-gtk/res/ui/main_window.ui:412
+msgid "User"
+msgstr "ユーザー"
+
+#: fractal-gtk/res/ui/main_window.ui:439
+msgid "Add"
+msgstr "追加"
+
+#: fractal-gtk/res/ui/main_window.ui:469
+msgid "Room search"
+msgstr "ルーム検索"
+
+#: fractal-gtk/res/ui/main_window.ui:596
+msgid "Room Menu"
+msgstr "ルームメニュー"
+
+#: fractal-gtk/res/ui/main_window.ui:702
+#: fractal-gtk/res/ui/server_chooser_menu.ui:65
+#: fractal-gtk/src/app/connect/directory.rs:137
+msgid "Default Matrix Server"
+msgstr "デフォルト Matrix サーバー"
+
+#: fractal-gtk/res/ui/markdown_popover.ui:23
+msgid "Markdown"
+msgstr "Markdown"
+
+#: fractal-gtk/res/ui/markdown_popover.ui:67
+msgid "> quote"
+msgstr "> 引用"
+
+#: fractal-gtk/res/ui/markdown_popover.ui:78
+msgid "**bold**"
+msgstr "**太字**"
+
+#: fractal-gtk/res/ui/markdown_popover.ui:93
+msgid "`code`"
+msgstr "`コード`"
+
+#: fractal-gtk/res/ui/markdown_popover.ui:105
+msgid "*italic*"
+msgstr "*斜体*"
+
+#: fractal-gtk/res/ui/media_viewer.ui:173
+msgid "Loading more media"
+msgstr "さらにメディアを読み込んでいます"
+
+#: fractal-gtk/res/ui/media_viewer.ui:264
+msgid "Toggle fullscreen"
+msgstr "フルスクリーンに切り替える"
+
+#: fractal-gtk/res/ui/members.ui:25 fractal-gtk/res/ui/room_settings.ui:940
+msgid "Search for room members"
+msgstr "ルーム番号を検索"
+
+#: fractal-gtk/res/ui/message_menu.ui:22
+msgid "Reply"
+msgstr "返信"
+
+#: fractal-gtk/res/ui/message_menu.ui:34
+msgid "Open With…"
+msgstr "…で開く"
+
+#: fractal-gtk/res/ui/message_menu.ui:47
+msgid "Save Image As…"
+msgstr "名前を付けて画像を保存…"
+
+#: fractal-gtk/res/ui/message_menu.ui:60
+msgid "Save Video As…"
+msgstr "名前を付けて動画を保存…"
+
+#: fractal-gtk/res/ui/message_menu.ui:73
+msgid "Copy Image"
+msgstr "画像をコピー"
+
+#: fractal-gtk/res/ui/message_menu.ui:86
+msgid "Copy Selection"
+msgstr "選択中の部分をコピー"
+
+#: fractal-gtk/res/ui/message_menu.ui:99
+msgid "Copy Text"
+msgstr "テキストをコピー"
+
+#: fractal-gtk/res/ui/message_menu.ui:114
+msgid "View Source"
+msgstr "ソースを表示"
+
+#: fractal-gtk/res/ui/message_menu.ui:139
+msgid "Delete Message"
+msgstr "メッセージを削除"
+
+#: fractal-gtk/res/ui/msg_src_window.ui:21
+msgid "Message Source"
+msgstr "メッセージのソース"
+
+#: fractal-gtk/res/ui/msg_src_window.ui:24
+msgid "Copy To Clipboard"
+msgstr "クリップボードにコピー"
+
+#: fractal-gtk/res/ui/new_room.ui:14
+msgid "Private Chat"
+msgstr "プライベートチャット"
+
+#: fractal-gtk/res/ui/new_room.ui:18 fractal-gtk/res/ui/new_room.ui:187
+msgid "Public"
+msgstr "パブリック"
+
+#: fractal-gtk/res/ui/new_room.ui:39
+msgid "Create new room"
+msgstr "新しいルームを作成"
+
+#: fractal-gtk/res/ui/new_room.ui:50
+msgid "Create"
+msgstr "作成"
+
+#: fractal-gtk/res/ui/new_room.ui:108
+msgid "Room name"
+msgstr "ルーム名"
+
+#: fractal-gtk/res/ui/new_room.ui:152
+msgid "Visibility"
+msgstr "公開設定"
+
+#: fractal-gtk/res/ui/new_room.ui:171
+msgid "Private"
+msgstr "プライベート"
+
+#: fractal-gtk/res/ui/password_dialog.ui:22
+#: fractal-gtk/src/widgets/file_dialog.rs:12
+#: fractal-gtk/src/widgets/file_dialog.rs:33
+msgid "_Cancel"
+msgstr "キャンセル(_C)"
+
+#: fractal-gtk/res/ui/password_dialog.ui:35
+msgid "Ch_ange"
+msgstr "変更(_A)"
+
+#: fractal-gtk/res/ui/password_dialog.ui:133
+msgid "The passwords do not match."
+msgstr "パスワードが一致しません。"
+
+#: fractal-gtk/res/ui/password_dialog.ui:151
+msgid "_Verify New Password"
+msgstr "新しいパスワードの確認(_V)"
+
+#: fractal-gtk/res/ui/password_dialog.ui:168
+msgid "_New Password"
+msgstr "新しいパスワード(_N)"
+
+#: fractal-gtk/res/ui/password_dialog.ui:212
+msgid "Current _Password"
+msgstr "現在のパスワード(_P)"
+
+#: fractal-gtk/res/ui/room_menu.ui:22
+msgid "Room Details"
+msgstr "ルーム詳細"
+
+#: fractal-gtk/res/ui/room_menu.ui:36
+msgid "Invite to This Room"
+msgstr "このルームに招待"
+
+#: fractal-gtk/res/ui/room_menu.ui:63
+msgid "Leave Room"
+msgstr "ルームを退出"
+
+#: fractal-gtk/res/ui/room_settings.ui:92
+msgid "Unknown"
+msgstr "不明"
+
+#: fractal-gtk/res/ui/room_settings.ui:118
+msgid "Add name"
+msgstr "名前を追加"
+
+#: fractal-gtk/res/ui/room_settings.ui:150
+msgid "Add topic"
+msgstr "トピックを追加"
+
+#: fractal-gtk/res/ui/room_settings.ui:174
+msgid "Type in your room topic"
+msgstr "ルームのトピックを入力"
+
+#: fractal-gtk/res/ui/room_settings.ui:202
+msgid "No room description"
+msgstr "ルームの説明がありません"
+
+#: fractal-gtk/res/ui/room_settings.ui:239
+msgid "Notifications"
+msgstr "通知"
+
+#: fractal-gtk/res/ui/room_settings.ui:280
+msgid "Notification sounds"
+msgstr "通知音"
+
+#: fractal-gtk/res/ui/room_settings.ui:325
+msgid "For all messages"
+msgstr "すべてのメッセージ"
+
+#: fractal-gtk/res/ui/room_settings.ui:366
+msgid "Only for mentions"
+msgstr "メンションのみ"
+
+#: fractal-gtk/res/ui/room_settings.ui:397
+msgid "Shared Media"
+msgstr "共有されたメディア"
+
+#: fractal-gtk/res/ui/room_settings.ui:444
+msgid "photos"
+msgstr "画像"
+
+#: fractal-gtk/res/ui/room_settings.ui:484
+msgid "videos"
+msgstr "動画"
+
+#: fractal-gtk/res/ui/room_settings.ui:524
+msgid "documents"
+msgstr "ドキュメント"
+
+#: fractal-gtk/res/ui/room_settings.ui:555
+msgid "New members can see"
+msgstr "新しいメンバーはこれらを見ることができます"
+
+#: fractal-gtk/res/ui/room_settings.ui:600
+msgid "All room history"
+msgstr "すべてのルーム履歴"
+
+#: fractal-gtk/res/ui/room_settings.ui:641
+msgid "History after they were invited"
+msgstr "招待されてからの履歴"
+
+#: fractal-gtk/res/ui/room_settings.ui:672
+msgid "Room Visibility"
+msgstr "ルームの公開設定"
+
+#: fractal-gtk/res/ui/room_settings.ui:719
+msgid "Allow guests"
+msgstr "ゲストを許可"
+
+#: fractal-gtk/res/ui/room_settings.ui:759
+msgid "Allow joining without invite"
+msgstr "招待なしで参加することを許可"
+
+#: fractal-gtk/res/ui/room_settings.ui:799
+msgid "Publish in room directory"
+msgstr "ルームディレクトリに載せる"
+
+#: fractal-gtk/res/ui/room_settings.ui:830
+msgid "Join addresses"
+msgstr "参加アドレス"
+
+#: fractal-gtk/res/ui/room_settings.ui:889
+msgid "members"
+msgstr "メンバー"
+
+#: fractal-gtk/res/ui/room_settings.ui:905
+msgid "Invite New Member"
+msgstr "新しいメンバーを招待"
+
+#: fractal-gtk/res/ui/room_settings.ui:1018
+msgid "Details"
+msgstr "詳細"
+
+#: fractal-gtk/res/ui/scroll_widget.ui:63
+msgid "Scroll to bottom"
+msgstr "下までスクロール"
+
+#: fractal-gtk/res/ui/server_chooser_menu.ui:34
+msgid "Show rooms from:"
+msgstr "ここからルームを表示:"
+
+#: fractal-gtk/res/ui/server_chooser_menu.ui:90
+msgid "Your homeserver"
+msgstr "あなたのホームサーバー"
+
+#: fractal-gtk/res/ui/server_chooser_menu.ui:134
+msgid "Other Protocol"
+msgstr "他のプロトコル"
+
+#: fractal-gtk/res/ui/server_chooser_menu.ui:207
+msgid "Other Homeserver"
+msgstr "他のホームサーバー"
+
+#: fractal-gtk/res/ui/server_chooser_menu.ui:235
+msgid "Homeserver URL"
+msgstr "ホームサーバー URL"
+
+#: fractal-gtk/src/actions/account_settings.rs:34
+#: fractal-gtk/src/actions/room_settings.rs:43
+msgid "Images"
+msgstr "画像"
+
+#: fractal-gtk/src/actions/account_settings.rs:35
+#: fractal-gtk/src/actions/room_settings.rs:45
+msgid "Select a new avatar"
+msgstr "新しいアバターを選択"
+
+#: fractal-gtk/src/actions/global.rs:298
+msgid "Select a file"
+msgstr "ファイルを選択"
+
+#: fractal-gtk/src/actions/message.rs:74
+msgid "This message has no source."
+msgstr "このメッセージはソースがありません。"
+
+#: fractal-gtk/src/actions/message.rs:159
+#: fractal-gtk/src/actions/message.rs:197
+msgid "Could not download the file"
+msgstr "ファイルをダウンロードできませんでした"
+
+#: fractal-gtk/src/actions/message.rs:168
+msgid "Couldn’t save file"
+msgstr "ファイルを保存できませんでした"
+
+#: fractal-gtk/src/actions/room_settings.rs:61
+msgid "Couldn’t open file"
+msgstr "ファイルを開けませんでした"
+
+#: fractal-gtk/src/appop/about.rs:20
+msgid "A Matrix.org client for GNOME"
+msgstr "GNOME 用 Matrix.org クライアント"
+
+#: fractal-gtk/src/appop/about.rs:22
+msgid "© 2017–2020 Daniel García Moreno, et al."
+msgstr "© 2017–2020 Daniel García Moreno, et al."
+
+#: fractal-gtk/src/appop/about.rs:29
+msgid "Learn more about Fractal"
+msgstr "Fractal についてもっと知る"
+
+#: fractal-gtk/src/appop/about.rs:30
+msgid "translator-credits"
+msgstr ""
+"Yuki Okushi <huyuumi.dev@gmail.com>, 2020"
+
+#: fractal-gtk/src/appop/about.rs:45
+msgid "Name by"
+msgstr "Name by"
+
+#: fractal-gtk/src/appop/account.rs:68
+msgid "The validation code is not correct."
+msgstr "バリデーションコードが間違っています。"
+
+#: fractal-gtk/src/appop/account.rs:81
+msgid "Enter the code received via SMS"
+msgstr "SMS 経由で受け取ったコードを入力してください"
+
+#: fractal-gtk/src/appop/account.rs:96 fractal-gtk/src/appop/account.rs:159
+msgid "Continue"
+msgstr "続ける"
+
+#: fractal-gtk/src/appop/account.rs:149
+msgid ""
+"In order to add this email address, go to your inbox and follow the link you "
+"received. Once you’ve done that, click Continue."
+msgstr ""
+"メールアドレスを追加するには、受信ボックスを確認し受け取ったリンク"
+"をクリックしてください。完了したら、「続ける」をクリックしてください。"
+
+#: fractal-gtk/src/appop/account.rs:218
+msgid "OK"
+msgstr "OK"
+
+#: fractal-gtk/src/appop/account.rs:786
+msgid "Are you sure you want to delete your account?"
+msgstr "アカウントを削除しますがよろしいですか？"
+
+#: fractal-gtk/src/appop/attach.rs:37
+msgid "Image from Clipboard"
+msgstr "クリップボートからの画像"
+
+#: fractal-gtk/src/appop/attach.rs:53
+msgid "Send"
+msgstr "送信"
+
+#. Filename for the attached image
+#: fractal-gtk/src/appop/attach.rs:82
+msgid "image"
+msgstr "画像ファイル名"
+
+#: fractal-gtk/src/appop/invite.rs:151
+msgid "Invite to {name}"
+msgstr "{name} を招待"
+
+#: fractal-gtk/src/appop/invite.rs:269
+msgid "Join {room_name}?"
+msgstr "{room_name} に参加しますか？"
+
+#: fractal-gtk/src/appop/invite.rs:274
+msgid ""
+"You’ve been invited to join <b>{room_name}</b> room by <b>{sender_name}</b>"
+msgstr ""
+"<b>{sender_name}</b> により <b>{room_name}</b> へ招待されました"
+
+#: fractal-gtk/src/appop/invite.rs:279
+msgid "You’ve been invited to join <b>{room_name}</b>"
+msgstr "<b>{room_name}</b> に招待されました"
+
+#. Translators: The placeholder is for the number of unread messages in the
+#. application
+#: fractal-gtk/src/appop/mod.rs:217
+msgid "Fractal [{}]"
+msgstr "Fractal [{}]"
+
+#: fractal-gtk/src/appop/notify.rs:52
+msgid "An audio file has been added to the conversation."
+msgstr "会話に音声ファイルが追加されました。"
+
+#: fractal-gtk/src/appop/notify.rs:53
+msgid "An image has been added to the conversation."
+msgstr "会話に画像が追加されました。"
+
+#: fractal-gtk/src/appop/notify.rs:54
+msgid "A video has been added to the conversation."
+msgstr "会話に動画が追加されました。"
+
+#: fractal-gtk/src/appop/notify.rs:55
+msgid "A file has been added to the conversation."
+msgstr "会話にファイルが追加されました。"
+
+#: fractal-gtk/src/appop/notify.rs:60
+msgid " (direct message)"
+msgstr " (ダイレクトメッセージ)"
+
+#: fractal-gtk/src/appop/room.rs:358
+msgid "Leave {room_name}?"
+msgstr "{room_name} を退出しますか？"
+
+#: fractal-gtk/src/appop/room.rs:573
+msgid "The room ID is malformed"
+msgstr "ルーム ID が間違っています"
+
+#: fractal-gtk/src/appop/room.rs:643
+msgid "EMPTY ROOM"
+msgstr "EMPTY ROOM"
+
+#: fractal-gtk/src/appop/room.rs:645
+msgid "{m1} and {m2}"
+msgstr "{m1} と {m2}"
+
+#: fractal-gtk/src/appop/room.rs:646
+msgid "{m1} and Others"
+msgstr "{m1} とその他"
+
+#: fractal-gtk/src/appop/room.rs:745
+msgid "Several users are typing…"
+msgstr "複数のユーザーが入力しています…"
+
+#: fractal-gtk/src/appop/room.rs:748
+msgid "<b>{}</b> is typing…"
+msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
+msgstr[0] "<b>{}</b> が入力しています…"
+msgstr[1] "<b>{}</b> と <b>{}</b> が入力しています…"
+
+#: fractal-gtk/src/appop/sync.rs:16
+msgid "Syncing, this could take a while"
+msgstr "同期中です、これには時間がかかる場合があります"
+
+#: fractal-gtk/src/backend/directory.rs:39
+#: fractal-gtk/src/backend/directory.rs:80
+msgid "Error searching for rooms"
+msgstr "ルームの検索中にエラーが発生しました"
+
+#: fractal-gtk/src/backend/register.rs:37
+msgid "Can’t login, try again"
+msgstr "ログインできません、再度試してください"
+
+#: fractal-gtk/src/backend/room.rs:352
+msgid "Error deleting message"
+msgstr "メッセージの削除中にエラーが発生しました"
+
+#: fractal-gtk/src/backend/room.rs:419
+msgid "Can’t join the room, try again."
+msgstr "ルームに参加できません、再度試してください。"
+
+#: fractal-gtk/src/backend/room.rs:684 fractal-gtk/src/backend/room.rs:741
+msgid "Can’t create the room, try again"
+msgstr "ルームを作成できません、再度試してください"
+
+#: fractal-gtk/src/backend/user.rs:162
+msgid "Sorry, account settings can’t be loaded."
+msgstr "申し訳ありません、アカウント設定を読み込めません。"
+
+#: fractal-gtk/src/backend/user.rs:201
+msgid "Email is already in use"
+msgstr "このメールアドレスはすでに使われています"
+
+#: fractal-gtk/src/backend/user.rs:205
+msgid "Please enter a valid email address."
+msgstr "有効なメールアドレスを入力してください。"
+
+#: fractal-gtk/src/backend/user.rs:209
+msgid "Couldn’t add the email address."
+msgstr "メールアドレスを追加できませんでした。"
+
+#: fractal-gtk/src/backend/user.rs:218 fractal-gtk/src/backend/user.rs:296
+msgid "The identity server is invalid."
+msgstr "アイデンティティサーバーが間違っています。"
+
+#: fractal-gtk/src/backend/user.rs:277
+msgid "Phone number is already in use"
+msgstr "この電話番号はすでに使われています"
+
+#: fractal-gtk/src/backend/user.rs:282
+msgid ""
+"Please enter your phone number in the format: \n"
+" + your country code and your phone number."
+msgstr ""
+"このような形式で電話番号を入力してください: \n"
+"+あなたの国番号と電話番号"
+
+#: fractal-gtk/src/backend/user.rs:287
+msgid "Couldn’t add the phone number."
+msgstr "電話番号を追加できませんでした。"
+
+#: fractal-gtk/src/backend/user.rs:443
+msgid "Couldn’t change the password"
+msgstr "パスワードを変更できませんでした"
+
+#: fractal-gtk/src/backend/user.rs:487
+msgid "Couldn’t delete the account"
+msgstr "アカウントを削除できませんでした"
+
+#: fractal-gtk/src/uibuilder.rs:52
+msgid "You don’t have permission to post to this room"
+msgstr "このルームへ投稿する権限を持っていません"
+
+#: fractal-gtk/src/widgets/file_dialog.rs:8
+msgid "Save media as"
+msgstr "名前を付けてメディアを保存"
+
+#: fractal-gtk/src/widgets/file_dialog.rs:11
+msgid "_Save"
+msgstr "保存(_S)"
+
+#: fractal-gtk/src/widgets/file_dialog.rs:32
+msgid "_Select"
+msgstr "選択(_S)"
+
+#: fractal-gtk/src/widgets/inline_player.rs:521
+msgid "Could not retrieve file URI"
+msgstr "ファイルの URI を取得できませんでした"
+
+#: fractal-gtk/src/widgets/kicked_dialog.rs:46
+msgid "You have been kicked from {}"
+msgstr "{} から追放されました"
+
+#: fractal-gtk/src/widgets/kicked_dialog.rs:50
+msgid ""
+"Kicked by: {}\n"
+" “{}”"
+msgstr ""
+"このユーザにより追放: {}\n"
+" “{}”"
+
+#: fractal-gtk/src/widgets/login.rs:98
+msgid "Malformed server URL"
+msgstr "不正なサーバー URL"
+
+#: fractal-gtk/src/widgets/media_viewer.rs:1050
+msgid "Error while loading previous media"
+msgstr "以前のメディアを読み込んでいる途中でエラーが発生しました"
+
+#: fractal-gtk/src/widgets/members_list.rs:51
+msgid "No matching members found"
+msgstr "一致するメンバーが見つかりません"
+
+#: fractal-gtk/src/widgets/members_list.rs:167
+msgid "Admin"
+msgstr "管理者"
+
+#: fractal-gtk/src/widgets/members_list.rs:168
+msgid "Moderator"
+msgstr "モデレーター"
+
+#: fractal-gtk/src/widgets/members_list.rs:169
+msgid "Privileged"
+msgstr "特権ユーザー"
+
+#: fractal-gtk/src/widgets/message.rs:90
+msgid "Uploading video."
+msgstr "動画をアップロードしています。"
+
+#: fractal-gtk/src/widgets/message.rs:95
+msgid "Uploading audio."
+msgstr "音声をアップロードしています。"
+
+#: fractal-gtk/src/widgets/message.rs:100
+msgid "Uploading image."
+msgstr "画像をアップロードしています。"
+
+#: fractal-gtk/src/widgets/message.rs:104
+msgid "Uploading file."
+msgstr "ファイルをアップロードしています。"
+
+#: fractal-gtk/src/widgets/message.rs:256
+#, c-format
+msgid "Last edited %c"
+msgstr "最終更新 %c"
+
+#: fractal-gtk/src/widgets/message.rs:481
+#: fractal-gtk/src/widgets/message.rs:596
+msgid "Save"
+msgstr "保存"
+
+#: fractal-gtk/src/widgets/message.rs:610
+msgid "Open"
+msgstr "開く"
+
+#. Use 12h time format (AM/PM)
+#: fractal-gtk/src/widgets/message.rs:630
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Use 24 time format
+#: fractal-gtk/src/widgets/message.rs:633
+msgid "%R"
+msgstr "%R"
+
+#: fractal-gtk/src/widgets/room_history.rs:96
+msgid "New Messages"
+msgstr "新しいメッセージ"
+
+#. Translators: This is a date format in the day divider without the year
+#: fractal-gtk/src/widgets/room_history.rs:795
+msgid "%B %e"
+msgstr "%B %e"
+
+#. Translators: This is a date format in the day divider with the year
+#: fractal-gtk/src/widgets/room_history.rs:798
+msgid "%B %e, %Y"
+msgstr "%B %e, %Y"
+
+#: fractal-gtk/src/widgets/room_settings.rs:211
+msgid "Room · {} member"
+msgid_plural "Room · {} members"
+msgstr[0] "ルーム · {}人のメンバー"
+msgstr[1] "ルーム · {}人のメンバー"
+
+#: fractal-gtk/src/widgets/room_settings.rs:659
+msgid "{} member"
+msgid_plural "{} members"
+msgstr[0] "{}人のメンバー"
+msgstr[1] "{}人のメンバー"
+
+#: fractal-gtk/src/widgets/roomlist.rs:480
+msgid "Invites"
+msgstr "招待"
+
+#: fractal-gtk/src/widgets/roomlist.rs:481
+msgid "You don’t have any invitations"
+msgstr "招待はありません"
+
+#: fractal-gtk/src/widgets/roomlist.rs:485
+msgid "Favorites"
+msgstr "お気に入り"
+
+#: fractal-gtk/src/widgets/roomlist.rs:486
+msgid "Drag and drop rooms here to add them to your favorites"
+msgstr "ルームをドラッグ & ドロップしてお気に入りに追加"
+
+#: fractal-gtk/src/widgets/roomlist.rs:490
+msgid "Rooms"
+msgstr "ルーム"
+
+#: fractal-gtk/src/widgets/roomlist.rs:491
+msgid "You don’t have any rooms yet"
+msgstr "ルームはありません"
