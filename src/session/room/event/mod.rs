@@ -227,21 +227,20 @@ impl Event {
     ///
     /// Returns `true` if the update succeeded.
     pub fn try_update_with(&self, item: &EventTimelineItem) -> bool {
-        match self.key() {
-            EventKey::TransactionId(txn_id) => match item {
-                EventTimelineItem::Local(local_event) if local_event.transaction_id() == txn_id => {
-                    self.set_item(item.clone());
-                    return true;
-                }
-                _ => {}
-            },
-            EventKey::EventId(event_id) => match item {
-                EventTimelineItem::Remote(remote_event) if remote_event.event_id() == event_id => {
-                    self.set_item(item.clone());
-                    return true;
-                }
-                _ => {}
-            },
+        match &self.key() {
+            EventKey::TransactionId(txn_id)
+                if item.is_local_echo() && item.transaction_id() == Some(txn_id) =>
+            {
+                self.set_item(item.clone());
+                return true;
+            }
+            EventKey::EventId(event_id)
+                if !item.is_local_echo() && item.event_id() == Some(event_id) =>
+            {
+                self.set_item(item.clone());
+                return true;
+            }
+            _ => {}
         }
 
         false
@@ -272,16 +271,8 @@ impl Event {
         let was_highlighted = self.is_highlighted();
         let imp = self.imp();
 
-        imp.reactions.update(
-            item.as_remote()
-                .map(|i| i.reactions().clone())
-                .unwrap_or_default(),
-        );
-        imp.read_receipts.update(
-            item.as_remote()
-                .map(|i| i.read_receipts().clone())
-                .unwrap_or_default(),
-        );
+        imp.reactions.update(item.reactions().clone());
+        imp.read_receipts.update(item.read_receipts().clone());
         imp.item.replace(Some(item));
 
         self.notify("source");
@@ -296,28 +287,41 @@ impl Event {
     /// The raw JSON source for this `Event`, if it has been echoed back
     /// by the server.
     pub fn raw(&self) -> Option<Raw<AnySyncTimelineEvent>> {
-        self.imp().item.borrow().as_ref().unwrap().raw().cloned()
+        self.imp()
+            .item
+            .borrow()
+            .as_ref()
+            .unwrap()
+            .original_json()
+            .cloned()
     }
 
     /// The pretty-formatted JSON source for this `Event`, if it has
     /// been echoed back by the server.
     pub fn source(&self) -> Option<String> {
-        self.imp().item.borrow().as_ref().unwrap().raw().map(|raw| {
-            // We have to convert it to a Value, because a RawValue cannot be
-            // pretty-printed.
-            let json = serde_json::to_value(raw).unwrap();
+        self.imp()
+            .item
+            .borrow()
+            .as_ref()
+            .unwrap()
+            .original_json()
+            .map(|raw| {
+                // We have to convert it to a Value, because a RawValue cannot be
+                // pretty-printed.
+                let json = serde_json::to_value(raw).unwrap();
 
-            serde_json::to_string_pretty(&json).unwrap()
-        })
+                serde_json::to_string_pretty(&json).unwrap()
+            })
     }
 
     /// The unique of this `Event` in the timeline.
     pub fn key(&self) -> EventKey {
-        match self.imp().item.borrow().as_ref().unwrap() {
-            EventTimelineItem::Local(event) => {
-                EventKey::TransactionId(event.transaction_id().to_owned())
-            }
-            EventTimelineItem::Remote(event) => EventKey::EventId(event.event_id().to_owned()),
+        let item_ref = self.imp().item.borrow();
+        let item = item_ref.as_ref().unwrap();
+        if item.is_local_echo() {
+            EventKey::TransactionId(item.transaction_id().unwrap().to_owned())
+        } else {
+            EventKey::EventId(item.event_id().unwrap().to_owned())
         }
     }
 
@@ -416,7 +420,7 @@ impl Event {
     /// Whether this `Event` should be highlighted.
     pub fn is_highlighted(&self) -> bool {
         let item_ref = self.imp().item.borrow();
-        let Some(item) = item_ref.as_ref().and_then(|i| i.as_remote()) else {
+        let Some(item) = item_ref.as_ref() else {
             return false;
         };
 
@@ -453,9 +457,7 @@ impl Event {
     /// Returns `None(_)` if this event is not a reply.
     pub fn reply_to_event_content(&self) -> Option<TimelineDetails<Box<RepliedToEvent>>> {
         match self.imp().item.borrow().as_ref().unwrap().content() {
-            TimelineItemContent::Message(message) => {
-                message.in_reply_to().map(|d| d.details.clone())
-            }
+            TimelineItemContent::Message(message) => message.in_reply_to().map(|d| d.event.clone()),
             _ => None,
         }
     }

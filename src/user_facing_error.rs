@@ -9,7 +9,6 @@ use matrix_sdk::{
     },
     ClientBuildError, Error, HttpError, RumaApiError,
 };
-use matrix_sdk_sled::OpenStoreError;
 
 use crate::ngettext_f;
 
@@ -74,12 +73,6 @@ impl UserFacingError for Error {
     }
 }
 
-impl UserFacingError for OpenStoreError {
-    fn to_user_facing(self) -> String {
-        gettext("Could not open the store.")
-    }
-}
-
 impl UserFacingError for ClientBuildError {
     fn to_user_facing(self) -> String {
         match self {
@@ -88,7 +81,7 @@ impl UserFacingError for ClientBuildError {
                 gettext("Homeserver auto-discovery failed. Try entering the full URL manually.")
             }
             ClientBuildError::Http(err) => err.to_user_facing(),
-            ClientBuildError::SledStore(err) => err.to_user_facing(),
+            ClientBuildError::SqliteStore(_) => gettext("Could not open the store."),
             _ => gettext("An unknown error occurred."),
         }
     }

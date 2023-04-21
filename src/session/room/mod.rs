@@ -31,7 +31,7 @@ use matrix_sdk::{
         OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
     },
     sync::{JoinedRoom, LeftRoom},
-    DisplayName, Result as MatrixResult,
+    DisplayName, Result as MatrixResult, RoomMemberships,
 };
 use ruma::events::{
     receipt::ReceiptThread, typing::TypingEventContent, AnyMessageLikeEventContent,
@@ -285,14 +285,18 @@ impl Room {
         self.imp().room_id.get().unwrap()
     }
 
-    /// Whether this room is a DM
-    pub fn is_direct(&self) -> bool {
-        self.imp()
-            .matrix_room
-            .borrow()
-            .as_ref()
-            .unwrap()
-            .is_direct()
+    /// Set the proper category for this joined room.
+    pub fn set_joined(&self) {
+        let matrix_room = self.matrix_room();
+
+        let handle = spawn_tokio!(async move { matrix_room.is_direct().await.unwrap_or_default() });
+        spawn!(clone!(@weak self as obj => async move {
+            if handle.await.unwrap() {
+                obj.set_category(RoomType::Direct);
+            } else {
+                obj.set_category(RoomType::Normal);
+            }
+        }));
     }
 
     pub fn matrix_room(&self) -> MatrixRoom {
@@ -450,7 +454,7 @@ impl Room {
                             }
                         }
 
-                        if room.is_direct() {
+                        if room.is_direct().await.unwrap_or_default() {
                             room.set_is_direct(false).await?;
                         }
 
@@ -473,7 +477,7 @@ impl Room {
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
                     RoomType::Direct => {
-                        if !room.is_direct() {
+                        if !room.is_direct().await.unwrap_or_default() {
                             room.set_is_direct(true).await?;
                         }
 
@@ -498,7 +502,7 @@ impl Room {
                         }
                     }
                     RoomType::Normal => {
-                        if room.is_direct() {
+                        if room.is_direct().await.unwrap_or_default() {
                             room.set_is_direct(false).await?;
                         }
                         match previous_category {
@@ -523,7 +527,7 @@ impl Room {
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
                     RoomType::Direct => {
-                        if !room.is_direct() {
+                        if !room.is_direct().await.unwrap_or_default() {
                             room.set_is_direct(true).await?;
                         }
 
@@ -576,7 +580,7 @@ impl Room {
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
                     RoomType::Direct => {
-                        if !room.is_direct() {
+                        if !room.is_direct().await.unwrap_or_default() {
                             room.set_is_direct(true).await?;
                         }
 
@@ -639,19 +643,22 @@ impl Room {
                 if matrix_room.is_space() {
                     self.set_category_internal(RoomType::Space);
                 } else {
-                    let is_direct = matrix_room.is_direct();
-                    let handle = spawn_tokio!(async move { matrix_room.tags().await });
+                    let matrix_room_clone = matrix_room.clone();
+                    let is_direct = spawn_tokio!(async move {
+                        matrix_room_clone.is_direct().await.unwrap_or_default()
+                    });
+                    let tags = spawn_tokio!(async move { matrix_room.tags().await });
 
                     spawn!(
                         glib::PRIORITY_DEFAULT_IDLE,
                         clone!(@weak self as obj => async move {
-                            let mut category = if is_direct {
-                                        RoomType::Direct
-                                    } else {
-                                        RoomType::Normal
-                                    };
+                            let mut category = if is_direct.await.unwrap() {
+                                RoomType::Direct
+                            } else {
+                                RoomType::Normal
+                            };
 
-                            if let Ok(Some(tags)) = handle.await.unwrap() {
+                            if let Ok(Some(tags)) = tags.await.unwrap() {
                                 if tags.get(&TagName::Favorite).is_some() {
                                     category = RoomType::Favorite;
                                 } else if tags.get(&TagName::LowPriority).is_some() {
@@ -1131,7 +1138,12 @@ impl Room {
 
         imp.members_loaded.set(true);
         let matrix_room = self.matrix_room();
-        let handle = spawn_tokio!(async move { matrix_room.members().await });
+        let handle = spawn_tokio!(async move {
+            let mut memberships = RoomMemberships::all();
+            memberships.remove(RoomMemberships::LEAVE);
+
+            matrix_room.members(memberships).await
+        });
         spawn!(
             glib::PRIORITY_LOW,
             clone!(@weak self as obj => async move {
@@ -1140,9 +1152,6 @@ impl Room {
                 match handle.await.unwrap() {
                     Ok(members) => {
                         // Add all members needed to display room events.
-                        let members: Vec<_> = members.into_iter().filter(|member| {
-                            &MembershipState::Leave != member.membership()
-                        }).collect();
                         obj.members().update_from_room_members(&members);
                     },
                     Err(error) => {

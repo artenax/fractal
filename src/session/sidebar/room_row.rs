@@ -351,11 +351,6 @@ impl RoomRow {
     }
 
     fn set_room_as_normal_or_direct(&self) {
-        let room = self.room().unwrap();
-        if room.is_direct() {
-            room.set_category(RoomType::Direct);
-        } else {
-            room.set_category(RoomType::Normal);
-        }
+        self.room().unwrap().set_joined();
     }
 }

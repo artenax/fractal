@@ -5,11 +5,9 @@ use gettextrs::gettext;
 use gtk::{self, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::{error, warn};
 use matrix_sdk::{
-    config::{RequestConfig, StoreConfig},
-    ruma::api::client::session::get_login_types::v3::LoginType,
-    Client, ClientBuildError, StoreError,
+    config::RequestConfig, ruma::api::client::session::get_login_types::v3::LoginType, Client,
+    ClientBuildError,
 };
-use matrix_sdk_sled::{MigrationConflictStrategy, OpenStoreError, SledStateStore};
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use ruma::OwnedServerName;
 use thiserror::Error;
@@ -715,8 +713,6 @@ pub enum HomeserverOrServerName {
 #[derive(Error, Debug)]
 pub enum ClientSetupError {
     #[error(transparent)]
-    Store(#[from] OpenStoreError),
-    #[error(transparent)]
     Client(#[from] ClientBuildError),
     #[error(transparent)]
     Sdk(#[from] matrix_sdk::Error),
@@ -725,7 +721,6 @@ pub enum ClientSetupError {
 impl UserFacingError for ClientSetupError {
     fn to_user_facing(self) -> String {
         match self {
-            ClientSetupError::Store(err) => err.to_user_facing(),
             ClientSetupError::Client(err) => err.to_user_facing(),
             ClientSetupError::Sdk(err) => err.to_user_facing(),
         }
@@ -754,7 +749,7 @@ impl CreatedClient {
         use_discovery: bool,
         path: Option<PathBuf>,
         passphrase: Option<String>,
-    ) -> Result<CreatedClient, ClientSetupError> {
+    ) -> Result<CreatedClient, ClientBuildError> {
         let path = path.unwrap_or_else(|| {
             let mut path = glib::user_data_dir();
             path.push(glib::uuid_string_random().as_str());
@@ -769,17 +764,6 @@ impl CreatedClient {
                 .collect()
         });
 
-        let state_store = SledStateStore::builder()
-            .path(path.clone())
-            .passphrase(passphrase.clone())
-            .migration_conflict_strategy(MigrationConflictStrategy::Drop)
-            .build()
-            .map_err(|err| OpenStoreError::from(StoreError::backend(err)))?;
-        let crypto_store = state_store.open_crypto_store().await?;
-        let store_config = StoreConfig::new()
-            .state_store(state_store)
-            .crypto_store(crypto_store);
-
         let builder = match homeserver {
             HomeserverOrServerName::Homeserver(url) => Client::builder().homeserver_url(url),
             HomeserverOrServerName::ServerName(server_name) => {
@@ -788,7 +772,7 @@ impl CreatedClient {
         };
 
         let client = builder
-            .store_config(store_config)
+            .sqlite_store(&path, Some(&passphrase))
             // force_auth option to solve an issue with some servers configuration to require
             // auth for profiles:
             // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
