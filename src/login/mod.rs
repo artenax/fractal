@@ -473,6 +473,7 @@ impl Login {
                         access_token: response.access_token,
                         passphrase,
                     },
+                    version: secret::CURRENT_VERSION,
                 };
                 self.create_session(session_info, true).await;
             }
@@ -528,6 +529,7 @@ impl Login {
                         access_token: response.access_token,
                         passphrase,
                     },
+                    version: secret::CURRENT_VERSION,
                 };
                 self.create_session(session_info, true).await;
             }

@@ -1,17 +1,20 @@
-use std::cell::Cell;
+use std::{cell::Cell, fs};
 
 use adw::subclass::prelude::AdwApplicationWindowImpl;
 use gettextrs::gettext;
 use glib::signal::Inhibit;
 use gtk::{self, gdk, gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
-use log::{info, warn};
+use log::{error, info, warn};
 use ruma::RoomId;
 
 use crate::{
     account_switcher::AccountSwitcher,
     components::Spinner,
     config::{APP_ID, PROFILE},
-    secret, spawn, spawn_tokio, Application, ErrorPage, Greeter, Login, Session,
+    secret::{self, SecretError},
+    spawn, spawn_tokio,
+    utils::matrix,
+    Application, ErrorPage, Greeter, Login, Session,
 };
 
 mod imp {
@@ -262,19 +265,56 @@ impl Window {
                     }
                 }
             }
-            Err(error) => {
-                warn!("Failed to restore previous sessions: {error}");
+            Err(error) => match error {
+                SecretError::OldVersion { item, session } if session.version == 0 => {
+                    warn!(
+                        "Found old session for user {} with sled store in '{}', removing…",
+                        session.user_id,
+                        session.path.to_string_lossy()
+                    );
 
-                let (message, item) = error.into_parts();
-                self.switch_to_error_page(
-                    &format!(
-                        "{}\n\n{}",
-                        gettext("Failed to restore previous sessions"),
-                        message,
-                    ),
-                    item,
-                );
-            }
+                    spawn_tokio!(async move {
+                        match matrix::client_with_stored_session(&session).await {
+                            Ok(client) => {
+                                if let Err(error) = client.logout().await {
+                                    error!("Failed to log out old session: {error}");
+                                }
+                            }
+                            Err(error) => {
+                                error!("Failed to build client to log out old session: {error}")
+                            }
+                        }
+
+                        if let Err(error) = item.delete().await {
+                            error!("Failed to delete old session from Secret Service: {error}");
+                        };
+
+                        if let Err(error) = fs::remove_dir_all(session.path) {
+                            error!("Failed to remove database from old session: {error}");
+                        }
+                    })
+                    .await
+                    .unwrap();
+
+                    // Restart.
+                    spawn!(clone!(@weak self as obj => async move {
+                        obj.restore_sessions().await;
+                    }));
+                }
+                _ => {
+                    error!("Failed to restore previous sessions: {error}");
+
+                    let (message, item) = error.into_parts();
+                    self.switch_to_error_page(
+                        &format!(
+                            "{}\n\n{}",
+                            gettext("Failed to restore previous sessions"),
+                            message,
+                        ),
+                        item,
+                    );
+                }
+            },
         }
     }
 

@@ -11,11 +11,24 @@ use url::Url;
 
 use crate::{config::APP_ID, gettext_f, user_facing_error::UserFacingError};
 
+pub const CURRENT_VERSION: u8 = 1;
 const SCHEMA_ATTRIBUTE: &str = "xdg:schema";
 
 /// Any error that can happen when interacting with the secret service.
 #[derive(Debug, Error)]
 pub enum SecretError {
+    /// A session with an unsupported version was found.
+    #[error("Session found with unsupported version {version}")]
+    UnsupportedVersion {
+        version: u8,
+        item: Item,
+        attributes: HashMap<String, String>,
+    },
+
+    /// A session with an old version was found.
+    #[error("Session found with old version")]
+    OldVersion { item: Item, session: StoredSession },
+
     /// A corrupted session was found.
     #[error("{error}")]
     CorruptSession { error: String, item: Item },
@@ -29,8 +42,18 @@ impl SecretError {
     /// Split `self` between its message and its optional `Item`.
     pub fn into_parts(self) -> (String, Option<Item>) {
         match self {
+            SecretError::UnsupportedVersion { version, item, .. } => (
+                gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    "Found stored session with unsupported version {version_nb}",
+                    &[("version_nb", &version.to_string())],
+                ),
+                Some(item),
+            ),
             SecretError::CorruptSession { error, item } => (error, Some(item)),
             SecretError::Oo7(error) => (error.to_user_facing(), None),
+            error => (error.to_string(), None),
         }
     }
 }
@@ -111,6 +134,7 @@ pub struct StoredSession {
     pub device_id: OwnedDeviceId,
     pub path: PathBuf,
     pub secret: Secret,
+    pub version: u8,
 }
 
 impl fmt::Debug for StoredSession {
@@ -120,6 +144,7 @@ impl fmt::Debug for StoredSession {
             .field("user_id", &self.user_id)
             .field("device_id", &self.device_id)
             .field("path", &self.path)
+            .field("version", &self.version)
             .finish()
     }
 }
@@ -128,6 +153,27 @@ impl StoredSession {
     /// Build self from a secret.
     pub async fn try_from_secret_item(item: Item) -> Result<Self, SecretError> {
         let attr = item.attributes().await?;
+
+        let version = match attr.get("version") {
+            Some(string) => match string.parse::<u8>() {
+                Ok(version) => version,
+                Err(error) => {
+                    error!("Could not parse 'version' attribute in stored session: {error}");
+                    return Err(SecretError::CorruptSession {
+                        error: gettext("Malformed version in stored session"),
+                        item,
+                    });
+                }
+            },
+            None => 0,
+        };
+        if version > 0 && version != CURRENT_VERSION {
+            return Err(SecretError::UnsupportedVersion {
+                version,
+                item,
+                attributes: attr,
+            });
+        }
 
         let homeserver = match attr.get("homeserver") {
             Some(string) => match Url::parse(string) {
@@ -203,23 +249,31 @@ impl StoredSession {
             }
         };
 
-        Ok(Self {
+        let session = Self {
             homeserver,
             user_id,
             device_id,
             path,
             secret,
-        })
+            version,
+        };
+
+        if version == 0 {
+            Err(SecretError::OldVersion { item, session })
+        } else {
+            Ok(session)
+        }
     }
 
     /// Get the attributes from `self`.
-    pub fn attributes(&self) -> HashMap<&str, &str> {
+    pub fn attributes(&self) -> HashMap<&str, String> {
         HashMap::from([
-            ("homeserver", self.homeserver.as_str()),
-            ("user", self.user_id.as_str()),
-            ("device-id", self.device_id.as_str()),
-            ("db-path", self.path.to_str().unwrap()),
-            (SCHEMA_ATTRIBUTE, APP_ID),
+            ("homeserver", self.homeserver.to_string()),
+            ("user", self.user_id.to_string()),
+            ("device-id", self.device_id.to_string()),
+            ("db-path", self.path.to_str().unwrap().to_owned()),
+            ("version", self.version.to_string()),
+            (SCHEMA_ATTRIBUTE, APP_ID.to_owned()),
         ])
     }
 
@@ -338,7 +392,8 @@ pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
 pub async fn store_session(session: &StoredSession) -> Result<(), SecretError> {
     let keyring = Keyring::new().await?;
 
-    let attributes = session.attributes();
+    let attrs = session.attributes();
+    let attributes = attrs.iter().map(|(k, v)| (*k, v.as_ref())).collect();
     let secret = serde_json::to_string(&session.secret).unwrap();
 
     keyring
@@ -362,7 +417,8 @@ pub async fn store_session(session: &StoredSession) -> Result<(), SecretError> {
 pub async fn remove_session(session: &StoredSession) -> Result<(), SecretError> {
     let keyring = Keyring::new().await?;
 
-    let attributes = session.attributes();
+    let attrs = session.attributes();
+    let attributes = attrs.iter().map(|(k, v)| (*k, v.as_ref())).collect();
 
     keyring.delete(attributes).await?;
 
