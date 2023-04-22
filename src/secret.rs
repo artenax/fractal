@@ -17,8 +17,8 @@ const SCHEMA_ATTRIBUTE: &str = "xdg:schema";
 #[derive(Debug, Error)]
 pub enum SecretError {
     /// A corrupted session was found.
-    #[error("{0}")]
-    CorruptSession(String, Item),
+    #[error("{error}")]
+    CorruptSession { error: String, item: Item },
 
     /// An error occurred interacting with the secret service.
     #[error(transparent)]
@@ -29,7 +29,7 @@ impl SecretError {
     /// Split `self` between its message and its optional `Item`.
     pub fn into_parts(self) -> (String, Option<Item>) {
         match self {
-            SecretError::CorruptSession(message, item) => (message, Some(item)),
+            SecretError::CorruptSession { error, item } => (error, Some(item)),
             SecretError::Oo7(error) => (error.to_user_facing(), None),
         }
     }
@@ -134,17 +134,17 @@ impl StoredSession {
                 Ok(homeserver) => homeserver,
                 Err(error) => {
                     error!("Could not parse 'homeserver' attribute in stored session: {error}");
-                    return Err(SecretError::CorruptSession(
-                        gettext("Malformed homeserver in stored session"),
+                    return Err(SecretError::CorruptSession {
+                        error: gettext("Malformed homeserver in stored session"),
                         item,
-                    ));
+                    });
                 }
             },
             None => {
-                return Err(SecretError::CorruptSession(
-                    gettext("Could not find homeserver in stored session"),
+                return Err(SecretError::CorruptSession {
+                    error: gettext("Could not find homeserver in stored session"),
                     item,
-                ));
+                });
             }
         };
         let user_id = match attr.get("user") {
@@ -152,35 +152,35 @@ impl StoredSession {
                 Ok(user_id) => user_id,
                 Err(error) => {
                     error!("Could not parse 'user' attribute in stored session: {error}");
-                    return Err(SecretError::CorruptSession(
-                        gettext("Malformed user ID in stored session"),
+                    return Err(SecretError::CorruptSession {
+                        error: gettext("Malformed user ID in stored session"),
                         item,
-                    ));
+                    });
                 }
             },
             None => {
-                return Err(SecretError::CorruptSession(
-                    gettext("Could not find user ID in stored session"),
+                return Err(SecretError::CorruptSession {
+                    error: gettext("Could not find user ID in stored session"),
                     item,
-                ));
+                });
             }
         };
         let device_id = match attr.get("device-id") {
             Some(string) => <&DeviceId>::from(string.as_str()).to_owned(),
             None => {
-                return Err(SecretError::CorruptSession(
-                    gettext("Could not find device ID in stored session"),
+                return Err(SecretError::CorruptSession {
+                    error: gettext("Could not find device ID in stored session"),
                     item,
-                ));
+                });
             }
         };
         let path = match attr.get("db-path") {
             Some(string) => PathBuf::from(string),
             None => {
-                return Err(SecretError::CorruptSession(
-                    gettext("Could not find database path in stored session"),
+                return Err(SecretError::CorruptSession {
+                    error: gettext("Could not find database path in stored session"),
                     item,
-                ));
+                });
             }
         };
         let secret = match item.secret().await {
@@ -188,18 +188,18 @@ impl StoredSession {
                 Ok(secret) => secret,
                 Err(error) => {
                     error!("Could not parse secret in stored session: {error:?}");
-                    return Err(SecretError::CorruptSession(
-                        gettext("Malformed secret in stored session"),
+                    return Err(SecretError::CorruptSession {
+                        error: gettext("Malformed secret in stored session"),
                         item,
-                    ));
+                    });
                 }
             },
             Err(error) => {
                 error!("Could not get secret in stored session: {error}");
-                return Err(SecretError::CorruptSession(
-                    gettext("Could not get secret in stored session"),
+                return Err(SecretError::CorruptSession {
+                    error: gettext("Could not get secret in stored session"),
                     item,
-                ));
+                });
             }
         };
 
