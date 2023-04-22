@@ -327,56 +327,9 @@ impl Secret {
 pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
     let keyring = Keyring::new().await?;
 
-    let mut items = keyring
+    let items = keyring
         .search_items(HashMap::from([(SCHEMA_ATTRIBUTE, APP_ID)]))
         .await?;
-
-    if items.is_empty() {
-        // If the keyring uses the file (portal) backend, look for all items,
-        // because libsecret didn't store the secrets with the schema attribute.
-        if let Keyring::File(_) = keyring {
-            items = keyring.items().await?;
-
-            if !items.is_empty() {
-                // Migrate those secrets to use the schema attribute.
-                for item in items {
-                    let attributes = item.attributes().await?;
-                    let secret = item.secret().await?;
-                    let user_id = match attributes.get("user") {
-                        Some(user_id) => user_id,
-                        None => continue,
-                    };
-
-                    item.delete().await?;
-
-                    let attr = attributes
-                        .iter()
-                        .map(|(k, v)| (k.as_str(), v.as_str()))
-                        .chain([(SCHEMA_ATTRIBUTE, APP_ID)])
-                        .collect::<HashMap<_, _>>();
-
-                    keyring
-                        .create_item(
-                            &gettext_f(
-                                // Translators: Do NOT translate the content between '{' and '}',
-                                // this is a variable name.
-                                "Fractal: Matrix credentials for {user_id}",
-                                &[("user_id", user_id.as_str())],
-                            ),
-                            attr,
-                            secret,
-                            true,
-                        )
-                        .await?;
-                }
-
-                // Get the migrated items to build the sessions.
-                items = keyring
-                    .search_items(HashMap::from([(SCHEMA_ATTRIBUTE, APP_ID)]))
-                    .await?;
-            }
-        }
-    }
 
     let mut sessions = Vec::with_capacity(items.len());
 
