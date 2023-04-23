@@ -5,12 +5,9 @@ use gettextrs::gettext;
 use gtk::{self, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::{error, warn};
 use matrix_sdk::{
-    config::RequestConfig, ruma::api::client::session::get_login_types::v3::LoginType, Client,
-    ClientBuildError,
+    ruma::api::client::session::get_login_types::v3::LoginType, Client, ClientBuildError,
 };
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
-use ruma::OwnedServerName;
-use thiserror::Error;
 use url::Url;
 
 mod advanced_dialog;
@@ -28,6 +25,7 @@ use crate::{
     secret::{self, Secret, StoredSession},
     spawn, spawn_tokio, toast,
     user_facing_error::UserFacingError,
+    utils::matrix::{self, ClientSetupError, HomeserverOrServerName},
     Application, Session, Window,
 };
 
@@ -356,15 +354,17 @@ impl Login {
     async fn get_homeserver(&self) {
         let autodiscovery = self.autodiscovery();
         let homeserver_page = &self.imp().homeserver_page;
-
-        let homeserver = if autodiscovery {
-            HomeserverOrServerName::ServerName(homeserver_page.server_name().unwrap())
-        } else {
-            HomeserverOrServerName::Homeserver(homeserver_page.homeserver_url().unwrap())
-        };
+        let server_name = homeserver_page.server_name();
+        let homeserver_url = homeserver_page.homeserver_url();
 
         let handle = spawn_tokio!(async move {
-            CreatedClient::new(&homeserver, autodiscovery, None, None).await
+            let homeserver = if autodiscovery {
+                HomeserverOrServerName::ServerName(server_name.as_deref().unwrap())
+            } else {
+                HomeserverOrServerName::Homeserver(homeserver_url.as_ref().unwrap())
+            };
+
+            CreatedClient::new(homeserver, autodiscovery, None, None).await
         });
 
         match handle.await.unwrap() {
@@ -555,7 +555,7 @@ impl Login {
     pub async fn restore_previous_session(&self, session: StoredSession) {
         let handle = spawn_tokio!(async move {
             let created_client = CreatedClient::new(
-                &HomeserverOrServerName::Homeserver(session.homeserver.clone()),
+                HomeserverOrServerName::Homeserver(&session.homeserver),
                 false,
                 Some(session.path.clone()),
                 Some(session.secret.passphrase.clone()),
@@ -700,33 +700,6 @@ impl Login {
     }
 }
 
-/// A homeserver URL or a server name.
-pub enum HomeserverOrServerName {
-    /// A homeserver URL.
-    Homeserver(Url),
-
-    /// A server name.
-    ServerName(OwnedServerName),
-}
-
-/// All errors that can occur when setting up the Matrix client.
-#[derive(Error, Debug)]
-pub enum ClientSetupError {
-    #[error(transparent)]
-    Client(#[from] ClientBuildError),
-    #[error(transparent)]
-    Sdk(#[from] matrix_sdk::Error),
-}
-
-impl UserFacingError for ClientSetupError {
-    fn to_user_facing(self) -> String {
-        match self {
-            ClientSetupError::Client(err) => err.to_user_facing(),
-            ClientSetupError::Sdk(err) => err.to_user_facing(),
-        }
-    }
-}
-
 /// A newly created Matrix client and its configuration.
 #[derive(Debug, Clone)]
 pub struct CreatedClient {
@@ -745,7 +718,7 @@ impl CreatedClient {
     ///
     /// Returns the `CreatedClient` and its ID.
     async fn new(
-        homeserver: &HomeserverOrServerName,
+        homeserver: HomeserverOrServerName<'_>,
         use_discovery: bool,
         path: Option<PathBuf>,
         passphrase: Option<String>,
@@ -764,22 +737,7 @@ impl CreatedClient {
                 .collect()
         });
 
-        let builder = match homeserver {
-            HomeserverOrServerName::Homeserver(url) => Client::builder().homeserver_url(url),
-            HomeserverOrServerName::ServerName(server_name) => {
-                Client::builder().server_name(server_name)
-            }
-        };
-
-        let client = builder
-            .sqlite_store(&path, Some(&passphrase))
-            // force_auth option to solve an issue with some servers configuration to require
-            // auth for profiles:
-            // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
-            .request_config(RequestConfig::new().retry_limit(2).force_auth())
-            .respect_login_well_known(use_discovery)
-            .build()
-            .await?;
+        let client = matrix::client(homeserver, use_discovery, &path, &passphrase).await?;
 
         Ok(Self {
             client,
