@@ -1315,6 +1315,7 @@ dependencies = [
  "qrcode",
  "rand 0.8.5",
  "regex",
+ "rmp-serde",
  "rqrr",
  "ruma",
  "secular",

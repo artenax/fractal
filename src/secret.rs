@@ -230,16 +230,31 @@ impl StoredSession {
             }
         };
         let secret = match item.secret().await {
-            Ok(secret) => match Secret::from_utf8(&secret) {
-                Ok(secret) => secret,
-                Err(error) => {
-                    error!("Could not parse secret in stored session: {error:?}");
-                    return Err(SecretError::CorruptSession {
-                        error: gettext("Malformed secret in stored session"),
-                        item,
-                    });
+            Ok(secret) => {
+                if version == 0 {
+                    match Secret::from_utf8(&secret) {
+                        Ok(secret) => secret,
+                        Err(error) => {
+                            error!("Could not parse secret in stored session: {error:?}");
+                            return Err(SecretError::CorruptSession {
+                                error: gettext("Malformed secret in stored session"),
+                                item,
+                            });
+                        }
+                    }
+                } else {
+                    match rmp_serde::from_slice::<Secret>(&secret) {
+                        Ok(secret) => secret,
+                        Err(error) => {
+                            error!("Could not parse secret in stored session: {error}");
+                            return Err(SecretError::CorruptSession {
+                                error: gettext("Malformed secret in stored session"),
+                                item,
+                            });
+                        }
+                    }
                 }
-            },
+            }
             Err(error) => {
                 error!("Could not get secret in stored session: {error}");
                 return Err(SecretError::CorruptSession {
@@ -347,7 +362,7 @@ pub async fn store_session(session: &StoredSession) -> Result<(), SecretError> {
 
     let attrs = session.attributes();
     let attributes = attrs.iter().map(|(k, v)| (*k, v.as_ref())).collect();
-    let secret = serde_json::to_string(&session.secret).unwrap();
+    let secret = rmp_serde::to_vec_named(&session.secret).unwrap();
 
     keyring
         .create_item(
