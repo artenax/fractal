@@ -1595,4 +1595,11 @@ impl Room {
     pub fn to_pill(&self) -> Pill {
         Pill::for_room(self)
     }
+
+    /// Get a human-readable ID for this `Room`.
+    ///
+    /// This is to identify the room easily in logs.
+    pub fn human_readable_id(&self) -> String {
+        format!("{} ({})", self.display_name(), self.room_id())
+    }
 }
