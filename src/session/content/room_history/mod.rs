@@ -348,6 +348,8 @@ mod imp {
                     if is_at_bottom {
                         imp.is_auto_scrolling.set(false);
                         obj.set_sticky(true);
+                    } else {
+                        obj.scroll_down();
                     }
                 } else {
                     obj.set_sticky(is_at_bottom);
