@@ -375,6 +375,10 @@ impl Timeline {
                 .event_map
                 .borrow_mut()
                 .insert(event.key(), event.clone());
+        } else if let Some(virtual_item) = item.downcast_ref::<VirtualItem>() {
+            if virtual_item.kind() == VirtualItemKind::TimelineStart {
+                self.set_state(TimelineState::Complete);
+            }
         }
 
         item
@@ -544,6 +548,8 @@ impl Timeline {
             async {}
         });
         spawn_tokio!(fut);
+
+        self.set_state(TimelineState::Ready);
 
         while let Some(diff) = receiver.next().await {
             self.update(diff);
