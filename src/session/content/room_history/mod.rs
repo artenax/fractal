@@ -143,6 +143,9 @@ mod imp {
         pub read_timeout: RefCell<Option<glib::SourceId>>,
         /// Whether we should load more history when the timeline is ready.
         pub load_when_timeline_ready: Cell<bool>,
+        /// The GtkSelectionModel used in the listview.
+        // TODO: use gtk::MultiSelection to allow selection
+        pub selection_model: OnceCell<gtk::NoSelection>,
     }
 
     #[glib::object_subclass]
@@ -334,6 +337,8 @@ mod imp {
             // Needed to use the natural height of GtkPictures
             self.listview
                 .set_vscroll_policy(gtk::ScrollablePolicy::Natural);
+
+            self.listview.set_model(Some(obj.selection_model()));
 
             obj.set_sticky(true);
             let adj = self.listview.vadjustment().unwrap();
@@ -565,12 +570,9 @@ impl RoomHistory {
             self.scroll_down();
         }
 
-        // TODO: use gtk::MultiSelection to allow selection
-        let model = room
-            .as_ref()
-            .map(|room| gtk::NoSelection::new(Some(room.timeline().clone())));
+        let model = room.as_ref().map(|room| room.timeline());
+        self.selection_model().set_model(model);
 
-        imp.listview.set_model(model.as_ref());
         imp.is_loading.set(false);
         imp.message_entry.grab_focus();
         imp.room.replace(room);
@@ -648,6 +650,12 @@ impl RoomHistory {
     pub fn clear_related_event(&self) {
         self.set_related_event(None);
         self.set_related_event_type(RelatedEventType::default());
+    }
+
+    fn selection_model(&self) -> &gtk::NoSelection {
+        self.imp()
+            .selection_model
+            .get_or_init(|| gtk::NoSelection::new(gio::ListModel::NONE.cloned()))
     }
 
     pub fn set_reply_to(&self, event: Event) {
