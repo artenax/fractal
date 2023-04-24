@@ -141,6 +141,8 @@ mod imp {
         pub related_event: RefCell<Option<Event>>,
         pub scroll_timeout: RefCell<Option<glib::SourceId>>,
         pub read_timeout: RefCell<Option<glib::SourceId>>,
+        /// Whether we should load more history when the timeline is ready.
+        pub load_when_timeline_ready: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -508,6 +510,8 @@ impl RoomHistory {
                 invite_action.unwatch();
             }
 
+            imp.load_when_timeline_ready.set(false);
+
             self.clear_related_event();
         }
 
@@ -524,7 +528,7 @@ impl RoomHistory {
             let handler_id = room.connect_notify_local(
                 Some("category"),
                 clone!(@weak self as obj => move |_, _| {
-                        obj.update_room_state();
+                    obj.update_room_state();
                 }),
             );
             imp.category_handler.replace(Some(handler_id));
@@ -532,15 +536,21 @@ impl RoomHistory {
             let handler_id = timeline.connect_notify_local(
                 Some("empty"),
                 clone!(@weak self as obj => move |_, _| {
-                        obj.update_view();
+                    obj.update_view();
                 }),
             );
             imp.empty_timeline_handler.replace(Some(handler_id));
 
             let handler_id = timeline.connect_notify_local(
                 Some("state"),
-                clone!(@weak self as obj => move |_, _| {
-                        obj.update_view();
+                clone!(@weak self as obj => move |timeline, _| {
+                    obj.update_view();
+
+                    let load_when_timeline_ready = &obj.imp().load_when_timeline_ready;
+                    if load_when_timeline_ready.get() && timeline.state() == TimelineState::Ready {
+                        load_when_timeline_ready.set(false);
+                        obj.start_loading();
+                    }
                 }),
             );
             imp.state_timeline_handler.replace(Some(handler_id));
@@ -831,8 +841,19 @@ impl RoomHistory {
         }
     }
 
+    /// Whether we need to load more messages.
     fn need_messages(&self) -> bool {
+        let Some(room) = self.room() else {
+            return false;
+        };
+        let timeline = room.timeline();
         let adj = self.imp().listview.vadjustment().unwrap();
+
+        if adj.value() <= 0.0 && timeline.n_items() > 0 {
+            // The room history is loading the timeline items, so wait until they are done.
+            return false;
+        }
+
         // Load more messages when the user gets close to the end of the known room
         // history. Use the page size twice to detect if the user gets close to
         // the end.
@@ -841,29 +862,36 @@ impl RoomHistory {
 
     fn start_loading(&self) {
         let imp = self.imp();
-        if !imp.is_loading.get() {
-            let room = if let Some(room) = self.room() {
-                room
-            } else {
-                return;
-            };
 
-            if !self.need_messages() && !room.timeline().is_empty() {
-                return;
-            }
-
-            imp.is_loading.set(true);
-
-            let obj_weak = self.downgrade();
-            spawn!(async move {
-                room.timeline().load().await;
-
-                // Remove the task
-                if let Some(obj) = obj_weak.upgrade() {
-                    obj.imp().is_loading.set(false);
-                }
-            });
+        if imp.is_loading.get() {
+            return;
         }
+
+        let Some(room) = self.room() else {
+            return;
+        };
+        let timeline = room.timeline();
+
+        if timeline.state() == TimelineState::Initial {
+            // Retry when the timeline is ready.
+            imp.load_when_timeline_ready.set(true);
+        }
+
+        if !self.need_messages() && !room.timeline().is_empty() {
+            return;
+        }
+
+        imp.is_loading.set(true);
+
+        let obj_weak = self.downgrade();
+        spawn!(glib::PRIORITY_DEFAULT_IDLE, async move {
+            room.timeline().load().await;
+
+            // Remove the task
+            if let Some(obj) = obj_weak.upgrade() {
+                obj.imp().is_loading.set(false);
+            }
+        });
     }
 
     /// Returns the parent GtkWindow containing this widget.

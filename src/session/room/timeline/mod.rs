@@ -399,10 +399,14 @@ impl Timeline {
 
     /// Load events at the start of the timeline.
     pub async fn load(&self) {
+        let state = self.state();
         if matches!(
-            self.state(),
-            TimelineState::Loading | TimelineState::Complete
+            state,
+            TimelineState::Initial | TimelineState::Loading | TimelineState::Complete
         ) {
+            // We don't want to load twice at the same time, and it's useless to try to load
+            // more history before the timeline is ready or when we reached the
+            // start.
             return;
         }
 
