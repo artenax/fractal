@@ -1,7 +1,7 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
-use matrix_sdk::room::timeline::{TimelineItem as SdkTimelineItem, VirtualTimelineItem};
+use matrix_sdk::room::timeline::TimelineItem as SdkTimelineItem;
 
-use super::{TimelineDayDivider, TimelineNewMessagesDivider, TimelinePlaceholder};
+use super::VirtualItem;
 use crate::session::{
     room::{Event, Member},
     Room,
@@ -124,20 +124,8 @@ impl TimelineItem {
     /// Constructs the proper child type.
     pub fn new(item: &SdkTimelineItem, room: &Room) -> Self {
         match item {
-            SdkTimelineItem::Event(event) => {
-                let event = Event::new(event.clone(), room);
-                event.upcast()
-            }
-            SdkTimelineItem::Virtual(item) => match item {
-                VirtualTimelineItem::DayDivider(ts) => {
-                    TimelineDayDivider::with_timestamp(*ts).upcast()
-                }
-                VirtualTimelineItem::ReadMarker => TimelineNewMessagesDivider::new().upcast(),
-                VirtualTimelineItem::LoadingIndicator => TimelinePlaceholder::spinner().upcast(),
-                VirtualTimelineItem::TimelineStart => {
-                    TimelinePlaceholder::timeline_start().upcast()
-                }
-            },
+            SdkTimelineItem::Event(event) => Event::new(event.clone(), room).upcast(),
+            SdkTimelineItem::Virtual(item) => VirtualItem::new(item).upcast(),
         }
     }
 

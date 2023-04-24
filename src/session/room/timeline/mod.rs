@@ -1,7 +1,5 @@
-mod timeline_day_divider;
 mod timeline_item;
-mod timeline_new_messages_divider;
-mod timeline_placeholder;
+mod virtual_item;
 
 use std::{
     collections::{HashMap, VecDeque},
@@ -18,11 +16,11 @@ use matrix_sdk::{
     Error as MatrixError,
 };
 use ruma::events::AnySyncTimelineEvent;
-pub use timeline_day_divider::TimelineDayDivider;
-pub use timeline_item::{TimelineItem, TimelineItemExt, TimelineItemImpl};
-pub use timeline_new_messages_divider::TimelineNewMessagesDivider;
-pub use timeline_placeholder::{PlaceholderKind, TimelinePlaceholder};
 
+pub use self::{
+    timeline_item::{TimelineItem, TimelineItemExt, TimelineItemImpl},
+    virtual_item::{VirtualItem, VirtualItemKind},
+};
 use super::{Event, EventKey, Room};
 use crate::{spawn, spawn_tokio};
 
@@ -158,7 +156,7 @@ impl Timeline {
         let imp = self.imp();
 
         if imp.has_typing.get() && position == self.n_items_in_list() {
-            return Some(TimelinePlaceholder::typing().upcast());
+            return Some(VirtualItem::typing().upcast());
         }
 
         imp.list
@@ -387,9 +385,8 @@ impl Timeline {
         if let Some(event) = item.downcast_ref::<Event>() {
             self.imp().event_map.borrow_mut().remove(&event.key());
         } else if item
-            .downcast_ref::<TimelinePlaceholder>()
-            .filter(|item| item.kind() == PlaceholderKind::Spinner)
-            .is_some()
+            .downcast_ref::<VirtualItem>()
+            .map_or(false, |item| item.kind() == VirtualItemKind::Spinner)
             && self.state() == TimelineState::Loading
         {
             self.set_state(TimelineState::Ready)

@@ -9,10 +9,7 @@ use crate::{
         content::room_history::{
             message_row::MessageRow, DividerRow, RoomHistory, StateRow, TypingRow,
         },
-        room::{
-            Event, EventActions, EventTexture, PlaceholderKind, TimelineDayDivider, TimelineItem,
-            TimelineNewMessagesDivider, TimelinePlaceholder,
-        },
+        room::{Event, EventActions, EventTexture, TimelineItem, VirtualItem, VirtualItemKind},
     },
     utils::BoundObjectWeakRef,
 };
@@ -270,49 +267,21 @@ impl ItemRow {
 
                 self.set_event_widget(event);
                 self.set_action_group(self.set_event_actions(Some(event.upcast_ref())));
-            } else if let Some(divider) = item.downcast_ref::<TimelineDayDivider>() {
+            } else if let Some(item) = item.downcast_ref::<VirtualItem>() {
                 self.set_popover(None);
                 self.set_action_group(None);
                 self.set_event_actions(None);
 
-                let child = if let Some(child) =
-                    self.child().and_then(|w| w.downcast::<DividerRow>().ok())
-                {
-                    child
-                } else {
-                    let child = DividerRow::new();
-                    self.set_child(Some(&child));
-                    child
-                };
-
-                let binding = divider
-                    .bind_property("formatted-date", &child, "label")
-                    .flags(glib::BindingFlags::SYNC_CREATE)
-                    .build();
-                imp.binding.replace(Some(binding));
-            } else if let Some(item) = item.downcast_ref::<TimelinePlaceholder>() {
                 match item.kind() {
-                    PlaceholderKind::Spinner => {
-                        if self
-                            .child()
-                            .filter(|widget| widget.is::<Spinner>())
-                            .is_none()
-                        {
-                            self.set_popover(None);
-                            self.set_action_group(None);
-                            self.set_event_actions(None);
-
+                    VirtualItemKind::Spinner => {
+                        if !self.child().map_or(false, |widget| widget.is::<Spinner>()) {
                             let spinner = Spinner::default();
                             spinner.set_margin_top(12);
                             spinner.set_margin_bottom(12);
                             self.set_child(Some(&spinner));
                         }
                     }
-                    PlaceholderKind::Typing => {
-                        self.set_popover(None);
-                        self.set_action_group(None);
-                        self.set_event_actions(None);
-
+                    VirtualItemKind::Typing => {
                         let child = if let Some(child) =
                             self.child().and_then(|w| w.downcast::<TypingRow>().ok())
                         {
@@ -330,11 +299,7 @@ impl ItemRow {
                                 .map(|room| room.typing_list()),
                         );
                     }
-                    PlaceholderKind::TimelineStart => {
-                        self.set_popover(None);
-                        self.set_action_group(None);
-                        self.set_event_actions(None);
-
+                    VirtualItemKind::TimelineStart => {
                         let label = gettext("This is the start of the visible history");
 
                         if let Some(Ok(child)) = self.child().map(|w| w.downcast::<DividerRow>()) {
@@ -344,20 +309,39 @@ impl ItemRow {
                             self.set_child(Some(&child));
                         };
                     }
+                    VirtualItemKind::DayDivider(date) => {
+                        let child = if let Some(child) =
+                            self.child().and_then(|w| w.downcast::<DividerRow>().ok())
+                        {
+                            child
+                        } else {
+                            let child = DividerRow::new();
+                            self.set_child(Some(&child));
+                            child
+                        };
+
+                        let fmt = if date.year() == glib::DateTime::now_local().unwrap().year() {
+                            // Translators: This is a date format in the day divider without the
+                            // year
+                            gettext("%A, %B %e")
+                        } else {
+                            // Translators: This is a date format in the day divider with the year
+                            gettext("%A, %B %e, %Y")
+                        };
+
+                        child.set_label(&date.format(&fmt).unwrap())
+                    }
+                    VirtualItemKind::NewMessages => {
+                        let label = gettext("New Messages");
+
+                        if let Some(Ok(child)) = self.child().map(|w| w.downcast::<DividerRow>()) {
+                            child.set_label(&label);
+                        } else {
+                            let child = DividerRow::with_label(label);
+                            self.set_child(Some(&child));
+                        };
+                    }
                 }
-            } else if item.downcast_ref::<TimelineNewMessagesDivider>().is_some() {
-                self.set_popover(None);
-                self.set_action_group(None);
-                self.set_event_actions(None);
-
-                let label = gettext("New Messages");
-
-                if let Some(Ok(child)) = self.child().map(|w| w.downcast::<DividerRow>()) {
-                    child.set_label(&label);
-                } else {
-                    let child = DividerRow::with_label(label);
-                    self.set_child(Some(&child));
-                };
             }
         }
         imp.item.replace(item);
