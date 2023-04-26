@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
 "POT-Creation-Date: 2023-03-26 13:49+0000\n"
-"PO-Revision-Date: 2023-04-26 22:41+0200\n"
+"PO-Revision-Date: 2023-04-27 00:25+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -48,25 +48,20 @@ msgid "Matrix;matrix.org;chat;irc;communications;talk;riot;element;"
 msgstr "Matrix;matrix.org;chat;irc;comunicacións;falar;riot;element;"
 
 #: data/org.gnome.Fractal.gschema.xml.in:6
-#, fuzzy
 msgid "Window width"
-msgstr "Ancho da xanela"
+msgstr "Anchura da xanela"
 
 #: data/org.gnome.Fractal.gschema.xml.in:10
-#, fuzzy
 msgid "Window height"
 msgstr "Altura da xanela"
 
 #: data/org.gnome.Fractal.gschema.xml.in:14
-#, fuzzy
-#| msgid "Whether the main window is maximized on startup"
 msgid "Window maximized state"
-msgstr "Indica se a xanela principal está maximizada ao inicio"
+msgstr "Estado da xanela maximizada"
 
 #: data/org.gnome.Fractal.gschema.xml.in:18
-#, fuzzy
 msgid "Enable markdown formatting"
-msgstr "Activar o formato de marcas"
+msgstr "Activar formatado markdown"
 
 #: data/org.gnome.Fractal.gschema.xml.in:19
 #, fuzzy
@@ -74,10 +69,8 @@ msgid "Whether messages should be processed as markdown when sending them"
 msgstr "Se as mensaxes deben ser procesadas como marcadas ao envialas"
 
 #: data/org.gnome.Fractal.gschema.xml.in:23
-#, fuzzy
-#| msgid "Account Settings"
 msgid "Session settings"
-msgstr "Preferencias da conta"
+msgstr "Preferencias da sesión"
 
 #: data/org.gnome.Fractal.gschema.xml.in:24
 #, fuzzy
@@ -85,10 +78,8 @@ msgid "Serialized list of settings per session"
 msgstr "Lista serializada de axustes por sesión"
 
 #: data/org.gnome.Fractal.gschema.xml.in:28
-#, fuzzy
-#| msgid "Current _Password"
 msgid "Current session"
-msgstr "Contrasinal _actual"
+msgstr "Sesión actual"
 
 #: data/org.gnome.Fractal.metainfo.xml.in.in:8
 msgid "Matrix group messaging app"
@@ -104,17 +95,13 @@ msgstr ""
 "como proxectos de software libre."
 
 #: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:170
-#, fuzzy
-#| msgid "Fractal"
 msgid "The Fractal Team"
-msgstr "Fractal"
+msgstr "O equipo de Fractal"
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:12
 #: data/resources/ui/account-settings-user-page.ui:51
-#, fuzzy
-#| msgid "_New Password"
 msgid "Change Password"
-msgstr "_Novo contrasinal"
+msgstr "Cambiar contrasinal"
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:60
 #, fuzzy
@@ -133,16 +120,12 @@ msgstr ""
 "das súas claves de cifrado antes de continuar."
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:94
-#, fuzzy
-#| msgid "_New Password"
 msgid "New Password"
-msgstr "_Novo contrasinal"
+msgstr "Novo contrasinal"
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:134
-#, fuzzy
-#| msgid "_New Password"
 msgid "Confirm New Password"
-msgstr "_Novo contrasinal"
+msgstr "Confirmar novo contrasinal"
 
 #: data/resources/ui/account-settings-change-password-subpage.ui:164
 #: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
@@ -169,16 +152,12 @@ msgstr ""
 "contactos e ficheiros."
 
 #: data/resources/ui/account-settings-deactivate-account-subpage.ui:71
-#, fuzzy
-#| msgid ""
-#| "To confirm that you really want to deactivate this account type in your "
-#| "password:"
 msgid ""
 "To confirm that you really want to deactivate this account, type in your "
 "Matrix user ID:"
 msgstr ""
-"Para confirmar que realmente quere desactivar esta conta escriba o seu "
-"contrasinal:"
+"Para confirmar que realmente quere desactivar esta conta escriba o seu ID de "
+"usuario de Matrix:"
 
 #: data/resources/ui/account-settings-device-row.ui:63
 #: src/session/content/verification/identity_verification_widget.rs:531
@@ -187,31 +166,24 @@ msgstr ""
 #: src/session/content/verification/identity_verification_widget.rs:556
 #: src/session/content/verification/identity_verification_widget.rs:560
 #: src/session/content/verification/identity_verification_widget.rs:564
-#, fuzzy
-#| msgid "_Verify New Password"
 msgid "Verify Session"
-msgstr "_Verificar o novo contrasinal"
+msgstr "Verificar sesión"
 
 #: data/resources/ui/account-settings-devices-page.ui:5
-#, fuzzy
 msgid "Sessions"
 msgstr "Sesións"
 
 #: data/resources/ui/account-settings-devices-page.ui:9
 #: data/resources/ui/account-settings-devices-page.ui:13
-#, fuzzy
-#| msgid "Current _Password"
 msgid "Current Session"
-msgstr "Contrasinal _actual"
+msgstr "Sesión actual"
 
 #: data/resources/ui/account-settings-devices-page.ui:24
 #: data/resources/ui/account-settings-devices-page.ui:28
-#, fuzzy
 msgid "Other Active Sessions"
 msgstr "Outras sesións activas"
 
 #: data/resources/ui/account-settings-log-out-subpage.ui:12
-#, fuzzy
 msgid "Log Out of this Session"
 msgstr "Saír desta sesión"
 
@@ -238,38 +210,30 @@ msgstr "Claves de cifrado de copia de seguridade"
 
 #: data/resources/ui/account-settings-import-export-keys-subpage.ui:80
 #: data/resources/ui/session-verification.ui:290
-#, fuzzy
 msgid "Passphrase"
-msgstr "PASSPHRASE"
+msgstr "Frase de paso"
 
 #: data/resources/ui/account-settings-import-export-keys-subpage.ui:97
-#, fuzzy
 msgid "Confirm Passphrase"
 msgstr "Confirma a frase de paso"
 
 #: data/resources/ui/account-settings-import-export-keys-subpage.ui:132
-#, fuzzy
 msgid "Choose…"
-msgstr "Escolla ..."
+msgstr "Escoller…"
 
 #: data/resources/ui/account-settings-notifications-page.ui:5
 msgid "Notifications"
 msgstr "Notificacións"
 
 #: data/resources/ui/account-settings-notifications-page.ui:11
-#, fuzzy
 msgid "Enable for this account"
-msgstr "Habilitar para esta conta"
+msgstr "Activar para esta conta"
 
 #: data/resources/ui/account-settings-notifications-page.ui:34
-#, fuzzy
 msgid "Enable for this session"
 msgstr "Activar para esta sesión"
 
 #: data/resources/ui/account-settings-user-page.ui:5
-#, fuzzy
-#| msgctxt "shortcut window"
-#| msgid "General"
 msgid "General"
 msgstr "Xeral"
 
@@ -287,13 +251,10 @@ msgid "Homeserver"
 msgstr "Homeserver"
 
 #: data/resources/ui/account-settings-user-page.ui:77
-#, fuzzy
-#| msgid "Matrix ID"
 msgid "Matrix User ID"
 msgstr "ID de Matrix"
 
 #: data/resources/ui/account-settings-user-page.ui:91
-#, fuzzy
 msgid "Session ID"
 msgstr "ID de sesión"
 
@@ -303,7 +264,6 @@ msgid "Log Out"
 msgstr "Pechar a sesión"
 
 #: data/resources/ui/account-settings-security-page.ui:5
-#, fuzzy
 msgid "Security"
 msgstr "Seguridade"
 
@@ -335,18 +295,14 @@ msgid "_Cancel"
 msgstr "_Cancelar"
 
 #: data/resources/ui/attachment-dialog.ui:21
-#, fuzzy
-#| msgid "Send"
 msgid "_Send"
-msgstr "Enviar"
+msgstr "_Enviar"
 
 #: data/resources/ui/components-auth-dialog.ui:20
-#, fuzzy
 msgid "Authentication"
 msgstr "Autenticación"
 
 #: data/resources/ui/components-auth-dialog.ui:43
-#, fuzzy
 msgid "Please authenticate the operation with your password"
 msgstr "Por favor, autentique a operación co seu contrasinal"
 
@@ -371,19 +327,16 @@ msgstr "Cancelar"
 
 #: data/resources/ui/components-auth-dialog.ui:118
 #: data/resources/ui/identity-verification-widget.ui:442
-#, fuzzy
 msgid "Confirm"
-msgstr "Confirme"
+msgstr "Confirmar"
 
 #: data/resources/ui/components-loading-listbox-row.ui:32
-#, fuzzy
 msgid "Try again"
-msgstr "Téntao de novo"
+msgstr "Téntar de novo"
 
 #: data/resources/ui/content-explore-servers-popover.ui:35
-#, fuzzy
 msgid "Add server…"
-msgstr "Engadir servidor ..."
+msgstr "Engadir servidor…"
 
 #: data/resources/ui/content-explore.ui:71
 #, fuzzy
@@ -392,21 +345,16 @@ msgid "No rooms matching the search were found"
 msgstr "Non se atoparon membros que coincidan"
 
 #: data/resources/ui/content-explore.ui:97
-#, fuzzy
-#| msgid "Rooms"
 msgid "Room List"
-msgstr "Salas"
+msgstr "Lista de salas"
 
 #: data/resources/ui/content-invite-subpage.ui:18
-#, fuzzy
-#| msgid "Invite"
 msgid "I_nvite"
-msgstr "Convidar"
+msgstr "C_onvidar"
 
 #: data/resources/ui/content-invite-subpage.ui:85
-#, fuzzy
 msgid "Search"
-msgstr "Busca"
+msgstr "Buscar"
 
 #: data/resources/ui/content-invite-subpage.ui:86
 #, fuzzy
@@ -414,7 +362,6 @@ msgid "Search for users to invite them to this room."
 msgstr "Busca os usuarios para invitalos a esta habitación."
 
 #: data/resources/ui/content-invite-subpage.ui:115
-#, fuzzy
 msgid "No Users Found"
 msgstr "Non se atoparon usuarios"
 
@@ -425,14 +372,12 @@ msgid "No users matching the search were found."
 msgstr "Non se atoparon membros que coincidan"
 
 #: data/resources/ui/content-invite-subpage.ui:122
-#, fuzzy
 msgid "Error"
 msgstr "Erro"
 
 #: data/resources/ui/content-invite-subpage.ui:123
-#, fuzzy
 msgid "An error occurred while searching for matches."
-msgstr "Produciuse un erro ao buscar partidos."
+msgstr "Produciuse un erro ao buscar coincidencias."
 
 #: data/resources/ui/content-invite.ui:26 data/resources/ui/content-invite.ui:51
 #: data/resources/ui/content-member-page.ui:69
@@ -440,20 +385,14 @@ msgid "Invite"
 msgstr "Convidar"
 
 #: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:33
-#, fuzzy
-#| msgid "Reject"
 msgid "_Reject"
-msgstr "Rexeitar"
+msgstr "_Rexeitar"
 
 #: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:28
-#, fuzzy
-#| msgid "Accept"
 msgid "_Accept"
-msgstr "Aceptar"
+msgstr "_Aceptar"
 
 #: data/resources/ui/content-member-page.ui:19
-#, fuzzy
-#| msgid "Search for room members"
 msgid "Search for Room Members"
 msgstr "Buscar os membros da sala"
 
@@ -468,7 +407,6 @@ msgid "Save"
 msgstr "Gardar"
 
 #: data/resources/ui/content-message-row.ui:61
-#, fuzzy
 msgid "Edited"
 msgstr "Editado"
 
@@ -478,86 +416,62 @@ msgid "Room Details"
 msgstr "Detalles da sala"
 
 #: data/resources/ui/content-room-details-general-page.ui:60
-#, fuzzy
-#| msgid "No room description"
 msgid "Description"
-msgstr "Non hai descrición de sala"
+msgstr "Descrición"
 
 #: data/resources/ui/content-room-details-general-page.ui:100
-#, fuzzy
-#| msgid "Details"
 msgid "Edit Details"
-msgstr "Detalles"
+msgstr "Editar detalles"
 
 #: data/resources/ui/content-room-details-general-page.ui:108
-#, fuzzy
-#| msgid "Details"
 msgid "Save Details"
-msgstr "Detalles"
+msgstr "Gardar detalles"
 
 #: data/resources/ui/content-room-details-general-page.ui:120
-#, fuzzy
-#| msgid "members"
 msgid "Members"
-msgstr "membros"
+msgstr "Membros"
 
 #: data/resources/ui/content-room-history.ui:6
-#, fuzzy
-#| msgid "Room Details"
 msgid "Room _Details"
-msgstr "Detalles da sala"
+msgstr "Detalles da _sala"
 
 #: data/resources/ui/content-room-history.ui:11
-#, fuzzy
-#| msgid "Invite New Member"
 msgid "_Invite New Member"
-msgstr "Convidar novos membros"
+msgstr "_Convidar novos membros"
 
 #: data/resources/ui/content-room-history.ui:16
-#, fuzzy
 msgid "Room _Permalink"
-msgstr "Habitación _permalink"
+msgstr "_Ligazón permanente da sala"
 
 #: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:62
-#, fuzzy
-#| msgid "Leave Room"
 msgid "_Leave Room"
-msgstr "Deixar sala"
+msgstr "_Deixar sala"
 
 #: data/resources/ui/content-room-history.ui:31
-#, fuzzy
-#| msgid "Notifications"
 msgid "_Location"
-msgstr "Notificacións"
+msgstr "_Localización"
 
 #: data/resources/ui/content-room-history.ui:36
-#, fuzzy
-#| msgid "Markdown"
 msgid "_Markdown"
-msgstr "Markdown"
+msgstr "_Markdown"
 
 #: data/resources/ui/content-room-history.ui:59
 msgid "Back"
 msgstr "Atrás"
 
 #: data/resources/ui/content-room-history.ui:84
-#, fuzzy
-#| msgid "Room Details"
 msgid "Room Settings"
-msgstr "Detalles da sala"
+msgstr "Preferencias da sala"
 
 #: data/resources/ui/content-room-history.ui:119
-#, fuzzy
 msgid "Unable to load room"
-msgstr "Non se pode cargar cuarto"
+msgstr "Non foi posíbel cargar a sala"
 
 #: data/resources/ui/content-room-history.ui:120
-#, fuzzy
 msgid "Check your network connection."
 msgstr "Comprobe a súa conexión de rede."
 
 #: data/resources/ui/content-room-history.ui:123
-#, fuzzy
 msgid "Try Again"
 msgstr "Téntao de novo"
 
@@ -566,60 +480,44 @@ msgid "Scroll to bottom"
 msgstr "Desprazarse ao fondo"
 
 #: data/resources/ui/content-room-history.ui:160
-#, fuzzy
 msgid "Drop Here to Send"
-msgstr "Déixate aquí para enviar"
+msgstr "Solte aquí para enviar"
 
 #: data/resources/ui/content-room-history.ui:180
-#, fuzzy
-#| msgid "Room Directory"
 msgid "Room History"
-msgstr "Directorio da sala"
+msgstr "Historial da sala"
 
 #: data/resources/ui/content-room-history.ui:271
-#, fuzzy
 msgid "Browse Attachment"
-msgstr "Examinar o anexo"
+msgstr "Examinar anexo"
 
 #: data/resources/ui/content-room-history.ui:281
-#, fuzzy
 msgid "Open Emoji Picker"
-msgstr "Picker Emoji aberto"
+msgstr "Abrir o Selector de emoticonas"
 
 #: data/resources/ui/content-room-history.ui:302
-#, fuzzy
-#| msgid "Message Source"
 msgid "Message Entry"
-msgstr "Orixe da mensaxe"
+msgstr "Entrada de mensaxe"
 
 #: data/resources/ui/content-room-history.ui:317
-#, fuzzy
-#| msgctxt "shortcut window"
-#| msgid "Open main menu"
 msgid "Open Message Menu"
-msgstr "Abrir menú principal"
+msgstr "Abrir menú de mensaxes"
 
 #: data/resources/ui/content-room-history.ui:332
-#, fuzzy
-#| msgid "New Messages"
 msgid "Send Message"
-msgstr "Novas mensaxes"
+msgstr "Enviar mensaxe"
 
 #: data/resources/ui/content-state-creation.ui:19
-#, fuzzy
-#| msgid "Leave room"
 msgid "Previous room"
-msgstr "Deixar sala"
+msgstr "Anterior sala"
 
 #: data/resources/ui/content-state-tombstone.ui:14
-#, fuzzy
 msgid "There is a newer version of this room."
-msgstr "Hai unha versión máis recente desta sala."
+msgstr "Hai unha nova versión desta sala."
 
 #: data/resources/ui/content-state-tombstone.ui:19
-#, fuzzy
 msgid "Go there"
-msgstr "Vaia alí"
+msgstr "Ir alí"
 
 #: data/resources/ui/content.ui:36
 msgid "No Room Selected"
@@ -630,13 +528,12 @@ msgid "Join a room to start chatting."
 msgstr "Unirse a unha sala para comezar a conversar."
 
 #: data/resources/ui/error-page.ui:40
-#, fuzzy
 msgid ""
 "It seems like one of the Fractal sessions stored in the Secret Service is "
 "corrupted. If you know how to fix it you should do so."
 msgstr ""
-"Parece que unha das sesións fractais almacenadas no servizo secreto está "
-"corrompida.Se sabes como solucionalo, debes facelo."
+"Semella que unha das sesións de Fractal almacenadas no servizo secreto está "
+"corrompida. Se sabes como solucionalo, debes facelo."
 
 #: data/resources/ui/error-page.ui:51
 #, fuzzy
@@ -704,83 +601,63 @@ msgstr ""
 
 #. Translators: In this string, 'Reply' is a verb.
 #: data/resources/ui/event-menu.ui:12
-#, fuzzy
-#| msgid "Reply"
 msgid "_Reply"
-msgstr "Responder"
+msgstr "_Responder"
 
 #. Translators: In this string, 'Edit' is a verb.
 #: data/resources/ui/event-menu.ui:18
-#, fuzzy
 msgid "_Edit"
-msgstr "_Edit"
+msgstr "_Editar"
 
 #. Translators: In this string, 'Forward' is a verb.
 #: data/resources/ui/event-menu.ui:24 data/resources/ui/event-menu.ui:115
-#, fuzzy
 msgid "_Forward"
-msgstr "_Forward"
+msgstr "_Reencamiñar"
 
 #: data/resources/ui/event-menu.ui:31 data/resources/ui/event-menu.ui:122
 msgid "_Select"
 msgstr "_Seleccionar"
 
 #: data/resources/ui/event-menu.ui:38 data/resources/ui/event-menu.ui:129
-#, fuzzy
-#| msgid "Copy Text"
 msgid "_Copy Text"
-msgstr "Copiar texto"
+msgstr "_Copiar texto"
 
 #: data/resources/ui/event-menu.ui:44
-#, fuzzy
 msgid "_Copy Thumbnail"
-msgstr "_COPY Miniatura"
+msgstr "_Copiar miniatura"
 
 #: data/resources/ui/event-menu.ui:49 data/resources/ui/event-menu.ui:90
-#, fuzzy
-#| msgid "Save Image As…"
 msgid "S_ave Image"
-msgstr "Gradar imaxe como…"
+msgstr "_Gardar imaxe"
 
 #: data/resources/ui/event-menu.ui:54 data/resources/ui/event-menu.ui:95
-#, fuzzy
-#| msgid "Save Video As…"
 msgid "S_ave Video"
-msgstr "Gardar vídeo como…"
+msgstr "_Gardar vídeo"
 
 #: data/resources/ui/event-menu.ui:59 data/resources/ui/event-menu.ui:100
-#, fuzzy
 msgid "S_ave Audio"
-msgstr "S_ave audio"
+msgstr "_Gardar son"
 
 #: data/resources/ui/event-menu.ui:64 data/resources/ui/event-menu.ui:105
 #: data/resources/ui/event-menu.ui:135
-#, fuzzy
 msgid "_Permalink"
-msgstr "_Permalink"
+msgstr "_Ligazón permanente"
 
 #: data/resources/ui/event-menu.ui:69 data/resources/ui/event-menu.ui:140
-#, fuzzy
-#| msgid "View Source"
 msgid "_View Source"
-msgstr "Ver orixe"
+msgstr "_Ver orixe"
 
 #: data/resources/ui/event-menu.ui:76 data/resources/ui/event-menu.ui:147
-#, fuzzy
 msgid "Re_move"
-msgstr "Quitar"
+msgstr "E_liminar"
 
 #: data/resources/ui/event-menu.ui:85
-#, fuzzy
-#| msgid "Copy Image"
 msgid "_Copy Image"
-msgstr "Copiar imaxe"
+msgstr "_Copiar imaxe"
 
 #: data/resources/ui/event-source-dialog.ui:5
-#, fuzzy
-#| msgid "View Source"
 msgid "Event Source"
-msgstr "Ver orixe"
+msgstr "Orixe do evento"
 
 #: data/resources/ui/greeter.ui:33
 #, fuzzy
@@ -797,8 +674,6 @@ msgid "Welcome to Fractal"
 msgstr "Benvida a Fractal"
 
 #: data/resources/ui/greeter.ui:97
-#, fuzzy
-#| msgid "_Log In"
 msgid "_Log in"
 msgstr "_Iniciar sesión"
 
@@ -808,57 +683,47 @@ msgstr "_Crear conta"
 
 #: data/resources/ui/identity-verification-widget.ui:46
 #: src/session/content/room_history/verification_info_bar.rs:171
-#, fuzzy
 msgid "Decline"
-msgstr "Declinamento"
+msgstr "Rexeitar"
 
 #: data/resources/ui/identity-verification-widget.ui:56
 #: src/session/content/room_history/verification_info_bar.rs:170
-#, fuzzy
 msgid "Verify"
 msgstr "Verificar"
 
 #: data/resources/ui/identity-verification-widget.ui:109
 #: data/resources/ui/identity-verification-widget.ui:213
-#, fuzzy
 msgid "Can’t scan QR code?"
-msgstr "Non podes dixitalizar o código QR?"
+msgstr "Non pode analizar o código QR?"
 
 #: data/resources/ui/identity-verification-widget.ui:117
 #: data/resources/ui/identity-verification-widget.ui:230
-#, fuzzy
 msgid "Compare Emoji"
-msgstr "Compare Emoji"
+msgstr "Comparar emoticona"
 
 #: data/resources/ui/identity-verification-widget.ui:144
-#, fuzzy
 msgid "Scan Complete"
-msgstr "Escanear completo"
+msgstr "Escaneado completo"
 
 #: data/resources/ui/identity-verification-widget.ui:222
-#, fuzzy
 msgid "Scan QR code with this session"
 msgstr "Escanear o código QR con esta sesión"
 
 #: data/resources/ui/identity-verification-widget.ui:290
-#, fuzzy
 msgid "Do Not Match"
-msgstr "Non coincides"
+msgstr "Non coincidir"
 
 #: data/resources/ui/identity-verification-widget.ui:300
-#, fuzzy
 msgid "Match"
 msgstr "Coincidir"
 
 #: data/resources/ui/identity-verification-widget.ui:350
-#, fuzzy
 msgid "Done"
 msgstr "Feito"
 
 #: data/resources/ui/identity-verification-widget.ui:419
-#, fuzzy
 msgid "Confirm Scan"
-msgstr "Confirma a exploración"
+msgstr "Confirma escaneado"
 
 #: data/resources/ui/identity-verification-widget.ui:482
 #, fuzzy
@@ -875,14 +740,12 @@ msgstr ""
 "claves necesarias:"
 
 #: data/resources/ui/identity-verification-widget.ui:518
-#, fuzzy
 msgid "User-signing key"
-msgstr "Clave de sinatura de usuario"
+msgstr "Chave de sinatura de usuario"
 
 #: data/resources/ui/identity-verification-widget.ui:538
-#, fuzzy
 msgid "Self-signing key"
-msgstr "Clave autofirmante"
+msgstr "Chave autofirmada"
 
 #: data/resources/ui/identity-verification-widget.ui:557
 #, fuzzy
@@ -917,10 +780,8 @@ msgid "Restart verification"
 msgstr "Notificacións"
 
 #: data/resources/ui/join-room-dialog.ui:4
-#, fuzzy
-#| msgid "Join Room"
 msgid "Join a Room"
-msgstr "Unirse á sala"
+msgstr "Unirse a unha sala"
 
 #: data/resources/ui/join-room-dialog.ui:5
 #, fuzzy
@@ -928,16 +789,12 @@ msgid "Enter a room ID, room alias, or permalink."
 msgstr "Introduza un ID da habitación, alias da habitación ou enlace permanente."
 
 #: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:712
-#, fuzzy
-#| msgid "Join"
 msgid "_Join"
-msgstr "Unirse"
+msgstr "_Unirse"
 
 #: data/resources/ui/login-advanced-dialog.ui:5
-#, fuzzy
-#| msgid "Homeserver"
 msgid "Homeserver Discovery"
-msgstr "Homeserver"
+msgstr "Descubrir Homeserver"
 
 #: data/resources/ui/login-advanced-dialog.ui:14
 #, fuzzy
@@ -959,18 +816,16 @@ msgstr "_Auto-descubrimento"
 
 #. Translators: As in 'Advanced Settings'.
 #: data/resources/ui/login-homeserver-page.ui:59
-#, fuzzy
 msgid "Advanced…"
-msgstr "Avanzado ..."
+msgstr "Avanzado…"
 
 #: data/resources/ui/login-method-page.ui:37 src/login/homeserver_page.rs:112
 msgid "Homeserver URL"
 msgstr "URL do Homeserver"
 
 #: data/resources/ui/login-method-page.ui:60
-#, fuzzy
 msgid "Matrix Username"
-msgstr "Nome de usuario de matriz"
+msgstr "Nome de usuario de Matrix"
 
 #: data/resources/ui/login-method-page.ui:72
 msgid "Password"
@@ -981,10 +836,8 @@ msgid "_Forgot Password?"
 msgstr "_Esqueceu o contrasinal?"
 
 #: data/resources/ui/login-method-page.ui:100
-#, fuzzy
-#| msgid "Choose Provider"
 msgid "More SSO Providers"
-msgstr "Seleccione un fornecedor"
+msgstr "Máis fornecedores de SSO"
 
 #: data/resources/ui/login-sso-page.ui:21
 #, fuzzy
@@ -996,32 +849,26 @@ msgid "_Next"
 msgstr "_Seguinte"
 
 #: data/resources/ui/member-menu.ui:6
-#, fuzzy
 msgid "_Verify"
-msgstr "_Verify"
+msgstr "_Verificar"
 
 #: data/resources/ui/member-menu.ui:14
-#, fuzzy
 msgid "Make _Mod"
-msgstr "Facer _mod"
+msgstr "Facer _Mod"
 
 #: data/resources/ui/member-menu.ui:20
-#, fuzzy
-#| msgid "Admin"
 msgid "Make _Admin"
-msgstr "ADmin"
+msgstr "Facer _administrador"
 
 #: data/resources/ui/member-menu.ui:26
-#, fuzzy
 msgid "_Kick"
-msgstr "_Kick"
+msgstr "_Expulsar"
 
 #: data/resources/ui/room-creation.ui:49
 msgid "New Room"
 msgstr "Nova sala"
 
 #: data/resources/ui/room-creation.ui:73
-#, fuzzy
 msgid "Topic (Optional)"
 msgstr "Tema (opcional)"
 
@@ -1048,12 +895,10 @@ msgid "Anyone can find and join this room"
 msgstr "Calquera pode atopar e unirse a esta habitación"
 
 #: data/resources/ui/room-creation.ui:117
-#, fuzzy
 msgid "End-to-End Encryption"
 msgstr "Cifrado de punta a punta"
 
 #: data/resources/ui/room-creation.ui:118
-#, fuzzy
 msgid "Cannot be disabled later"
 msgstr "Non se pode desactivar máis tarde"
 
@@ -1069,22 +914,17 @@ msgstr ""
 "mensaxes se perde o acceso a todas as túas sesións."
 
 #: data/resources/ui/room-creation.ui:150
-#, fuzzy
-#| msgid "Join addresses"
 msgid "Room Address"
-msgstr "Unir enderezos"
+msgstr "Enderezo da sala"
 
 #: data/resources/ui/room-creation.ui:200
-#, fuzzy
-#| msgid "Create new room"
 msgid "_Create Room"
-msgstr "Crear nova sala"
+msgstr "_Crear sala"
 
 #: data/resources/ui/session-verification.ui:59
 #: src/session/content/verification/identity_verification_widget.rs:573
-#, fuzzy
 msgid "Get Another Device"
-msgstr "Obtén outro dispositivo"
+msgstr "Obter outro dispositivo"
 
 #: data/resources/ui/session-verification.ui:70
 #: src/session/content/verification/identity_verification_widget.rs:575
@@ -1099,20 +939,17 @@ msgstr "Non hai outros dispositivos conectados a esta conta?"
 
 #: data/resources/ui/session-verification.ui:91
 #: data/resources/ui/session-verification.ui:186
-#, fuzzy
 msgid "Recovery"
 msgstr "Recuperación"
 
 #: data/resources/ui/session-verification.ui:101
 #: src/session/content/verification/session_verification.rs:249
-#, fuzzy
 msgid "Reset"
-msgstr "Restablecer"
+msgstr "Restabelecer"
 
 #: data/resources/ui/session-verification.ui:138
-#, fuzzy
 msgid "Setup Encryption Identity"
-msgstr "Identidade de cifrado de configuración"
+msgstr "Configuración da Identidade de cifrado"
 
 #: data/resources/ui/session-verification.ui:149
 #, fuzzy
@@ -1124,9 +961,8 @@ msgstr ""
 "inicia na súa conta."
 
 #: data/resources/ui/session-verification.ui:157
-#, fuzzy
 msgid "Setup"
-msgstr "Montar"
+msgstr "Configuración"
 
 #: data/resources/ui/session-verification.ui:197
 #, fuzzy
@@ -1139,29 +975,25 @@ msgstr ""
 
 #: data/resources/ui/session-verification.ui:205
 #: data/resources/ui/session-verification.ui:260
-#, fuzzy
 msgid "Recovery Passphrase"
-msgstr "Recuperación Passphrase"
+msgstr "Frase de paso de recuperación"
 
 #: data/resources/ui/session-verification.ui:214
 #: data/resources/ui/session-verification.ui:324
-#, fuzzy
 msgid "Recovery Key"
-msgstr "Clave de recuperación"
+msgstr "Chave de recuperación"
 
 #: data/resources/ui/session-verification.ui:223
-#, fuzzy
 msgid ""
 "If you don’t have any of these you can reset your identity, but be aware this "
 "makes your old messages inaccessible forever."
 msgstr ""
-"Se non tes nada, podes restablecer a túa identidade, pero ten en conta que "
-"isto fai que as túas mensaxes antigas sexan inaccesibles para sempre."
+"Se non ten nada, pode restabelecer a súa identidade, pero teña en conta que "
+"isto fai que as súas mensaxes antigas sexan inaccesíbeis para sempre."
 
 #: data/resources/ui/session-verification.ui:232
-#, fuzzy
 msgid "Reset Identity"
-msgstr "Restablecer a identidade"
+msgstr "Restabelecer a identidade"
 
 #: data/resources/ui/session-verification.ui:271
 #, fuzzy
@@ -1178,10 +1010,8 @@ msgstr ""
 
 #: data/resources/ui/session-verification.ui:295
 #: data/resources/ui/session-verification.ui:360
-#, fuzzy
-#| msgid "_Next"
 msgid "Next"
-msgstr "_Seguinte"
+msgstr "Seguinte"
 
 #: data/resources/ui/session-verification.ui:335
 #, fuzzy
@@ -1265,22 +1095,16 @@ msgid "Move to Low _Priority"
 msgstr "Móvese a baixa _prioridade"
 
 #: data/resources/ui/sidebar.ui:67
-#, fuzzy
-#| msgid "Join Room"
 msgid "Re_join Room"
-msgstr "Unirse á sala"
+msgstr "Re_unirse á sala"
 
 #: data/resources/ui/sidebar.ui:72
-#, fuzzy
-#| msgid "New Room"
 msgid "_Forget Room"
-msgstr "Nova sala"
+msgstr "_Esquecer sala"
 
 #: data/resources/ui/sidebar.ui:91
-#, fuzzy
-#| msgid "Deactivate Account"
 msgid "Switch Accounts"
-msgstr "Desactivar conta"
+msgstr "Trocar conta"
 
 #: data/resources/ui/sidebar.ui:113
 #, fuzzy
@@ -1295,24 +1119,18 @@ msgid "Toggle Room Search"
 msgstr "Busca de sala"
 
 #: data/resources/ui/sidebar.ui:135
-#, fuzzy
-#| msgid "Room search"
 msgid "Room Search"
-msgstr "Busca de sala"
+msgstr "Buscar sala"
 
 #: data/resources/ui/sidebar.ui:136
-#, fuzzy
-#| msgid "Search for room members"
 msgid "Search for a room"
-msgstr "Buscar os membros da sala"
+msgstr "Buscar por unha sala"
 
 #: data/resources/ui/sidebar.ui:142
-#, fuzzy
 msgid "Offline"
 msgstr "Sen conexión"
 
 #: data/resources/ui/sidebar.ui:157
-#, fuzzy
 msgid "Sidebar"
 msgstr "Barra lateral"
 
@@ -1327,13 +1145,12 @@ msgid "Unable to connect to Camera"
 msgstr "Non se pode conectar á cámara"
 
 #: src/application.rs:178
-#, fuzzy
 msgid "© 2017-2023 The Fractal Team"
-msgstr "© 2017-2023 O equipo fractal"
+msgstr "© 2017-2023 O equipo Fractal"
 
 #: src/application.rs:192
 msgid "translator-credits"
-msgstr "Fran Diéguez <frandieguez@gnome.org>, 2021"
+msgstr "Fran Diéguez <frandieguez@gnome.org>, 2021-2023"
 
 #. This can't be added via the builder
 #: src/application.rs:196
@@ -1345,22 +1162,17 @@ msgid "Images"
 msgstr "Imaxes"
 
 #: src/components/editable_avatar.rs:393
-#, fuzzy
-#| msgid "Choose Provider"
 msgid "Choose Avatar"
-msgstr "Seleccione un fornecedor"
+msgstr "Escoller un avatar"
 
 #: src/components/editable_avatar.rs:395
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:246
-#, fuzzy
 msgid "Choose"
-msgstr "Escolla"
+msgstr "Escoller"
 
 #: src/components/editable_avatar.rs:413
-#, fuzzy
-#| msgid "Couldn’t open file"
 msgid "Could not open avatar file"
-msgstr "Non é posíbel abrir o ficheiro"
+msgstr "Non é posíbel abrir o ficheiro de avatar"
 
 #: src/components/editable_avatar.rs:434
 #, fuzzy
@@ -1601,67 +1413,65 @@ msgstr ""
 
 #. Translators: Time in 24h format
 #: src/session/account_settings/devices_page/device_row.rs:255
-#, fuzzy
 msgid "Last seen at %H:%M"
-msgstr "Visto por última vez en %h: %m"
+msgstr "Visto por última vez ás %H:%M"
 
 #. Translators: Time in 12h format
 #: src/session/account_settings/devices_page/device_row.rs:258
-#, fuzzy
 msgid "Last seen at %l:%M %p"
-msgstr "Visto por última vez a %l: %m %p"
+msgstr "Visto por última vez ás %l:%M %p"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
 #: src/session/account_settings/devices_page/device_row.rs:267
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Last seen Yesterday at %H:%M"
-msgstr "Visto por última vez onte ao %h: %m"
+msgstr "Visto por última vez onte ás %H:%M"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
 #: src/session/account_settings/devices_page/device_row.rs:272
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Last seen Yesterday at %l:%M %p"
-msgstr "Visto por última vez onte ao %l: %m %p"
+msgstr "Visto por última vez onte ás %l:%M %p"
 
 #. Translators: this is the name of the week day followed by
 #. a time in 24h format. i.e. "Last seen Monday at 23:04"
 #: src/session/account_settings/devices_page/device_row.rs:281
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Last seen %A at %H:%M"
-msgstr "Última vista %a at %h: %m"
+msgstr "Visto por última vez %A ás %H:%M"
 
 #. Translators: this is the week day name followed by
 #. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
 #: src/session/account_settings/devices_page/device_row.rs:286
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Last seen %A at %l:%M %p"
-msgstr "Última vista %a at %l: %m %p"
+msgstr "Visto por última vez %A ás %l:%M %p"
 
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 24h format i.e. "Last seen February 3 at 23:04"
 #: src/session/account_settings/devices_page/device_row.rs:294
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Last seen %B %-e at %H:%M"
-msgstr "Visto por última vez %b %-e at %h: %m"
+msgstr "Visto por última vez %B %-e ás %H:%M"
 
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 12h format i.e. "Last seen February 3 at 9:04 PM"
 #: src/session/account_settings/devices_page/device_row.rs:300
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Last seen %B %-e at %l:%M %p"
-msgstr "Visto por última vez %b %-e at %l: %m %p"
+msgstr "Visto por última vez %B %-e ás %l:%M %p"
 
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
 #: src/session/account_settings/devices_page/device_row.rs:307
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Last seen %B %-e %Y at %H:%M"
-msgstr "Visto por última vez %b %-e %y at %h: %m"
+msgstr "Visto por última vez %B %-e %Y ás %H:%M"
 
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
@@ -1709,9 +1519,8 @@ msgstr ""
 "cunha frase de paso forte que se empregará para cifrar os datos."
 
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:218
-#, fuzzy
 msgid "Export Keys"
-msgstr "Claves de exportación"
+msgstr "Exportar chaves"
 
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:222
 #, fuzzy
@@ -1731,9 +1540,8 @@ msgstr ""
 "seguridade."
 
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:228
-#, fuzzy
 msgid "Import Keys"
-msgstr "Claves de importación"
+msgstr "Importar chaves"
 
 #. Translators: Do no translate "fractal" as it is the application
 #. name.
@@ -1754,10 +1562,8 @@ msgstr "Importar claves de cifrado de ..."
 
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:275
 #: src/session/room/event/event_actions.rs:346
-#, fuzzy
-#| msgid "Couldn’t save file"
 msgid "Could not access file"
-msgstr "Non é posíbel gardar o ficheiro"
+msgstr "Non é posíbel acceder ao ficheiro"
 
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:301
 #, fuzzy
@@ -1779,10 +1585,8 @@ msgstr[0] "Non hai descrición de sala"
 msgstr[1] "Non hai descrición de sala"
 
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:393
-#, fuzzy
-#| msgid "Could not download the file"
 msgid "Could not export the keys"
-msgstr "Non foi posíbel descargar o ficheiro"
+msgstr "Non foi posíbel exportar as chaves"
 
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:403
 #, fuzzy
@@ -1790,10 +1594,8 @@ msgid "The passphrase doesn't match the one used to export the keys."
 msgstr "A frase de paso non coincide coa que se usa para exportar as teclas."
 
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:407
-#, fuzzy
-#| msgid "Could not download the file"
 msgid "Could not import the keys"
-msgstr "Non foi posíbel descargar o ficheiro"
+msgstr "Non foi posíbel importar as chaves"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:181
 #, fuzzy
@@ -1821,10 +1623,8 @@ msgid "Password must have at least one symbol"
 msgstr "O contrasinal debe ter polo menos un símbolo"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:223
-#, fuzzy
-#| msgid "The passwords do not match."
 msgid "Passwords do not match"
-msgstr "Os contrasinais non coinciden."
+msgstr "Os contrasinais non coinciden"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:281
 #, fuzzy
@@ -1837,8 +1637,6 @@ msgid "Password rejected for being too weak"
 msgstr "Contrasinal rexeitado por ser demasiado débil"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:307
-#, fuzzy
-#| msgid "Couldn’t change the password"
 msgid "Could not change password"
 msgstr "Non foi posíbel cambiar o contrasinal"
 
@@ -1848,29 +1646,23 @@ msgid "Account successfully deactivated"
 msgstr "Conta desactivada con éxito"
 
 #: src/session/account_settings/user_page/deactivate_account_subpage.rs:180
-#, fuzzy
-#| msgid "Couldn’t delete the account"
 msgid "Could not deactivate account"
-msgstr "Non foi posíbel eliminar a conta"
+msgstr "Non foi posíbel desactivar a conta"
 
 #: src/session/account_settings/user_page/mod.rs:222
 #: src/session/content/room_details/general_page/mod.rs:225
-#, fuzzy
 msgid "Avatar removed successfully"
-msgstr "Avatar eliminouse con éxito"
+msgstr "Avatar eliminado con éxito"
 
 #: src/session/account_settings/user_page/mod.rs:224
 #: src/session/content/room_details/general_page/mod.rs:227
-#, fuzzy
 msgid "Avatar changed successfully"
-msgstr "O avatar cambiou con éxito"
+msgstr "Avatar cambiado con éxito"
 
 #: src/session/account_settings/user_page/mod.rs:237
 #: src/session/content/room_details/general_page/mod.rs:246
-#, fuzzy
-#| msgid "Could not download the file"
 msgid "Could not load file"
-msgstr "Non foi posíbel descargar o ficheiro"
+msgstr "Non foi posíbel cargar o ficheiro"
 
 #: src/session/account_settings/user_page/mod.rs:252
 #: src/session/content/room_details/general_page/mod.rs:267
@@ -1894,7 +1686,6 @@ msgid "Could not remove avatar"
 msgstr "Non foi posíbel obter o URI do ficheiro"
 
 #: src/session/account_settings/user_page/mod.rs:354
-#, fuzzy
 msgid "Name changed successfully"
 msgstr "O nome cambiou correctamente"
 
@@ -1904,7 +1695,6 @@ msgid "Could not change display name"
 msgstr "Non puido cambiar o nome de visualización"
 
 #: src/session/content/explore/public_room_row.rs:211
-#, fuzzy
 msgid "View"
 msgstr "Ver"
 
@@ -1913,7 +1703,6 @@ msgid "Join"
 msgstr "Unirse"
 
 #: src/session/content/invite.rs:115
-#, fuzzy
 msgid "{user} invited you"
 msgstr "{usuario} convidouno"
 
@@ -1939,47 +1728,35 @@ msgid "Could not change room topic"
 msgstr "Non puido cambiar o tema da habitación"
 
 #: src/session/content/room_details/invite_subpage/invitee_list.rs:287
-#, fuzzy
-#| msgid "members"
 msgid "Member"
-msgstr "membros"
+msgstr "Membro"
 
 #: src/session/content/room_details/invite_subpage/invitee_list.rs:288
 #: src/session/room/member.rs:47
-#, fuzzy
 msgid "Banned"
-msgstr "Prohibido"
+msgstr "Expulsado"
 
 #: src/session/content/room_details/invite_subpage/invitee_list.rs:290
 #: src/session/room/member.rs:46 src/session/sidebar/category_type.rs:30
-#, fuzzy
-#| msgid "Invite"
 msgid "Invited"
-msgstr "Convidar"
+msgstr "Convidado"
 
 #: src/session/content/room_details/member_page/mod.rs:288
-#, fuzzy
-#| msgid "Invite New Member"
 msgid "Invited Room Members"
-msgstr "Convidar novos membros"
+msgstr "Membros convidados da sala"
 
 #: src/session/content/room_details/member_page/mod.rs:289
-#, fuzzy
 msgid "Banned Room Members"
-msgstr "Membros da habitación prohibidos"
+msgstr "Membros expulsados da sala"
 
 #: src/session/content/room_details/member_page/mod.rs:290
 #: src/session/content/room_details/mod.rs:217
-#, fuzzy
-#| msgid "members"
 msgid "Room Members"
-msgstr "membros"
+msgstr "Membros da sala"
 
 #: src/session/content/room_details/mod.rs:233
-#, fuzzy
-#| msgid "Invite New Member"
 msgid "Invite new Members"
-msgstr "Convidar novos membros"
+msgstr "Convidar a novos membros"
 
 #: src/session/content/room_history/item_row.rs:319
 msgid "This is the start of the visible history"
@@ -2051,26 +1828,22 @@ msgstr "Non conseguiu recuperar a situación actual."
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
 #: src/session/content/room_history/mod.rs:653
-#, fuzzy
 msgid "Reply to {user}"
-msgstr "Responder a {usuario}"
+msgstr "Responder a {user}"
 
 #: src/session/content/room_history/mod.rs:766
 #: src/session/room/event/event_actions.rs:110
-#, fuzzy
 msgid "Permalink copied to clipboard"
-msgstr "Permalink copiado no portapapeis"
+msgstr "Ligazón permanente copiado no portapapeis"
 
 #: src/session/content/room_history/mod.rs:770
 #: src/session/room/event/event_actions.rs:114
-#, fuzzy
 msgid "Failed to copy the permalink"
-msgstr "Non se puido copiar o enlace permanente"
+msgstr "Non foi posíbel copiar a ligazón permanente"
 
 #: src/session/content/room_history/mod.rs:958
-#, fuzzy
 msgid "Your Location"
-msgstr "A túa situación"
+msgstr "A súa localización"
 
 #: src/session/content/room_history/mod.rs:968
 #, fuzzy
@@ -2078,28 +1851,20 @@ msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Localización do usuario {xeo_uri} en {iso8601_dateTime}"
 
 #: src/session/content/room_history/mod.rs:1013
-#, fuzzy
-#| msgid "Select a file"
 msgid "Select File"
-msgstr "Seleccione un ficheiro"
+msgstr "Seleccionar un ficheiro"
 
 #: src/session/content/room_history/mod.rs:1015
-#, fuzzy
-#| msgid "_Select"
 msgid "Select"
-msgstr "_Seleccionar"
+msgstr "Seleccionar"
 
 #: src/session/content/room_history/mod.rs:1034
-#, fuzzy
-#| msgid "Couldn’t open file"
 msgid "Could not open file"
-msgstr "Non é posíbel abrir o ficheiro"
+msgstr "Non foi posíbel abrir o ficheiro"
 
 #: src/session/content/room_history/mod.rs:1079
-#, fuzzy
-#| msgid "Error searching for rooms"
 msgid "Error reading file"
-msgstr "Produciuse un erro ao buscar por salas"
+msgstr "Produciuse un erro ao ler o ficheiro"
 
 #: src/session/content/room_history/mod.rs:1105
 #, fuzzy
@@ -2157,58 +1922,50 @@ msgstr "Recibiuse un evento estatal non compatible."
 #. is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:197
 #: src/session/content/room_history/state_row/mod.rs:350
-#, fuzzy
 msgid "{user} joined this room."
-msgstr "{usuario} uniuse a esta habitación."
+msgstr "{user} uniuse a esta sala."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:202
-#, fuzzy
 msgid "{user} left the room."
-msgstr "{usuario} deixou a habitación."
+msgstr "{user} deixou a sala."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:207
-#, fuzzy
 msgid "{user} was banned."
-msgstr "{usuario} prohibiuse."
+msgstr "{user} foi bloqueado."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:213
-#, fuzzy
 msgid "{user} was unbanned."
-msgstr "{User} non se prohibiu."
+msgstr "{user} foi desbloqueado."
 
 #. Translators: Do NOT translate the content between '{' and
 #. '}', this is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:219
-#, fuzzy
 msgid "{user} was kicked out of the room."
-msgstr "{usuario} foi expulsado da habitación."
+msgstr "{user} foi expulsado da sala."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is
 #. a variable name.
 #: src/session/content/room_history/state_row/mod.rs:231
-#, fuzzy
 msgid "{user} was kicked out of the room and banned."
-msgstr "{O usuario} foi expulsado da habitación e prohibido."
+msgstr "{user} foi expulsado da sala e bloqueado."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:237
-#, fuzzy
 msgid "{user} accepted the invite."
-msgstr "{usuario} aceptou a invitación."
+msgstr "{user} aceptou o convite."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:243
-#, fuzzy
 msgid "{user} rejected the invite."
-msgstr "{usuario} rexeitou a invitación."
+msgstr "{user} rexeitou o convite."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
@@ -2262,66 +2019,54 @@ msgstr ""
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:316
-#, fuzzy
 msgid "{user_id} set their display name to {new_user_name}."
-msgstr "{user_id} Estableza o seu nome de visualización en {new_user_name}."
+msgstr "{user_id} estabeleceu o seu nome de visualización a {new_user_name}."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:328
-#, fuzzy
 msgid "{user} set their avatar."
-msgstr "{usuario} Estableza o seu avatar."
+msgstr "{user} estabeleceu o seu avatar."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:335
-#, fuzzy
 msgid "{user} removed their avatar."
-msgstr "{usuario} eliminou o seu avatar."
+msgstr "{user} eliminou o seu avatar."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:342
-#, fuzzy
 msgid "{user} changed their avatar."
-msgstr "{usuario} cambiou o seu avatar."
+msgstr "{user} cambiou o seu avatar."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
 #: src/session/content/room_history/typing_row.rs:183
-#, fuzzy
-#| msgid "<b>{}</b> is typing…"
-#| msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
 msgid "<b>{user}</b> is typing…"
-msgstr "<b>{}</b> está escribindo…"
+msgstr "<b>{user}</b> está escribindo…"
 
 #. Translators: Do NOT translate the content between '{' and '}', these are
 #. variable names.
 #: src/session/content/room_history/typing_row.rs:193
-#, fuzzy
-#| msgid "<b>{}</b> is typing…"
-#| msgid_plural "<b>{}</b> and <b>{}</b> are typing…"
 msgid "<b>{user1}</b> and <b>{user2}</b> are typing…"
-msgstr "<b>{}</b> está escribindo…"
+msgstr "<b>{user1}</b> e <b>{user2}</b> está escribindo…"
 
 #. Translators: Do NOT translate the content between '{' and '}', these are
 #. variable names.
 #: src/session/content/room_history/typing_row.rs:200
 msgid "<b>{user1}</b>, <b>{user2}</b> and 1 other are typing…"
 msgid_plural "<b>{user1}</b>, <b>{user2}</b> and {n} others are typing…"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "<b>{user1}</b>, <b>{user2}</b> e outro máis están escribindo…"
+msgstr[1] "<b>{user1}</b>, <b>{user2}</b> e {n} personas máis están escribindo…"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
 #: src/session/content/room_history/verification_info_bar.rs:164
-#, fuzzy
 msgid "{user_name} wants to be verified"
-msgstr "{User_name} quere ser verificado"
+msgstr "{user_name} quere ser verificado"
 
 #: src/session/content/room_history/verification_info_bar.rs:174
-#, fuzzy
 msgid "Verification in progress"
 msgstr "Verificación en curso"
 
@@ -2360,7 +2105,6 @@ msgstr ""
 
 #: src/session/content/verification/identity_verification_widget.rs:543
 #: src/session/content/verification/identity_verification_widget.rs:568
-#, fuzzy
 msgid "Request Complete"
 msgstr "Solicitude completa"
 
@@ -2370,7 +2114,6 @@ msgid "This session is ready to send and receive secure messages."
 msgstr "Esta sesión está preparada para enviar e recibir mensaxes seguras."
 
 #: src/session/content/verification/identity_verification_widget.rs:547
-#, fuzzy
 msgid "Get Started"
 msgstr "Comezar"
 
@@ -2404,10 +2147,8 @@ msgstr "A nova sesión xa está preparada para enviar e recibir mensaxes seguras
 #: src/session/content/verification/identity_verification_widget.rs:590
 #: src/session/content/verification/identity_verification_widget.rs:601
 #: src/session/content/verification/identity_verification_widget.rs:608
-#, fuzzy
-#| msgid "Notification sounds"
 msgid "Verification Request"
-msgstr "Sons de notificación"
+msgstr "Solicitude de verificación"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
@@ -2462,44 +2203,38 @@ msgstr "Verificación completa"
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
 #: src/session/content/verification/identity_verification_widget.rs:619
-#, fuzzy
 msgid ""
 "{user} is verified and you can now be sure that your communication will be "
 "private."
 msgstr ""
-"{User} está verificado e agora podes estar seguro de que a túa comunicación "
+"{user} está verificado e agora pode estar seguro de que a súa comunicación "
 "será privada."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
 #: src/session/content/verification/identity_verification_widget.rs:623
-#, fuzzy
 msgid "Waiting for {user}"
-msgstr "Á espera de {usuario}"
+msgstr "Agardando a {user}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
 #: src/session/content/verification/identity_verification_widget.rs:629
-#, fuzzy
 msgid "Ask {user} to accept the verification request."
-msgstr "Pídelle {usuario} que acepte a solicitude de verificación."
+msgstr "Pedirlle a {user} que acepte a solicitude de verificación."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
 #: src/session/content/verification/identity_verification_widget.rs:635
-#, fuzzy
 msgid "Does {user} see a confirmation on their session?"
-msgstr "{Usuario} ve unha confirmación na súa sesión?"
+msgstr "{user} ve unha confirmación na súa sesión?"
 
 #. Translators: This is the tooltip when a signing key was received.
 #: src/session/content/verification/identity_verification_widget.rs:751
-#, fuzzy
 msgid "Received"
 msgstr "Recibido"
 
 #. Translators: This is the tooltip when a signing key is missing.
 #: src/session/content/verification/identity_verification_widget.rs:757
-#, fuzzy
 msgid "Missing"
 msgstr "Falta"
 
@@ -2526,42 +2261,32 @@ msgid "An error occurred during the creation of the encryption keys."
 msgstr "Produciuse un erro durante a creación das claves de cifrado."
 
 #: src/session/mod.rs:710
-#, fuzzy
 msgid "_View"
-msgstr "_View"
+msgstr "_Vista"
 
 #: src/session/mod.rs:751
-#, fuzzy
 msgid "Failed to logout the session."
-msgstr "Non puido saír da sesión."
+msgstr "Produciuse un fallo ao saír da sesión."
 
 #: src/session/room/event/event_actions.rs:191
 #: src/session/room/event/event_actions.rs:212
 #: src/session/room/event/event_actions.rs:223
-#, fuzzy
 msgid "Message copied to clipboard"
 msgstr "Mensaxe copiada no portapapeis"
 
 #: src/session/room/event/event_actions.rs:237
-#, fuzzy
-#| msgid "Image from Clipboard"
 msgid "Image copied to clipboard"
-msgstr "Imaxe desde o portapapeis"
+msgstr "Imaxe copiada ao portapapeis"
 
 #: src/session/room/event/event_actions.rs:241
-#, fuzzy
 msgid "Thumbnail copied to clipboard"
 msgstr "Miniatura copiada no portapapeis"
 
 #: src/session/room/event/event_actions.rs:315
-#, fuzzy
-#| msgid "Save"
 msgid "Save File"
-msgstr "Gardar"
+msgstr "Gardar ficheiro"
 
 #: src/session/room/event/event_actions.rs:338
-#, fuzzy
-#| msgid "Couldn’t save file"
 msgid "Could not save file"
 msgstr "Non é posíbel gardar o ficheiro"
 
@@ -2570,47 +2295,41 @@ msgid "Left"
 msgstr ""
 
 #: src/session/room/member.rs:45
-#, fuzzy
-#| msgid "Join"
 msgid "Joined"
-msgstr "Unirse"
+msgstr "Unido"
 
 #: src/session/room/member.rs:48
-#, fuzzy
 msgid "Knocked"
-msgstr "Bateado"
+msgstr "Expulsado"
 
 #: src/session/room/member.rs:49
-#, fuzzy
 msgid "Custom"
 msgstr "Personalizado"
 
 #: src/session/room/member_role.rs:48
 msgid "Admin"
-msgstr "ADmin"
+msgstr "Administrador"
 
 #: src/session/room/member_role.rs:49
 msgid "Moderator"
 msgstr "Moderador"
 
 #: src/session/room/member_role.rs:50
-#, fuzzy
 msgid "Normal user"
 msgstr "Usuario normal"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
 #: src/session/room/mod.rs:368
-#, fuzzy
 msgid "Failed to forget {room}."
-msgstr "Fallou ao esquecer {sala}."
+msgstr "Produciuse un fallo ao esquecer {room}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
 #: src/session/room/mod.rs:622
-#, fuzzy
 msgid "Failed to move {room} from {previous_category} to {new_category}."
-msgstr "Fallou ao moverse {Room} de {anterior_category} a {new_category}."
+msgstr ""
+"Produciuse un fallo ao mover {room} de {previous_category} a {new_category}."
 
 #: src/session/room/mod.rs:969
 msgid "Unknown"
@@ -2620,36 +2339,36 @@ msgstr "Descoñecido"
 #. before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
 #: src/session/room/mod.rs:997
-#, fuzzy
 msgid "Empty Room (was {user})"
-msgstr "Habitación baleira (era {usuario})"
+msgstr "Sala baleira (era {user})"
 
 #. Translators: This is the name of a room without other users.
 #: src/session/room/mod.rs:999
-#, fuzzy
 msgid "Empty Room"
-msgstr "Habitación baleira"
+msgstr "Sala baleira"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
 #: src/session/room/mod.rs:1299
-#, fuzzy
 msgid "Failed to accept invitation for {room}. Try again later."
-msgstr "Fallou a aceptar a invitación para {Room}.Téntao de novo máis tarde."
+msgstr ""
+"Produciuse un fallo ao aceptar a invitación para {room}.Ténteo de novo máis "
+"tarde."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
 #: src/session/room/mod.rs:1328
-#, fuzzy
 msgid "Failed to reject invitation for {room}. Try again later."
-msgstr "Non puido rexeitar a invitación para {sala}.Téntao de novo máis tarde."
+msgstr ""
+"Produciuse un fallo ao rexeitar o convite para {room}.Ténteo de novo máis "
+"tarde."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
 #: src/session/room/mod.rs:1524
-#, fuzzy
 msgid "Failed to invite {user} to {room}. Try again later."
-msgstr "Fallou a invitar {usuario} a {sala}.Téntao de novo máis tarde."
+msgstr ""
+"Produciuse un fallo ao convidar a {user} a {room}.Ténteo de novo máis tarde."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
@@ -2662,36 +2381,29 @@ msgstr[1] ""
 
 #. Translators: This is a date format in the day divider without the year
 #: src/session/room/timeline/timeline_day_divider.rs:121
-#, fuzzy
-#| msgid "%B %e"
 msgid "%A, %B %e"
-msgstr "%B %e"
+msgstr "%A, %e de %B"
 
 #. Translators: This is a date format in the day divider with the year
 #: src/session/room/timeline/timeline_day_divider.rs:124
-#, fuzzy
 msgid "%A, %B %e, %Y"
-msgstr "%A, %b %e, %y"
+msgstr "%A, %e de %B de %Y"
 
 #: src/session/room_creation/mod.rs:240
-#, fuzzy
 msgid "The address is already taken."
-msgstr "O enderezo xa está tomado."
+msgstr "O enderezo xa está collido."
 
 #: src/session/room_creation/mod.rs:273
-#, fuzzy
 msgid "Can’t contain “:”"
-msgstr "Non podo conter \":\""
+msgstr "Non podo conter «:»"
 
 #: src/session/room_creation/mod.rs:278
-#, fuzzy
 msgid "Can’t contain “#”"
-msgstr "Non podo conter \"#\""
+msgstr "Non podo conter «#»"
 
 #: src/session/room_creation/mod.rs:283
-#, fuzzy
 msgid "Too long. Use a shorter address."
-msgstr "Demasiado longo.Use un enderezo máis curto."
+msgstr "Demasiado longo. Use un enderezo máis curto."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
