@@ -72,7 +72,7 @@ doc_deps = [
   '--package=matrix-sdk-common',
   '--package=matrix-sdk-crypto',
   '--package=matrix-sdk-qrcode',
-  '--package=matrix-sdk-sled',
+  '--package=matrix-sdk-sqlite',
   '--package=matrix-sdk-store-encryption',
   '--package=fractal',
 ]
