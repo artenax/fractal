@@ -211,7 +211,7 @@ mod imp {
             klass.install_action("room-history.send-location", None, move |widget, _, _| {
                 spawn!(clone!(@weak widget => async move {
                     let toast_error = match widget.send_location().await {
-                        // Do nothing if the request was canceled by the user
+                        // Do nothing if the request was cancelled by the user
                         Err(ashpd::Error::Response(ashpd::desktop::ResponseError::Cancelled)) => {
                             error!("Location request was cancelled by the user");
                             Some(gettext("The location request has been cancelled."))
