@@ -16,7 +16,10 @@ const ANIMATION_DURATION: u32 = 250;
 const CANCEL_SWIPE_ANIMATION_DURATION: u32 = 400;
 
 mod imp {
-    use std::cell::{Cell, RefCell};
+    use std::{
+        cell::{Cell, RefCell},
+        collections::HashMap,
+    };
 
     use glib::{object::WeakRef, subclass::InitializingObject};
     use once_cell::{sync::Lazy, unsync::OnceCell};
@@ -42,6 +45,7 @@ mod imp {
         pub revealer: TemplateChild<ScaleRevealer>,
         #[template_child]
         pub media: TemplateChild<MediaContentViewer>,
+        pub actions_expression_watches: RefCell<HashMap<&'static str, gtk::ExpressionWatch>>,
     }
 
     #[glib::object_subclass]
@@ -181,6 +185,10 @@ mod imp {
 
         fn dispose(&self) {
             self.flap.unparent();
+
+            for expr_watch in self.actions_expression_watches.take().values() {
+                expr_watch.unwatch();
+            }
         }
     }
 
@@ -439,5 +447,26 @@ impl MediaViewer {
 impl EventActions for MediaViewer {
     fn texture(&self) -> Option<EventTexture> {
         self.imp().media.texture().map(EventTexture::Original)
+    }
+
+    fn set_expression_watch(&self, key: &'static str, expr_watch: gtk::ExpressionWatch) {
+        self.imp()
+            .actions_expression_watches
+            .borrow_mut()
+            .insert(key, expr_watch);
+    }
+
+    fn expression_watch(&self, key: &&str) -> Option<gtk::ExpressionWatch> {
+        self.imp()
+            .actions_expression_watches
+            .borrow()
+            .get(key)
+            .cloned()
+    }
+
+    fn clear_expression_watches(&self) {
+        for expr_watch in self.imp().actions_expression_watches.take().values() {
+            expr_watch.unwatch();
+        }
     }
 }

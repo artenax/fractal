@@ -39,7 +39,10 @@ use ruma::{
     api::client::receipt::create_receipt::v3::ReceiptType,
     events::{
         receipt::ReceiptThread,
-        room::message::{ForwardThread, LocationMessageEventContent, RoomMessageEventContent},
+        room::{
+            message::{ForwardThread, LocationMessageEventContent, RoomMessageEventContent},
+            power_levels::PowerLevelAction,
+        },
         AnyMessageLikeEventContent,
     },
     OwnedEventId,
@@ -58,7 +61,7 @@ use crate::{
     i18n::gettext_f,
     session::{
         content::{room_details, RoomDetails},
-        room::{Event, EventKey, Room, RoomAction, RoomType, Timeline, TimelineState},
+        room::{Event, EventKey, Room, RoomType, Timeline, TimelineState},
         user::UserExt,
     },
     spawn, spawn_tokio, toast,
@@ -789,7 +792,7 @@ impl RoomHistory {
     }
 
     fn init_invite_action(&self, room: &Room) {
-        let invite_possible = room.new_allowed_expr(RoomAction::Invite);
+        let invite_possible = room.own_user_is_allowed_to_expr(PowerLevelAction::Invite);
 
         let watch = invite_possible.watch(
             glib::Object::NONE,

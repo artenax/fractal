@@ -34,8 +34,8 @@ use matrix_sdk::{
     DisplayName, Result as MatrixResult, RoomMemberships,
 };
 use ruma::events::{
-    receipt::ReceiptThread, typing::TypingEventContent, AnyMessageLikeEventContent,
-    SyncEphemeralRoomEvent,
+    receipt::ReceiptThread, room::power_levels::PowerLevelAction, typing::TypingEventContent,
+    AnyMessageLikeEventContent, SyncEphemeralRoomEvent,
 };
 
 pub use self::{
@@ -44,7 +44,7 @@ pub use self::{
     member::{Member, Membership},
     member_list::MemberList,
     member_role::MemberRole,
-    power_levels::{PowerLevel, PowerLevels, RoomAction, POWER_LEVEL_MAX, POWER_LEVEL_MIN},
+    power_levels::{PowerLevel, PowerLevels, POWER_LEVEL_MAX, POWER_LEVEL_MIN},
     room_type::RoomType,
     timeline::*,
     typing_list::TypingList,
@@ -1260,13 +1260,16 @@ impl Room {
         );
     }
 
-    /// Creates an expression that is true when the user is allowed the given
-    /// action.
-    pub fn new_allowed_expr(&self, room_action: RoomAction) -> gtk::ClosureExpression {
+    /// Creates an expression that is true when our own user is allowed to do
+    /// the given action in this `Room`.
+    pub fn own_user_is_allowed_to_expr(
+        &self,
+        room_action: PowerLevelAction,
+    ) -> gtk::ClosureExpression {
         let session = self.session();
         let user_id = session.user().unwrap().user_id();
-        let member = self.members().member_by_id(user_id);
-        self.power_levels().new_allowed_expr(&member, room_action)
+        self.power_levels()
+            .member_is_allowed_to_expr(user_id, room_action)
     }
 
     pub async fn accept_invite(&self) -> MatrixResult<()> {

@@ -3,12 +3,13 @@ use gtk::{gdk, gio, glib, glib::clone, prelude::*};
 use log::{debug, error};
 use matrix_sdk::{room::timeline::TimelineItemContent, ruma::events::room::message::MessageType};
 use once_cell::sync::Lazy;
+use ruma::events::room::power_levels::PowerLevelAction;
 
 use crate::{
     prelude::*,
     session::{
         event_source_dialog::EventSourceDialog,
-        room::{Event, EventKey, RoomAction},
+        room::{Event, EventKey},
     },
     spawn, spawn_tokio, toast, UserFacingError,
 };
@@ -62,12 +63,22 @@ where
         &MODEL.0
     }
 
+    /// Store a `GtkExpressionWatch` for re-use later.
+    fn set_expression_watch(&self, key: &'static str, expr_watch: gtk::ExpressionWatch);
+
+    /// Get a `GtkExpressionWatch` by key.
+    fn expression_watch(&self, key: &&str) -> Option<gtk::ExpressionWatch>;
+
+    /// Unwatch and drop all the expression watches on this widget.
+    fn clear_expression_watches(&self);
+
     /// Set the actions available on `self` for `event`.
     ///
     /// Unsets the actions if `event` is `None`.
     ///
     /// Should be paired with the `EventActions` menu models.
     fn set_event_actions(&self, event: Option<&Event>) -> Option<gio::SimpleActionGroup> {
+        self.clear_expression_watches();
         let event = match event {
             Some(event) => event,
             None => {
@@ -130,20 +141,45 @@ where
                 let user = event.room().members().member_by_id(user_id);
 
                 // Remove message
-                if event.sender() == user
-                    || event
+                fn update_remove_action(
+                    action_group: &gio::SimpleActionGroup,
+                    event: &Event,
+                    allowed: bool,
+                ) {
+                    if allowed {
+                        action_group.add_action_entries([gio::ActionEntry::builder("remove")
+                            .activate(clone!(@weak event, => move |_, _, _| {
+                                if let Some(event_id) = event.event_id() {
+                                    event.room().redact(event_id, None);
+                                }
+                            }))
+                            .build()]);
+                    } else {
+                        action_group.remove_action("remove");
+                    }
+                }
+
+                if event.sender() == user {
+                    update_remove_action(&action_group, event, true);
+                } else {
+                    let remove_watch = event
                         .room()
-                        .power_levels()
-                        .min_level_for_room_action(&RoomAction::Redact)
-                        <= user.power_level()
-                {
-                    action_group.add_action_entries([gio::ActionEntry::builder("remove")
-                        .activate(clone!(@weak event, => move |_, _, _| {
-                            if let Some(event_id) = event.event_id() {
-                                event.room().redact(event_id, None);
-                            }
-                        }))
-                        .build()]);
+                        .own_user_is_allowed_to_expr(PowerLevelAction::Redact)
+                        .watch(
+                            glib::Object::NONE,
+                            clone!(@weak self as widget, @weak action_group, @weak event => move || {
+                                let Some(allowed) = widget.expression_watch(&"remove").and_then(|e| e.evaluate_as::<bool>()) else {
+                                    return;
+                                };
+
+                                update_remove_action(&action_group, &event, allowed);
+                            }),
+                        );
+
+                    let allowed = remove_watch.evaluate_as::<bool>().unwrap();
+                    update_remove_action(&action_group, event, allowed);
+
+                    self.set_expression_watch("remove", remove_watch);
                 }
 
                 action_group.add_action_entries([

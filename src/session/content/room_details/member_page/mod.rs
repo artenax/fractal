@@ -14,13 +14,14 @@ mod member_menu;
 mod members_list_view;
 
 use members_list_view::{MembersListView, MembershipSubpageItem};
+use ruma::events::room::power_levels::PowerLevelAction;
 
 use self::member_menu::MemberMenu;
 use crate::{
     prelude::*,
     session::{
         content::room_details::member_page::members_list_view::extra_lists::ExtraLists,
-        room::{Member, Membership, RoomAction},
+        room::{Member, Membership},
         Room, User, UserActions,
     },
     spawn,
@@ -354,7 +355,7 @@ impl MemberPage {
     }
 
     fn init_invite_button(&self, room: &Room) {
-        let invite_possible = room.new_allowed_expr(RoomAction::Invite);
+        let invite_possible = room.own_user_is_allowed_to_expr(PowerLevelAction::Invite);
 
         let watch = invite_possible.watch(
             glib::Object::NONE,

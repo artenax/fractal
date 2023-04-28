@@ -15,7 +15,7 @@ use crate::{
 };
 
 mod imp {
-    use std::{cell::RefCell, rc::Rc};
+    use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
     use glib::signal::SignalHandlerId;
 
@@ -30,6 +30,7 @@ mod imp {
         pub binding: RefCell<Option<glib::Binding>>,
         pub reaction_chooser: RefCell<Option<ReactionChooser>>,
         pub emoji_chooser: RefCell<Option<gtk::EmojiChooser>>,
+        pub actions_expression_watches: RefCell<HashMap<&'static str, gtk::ExpressionWatch>>,
     }
 
     #[glib::object_subclass]
@@ -100,6 +101,10 @@ mod imp {
                 }
             } else if let Some(binding) = self.binding.take() {
                 binding.unbind();
+            }
+
+            for expr_watch in self.actions_expression_watches.take().values() {
+                expr_watch.unwatch();
             }
 
             self.room_history.disconnect_signals();
@@ -428,5 +433,26 @@ impl EventActions for ItemRow {
             .and_then(|w| w.downcast::<MessageRow>().ok())
             .and_then(|r| r.texture())
             .map(EventTexture::Thumbnail)
+    }
+
+    fn set_expression_watch(&self, key: &'static str, expr_watch: gtk::ExpressionWatch) {
+        self.imp()
+            .actions_expression_watches
+            .borrow_mut()
+            .insert(key, expr_watch);
+    }
+
+    fn expression_watch(&self, key: &&str) -> Option<gtk::ExpressionWatch> {
+        self.imp()
+            .actions_expression_watches
+            .borrow()
+            .get(key)
+            .cloned()
+    }
+
+    fn clear_expression_watches(&self) {
+        for expr_watch in self.imp().actions_expression_watches.take().values() {
+            expr_watch.unwatch();
+        }
     }
 }

@@ -11,13 +11,16 @@ use log::error;
 use matrix_sdk::room::Room as MatrixRoom;
 use ruma::{
     assign,
-    events::{room::avatar::ImageInfo, StateEventType},
+    events::{
+        room::{avatar::ImageInfo, power_levels::PowerLevelAction},
+        StateEventType,
+    },
     OwnedMxcUri,
 };
 
 use crate::{
     components::{CustomEntry, EditableAvatar, SpinnerButton},
-    session::{room::RoomAction, Room},
+    session::Room,
     spawn, spawn_tokio, toast,
     utils::{
         and_expr,
@@ -198,8 +201,8 @@ impl GeneralPage {
 
         // Hide avatar controls when the user is not eligible to perform the actions.
         let room = self.room();
-        let room_avatar_changeable =
-            room.new_allowed_expr(RoomAction::StateEvent(StateEventType::RoomAvatar));
+        let room_avatar_changeable = room
+            .own_user_is_allowed_to_expr(PowerLevelAction::SendState(StateEventType::RoomAvatar));
 
         room_avatar_changeable.bind(avatar, "editable", gtk::Widget::NONE);
     }
@@ -367,9 +370,9 @@ impl GeneralPage {
         // Hide edit controls when the user is not eligible to perform the actions.
         let room = self.room();
         let room_name_changeable =
-            room.new_allowed_expr(RoomAction::StateEvent(StateEventType::RoomName));
-        let room_topic_changeable =
-            room.new_allowed_expr(RoomAction::StateEvent(StateEventType::RoomTopic));
+            room.own_user_is_allowed_to_expr(PowerLevelAction::SendState(StateEventType::RoomName));
+        let room_topic_changeable = room
+            .own_user_is_allowed_to_expr(PowerLevelAction::SendState(StateEventType::RoomTopic));
         let edit_mode_disabled = not_expr(self.property_expression("edit-mode-enabled"));
 
         let details_changeable = or_expr(room_name_changeable, room_topic_changeable);

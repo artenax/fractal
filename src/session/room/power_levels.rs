@@ -1,10 +1,11 @@
-use gtk::{glib, glib::closure, prelude::*, subclass::prelude::*};
-use matrix_sdk::ruma::events::{
-    room::power_levels::RoomPowerLevelsEventContent, MessageLikeEventType, OriginalSyncStateEvent,
-    StateEventType,
+use gtk::{glib, glib::closure_local, prelude::*, subclass::prelude::*};
+use ruma::{
+    events::{
+        room::power_levels::{PowerLevelAction, RoomPowerLevels, RoomPowerLevelsEventContent},
+        OriginalSyncStateEvent,
+    },
+    OwnedUserId, UserId,
 };
-
-use crate::session::room::Member;
 
 #[derive(Clone, Debug, Default, glib::Boxed)]
 #[boxed_type(name = "BoxedPowerLevelsEventContent")]
@@ -72,29 +73,27 @@ impl PowerLevels {
         self.imp().content.borrow().clone()
     }
 
-    /// Returns the power level minimally required to perform the given action.
-    pub fn min_level_for_room_action(&self, room_action: &RoomAction) -> PowerLevel {
-        let content = self.imp().content.borrow();
-        min_level_for_room_action(&content.0, room_action)
+    /// Returns whether the member with the given user ID is allowed to do the
+    /// given action.
+    pub fn member_is_allowed_to(&self, user_id: &UserId, room_action: PowerLevelAction) -> bool {
+        let content = self.imp().content.borrow().0.clone();
+        RoomPowerLevels::from(content).user_can_do(user_id, room_action)
     }
 
-    /// Creates an expression that is true when the user is allowed the given
-    /// action.
-    pub fn new_allowed_expr(
+    /// Creates an expression that is true when the member with the given user
+    /// ID is allowed to do the given action.
+    pub fn member_is_allowed_to_expr(
         &self,
-        member: &Member,
-        room_action: RoomAction,
+        user_id: OwnedUserId,
+        room_action: PowerLevelAction,
     ) -> gtk::ClosureExpression {
         gtk::ClosureExpression::new::<bool>(
-            &[
-                member.property_expression("power-level"),
-                self.property_expression("power-levels"),
-            ],
-            closure!(|_: Option<glib::Object>,
-                      power_level: PowerLevel,
-                      content: BoxedPowerLevelsEventContent| {
-                power_level >= min_level_for_room_action(&content.0, &room_action)
-            }),
+            &[self.property_expression("power-levels")],
+            closure_local!(
+                move |_: Option<glib::Object>, content: BoxedPowerLevelsEventContent| {
+                    RoomPowerLevels::from(content.0).user_can_do(&user_id, room_action.clone())
+                }
+            ),
         )
     }
 
@@ -110,38 +109,4 @@ impl Default for PowerLevels {
     fn default() -> Self {
         Self::new()
     }
-}
-
-/// Returns the power level minimally required to perform the given action.
-fn min_level_for_room_action(
-    content: &RoomPowerLevelsEventContent,
-    room_action: &RoomAction,
-) -> PowerLevel {
-    match room_action {
-        RoomAction::Ban => content.ban,
-        RoomAction::Invite => content.invite,
-        RoomAction::Kick => content.kick,
-        RoomAction::Redact => content.redact,
-        RoomAction::RoomNotification => content.notifications.room,
-        RoomAction::StateEvent(event_type) => *content
-            .events
-            .get(&event_type.clone().into())
-            .unwrap_or(&content.state_default),
-        RoomAction::MessageLikeEvent(event_type) => *content
-            .events
-            .get(&event_type.clone().into())
-            .unwrap_or(&content.events_default),
-    }
-    .into()
-}
-
-/// Actions that require different power levels to perform them.
-pub enum RoomAction {
-    Ban,
-    Invite,
-    Kick,
-    Redact,
-    RoomNotification,
-    StateEvent(StateEventType),
-    MessageLikeEvent(MessageLikeEventType),
 }
