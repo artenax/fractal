@@ -21,7 +21,7 @@ use crate::{
     prelude::*,
     session::{
         content::room_details::member_page::members_list_view::extra_lists::ExtraLists,
-        room::{Member, Membership},
+        room::{Member, Membership, PowerLevel},
         Room, User, UserActions,
     },
     spawn,
@@ -192,18 +192,12 @@ impl MemberPage {
         let sorter = gtk::MultiSorter::new();
         sorter.append(
             gtk::NumericSorter::builder()
-                .expression(&gtk::PropertyExpression::new(
-                    Member::static_type(),
-                    gtk::Expression::NONE,
-                    "power-level",
-                ))
+                .expression(Member::this_expression("power-level"))
                 .sort_order(gtk::SortType::Descending)
                 .build(),
         );
 
-        sorter.append(gtk::StringSorter::new(Some(gtk::PropertyExpression::new(
-            Member::static_type(),
-            gtk::Expression::NONE,
+        sorter.append(gtk::StringSorter::new(Some(Member::this_expression(
             "display-name",
         ))));
 
@@ -308,14 +302,9 @@ impl MemberPage {
         model: impl IsA<gio::ListModel>,
         state: Membership,
     ) -> gio::ListModel {
-        let membership_expression = gtk::PropertyExpression::new(
-            Member::static_type(),
-            gtk::Expression::NONE,
-            "membership",
-        )
-        .chain_closure::<bool>(closure!(
-            |_: Option<glib::Object>, this_state: Membership| this_state == state
-        ));
+        let membership_expression = Member::this_expression("membership").chain_closure::<bool>(
+            closure!(|_: Option<glib::Object>, this_state: Membership| this_state == state),
+        );
 
         let membership_filter = gtk::BoolFilter::new(Some(&membership_expression));
 
@@ -330,8 +319,15 @@ impl MemberPage {
         }
 
         let member_expr = gtk::ClosureExpression::new::<String>(
-            &[] as &[gtk::Expression],
-            closure!(|member: Option<Member>| { member.map(search_string).unwrap_or_default() }),
+            [
+                Member::this_expression("display-name"),
+                Member::this_expression("power-level"),
+            ],
+            closure!(
+                |member: Option<Member>, _display_name: String, _power_level: PowerLevel| {
+                    member.map(search_string).unwrap_or_default()
+                }
+            ),
         );
         let search_filter = gtk::StringFilter::builder()
             .match_mode(gtk::StringFilterMatchMode::Substring)
