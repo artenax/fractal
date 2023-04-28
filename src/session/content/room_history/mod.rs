@@ -940,7 +940,7 @@ impl RoomHistory {
         imp.is_auto_scrolling.set(true);
 
         imp.scrolled_window
-            .emit_by_name::<bool>("scroll-child", &[&gtk::ScrollType::End, &false]);
+            .emit_scroll_child(gtk::ScrollType::End, false);
     }
 
     /// Set `RoomHistory` to stick to the bottom based on scrollbar position
