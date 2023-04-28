@@ -1001,6 +1001,8 @@ impl RoomHistory {
             glib::DateTime::from_unix_local(location.timestamp().as_secs() as i64)
                 .expect("Valid location timestamp");
         let location_body = gettext_f(
+            // Translators: Do NOT translate the content between '{' and '}', this is a variable
+            // name.
             "User Location {geo_uri} at {iso8601_datetime}",
             &[
                 ("geo_uri", &geo_uri_string),
