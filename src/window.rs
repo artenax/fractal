@@ -112,8 +112,8 @@ mod imp {
             let shortcuts = builder.object("shortcuts").unwrap();
             obj.set_help_overlay(Some(&shortcuts));
 
-            // Devel Profile
-            if PROFILE == "Devel" {
+            // Development Profile
+            if PROFILE.should_use_devel_class() {
                 obj.add_css_class("devel");
             }
 

@@ -61,7 +61,7 @@ elif get_option('profile') == 'beta'
   profile = 'Beta'
 else
   is_release = true
-  profile = ''
+  profile = 'Stable'
 endif
 
 if is_release

@@ -1,4 +1,4 @@
-use std::borrow::Cow;
+use std::{borrow::Cow, fmt};
 
 use gettextrs::gettext;
 use gio::{ApplicationFlags, Settings};
@@ -213,6 +213,43 @@ impl Default for Application {
             .unwrap()
             .downcast::<Application>()
             .unwrap()
+    }
+}
+
+/// The profile that was built.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[allow(dead_code)]
+pub enum AppProfile {
+    /// A stable release.
+    Stable,
+    /// A beta release.
+    Beta,
+    /// A nightly release.
+    Devel,
+    /// A development release.
+    Hack,
+}
+
+impl AppProfile {
+    /// The string representation of this `AppProfile`.
+    pub fn as_str(&self) -> &str {
+        match self {
+            Self::Stable => "stable",
+            Self::Beta => "beta",
+            Self::Devel => "devel",
+            Self::Hack => "hack",
+        }
+    }
+
+    /// Whether this `AppProfile` should use the `.devel` CSS class on windows.
+    pub fn should_use_devel_class(&self) -> bool {
+        matches!(self, Self::Devel | Self::Hack)
+    }
+}
+
+impl fmt::Display for AppProfile {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.as_str())
     }
 }
 
