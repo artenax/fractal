@@ -1,7 +1,7 @@
-use std::{collections::HashMap, ffi::OsStr, fmt, path::PathBuf, string::FromUtf8Error};
+use std::{collections::HashMap, ffi::OsStr, fmt, fs, path::PathBuf, string::FromUtf8Error};
 
 use gettextrs::gettext;
-use log::error;
+use log::{debug, error, warn};
 use matrix_sdk::ruma::{DeviceId, OwnedDeviceId, OwnedUserId, UserId};
 use oo7::{Item, Keyring};
 use serde::{Deserialize, Serialize};
@@ -9,9 +9,14 @@ use serde_json::error::Error as JsonError;
 use thiserror::Error;
 use url::Url;
 
-use crate::{config::APP_ID, gettext_f, user_facing_error::UserFacingError};
+use crate::{
+    config::{APP_ID, PROFILE},
+    gettext_f, spawn_tokio,
+    user_facing_error::UserFacingError,
+    utils::matrix,
+};
 
-pub const CURRENT_VERSION: u8 = 1;
+pub const CURRENT_VERSION: u8 = 2;
 const SCHEMA_ATTRIBUTE: &str = "xdg:schema";
 
 /// Any error that can happen when interacting with the secret service.
@@ -36,6 +41,10 @@ pub enum SecretError {
     /// An error occurred interacting with the secret service.
     #[error(transparent)]
     Oo7(#[from] oo7::Error),
+
+    /// Trying to restore a session with the wrong profile.
+    #[error("Session found for wrong profile")]
+    WrongProfile,
 }
 
 impl SecretError {
@@ -167,13 +176,30 @@ impl StoredSession {
             },
             None => 0,
         };
-        if version > 0 && version != CURRENT_VERSION {
+        if version > CURRENT_VERSION {
             return Err(SecretError::UnsupportedVersion {
                 version,
                 item,
                 attributes: attr,
             });
         }
+
+        // TODO: Remove this and request profile in Keyring::search_items when we remove
+        // migration.
+        match attr.get("profile") {
+            // Ignore the item if it's for another profile.
+            Some(profile) if *profile != PROFILE.as_str() => return Err(SecretError::WrongProfile),
+            // It's an error if the version is at least 2 but there is no profile.
+            // Versions older than 2 will be migrated.
+            None if version >= 2 => {
+                return Err(SecretError::CorruptSession {
+                    error: gettext("Could not find profile in stored session"),
+                    item,
+                });
+            }
+            // No issue for other cases.
+            _ => {}
+        };
 
         let homeserver = match attr.get("homeserver") {
             Some(string) => match Url::parse(string) {
@@ -273,7 +299,7 @@ impl StoredSession {
             version,
         };
 
-        if version == 0 {
+        if version < CURRENT_VERSION {
             Err(SecretError::OldVersion { item, session })
         } else {
             Ok(session)
@@ -288,6 +314,7 @@ impl StoredSession {
             ("device-id", self.device_id.to_string()),
             ("db-path", self.path.to_str().unwrap().to_owned()),
             ("version", self.version.to_string()),
+            ("profile", PROFILE.to_string()),
             (SCHEMA_ATTRIBUTE, APP_ID.to_owned()),
         ])
     }
@@ -301,6 +328,79 @@ impl StoredSession {
             .next_back()
             .and_then(OsStr::to_str)
             .unwrap()
+    }
+
+    /// Delete this session from the system.
+    pub async fn delete(self, item: Item) {
+        debug!(
+            "Removing session {} found for user {} with ID {}…",
+            self.version,
+            self.user_id,
+            self.id()
+        );
+
+        spawn_tokio!(async move {
+            match matrix::client_with_stored_session(&self).await {
+                Ok(client) => {
+                    if let Err(error) = client.logout().await {
+                        error!("Failed to log out old session: {error}");
+                    }
+                }
+                Err(error) => {
+                    error!("Failed to build client to log out old session: {error}")
+                }
+            }
+
+            if let Err(error) = item.delete().await {
+                error!("Failed to delete old session from Secret Service: {error}");
+            };
+
+            if let Err(error) = fs::remove_dir_all(self.path) {
+                error!("Failed to remove database from old session: {error}");
+            }
+        })
+        .await
+        .unwrap();
+    }
+
+    /// Migrate this session to version 2.
+    ///
+    /// This implies moving the database under the profile's directory.
+    pub async fn migrate_to_v2(mut self, item: Item) {
+        warn!(
+            "Session version {} found for user {} with ID {}, migrating to version 2…",
+            self.version,
+            self.user_id,
+            self.id()
+        );
+
+        spawn_tokio!(async move {
+            let new_path = self
+                .path
+                .with_file_name(format!("{}/{}", PROFILE.as_str(), self.id()));
+            debug!("Moving database to: {}", new_path.to_string_lossy());
+
+            if let Err(error) = fs::create_dir_all(&new_path) {
+                error!("Failed to create new directory: {error}");
+            }
+
+            if let Err(error) = fs::rename(&self.path, &new_path) {
+                error!("Failed to move database: {error}");
+            }
+
+            self.path = new_path;
+            self.version = 2;
+
+            if let Err(error) = item.delete().await {
+                error!("Failed to remove outdated session: {error}");
+            }
+
+            if let Err(error) = store_session(&self).await {
+                error!("Failed to store updated session: {error}");
+            }
+        })
+        .await
+        .unwrap();
     }
 }
 
@@ -349,7 +449,11 @@ pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
     let mut sessions = Vec::with_capacity(items.len());
 
     for item in items {
-        sessions.push(StoredSession::try_from_secret_item(item).await?);
+        match StoredSession::try_from_secret_item(item).await {
+            Ok(session) => sessions.push(session),
+            Err(SecretError::WrongProfile) => {}
+            Err(error) => return Err(error),
+        }
     }
 
     Ok(sessions)

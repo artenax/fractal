@@ -1,4 +1,4 @@
-use std::{cell::Cell, fs};
+use std::cell::Cell;
 
 use adw::subclass::prelude::AdwApplicationWindowImpl;
 use gettextrs::gettext;
@@ -12,9 +12,7 @@ use crate::{
     components::Spinner,
     config::{APP_ID, PROFILE},
     secret::{self, SecretError},
-    spawn, spawn_tokio,
-    utils::matrix,
-    Application, ErrorPage, Greeter, Login, Session,
+    spawn, spawn_tokio, Application, ErrorPage, Greeter, Login, Session,
 };
 
 mod imp {
@@ -266,35 +264,13 @@ impl Window {
                 }
             }
             Err(error) => match error {
-                SecretError::OldVersion { item, session } if session.version == 0 => {
-                    warn!(
-                        "Found old session for user {} with sled store in '{}', removing…",
-                        session.user_id,
-                        session.path.to_string_lossy()
-                    );
-
-                    spawn_tokio!(async move {
-                        match matrix::client_with_stored_session(&session).await {
-                            Ok(client) => {
-                                if let Err(error) = client.logout().await {
-                                    error!("Failed to log out old session: {error}");
-                                }
-                            }
-                            Err(error) => {
-                                error!("Failed to build client to log out old session: {error}")
-                            }
-                        }
-
-                        if let Err(error) = item.delete().await {
-                            error!("Failed to delete old session from Secret Service: {error}");
-                        };
-
-                        if let Err(error) = fs::remove_dir_all(session.path) {
-                            error!("Failed to remove database from old session: {error}");
-                        }
-                    })
-                    .await
-                    .unwrap();
+                SecretError::OldVersion { item, session } => {
+                    if session.version == 0 {
+                        warn!("Found old session with sled store, removing…");
+                        session.delete(item).await
+                    } else if session.version < 2 {
+                        session.migrate_to_v2(item).await
+                    }
 
                     // Restart.
                     spawn!(clone!(@weak self as obj => async move {
