@@ -3,9 +3,10 @@ option(
   type: 'combo',
   choices: [
     'default',
+    'beta',
     'development',
     'hack',
   ],
   value: 'default',
-  description: 'The build profile for Fractal. One of "default", "development" or "hack".'
+  description: 'The build profile for Fractal. One of "default", "beta", "development" or "hack".'
 )

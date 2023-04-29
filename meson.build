@@ -56,6 +56,9 @@ if get_option('profile') == 'hack'
 elif get_option('profile') == 'development'
   is_release = false
   profile = 'Devel'
+elif get_option('profile') == 'beta'
+  is_release = true
+  profile = 'Beta'
 else
   is_release = true
   profile = ''
