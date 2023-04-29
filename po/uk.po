@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-03-26 13:49+0000\n"
-"PO-Revision-Date: 2023-03-26 19:40+0300\n"
+"POT-Creation-Date: 2023-04-27 08:45+0000\n"
+"PO-Revision-Date: 2023-04-29 19:27+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -316,7 +316,7 @@ msgstr "Скасувати"
 msgid "Confirm"
 msgstr "Підтвердити"
 
-#: data/resources/ui/components-loading-listbox-row.ui:32
+#: data/resources/ui/components-loading-listbox-row.ui:31
 msgid "Try again"
 msgstr "Спробувати ще раз"
 
@@ -324,11 +324,11 @@ msgstr "Спробувати ще раз"
 msgid "Add server…"
 msgstr "Додати сервер…"
 
-#: data/resources/ui/content-explore.ui:71
+#: data/resources/ui/content-explore.ui:70
 msgid "No rooms matching the search were found"
 msgstr "Не знайдено жодної кімнати, яка відповідає критерію пошуку"
 
-#: data/resources/ui/content-explore.ui:97
+#: data/resources/ui/content-explore.ui:96
 msgid "Room List"
 msgstr "Список кімнат"
 
@@ -445,47 +445,47 @@ msgstr "Назад"
 msgid "Room Settings"
 msgstr "Параметри кімнати"
 
-#: data/resources/ui/content-room-history.ui:119
+#: data/resources/ui/content-room-history.ui:118
 msgid "Unable to load room"
 msgstr "Не вдалося завантажити кімнату"
 
-#: data/resources/ui/content-room-history.ui:120
+#: data/resources/ui/content-room-history.ui:119
 msgid "Check your network connection."
 msgstr "Перевірте ваше з'єднання з мережею."
 
-#: data/resources/ui/content-room-history.ui:123
+#: data/resources/ui/content-room-history.ui:122
 msgid "Try Again"
 msgstr "Повторити спробу"
 
-#: data/resources/ui/content-room-history.ui:148
+#: data/resources/ui/content-room-history.ui:147
 msgid "Scroll to bottom"
 msgstr "Прокрутіть донизу"
 
-#: data/resources/ui/content-room-history.ui:160
+#: data/resources/ui/content-room-history.ui:159
 msgid "Drop Here to Send"
 msgstr "Скиньте сюди, щоб надіслати"
 
-#: data/resources/ui/content-room-history.ui:180
+#: data/resources/ui/content-room-history.ui:179
 msgid "Room History"
 msgstr "Журнал кімнати"
 
-#: data/resources/ui/content-room-history.ui:271
+#: data/resources/ui/content-room-history.ui:270
 msgid "Browse Attachment"
 msgstr "Навігація долученням"
 
-#: data/resources/ui/content-room-history.ui:281
+#: data/resources/ui/content-room-history.ui:280
 msgid "Open Emoji Picker"
 msgstr "Відкрити вибір емодзі"
 
-#: data/resources/ui/content-room-history.ui:302
+#: data/resources/ui/content-room-history.ui:301
 msgid "Message Entry"
 msgstr "Введення повідомлення"
 
-#: data/resources/ui/content-room-history.ui:317
+#: data/resources/ui/content-room-history.ui:316
 msgid "Open Message Menu"
 msgstr "Відкрити меню повідомлення"
 
-#: data/resources/ui/content-room-history.ui:332
+#: data/resources/ui/content-room-history.ui:331
 msgid "Send Message"
 msgstr "Надіслати повідомлення"
 
@@ -756,7 +756,7 @@ msgstr ""
 "Введіть ідентифікатор кімнати, альтернативну назву кімнати або постійне "
 "посилання."
 
-#: data/resources/ui/join-room-dialog.ui:10 src/session/mod.rs:712
+#: data/resources/ui/join-room-dialog.ui:10 src/session/join_room_dialog.rs:141
 msgid "_Join"
 msgstr "_Увійти"
 
@@ -1102,7 +1102,6 @@ msgid "Name by"
 msgstr "Авторка назви"
 
 #: src/components/editable_avatar.rs:388
-#| msgid "Image"
 msgid "Images"
 msgstr "Зображення"
 
@@ -1116,7 +1115,6 @@ msgid "Choose"
 msgstr "Вибрати"
 
 #: src/components/editable_avatar.rs:413
-#| msgid "Could not remove avatar"
 msgid "Could not open avatar file"
 msgstr "Не вдалося відкрити файл аватара"
 
@@ -1132,19 +1130,19 @@ msgstr "Не вдалося визначити тип вибраного фай�
 msgid "Location at latitude {latitude} and longitude {longitude}"
 msgstr "Розташування за широтою {latitude} і довготою {longitude}"
 
-#: src/components/media_content_viewer.rs:167
+#: src/components/media_content_viewer.rs:169
 msgid "Image not Viewable"
 msgstr "Зображення не придатне до перегляду"
 
-#: src/components/media_content_viewer.rs:168
+#: src/components/media_content_viewer.rs:170
 msgid "Audio Clip not Playable"
 msgstr "Звуковий кліп не придатний до відтворення"
 
-#: src/components/media_content_viewer.rs:169
+#: src/components/media_content_viewer.rs:171
 msgid "Video not Playable"
 msgstr "Відео не придатне до відтворення"
 
-#: src/components/media_content_viewer.rs:170
+#: src/components/media_content_viewer.rs:172
 msgid "File not Viewable"
 msgstr "Файл не придатний до перегляду"
 
@@ -1156,11 +1154,11 @@ msgstr "Сеанс успішно вилучено."
 msgid "Could not remove session from secret storage"
 msgstr "Не вдалося вилучити сеанс із зашифрованого сховища"
 
-#: src/greeter.rs:80 src/login/mod.rs:688 src/window.rs:389
+#: src/greeter.rs:80 src/login/mod.rs:688 src/window.rs:432
 msgid "No network connection"
 msgstr "Немає з'єднання з мережею"
 
-#: src/greeter.rs:85 src/login/mod.rs:693 src/window.rs:393
+#: src/greeter.rs:85 src/login/mod.rs:693 src/window.rs:436
 msgid "No Internet connection"
 msgstr "Відсутнє з'єднання з інтернетом"
 
@@ -1188,28 +1186,34 @@ msgstr "Встановлюємо з'єднання із {domain_name}"
 msgid "Unable to store session"
 msgstr "Не вдалося зберегти сеанс"
 
-#: src/secret.rs:57
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/secret.rs:49
+msgid "Found stored session with unsupported version {version_nb}"
+msgstr "Виявлено збережений сеанс непідтримуваної версії {version_nb}"
+
+#: src/secret.rs:80
 msgid "The secret storage file is corrupted."
 msgstr "Файл сховища реєстраційних даних пошкоджено."
 
-#: src/secret.rs:61
+#: src/secret.rs:84
 msgid "Could not access the secret storage file location."
 msgstr ""
 "Не вдалося отримати доступ до місця зберігання файл сховища реєстраційних "
 "даних."
 
-#: src/secret.rs:64
+#: src/secret.rs:87
 msgid "An unknown error occurred when accessing the secret storage file."
 msgstr ""
 "Під час спроби доступу до файла сховища реєстраційних даних сталася невідома "
 "помилка"
 
-#: src/secret.rs:67
+#: src/secret.rs:90
 msgid "The secret storage file has been changed by another process."
 msgstr ""
 "До файла сховища реєстраційних даних внесено зміни стороннім процесом."
 
-#: src/secret.rs:70
+#: src/secret.rs:93
 msgid ""
 "An unknown error occurred when interacting with the D-Bus Secret Portal "
 "backend."
@@ -1217,7 +1221,7 @@ msgstr ""
 "Під час роботи із модулем порталу реєстраційних даних за допомогою D-Bus "
 "сталася невідома помилка"
 
-#: src/secret.rs:73
+#: src/secret.rs:96
 msgid ""
 "The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1225,7 +1229,7 @@ msgstr ""
 "Запит до порталу реєстраційних даних Flatpak було скасовано. Переконайтеся, "
 "що прийнято усі запити, що вимагають доступу до нього."
 
-#: src/secret.rs:76
+#: src/secret.rs:99
 msgid ""
 "The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
 "installed, and it is at least at version 1.5.0."
@@ -1233,18 +1237,18 @@ msgstr ""
 "Немає доступу до порталу реєстраційних даних Flatpak. Переконайтеся, що "
 "встановлено пакунок xdg-desktop-portal версії, яка є не меншою за 1.5.0."
 
-#: src/secret.rs:79
+#: src/secret.rs:102
 msgid ""
 "The Flatpak Secret Portal provided a key that is too weak to be secure."
 msgstr ""
 "Портал реєстраційних даних Flatpak надав ключ, який є надто простим, щоб "
 "бути безпечним."
 
-#: src/secret.rs:91
+#: src/secret.rs:114
 msgid "The item was deleted."
 msgstr "Запис було вилучено."
 
-#: src/secret.rs:94
+#: src/secret.rs:117
 msgid ""
 "The request to the D-Bus Secret Service was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1253,7 +1257,7 @@ msgstr ""
 "скасовано. Переконайтеся, що прийнято усі запити, що вимагають доступу до "
 "неї."
 
-#: src/secret.rs:97
+#: src/secret.rs:120
 msgid ""
 "Could not access the default collection. Make sure a keyring was created and "
 "set as default."
@@ -1261,51 +1265,54 @@ msgstr ""
 "Не вдалося отримати доступу до типової збірки. Переконайтеся, що в'язку "
 "ключів було створено і зроблено типовою."
 
-#: src/secret.rs:101
+#: src/secret.rs:124
 msgid ""
 "An unknown error occurred when interacting with the D-Bus Secret Service."
 msgstr ""
 "Під час роботи із службою реєстраційних даних за допомогою D-Bus сталася "
 "невідома помилка"
 
-#: src/secret.rs:141
+#: src/secret.rs:163
+#| msgid "Malformed secret in stored session"
+msgid "Malformed version in stored session"
+msgstr "Помилкове форматування запису версії у збереженому сеансі"
+
+#: src/secret.rs:184
 msgid "Malformed homeserver in stored session"
 msgstr "Помилкове форматування запису домашнього сервера у збереженому сеансі"
 
-#: src/secret.rs:148
+#: src/secret.rs:191
 msgid "Could not find homeserver in stored session"
 msgstr "Не вдалося знайти дані домашнього сервера у збереженому сеансі"
 
-#: src/secret.rs:162
+#: src/secret.rs:202
 msgid "Malformed user ID in stored session"
 msgstr ""
 "Помилкове форматування ідентифікатора користувача у збереженому сеансі"
 
-#: src/secret.rs:169
+#: src/secret.rs:209
 msgid "Could not find user ID in stored session"
 msgstr "Не вдалося знайти ідентифікатор користувача у збереженому сеансі"
 
-#: src/secret.rs:178
+#: src/secret.rs:218
 msgid "Could not find device ID in stored session"
 msgstr "Не вдалося знайти ідентифікатор пристрою у збереженому сеансі"
 
-#: src/secret.rs:187
+#: src/secret.rs:227
 msgid "Could not find database path in stored session"
 msgstr "Не вдалося знайти шлях до бази даних у збереженому сеансі"
 
-#: src/secret.rs:198
+#: src/secret.rs:240 src/secret.rs:251
 msgid "Malformed secret in stored session"
 msgstr "Помилкове форматування реєстраційних даних у збереженому сеансі"
 
-#: src/secret.rs:206
+#: src/secret.rs:261
 msgid "Could not get secret in stored session"
 msgstr "Не вдалося отримати зашифровані дані у збереженому сеансі"
 
-#. Translators: Do NOT translate the content between '{' and '}',
-#. this is a variable name.
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:315 src/secret.rs:355
+#: src/secret.rs:372
 msgid "Fractal: Matrix credentials for {user_id}"
 msgstr "Фрактал: реєстраційні дані Matrix для {user_id}"
 
@@ -1466,7 +1473,6 @@ msgstr "Імпортувати ключі шифрування з…"
 
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:275
 #: src/session/room/event/event_actions.rs:346
-#| msgid "Could not load file"
 msgid "Could not access file"
 msgstr "Не вдалося отримати доступ до файла"
 
@@ -1499,39 +1505,39 @@ msgstr ""
 msgid "Could not import the keys"
 msgstr "Не вдалося імпортувати ключі"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:181
+#: src/session/account_settings/user_page/change_password_subpage.rs:172
 msgid "Password must be at least 8 characters long"
 msgstr "Пароль має складатися із принаймні 8 символів"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:184
+#: src/session/account_settings/user_page/change_password_subpage.rs:175
 msgid "Password must have at least one lower-case letter"
 msgstr "Пароль має містити принаймні одну літеру нижнього регістру"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:188
+#: src/session/account_settings/user_page/change_password_subpage.rs:179
 msgid "Password must have at least one upper-case letter"
 msgstr "Пароль має містити принаймні одну літеру верхнього регістру"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:191
+#: src/session/account_settings/user_page/change_password_subpage.rs:182
 msgid "Password must have at least one digit"
 msgstr "У паролі має містити принаймні одна цифра"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:193
+#: src/session/account_settings/user_page/change_password_subpage.rs:184
 msgid "Password must have at least one symbol"
 msgstr "У паролі має містити принаймні один символ пунктуації"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:223
+#: src/session/account_settings/user_page/change_password_subpage.rs:214
 msgid "Passwords do not match"
 msgstr "Паролі не збігаються"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:281
+#: src/session/account_settings/user_page/change_password_subpage.rs:272
 msgid "Password changed successfully"
 msgstr "Пароль успішно змінено"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:303
+#: src/session/account_settings/user_page/change_password_subpage.rs:283
 msgid "Password rejected for being too weak"
 msgstr "Пароль є надто простим"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:307
+#: src/session/account_settings/user_page/change_password_subpage.rs:287
 msgid "Could not change password"
 msgstr "Не вдалося змінити пароль"
 
@@ -1581,11 +1587,11 @@ msgstr "Ім'я успішно змінено"
 msgid "Could not change display name"
 msgstr "Не вдалося змінити показане ім'я"
 
-#: src/session/content/explore/public_room_row.rs:211
+#: src/session/content/explore/public_room_row.rs:209
 msgid "View"
 msgstr "Перегляд"
 
-#: src/session/content/explore/public_room_row.rs:213
+#: src/session/content/explore/public_room_row.rs:211
 msgid "Join"
 msgstr "Увійти"
 
@@ -1614,24 +1620,25 @@ msgid "Member"
 msgstr "Учасник"
 
 #: src/session/content/room_details/invite_subpage/invitee_list.rs:288
-#: src/session/room/member.rs:47
+#: src/session/room/member.rs:45
 msgid "Banned"
 msgstr "Заблоковано"
 
 #: src/session/content/room_details/invite_subpage/invitee_list.rs:290
-#: src/session/room/member.rs:46 src/session/sidebar/category_type.rs:30
+#: src/session/room/member.rs:44
+#: src/session/sidebar/category/category_type.rs:30
 msgid "Invited"
 msgstr "Запрошено"
 
-#: src/session/content/room_details/member_page/mod.rs:288
+#: src/session/content/room_details/member_page/mod.rs:286
 msgid "Invited Room Members"
 msgstr "Запрошені учасники кімнати"
 
-#: src/session/content/room_details/member_page/mod.rs:289
+#: src/session/content/room_details/member_page/mod.rs:287
 msgid "Banned Room Members"
 msgstr "Заблоковані учасники кімнати"
 
-#: src/session/content/room_details/member_page/mod.rs:290
+#: src/session/content/room_details/member_page/mod.rs:288
 #: src/session/content/room_details/mod.rs:217
 msgid "Room Members"
 msgstr "Учасники кімнати"
@@ -1640,20 +1647,31 @@ msgstr "Учасники кімнати"
 msgid "Invite new Members"
 msgstr "Запросити нових учасників"
 
-#: src/session/content/room_history/item_row.rs:319
+#: src/session/content/room_history/item_row.rs:303
 msgid "This is the start of the visible history"
 msgstr "Це початок видимого журналу"
 
-#: src/session/content/room_history/item_row.rs:334
+#. Translators: This is a date format in the day divider without the
+#. year
+#: src/session/content/room_history/item_row.rs:326
+msgid "%A, %B %e"
+msgstr "%A, %e %b"
+
+#. Translators: This is a date format in the day divider with the year
+#: src/session/content/room_history/item_row.rs:329
+msgid "%A, %B %e, %Y"
+msgstr "%A, %e %b %Y"
+
+#: src/session/content/room_history/item_row.rs:335
 msgid "New Messages"
 msgstr "Нові повідомлення"
 
-#: src/session/content/room_history/message_row/audio.rs:228
-#: src/session/content/room_history/message_row/audio.rs:232
+#: src/session/content/room_history/message_row/audio.rs:231
+#: src/session/content/room_history/message_row/audio.rs:235
 msgid "Could not retrieve audio file"
 msgstr "Не вдалося отримати звуковий файл"
 
-#: src/session/content/room_history/message_row/audio.rs:245
+#: src/session/content/room_history/message_row/audio.rs:248
 msgid "Error reading audio file"
 msgstr "Помилка під час читання звукового файла"
 
@@ -1687,73 +1705,71 @@ msgstr "Підтримки файла зображення не передбач
 msgid "Could not retrieve media"
 msgstr "Не вдалося отримати мультимедійні дані"
 
-#: src/session/content/room_history/mod.rs:207
+#: src/session/content/room_history/mod.rs:214
 msgid "The location request has been cancelled."
 msgstr "Запит щодо визначення розташування було скасовано."
 
-#: src/session/content/room_history/mod.rs:211
+#: src/session/content/room_history/mod.rs:218
 msgid "Failed to retrieve current location."
 msgstr "Не вдалося отримати дані щодо поточного розташування."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/content/room_history/mod.rs:653
+#: src/session/content/room_history/mod.rs:668
 msgid "Reply to {user}"
 msgstr "Відповідь {user}"
 
-#: src/session/content/room_history/mod.rs:766
+#: src/session/content/room_history/mod.rs:781
 #: src/session/room/event/event_actions.rs:110
 msgid "Permalink copied to clipboard"
 msgstr "Стале посилання скопійовано до буфера обміну"
 
-#: src/session/content/room_history/mod.rs:770
+#: src/session/content/room_history/mod.rs:785
 #: src/session/room/event/event_actions.rs:114
 msgid "Failed to copy the permalink"
 msgstr "Не вдалося скопіювати стале посилання"
 
-#: src/session/content/room_history/mod.rs:958
+#: src/session/content/room_history/mod.rs:991
 msgid "Your Location"
 msgstr "Ваше місце перебування"
 
-#: src/session/content/room_history/mod.rs:968
+#: src/session/content/room_history/mod.rs:1001
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Розташування користувача {geo_uri} {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:1013
-#| msgid "Select a file"
+#: src/session/content/room_history/mod.rs:1046
 msgid "Select File"
 msgstr "Виберіть файл"
 
-#: src/session/content/room_history/mod.rs:1015
+#: src/session/content/room_history/mod.rs:1048
 msgid "Select"
 msgstr "Вибрати"
 
-#: src/session/content/room_history/mod.rs:1034
-#| msgid "Couldn’t open file"
+#: src/session/content/room_history/mod.rs:1067
 msgid "Could not open file"
 msgstr "Не вдалося відкрити файл"
 
-#: src/session/content/room_history/mod.rs:1079
+#: src/session/content/room_history/mod.rs:1112
 msgid "Error reading file"
 msgstr "Помилка при зчитуванні файла"
 
-#: src/session/content/room_history/mod.rs:1105
+#: src/session/content/room_history/mod.rs:1138
 msgid "Error getting file from drop"
 msgstr "Помилка під час отримання файла зі скидання"
 
-#: src/session/content/room_history/mod.rs:1137
+#: src/session/content/room_history/mod.rs:1170
 msgid "Error getting image from clipboard"
 msgstr "Помилка під час отримання зображення з буфера обміну"
 
-#: src/session/content/room_history/mod.rs:1154
+#: src/session/content/room_history/mod.rs:1187
 msgid "Error getting file from clipboard"
 msgstr "Помилка під час отримання файла з буфера обміну"
 
-#: src/session/content/room_history/state_row/creation.rs:68
+#: src/session/content/room_history/state_row/creation.rs:66
 msgid "This is the continuation of an upgraded room."
 msgstr "Це продовження оновленої кімнати."
 
-#: src/session/content/room_history/state_row/creation.rs:73
+#: src/session/content/room_history/state_row/creation.rs:71
 msgid "This is the beginning of this room."
 msgstr "Це початок цієї кімнати."
 
@@ -1892,19 +1908,19 @@ msgstr "{user} змінено аватар."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/room_history/typing_row.rs:183
+#: src/session/content/room_history/typing_row.rs:173
 msgid "<b>{user}</b> is typing…"
 msgstr "<b>{user}</b> вводить повідомлення…"
 
 #. Translators: Do NOT translate the content between '{' and '}', these are
 #. variable names.
-#: src/session/content/room_history/typing_row.rs:193
+#: src/session/content/room_history/typing_row.rs:183
 msgid "<b>{user1}</b> and <b>{user2}</b> are typing…"
 msgstr "<b>{user1}</b> і <b>{user2}</b> вводять повідомлення…"
 
 #. Translators: Do NOT translate the content between '{' and '}', these are
 #. variable names.
-#: src/session/content/room_history/typing_row.rs:200
+#: src/session/content/room_history/typing_row.rs:190
 msgid "<b>{user1}</b>, <b>{user2}</b> and 1 other are typing…"
 msgid_plural "<b>{user1}</b>, <b>{user2}</b> and {n} others are typing…"
 msgstr[0] "<b>{user1}</b>, <b>{user2}</b> та {n} інший вводять повідомлення…"
@@ -2099,11 +2115,11 @@ msgstr ""
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Під час створення ключів шифрування сталася помилка."
 
-#: src/session/mod.rs:710
+#: src/session/join_room_dialog.rs:139
 msgid "_View"
 msgstr "П_ерегляд"
 
-#: src/session/mod.rs:751
+#: src/session/mod.rs:713
 msgid "Failed to logout the session."
 msgstr "Не вдалося вийти з сеансу."
 
@@ -2126,23 +2142,22 @@ msgid "Save File"
 msgstr "Зберегти файл"
 
 #: src/session/room/event/event_actions.rs:338
-#| msgid "Could not load file"
 msgid "Could not save file"
 msgstr "Не вдалося зберегти файл"
 
-#: src/session/room/member.rs:44
+#: src/session/room/member.rs:42
 msgid "Left"
 msgstr "Полишено"
 
-#: src/session/room/member.rs:45
+#: src/session/room/member.rs:43
 msgid "Joined"
 msgstr "Приєднано"
 
-#: src/session/room/member.rs:48
+#: src/session/room/member.rs:46
 msgid "Knocked"
 msgstr "Виштурхнуто"
 
-#: src/session/room/member.rs:49
+#: src/session/room/member.rs:47
 msgid "Custom"
 msgstr "Нетипове"
 
@@ -2159,52 +2174,52 @@ msgid "Normal user"
 msgstr "Звичайний користувач"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:368
+#: src/session/room/mod.rs:363
 msgid "Failed to forget {room}."
 msgstr "Не вдалося забути про {room}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:622
+#: src/session/room/mod.rs:616
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "Не вдалося пересунути {room} з {previous_category} до {new_category}."
 
-#: src/session/room/mod.rs:969
+#: src/session/room/mod.rs:962
 msgid "Unknown"
 msgstr "Невідомий"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:997
+#: src/session/room/mod.rs:990
 msgid "Empty Room (was {user})"
 msgstr "Порожня кімната (був {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:999
+#: src/session/room/mod.rs:992
 msgid "Empty Room"
 msgstr "Порожня кімната"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1299
+#: src/session/room/mod.rs:1291
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "Не вдалося прийняти запрошення до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1328
+#: src/session/room/mod.rs:1320
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 "Не вдалося відмовити у запрошенні до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1524
+#: src/session/room/mod.rs:1507
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "Не вдалося запросити {user} до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1536
+#: src/session/room/mod.rs:1519
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -2221,135 +2236,125 @@ msgstr[3] ""
 "Не вдалося запросити {user} та одного іншого користувача до {room}. "
 "Повторіть спробу пізніше."
 
-#. Translators: This is a date format in the day divider without the year
-#: src/session/room/timeline/timeline_day_divider.rs:121
-msgid "%A, %B %e"
-msgstr "%A, %e %b"
-
-#. Translators: This is a date format in the day divider with the year
-#: src/session/room/timeline/timeline_day_divider.rs:124
-msgid "%A, %B %e, %Y"
-msgstr "%A, %e %b %Y"
-
-#: src/session/room_creation/mod.rs:240
+#: src/session/room_creation/mod.rs:231
 msgid "The address is already taken."
 msgstr "Адресу вже використано."
 
-#: src/session/room_creation/mod.rs:273
+#: src/session/room_creation/mod.rs:264
 msgid "Can’t contain “:”"
 msgstr "Не може містити «:»"
 
-#: src/session/room_creation/mod.rs:278
+#: src/session/room_creation/mod.rs:269
 msgid "Can’t contain “#”"
 msgstr "Не може містити «#»"
 
-#: src/session/room_creation/mod.rs:283
+#: src/session/room_creation/mod.rs:274
 msgid "Too long. Use a shorter address."
 msgstr "Задовга. Скористайтеся коротшою адресою."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room_list.rs:311
+#: src/session/room_list.rs:297
 msgid "Failed to join room {room_name}. Try again later."
 msgstr ""
 "Не вдалося долучитися до кімнати {room_name}. Повторіть спробу пізніше."
 
-#: src/session/sidebar/category_row.rs:160
+#: src/session/sidebar/category/category_row.rs:154
 msgid "Join Room as Favorite"
 msgstr "Увійти як до улюбленої кімнати"
 
-#: src/session/sidebar/category_row.rs:161
+#: src/session/sidebar/category/category_row.rs:155
 msgid "Join Room"
 msgstr "Увійти до кімнати"
 
-#: src/session/sidebar/category_row.rs:162
+#: src/session/sidebar/category/category_row.rs:156
 msgid "Join Room as Low Priority"
 msgstr "Увійти як до низькопріоритетної кімнати"
 
-#: src/session/sidebar/category_row.rs:163
+#: src/session/sidebar/category/category_row.rs:157
 msgid "Reject Invite"
 msgstr "Відкинути запрошення"
 
-#: src/session/sidebar/category_row.rs:164
+#: src/session/sidebar/category/category_row.rs:158
 msgid "Join Room as People"
 msgstr "Долучитися як до кімнати «Люди»"
 
-#: src/session/sidebar/category_row.rs:168
-#: src/session/sidebar/category_row.rs:183
-#: src/session/sidebar/category_row.rs:197
+#: src/session/sidebar/category/category_row.rs:162
+#: src/session/sidebar/category/category_row.rs:177
+#: src/session/sidebar/category/category_row.rs:191
 msgid "Move to Rooms"
 msgstr "Пересунути до «Кімнат»"
 
-#: src/session/sidebar/category_row.rs:169
-#: src/session/sidebar/category_row.rs:176
-#: src/session/sidebar/category_row.rs:198
+#: src/session/sidebar/category/category_row.rs:163
+#: src/session/sidebar/category/category_row.rs:170
+#: src/session/sidebar/category/category_row.rs:192
 msgid "Move to Low Priority"
 msgstr "Пересунути до «Низький пріоритет»"
 
-#: src/session/sidebar/category_row.rs:170
-#: src/session/sidebar/category_row.rs:177
-#: src/session/sidebar/category_row.rs:184
-#: src/session/sidebar/category_row.rs:199
+#: src/session/sidebar/category/category_row.rs:164
+#: src/session/sidebar/category/category_row.rs:171
+#: src/session/sidebar/category/category_row.rs:178
+#: src/session/sidebar/category/category_row.rs:193
 msgid "Leave Room"
 msgstr "Покинути кімнату"
 
-#: src/session/sidebar/category_row.rs:171
-#: src/session/sidebar/category_row.rs:178
-#: src/session/sidebar/category_row.rs:185
+#: src/session/sidebar/category/category_row.rs:165
+#: src/session/sidebar/category/category_row.rs:172
+#: src/session/sidebar/category/category_row.rs:179
 msgid "Move to People"
 msgstr "Пересунути до «Людей»"
 
-#: src/session/sidebar/category_row.rs:175
-#: src/session/sidebar/category_row.rs:182
-#: src/session/sidebar/category_row.rs:196
+#: src/session/sidebar/category/category_row.rs:169
+#: src/session/sidebar/category/category_row.rs:176
+#: src/session/sidebar/category/category_row.rs:190
 msgid "Move to Favorites"
 msgstr "Пересунути до «Улюблених»"
 
-#: src/session/sidebar/category_row.rs:189
+#: src/session/sidebar/category/category_row.rs:183
 msgid "Rejoin Room as Favorites"
 msgstr "Повторно увійти як до кімнати «Улюблені»"
 
-#: src/session/sidebar/category_row.rs:190
+#: src/session/sidebar/category/category_row.rs:184
 msgid "Rejoin Room"
 msgstr "Повторно увійти до кімнати"
 
-#: src/session/sidebar/category_row.rs:191
+#: src/session/sidebar/category/category_row.rs:185
 msgid "Rejoin Room as Low Priority"
 msgstr "Повторно увійти як до низькопріоритетної кімнати"
 
-#: src/session/sidebar/category_row.rs:192
+#: src/session/sidebar/category/category_row.rs:186
 msgid "Rejoin Room as People"
 msgstr "Повторно увійти як до кімнати «Люди»"
 
-#: src/session/sidebar/category_type.rs:29
+#: src/session/sidebar/category/category_type.rs:29
 msgid "Verifications"
 msgstr "Перевірки"
 
-#: src/session/sidebar/category_type.rs:31
+#: src/session/sidebar/category/category_type.rs:31
 msgid "Favorites"
 msgstr "Улюблені"
 
-#: src/session/sidebar/category_type.rs:32
+#: src/session/sidebar/category/category_type.rs:32
 msgid "Rooms"
 msgstr "Кімнати"
 
-#: src/session/sidebar/category_type.rs:33
+#: src/session/sidebar/category/category_type.rs:33
 msgid "Low Priority"
 msgstr "Низький пріоритет"
 
-#: src/session/sidebar/category_type.rs:34
+#: src/session/sidebar/category/category_type.rs:34
 msgid "Historical"
 msgstr "Історичні"
 
 #. Translators: This shouldn't ever be visible to the user,
-#: src/session/sidebar/category_type.rs:36
+#: src/session/sidebar/category/category_type.rs:36
 msgid "Outdated"
 msgstr "Застарілі"
 
-#: src/session/sidebar/category_type.rs:37
+#: src/session/sidebar/category/category_type.rs:37
 msgid "Spaces"
 msgstr "Простори"
 
-#: src/session/sidebar/category_type.rs:38
+#: src/session/sidebar/category/category_type.rs:38
 msgid "People"
 msgstr "Люди"
 
@@ -2382,27 +2387,27 @@ msgstr "Емодзі не збігаються."
 msgid "An unknown error occurred during the verification process."
 msgstr "Під час процедури перевірки сталася невідома помилка."
 
-#: src/user_facing_error.rs:26
+#: src/user_facing_error.rs:25
 msgid "The connection timed out. Try again later."
 msgstr ""
 "Перевищено час очікування на встановлення з'єднання. Спробуйте повторити "
 "спробу пізніше."
 
-#: src/user_facing_error.rs:28
+#: src/user_facing_error.rs:27
 msgid "Unable to connect to the homeserver."
 msgstr "Не вдалося встановити з'єднання із домашнім сервером."
 
-#: src/user_facing_error.rs:38
+#: src/user_facing_error.rs:37
 msgid "The provided username or password is invalid."
 msgstr "Надана пара користувач-пароль є некоректною."
 
-#: src/user_facing_error.rs:39
+#: src/user_facing_error.rs:38
 msgid "The account is deactivated."
 msgstr "Обліковий запис вимкнено."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name.
-#: src/user_facing_error.rs:46
+#: src/user_facing_error.rs:45
 msgid "You exceeded the homeserver’s rate limit, retry in 1 second."
 msgid_plural "You exceeded the homeserver’s rate limit, retry in {n} seconds."
 msgstr[0] ""
@@ -2418,37 +2423,37 @@ msgstr[3] ""
 "Вами перевищено обмеження на частоту повідомлень на домашньому сервері. "
 "Повторна спроба за 1 секунду."
 
-#: src/user_facing_error.rs:52
+#: src/user_facing_error.rs:51
 msgid "You exceeded the homeserver’s rate limit, try again later."
 msgstr ""
 "Вами перевищено обмеження на частоту повідомлень на домашньому сервері. "
 "Повторіть спробу пізніше."
 
-#: src/user_facing_error.rs:62
+#: src/user_facing_error.rs:61
 msgid "An unknown connection error occurred."
 msgstr "Сталася невідома помилка з'єднання."
 
-#: src/user_facing_error.rs:70
+#: src/user_facing_error.rs:69
 msgid "Could not decrypt the event"
 msgstr "Не вдалося розшифрувати подію"
 
-#: src/user_facing_error.rs:72 src/user_facing_error.rs:92
+#: src/user_facing_error.rs:71 src/user_facing_error.rs:85
 msgid "An unknown error occurred."
 msgstr "Сталася невідома помилка."
 
 #: src/user_facing_error.rs:79
-msgid "Could not open the store."
-msgstr "Не вдалося відкрити сховище."
-
-#: src/user_facing_error.rs:86
 msgid "This is not a valid URL"
 msgstr "Ця адреса є некоректною"
 
-#: src/user_facing_error.rs:88
+#: src/user_facing_error.rs:81
 msgid "Homeserver auto-discovery failed. Try entering the full URL manually."
 msgstr ""
 "Не вдалося автоматично виявити домашній сервер. Спробуйте ввести повну "
 "адресу вручну."
+
+#: src/user_facing_error.rs:84
+msgid "Could not open the store."
+msgstr "Не вдалося відкрити сховище."
 
 #. Translators: Default name for image files.
 #: src/utils/media.rs:51
@@ -2470,40 +2475,40 @@ msgstr "звук"
 msgid "file"
 msgstr "файл"
 
-#: src/utils/matrix.rs:92
+#: src/utils/matrix.rs:98
 msgid "{user} sent an audio file."
 msgstr "Користувачем {user} надіслано звуковий файл."
 
-#: src/utils/matrix.rs:95 src/utils/matrix.rs:106 src/utils/matrix.rs:110
-#: src/utils/matrix.rs:114
+#: src/utils/matrix.rs:101 src/utils/matrix.rs:112 src/utils/matrix.rs:116
+#: src/utils/matrix.rs:120
 msgid "{user}: {message}"
 msgstr "{user}: {message}"
 
-#: src/utils/matrix.rs:98
+#: src/utils/matrix.rs:104
 msgid "{user} sent a file."
 msgstr "Користувачем {user} надіслано файл."
 
-#: src/utils/matrix.rs:100
+#: src/utils/matrix.rs:106
 msgid "{user} sent an image."
 msgstr "Користувачем {user} надіслано зображення."
 
-#: src/utils/matrix.rs:103
+#: src/utils/matrix.rs:109
 msgid "{user} sent their location."
 msgstr "Користувачем {user} надіслано дані щодо місця перебування."
 
-#: src/utils/matrix.rs:118
+#: src/utils/matrix.rs:124
 msgid "{user} sent a video."
 msgstr "Користувачем {user} надіслано відео."
 
-#: src/utils/matrix.rs:121
+#: src/utils/matrix.rs:127
 msgid "{user} sent a verification request."
 msgstr "Користувачем {user} надіслано запит щодо перевірки."
 
-#: src/utils/matrix.rs:129
+#: src/utils/matrix.rs:135
 msgid "{user} sent a sticker."
 msgstr "Користувачем {user} надіслано наліпку."
 
-#: src/window.rs:269
+#: src/window.rs:311
 msgid "Failed to restore previous sessions"
 msgstr "Не вдалося відновити попередні сеанси"
 
