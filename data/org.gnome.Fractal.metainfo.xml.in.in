@@ -50,7 +50,7 @@
     <content_attribute id="social-audio">intense</content_attribute>
   </content_rating>
 
-  <releases>
+  <releases>@development-release@
     <release version="5~alpha1" type="development" date="2022-09-25" urgency="high">
       <description>
         <p>Fractal 5.alpha1 is the first release since Fractal has been

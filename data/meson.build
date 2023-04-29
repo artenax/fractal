@@ -26,9 +26,20 @@ if desktop_file_validate.found()
 endif
 
 # Appdata
+if is_release
+  development_release = ''
+else
+  development_release = '''
+    <release version="@0@" type="development" date="@1@">
+      <description>
+        <p>Development release.</p>
+      </description>
+    </release>'''.format(version.replace('-', '~'), release_date)
+endif
 appdata_conf = configuration_data()
 appdata_conf.set('app-id', application_id)
 appdata_conf.set('gettext-package', gettext_package)
+appdata_conf.set('development-release', development_release)
 appdata_file = i18n.merge_file(
   input: configure_file(
     input: '@0@.metainfo.xml.in.in'.format(base_id),
