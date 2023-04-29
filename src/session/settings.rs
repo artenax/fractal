@@ -1,14 +1,12 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
+use indexmap::IndexMap;
 use log::error;
 use serde::{Deserialize, Serialize};
 
 use crate::Application;
 
-#[derive(Serialize, Deserialize)]
-struct StoredSessionSettings {
-    /// The ID of the session these settings are for.
-    session_id: String,
-
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StoredSessionSettings {
     /// Custom servers to explore.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     explore_custom_servers: Vec<String>,
@@ -21,33 +19,28 @@ struct StoredSessionSettings {
     notifications_enabled: bool,
 }
 
+impl Default for StoredSessionSettings {
+    fn default() -> Self {
+        Self {
+            explore_custom_servers: Default::default(),
+            notifications_enabled: true,
+        }
+    }
+}
+
 mod imp {
-    use std::cell::{Cell, RefCell};
+    use std::cell::RefCell;
 
     use once_cell::sync::{Lazy, OnceCell};
 
     use super::*;
 
-    #[derive(Debug)]
+    #[derive(Debug, Default)]
     pub struct SessionSettings {
         /// The ID of the session these settings are for.
         pub session_id: OnceCell<String>,
-
-        /// Custom servers to explore.
-        pub explore_custom_servers: RefCell<Vec<String>>,
-
-        /// Whether notifications are enabled for this session.
-        pub notifications_enabled: Cell<bool>,
-    }
-
-    impl Default for SessionSettings {
-        fn default() -> Self {
-            Self {
-                session_id: Default::default(),
-                explore_custom_servers: Default::default(),
-                notifications_enabled: Cell::new(true),
-            }
-        }
+        /// The stored settings.
+        pub stored_settings: RefCell<StoredSessionSettings>,
     }
 
     #[glib::object_subclass]
@@ -101,10 +94,41 @@ glib::wrapper! {
 }
 
 impl SessionSettings {
+    /// Create a new `SessionSettings` for the given session ID.
     pub fn new(session_id: &str) -> Self {
         glib::Object::builder()
             .property("session-id", session_id)
             .build()
+    }
+
+    /// Save the settings in the GSettings.
+    fn save(&self) {
+        let mut sessions = sessions();
+        let stored_settings = self.imp().stored_settings.borrow().clone();
+
+        sessions.insert(self.session_id().to_owned(), stored_settings);
+        let sessions = sessions.into_iter().collect::<Vec<_>>();
+
+        if let Err(error) = Application::default()
+            .settings()
+            .set_string("sessions", &serde_json::to_string(&sessions).unwrap())
+        {
+            error!("Failed to save session settings: {error}");
+        }
+    }
+
+    /// Delete the settings from the GSettings.
+    pub fn delete(&self) {
+        let mut sessions = sessions();
+
+        sessions.remove(self.session_id());
+
+        if let Err(error) = Application::default()
+            .settings()
+            .set_string("sessions", &serde_json::to_string(&sessions).unwrap())
+        {
+            error!("Failed to delete session settings: {error}");
+        }
     }
 
     /// The ID of the session these settings are for.
@@ -114,109 +138,32 @@ impl SessionSettings {
 
     /// Set the ID of the session these settings are for.
     fn set_session_id(&self, session_id: Option<String>) {
-        let imp = self.imp();
-
         let session_id = match session_id {
             Some(s) => s,
             None => return,
         };
 
-        let app_settings = Application::default().settings();
-        let sessions =
-            serde_json::from_str::<Vec<StoredSessionSettings>>(&app_settings.string("sessions"))
-                .unwrap_or_default();
-
-        let index = sessions
-            .iter()
-            .enumerate()
-            .find_map(|(idx, settings)| (settings.session_id == session_id).then_some(idx));
-
-        imp.session_id.set(session_id).unwrap();
-
-        if let Some(settings) = index.and_then(|idx| sessions.into_iter().nth(idx)) {
-            self.update_from_stored_settings(settings);
-        } else {
-            self.store_settings();
-        }
-    }
-
-    fn update_from_stored_settings(&self, settings: StoredSessionSettings) {
         let imp = self.imp();
-        let StoredSessionSettings {
-            session_id: _,
-            explore_custom_servers,
-            notifications_enabled,
-        } = settings;
+        imp.session_id.set(session_id.clone()).unwrap();
 
-        *imp.explore_custom_servers.borrow_mut() = explore_custom_servers;
-        imp.notifications_enabled.set(notifications_enabled);
-    }
-
-    fn as_stored_settings(&self) -> StoredSessionSettings {
-        StoredSessionSettings {
-            session_id: self.session_id().to_owned(),
-            explore_custom_servers: self.explore_custom_servers(),
-            notifications_enabled: self.notifications_enabled(),
-        }
-    }
-
-    fn store_settings(&self) {
-        let new_settings = self.as_stored_settings();
-
-        let app_settings = Application::default().settings();
-        let mut sessions =
-            serde_json::from_str::<Vec<StoredSessionSettings>>(&app_settings.string("sessions"))
-                .unwrap_or_default();
-
-        let index = sessions.iter().enumerate().find_map(|(idx, settings)| {
-            (settings.session_id == new_settings.session_id).then_some(idx)
-        });
-        if let Some(index) = index {
-            sessions[index] = new_settings;
-        } else {
-            sessions.push(new_settings);
-        }
-
-        if let Err(error) =
-            app_settings.set_string("sessions", &serde_json::to_string(&sessions).unwrap())
-        {
-            error!("Error storing settings for session: {error}");
-        }
-    }
-
-    pub fn delete_settings(&self) {
-        let app_settings = Application::default().settings();
-        let Ok(sessions) =
-            serde_json::from_str::<Vec<StoredSessionSettings>>(&app_settings.string("sessions"))
-        else {
-            return;
-        };
-
-        let session_id = self.session_id();
-        let mut found = false;
-        let sessions = sessions
+        if let Some(session_settings) = sessions()
             .into_iter()
-            .filter(|settings| {
-                if settings.session_id == session_id {
-                    found = true;
-                    false
-                } else {
-                    true
-                }
-            })
-            .collect::<Vec<_>>();
-
-        if found {
-            if let Err(error) =
-                app_settings.set_string("sessions", &serde_json::to_string(&sessions).unwrap())
-            {
-                error!("Error deleting settings for session: {error}");
-            }
+            .find_map(|(s_id, session)| (s_id == session_id).then_some(session))
+        {
+            // Restore the settings.
+            imp.stored_settings.replace(session_settings);
+        } else {
+            // This is a new session, add it to the list of sessions.
+            self.save();
         }
     }
 
     pub fn explore_custom_servers(&self) -> Vec<String> {
-        self.imp().explore_custom_servers.borrow().clone()
+        self.imp()
+            .stored_settings
+            .borrow()
+            .explore_custom_servers
+            .clone()
     }
 
     pub fn set_explore_custom_servers(&self, servers: Vec<String>) {
@@ -224,13 +171,16 @@ impl SessionSettings {
             return;
         }
 
-        self.imp().explore_custom_servers.replace(servers);
-        self.store_settings();
+        self.imp()
+            .stored_settings
+            .borrow_mut()
+            .explore_custom_servers = servers;
+        self.save();
     }
 
     /// Whether notifications are enabled for this session.
     pub fn notifications_enabled(&self) -> bool {
-        self.imp().notifications_enabled.get()
+        self.imp().stored_settings.borrow().notifications_enabled
     }
 
     /// Set whether notifications are enabled for this session.
@@ -239,8 +189,24 @@ impl SessionSettings {
             return;
         }
 
-        self.imp().notifications_enabled.replace(enabled);
-        self.store_settings();
+        self.imp()
+            .stored_settings
+            .borrow_mut()
+            .notifications_enabled = enabled;
+        self.save();
         self.notify("notifications-enabled");
+    }
+}
+
+/// Get map of session stored in the GSettings.
+fn sessions() -> IndexMap<String, StoredSessionSettings> {
+    let serialized = Application::default().settings().string("sessions");
+
+    match serde_json::from_str::<Vec<(String, StoredSessionSettings)>>(&serialized) {
+        Ok(stored_settings) => stored_settings.into_iter().collect(),
+        Err(error) => {
+            error!("Failed to load profile settings, fallback to default settings: {error}");
+            Default::default()
+        }
     }
 }

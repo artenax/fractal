@@ -745,7 +745,7 @@ impl Session {
         }
 
         if let Some(settings) = imp.settings.get() {
-            settings.delete_settings();
+            settings.delete();
         }
 
         let session_info = info.clone();
