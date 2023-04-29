@@ -337,7 +337,7 @@ pub enum EventTexture {
 }
 
 async fn save_event_file_inner(obj: &impl IsA<gtk::Widget>, event: Event) {
-    let (_, filename, data) = match event.get_media_content().await {
+    let (filename, data) = match event.get_media_content().await {
         Ok(res) => res,
         Err(error) => {
             error!("Could not get event file: {error}");

@@ -346,7 +346,7 @@ impl MediaViewer {
                         let imp = obj.imp();
 
                         match event.get_media_content().await {
-                            Ok((_, _, data)) => {
+                            Ok(( _, data)) => {
                                 match ImagePaintable::from_bytes(&glib::Bytes::from(&data), image.info.and_then(|info| info.mimetype).as_deref()) {
                                     Ok(texture) => {
                                         imp.media.view_image(&texture);
@@ -371,7 +371,7 @@ impl MediaViewer {
                         let imp = obj.imp();
 
                         match event.get_media_content().await {
-                            Ok((_, _, data)) => {
+                            Ok(( _, data)) => {
                                 // The GStreamer backend of GtkVideo doesn't work with input streams so
                                 // we need to store the file.
                                 // See: https://gitlab.gnome.org/GNOME/gtk/-/issues/4062

@@ -2,7 +2,6 @@ use std::fmt;
 
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use matrix_sdk::{
-    media::MediaEventContent,
     room::timeline::{
         AnyOtherFullStateEventContent, EventTimelineItem, RepliedToEvent, TimelineDetails,
         TimelineItemContent,
@@ -29,10 +28,7 @@ use super::{
     timeline::{TimelineItem, TimelineItemImpl},
     Member, Room,
 };
-use crate::{
-    spawn_tokio,
-    utils::media::{filename_for_mime, media_type_uid},
-};
+use crate::{spawn_tokio, utils::media::filename_for_mime};
 
 /// The unique key to identify an event in a room.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -485,12 +481,11 @@ impl Event {
     /// - Video message (`MessageType::Video`).
     /// - Audio message (`MessageType::Audio`).
     ///
-    /// Returns `Ok((uid, filename, binary_content))` on success. `uid` is a
-    /// unique identifier for this media.
+    /// Returns `Ok((filename, binary_content))` on success.
     ///
     /// Returns `Err` if an error occurred while fetching the content. Panics on
     /// an incompatible event.
-    pub async fn get_media_content(&self) -> Result<(String, String, Vec<u8>), matrix_sdk::Error> {
+    pub async fn get_media_content(&self) -> Result<(String, Vec<u8>), matrix_sdk::Error> {
         let TimelineItemContent::Message(message) = self.content() else {
             panic!("Trying to get the media content of an event of incompatible type");
         };
@@ -499,7 +494,6 @@ impl Event {
         match message.msgtype() {
             MessageType::File(content) => {
                 let content = content.clone();
-                let uid = media_type_uid(content.source());
                 let filename = content
                     .filename
                     .as_ref()
@@ -518,11 +512,10 @@ impl Event {
                     });
                 let handle = spawn_tokio!(async move { media.get_file(content, true).await });
                 let data = handle.await.unwrap()?.unwrap();
-                Ok((uid, filename, data))
+                Ok((filename, data))
             }
             MessageType::Image(content) => {
                 let content = content.clone();
-                let uid = media_type_uid(content.source());
                 let filename = if content.body.is_empty() {
                     filename_for_mime(
                         content
@@ -536,11 +529,10 @@ impl Event {
                 };
                 let handle = spawn_tokio!(async move { media.get_file(content, true).await });
                 let data = handle.await.unwrap()?.unwrap();
-                Ok((uid, filename, data))
+                Ok((filename, data))
             }
             MessageType::Video(content) => {
                 let content = content.clone();
-                let uid = media_type_uid(content.source());
                 let filename = if content.body.is_empty() {
                     filename_for_mime(
                         content
@@ -554,11 +546,10 @@ impl Event {
                 };
                 let handle = spawn_tokio!(async move { media.get_file(content, true).await });
                 let data = handle.await.unwrap()?.unwrap();
-                Ok((uid, filename, data))
+                Ok((filename, data))
             }
             MessageType::Audio(content) => {
                 let content = content.clone();
-                let uid = media_type_uid(content.source());
                 let filename = if content.body.is_empty() {
                     filename_for_mime(
                         content
@@ -572,7 +563,7 @@ impl Event {
                 };
                 let handle = spawn_tokio!(async move { media.get_file(content, true).await });
                 let data = handle.await.unwrap()?.unwrap();
-                Ok((uid, filename, data))
+                Ok((filename, data))
             }
             _ => {
                 panic!("Trying to get the media content of an event of incompatible type");

@@ -6,27 +6,6 @@ use gettextrs::gettext;
 use gtk::{gio, glib, prelude::*};
 use matrix_sdk::attachment::{BaseAudioInfo, BaseImageInfo, BaseVideoInfo};
 use mime::Mime;
-use ruma::events::room::MediaSource;
-
-/// Get the unique id of the given `MediaSource`.
-///
-/// It is built from the underlying `MxcUri` and can be safely used in a
-/// filename.
-///
-/// The id is not guaranteed to be unique for malformed `MxcUri`s.
-pub fn media_type_uid(media_type: Option<MediaSource>) -> String {
-    if let Some(mxc) = media_type
-        .map(|media_type| match media_type {
-            MediaSource::Plain(uri) => uri,
-            MediaSource::Encrypted(file) => file.url,
-        })
-        .filter(|mxc| mxc.is_valid())
-    {
-        format!("{}_{}", mxc.server_name().unwrap(), mxc.media_id().unwrap())
-    } else {
-        "media_uid".to_owned()
-    }
-}
 
 /// Get a default filename for a mime type.
 ///
