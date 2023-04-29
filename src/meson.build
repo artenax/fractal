@@ -2,7 +2,7 @@ global_conf = configuration_data()
 global_conf.set_quoted('APP_ID', application_id)
 global_conf.set_quoted('PKGDATADIR', pkgdatadir)
 global_conf.set_quoted('PROFILE', profile)
-global_conf.set_quoted('VERSION', version + version_suffix)
+global_conf.set_quoted('VERSION', version)
 global_conf.set_quoted('GETTEXT_PACKAGE', gettext_package)
 global_conf.set_quoted('LOCALEDIR', localedir)
 config = configure_file(
@@ -21,13 +21,13 @@ run_command(
 cargo_options = [ '--manifest-path', meson.project_source_root() / 'Cargo.toml' ]
 cargo_options += [ '--target-dir', meson.project_build_root() / 'src' ]
 
-if get_option('profile') == 'default' or get_option('profile') == 'development'
+if profile == 'Hack'
+  rust_target = 'debug'
+  message('Building in debug mode')
+else
   cargo_options += [ '--release' ]
   rust_target = 'release'
   message('Building in release mode')
-else
-  rust_target = 'debug'
-  message('Building in debug mode')
 endif
 
 cargo_env = [ 'CARGO_HOME=' + meson.project_build_root() / 'cargo-home' ]

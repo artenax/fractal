@@ -8,6 +8,7 @@ i18n = import('i18n')
 gnome = import('gnome')
 
 base_id = 'org.gnome.Fractal'
+base_version = meson.project_version()
 
 dependency('glib-2.0', version: '>= 2.72') # update when changing gtk version
 dependency('gio-2.0', version: '>= 2.72') # always same version as glib
@@ -39,8 +40,6 @@ desktop_file_validate = find_program('desktop-file-validate', required: false)
 appstream_util = find_program('appstream-util', required: false)
 cargo = find_program('cargo', required: true)
 
-version = meson.project_version()
-
 prefix = get_option('prefix')
 bindir = prefix / get_option('bindir')
 localedir = prefix / get_option('localedir')
@@ -52,36 +51,36 @@ podir = meson.project_source_root() / 'po'
 gettext_package = meson.project_name()
 
 if get_option('profile') == 'hack'
+  is_release = false
   profile = 'Hack'
-  vcs_tag = run_command('git', 'rev-parse', '--short', 'HEAD').stdout().strip()
-  if vcs_tag == ''
-    version_suffix = '-hack'
-  else
-    version_suffix = '-@0@'.format(vcs_tag)
-  endif
-  application_id = '@0@.@1@'.format(base_id, profile)
 elif get_option('profile') == 'development'
+  is_release = false
   profile = 'Devel'
+else
+  is_release = true
+  profile = ''
+endif
+
+if is_release
+  version = base_version
+  application_id = base_id
+else
   vcs_tag = run_command('git', 'rev-parse', '--short', 'HEAD').stdout().strip()
   if vcs_tag == ''
-    version_suffix = '-devel'
+    version = '@0@-@1@'.format(base_version, profile.to_lower())
   else
-    version_suffix = '-@0@'.format(vcs_tag)
+    version = '@0@-@1@'.format(base_version, vcs_tag)
   endif
   application_id = '@0@.@1@'.format(base_id, profile)
-else
-  profile = ''
-  version_suffix = ''
-  application_id = base_id
 endif
 
 meson.add_dist_script(
   'build-aux/dist-vendor.sh',
-  meson.project_build_root() / 'meson-dist' / meson.project_name() + '-' + version,
+  meson.project_build_root() / 'meson-dist' / meson.project_name() + '-' + base_version,
   meson.project_source_root()
 )
 
-if get_option('profile') == 'hack'
+if profile == 'Hack'
   # Setup pre-commit hook for ensuring coding style is always consistent
   message('Setting up git pre-commit hook..')
   run_command('cp', '-f', 'hooks/pre-commit.hook', '.git/hooks/pre-commit')
