@@ -7,9 +7,7 @@ use super::room::{EventActions, EventTexture};
 use crate::{
     components::{ContentType, ImagePaintable, MediaContentViewer, ScaleRevealer},
     session::room::Event,
-    spawn,
-    utils::cache_dir,
-    Window,
+    spawn, Window,
 };
 
 const ANIMATION_DURATION: u32 = 250;
@@ -373,13 +371,11 @@ impl MediaViewer {
                         let imp = obj.imp();
 
                         match event.get_media_content().await {
-                            Ok((uid, filename, data)) => {
+                            Ok((_, _, data)) => {
                                 // The GStreamer backend of GtkVideo doesn't work with input streams so
                                 // we need to store the file.
                                 // See: https://gitlab.gnome.org/GNOME/gtk/-/issues/4062
-                                let mut path = cache_dir();
-                                path.push(format!("{uid}_{filename}"));
-                                let file = gio::File::for_path(path);
+                                let (file, _) = gio::File::new_tmp(Option::<String>::None).unwrap();
                                 file.replace_contents(
                                     &data,
                                     None,

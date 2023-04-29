@@ -10,7 +10,6 @@ pub mod template_callbacks;
 
 use std::{
     cell::RefCell,
-    path::PathBuf,
     rc::{Rc, Weak},
 };
 
@@ -58,22 +57,6 @@ pub fn or_expr(
 #[allow(dead_code)]
 pub fn not_expr<E: AsRef<gtk::Expression>>(a_expr: E) -> gtk::ClosureExpression {
     gtk::ClosureExpression::new::<bool>(&[a_expr], closure!(|_: Option<Object>, a: bool| { !a }))
-}
-
-/// Get the cache directory.
-///
-/// If it doesn't exist, this method creates it.
-pub fn cache_dir() -> PathBuf {
-    let mut path = glib::user_cache_dir();
-    path.push("fractal");
-
-    if !path.exists() {
-        let dir = gio::File::for_path(path.clone());
-        dir.make_directory_with_parents(gio::Cancellable::NONE)
-            .unwrap();
-    }
-
-    path
 }
 
 /// Converts a `UInt` to `i32`.

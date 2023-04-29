@@ -26,6 +26,8 @@ mod imp {
         pub timestamp: TemplateChild<gtk::Label>,
         #[template_child]
         pub player: TemplateChild<GstPlay>,
+        /// The file that is currently played.
+        pub file: RefCell<Option<gio::File>>,
     }
 
     #[glib::object_subclass]
@@ -141,7 +143,8 @@ impl VideoPlayer {
     }
 
     /// Set the file to display.
-    pub fn play_media_file(&self, file: &gio::File) {
+    pub fn play_media_file(&self, file: gio::File) {
+        self.imp().file.replace(Some(file.clone()));
         self.duration_changed(None);
         let player = self.player();
         player.set_uri(Some(file.uri().as_ref()));

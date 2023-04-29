@@ -6,14 +6,13 @@ use gtk::{
     CompositeTemplate,
 };
 use log::warn;
-use matrix_sdk::{media::MediaEventContent, ruma::events::room::message::AudioMessageEventContent};
+use matrix_sdk::ruma::events::room::message::AudioMessageEventContent;
 
 use super::{media::MediaState, ContentFormat};
 use crate::{
     components::{AudioPlayer, Spinner},
     session::Session,
     spawn, spawn_tokio,
-    utils::media::media_type_uid,
 };
 
 mod imp {
@@ -196,15 +195,6 @@ impl MessageAudio {
 
         self.set_state(MediaState::Loading);
 
-        let mut path = glib::tmp_dir();
-        path.push(media_type_uid(audio.source()));
-        let file = gio::File::for_path(path);
-
-        if file.query_exists(gio::Cancellable::NONE) {
-            self.display_file(file);
-            return;
-        }
-
         let client = session.client();
         let handle = spawn_tokio!(async move { client.media().get_file(audio, true).await });
 
@@ -216,6 +206,7 @@ impl MessageAudio {
                         // The GStreamer backend doesn't work with input streams so
                         // we need to store the file.
                         // See: https://gitlab.gnome.org/GNOME/gtk/-/issues/4062
+                        let (file, _) = gio::File::new_tmp(Option::<String>::None).unwrap();
                         file.replace_contents(
                             &data,
                             None,

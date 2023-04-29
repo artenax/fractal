@@ -22,7 +22,7 @@ use crate::{
     components::{ImagePaintable, Spinner, VideoPlayer},
     session::Session,
     spawn, spawn_tokio,
-    utils::{cache_dir, media::media_type_uid, uint_to_i32},
+    utils::uint_to_i32,
 };
 
 const MAX_THUMBNAIL_WIDTH: i32 = 600;
@@ -391,11 +391,9 @@ impl MessageMedia {
                 };
 
             if let Some(data) = thumbnail {
-                let id = media_type_uid(content.thumbnail_source());
-                Ok((Some(data), id))
+                Ok(Some(data))
             } else {
-                let id = media_type_uid(content.source());
-                media.get_file(content, true).await.map(|data| (data, id))
+                media.get_file(content, true).await
             }
         });
 
@@ -405,7 +403,7 @@ impl MessageMedia {
                 let imp = obj.imp();
 
                 match handle.await.unwrap() {
-                    Ok((Some(data), id)) => {
+                    Ok(Some(data)) => {
                         match media_type {
                             MediaType::Image | MediaType::Sticker => {
                                 match ImagePaintable::from_bytes(&glib::Bytes::from(&data), None)
@@ -442,9 +440,7 @@ impl MessageMedia {
                                 // The GStreamer backend of GtkVideo doesn't work with input streams so
                                 // we need to store the file.
                                 // See: https://gitlab.gnome.org/GNOME/gtk/-/issues/4062
-                                let mut path = cache_dir();
-                                path.push(format!("{id}_{}", body.unwrap_or_default()));
-                                let file = gio::File::for_path(path);
+                                let (file, _) = gio::File::new_tmp(Option::<String>::None).unwrap();
                                 file.replace_contents(
                                     &data,
                                     None,
@@ -464,13 +460,13 @@ impl MessageMedia {
                                     child
                                 };
                                 child.set_compact(obj.compact());
-                                child.play_media_file(&file)
+                                child.play_media_file(file)
                             }
                         };
 
                         obj.set_state(MediaState::Ready);
                     }
-                    Ok((None, _)) => {
+                    Ok(None) => {
                         warn!("Could not retrieve invalid media file");
                         imp.overlay_error.set_tooltip_text(Some(&gettext("Could not retrieve media")));
                         obj.set_state(MediaState::Error);
