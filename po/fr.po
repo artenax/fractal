@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2022-04-07 13:04+0000\n"
-"PO-Revision-Date: 2022-04-07 15:21+0200\n"
+"POT-Creation-Date: 2022-04-07 13:22+0000\n"
+"PO-Revision-Date: 2022-04-07 20:06+0200\n"
 "Last-Translator: Alexandre Franke <afranke@gnome.org>\n"
 "Language-Team: French - France <gnomefr@traduc.org>\n"
 "Language: fr_FR\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 42.0\n"
+"X-Generator: Gtranslator 40.0\n"
 "X-DL-Team: fr\n"
 "X-DL-Module: fractal\n"
 "X-DL-Branch: master\n"
@@ -225,7 +225,7 @@ msgstr "Aucun salon correspondant trouvé"
 
 #: data/resources/ui/content-explore.ui:96
 msgid "Room List"
-msgstr "List des salons"
+msgstr "Liste des salons"
 
 #: data/resources/ui/content-invite-subpage.ui:18
 msgid "I_nvite"
@@ -403,8 +403,8 @@ msgstr ""
 msgid ""
 "Here are a few things that might help you fix issues with the Secret Service:"
 msgstr ""
-"Voici quelques choses qui pourrait vous aider à régler le problème avec le "
-"service des secrets :"
+"Voici quelques éléments qui pourraient vous aider à régler le problème avec "
+"le service des secrets :"
 
 #: data/resources/ui/error-page.ui:147
 msgid ""
@@ -424,7 +424,7 @@ msgid ""
 "details."
 msgstr ""
 "Vérifiez le journal de l’application et la documentation de votre "
-"distribution pour plus d’information."
+"distribution pour plus d’informations."
 
 #: data/resources/ui/event-menu.ui:11
 msgid "_Reply"
@@ -764,11 +764,11 @@ msgstr "Retirer des _favoris"
 
 #: data/resources/ui/sidebar-room-row.ui:28
 msgid "Mark as Low _Priority"
-msgstr "Marque comme _priorité basse"
+msgstr "Marquer comme _priorité basse"
 
 #: data/resources/ui/sidebar-room-row.ui:33
 msgid "Unmark as Low _Priority"
-msgstr "Retirer la priorité basse"
+msgstr "Retirer la _priorité basse"
 
 #: data/resources/ui/sidebar-room-row.ui:45
 msgid "Re_join Room"
@@ -945,7 +945,7 @@ msgstr "Déconnexion"
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
 #: src/session/account_settings/devices_page/device_row.rs:216
 msgid "Failed to disconnect device “{device_name}”"
-msgstr "Échec de la déconnexion de l’appareil {device_name}."
+msgstr "Échec de la déconnexion de l’appareil « {device_name} »"
 
 #: src/session/account_settings/devices_page/device_row.rs:230
 msgid ""
@@ -1001,7 +1001,7 @@ msgstr "Dernière activité %A à %l:%M %p"
 #: src/session/account_settings/devices_page/device_row.rs:327
 #, no-c-format
 msgid "Last seen %B %-e at %H:%M"
-msgstr "Dernière activité le %B %-e à %H:%M"
+msgstr "Dernière activité le %-e %B à %H:%M"
 
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
@@ -1009,7 +1009,7 @@ msgstr "Dernière activité le %B %-e à %H:%M"
 #: src/session/account_settings/devices_page/device_row.rs:333
 #, no-c-format
 msgid "Last seen %B %-e at %l:%M %p"
-msgstr "Dernière activité le %B %-e à %l:%M %p"
+msgstr "Dernière activité le %-e %B à %l:%M %p"
 
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
@@ -1017,7 +1017,7 @@ msgstr "Dernière activité le %B %-e à %l:%M %p"
 #: src/session/account_settings/devices_page/device_row.rs:340
 #, no-c-format
 msgid "Last seen %B %-e %Y at %H:%M"
-msgstr "Dernière activité le %B %-e %Y à %H:%M"
+msgstr "Dernière activité le %-e %B %Y à %H:%M"
 
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
@@ -1025,11 +1025,11 @@ msgstr "Dernière activité le %B %-e %Y à %H:%M"
 #: src/session/account_settings/devices_page/device_row.rs:346
 #, no-c-format
 msgid "Last seen %B %-e %Y at %l:%M %p"
-msgstr "Dernière activité le %B %-e %Y à %l:%M %p"
+msgstr "Dernière activité le %-e %B %Y à %l:%M %p"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:217
 msgid "Password must be at least 8 characters long"
-msgstr "Le mot de passe doit faire au moins 8 charactères"
+msgstr "Le mot de passe doit faire au moins 8 caractères"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:220
 msgid "Password must have at least one lower-case letter"
@@ -1053,7 +1053,7 @@ msgstr "Les mots de passe ne correspondent pas"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:313
 msgid "Password changed successfully"
-msgstr "Mot de passe changé avec succès."
+msgstr "Mot de passe changé avec succès"
 
 #: src/session/account_settings/user_page/change_password_subpage.rs:329
 msgid "Password rejected for being too weak"
@@ -1142,12 +1142,12 @@ msgstr "Inviter de nouveaux membres"
 #. Translators: This is a date format in the day divider without the year
 #: src/session/content/room_history/item_row.rs:168
 msgid "%A, %B %e"
-msgstr "%A, %B %e"
+msgstr "%A %e %B"
 
 #. Translators: This is a date format in the day divider with the year
 #: src/session/content/room_history/item_row.rs:171
 msgid "%A, %B %e, %Y"
-msgstr "%A, %B %e, %Y"
+msgstr "%A %e %B %Y"
 
 #: src/session/content/room_history/item_row.rs:186
 msgid "New Messages"
@@ -1212,7 +1212,7 @@ msgstr "Ce salon est chiffré à partir d’ici."
 #. '{' and '}', this is a variable name.
 #: src/session/content/room_history/state_row/mod.rs:94
 msgid "{previous_user_name} removed their display name."
-msgstr "{previous_user_name} a supprimé son nom d’affichage"
+msgstr "{previous_user_name} a supprimé son nom d’affichage."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
@@ -1317,7 +1317,7 @@ msgstr "{user_name} veut être vérifié"
 
 #: src/session/content/room_history/verification_info_bar.rs:180
 msgid "Verification in progress"
-msgstr "Vérification en cours."
+msgstr "Vérification en cours"
 
 #: src/session/content/verification/identity_verification_widget.rs:493
 #: src/session/content/verification/identity_verification_widget.rs:522
@@ -1467,7 +1467,7 @@ msgstr "Demandez à {user} d’accepter la requête de vérification."
 #. variable name.
 #: src/session/content/verification/identity_verification_widget.rs:597
 msgid "Does {user} see a confirmation shield on their session?"
-msgstr "Un bouclier de confirmation apparait-il chez {user} ?"
+msgstr "Un bouclier de confirmation apparaît-il chez {user} ?"
 
 #: src/session/content/verification/session_verification.rs:237
 msgid ""
@@ -1500,7 +1500,7 @@ msgstr "Impossible de récupérer la vidéo"
 
 #: src/session/mod.rs:463
 msgid "Unable to store session"
-msgstr "Impossible de stocker la session."
+msgstr "Impossible de stocker la session"
 
 #: src/session/mod.rs:760
 msgid "Failed to logout the session."
@@ -1790,7 +1790,7 @@ msgstr "fichier"
 
 #: src/window.rs:204
 msgid "Failed to restore previous sessions"
-msgstr "Échec de la restauration de la session précédente."
+msgstr "Échec de la restauration de la session précédente"
 
 #~ msgid "{user}’s invite was revoked'."
 #~ msgstr "L’invitation de {user} a été revoquée"
