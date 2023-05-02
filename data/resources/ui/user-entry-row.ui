@@ -11,8 +11,8 @@
         <child>
           <object class="AvatarWithSelection" id="account_avatar">
             <property name="size">40</property>
-            <binding name="item">
-              <lookup name="avatar" type="User">
+            <binding name="data">
+              <lookup name="avatar-data" type="User">
                 <lookup name="user" type="Session">
                   <lookup name="session">UserEntryRow</lookup>
                 </lookup>
@@ -71,4 +71,3 @@
     </child>
   </template>
 </interface>
-

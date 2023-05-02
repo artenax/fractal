@@ -8,8 +8,8 @@
       <object class="AdwPreferencesGroup">
         <child>
           <object class="ComponentsEditableAvatar" id="avatar">
-            <binding name="avatar">
-              <lookup name="avatar">
+            <binding name="data">
+              <lookup name="avatar-data">
                 <lookup name="user">
                   <lookup name="session">UserPage</lookup>
                 </lookup>

@@ -24,7 +24,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default)]
-    pub struct Avatar {
+    pub struct AvatarData {
         pub image: RefCell<Option<gdk::Paintable>>,
         pub needed_size: Cell<u32>,
         pub url: RefCell<Option<OwnedMxcUri>>,
@@ -33,12 +33,12 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for Avatar {
-        const NAME: &'static str = "Avatar";
-        type Type = super::Avatar;
+    impl ObjectSubclass for AvatarData {
+        const NAME: &'static str = "AvatarData";
+        type Type = super::AvatarData;
     }
 
-    impl ObjectImpl for Avatar {
+    impl ObjectImpl for AvatarData {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
@@ -97,11 +97,11 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// Object holding information about a User’s or Room’s `Avatar`.
-    pub struct Avatar(ObjectSubclass<imp::Avatar>);
+    /// Data about a User’s or Room’s avatar.
+    pub struct AvatarData(ObjectSubclass<imp::AvatarData>);
 }
 
-impl Avatar {
+impl AvatarData {
     pub fn new(session: &Session, url: Option<&MxcUri>) -> Self {
         glib::Object::builder()
             .property("session", session)
@@ -200,7 +200,7 @@ impl Avatar {
         self.imp().needed_size.get()
     }
 
-    /// Set the url of the Avatar.
+    /// Set the url of the `AvatarData`.
     pub fn set_url(&self, url: Option<OwnedMxcUri>) {
         let imp = self.imp();
 
@@ -220,7 +220,7 @@ impl Avatar {
         self.notify("url");
     }
 
-    /// The url of the Avatar.
+    /// The url of the `AvatarData`.
     pub fn url(&self) -> Option<OwnedMxcUri> {
         self.imp().url.borrow().to_owned()
     }

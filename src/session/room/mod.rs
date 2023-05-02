@@ -56,7 +56,7 @@ use crate::{
     prelude::*,
     session::{
         sidebar::{SidebarItem, SidebarItemImpl},
-        Avatar, Session, User,
+        AvatarData, Session, User,
     },
     spawn, spawn_tokio, toast,
 };
@@ -75,7 +75,7 @@ mod imp {
         pub matrix_room: RefCell<Option<MatrixRoom>>,
         pub session: WeakRef<Session>,
         pub name: RefCell<Option<String>>,
-        pub avatar: OnceCell<Avatar>,
+        pub avatar_data: OnceCell<AvatarData>,
         pub category: Cell<RoomType>,
         pub timeline: OnceCell<Timeline>,
         pub members: OnceCell<MemberList>,
@@ -130,7 +130,7 @@ mod imp {
                     glib::ParamSpecObject::builder::<Member>("inviter")
                         .read_only()
                         .build(),
-                    glib::ParamSpecObject::builder::<Avatar>("avatar")
+                    glib::ParamSpecObject::builder::<AvatarData>("avatar-data")
                         .read_only()
                         .build(),
                     glib::ParamSpecObject::builder::<Timeline>("timeline")
@@ -204,7 +204,7 @@ mod imp {
                 "inviter" => obj.inviter().to_value(),
                 "name" => obj.name().to_value(),
                 "display-name" => obj.display_name().to_value(),
-                "avatar" => obj.avatar().to_value(),
+                "avatar-data" => obj.avatar_data().to_value(),
                 "timeline" => self.timeline.get().unwrap().to_value(),
                 "category" => obj.category().to_value(),
                 "highlight" => obj.highlight().to_value(),
@@ -236,8 +236,8 @@ mod imp {
             obj.set_matrix_room(obj.session().client().get_room(obj.room_id()).unwrap());
             self.timeline.set(Timeline::new(&obj)).unwrap();
             self.members.set(MemberList::new(&obj)).unwrap();
-            self.avatar
-                .set(Avatar::new(
+            self.avatar_data
+                .set(AvatarData::new(
                     &obj.session(),
                     obj.matrix_room().avatar_url().as_deref(),
                 ))
@@ -249,7 +249,7 @@ mod imp {
                 obj.setup_is_encrypted().await;
             }));
 
-            obj.bind_property("display-name", obj.avatar(), "display-name")
+            obj.bind_property("display-name", obj.avatar_data(), "display-name")
                 .flags(glib::BindingFlags::SYNC_CREATE)
                 .build();
 
@@ -1018,8 +1018,8 @@ impl Room {
     }
 
     /// The Avatar of this room.
-    pub fn avatar(&self) -> &Avatar {
-        self.imp().avatar.get().unwrap()
+    pub fn avatar_data(&self) -> &AvatarData {
+        self.imp().avatar_data.get().unwrap()
     }
 
     /// The topic of this room.
@@ -1093,7 +1093,7 @@ impl Room {
                         self.members().update_member_for_member_event(event)
                     }
                     AnySyncStateEvent::RoomAvatar(SyncStateEvent::Original(event)) => {
-                        self.avatar().set_url(event.content.url.to_owned());
+                        self.avatar_data().set_url(event.content.url.to_owned());
                     }
                     AnySyncStateEvent::RoomName(_) => {
                         self.notify("name");

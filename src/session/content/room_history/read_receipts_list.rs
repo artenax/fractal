@@ -94,10 +94,10 @@ impl ReadReceiptsList {
         let imp = self.imp();
 
         imp.overlapping_box.bind_model(Some(read_receipts), |obj| {
-            let avatar_item = obj.downcast_ref::<Member>().unwrap().avatar();
+            let avatar_data = obj.downcast_ref::<Member>().unwrap().avatar_data();
             let avatar = Avatar::new();
             avatar.set_size(20);
-            avatar.set_item(Some(avatar_item.clone()));
+            avatar.set_data(Some(avatar_data.clone()));
             avatar.upcast()
         });
 

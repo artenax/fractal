@@ -9,7 +9,7 @@ use crate::{
     components::Pill,
     session::{
         verification::{IdentityVerification, VerificationState},
-        Avatar, Session,
+        AvatarData, Session,
     },
     spawn, spawn_tokio,
 };
@@ -38,7 +38,7 @@ mod imp {
         pub user_id: OnceCell<OwnedUserId>,
         pub display_name: RefCell<Option<String>>,
         pub session: WeakRef<Session>,
-        pub avatar: OnceCell<Avatar>,
+        pub avatar_data: OnceCell<AvatarData>,
         pub is_verified: Cell<bool>,
     }
 
@@ -58,7 +58,7 @@ mod imp {
                     glib::ParamSpecString::builder("display-name")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecObject::builder::<Avatar>("avatar")
+                    glib::ParamSpecObject::builder::<AvatarData>("avatar-data")
                         .read_only()
                         .build(),
                     glib::ParamSpecObject::builder::<Session>("session")
@@ -98,7 +98,7 @@ mod imp {
                 "display-name" => obj.display_name().to_value(),
                 "user-id" => obj.user_id().as_str().to_value(),
                 "session" => obj.session().to_value(),
-                "avatar" => obj.avatar().to_value(),
+                "avatar-data" => obj.avatar_data().to_value(),
                 "verified" => obj.is_verified().to_value(),
                 "allowed-actions" => obj.allowed_actions().to_value(),
                 _ => unimplemented!(),
@@ -109,10 +109,10 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            let avatar = Avatar::new(&obj.session(), None);
-            self.avatar.set(avatar).unwrap();
+            let avatar_data = AvatarData::new(&obj.session(), None);
+            self.avatar_data.set(avatar_data).unwrap();
 
-            obj.bind_property("display-name", obj.avatar(), "display-name")
+            obj.bind_property("display-name", obj.avatar_data(), "display-name")
                 .flags(glib::BindingFlags::SYNC_CREATE)
                 .build();
 
@@ -214,14 +214,14 @@ pub trait UserExt: IsA<User> {
         self.notify("display-name");
     }
 
-    /// The avatar of this user.
-    fn avatar(&self) -> &Avatar {
-        self.upcast_ref().imp().avatar.get().unwrap()
+    /// The [`AvatarData`] of this user.
+    fn avatar_data(&self) -> &AvatarData {
+        self.upcast_ref().imp().avatar_data.get().unwrap()
     }
 
     /// Set the avatar URL of this user.
     fn set_avatar_url(&self, url: Option<OwnedMxcUri>) {
-        self.avatar().set_url(url);
+        self.avatar_data().set_url(url);
     }
 
     /// The actions the currently logged-in user is allowed to perform on this

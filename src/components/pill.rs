@@ -126,7 +126,7 @@ impl Pill {
         }
 
         imp.avatar
-            .set_item(user.as_ref().map(|user| user.avatar().clone()));
+            .set_data(user.as_ref().map(|user| user.avatar_data().clone()));
         imp.user.replace(user);
 
         self.notify("user");
@@ -162,7 +162,7 @@ impl Pill {
         }
 
         imp.avatar
-            .set_item(room.as_ref().map(|room| room.avatar().clone()));
+            .set_data(room.as_ref().map(|room| room.avatar_data().clone()));
         imp.room.replace(room);
 
         self.notify("room");

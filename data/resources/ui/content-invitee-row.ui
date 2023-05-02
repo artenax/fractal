@@ -14,8 +14,8 @@
         <child>
           <object class="ComponentsAvatar">
             <property name="size">32</property>
-            <binding name="item">
-              <lookup name="avatar" type="Invitee">
+            <binding name="data">
+              <lookup name="avatar-data" type="Invitee">
                 <lookup name="user">ContentInviteInviteeRow</lookup>
               </lookup>
             </binding>
@@ -97,4 +97,3 @@
     </property>
   </template>
 </interface>
-

@@ -13,7 +13,7 @@
                 <property name="child">
                   <object class="ComponentsAvatar">
                     <property name="size">128</property>
-                    <property name="item" bind-source="ComponentsEditableAvatar" bind-property="avatar" bind-flags="sync-create"/>
+                    <property name="data" bind-source="ComponentsEditableAvatar" bind-property="data" bind-flags="sync-create"/>
                   </object>
                 </property>
               </object>
@@ -27,7 +27,7 @@
                     <property name="show-initials">true</property>
                     <binding name="text">
                       <lookup name="display-name">
-                        <lookup name="avatar">
+                        <lookup name="data">
                           ComponentsEditableAvatar
                         </lookup>
                       </lookup>

@@ -179,7 +179,8 @@ impl MessageRow {
             }
         }
 
-        imp.avatar.set_item(Some(event.sender().avatar().clone()));
+        imp.avatar
+            .set_data(Some(event.sender().avatar_data().clone()));
 
         let display_name_binding = event
             .sender()

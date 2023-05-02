@@ -96,8 +96,8 @@
                 <property name="child">
                   <object class="ComponentsAvatar">
                     <property name="size">24</property>
-                    <binding name="item">
-                      <lookup name="avatar" type="User">
+                    <binding name="data">
+                      <lookup name="avatar-data" type="User">
                         <lookup name="user">Sidebar</lookup>
                       </lookup>
                     </binding>

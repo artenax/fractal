@@ -160,7 +160,7 @@ impl GeneralPage {
 
     /// Set the room backing all the details of the preference window.
     fn set_room(&self, room: Room) {
-        room.avatar().connect_notify_local(
+        room.avatar_data().connect_notify_local(
             Some("url"),
             clone!(@weak self as obj => move |avatar, _| {
                 obj.avatar_changed(avatar.url());

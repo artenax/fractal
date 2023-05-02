@@ -96,11 +96,11 @@ impl CompletionRow {
         }
 
         if let Some(member) = &member {
-            imp.avatar.set_item(Some(member.avatar().to_owned()));
+            imp.avatar.set_data(Some(member.avatar_data().to_owned()));
             imp.display_name.set_label(&member.display_name());
             imp.id.set_label(member.user_id().as_str());
         } else {
-            imp.avatar.set_item(None);
+            imp.avatar.set_data(None);
             imp.display_name.set_label("");
             imp.id.set_label("");
         }

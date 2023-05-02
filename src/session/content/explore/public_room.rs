@@ -1,7 +1,7 @@
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use matrix_sdk::ruma::{directory::PublicRoomsChunk, RoomId, RoomOrAliasId};
 
-use crate::session::{room::Room, Avatar, RoomList};
+use crate::session::{room::Room, AvatarData, RoomList};
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -15,7 +15,7 @@ mod imp {
     pub struct PublicRoom {
         pub room_list: OnceCell<RoomList>,
         pub matrix_public_room: OnceCell<PublicRoomsChunk>,
-        pub avatar: OnceCell<Avatar>,
+        pub avatar_data: OnceCell<AvatarData>,
         pub room: OnceCell<Room>,
         pub is_pending: Cell<bool>,
         pub room_handler: RefCell<Option<SignalHandlerId>>,
@@ -40,7 +40,7 @@ mod imp {
                     glib::ParamSpecBoolean::builder("pending")
                         .read_only()
                         .build(),
-                    glib::ParamSpecObject::builder::<Avatar>("avatar")
+                    glib::ParamSpecObject::builder::<AvatarData>("avatar-data")
                         .read_only()
                         .build(),
                 ]
@@ -61,7 +61,7 @@ mod imp {
 
             match pspec.name() {
                 "room-list" => obj.room_list().to_value(),
-                "avatar" => obj.avatar().to_value(),
+                "avatar-data" => obj.avatar_data().to_value(),
                 "room" => obj.room().to_value(),
                 "pending" => obj.is_pending().to_value(),
                 _ => unimplemented!(),
@@ -72,16 +72,16 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            self.avatar
-                .set(Avatar::new(&obj.room_list().session(), None))
+            self.avatar_data
+                .set(AvatarData::new(&obj.room_list().session(), None))
                 .unwrap();
 
             obj.room_list()
                 .connect_pending_rooms_changed(clone!(@weak obj => move |_| {
                     if let Some(matrix_public_room) = obj.matrix_public_room() {
                         obj.set_pending(obj.room_list().session()
-                        .room_list()
-                        .is_pending_room((*matrix_public_room.room_id).into()));
+                            .room_list()
+                            .is_pending_room((*matrix_public_room.room_id).into()));
                     }
                 }));
         }
@@ -110,9 +110,9 @@ impl PublicRoom {
         self.imp().room_list.get().unwrap()
     }
 
-    /// The Avatar of this room.
-    pub fn avatar(&self) -> &Avatar {
-        self.imp().avatar.get().unwrap()
+    /// The [`AvatarData`] of this room.
+    pub fn avatar_data(&self) -> &AvatarData {
+        self.imp().avatar_data.get().unwrap()
     }
 
     /// The `Room` object for this room, if the user is already a member of this
@@ -148,8 +148,8 @@ impl PublicRoom {
         let imp = self.imp();
 
         let display_name = room.name.clone().map(Into::into);
-        self.avatar().set_display_name(display_name);
-        self.avatar().set_url(room.avatar_url.clone());
+        self.avatar_data().set_display_name(display_name);
+        self.avatar_data().set_url(room.avatar_url.clone());
 
         if let Some(room) = self.room_list().get(&room.room_id) {
             self.set_room(room);

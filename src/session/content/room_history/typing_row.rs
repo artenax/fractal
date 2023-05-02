@@ -126,9 +126,9 @@ impl TypingRow {
             );
 
             imp.avatar_box.bind_model(Some(list), |item| {
-                let avatar_item = item.downcast_ref::<Member>().unwrap().avatar().clone();
+                let avatar_data = item.downcast_ref::<Member>().unwrap().avatar_data().clone();
                 let avatar = Avatar::new();
-                avatar.set_item(Some(avatar_item));
+                avatar.set_data(Some(avatar_data));
                 avatar.set_size(30);
                 avatar.upcast()
             });

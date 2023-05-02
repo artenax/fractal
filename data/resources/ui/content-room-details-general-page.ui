@@ -23,8 +23,8 @@
                     </style>
                     <child>
                       <object class="ComponentsEditableAvatar" id="avatar">
-                        <binding name="avatar">
-                          <lookup name="avatar">
+                        <binding name="data">
+                          <lookup name="avatar-data">
                             <lookup name="room">ContentRoomDetailsGeneralPage</lookup>
                           </lookup>
                         </binding>

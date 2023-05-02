@@ -53,8 +53,10 @@
                     <child>
                       <object class="ComponentsAvatar">
                         <property name="size">150</property>
-                        <binding name="item">
+                        <binding name="data">
+                          <lookup name="avatar-data">
                             <lookup name="room">ContentInvite</lookup>
+                          </lookup>
                         </binding>
                       </object>
                     </child>

@@ -1,7 +1,7 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, prelude::*, CompositeTemplate};
 
-use crate::{components::Avatar, session::Avatar as AvatarItem};
+use crate::{components::Avatar, session::AvatarData};
 
 mod imp {
     use glib::subclass::InitializingObject;
@@ -37,7 +37,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::builder::<AvatarItem>("item")
+                    glib::ParamSpecObject::builder::<AvatarData>("data")
                         .explicit_notify()
                         .build(),
                     glib::ParamSpecInt::builder("size")
@@ -55,7 +55,7 @@ mod imp {
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "item" => self.child_avatar.set_item(value.get().unwrap()),
+                "data" => self.child_avatar.set_data(value.get().unwrap()),
                 "size" => self.child_avatar.set_size(value.get().unwrap()),
                 "selected" => self.obj().set_selected(value.get().unwrap()),
                 _ => unimplemented!(),
@@ -64,7 +64,7 @@ mod imp {
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "item" => self.child_avatar.item().to_value(),
+                "data" => self.child_avatar.data().to_value(),
                 "size" => self.child_avatar.size().to_value(),
                 "selected" => self.obj().is_selected().to_value(),
                 _ => unimplemented!(),
@@ -115,9 +115,9 @@ impl AvatarWithSelection {
         &self.imp().child_avatar
     }
 
-    /// The Avatar item displayed by this widget.
-    pub fn item(&self) -> Option<AvatarItem> {
-        self.avatar().item()
+    /// The [`AvatarData`] displayed by this widget.
+    pub fn data(&self) -> Option<AvatarData> {
+        self.avatar().data()
     }
 
     /// The size of the Avatar.

@@ -158,7 +158,10 @@ impl Notifications {
             .set_default_action_and_target_value("app.show-room", Some(&payload.to_variant()));
         notification.set_body(Some(&body));
 
-        if let Some(icon) = room.avatar().as_notification_icon(session.upcast_ref()) {
+        if let Some(icon) = room
+            .avatar_data()
+            .as_notification_icon(session.upcast_ref())
+        {
             notification.set_icon(&icon);
         }
 

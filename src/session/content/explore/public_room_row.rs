@@ -140,7 +140,7 @@ impl PublicRoomRow {
             }
             if let Some(matrix_public_room) = public_room.matrix_public_room() {
                 imp.avatar
-                    .set_item(Some(public_room.avatar().clone().upcast()));
+                    .set_data(Some(public_room.avatar_data().clone().upcast()));
 
                 let display_name = matrix_public_room
                     .name
@@ -198,7 +198,7 @@ impl PublicRoomRow {
             }
         }
         imp.avatar
-            .set_item(public_room.clone().map(|room| room.avatar().clone()));
+            .set_data(public_room.clone().map(|room| room.avatar_data().clone()));
         imp.public_room.replace(public_room);
         self.notify("public-room");
     }

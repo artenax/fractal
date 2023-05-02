@@ -11,7 +11,7 @@ use gtk::{
 use log::{debug, error};
 
 use super::{ActionButton, ActionState, ImagePaintable};
-use crate::{session::Avatar, spawn, toast, utils::and_expr};
+use crate::{session::AvatarData, spawn, toast, utils::and_expr};
 
 /// The state of the editable avatar.
 #[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
@@ -40,8 +40,8 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/components-editable-avatar.ui")]
     pub struct EditableAvatar {
-        /// The avatar to display.
-        pub avatar: RefCell<Option<Avatar>>,
+        /// The [`AvatarData`] to display.
+        pub data: RefCell<Option<AvatarData>>,
         /// Whether this avatar is changeable.
         pub editable: Cell<bool>,
         /// The current state of the edit.
@@ -108,7 +108,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::builder::<Avatar>("avatar")
+                    glib::ParamSpecObject::builder::<AvatarData>("data")
                         .explicit_notify()
                         .build(),
                     glib::ParamSpecBoolean::builder("editable")
@@ -130,7 +130,7 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "avatar" => obj.set_avatar(value.get().unwrap()),
+                "data" => obj.set_data(value.get().unwrap()),
                 "editable" => obj.set_editable(value.get().unwrap()),
                 "state" => obj.set_state(value.get().unwrap()),
                 _ => unimplemented!(),
@@ -141,7 +141,7 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "avatar" => obj.avatar().to_value(),
+                "data" => obj.data().to_value(),
                 "editable" => obj.editable().to_value(),
                 "state" => obj.state().to_value(),
                 "temp-image" => obj.temp_image().to_value(),
@@ -155,14 +155,14 @@ mod imp {
             self.button_remove.set_extra_classes(&["error"]);
 
             let obj = self.obj();
-            let avatar_present_expr = obj
-                .property_expression("avatar")
-                .chain_property::<Avatar>("image")
+            let image_present_expr = obj
+                .property_expression("data")
+                .chain_property::<AvatarData>("image")
                 .chain_closure::<bool>(closure!(
                     |_: Option<glib::Object>, image: Option<gdk::Paintable>| { image.is_some() }
                 ));
             let editable_expr = obj.property_expression("editable");
-            let button_remove_visible = and_expr(editable_expr, avatar_present_expr);
+            let button_remove_visible = and_expr(editable_expr, image_present_expr);
             button_remove_visible.bind(&*self.button_remove, "visible", glib::Object::NONE);
         }
     }
@@ -183,19 +183,19 @@ impl EditableAvatar {
         glib::Object::new()
     }
 
-    /// The Avatar to display.
-    pub fn avatar(&self) -> Option<Avatar> {
-        self.imp().avatar.borrow().to_owned()
+    /// The [`AvatarData`] to display.
+    pub fn data(&self) -> Option<AvatarData> {
+        self.imp().data.borrow().to_owned()
     }
 
-    /// Set the Avatar to display.
-    pub fn set_avatar(&self, avatar: Option<Avatar>) {
-        if self.avatar() == avatar {
+    /// Set the [`AvatarData`] to display.
+    pub fn set_data(&self, data: Option<AvatarData>) {
+        if self.data() == data {
             return;
         }
 
-        self.imp().avatar.replace(avatar);
-        self.notify("avatar");
+        self.imp().data.replace(data);
+        self.notify("data");
     }
 
     /// Whether this avatar is editable.
