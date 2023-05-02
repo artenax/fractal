@@ -16,7 +16,7 @@
         </child>
         <child>
           <object class="GtkButton" id="new_room_btn">
-            <property name="label" translatable="yes">View</property>
+            <signal name="clicked" handler="join_or_view_successor" swapped="yes"/>
           </object>
         </child>
       </object>

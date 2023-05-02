@@ -77,7 +77,7 @@ impl StateRow {
                 self.update_with_profile_change(&profile_change, &event.sender().display_name())
             }
             TimelineItemContent::OtherState(other_state) => {
-                self.update_with_other_state(&other_state)
+                self.update_with_other_state(event, &other_state)
             }
             _ => unreachable!(),
         }
@@ -85,7 +85,7 @@ impl StateRow {
         self.imp().read_receipts.set_list(event.read_receipts());
     }
 
-    fn update_with_other_state(&self, other_state: &OtherState) {
+    fn update_with_other_state(&self, event: &Event, other_state: &OtherState) {
         let widget = match other_state.content() {
             AnyOtherFullStateEventContent::RoomCreate(content) => {
                 WidgetType::Creation(StateCreation::new(content))
@@ -110,8 +110,8 @@ impl StateRow {
                     &[("user", display_name)],
                 ))
             }
-            AnyOtherFullStateEventContent::RoomTombstone(content) => {
-                WidgetType::Tombstone(StateTombstone::new(content))
+            AnyOtherFullStateEventContent::RoomTombstone(_) => {
+                WidgetType::Tombstone(StateTombstone::new(&event.room()))
             }
             _ => {
                 warn!(

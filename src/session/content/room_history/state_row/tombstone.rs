@@ -1,10 +1,12 @@
 use adw::{prelude::*, subclass::prelude::*};
-use gtk::{glib, CompositeTemplate};
-use matrix_sdk::ruma::events::room::tombstone::RoomTombstoneEventContent;
-use ruma::events::FullStateEventContent;
+use gettextrs::gettext;
+use gtk::{glib, glib::clone, CompositeTemplate};
+
+use crate::{session::Room, utils::BoundObjectWeakRef};
 
 mod imp {
     use glib::subclass::InitializingObject;
+    use once_cell::sync::Lazy;
 
     use super::*;
 
@@ -13,6 +15,8 @@ mod imp {
     pub struct StateTombstone {
         #[template_child]
         pub new_room_btn: TemplateChild<gtk::Button>,
+        /// The [`Room`] this event belongs to.
+        pub room: BoundObjectWeakRef<Room>,
     }
 
     #[glib::object_subclass]
@@ -23,6 +27,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -30,7 +35,40 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for StateTombstone {}
+    impl ObjectImpl for StateTombstone {
+        fn properties() -> &'static [glib::ParamSpec] {
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecObject::builder::<Room>("room")
+                    .construct_only()
+                    .build()]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
+            match pspec.name() {
+                "room" => obj.set_room(value.get().unwrap()),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
+            match pspec.name() {
+                "room" => obj.room().to_value(),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn dispose(&self) {
+            self.room.disconnect_signals();
+        }
+    }
+
     impl WidgetImpl for StateTombstone {}
     impl BinImpl for StateTombstone {}
 }
@@ -40,25 +78,64 @@ glib::wrapper! {
         @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
 }
 
+#[gtk::template_callbacks]
 impl StateTombstone {
-    pub fn new(event: &FullStateEventContent<RoomTombstoneEventContent>) -> Self {
-        let obj: Self = glib::Object::new();
-        obj.set_event(event);
-        obj
+    /// Construct a new `StateTombstone` with the given room.
+    pub fn new(room: &Room) -> Self {
+        glib::Object::builder().property("room", room).build()
     }
 
-    fn set_event(&self, event: &FullStateEventContent<RoomTombstoneEventContent>) {
-        let new_room_btn = &self.imp().new_room_btn;
-        let btn_visible = match event {
-            FullStateEventContent::Original { content, .. } => {
-                new_room_btn.set_detailed_action_name(&format!(
-                    "session.show-room::{}",
-                    content.replacement_room
-                ));
-                true
-            }
-            FullStateEventContent::Redacted(_) => false,
+    /// Set the room this event belongs to.
+    fn set_room(&self, room: Room) {
+        let imp = self.imp();
+
+        let successor_handler = room.connect_notify_local(
+            Some("successor"),
+            clone!(@weak self as obj => move |room, _| {
+                obj.imp().new_room_btn.set_visible(room.successor().is_some());
+            }),
+        );
+        imp.new_room_btn.set_visible(room.successor().is_some());
+
+        let successor_room_handler = room.connect_notify_local(
+            Some("successor-room"),
+            clone!(@weak self as obj => move |room, _| {
+                obj.update_button_label(room);
+            }),
+        );
+        self.update_button_label(&room);
+
+        imp.room
+            .set(&room, vec![successor_handler, successor_room_handler]);
+    }
+
+    /// The room this event belongs to.
+    pub fn room(&self) -> Option<Room> {
+        self.imp().room.obj()
+    }
+
+    /// Update the button of the label.
+    fn update_button_label(&self, room: &Room) {
+        let button = &self.imp().new_room_btn;
+        if room.successor_room().is_some() {
+            button.set_label(&gettext("View"));
+        } else {
+            button.set_label(&gettext("Join"));
+        }
+    }
+
+    /// Join or view the successor of this event's room.
+    #[template_callback]
+    fn join_or_view_successor(&self) {
+        let Some(room) = self.room() else {
+            return;
         };
-        new_room_btn.set_visible(btn_visible);
+        let Some(successor) = room.successor() else {
+            return;
+        };
+
+        room.session()
+            .room_list()
+            .join_or_view(successor.into(), vec![]);
     }
 }
