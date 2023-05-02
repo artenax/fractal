@@ -26,6 +26,7 @@ mod imp {
     pub struct RoomList {
         pub list: RefCell<IndexMap<OwnedRoomId, Room>>,
         pub pending_rooms: RefCell<HashSet<OwnedRoomOrAliasId>>,
+        pub tombstoned_rooms: RefCell<HashSet<OwnedRoomId>>,
         pub session: WeakRef<Session>,
     }
 
@@ -166,11 +167,15 @@ impl RoomList {
     }
 
     pub fn remove(&self, room_id: &RoomId) {
+        let imp = self.imp();
+
         let removed = {
-            let mut list = self.imp().list.borrow_mut();
+            let mut list = imp.list.borrow_mut();
 
             list.shift_remove_full(room_id)
         };
+
+        imp.tombstoned_rooms.borrow_mut().remove(room_id);
 
         if let Some((position, ..)) = removed {
             self.items_changed(position as u32, 1, 0);
@@ -178,15 +183,38 @@ impl RoomList {
     }
 
     fn items_added(&self, added: usize) {
-        let list = self.imp().list.borrow();
+        let position = {
+            let imp = self.imp();
+            let list = imp.list.borrow();
 
-        let position = list.len() - added;
+            let position = list.len() - added;
 
-        for (_room_id, room) in list.iter().skip(position) {
-            room.connect_room_forgotten(clone!(@weak self as obj => move |room| {
-                obj.remove(room.room_id());
-            }));
-        }
+            for (_room_id, room) in list.iter().skip(position) {
+                room.connect_room_forgotten(clone!(@weak self as obj => move |room| {
+                    obj.remove(room.room_id());
+                }));
+            }
+
+            let mut to_remove = Vec::new();
+            for room_id in imp.tombstoned_rooms.borrow().iter() {
+                if let Some(room) = list.get(room_id) {
+                    if room.update_outdated() {
+                        to_remove.push(room_id.to_owned());
+                    }
+                } else {
+                    to_remove.push(room_id.to_owned());
+                }
+            }
+
+            if !to_remove.is_empty() {
+                let mut tombstoned_rooms = imp.tombstoned_rooms.borrow_mut();
+                for room_id in to_remove {
+                    tombstoned_rooms.remove(&room_id);
+                }
+            }
+
+            position
+        };
 
         self.items_changed(position as u32, 0, added as u32);
     }
@@ -203,12 +231,13 @@ impl RoomList {
 
         if added > 0 {
             {
-                let mut list = self.imp().list.borrow_mut();
+                let mut added = Vec::with_capacity(matrix_rooms.len());
                 for matrix_room in matrix_rooms {
                     let room_id = matrix_room.room_id().to_owned();
                     let room = Room::new(&session, &room_id);
-                    list.insert(room_id, room);
+                    added.push((room_id, room));
                 }
+                self.imp().list.borrow_mut().extend(added);
             }
 
             self.items_added(added);
@@ -334,5 +363,11 @@ impl RoomList {
                     && room.is_joined()
             })
             .cloned()
+    }
+
+    /// Add a room that was tombstoned but for which we haven't joined the
+    /// successor yet.
+    pub fn add_tombstoned_room(&self, room_id: OwnedRoomId) {
+        self.imp().tombstoned_rooms.borrow_mut().insert(room_id);
     }
 }

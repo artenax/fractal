@@ -92,8 +92,12 @@ mod imp {
         pub latest_read: RefCell<Option<Event>>,
         /// The highlight state of the room,
         pub highlight: Cell<HighlightFlags>,
+        /// The ID of the room that was upgraded and that this one replaces.
         pub predecessor: OnceCell<OwnedRoomId>,
+        /// The ID of the successor of this Room, if this room was upgraded.
         pub successor: OnceCell<OwnedRoomId>,
+        /// The successor of this Room, if this room was upgraded.
+        pub successor_room: WeakRef<super::Room>,
         /// The most recent verification request event.
         pub verification: RefCell<Option<IdentityVerification>>,
         /// Whether this room is encrypted
@@ -157,6 +161,9 @@ mod imp {
                     glib::ParamSpecString::builder("successor")
                         .read_only()
                         .build(),
+                    glib::ParamSpecObject::builder::<super::Room>("successor-room")
+                        .read_only()
+                        .build(),
                     glib::ParamSpecObject::builder::<IdentityVerification>("verification")
                         .explicit_notify()
                         .build(),
@@ -208,6 +215,7 @@ mod imp {
                 "latest-read" => obj.latest_read().to_value(),
                 "predecessor" => obj.predecessor().map(|id| id.as_str()).to_value(),
                 "successor" => obj.successor().map(|id| id.as_str()).to_value(),
+                "successor-room" => obj.successor_room().to_value(),
                 "verification" => obj.verification().to_value(),
                 "encrypted" => obj.is_encrypted().to_value(),
                 "typing-list" => obj.typing_list().to_value(),
@@ -1405,6 +1413,17 @@ impl Room {
         self.imp().successor.get().map(std::ops::Deref::deref)
     }
 
+    /// The successor of this Room, if this room was upgraded.
+    pub fn successor_room(&self) -> Option<Room> {
+        self.imp().successor_room.upgrade()
+    }
+
+    /// Set the successor of this Room, if this room was upgraded.
+    fn set_successor_room(&self, successor_room: &Room) {
+        self.imp().successor_room.set(Some(successor_room));
+        self.notify("successor-room")
+    }
+
     /// Load the successor of this room.
     pub fn load_successor(&self) {
         let imp = self.imp();
@@ -1418,8 +1437,36 @@ impl Room {
         };
 
         imp.successor.set(room_tombstone.replacement_room).unwrap();
-        self.set_category_internal(RoomType::Outdated);
         self.notify("successor");
+
+        if !self.update_outdated() {
+            self.session()
+                .room_list()
+                .add_tombstoned_room(self.room_id().to_owned());
+        }
+    }
+
+    /// Update whether this `Room` is outdated.
+    ///
+    /// A room is outdated when it was tombstoned and we joined its successor.
+    ///
+    /// Returns `true` if the `Room` was set as outdated, `false` otherwise.
+    pub fn update_outdated(&self) -> bool {
+        if self.category() == RoomType::Outdated {
+            return true;
+        }
+
+        let Some(successor) = self.imp().successor.get() else {
+            return false;
+        };
+
+        if let Some(successor_room) = self.session().room_list().get(successor) {
+            self.set_successor_room(&successor_room);
+            self.set_category_internal(RoomType::Outdated);
+            true
+        } else {
+            false
+        }
     }
 
     pub fn send_attachment(
