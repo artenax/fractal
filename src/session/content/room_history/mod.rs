@@ -20,7 +20,7 @@ use geo_uri::GeoUri;
 use gettextrs::gettext;
 use gtk::{
     gdk, gio, glib,
-    glib::{clone, signal::Inhibit, FromVariant},
+    glib::{clone, closure, signal::Inhibit, FromVariant},
     prelude::*,
     CompositeTemplate,
 };
@@ -86,7 +86,10 @@ pub enum RelatedEventType {
 }
 
 mod imp {
-    use std::cell::{Cell, RefCell};
+    use std::{
+        cell::{Cell, RefCell},
+        collections::HashMap,
+    };
 
     use glib::{signal::SignalHandlerId, subclass::InitializingObject};
     use once_cell::unsync::OnceCell;
@@ -132,10 +135,11 @@ mod imp {
         pub error: TemplateChild<adw::StatusPage>,
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
+        #[template_child]
+        pub tombstoned_banner: TemplateChild<adw::Banner>,
         pub is_loading: Cell<bool>,
         #[template_child]
         pub drag_overlay: TemplateChild<DragOverlay>,
-        pub invite_action_watch: RefCell<Option<gtk::ExpressionWatch>>,
         #[template_child]
         pub related_event_header: TemplateChild<LabelWithWidgets>,
         #[template_child]
@@ -149,6 +153,7 @@ mod imp {
         /// The GtkSelectionModel used in the listview.
         // TODO: use gtk::MultiSelection to allow selection
         pub selection_model: OnceCell<gtk::NoSelection>,
+        pub room_expr_watches: RefCell<HashMap<&'static str, gtk::ExpressionWatch>>,
     }
 
     #[glib::object_subclass]
@@ -463,8 +468,8 @@ mod imp {
         fn dispose(&self) {
             self.completion.unparent();
 
-            if let Some(invite_action) = self.invite_action_watch.take() {
-                invite_action.unwatch();
+            for (_, expr_watch) in self.room_expr_watches.take() {
+                expr_watch.unwatch();
             }
         }
     }
@@ -516,8 +521,8 @@ impl RoomHistory {
                 room.timeline().disconnect(state_timeline_handler);
             }
 
-            if let Some(invite_action) = imp.invite_action_watch.take() {
-                invite_action.unwatch();
+            for (_, expr_watch) in imp.room_expr_watches.take() {
+                expr_watch.unwatch();
             }
 
             imp.load_when_timeline_ready.set(false);
@@ -570,6 +575,7 @@ impl RoomHistory {
 
             room.load_members();
             self.init_invite_action(room);
+            self.init_room_tombstoned(room);
             self.scroll_down();
         }
 
@@ -801,12 +807,15 @@ impl RoomHistory {
             }),
         );
 
-        self.imp().invite_action_watch.replace(Some(watch));
+        self.imp()
+            .room_expr_watches
+            .borrow_mut()
+            .insert("invite-action", watch);
         self.update_invite_action();
     }
 
     fn update_invite_action(&self) {
-        if let Some(invite_action) = &*self.imp().invite_action_watch.borrow() {
+        if let Some(invite_action) = self.imp().room_expr_watches.borrow().get("invite-action") {
             let allow_invite = invite_action
                 .evaluate_as::<bool>()
                 .expect("Created expression needs to be valid and a boolean");
@@ -1382,6 +1391,54 @@ impl RoomHistory {
 
         if let Err(error) = handle.await.unwrap() {
             error!("Failed to send read receipt: {error}");
+        }
+    }
+
+    /// Initialize the banner that is revealed when the room is tombstoned and
+    /// offers to join the room's successor.
+    fn init_room_tombstoned(&self, room: &Room) {
+        let tombstoned_expr = gtk::ClosureExpression::new::<bool>(
+            [
+                Room::this_expression("category"),
+                Room::this_expression("successor"),
+            ],
+            closure!(
+                |room: Room, category: RoomType, successor: Option<String>| {
+                    successor.is_some() && room.is_joined() && category != RoomType::Outdated
+                }
+            ),
+        );
+        let tombstoned_watch =
+            tombstoned_expr.bind(&*self.imp().tombstoned_banner, "revealed", Some(room));
+
+        self.imp()
+            .room_expr_watches
+            .borrow_mut()
+            .insert("tombstoned", tombstoned_watch);
+    }
+
+    /// Join the room's successor, if possible.
+    #[template_callback]
+    fn join_successor(&self) {
+        let Some(room) = self.room() else {
+            return;
+        };
+        let room_expr_watches = self.imp().room_expr_watches.borrow();
+        let Some(room_tombstoned_watch) = room_expr_watches.get("tombstoned") else {
+            return;
+        };
+
+        if room_tombstoned_watch
+            .evaluate_as::<bool>()
+            .unwrap_or_default()
+        {
+            let Some(successor) = room.successor() else {
+                return;
+            };
+
+            room.session()
+                .room_list()
+                .join_by_id_or_alias(successor.to_owned().into(), vec![]);
         }
     }
 }

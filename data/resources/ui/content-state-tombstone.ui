@@ -11,16 +11,15 @@
           <object class="GtkLabel">
             <property name="wrap">True</property>
             <property name="wrap-mode">word-char</property>
-            <property name="label" translatable="yes">There is a newer version of this room.</property>
+            <property name="label" translatable="yes">There is a newer version of this room</property>
           </object>
         </child>
         <child>
           <object class="GtkButton" id="new_room_btn">
-            <property name="label" translatable="yes">Go there</property>
+            <property name="label" translatable="yes">View</property>
           </object>
         </child>
       </object>
     </child>
   </template>
 </interface>
-

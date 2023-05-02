@@ -88,6 +88,13 @@
           </object>
         </child>
         <child>
+          <object class="AdwBanner" id="tombstoned_banner">
+            <property name="title" translatable="yes">There is a newer version of this room</property>
+            <property name="button-label" translatable="yes">Join</property>
+            <signal name="button-clicked" handler="join_successor" swapped="yes"/>
+          </object>
+        </child>
+        <child>
           <object class="ContentVerificationInfoBar" id="verification_info_bar">
             <binding name="request">
               <lookup name="verification">
