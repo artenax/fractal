@@ -4,7 +4,7 @@ use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use indexmap::map::IndexMap;
 use log::error;
 use matrix_sdk::{
-    ruma::{OwnedRoomId, OwnedRoomOrAliasId, OwnedServerName, RoomId, RoomOrAliasId},
+    ruma::{OwnedRoomId, OwnedRoomOrAliasId, OwnedServerName, RoomAliasId, RoomId, RoomOrAliasId},
     sync::Rooms as ResponseRooms,
 };
 
@@ -134,8 +134,23 @@ impl RoomList {
         self.emit_by_name::<()>("pending-rooms-changed", &[]);
     }
 
+    /// Get the room with the given room ID, if any.
     pub fn get(&self, room_id: &RoomId) -> Option<Room> {
         self.imp().list.borrow().get(room_id).cloned()
+    }
+
+    /// Get the room with the given identifier, if any.
+    pub fn get_by_identifier(&self, identifier: RoomIdentifier) -> Option<Room> {
+        match identifier {
+            RoomIdentifier::Id(room_id) => self.get(room_id),
+            RoomIdentifier::Alias(room_alias) => self
+                .imp()
+                .list
+                .borrow()
+                .values()
+                .find(|room| room.matrix_room().canonical_alias().as_deref() == Some(room_alias))
+                .cloned(),
+        }
     }
 
     /// Waits till the Room becomes available
@@ -300,6 +315,7 @@ impl RoomList {
         }
     }
 
+    /// Join the room with the given identifier.
     pub fn join_by_id_or_alias(&self, identifier: OwnedRoomOrAliasId, via: Vec<OwnedServerName>) {
         let client = self.session().client();
         let identifier_clone = identifier.clone();
@@ -347,27 +363,73 @@ impl RoomList {
         })
     }
 
-    pub fn find_joined_room(&self, room_id: &RoomOrAliasId) -> Option<Room> {
-        let room_id = room_id.as_str();
-        self.imp()
-            .list
-            .borrow()
-            .values()
-            .find(|room| {
-                (room.room_id() == room_id
-                    || room
-                        .matrix_room()
-                        .canonical_alias()
-                        .filter(|id| id == room_id)
-                        .is_some())
-                    && room.is_joined()
-            })
-            .cloned()
+    /// Get the room with the given identifier, if it is joined.
+    pub fn joined_room(&self, identifier: RoomIdentifier) -> Option<Room> {
+        self.get_by_identifier(identifier)
+            .filter(|room| room.is_joined())
+    }
+
+    /// Join or view the room with the given identifier.
+    pub fn join_or_view(&self, identifier: RoomIdentifier, via: Vec<OwnedServerName>) {
+        if let Some(room) = self.joined_room(identifier) {
+            self.session().select_room(Some(room));
+        } else {
+            self.join_by_id_or_alias(identifier.into(), via);
+        }
     }
 
     /// Add a room that was tombstoned but for which we haven't joined the
     /// successor yet.
     pub fn add_tombstoned_room(&self, room_id: OwnedRoomId) {
         self.imp().tombstoned_rooms.borrow_mut().insert(room_id);
+    }
+}
+
+/// A unique identifier for a room.
+#[derive(Debug, Clone, Copy)]
+pub enum RoomIdentifier<'a> {
+    /// A room ID.
+    Id(&'a RoomId),
+    /// A room alias.
+    Alias(&'a RoomAliasId),
+}
+
+impl<'a> From<&'a RoomId> for RoomIdentifier<'a> {
+    fn from(value: &'a RoomId) -> Self {
+        Self::Id(value)
+    }
+}
+
+impl<'a> From<&'a RoomAliasId> for RoomIdentifier<'a> {
+    fn from(value: &'a RoomAliasId) -> Self {
+        Self::Alias(value)
+    }
+}
+
+impl<'a> From<&'a RoomOrAliasId> for RoomIdentifier<'a> {
+    fn from(value: &'a RoomOrAliasId) -> Self {
+        if value.is_room_id() {
+            RoomIdentifier::Id(value.as_str().try_into().unwrap())
+        } else {
+            RoomIdentifier::Alias(value.as_str().try_into().unwrap())
+        }
+    }
+}
+
+impl<'a> From<RoomIdentifier<'a>> for &'a RoomOrAliasId {
+    fn from(value: RoomIdentifier<'a>) -> Self {
+        match value {
+            RoomIdentifier::Id(id) => id.into(),
+            RoomIdentifier::Alias(alias) => alias.into(),
+        }
+    }
+}
+
+impl<'a> From<RoomIdentifier<'a>> for OwnedRoomOrAliasId {
+    fn from(value: RoomIdentifier<'a>) -> Self {
+        match value {
+            RoomIdentifier::Id(id) => id.to_owned().into(),
+            RoomIdentifier::Alias(alias) => alias.to_owned().into(),
+        }
     }
 }

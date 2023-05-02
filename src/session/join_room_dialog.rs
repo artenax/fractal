@@ -135,7 +135,11 @@ impl JoinRoomDialog {
 
         self.set_response_enabled("join", true);
 
-        if session.room_list().find_joined_room(&room_id).is_some() {
+        if session
+            .room_list()
+            .joined_room((&*room_id).into())
+            .is_some()
+        {
             self.set_response_label("join", &gettext("_View"));
         } else {
             self.set_response_label("join", &gettext("_Join"));
@@ -152,11 +156,7 @@ impl JoinRoomDialog {
             return;
         };
 
-        if let Some(room) = session.room_list().find_joined_room(&room_id) {
-            session.select_room(Some(room));
-        } else {
-            session.room_list().join_by_id_or_alias(room_id, via)
-        }
+        session.room_list().join_or_view((&*room_id).into(), via);
     }
 }
 
