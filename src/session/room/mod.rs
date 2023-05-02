@@ -1406,20 +1406,20 @@ impl Room {
     }
 
     /// Load the successor of this room.
-    pub fn load_successor(&self) -> Option<()> {
+    pub fn load_successor(&self) {
         let imp = self.imp();
 
         if imp.successor.get().is_some() {
-            return None;
+            return;
         }
 
-        let room_id = self.matrix_room().tombstone()?.replacement_room;
+        let Some(room_tombstone) = self.matrix_room().tombstone() else {
+            return;
+        };
 
-        imp.successor.set(room_id).unwrap();
+        imp.successor.set(room_tombstone.replacement_room).unwrap();
         self.set_category_internal(RoomType::Outdated);
         self.notify("successor");
-
-        Some(())
     }
 
     pub fn send_attachment(
