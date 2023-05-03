@@ -11,7 +11,11 @@ use gtk::{
 use log::{debug, error};
 
 use super::{ActionButton, ActionState, ImagePaintable};
-use crate::{session::AvatarData, spawn, toast, utils::and_expr};
+use crate::{
+    session::{AvatarData, AvatarImage},
+    spawn, toast,
+    utils::and_expr,
+};
 
 /// The state of the editable avatar.
 #[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
@@ -158,6 +162,7 @@ mod imp {
             let image_present_expr = obj
                 .property_expression("data")
                 .chain_property::<AvatarData>("image")
+                .chain_property::<AvatarImage>("paintable")
                 .chain_closure::<bool>(closure!(
                     |_: Option<glib::Object>, image: Option<gdk::Paintable>| { image.is_some() }
                 ));

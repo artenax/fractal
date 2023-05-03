@@ -1,7 +1,7 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, prelude::*, CompositeTemplate};
 
-use crate::session::AvatarData;
+use crate::session::{AvatarData, AvatarImage};
 
 mod imp {
     use std::cell::RefCell;
@@ -27,6 +27,7 @@ mod imp {
         type ParentType = adw::Bin;
 
         fn class_init(klass: &mut Self::Class) {
+            AvatarImage::static_type();
             Self::bind_template(klass);
         }
 
@@ -143,7 +144,7 @@ impl Avatar {
     fn request_custom_avatar(&self) {
         if let Some(data) = &*self.imp().data.borrow() {
             let size = self.size() * self.scale_factor();
-            data.set_needed_size(size as u32);
+            data.image().set_needed_size(size as u32);
         }
     }
 }

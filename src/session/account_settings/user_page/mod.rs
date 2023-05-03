@@ -144,10 +144,10 @@ impl UserPage {
         self.imp().session.set(session.as_ref());
         self.notify("session");
 
-        self.user().avatar_data().connect_notify_local(
-            Some("url"),
-            clone!(@weak self as obj => move |avatar_data, _| {
-                obj.avatar_changed(avatar_data.url());
+        self.user().avatar_data().image().connect_notify_local(
+            Some("uri"),
+            clone!(@weak self as obj => move |avatar_image, _| {
+                obj.avatar_changed(avatar_image.uri());
             }),
         );
         self.user().connect_notify_local(

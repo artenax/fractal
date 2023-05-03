@@ -8,12 +8,7 @@ use matrix_sdk::{
     },
 };
 
-use crate::{
-    components::ImagePaintable,
-    session::Session,
-    spawn, spawn_tokio,
-    utils::notifications::{paintable_as_notification_icon, string_as_notification_icon},
-};
+use crate::{components::ImagePaintable, session::Session, spawn, spawn_tokio};
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -24,35 +19,31 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default)]
-    pub struct AvatarData {
-        pub image: RefCell<Option<gdk::Paintable>>,
+    pub struct AvatarImage {
+        pub paintable: RefCell<Option<gdk::Paintable>>,
         pub needed_size: Cell<u32>,
-        pub url: RefCell<Option<OwnedMxcUri>>,
-        pub display_name: RefCell<Option<String>>,
+        pub uri: RefCell<Option<OwnedMxcUri>>,
         pub session: WeakRef<Session>,
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for AvatarData {
-        const NAME: &'static str = "AvatarData";
-        type Type = super::AvatarData;
+    impl ObjectSubclass for AvatarImage {
+        const NAME: &'static str = "AvatarImage";
+        type Type = super::AvatarImage;
     }
 
-    impl ObjectImpl for AvatarData {
+    impl ObjectImpl for AvatarImage {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::builder::<gdk::Paintable>("image")
+                    glib::ParamSpecObject::builder::<gdk::Paintable>("paintable")
                         .read_only()
                         .build(),
                     glib::ParamSpecUInt::builder("needed-size")
                         .minimum(0)
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecString::builder("url")
-                        .explicit_notify()
-                        .build(),
-                    glib::ParamSpecString::builder("display-name")
+                    glib::ParamSpecString::builder("uri")
                         .explicit_notify()
                         .build(),
                     glib::ParamSpecObject::builder::<Session>("session")
@@ -69,9 +60,8 @@ mod imp {
 
             match pspec.name() {
                 "needed-size" => obj.set_needed_size(value.get().unwrap()),
-                "url" => obj.set_url(value.get::<&str>().ok().map(Into::into)),
+                "uri" => obj.set_uri(value.get::<&str>().ok().map(Into::into)),
                 "session" => self.session.set(value.get().ok().as_ref()),
-                "display-name" => obj.set_display_name(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -80,16 +70,15 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "image" => obj.image().to_value(),
+                "paintable" => obj.paintable().to_value(),
                 "needed-size" => obj.needed_size().to_value(),
-                "url" => obj.url().map_or_else(
+                "uri" => obj.uri().map_or_else(
                     || {
                         let none: Option<&str> = None;
                         none.to_value()
                     },
                     |url| url.as_str().to_value(),
                 ),
-                "display-name" => obj.display_name().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -97,15 +86,16 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// Data about a User’s or Room’s avatar.
-    pub struct AvatarData(ObjectSubclass<imp::AvatarData>);
+    /// The image data for an avatar.
+    pub struct AvatarImage(ObjectSubclass<imp::AvatarImage>);
 }
 
-impl AvatarData {
-    pub fn new(session: &Session, url: Option<&MxcUri>) -> Self {
+impl AvatarImage {
+    /// Construct a new `AvatarImage` with the given session and Matrix URI.
+    pub fn new(session: &Session, uri: Option<&MxcUri>) -> Self {
         glib::Object::builder()
             .property("session", session)
-            .property("url", &url.map(|url| url.to_string()))
+            .property("uri", uri.map(|uri| uri.to_string()))
             .build()
     }
 
@@ -114,34 +104,34 @@ impl AvatarData {
         self.imp().session.upgrade().unwrap()
     }
 
-    /// The user-defined image, if any.
-    pub fn image(&self) -> Option<gdk::Paintable> {
-        self.imp().image.borrow().clone()
+    /// The image content as a paintable, if any.
+    pub fn paintable(&self) -> Option<gdk::Paintable> {
+        self.imp().paintable.borrow().clone()
     }
 
-    /// Set the user-defined image.
+    /// Set the content of the image.
     fn set_image_data(&self, data: Option<Vec<u8>>) {
-        let image = data
+        let paintable = data
             .and_then(|data| ImagePaintable::from_bytes(&glib::Bytes::from(&data), None).ok())
             .map(|texture| texture.upcast());
-        self.imp().image.replace(image);
-        self.notify("image");
+        self.imp().paintable.replace(paintable);
+        self.notify("paintable");
     }
 
     fn load(&self) {
-        // Don't do anything here if we don't need the avatar
+        // Don't do anything here if we don't need the avatar.
         if self.needed_size() == 0 {
             return;
         }
 
-        let Some(url) = self.url() else {
+        let Some(uri) = self.uri() else {
             return;
         };
 
         let client = self.session().client();
         let needed_size = self.needed_size();
         let request = MediaRequest {
-            source: MediaSource::Plain(url),
+            source: MediaSource::Plain(uri),
             format: MediaFormat::Thumbnail(MediaThumbnailSize {
                 width: needed_size.into(),
                 height: needed_size.into(),
@@ -156,26 +146,10 @@ impl AvatarData {
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
                     Ok(data) => obj.set_image_data(Some(data)),
-                    Err(error) => error!("Couldn’t fetch avatar: {error}"),
+                    Err(error) => error!("Could not fetch avatar: {error}"),
                 };
             })
         );
-    }
-
-    /// Set the display name used for this avatar.
-    pub fn set_display_name(&self, display_name: Option<String>) {
-        if self.display_name() == display_name {
-            return;
-        }
-
-        self.imp().display_name.replace(display_name);
-
-        self.notify("display-name");
-    }
-
-    /// The display name used for this avatar.
-    pub fn display_name(&self) -> Option<String> {
-        self.imp().display_name.borrow().clone()
     }
 
     /// Set the needed size of the user-defined image.
@@ -200,47 +174,28 @@ impl AvatarData {
         self.imp().needed_size.get()
     }
 
-    /// Set the url of the `AvatarData`.
-    pub fn set_url(&self, url: Option<OwnedMxcUri>) {
+    /// Set the Matrix URI of the `AvatarImage`.
+    pub fn set_uri(&self, uri: Option<OwnedMxcUri>) {
         let imp = self.imp();
 
-        if imp.url.borrow().as_ref() == url.as_ref() {
+        if imp.uri.borrow().as_ref() == uri.as_ref() {
             return;
         }
 
-        let has_url = url.is_some();
-        imp.url.replace(url);
+        let has_uri = uri.is_some();
+        imp.uri.replace(uri);
 
-        if has_url {
+        if has_uri {
             self.load();
         } else {
             self.set_image_data(None);
         }
 
-        self.notify("url");
+        self.notify("uri");
     }
 
-    /// The url of the `AvatarData`.
-    pub fn url(&self) -> Option<OwnedMxcUri> {
-        self.imp().url.borrow().to_owned()
-    }
-
-    /// Get this avatar as a notification icon.
-    ///
-    /// Returns `None` if an error occurred while generating the icon.
-    pub fn as_notification_icon(&self, helper_widget: &gtk::Widget) -> Option<gdk::Texture> {
-        let icon = if let Some(paintable) = self.image() {
-            paintable_as_notification_icon(paintable.upcast_ref(), helper_widget)
-        } else {
-            string_as_notification_icon(&self.display_name().unwrap_or_default(), helper_widget)
-        };
-
-        match icon {
-            Ok(icon) => Some(icon),
-            Err(error) => {
-                log::warn!("Failed to generate icon for notification: {error}");
-                None
-            }
-        }
+    /// The Matrix URI of the `AvatarImage`.
+    pub fn uri(&self) -> Option<OwnedMxcUri> {
+        self.imp().uri.borrow().to_owned()
     }
 }

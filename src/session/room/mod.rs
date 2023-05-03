@@ -56,7 +56,7 @@ use crate::{
     prelude::*,
     session::{
         sidebar::{SidebarItem, SidebarItemImpl},
-        AvatarData, Session, User,
+        AvatarData, AvatarImage, Session, User,
     },
     spawn, spawn_tokio, toast,
 };
@@ -237,10 +237,10 @@ mod imp {
             self.timeline.set(Timeline::new(&obj)).unwrap();
             self.members.set(MemberList::new(&obj)).unwrap();
             self.avatar_data
-                .set(AvatarData::new(
+                .set(AvatarData::new(AvatarImage::new(
                     &obj.session(),
                     obj.matrix_room().avatar_url().as_deref(),
-                ))
+                )))
                 .unwrap();
 
             obj.load_power_levels();
@@ -1093,7 +1093,9 @@ impl Room {
                         self.members().update_member_for_member_event(event)
                     }
                     AnySyncStateEvent::RoomAvatar(SyncStateEvent::Original(event)) => {
-                        self.avatar_data().set_url(event.content.url.to_owned());
+                        self.avatar_data()
+                            .image()
+                            .set_uri(event.content.url.to_owned());
                     }
                     AnySyncStateEvent::RoomName(_) => {
                         self.notify("name");

@@ -1,5 +1,5 @@
 mod account_settings;
-mod avatar_data;
+mod avatar;
 mod content;
 mod event_source_dialog;
 mod join_room_dialog;
@@ -56,7 +56,7 @@ use self::{
     verification::VerificationList,
 };
 pub use self::{
-    avatar_data::AvatarData,
+    avatar::{AvatarData, AvatarImage},
     room::{Event, Room},
     room_creation::RoomCreation,
     settings::SessionSettings,

@@ -9,7 +9,7 @@ use crate::{
     components::Pill,
     session::{
         verification::{IdentityVerification, VerificationState},
-        AvatarData, Session,
+        AvatarData, AvatarImage, Session,
     },
     spawn, spawn_tokio,
 };
@@ -109,7 +109,7 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            let avatar_data = AvatarData::new(&obj.session(), None);
+            let avatar_data = AvatarData::new(AvatarImage::new(&obj.session(), None));
             self.avatar_data.set(avatar_data).unwrap();
 
             obj.bind_property("display-name", obj.avatar_data(), "display-name")
@@ -220,8 +220,8 @@ pub trait UserExt: IsA<User> {
     }
 
     /// Set the avatar URL of this user.
-    fn set_avatar_url(&self, url: Option<OwnedMxcUri>) {
-        self.avatar_data().set_url(url);
+    fn set_avatar_url(&self, uri: Option<OwnedMxcUri>) {
+        self.avatar_data().image().set_uri(uri);
     }
 
     /// The actions the currently logged-in user is allowed to perform on this

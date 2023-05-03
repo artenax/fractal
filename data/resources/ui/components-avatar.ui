@@ -5,8 +5,10 @@
       <object class="AdwAvatar" id="avatar">
         <property name="show-initials">True</property>
         <binding name="custom-image">
-          <lookup name="image" type="AvatarData">
-            <lookup name="data">ComponentsAvatar</lookup>
+          <lookup name="paintable" type="AvatarImage">
+            <lookup name="image" type="AvatarData">
+              <lookup name="data">ComponentsAvatar</lookup>
+            </lookup>
           </lookup>
         </binding>
         <binding name="text">

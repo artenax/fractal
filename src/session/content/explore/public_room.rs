@@ -1,7 +1,7 @@
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use matrix_sdk::ruma::{directory::PublicRoomsChunk, RoomId, RoomOrAliasId};
 
-use crate::session::{room::Room, AvatarData, RoomList};
+use crate::session::{room::Room, AvatarData, AvatarImage, RoomList};
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -73,7 +73,10 @@ mod imp {
             let obj = self.obj();
 
             self.avatar_data
-                .set(AvatarData::new(&obj.room_list().session(), None))
+                .set(AvatarData::new(AvatarImage::new(
+                    &obj.room_list().session(),
+                    None,
+                )))
                 .unwrap();
 
             obj.room_list()
@@ -149,7 +152,7 @@ impl PublicRoom {
 
         let display_name = room.name.clone().map(Into::into);
         self.avatar_data().set_display_name(display_name);
-        self.avatar_data().set_url(room.avatar_url.clone());
+        self.avatar_data().image().set_uri(room.avatar_url.clone());
 
         if let Some(room) = self.room_list().get(&room.room_id) {
             self.set_room(room);
