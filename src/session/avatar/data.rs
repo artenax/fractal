@@ -78,7 +78,7 @@ impl AvatarData {
     }
 
     /// Set the data of the user-defined image.
-    fn set_image(&self, image: AvatarImage) {
+    pub fn set_image(&self, image: AvatarImage) {
         let imp = self.imp();
 
         if imp.image.borrow().as_ref() == Some(&image) {

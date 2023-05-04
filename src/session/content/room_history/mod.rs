@@ -573,7 +573,12 @@ impl RoomHistory {
             timeline.remove_empty_typing_row();
             self.trigger_read_receipts_update();
 
-            room.load_members();
+            spawn!(
+                glib::PRIORITY_LOW,
+                clone!(@weak room => async move {
+                    room.load_members().await;
+                })
+            );
             self.init_invite_action(room);
             self.init_room_tombstoned(room);
             self.scroll_down();

@@ -1,7 +1,7 @@
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use matrix_sdk::ruma::{directory::PublicRoomsChunk, RoomId, RoomOrAliasId};
 
-use crate::session::{room::Room, AvatarData, AvatarImage, RoomList};
+use crate::session::{room::Room, AvatarData, AvatarImage, AvatarUriSource, RoomList};
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -76,6 +76,7 @@ mod imp {
                 .set(AvatarData::new(AvatarImage::new(
                     &obj.room_list().session(),
                     None,
+                    AvatarUriSource::Room,
                 )))
                 .unwrap();
 

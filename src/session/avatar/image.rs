@@ -10,6 +10,18 @@ use matrix_sdk::{
 
 use crate::{components::ImagePaintable, session::Session, spawn, spawn_tokio};
 
+/// The source of an avatar's URI.
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, glib::Enum)]
+#[repr(u32)]
+#[enum_type(name = "AvatarUriSource")]
+pub enum AvatarUriSource {
+    /// The URI comes from a Matrix user.
+    #[default]
+    User = 0,
+    /// The URI comes from a Matrix room.
+    Room = 1,
+}
+
 mod imp {
     use std::cell::{Cell, RefCell};
 
@@ -23,6 +35,8 @@ mod imp {
         pub paintable: RefCell<Option<gdk::Paintable>>,
         pub needed_size: Cell<u32>,
         pub uri: RefCell<Option<OwnedMxcUri>>,
+        /// The source of the avatar's URI.
+        pub uri_source: Cell<AvatarUriSource>,
         pub session: WeakRef<Session>,
     }
 
@@ -46,6 +60,9 @@ mod imp {
                     glib::ParamSpecString::builder("uri")
                         .explicit_notify()
                         .build(),
+                    glib::ParamSpecEnum::builder::<AvatarUriSource>("uri-source")
+                        .construct_only()
+                        .build(),
                     glib::ParamSpecObject::builder::<Session>("session")
                         .construct_only()
                         .build(),
@@ -61,6 +78,7 @@ mod imp {
             match pspec.name() {
                 "needed-size" => obj.set_needed_size(value.get().unwrap()),
                 "uri" => obj.set_uri(value.get::<&str>().ok().map(Into::into)),
+                "uri-source" => obj.set_uri_source(value.get().unwrap()),
                 "session" => self.session.set(value.get().ok().as_ref()),
                 _ => unimplemented!(),
             }
@@ -79,6 +97,7 @@ mod imp {
                     },
                     |url| url.as_str().to_value(),
                 ),
+                "uri_source" => obj.uri_source().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -92,10 +111,11 @@ glib::wrapper! {
 
 impl AvatarImage {
     /// Construct a new `AvatarImage` with the given session and Matrix URI.
-    pub fn new(session: &Session, uri: Option<&MxcUri>) -> Self {
+    pub fn new(session: &Session, uri: Option<&MxcUri>, uri_source: AvatarUriSource) -> Self {
         glib::Object::builder()
             .property("session", session)
             .property("uri", uri.map(|uri| uri.to_string()))
+            .property("uri-source", uri_source)
             .build()
     }
 
@@ -197,5 +217,15 @@ impl AvatarImage {
     /// The Matrix URI of the `AvatarImage`.
     pub fn uri(&self) -> Option<OwnedMxcUri> {
         self.imp().uri.borrow().to_owned()
+    }
+
+    /// The source of the avatar's URI.
+    pub fn uri_source(&self) -> AvatarUriSource {
+        self.imp().uri_source.get()
+    }
+
+    /// Set the source of the avatar's URI.
+    fn set_uri_source(&self, uri_source: AvatarUriSource) {
+        self.imp().uri_source.set(uri_source);
     }
 }

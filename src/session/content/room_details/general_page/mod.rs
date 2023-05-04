@@ -20,7 +20,7 @@ use ruma::{
 
 use crate::{
     components::{CustomEntry, EditableAvatar, SpinnerButton},
-    session::Room,
+    session::{AvatarData, AvatarImage, Room},
     spawn, spawn_tokio, toast,
     utils::{
         and_expr,
@@ -160,12 +160,15 @@ impl GeneralPage {
 
     /// Set the room backing all the details of the preference window.
     fn set_room(&self, room: Room) {
-        room.avatar_data().image().connect_notify_local(
-            Some("uri"),
-            clone!(@weak self as obj => move |avatar_image, _| {
-                obj.avatar_changed(avatar_image.uri());
-            }),
-        );
+        let avatar_data = room.avatar_data();
+        AvatarData::this_expression("image")
+            .chain_property::<AvatarImage>("uri")
+            .watch(
+                Some(avatar_data),
+                clone!(@weak self as obj, @weak avatar_data => move || {
+                    obj.avatar_changed(avatar_data.image().uri());
+                }),
+            );
         room.connect_notify_local(
             Some("name"),
             clone!(@weak self as obj => move |room, _| {

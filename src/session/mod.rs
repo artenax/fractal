@@ -56,7 +56,7 @@ use self::{
     verification::VerificationList,
 };
 pub use self::{
-    avatar::{AvatarData, AvatarImage},
+    avatar::{AvatarData, AvatarImage, AvatarUriSource},
     room::{Event, Room},
     room_creation::RoomCreation,
     settings::SessionSettings,

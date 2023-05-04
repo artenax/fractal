@@ -9,7 +9,7 @@ use crate::{
     components::Pill,
     session::{
         verification::{IdentityVerification, VerificationState},
-        AvatarData, AvatarImage, Session,
+        AvatarData, AvatarImage, AvatarUriSource, Session,
     },
     spawn, spawn_tokio,
 };
@@ -109,7 +109,11 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            let avatar_data = AvatarData::new(AvatarImage::new(&obj.session(), None));
+            let avatar_data = AvatarData::new(AvatarImage::new(
+                &obj.session(),
+                None,
+                AvatarUriSource::User,
+            ));
             self.avatar_data.set(avatar_data).unwrap();
 
             obj.bind_property("display-name", obj.avatar_data(), "display-name")

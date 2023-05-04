@@ -1,4 +1,7 @@
 mod data;
 mod image;
 
-pub use self::{data::AvatarData, image::AvatarImage};
+pub use self::{
+    data::AvatarData,
+    image::{AvatarImage, AvatarUriSource},
+};

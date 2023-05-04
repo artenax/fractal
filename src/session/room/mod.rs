@@ -56,7 +56,7 @@ use crate::{
     prelude::*,
     session::{
         sidebar::{SidebarItem, SidebarItemImpl},
-        AvatarData, AvatarImage, Session, User,
+        AvatarData, AvatarImage, AvatarUriSource, Session, User,
     },
     spawn, spawn_tokio, toast,
 };
@@ -236,12 +236,18 @@ mod imp {
             obj.set_matrix_room(obj.session().client().get_room(obj.room_id()).unwrap());
             self.timeline.set(Timeline::new(&obj)).unwrap();
             self.members.set(MemberList::new(&obj)).unwrap();
+
+            // Initialize the avatar first since loading is async.
             self.avatar_data
                 .set(AvatarData::new(AvatarImage::new(
                     &obj.session(),
                     obj.matrix_room().avatar_url().as_deref(),
+                    AvatarUriSource::Room,
                 )))
                 .unwrap();
+            spawn!(clone!(@weak obj => async move {
+                obj.load_avatar().await;
+            }));
 
             obj.load_power_levels();
 
@@ -1090,12 +1096,17 @@ impl Room {
             if let AnySyncTimelineEvent::State(state_event) = event {
                 match state_event {
                     AnySyncStateEvent::RoomMember(SyncStateEvent::Original(event)) => {
-                        self.members().update_member_for_member_event(event)
+                        self.members().update_member_for_member_event(event);
+                        // If we show the other user's avatar, a member joining or leaving changes
+                        // the avatar.
+                        spawn!(clone!(@weak self as obj => async move {
+                            obj.load_avatar().await;
+                        }));
                     }
-                    AnySyncStateEvent::RoomAvatar(SyncStateEvent::Original(event)) => {
-                        self.avatar_data()
-                            .image()
-                            .set_uri(event.content.url.to_owned());
+                    AnySyncStateEvent::RoomAvatar(SyncStateEvent::Original(_)) => {
+                        spawn!(clone!(@weak self as obj => async move {
+                            obj.load_avatar().await;
+                        }));
                     }
                     AnySyncStateEvent::RoomName(_) => {
                         self.notify("name");
@@ -1140,13 +1151,15 @@ impl Room {
         self.update_latest_read();
     }
 
-    pub fn load_members(&self) {
+    /// Load the room members in the list.
+    pub async fn load_members(&self) {
         let imp = self.imp();
         if imp.members_loaded.get() {
             return;
         }
 
         imp.members_loaded.set(true);
+
         let matrix_room = self.matrix_room();
         let handle = spawn_tokio!(async move {
             let mut memberships = RoomMemberships::all();
@@ -1154,23 +1167,18 @@ impl Room {
 
             matrix_room.members(memberships).await
         });
-        spawn!(
-            glib::PRIORITY_LOW,
-            clone!(@weak self as obj => async move {
-                // FIXME: We should retry to load the room members if the request failed
-                let imp = obj.imp();
-                match handle.await.unwrap() {
-                    Ok(members) => {
-                        // Add all members needed to display room events.
-                        obj.members().update_from_room_members(&members);
-                    },
-                    Err(error) => {
-                        imp.members_loaded.set(false);
-                        error!("Couldn’t load room members: {error}")
-                    },
-                };
-            })
-        );
+
+        // FIXME: We should retry to load the room members if the request failed
+        match handle.await.unwrap() {
+            Ok(members) => {
+                // Add all members needed to display room events.
+                self.members().update_from_room_members(&members);
+            }
+            Err(error) => {
+                self.imp().members_loaded.set(false);
+                error!("Couldn’t load room members: {error}")
+            }
+        };
     }
 
     fn load_power_levels(&self) {
@@ -1662,5 +1670,59 @@ impl Room {
     /// This is to identify the room easily in logs.
     pub fn human_readable_id(&self) -> String {
         format!("{} ({})", self.display_name(), self.room_id())
+    }
+
+    /// Load the avatar for the room.
+    async fn load_avatar(&self) {
+        let matrix_room = self.matrix_room();
+        let avatar_url = matrix_room.avatar_url();
+        let avatar_data = self.avatar_data();
+
+        if avatar_url.is_none() && matrix_room.clone_info().active_members_count() == 2 {
+            // Fallback to other user's avatar if this is a 1-to-1 room.
+
+            // First, make sure the members are loaded.
+            self.load_members().await;
+
+            let own_user_id = self.session().user().unwrap().user_id();
+            let members = self.members();
+
+            if members.n_items() >= 1 {
+                // Try to get the member from the list.
+                for member in members.iter::<Member>() {
+                    match member {
+                        Ok(member) => {
+                            if member.user_id() != own_user_id
+                                && matches!(
+                                    member.membership(),
+                                    Membership::Join | Membership::Invite
+                                )
+                            {
+                                avatar_data.set_image(member.avatar_data().image());
+                                return;
+                            }
+                        }
+                        Err(error) => {
+                            debug!("Error iterating through room members: {error}");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        let avatar_image = avatar_data.image();
+        if avatar_image.uri_source() == AvatarUriSource::Room {
+            // We can just change the image URI.
+            avatar_image.set_uri(avatar_url);
+        } else {
+            // We need to create an AvatarImage since this one belongs to a user.
+            let avatar_image = AvatarImage::new(
+                &self.session(),
+                avatar_url.as_deref(),
+                AvatarUriSource::Room,
+            );
+            avatar_data.set_image(avatar_image);
+        }
     }
 }
