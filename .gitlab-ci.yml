@@ -92,6 +92,7 @@ pages:
     - echo "ninja src/doc" | flatpak-builder --disable-rofiles-fuse --build-shell=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}
     - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/src/doc public
     - chmod -R a=rwx public
+  dependencies: []
   artifacts:
     paths:
       - 'public'
