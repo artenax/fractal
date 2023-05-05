@@ -1,3 +1,5 @@
+include: 'https://gitlab.gnome.org/GNOME/citemplates/-/raw/master/flatpak/flatpak_ci_initiative.yml'
+
 stages:
   - check
   - test
@@ -7,70 +9,25 @@ stages:
   - release
 
 variables:
-  FLATPAK_MODULE: "fractal"
   RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-  CI_IMAGE: "quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master"
+  FLATPAK_MODULE: "fractal"
+  # We currently don't have any tests, remove "RUN_TESTS" to run tests
+  RUN_TESTS: "0"
+  BUNDLE: "${APP_ID}.flatpak"
 
-.hack:
+.vars_nightly:
+  variables:
+    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
+    APP_ID: "org.gnome.Fractal.Devel"
+  only:
+    - main
+
+.vars_hack:
   variables:
     MANIFEST_PATH: "build-aux/org.gnome.Fractal.Hack.json"
     APP_ID: "org.gnome.Fractal.Hack"
-
-.devel:
-  variables:
-    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
-    APP_ID: "org.gnome.Fractal.Devel"  
-
-.build_template:
-  image: '${CI_IMAGE}'
-  script:
-    - >
-      xvfb-run -a -s "-screen 0 1024x768x24"
-      flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
-    - flatpak build-bundle repo ${BUNDLE} --runtime-repo=${RUNTIME_REPO} ${APP_ID} ${BRANCH}
-    - mkdir logs
-    - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-logs/meson-log.txt logs/
-    - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-logs/testlog.txt logs/
-    - tar cf repo.tar repo/
-  artifacts:
-    name: 'Flatpak artifacts'
-    expose_as: 'Get Flatpak bundle here'
-    when: 'always'
-    paths:
-      - "${BUNDLE}"
-      - 'repo.tar'
-      - 'logs'
-    expire_in: 14 days
-
-.build_x86_64:
-  extends: .build_template
-  tags:
-    - flatpak
-
-.build_aarch64:
-  extends: .build_template
-  tags:
-    - flatpak-aarch64
-
-.publish_nightly_template:
-  image: 'quay.io/gnome_infrastructure/gnome-runtime-images:flat-manager-client'
-  stage: 'deploy'
-  timeout: '100m'
-  script:
-    - tar xf repo.tar
-    - flatpak build-update-repo --generate-static-deltas repo/
-    - BUILD_ID=$(flat-manager-client create ${FLAT_MANAGER_URL} ${FLATPAK_REPO})
-    - flat-manager-client push --commit --publish --wait ${BUILD_ID} repo/ || result=$?
-    - flat-manager-client purge ${BUILD_ID}
-    - exit $result
-  variables:
-    FLAT_MANAGER_URL: https://flat-manager.gnome.org/
-    FLATPAK_REPO: nightly
-  only:
-    refs:
-      - main
-    variables:
-      - $REPO_TOKEN
+  except:
+    - main
 
 # Configure and run code checks
 # Exits and fails if an error is encountered
@@ -82,9 +39,10 @@ checks:
 
 # Lint the code
 cargo-clippy:
-  extends: .hack
-  image: '${CI_IMAGE}'
   stage: check
+  image: 'quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master'
+  extends:
+    - .vars_hack
   tags:
     - flatpak
   script:
@@ -93,46 +51,37 @@ cargo-clippy:
 
 # Build a debug version of the flatpak
 # Except on main
-flatpak:
+build-hack@x86_64:
   extends:
-    - .hack
-    - .build_x86_64
-  stage: test
-  variables:
-    BUNDLE: "fractal-hack.flatpak"
-  except:
-    - main
+    - .flatpak@x86_64
+    - .vars_hack
+  stage: build
+
+build-hack@aarch64:
+  extends:
+    - .flatpak@aarch64
+    - .vars_hack
+  stage: build
 
 # Build the nightly version of the flatpak
 # Only on main
-build-x86_64:
+build@x86_64:
   extends:
-    - .devel
-    - .build_x86_64
+    - .flatpak@x86_64
+    - .vars_nightly
   stage: build
-  variables:
-    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
-    APP_ID: "org.gnome.Fractal.Devel"
-    BUNDLE: "fractal-devel-x86_64.flatpak"
-  only:
-    - main
-build-aarch64:
+
+build@aarch64:
   extends:
-    - .devel
-    - .build_aarch64
+    - .flatpak@aarch64
+    - .vars_nightly
   stage: build
-  variables:
-    MANIFEST_PATH: "build-aux/org.gnome.Fractal.Devel.json"
-    APP_ID: "org.gnome.Fractal.Devel"
-    BUNDLE: "fractal-devel-aarch64.flatpak"
-  only:
-    - main
 
 # Build the docs
 # Only on main
 pages:
-  extends: .devel
-  image: '${CI_IMAGE}'
+  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master'
+  extends: .vars_nightly
   stage: doc
   tags:
     - flatpak
@@ -146,20 +95,16 @@ pages:
   artifacts:
     paths:
       - 'public'
-  only:
-    refs:
-      - main
 
 # Publish the nightly version
 # Only on main
-publish_nightly-x86_64:
-  extends: .publish_nightly_template
-  dependencies: ['build-x86_64']
-  needs: ['build-x86_64']
-publish_nightly-aarch64:
-  extends: .publish_nightly_template
-  dependencies: ['build-aarch64']
-  needs: ['build-aarch64']
+publish_nightly@x86_64:
+  extends: .publish_nightly
+  needs: ['build@x86_64']
+
+publish_nightly@aarch64:
+  extends: .publish_nightly
+  needs: ['build@aarch64']
 
 .vars_release:
   variables:
