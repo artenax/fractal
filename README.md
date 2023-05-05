@@ -37,7 +37,7 @@ Until our next iteration is ready, you can get the official Fractal Flatpak on F
 
 <a href="https://flathub.org/apps/details/org.gnome.Fractal">
 <img
-    src="https://flathub.org/assets/badges/flathub-badge-i-en.png"
+    src="https://flathub.org/assets/badges/flathub-badge-i-en.svg"
     alt="Download Fractal on Flathub"
     width="240px"
     height="80px"
@@ -53,7 +53,7 @@ First, setup the GNOME nightlies.
 
 <a href="https://nightly.gnome.org/gnome-nightly.flatpakrepo ">
 <img
-    src="https://gitlab.gnome.org/GNOME/fractal/uploads/447997cccc862eb27483b9c61b8a8a12/gnome-nightly.png"
+    src="https://gitlab.gnome.org/GNOME/fractal/uploads/c276f92660dcf50067714ac08e193fea/gnome-nightly-badge.svg"
     alt="Add gnome-nightly repository"
     width="240px"
     height="80px"
@@ -64,7 +64,7 @@ Then install the application.
 
 <a href="https://nightly.gnome.org/repo/appstream/org.gnome.Fractal.Devel.flatpakref">
 <img
-    src="https://gitlab.gnome.org/GNOME/fractal/uploads/a688e9176e8e76d630993869c13a0222/download-fractal-nightly.png"
+    src="https://gitlab.gnome.org/GNOME/fractal/uploads/5e42d322eaacc7da2a52bfda9f7a4e53/fractal-nightly-badge.svg"
     alt="Download Fractal Nightly"
     width="240px"
     height="80px"
