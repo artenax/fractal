@@ -71,9 +71,9 @@ if is_release
 else
   vcs_tag = run_command('git', 'rev-parse', '--short', 'HEAD').stdout().strip()
   if vcs_tag == ''
-    version = '@0@-@1@'.format(base_version, profile.to_lower())
+    version = '@0@+@1@'.format(base_version, profile.to_lower())
   else
-    version = '@0@-@1@'.format(base_version, vcs_tag)
+    version = '@0@+@1@'.format(base_version, vcs_tag)
   endif
   release_date = run_command('git', 'show', '-s', '--format=%cI').stdout().strip()
   application_id = '@0@.@1@'.format(base_id, profile)
