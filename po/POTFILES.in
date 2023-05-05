@@ -34,6 +34,7 @@ data/resources/ui/content-room-history.ui
 data/resources/ui/content-state-creation.ui
 data/resources/ui/content-state-tombstone.ui
 data/resources/ui/content.ui
+data/resources/ui/create-dm-dialog.ui
 data/resources/ui/error-page.ui
 data/resources/ui/event-menu.ui
 data/resources/ui/event-source-dialog.ui
@@ -93,6 +94,7 @@ src/session/content/room_history/typing_row.rs
 src/session/content/room_history/verification_info_bar.rs
 src/session/content/verification/identity_verification_widget.rs
 src/session/content/verification/session_verification.rs
+src/session/create_dm_dialog/mod.rs
 src/session/join_room_dialog.rs
 src/session/media_viewer.rs
 src/session/mod.rs

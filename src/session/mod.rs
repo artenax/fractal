@@ -1,6 +1,7 @@
 mod account_settings;
 mod avatar;
 mod content;
+mod create_dm_dialog;
 mod event_source_dialog;
 mod join_room_dialog;
 mod media_viewer;
@@ -55,6 +56,7 @@ use self::{
 pub use self::{
     avatar::{AvatarData, AvatarImage, AvatarUriSource},
     content::verification::SessionVerification,
+    create_dm_dialog::CreateDmDialog,
     room::{Event, Room},
     room_creation::RoomCreation,
     settings::SessionSettings,
@@ -168,6 +170,10 @@ mod imp {
                 spawn!(clone!(@weak widget => async move {
                     widget.show_join_room_dialog().await;
                 }));
+            });
+
+            klass.install_action("session.create-dm", None, move |session, _, _| {
+                session.show_create_dm_dialog();
             });
 
             klass.add_binding_action(
@@ -678,6 +684,11 @@ impl Session {
 
     fn show_room_creation_dialog(&self) {
         let window = RoomCreation::new(self.parent_window().as_ref(), self);
+        window.present();
+    }
+
+    fn show_create_dm_dialog(&self) {
+        let window = CreateDmDialog::new(self.parent_window().as_ref(), self);
         window.present();
     }
 

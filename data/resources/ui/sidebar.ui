@@ -3,6 +3,10 @@
   <menu id="primary_menu">
     <section>
       <item>
+        <attribute name="label" translatable="yes">New _Direct Chat</attribute>
+        <attribute name="action">session.create-dm</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes">_New Room</attribute>
         <attribute name="action">session.room-creation</attribute>
       </item>
@@ -165,3 +169,4 @@
     </child>
   </template>
 </interface>
+

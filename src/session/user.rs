@@ -255,6 +255,29 @@ pub trait UserExt: IsA<User> {
         let uri = self.user_id().matrix_to_uri();
         format!("<a href=\"{uri}\">{}</a>", self.display_name())
     }
+
+    /// Load the user profile from the homeserver.
+    ///
+    /// This overwrites the already loaded display name and avatar.
+    fn load_profile(&self) {
+        let client = self.session().client();
+        let user_id = self.user_id();
+        let user = self.upcast_ref::<User>();
+
+        let handle = spawn_tokio!(async move { client.get_profile(&user_id).await });
+
+        spawn!(clone!(@weak user => async move {
+            match handle.await.unwrap() {
+                Ok(response) => {
+                    user.set_display_name(response.displayname);
+                    user.set_avatar_url(response.avatar_url);
+                },
+                Err(error) => {
+                    error!("Failed to load user profile for {}: {}", user.user_id(), error);
+                }
+            };
+        }));
+    }
 }
 
 impl<T: IsA<User>> UserExt for T {}

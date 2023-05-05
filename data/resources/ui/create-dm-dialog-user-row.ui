@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="CreateDmDialogUserRow" parent="GtkListBoxRow">
+    <property name="child">
+      <object class="GtkBox">
+        <property name="spacing">12</property>
+        <property name="margin-top">9</property>
+        <property name="margin-bottom">9</property>
+        <child>
+          <object class="ComponentsAvatar">
+            <property name="size">32</property>
+            <binding name="data">
+              <lookup name="avatar-data" type="CreateDmDialogUser">
+                <lookup name="user">CreateDmDialogUserRow</lookup>
+              </lookup>
+            </binding>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <style>
+              <class name="title"/>
+            </style>
+            <child>
+              <object class="GtkLabel" id="display-name">
+                <property name="halign">start</property>
+                <property name="ellipsize">end</property>
+                <binding name="label">
+                  <lookup name="display-name" type="CreateDmDialogUser">
+                    <lookup name="user">CreateDmDialogUserRow</lookup>
+                  </lookup>
+                </binding>
+                <style>
+                  <class name="title"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="subtitle">
+                <property name="hexpand">True</property>
+                <property name="halign">start</property>
+                <property name="ellipsize">end</property>
+                <binding name="label">
+                  <lookup name="user-id" type="CreateDmDialogUser">
+                    <lookup name="user">CreateDmDialogUserRow</lookup>
+                  </lookup>
+                </binding>
+                <style>
+                  <class name="subtitle"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>
+

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="CreateDmDialog" parent="AdwWindow">
+    <property name="title" translatable="yes">Direct Chat</property>
+    <property name="modal">True</property>
+    <property name="default-width">380</property>
+    <property name="default-height">620</property>
+    <property name="content">
+      <object class="GtkWindowHandle">
+        <property name="child">
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkHeaderBar">
+                <style>
+                  <class name="flat"/>
+                </style>
+                <property name="title-widget">
+                  <object class="GtkBox">
+                    <property name="visible">False</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwClamp">
+                <property name="hexpand">True</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">18</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <child>
+                      <object class="GtkLabel" id="heading">
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="max-width-chars">20</property>
+                        <property name="justify">center</property>
+                        <property name="xalign">0.5</property>
+                        <property name="label" translatable="yes">New Direct Chat</property>
+                        <style>
+                          <class name="title-2"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSearchEntry" id="search_entry">
+                  </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStack" id="stack">
+                <child>
+                  <object class="GtkStackPage">
+                    <property name="name">no-search-page</property>
+                    <property name="child">
+                      <object class="AdwStatusPage">
+                        <property name="vexpand">True</property>
+                        <property name="icon-name">system-search-symbolic</property>
+                        <property name="title" translatable="yes">Search</property>
+                        <property name="description" translatable="yes">Search for people to start a new chat with</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkStackPage">
+                    <property name="name">matching-page</property>
+                    <property name="child">
+                      <object class="GtkScrolledWindow" id="matching_page">
+                        <property name="child">
+                          <object class="AdwClamp">
+                            <property name="child">
+                              <object class="GtkListBox" id="list_box">
+                                <property name="activate-on-single-click">True</property>
+                                <property name="margin-start">6</property>
+                                <property name="margin-end">6</property>
+                                <signal name="row-activated" handler="row_activated_cb" swapped="yes"/>
+                                <style>
+                                  <class name="navigation-sidebar"/>
+                                </style>
+                              </object>
+                            </property>
+                          </object>
+                        </property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkStackPage">
+                    <property name="name">no-matching-page</property>
+                    <property name="child">
+                      <object class="AdwStatusPage">
+                        <property name="icon-name">system-search-symbolic</property>
+                        <property name="title" translatable="yes">No Users Found</property>
+                        <property name="description" translatable="yes">No users matching the search pattern were found</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkStackPage">
+                    <property name="name">error-page</property>
+                    <property name="child">
+                      <object class="AdwStatusPage" id="error_page">
+                        <property name="icon-name">dialog-error-symbolic</property>
+                        <property name="title" translatable="yes">Error</property>
+                        <property name="description" translatable="yes">An error occurred while searching for matches</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkStackPage">
+                    <property name="name">loading-page</property>
+                    <property name="child">
+                      <object class="Spinner">
+                        <property name="valign">center</property>
+                        <property name="halign">center</property>
+                        <style>
+                          <class name="session-loading-spinner"/>
+                        </style>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+</interface>
+
