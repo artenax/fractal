@@ -80,7 +80,7 @@ build@aarch64:
 # Build the docs
 # Only on main
 pages:
-  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master'
+  image: 'quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master'
   extends: .vars_nightly
   stage: doc
   tags:
