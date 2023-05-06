@@ -45,11 +45,6 @@
               <object class="GtkBox">
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="AdwBanner" id="development_banner">
-                    <property name="title" translatable="yes">You are running an early stage development version. Be aware it is a work in progress and far from complete yet.</property>
-                  </object>
-                </child>
-                <child>
                   <object class="AdwBanner" id="offline_banner"/>
                 </child>
                 <child>

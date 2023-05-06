@@ -16,8 +16,6 @@ mod imp {
         #[template_child]
         pub login_button: TemplateChild<gtk::Button>,
         #[template_child]
-        pub development_banner: TemplateChild<adw::Banner>,
-        #[template_child]
         pub offline_banner: TemplateChild<adw::Banner>,
     }
 
@@ -75,17 +73,14 @@ impl Greeter {
         let monitor = gio::NetworkMonitor::default();
 
         if !monitor.is_network_available() {
-            imp.development_banner.set_revealed(false);
             imp.offline_banner
                 .set_title(&gettext("No network connection"));
             imp.offline_banner.set_revealed(true);
         } else if monitor.connectivity() < gio::NetworkConnectivity::Full {
-            imp.development_banner.set_revealed(false);
             imp.offline_banner
                 .set_title(&gettext("No Internet connection"));
             imp.offline_banner.set_revealed(true);
         } else {
-            imp.development_banner.set_revealed(true);
             imp.offline_banner.set_revealed(false);
         }
     }
