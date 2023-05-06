@@ -18,6 +18,22 @@
                 <property name="icon-name">go-previous-symbolic</property>
               </object>
             </child>
+            <child type="start">
+              <object class="GtkButton">
+                <property name="visible" bind-source="back_button" bind-property="visible" bind-flags="sync-create | invert-boolean"/>
+                <property name="action-name">app.about</property>
+                <property name="tooltip-text" translatable="yes">About Fractal</property>
+                <property name="icon-name">help-about-symbolic</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkButton">
+                <property name="visible" bind-source="back_button" bind-property="visible" bind-flags="sync-create"/>
+                <property name="action-name">app.about</property>
+                <property name="tooltip-text" translatable="yes">About Fractal</property>
+                <property name="icon-name">help-about-symbolic</property>
+              </object>
+            </child>
           </object>
         </child>
         <child>
