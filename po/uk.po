@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-05-05 11:47+0000\n"
-"PO-Revision-Date: 2023-05-05 21:35+0300\n"
+"POT-Creation-Date: 2023-05-06 10:57+0000\n"
+"PO-Revision-Date: 2023-05-06 17:30+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -366,11 +366,11 @@ msgstr "Під час пошуку відповідників сталася п�
 msgid "Invite"
 msgstr "Запросити"
 
-#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:33
+#: data/resources/ui/content-invite.ui:110 data/resources/ui/sidebar.ui:33
 msgid "_Reject"
 msgstr "Від_хилити"
 
-#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:28
+#: data/resources/ui/content-invite.ui:120 data/resources/ui/sidebar.ui:28
 msgid "_Accept"
 msgstr "При_йняти"
 
@@ -447,7 +447,6 @@ msgstr "Параметри кімнати"
 
 #: data/resources/ui/content-room-history.ui:92
 #: data/resources/ui/content-state-tombstone.ui:14
-#| msgid "There is a newer version of this room."
 msgid "There is a newer version of this room"
 msgstr "Існує новіша версія цієї кімнати"
 
@@ -639,7 +638,12 @@ msgstr "_Копіювати зображення"
 msgid "Event Source"
 msgstr "Джерело подій"
 
-#: data/resources/ui/greeter.ui:33
+#: data/resources/ui/greeter.ui:25 data/resources/ui/greeter.ui:33
+#| msgid "_About Fractal"
+msgid "About Fractal"
+msgstr "Про «Фрактал»"
+
+#: data/resources/ui/greeter.ui:49
 msgid ""
 "You are running an early stage development version. Be aware it is a work in "
 "progress and far from complete yet."
@@ -648,15 +652,15 @@ msgstr ""
 "врахувати, що цю роботу ще не завершено, і її результати далекі від повноти."
 
 #. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:72
+#: data/resources/ui/greeter.ui:88
 msgid "Welcome to Fractal"
 msgstr "Вітаємо у «Фракталі»"
 
-#: data/resources/ui/greeter.ui:97
+#: data/resources/ui/greeter.ui:113
 msgid "_Log in"
 msgstr "_Увійти"
 
-#: data/resources/ui/greeter.ui:107
+#: data/resources/ui/greeter.ui:123
 msgid "_Create Account"
 msgstr "С_творити обліковий запис"
 
@@ -1105,28 +1109,28 @@ msgstr "Artem Polishchuk <ego.cordatus@gmail.com>, 2019."
 msgid "Name by"
 msgstr "Авторка назви"
 
-#: src/components/editable_avatar.rs:388
+#: src/components/editable_avatar.rs:393
 msgid "Images"
 msgstr "Зображення"
 
-#: src/components/editable_avatar.rs:393
+#: src/components/editable_avatar.rs:398
 msgid "Choose Avatar"
 msgstr "Виберіть аватар"
 
-#: src/components/editable_avatar.rs:395
+#: src/components/editable_avatar.rs:400
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:246
 msgid "Choose"
 msgstr "Вибрати"
 
-#: src/components/editable_avatar.rs:413
+#: src/components/editable_avatar.rs:418
 msgid "Could not open avatar file"
 msgstr "Не вдалося відкрити файл аватара"
 
-#: src/components/editable_avatar.rs:434
+#: src/components/editable_avatar.rs:439
 msgid "The chosen file is not an image"
 msgstr "Вибраний файл не є файлом зображення"
 
-#: src/components/editable_avatar.rs:440
+#: src/components/editable_avatar.rs:445
 msgid "Could not determine the type of the chosen file"
 msgstr "Не вдалося визначити тип вибраного файла"
 
@@ -1281,7 +1285,6 @@ msgid "Malformed version in stored session"
 msgstr "Помилкове форматування запису версії у збереженому сеансі"
 
 #: src/secret.rs:196
-#| msgid "Could not find device ID in stored session"
 msgid "Could not find profile in stored session"
 msgstr "Не вдалося знайти профіль у збереженому сеансі"
 
@@ -1558,32 +1561,32 @@ msgid "Could not deactivate account"
 msgstr "Не вдалося вимкнути обліковий запис"
 
 #: src/session/account_settings/user_page/mod.rs:222
-#: src/session/content/room_details/general_page/mod.rs:228
+#: src/session/content/room_details/general_page/mod.rs:231
 msgid "Avatar removed successfully"
 msgstr "Аватар успішно вилучено"
 
 #: src/session/account_settings/user_page/mod.rs:224
-#: src/session/content/room_details/general_page/mod.rs:230
+#: src/session/content/room_details/general_page/mod.rs:233
 msgid "Avatar changed successfully"
 msgstr "Аватар успішно змінено"
 
 #: src/session/account_settings/user_page/mod.rs:237
-#: src/session/content/room_details/general_page/mod.rs:249
+#: src/session/content/room_details/general_page/mod.rs:252
 msgid "Could not load file"
 msgstr "Не вдалось завантажити файл"
 
 #: src/session/account_settings/user_page/mod.rs:252
-#: src/session/content/room_details/general_page/mod.rs:270
+#: src/session/content/room_details/general_page/mod.rs:273
 msgid "Could not upload avatar"
 msgstr "Не вдалося вивантажити аватар"
 
 #: src/session/account_settings/user_page/mod.rs:281
-#: src/session/content/room_details/general_page/mod.rs:290
+#: src/session/content/room_details/general_page/mod.rs:293
 msgid "Could not change avatar"
 msgstr "Не вдалося змінити аватар"
 
 #: src/session/account_settings/user_page/mod.rs:315
-#: src/session/content/room_details/general_page/mod.rs:320
+#: src/session/content/room_details/general_page/mod.rs:323
 msgid "Could not remove avatar"
 msgstr "Не вдалося вилучити аватар"
 
@@ -1604,19 +1607,19 @@ msgstr "Перегляд"
 msgid "{user} invited you"
 msgstr "{user} запросив/запросила вас"
 
-#: src/session/content/room_details/general_page/mod.rs:413
+#: src/session/content/room_details/general_page/mod.rs:416
 msgid "Room name saved successfully"
 msgstr "Назву кімнати успішно збережено"
 
-#: src/session/content/room_details/general_page/mod.rs:438
+#: src/session/content/room_details/general_page/mod.rs:441
 msgid "Room topic saved successfully"
 msgstr "Тему кімнати успішно збережено"
 
-#: src/session/content/room_details/general_page/mod.rs:511
+#: src/session/content/room_details/general_page/mod.rs:514
 msgid "Could not change room name"
 msgstr "Не вдалося змінити назву кімнати"
 
-#: src/session/content/room_details/general_page/mod.rs:535
+#: src/session/content/room_details/general_page/mod.rs:538
 msgid "Could not change room topic"
 msgstr "Не вдалося змінити тему кімнати"
 
@@ -1720,55 +1723,55 @@ msgstr "Не вдалося отримати дані щодо поточног�
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/content/room_history/mod.rs:677
+#: src/session/content/room_history/mod.rs:682
 msgid "Reply to {user}"
 msgstr "Відповідь {user}"
 
-#: src/session/content/room_history/mod.rs:790
+#: src/session/content/room_history/mod.rs:795
 #: src/session/room/event/event_actions.rs:121
 msgid "Permalink copied to clipboard"
 msgstr "Стале посилання скопійовано до буфера обміну"
 
-#: src/session/content/room_history/mod.rs:794
+#: src/session/content/room_history/mod.rs:799
 #: src/session/room/event/event_actions.rs:125
 msgid "Failed to copy the permalink"
 msgstr "Не вдалося скопіювати стале посилання"
 
-#: src/session/content/room_history/mod.rs:1003
+#: src/session/content/room_history/mod.rs:1008
 msgid "Your Location"
 msgstr "Ваше місце перебування"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/session/content/room_history/mod.rs:1015
+#: src/session/content/room_history/mod.rs:1020
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Розташування користувача {geo_uri} {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:1060
+#: src/session/content/room_history/mod.rs:1065
 msgid "Select File"
 msgstr "Виберіть файл"
 
-#: src/session/content/room_history/mod.rs:1062
+#: src/session/content/room_history/mod.rs:1067
 msgid "Select"
 msgstr "Вибрати"
 
-#: src/session/content/room_history/mod.rs:1081
+#: src/session/content/room_history/mod.rs:1086
 msgid "Could not open file"
 msgstr "Не вдалося відкрити файл"
 
-#: src/session/content/room_history/mod.rs:1126
+#: src/session/content/room_history/mod.rs:1131
 msgid "Error reading file"
 msgstr "Помилка при зчитуванні файла"
 
-#: src/session/content/room_history/mod.rs:1152
+#: src/session/content/room_history/mod.rs:1157
 msgid "Error getting file from drop"
 msgstr "Помилка під час отримання файла зі скидання"
 
-#: src/session/content/room_history/mod.rs:1184
+#: src/session/content/room_history/mod.rs:1189
 msgid "Error getting image from clipboard"
 msgstr "Помилка під час отримання зображення з буфера обміну"
 
-#: src/session/content/room_history/mod.rs:1201
+#: src/session/content/room_history/mod.rs:1206
 msgid "Error getting file from clipboard"
 msgstr "Помилка під час отримання файла з буфера обміну"
 
@@ -2181,52 +2184,52 @@ msgid "Normal user"
 msgstr "Звичайний користувач"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:371
+#: src/session/room/mod.rs:377
 msgid "Failed to forget {room}."
 msgstr "Не вдалося забути про {room}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:624
+#: src/session/room/mod.rs:630
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "Не вдалося пересунути {room} з {previous_category} до {new_category}."
 
-#: src/session/room/mod.rs:970
+#: src/session/room/mod.rs:976
 msgid "Unknown"
 msgstr "Невідомий"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:998
+#: src/session/room/mod.rs:1004
 msgid "Empty Room (was {user})"
 msgstr "Порожня кімната (був {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:1000
+#: src/session/room/mod.rs:1006
 msgid "Empty Room"
 msgstr "Порожня кімната"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1302
+#: src/session/room/mod.rs:1312
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "Не вдалося прийняти запрошення до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1331
+#: src/session/room/mod.rs:1341
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 "Не вдалося відмовити у запрошенні до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1557
+#: src/session/room/mod.rs:1567
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr "Не вдалося запросити {user} до {room}. Повторіть спробу пізніше."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1569
+#: src/session/room/mod.rs:1579
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
