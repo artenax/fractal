@@ -10,7 +10,7 @@ use crate::{
         verification::{IdentityVerification, VerificationState},
         UserExt,
     },
-    spawn, toast, Session, Window,
+    spawn, spawn_tokio, toast, Session, Window,
 };
 
 mod imp {
@@ -60,10 +60,10 @@ mod imp {
             );
 
             klass.install_action(
-                "session-verification.show-bootstrap",
+                "session-verification.reset-identity",
                 None,
                 move |obj, _, _| {
-                    obj.show_bootstrap();
+                    obj.reset_identity();
                 },
             );
         }
@@ -108,10 +108,13 @@ mod imp {
             self.bootstrap_button
                 .connect_clicked(clone!(@weak obj => move |button| {
                     button.set_loading(true);
-                    obj.bootstrap_cross_signing();
+
+                    spawn!(clone!(@weak obj => async move {
+                        obj.bootstrap_cross_signing().await;
+                    }));
                 }));
 
-            obj.start_request();
+            obj.start();
         }
 
         fn dispose(&self) {
@@ -207,7 +210,7 @@ impl SessionVerification {
         let imp = self.imp();
 
         if request.is_finished() && request.state() != VerificationState::Completed {
-            self.start_request();
+            self.start();
             return;
         }
 
@@ -231,38 +234,69 @@ impl SessionVerification {
         self.imp().main_stack.set_visible_child_name("recovery");
     }
 
-    fn show_bootstrap(&self) {
+    /// Show screen to reset the encryption user identity.
+    fn reset_identity(&self) {
         let imp = self.imp();
 
         self.set_request(None);
-        imp.bootstrap_label.set_label(&gettext("If you lost access to all other sessions you can create a new crypto identity. Be careful because this will reset all verified users and make previously encrypted conversations unreadable."));
+        imp.bootstrap_label.set_label(&gettext("If you lost access to all other sessions you can create a new encryption identity. Be careful because this will cancel the verifications of all users and sessions."));
         imp.bootstrap_button.remove_css_class("suggested-action");
         imp.bootstrap_button.add_css_class("destructive-action");
         imp.bootstrap_button.set_label(&gettext("Reset"));
         imp.main_stack.set_visible_child_name("bootstrap");
     }
 
-    fn start_request(&self) {
+    fn start(&self) {
+        spawn!(clone!(@weak self as obj => async move {
+            obj.start_inner().await;
+        }));
+    }
+
+    async fn start_inner(&self) {
+        let session = self.session();
+        let client = session.client();
+        let user_identity_handle = spawn_tokio!(async move {
+            let user_id = client.user_id().unwrap();
+            client.encryption().get_user_identity(user_id).await
+        });
+
+        let needs_new_identity = match user_identity_handle.await.unwrap() {
+            Ok(Some(_)) => false,
+            Ok(None) => {
+                debug!("No encryption user identity found");
+                true
+            }
+            Err(error) => {
+                error!("Failed to get encryption user identity: {error}");
+                true
+            }
+        };
+
+        if needs_new_identity {
+            debug!("Creating new encryption user identity…");
+            self.imp().main_stack.set_visible_child_name("bootstrap");
+            return;
+        }
+
+        debug!("Starting session verification…");
+
         self.imp()
             .main_stack
             .set_visible_child_name("wait-for-device");
 
-        spawn!(clone!(@weak self as obj => async move {
-            let session = obj.session();
-            let verification_list = session.verification_list();
-            let request = if let Some(request) = verification_list.get_session() {
-                debug!("Use session verification started by another session");
-                request
-            } else {
-                let request = IdentityVerification::create(&session, None).await;
-                debug!("Start a new session verification");
-                verification_list.add(request.clone());
-                request
-            };
+        let verification_list = session.verification_list();
+        let request = if let Some(request) = verification_list.get_session() {
+            debug!("Use session verification started by another session");
+            request
+        } else {
+            let request = IdentityVerification::create(&session, None).await;
+            debug!("Start a new session verification");
+            verification_list.add(request.clone());
+            request
+        };
 
-            request.set_force_current_session(true);
-            obj.set_request(Some(request));
-        }));
+        request.set_force_current_session(true);
+        self.set_request(Some(request));
     }
 
     fn previous(&self) {
@@ -271,7 +305,7 @@ impl SessionVerification {
         if let Some(child_name) = main_stack.visible_child_name() {
             match child_name.as_str() {
                 "recovery" => {
-                    self.start_request();
+                    self.start();
                     return;
                 }
                 "recovery-passphrase" | "recovery-key" => {
@@ -279,7 +313,7 @@ impl SessionVerification {
                     return;
                 }
                 "bootstrap" => {
-                    self.start_request();
+                    self.start();
                     return;
                 }
                 _ => {}
@@ -291,42 +325,45 @@ impl SessionVerification {
                 self.set_request(None);
                 self.activate_action("session.logout", None).unwrap();
             } else {
-                self.start_request();
+                self.start();
             }
         } else {
             self.activate_action("session.logout", None).unwrap();
         }
     }
 
-    fn bootstrap_cross_signing(&self) {
-        spawn!(clone!(@weak self as obj => async move {
-            let dialog = AuthDialog::new(obj.parent_window().as_ref(), &obj.session());
+    /// Create a new encryption user identity.
+    async fn bootstrap_cross_signing(&self) {
+        let dialog = AuthDialog::new(self.parent_window().as_ref(), &self.session());
 
-            let result = dialog
+        let result = dialog
             .authenticate(move |client, auth| async move {
                 client.encryption().bootstrap_cross_signing(auth).await
             })
             .await;
 
-
-            let error_message = match result {
-                Ok(_) => None,
-                Err(AuthError::UserCancelled) => {
-                    error!("Failed to bootstrap cross-signing: User cancelled the authentication");
-                    Some(gettext("You cancelled the authentication needed to create the encryption keys."))
-                },
-                Err(error) => {
-                    error!("Failed to bootstrap cross-signing: {error:?}");
-                    Some(gettext("An error occurred during the creation of the encryption keys."))
-                },
-            };
-
-            if let Some(error_message) = error_message {
-                toast!(obj, error_message);
-            } else {
-                // TODO tell user that the a crypto identity was created
-                obj.activate_action("session.mark-ready", None).unwrap();
+        let error_message = match result {
+            Ok(_) => None,
+            Err(AuthError::UserCancelled) => {
+                error!("Failed to bootstrap cross-signing: User cancelled the authentication");
+                Some(gettext(
+                    "You cancelled the authentication needed to create the encryption identity.",
+                ))
             }
-        }));
+            Err(error) => {
+                error!("Failed to bootstrap cross-signing: {error:?}");
+                Some(gettext(
+                    "An error occurred during the creation of the encryption identity.",
+                ))
+            }
+        };
+
+        if let Some(error_message) = error_message {
+            toast!(self, error_message);
+            self.imp().bootstrap_button.set_loading(false);
+        } else {
+            // TODO tell user that the a crypto identity was created
+            self.activate_action("session.mark-ready", None).unwrap();
+        }
     }
 }

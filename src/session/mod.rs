@@ -497,37 +497,7 @@ impl Session {
 
         imp.logout_on_dispose.set(true);
 
-        let client = self.client();
-        let client_clone = client.clone();
-        let user_identity_handle = spawn_tokio!(async move {
-            let user_id = client_clone.user_id().unwrap();
-            client_clone.encryption().get_user_identity(user_id).await
-        });
-
-        let needs_new_identity = match user_identity_handle.await.unwrap() {
-            Ok(Some(_)) => false,
-            Ok(None) => {
-                debug!("No encryption user identity found");
-                true
-            }
-            Err(error) => {
-                error!("Failed to get encryption user identity: {error}");
-                true
-            }
-        };
-
-        if needs_new_identity {
-            debug!("Creating a new encryption user identity…");
-            let handle =
-                spawn_tokio!(
-                    async move { client.encryption().bootstrap_cross_signing(None).await }
-                );
-            if handle.await.is_ok() {
-                self.mark_ready().await;
-            }
-        } else {
-            self.create_session_verification().await;
-        }
+        self.create_session_verification().await;
     }
 
     pub async fn mark_ready(&self) {

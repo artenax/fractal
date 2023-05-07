@@ -100,7 +100,7 @@
                           <object class="GtkButton">
                             <property name="label" translatable="yes">Reset</property>
                             <property name="halign">center</property>
-                            <property name="action-name">session-verification.show-bootstrap</property>
+                            <property name="action-name">session-verification.reset-identity</property>
                             <style>
                               <class name="pill"/>
                             </style>
