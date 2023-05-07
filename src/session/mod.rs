@@ -464,48 +464,70 @@ impl Session {
         }
     }
 
-    fn mark_loaded(&self) {
+    /// Whether this session is verified with cross-signing.
+    async fn is_verified(&self) -> bool {
         let client = self.client();
-        let user_id = self.user().unwrap().user_id();
-
-        self.set_state(SessionState::Verification);
-
-        let encryption = client.encryption();
-        let need_new_identity = spawn_tokio!(async move {
-            // If there is an error just assume we don't need a new identity since
-            // we will try again during the session verification
-            encryption
-                .get_user_identity(&user_id)
-                .await
-                .map_or(false, |identity| identity.is_none())
+        let e2ee_device_handle = spawn_tokio!(async move {
+            let user_id = client.user_id().unwrap();
+            let device_id = client.device_id().unwrap();
+            client.encryption().get_device(user_id, device_id).await
         });
 
-        spawn!(clone!(@weak self as obj => async move {
-            let imp = obj.imp();
-            if !obj.has_cross_signing_keys().await {
-                if need_new_identity.await.unwrap() {
-                    debug!("No E2EE identity found for this user, we need to create a new one…");
-                    let encryption = obj.client().encryption();
-
-                    let handle = spawn_tokio!(async move { encryption.bootstrap_cross_signing(None).await });
-                    if handle.await.is_ok() {
-                        imp.stack.set_visible_child(&*imp.overlay);
-                        if let Some(window) = obj.parent_window() {
-                            window.switch_to_sessions_page();
-                        }
-                        return;
-                    }
-                }
-
-                debug!("The cross-signing keys were not found, we need to verify this session…");
-                imp.logout_on_dispose.set(true);
-                obj.create_session_verification().await;
-
-                return;
+        match e2ee_device_handle.await.unwrap() {
+            Ok(Some(device)) => device.is_verified_with_cross_signing(),
+            Ok(None) => {
+                error!("Could not find this session’s encryption profile");
+                false
             }
+            Err(error) => {
+                error!("Failed to get session’s encryption profile: {error}");
+                false
+            }
+        }
+    }
 
-            obj.mark_ready().await;
-        }));
+    /// Check whether we need to proceed to session verification.
+    async fn check_verification(&self) {
+        let imp = self.imp();
+
+        if self.is_verified().await {
+            self.mark_ready().await;
+            return;
+        }
+
+        imp.logout_on_dispose.set(true);
+
+        let client = self.client();
+        let client_clone = client.clone();
+        let user_identity_handle = spawn_tokio!(async move {
+            let user_id = client_clone.user_id().unwrap();
+            client_clone.encryption().get_user_identity(user_id).await
+        });
+
+        let needs_new_identity = match user_identity_handle.await.unwrap() {
+            Ok(Some(_)) => false,
+            Ok(None) => {
+                debug!("No encryption user identity found");
+                true
+            }
+            Err(error) => {
+                error!("Failed to get encryption user identity: {error}");
+                true
+            }
+        };
+
+        if needs_new_identity {
+            debug!("Creating a new encryption user identity…");
+            let handle =
+                spawn_tokio!(
+                    async move { client.encryption().bootstrap_cross_signing(None).await }
+                );
+            if handle.await.is_ok() {
+                self.mark_ready().await;
+            }
+        } else {
+            self.create_session_verification().await;
+        }
     }
 
     pub async fn mark_ready(&self) {
@@ -656,7 +678,11 @@ impl Session {
                     .handle_response_to_device(response.to_device);
 
                 if self.state() < SessionState::Verification {
-                    self.mark_loaded();
+                    self.set_state(SessionState::Verification);
+
+                    spawn!(clone!(@weak self as obj => async move {
+                        obj.check_verification().await;
+                    }));
                 }
             }
             Err(error) => {
@@ -781,25 +807,6 @@ impl Session {
         imp.media_viewer.reveal(source_widget);
     }
 
-    pub async fn cross_signing_status(&self) -> Option<CrossSigningStatus> {
-        let encryption = self.client().encryption();
-
-        spawn_tokio!(async move { encryption.cross_signing_status().await })
-            .await
-            .unwrap()
-            .map(|s| CrossSigningStatus {
-                has_self_signing: s.has_self_signing,
-                has_user_signing: s.has_user_signing,
-            })
-    }
-
-    pub async fn has_cross_signing_keys(&self) -> bool {
-        self.cross_signing_status()
-            .await
-            .filter(|s| s.has_all_keys())
-            .is_some()
-    }
-
     fn setup_direct_room_handler(&self) {
         spawn!(
             glib::PRIORITY_DEFAULT_IDLE,
@@ -854,18 +861,5 @@ impl Session {
 
     pub fn notifications(&self) -> &Notifications {
         &self.imp().notifications
-    }
-}
-
-#[derive(Debug, Default, Clone, Copy)]
-pub struct CrossSigningStatus {
-    pub has_self_signing: bool,
-    pub has_user_signing: bool,
-}
-
-impl CrossSigningStatus {
-    /// Whether this status indicates that we have all the keys.
-    pub fn has_all_keys(&self) -> bool {
-        self.has_self_signing && self.has_user_signing
     }
 }
