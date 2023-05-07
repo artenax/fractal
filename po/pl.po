@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-04-27 08:45+0000\n"
-"PO-Revision-Date: 2023-04-30 12:22+0200\n"
+"POT-Creation-Date: 2023-05-07 09:42+0000\n"
+"PO-Revision-Date: 2023-05-07 15:50+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -364,11 +364,11 @@ msgstr "Wystąpił błąd podczas wyszukiwania."
 msgid "Invite"
 msgstr "Zaproszenie"
 
-#: data/resources/ui/content-invite.ui:108 data/resources/ui/sidebar.ui:33
+#: data/resources/ui/content-invite.ui:110 data/resources/ui/sidebar.ui:33
 msgid "_Reject"
 msgstr "_Odrzuć"
 
-#: data/resources/ui/content-invite.ui:118 data/resources/ui/sidebar.ui:28
+#: data/resources/ui/content-invite.ui:120 data/resources/ui/sidebar.ui:28
 msgid "_Accept"
 msgstr "_Przyjmij"
 
@@ -382,7 +382,7 @@ msgid "Search for room members"
 msgstr "Wyszukiwanie członków pokoju"
 
 #: data/resources/ui/content-message-file.ui:25
-#: src/session/room/event/event_actions.rs:317
+#: src/session/room/event/event_actions.rs:353
 msgid "Save"
 msgstr "Zapisz"
 
@@ -443,61 +443,64 @@ msgstr "Wstecz"
 msgid "Room Settings"
 msgstr "Ustawienia pokoju"
 
-#: data/resources/ui/content-room-history.ui:118
+#: data/resources/ui/content-room-history.ui:92
+#: data/resources/ui/content-state-tombstone.ui:14
+msgid "There is a newer version of this room"
+msgstr "Dostępna jest nowsza wersja tego pokoju"
+
+#: data/resources/ui/content-room-history.ui:93
+#: src/session/content/explore/public_room_row.rs:211
+#: src/session/content/room_history/state_row/tombstone.rs:123
+msgid "Join"
+msgstr "Dołącz"
+
+#: data/resources/ui/content-room-history.ui:125
 msgid "Unable to load room"
 msgstr "Nie można wczytać pokoju"
 
-#: data/resources/ui/content-room-history.ui:119
+#: data/resources/ui/content-room-history.ui:126
 msgid "Check your network connection."
 msgstr "Proszę sprawdzić połączenie z siecią."
 
-#: data/resources/ui/content-room-history.ui:122
+#: data/resources/ui/content-room-history.ui:129
 msgid "Try Again"
 msgstr "Spróbuj ponownie"
 
-#: data/resources/ui/content-room-history.ui:147
+#: data/resources/ui/content-room-history.ui:154
 msgid "Scroll to bottom"
 msgstr "Przewiń na dół"
 
-#: data/resources/ui/content-room-history.ui:159
+#: data/resources/ui/content-room-history.ui:166
 msgid "Drop Here to Send"
 msgstr "Przeciągnięcie tutaj wyśle"
 
-#: data/resources/ui/content-room-history.ui:179
+#: data/resources/ui/content-room-history.ui:186
 msgid "Room History"
 msgstr "Historia pokoju"
 
-#: data/resources/ui/content-room-history.ui:270
+#: data/resources/ui/content-room-history.ui:277
 msgid "Browse Attachment"
 msgstr "Przeglądaj załącznik"
 
-#: data/resources/ui/content-room-history.ui:280
+#: data/resources/ui/content-room-history.ui:287
 msgid "Open Emoji Picker"
 msgstr "Otwórz wybór emoji"
 
-#: data/resources/ui/content-room-history.ui:301
+#: data/resources/ui/content-room-history.ui:308
 msgid "Message Entry"
 msgstr "Pole wpisywania wiadomości"
 
-#: data/resources/ui/content-room-history.ui:316
+#: data/resources/ui/content-room-history.ui:323
 msgid "Open Message Menu"
 msgstr "Otwórz menu wiadomości"
 
-#: data/resources/ui/content-room-history.ui:331
+#: data/resources/ui/content-room-history.ui:338
 msgid "Send Message"
 msgstr "Wyślij wiadomość"
 
 #: data/resources/ui/content-state-creation.ui:19
 msgid "Previous room"
 msgstr "Poprzedni pokój"
-
-#: data/resources/ui/content-state-tombstone.ui:14
-msgid "There is a newer version of this room."
-msgstr "Dostępna jest nowsza wersja tego pokoju."
-
-#: data/resources/ui/content-state-tombstone.ui:19
-msgid "Go there"
-msgstr "Przejdź do niej"
 
 #: data/resources/ui/content.ui:36
 msgid "No Room Selected"
@@ -630,24 +633,20 @@ msgstr "S_kopiuj obraz"
 msgid "Event Source"
 msgstr "Źródło wydarzenia"
 
-#: data/resources/ui/greeter.ui:33
-msgid ""
-"You are running an early stage development version. Be aware it is a work in "
-"progress and far from complete yet."
-msgstr ""
-"To wczesna wersja rozwojowa. Należy pamiętać, że nie jest jeszcze gotowa dla "
-"wszystkich."
+#: data/resources/ui/greeter.ui:25 data/resources/ui/greeter.ui:33
+msgid "About Fractal"
+msgstr "O programie"
 
 #. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:72
+#: data/resources/ui/greeter.ui:83
 msgid "Welcome to Fractal"
 msgstr "Witamy w programie Fractal"
 
-#: data/resources/ui/greeter.ui:97
+#: data/resources/ui/greeter.ui:108
 msgid "_Log in"
 msgstr "_Zaloguj się"
 
-#: data/resources/ui/greeter.ui:107
+#: data/resources/ui/greeter.ui:118
 msgid "_Create Account"
 msgstr "_Utwórz konto"
 
@@ -749,7 +748,7 @@ msgstr "Dołączenie do pokoju"
 msgid "Enter a room ID, room alias, or permalink."
 msgstr "Proszę podać identyfikator pokoju, alias pokoju lub trwały odnośnik."
 
-#: data/resources/ui/join-room-dialog.ui:10 src/session/join_room_dialog.rs:141
+#: data/resources/ui/join-room-dialog.ui:10 src/session/join_room_dialog.rs:145
 msgid "_Join"
 msgstr "_Dołącz"
 
@@ -1093,28 +1092,28 @@ msgstr ""
 msgid "Name by"
 msgstr "Nazwa"
 
-#: src/components/editable_avatar.rs:388
+#: src/components/editable_avatar.rs:393
 msgid "Images"
 msgstr "Obrazy"
 
-#: src/components/editable_avatar.rs:393
+#: src/components/editable_avatar.rs:398
 msgid "Choose Avatar"
 msgstr "Wybór awatara"
 
-#: src/components/editable_avatar.rs:395
+#: src/components/editable_avatar.rs:400
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:246
 msgid "Choose"
 msgstr "Wybierz"
 
-#: src/components/editable_avatar.rs:413
+#: src/components/editable_avatar.rs:418
 msgid "Could not open avatar file"
 msgstr "Nie można otworzyć pliku awatara"
 
-#: src/components/editable_avatar.rs:434
+#: src/components/editable_avatar.rs:439
 msgid "The chosen file is not an image"
 msgstr "Wybrany plik nie jest obrazem"
 
-#: src/components/editable_avatar.rs:440
+#: src/components/editable_avatar.rs:445
 msgid "Could not determine the type of the chosen file"
 msgstr "Nie można ustalić typu wybranego pliku"
 
@@ -1146,11 +1145,11 @@ msgstr "Pomyślnie usunięto sesję."
 msgid "Could not remove session from secret storage"
 msgstr "Nie można usunąć sesji z przechowalni haseł"
 
-#: src/greeter.rs:80 src/login/mod.rs:688 src/window.rs:432
+#: src/greeter.rs:77 src/login/mod.rs:688 src/window.rs:408
 msgid "No network connection"
 msgstr "Brak połączenia z siecią"
 
-#: src/greeter.rs:85 src/login/mod.rs:693 src/window.rs:436
+#: src/greeter.rs:81 src/login/mod.rs:693 src/window.rs:412
 msgid "No Internet connection"
 msgstr "Brak połączenia z Internetem"
 
@@ -1180,29 +1179,29 @@ msgstr "Nie można przechować sesji"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:49
+#: src/secret.rs:58
 msgid "Found stored session with unsupported version {version_nb}"
 msgstr "Odnaleziono przechowaną sesję z nieobsługiwaną wersją {version_nb}"
 
-#: src/secret.rs:80
+#: src/secret.rs:89
 msgid "The secret storage file is corrupted."
 msgstr "Plik przechowalni haseł jest uszkodzony."
 
-#: src/secret.rs:84
+#: src/secret.rs:93
 msgid "Could not access the secret storage file location."
 msgstr "Nie można uzyskać dostępu do położenia pliku przechowalni haseł."
 
-#: src/secret.rs:87
+#: src/secret.rs:96
 msgid "An unknown error occurred when accessing the secret storage file."
 msgstr ""
 "Wystąpił nieznany błąd podczas uzyskiwania dostępu do położenia pliku "
 "przechowalni haseł."
 
-#: src/secret.rs:90
+#: src/secret.rs:99
 msgid "The secret storage file has been changed by another process."
 msgstr "Plik przechowalni haseł został zmieniony przez inny proces."
 
-#: src/secret.rs:93
+#: src/secret.rs:102
 msgid ""
 "An unknown error occurred when interacting with the D-Bus Secret Portal "
 "backend."
@@ -1210,7 +1209,7 @@ msgstr ""
 "Wystąpił nieznany błąd podczas współdziałania z mechanizmem portalu haseł na "
 "magistrali D-Bus."
 
-#: src/secret.rs:96
+#: src/secret.rs:105
 msgid ""
 "The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1218,7 +1217,7 @@ msgstr ""
 "Żądanie do portalu haseł Flatpak zostało anulowane. Należy się upewnić, że "
 "zaakceptowano prośbę o dostęp do niego."
 
-#: src/secret.rs:99
+#: src/secret.rs:108
 msgid ""
 "The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
 "installed, and it is at least at version 1.5.0."
@@ -1226,17 +1225,17 @@ msgstr ""
 "Portal haseł Flatpak jest niedostępny. Należy się upewnić, że zainstalowano "
 "xdg-desktop-portal w wersji co najmniej 1.5.0."
 
-#: src/secret.rs:102
+#: src/secret.rs:111
 msgid "The Flatpak Secret Portal provided a key that is too weak to be secure."
 msgstr ""
 "Portal haseł Flatpak dostarczył klucz, który jest za słaby, aby był "
 "bezpieczny."
 
-#: src/secret.rs:114
+#: src/secret.rs:123
 msgid "The item was deleted."
 msgstr "Element został usunięty."
 
-#: src/secret.rs:117
+#: src/secret.rs:126
 msgid ""
 "The request to the D-Bus Secret Service was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1244,7 +1243,7 @@ msgstr ""
 "Żądanie do usługi Secret Service na magistrali D-Bus zostało anulowane. "
 "Należy się upewnić, że zaakceptowano prośbę o dostęp do niej."
 
-#: src/secret.rs:120
+#: src/secret.rs:129
 msgid ""
 "Could not access the default collection. Make sure a keyring was created and "
 "set as default."
@@ -1252,52 +1251,56 @@ msgstr ""
 "Nie można uzyskać dostępu do domyślnej kolekcji. Należy się upewnić, że "
 "utworzono bazę kluczy i ustawiono ją jako domyślną."
 
-#: src/secret.rs:124
+#: src/secret.rs:133
 msgid ""
 "An unknown error occurred when interacting with the D-Bus Secret Service."
 msgstr ""
 "Wystąpił nieznany błąd podczas współdziałania z usługą Secret Service na "
 "magistrali D-Bus."
 
-#: src/secret.rs:163
+#: src/secret.rs:172
 msgid "Malformed version in stored session"
 msgstr "Błędnie sformatowana wersja w przechowanej sesji"
 
-#: src/secret.rs:184
+#: src/secret.rs:196
+msgid "Could not find profile in stored session"
+msgstr "Nie można odnaleźć profilu w przechowanej sesji"
+
+#: src/secret.rs:210
 msgid "Malformed homeserver in stored session"
 msgstr "Błędnie sformatowany serwer domowy w przechowanej sesji"
 
-#: src/secret.rs:191
+#: src/secret.rs:217
 msgid "Could not find homeserver in stored session"
 msgstr "Nie można odnaleźć serwera domowego w przechowanej sesji"
 
-#: src/secret.rs:202
+#: src/secret.rs:228
 msgid "Malformed user ID in stored session"
 msgstr "Błędnie sformatowany identyfikator użytkownika w przechowanej sesji"
 
-#: src/secret.rs:209
+#: src/secret.rs:235
 msgid "Could not find user ID in stored session"
 msgstr "Nie można odnaleźć identyfikatora użytkownika w przechowanej sesji"
 
-#: src/secret.rs:218
+#: src/secret.rs:244
 msgid "Could not find device ID in stored session"
 msgstr "Nie można odnaleźć identyfikatora urządzenia w przechowanej sesji"
 
-#: src/secret.rs:227
+#: src/secret.rs:253
 msgid "Could not find database path in stored session"
 msgstr "Nie można odnaleźć ścieżki do bazy danych w przechowanej sesji"
 
-#: src/secret.rs:240 src/secret.rs:251
+#: src/secret.rs:266 src/secret.rs:277
 msgid "Malformed secret in stored session"
 msgstr "Błędnie sformatowane hasło w przechowanej sesji"
 
-#: src/secret.rs:261
+#: src/secret.rs:287
 msgid "Could not get secret in stored session"
 msgstr "Nie można uzyskać hasła z przechowanej sesji"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:372
+#: src/secret.rs:476
 msgid "Fractal: Matrix credentials for {user_id}"
 msgstr "Fractal: dane uwierzytelniania Matrix dla użytkownika {user_id}"
 
@@ -1456,7 +1459,7 @@ msgid "Import Encryption Keys From…"
 msgstr "Import kluczy szyfrowania z…"
 
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:275
-#: src/session/room/event/event_actions.rs:346
+#: src/session/room/event/event_actions.rs:382
 msgid "Could not access file"
 msgstr "Nie można uzyskać dostępu do pliku"
 
@@ -1532,32 +1535,32 @@ msgid "Could not deactivate account"
 msgstr "Nie można zdezaktywować konta"
 
 #: src/session/account_settings/user_page/mod.rs:222
-#: src/session/content/room_details/general_page/mod.rs:225
+#: src/session/content/room_details/general_page/mod.rs:231
 msgid "Avatar removed successfully"
 msgstr "Pomyślnie usunięto awatar"
 
 #: src/session/account_settings/user_page/mod.rs:224
-#: src/session/content/room_details/general_page/mod.rs:227
+#: src/session/content/room_details/general_page/mod.rs:233
 msgid "Avatar changed successfully"
 msgstr "Pomyślnie zmieniono awatar"
 
 #: src/session/account_settings/user_page/mod.rs:237
-#: src/session/content/room_details/general_page/mod.rs:246
+#: src/session/content/room_details/general_page/mod.rs:252
 msgid "Could not load file"
 msgstr "Nie można wczytać pliku"
 
 #: src/session/account_settings/user_page/mod.rs:252
-#: src/session/content/room_details/general_page/mod.rs:267
+#: src/session/content/room_details/general_page/mod.rs:273
 msgid "Could not upload avatar"
 msgstr "Nie można przesłać awatara"
 
 #: src/session/account_settings/user_page/mod.rs:281
-#: src/session/content/room_details/general_page/mod.rs:287
+#: src/session/content/room_details/general_page/mod.rs:293
 msgid "Could not change avatar"
 msgstr "Nie można zmienić awatara"
 
 #: src/session/account_settings/user_page/mod.rs:315
-#: src/session/content/room_details/general_page/mod.rs:317
+#: src/session/content/room_details/general_page/mod.rs:323
 msgid "Could not remove avatar"
 msgstr "Nie można usunąć awatara"
 
@@ -1570,30 +1573,27 @@ msgid "Could not change display name"
 msgstr "Nie można zmienić wyświetlanej nazwy"
 
 #: src/session/content/explore/public_room_row.rs:209
+#: src/session/content/room_history/state_row/tombstone.rs:121
 msgid "View"
 msgstr "Wyświetl"
-
-#: src/session/content/explore/public_room_row.rs:211
-msgid "Join"
-msgstr "Dołącz"
 
 #: src/session/content/invite.rs:115
 msgid "{user} invited you"
 msgstr "{user} zaprasza"
 
-#: src/session/content/room_details/general_page/mod.rs:410
+#: src/session/content/room_details/general_page/mod.rs:416
 msgid "Room name saved successfully"
 msgstr "Pomyślnie zapisano nazwę pokoju"
 
-#: src/session/content/room_details/general_page/mod.rs:435
+#: src/session/content/room_details/general_page/mod.rs:441
 msgid "Room topic saved successfully"
 msgstr "Pomyślnie zapisano temat pokoju"
 
-#: src/session/content/room_details/general_page/mod.rs:508
+#: src/session/content/room_details/general_page/mod.rs:514
 msgid "Could not change room name"
 msgstr "Nie można zmienić nazwy pokoju"
 
-#: src/session/content/room_details/general_page/mod.rs:532
+#: src/session/content/room_details/general_page/mod.rs:538
 msgid "Could not change room topic"
 msgstr "Nie można zmienić tematu pokoju"
 
@@ -1612,15 +1612,15 @@ msgstr "Wykluczono"
 msgid "Invited"
 msgstr "Zaproszono"
 
-#: src/session/content/room_details/member_page/mod.rs:286
+#: src/session/content/room_details/member_page/mod.rs:281
 msgid "Invited Room Members"
 msgstr "Zaproszeni członkowie pokoju"
 
-#: src/session/content/room_details/member_page/mod.rs:287
+#: src/session/content/room_details/member_page/mod.rs:282
 msgid "Banned Room Members"
 msgstr "Wykluczeni członkowie pokoju"
 
-#: src/session/content/room_details/member_page/mod.rs:288
+#: src/session/content/room_details/member_page/mod.rs:283
 #: src/session/content/room_details/mod.rs:217
 msgid "Room Members"
 msgstr "Członkowie pokoju"
@@ -1629,31 +1629,31 @@ msgstr "Członkowie pokoju"
 msgid "Invite new Members"
 msgstr "Zaproś nowych członków"
 
-#: src/session/content/room_history/item_row.rs:303
+#: src/session/content/room_history/item_row.rs:308
 msgid "This is the start of the visible history"
 msgstr "To początek widocznej historii"
 
 #. Translators: This is a date format in the day divider without the
 #. year
-#: src/session/content/room_history/item_row.rs:326
+#: src/session/content/room_history/item_row.rs:331
 msgid "%A, %B %e"
 msgstr "%A, %-d %B"
 
 #. Translators: This is a date format in the day divider with the year
-#: src/session/content/room_history/item_row.rs:329
+#: src/session/content/room_history/item_row.rs:334
 msgid "%A, %B %e, %Y"
 msgstr "%A, %-d %B %Y"
 
-#: src/session/content/room_history/item_row.rs:335
+#: src/session/content/room_history/item_row.rs:340
 msgid "New Messages"
 msgstr "Nowe wiadomości"
 
-#: src/session/content/room_history/message_row/audio.rs:231
-#: src/session/content/room_history/message_row/audio.rs:235
+#: src/session/content/room_history/message_row/audio.rs:222
+#: src/session/content/room_history/message_row/audio.rs:226
 msgid "Could not retrieve audio file"
 msgstr "Nie można odebrać pliku dźwiękowego"
 
-#: src/session/content/room_history/message_row/audio.rs:248
+#: src/session/content/room_history/message_row/audio.rs:239
 msgid "Error reading audio file"
 msgstr "Błąd podczas odczytywania pliku dźwiękowego"
 
@@ -1678,72 +1678,74 @@ msgstr ""
 msgid "Location is invalid and cannot be displayed"
 msgstr "Położenie jest nieprawidłowe i nie można go wyświetlić"
 
-#: src/session/content/room_history/message_row/media.rs:436
+#: src/session/content/room_history/message_row/media.rs:434
 msgid "Image file not supported"
 msgstr "Plik obrazu jest nieobsługiwany"
 
-#: src/session/content/room_history/message_row/media.rs:475
-#: src/session/content/room_history/message_row/media.rs:480
+#: src/session/content/room_history/message_row/media.rs:471
+#: src/session/content/room_history/message_row/media.rs:476
 msgid "Could not retrieve media"
 msgstr "Nie można odebrać multimediów"
 
-#: src/session/content/room_history/mod.rs:214
+#: src/session/content/room_history/mod.rs:222
 msgid "The location request has been cancelled."
 msgstr "Prośba o udostępnienie położenia została anulowana."
 
-#: src/session/content/room_history/mod.rs:218
+#: src/session/content/room_history/mod.rs:226
 msgid "Failed to retrieve current location."
 msgstr "Ustalenie obecnego położenia się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/content/room_history/mod.rs:668
+#: src/session/content/room_history/mod.rs:682
 msgid "Reply to {user}"
 msgstr "Odpowiedź do użytkownika {user}"
 
-#: src/session/content/room_history/mod.rs:781
-#: src/session/room/event/event_actions.rs:110
+#: src/session/content/room_history/mod.rs:795
+#: src/session/room/event/event_actions.rs:121
 msgid "Permalink copied to clipboard"
 msgstr "Skopiowano trwały odnośnik do schowka"
 
-#: src/session/content/room_history/mod.rs:785
-#: src/session/room/event/event_actions.rs:114
+#: src/session/content/room_history/mod.rs:799
+#: src/session/room/event/event_actions.rs:125
 msgid "Failed to copy the permalink"
 msgstr "Skopiowanie trwałego odnośnika się nie powiodło"
 
-#: src/session/content/room_history/mod.rs:991
+#: src/session/content/room_history/mod.rs:1008
 msgid "Your Location"
 msgstr "Położenie użytkownika"
 
-#: src/session/content/room_history/mod.rs:1001
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable
+#. name.
+#: src/session/content/room_history/mod.rs:1020
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Położenie użytkownika {geo_uri} w dniu {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:1046
+#: src/session/content/room_history/mod.rs:1065
 msgid "Select File"
 msgstr "Wybór pliku"
 
-#: src/session/content/room_history/mod.rs:1048
+#: src/session/content/room_history/mod.rs:1067
 msgid "Select"
 msgstr "Wybierz"
 
-#: src/session/content/room_history/mod.rs:1067
+#: src/session/content/room_history/mod.rs:1086
 msgid "Could not open file"
 msgstr "Nie można otworzyć pliku"
 
-#: src/session/content/room_history/mod.rs:1112
+#: src/session/content/room_history/mod.rs:1131
 msgid "Error reading file"
 msgstr "Błąd podczas odczytywania pliku"
 
-#: src/session/content/room_history/mod.rs:1138
+#: src/session/content/room_history/mod.rs:1157
 msgid "Error getting file from drop"
 msgstr "Błąd podczas uzyskiwania pliku z przeciągnięcia"
 
-#: src/session/content/room_history/mod.rs:1170
+#: src/session/content/room_history/mod.rs:1189
 msgid "Error getting image from clipboard"
 msgstr "Błąd podczas uzyskiwania obrazu ze schowka"
 
-#: src/session/content/room_history/mod.rs:1187
+#: src/session/content/room_history/mod.rs:1206
 msgid "Error getting file from clipboard"
 msgstr "Błąd podczas uzyskiwania pliku ze schowka"
 
@@ -2100,7 +2102,7 @@ msgstr "Anulowano uwierzytelnianie wymagane do utworzenia kluczy szyfrowania."
 msgid "An error occurred during the creation of the encryption keys."
 msgstr "Wystąpił błąd podczas tworzenia kluczy szyfrowania."
 
-#: src/session/join_room_dialog.rs:139
+#: src/session/join_room_dialog.rs:143
 msgid "_View"
 msgstr "_Wyświetl"
 
@@ -2108,25 +2110,25 @@ msgstr "_Wyświetl"
 msgid "Failed to logout the session."
 msgstr "Wylogowanie sesji się nie powiodło."
 
-#: src/session/room/event/event_actions.rs:191
-#: src/session/room/event/event_actions.rs:212
-#: src/session/room/event/event_actions.rs:223
+#: src/session/room/event/event_actions.rs:227
+#: src/session/room/event/event_actions.rs:248
+#: src/session/room/event/event_actions.rs:259
 msgid "Message copied to clipboard"
 msgstr "Skopiowano wiadomość do schowka"
 
-#: src/session/room/event/event_actions.rs:237
+#: src/session/room/event/event_actions.rs:273
 msgid "Image copied to clipboard"
 msgstr "Skopiowano obraz do schowka"
 
-#: src/session/room/event/event_actions.rs:241
+#: src/session/room/event/event_actions.rs:277
 msgid "Thumbnail copied to clipboard"
 msgstr "Skopiowano miniaturę do schowka"
 
-#: src/session/room/event/event_actions.rs:315
+#: src/session/room/event/event_actions.rs:351
 msgid "Save File"
 msgstr "Zapis pliku"
 
-#: src/session/room/event/event_actions.rs:338
+#: src/session/room/event/event_actions.rs:374
 msgid "Could not save file"
 msgstr "Nie można zapisać pliku"
 
@@ -2159,35 +2161,35 @@ msgid "Normal user"
 msgstr "Zwykły użytkownik"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:363
+#: src/session/room/mod.rs:377
 msgid "Failed to forget {room}."
 msgstr "Zapomnienie pokoju {room} się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:616
+#: src/session/room/mod.rs:630
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr ""
 "Przeniesienie pokoju {room} z kategorii {previous_category} do "
 "{new_category} się nie powiodło."
 
-#: src/session/room/mod.rs:962
+#: src/session/room/mod.rs:976
 msgid "Unknown"
 msgstr "Nieznane"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:990
+#: src/session/room/mod.rs:1004
 msgid "Empty Room (was {user})"
 msgstr "Pusty pokój (wcześniej: {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:992
+#: src/session/room/mod.rs:1006
 msgid "Empty Room"
 msgstr "Pusty pokój"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1291
+#: src/session/room/mod.rs:1312
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 "Przyjęcie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -2195,7 +2197,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1320
+#: src/session/room/mod.rs:1341
 msgid "Failed to reject invitation for {room}. Try again later."
 msgstr ""
 "Odrzucenie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -2203,7 +2205,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1507
+#: src/session/room/mod.rs:1567
 msgid "Failed to invite {user} to {room}. Try again later."
 msgstr ""
 "Zaproszenie użytkownika {user} do pokoju {room} się nie powiodło. Proszę "
@@ -2211,7 +2213,7 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/room/mod.rs:1519
+#: src/session/room/mod.rs:1579
 msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 msgid_plural ""
 "Failed to invite {user} and {n} other users to {room}. Try again later."
@@ -2242,7 +2244,7 @@ msgid "Too long. Use a shorter address."
 msgstr "Za długi. Należy użyć krótszego adresu."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room_list.rs:297
+#: src/session/room_list.rs:340
 msgid "Failed to join room {room_name}. Try again later."
 msgstr ""
 "Dołączenie do pokoju {room_name} się nie powiodło. Proszę spróbować ponownie "
@@ -2443,22 +2445,22 @@ msgid "Could not open the store."
 msgstr "Nie można otworzyć przechowalni."
 
 #. Translators: Default name for image files.
-#: src/utils/media.rs:51
+#: src/utils/media.rs:30
 msgid "image"
 msgstr "obraz"
 
 #. Translators: Default name for video files.
-#: src/utils/media.rs:53
+#: src/utils/media.rs:32
 msgid "video"
 msgstr "film"
 
 #. Translators: Default name for audio files.
-#: src/utils/media.rs:55
+#: src/utils/media.rs:34
 msgid "audio"
 msgstr "dźwięk"
 
 #. Translators: Default name for files.
-#: src/utils/media.rs:57
+#: src/utils/media.rs:36
 msgid "file"
 msgstr "plik"
 
@@ -2495,6 +2497,6 @@ msgstr "Użytkownik {user} wysłał prośbę o weryfikację."
 msgid "{user} sent a sticker."
 msgstr "Użytkownik {user} wysłał naklejkę."
 
-#: src/window.rs:311
+#: src/window.rs:287
 msgid "Failed to restore previous sessions"
 msgstr "Przywrócenie poprzednich sesji się nie powiodło"
