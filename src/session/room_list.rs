@@ -1,4 +1,7 @@
-use std::{cell::Cell, collections::HashSet};
+use std::{
+    cell::Cell,
+    collections::{HashMap, HashSet},
+};
 
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use indexmap::map::IndexMap;
@@ -260,57 +263,52 @@ impl RoomList {
     }
 
     pub fn handle_response_rooms(&self, rooms: ResponseRooms) {
-        let imp = self.imp();
         let session = self.session();
 
-        let mut added = 0;
+        let mut new_rooms = HashMap::new();
 
         for (room_id, left_room) in rooms.leave {
-            let room = imp
-                .list
-                .borrow_mut()
-                .entry(room_id.clone())
-                .or_insert_with_key(|room_id| {
-                    added += 1;
-                    Room::new(&session, room_id)
-                })
-                .clone();
+            let room = match self.get(&room_id) {
+                Some(room) => room,
+                None => new_rooms
+                    .entry(room_id.clone())
+                    .or_insert_with_key(|room_id| Room::new(&session, room_id))
+                    .clone(),
+            };
 
             self.pending_rooms_remove((*room_id).into());
             room.handle_left_response(left_room);
         }
 
         for (room_id, joined_room) in rooms.join {
-            let room = imp
-                .list
-                .borrow_mut()
-                .entry(room_id.clone())
-                .or_insert_with_key(|room_id| {
-                    added += 1;
-                    Room::new(&session, room_id)
-                })
-                .clone();
+            let room = match self.get(&room_id) {
+                Some(room) => room,
+                None => new_rooms
+                    .entry(room_id.clone())
+                    .or_insert_with_key(|room_id| Room::new(&session, room_id))
+                    .clone(),
+            };
 
             self.pending_rooms_remove((*room_id).into());
             room.handle_joined_response(joined_room);
         }
 
         for (room_id, invited_room) in rooms.invite {
-            let room = imp
-                .list
-                .borrow_mut()
-                .entry(room_id.clone())
-                .or_insert_with_key(|room_id| {
-                    added += 1;
-                    Room::new(&session, room_id)
-                })
-                .clone();
+            let room = match self.get(&room_id) {
+                Some(room) => room,
+                None => new_rooms
+                    .entry(room_id.clone())
+                    .or_insert_with_key(|room_id| Room::new(&session, room_id))
+                    .clone(),
+            };
 
             self.pending_rooms_remove((*room_id).into());
             room.handle_invited_response(invited_room);
         }
 
-        if added > 0 {
+        if !new_rooms.is_empty() {
+            let added = new_rooms.len();
+            self.imp().list.borrow_mut().extend(new_rooms);
             self.items_added(added);
         }
     }
