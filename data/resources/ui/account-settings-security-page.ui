@@ -23,6 +23,41 @@
         </child>
       </object>
     </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Cross-Signing</property>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Master key</property>
+            <child>
+              <object class="GtkLabel" id="master_key_status">
+                <property name="ellipsize">end</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Self-signing key</property>
+            <child>
+              <object class="GtkLabel" id="self_signing_key_status">
+                <property name="ellipsize">end</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">User-signing key</property>
+            <child>
+              <object class="GtkLabel" id="user_signing_key_status">
+                <property name="ellipsize">end</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
   </template>
   <object class="ImportExportKeysSubpage" id="import_export_keys_subpage">
     <property name="session" bind-source="SecurityPage" bind-property="session" bind-flags="sync-create"/>

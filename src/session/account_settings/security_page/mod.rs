@@ -1,7 +1,8 @@
 use adw::{prelude::*, subclass::prelude::*};
-use gtk::{glib, CompositeTemplate};
+use gettextrs::gettext;
+use gtk::{glib, glib::clone, CompositeTemplate};
 
-use crate::{components::ButtonRow, session::Session};
+use crate::{components::ButtonRow, session::Session, spawn, spawn_tokio};
 
 mod import_export_keys_subpage;
 use import_export_keys_subpage::{ImportExportKeysSubpage, KeysSubpageMode};
@@ -17,6 +18,12 @@ mod imp {
         pub session: WeakRef<Session>,
         #[template_child]
         pub import_export_keys_subpage: TemplateChild<ImportExportKeysSubpage>,
+        #[template_child]
+        pub master_key_status: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub self_signing_key_status: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub user_signing_key_status: TemplateChild<gtk::Label>,
     }
 
     #[glib::object_subclass]
@@ -95,6 +102,10 @@ impl SecurityPage {
 
         self.imp().session.set(session.as_ref());
         self.notify("session");
+
+        spawn!(clone!(@weak self as obj => async move {
+            obj.load_cross_signing_status().await;
+        }));
     }
 
     #[template_callback]
@@ -117,5 +128,52 @@ impl SecurityPage {
             .and_then(|root| root.downcast_ref::<adw::PreferencesWindow>())
             .unwrap()
             .present_subpage(subpage);
+    }
+
+    async fn load_cross_signing_status(&self) {
+        let Some(session) = self.session() else {
+            return;
+        };
+        let client = session.client();
+
+        let cross_signing_status =
+            spawn_tokio!(async move { client.encryption().cross_signing_status().await })
+                .await
+                .unwrap();
+
+        let imp = self.imp();
+        update_cross_signing_key_status(
+            &imp.master_key_status,
+            cross_signing_status
+                .as_ref()
+                .map(|s| s.has_master)
+                .unwrap_or_default(),
+        );
+        update_cross_signing_key_status(
+            &imp.self_signing_key_status,
+            cross_signing_status
+                .as_ref()
+                .map(|s| s.has_self_signing)
+                .unwrap_or_default(),
+        );
+        update_cross_signing_key_status(
+            &imp.user_signing_key_status,
+            cross_signing_status
+                .as_ref()
+                .map(|s| s.has_user_signing)
+                .unwrap_or_default(),
+        );
+    }
+}
+
+fn update_cross_signing_key_status(label: &gtk::Label, available: bool) {
+    if available {
+        label.add_css_class("success");
+        label.remove_css_class("error");
+        label.set_text(&gettext("Available"));
+    } else {
+        label.add_css_class("error");
+        label.remove_css_class("success");
+        label.set_text(&gettext("Not available"));
     }
 }

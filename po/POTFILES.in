@@ -64,6 +64,7 @@ src/session/account_settings/devices_page/device_list.rs
 src/session/account_settings/devices_page/device_row.rs
 src/session/account_settings/notifications_page.rs
 src/session/account_settings/security_page/import_export_keys_subpage.rs
+src/session/account_settings/security_page/mod.rs
 src/session/account_settings/user_page/change_password_subpage.rs
 src/session/account_settings/user_page/deactivate_account_subpage.rs
 src/session/account_settings/user_page/mod.rs
