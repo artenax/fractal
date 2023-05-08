@@ -135,7 +135,7 @@
                         <property name="halign">center</property>
                         <child>
                           <object class="GtkLabel">
-                            <property name="label" translatable="yes">Setup Encryption Identity</property>
+                            <property name="label" translatable="yes">Set Up Encryption Identity</property>
                             <property name="wrap">True</property>
                             <property name="wrap-mode">word-char</property>
                             <property name="justify">center</property>
@@ -146,18 +146,26 @@
                         </child>
                         <child>
                           <object class="GtkLabel" id="bootstrap_label">
-                            <property name="label" translatable="yes">You need to setup an encryption identity, since this is the first time you logged into your account.</property>
                             <property name="wrap">True</property>
                             <property name="wrap-mode">word-char</property>
                             <property name="justify">center</property>
                           </object>
                         </child>
                         <child>
-                          <object class="SpinnerButton" id="bootstrap_button">
-                            <property name="label" translatable="yes">Setup</property>
+                          <object class="SpinnerButton" id="bootstrap_setup_button">
                             <property name="halign">center</property>
                             <style>
                               <class name="suggested-action"/>
+                              <class name="pill"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="bootstrap_restart_button">
+                            <property name="label" translatable="yes">Restart verification</property>
+                            <property name="halign">center</property>
+                            <property name="action-name">session-verification.start</property>
+                            <style>
                               <class name="pill"/>
                             </style>
                           </object>

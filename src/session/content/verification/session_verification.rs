@@ -13,8 +13,20 @@ use crate::{
     spawn, spawn_tokio, toast, Session, Window,
 };
 
+/// The mode of the bootstrap page.
+#[derive(Debug, Clone, Copy)]
+enum BootstrapMode {
+    /// Create a new identity when no encryption identity exists.
+    CreateIdentity,
+    /// Reset the encryption identity because no device is available for
+    /// verification.
+    NoDevices,
+    /// The user selected to reset the encryption identity.
+    Reset,
+}
+
 mod imp {
-    use std::cell::RefCell;
+    use std::cell::{Cell, RefCell};
 
     use glib::{subclass::InitializingObject, SignalHandlerId, WeakRef};
 
@@ -28,14 +40,17 @@ mod imp {
         #[template_child]
         pub header_title: TemplateChild<gtk::Label>,
         #[template_child]
-        pub bootstrap_button: TemplateChild<SpinnerButton>,
-        #[template_child]
         pub main_stack: TemplateChild<gtk::Stack>,
         #[template_child]
         pub bootstrap_label: TemplateChild<gtk::Label>,
         #[template_child]
+        pub bootstrap_setup_button: TemplateChild<SpinnerButton>,
+        #[template_child]
+        pub bootstrap_restart_button: TemplateChild<gtk::Button>,
+        #[template_child]
         pub verification_widget: TemplateChild<IdentityVerificationWidget>,
         pub state_handler: RefCell<Option<SignalHandlerId>>,
+        pub bootstrap_can_restart: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -105,7 +120,7 @@ mod imp {
 
             obj.action_set_enabled("session-verification.show-recovery", false);
 
-            self.bootstrap_button
+            self.bootstrap_setup_button
                 .connect_clicked(clone!(@weak obj => move |button| {
                     button.set_loading(true);
 
@@ -200,10 +215,7 @@ impl SessionVerification {
     }
 
     fn reset(&self) {
-        let bootstrap_button = &self.imp().bootstrap_button;
-
-        bootstrap_button.set_sensitive(true);
-        bootstrap_button.set_loading(false);
+        self.imp().bootstrap_setup_button.set_loading(false);
     }
 
     fn update_view(&self, request: &IdentityVerification) {
@@ -217,7 +229,7 @@ impl SessionVerification {
         match request.state() {
             // FIXME: we bootstrap on all errors
             VerificationState::Error => {
-                imp.main_stack.set_visible_child_name("bootstrap");
+                self.show_bootstrap(BootstrapMode::Reset);
             }
             VerificationState::RequestSend => {
                 imp.main_stack.set_visible_child_name("wait-for-device");
@@ -234,16 +246,47 @@ impl SessionVerification {
         self.imp().main_stack.set_visible_child_name("recovery");
     }
 
+    fn show_bootstrap(&self, mode: BootstrapMode) {
+        let imp = self.imp();
+        let label = &imp.bootstrap_label;
+        let setup_btn = &imp.bootstrap_setup_button;
+        let restart_btn = &imp.bootstrap_restart_button;
+        let bootstrap_can_restart = &imp.bootstrap_can_restart;
+
+        match mode {
+            BootstrapMode::CreateIdentity => {
+                label.set_label(&gettext("You need to set up an encryption identity, since this is the first time you logged into your account."));
+                setup_btn.add_css_class("suggested-action");
+                setup_btn.remove_css_class("destructive-action");
+                setup_btn.set_label(&gettext("Set Up"));
+                restart_btn.set_visible(false);
+                bootstrap_can_restart.set(false);
+            }
+            BootstrapMode::NoDevices => {
+                label.set_label(&gettext("No other devices are available to verify this session. You can either restore cross-signing from another device and restart this process or reset the encryption identity."));
+                setup_btn.remove_css_class("suggested-action");
+                setup_btn.add_css_class("destructive-action");
+                setup_btn.set_label(&gettext("Reset"));
+                restart_btn.set_visible(true);
+                bootstrap_can_restart.set(false);
+            }
+            BootstrapMode::Reset => {
+                label.set_label(&gettext("If you lost access to all other sessions, you can create a new encryption identity. Be careful because this will cancel the verifications of all users and sessions."));
+                setup_btn.remove_css_class("suggested-action");
+                setup_btn.add_css_class("destructive-action");
+                setup_btn.set_label(&gettext("Reset"));
+                restart_btn.set_visible(false);
+                bootstrap_can_restart.set(true);
+            }
+        }
+
+        imp.main_stack.set_visible_child_name("bootstrap");
+    }
+
     /// Show screen to reset the encryption user identity.
     fn reset_identity(&self) {
-        let imp = self.imp();
-
         self.set_request(None);
-        imp.bootstrap_label.set_label(&gettext("If you lost access to all other sessions you can create a new encryption identity. Be careful because this will cancel the verifications of all users and sessions."));
-        imp.bootstrap_button.remove_css_class("suggested-action");
-        imp.bootstrap_button.add_css_class("destructive-action");
-        imp.bootstrap_button.set_label(&gettext("Reset"));
-        imp.main_stack.set_visible_child_name("bootstrap");
+        self.show_bootstrap(BootstrapMode::Reset);
     }
 
     fn start(&self) {
@@ -255,9 +298,11 @@ impl SessionVerification {
     async fn start_inner(&self) {
         let session = self.session();
         let client = session.client();
+
+        let client_clone = client.clone();
         let user_identity_handle = spawn_tokio!(async move {
-            let user_id = client.user_id().unwrap();
-            client.encryption().get_user_identity(user_id).await
+            let user_id = client_clone.user_id().unwrap();
+            client_clone.encryption().get_user_identity(user_id).await
         });
 
         let needs_new_identity = match user_identity_handle.await.unwrap() {
@@ -274,11 +319,32 @@ impl SessionVerification {
 
         if needs_new_identity {
             debug!("Creating new encryption user identity…");
-            self.imp().main_stack.set_visible_child_name("bootstrap");
+            self.show_bootstrap(BootstrapMode::CreateIdentity);
             return;
         }
 
-        debug!("Starting session verification…");
+        let devices_handle = spawn_tokio!(async move {
+            let user_id = client.user_id().unwrap();
+            client.encryption().get_user_devices(user_id).await
+        });
+
+        let can_verify_with_devices = match devices_handle.await.unwrap() {
+            Ok(devices) => devices.devices().any(|d| d.is_cross_signed_by_owner()),
+            Err(error) => {
+                error!("Failed to get user devices: {error}");
+                // If there are actually no other devices, the user can still
+                // reset the cross-signing identity.
+                true
+            }
+        };
+
+        if !can_verify_with_devices {
+            debug!("No other device is cross-signed, don’t request verification");
+            self.show_bootstrap(BootstrapMode::NoDevices);
+            return;
+        }
+
+        debug!("Starting session verification with other device…");
 
         self.imp()
             .main_stack
@@ -300,7 +366,8 @@ impl SessionVerification {
     }
 
     fn previous(&self) {
-        let main_stack = &self.imp().main_stack;
+        let imp = self.imp();
+        let main_stack = &imp.main_stack;
 
         if let Some(child_name) = main_stack.visible_child_name() {
             match child_name.as_str() {
@@ -312,7 +379,7 @@ impl SessionVerification {
                     main_stack.set_visible_child_name("recovery");
                     return;
                 }
-                "bootstrap" => {
+                "bootstrap" if imp.bootstrap_can_restart.get() => {
                     self.start();
                     return;
                 }
@@ -360,7 +427,7 @@ impl SessionVerification {
 
         if let Some(error_message) = error_message {
             toast!(self, error_message);
-            self.imp().bootstrap_button.set_loading(false);
+            self.imp().bootstrap_setup_button.set_loading(false);
         } else {
             // TODO tell user that the a crypto identity was created
             self.activate_action("session.mark-ready", None).unwrap();
