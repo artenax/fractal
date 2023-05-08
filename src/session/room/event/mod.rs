@@ -467,7 +467,7 @@ impl Event {
         };
 
         let timeline = self.room().timeline().matrix_timeline();
-        spawn_tokio!(async move { timeline.fetch_event_details(&event_id).await })
+        spawn_tokio!(async move { timeline.fetch_details_for_event(&event_id).await })
             .await
             .unwrap()
     }

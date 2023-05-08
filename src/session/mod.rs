@@ -653,7 +653,7 @@ impl Session {
             Ok(response) => {
                 self.room_list().handle_response_rooms(response.rooms);
                 self.verification_list()
-                    .handle_response_to_device(response.to_device_events);
+                    .handle_response_to_device(response.to_device);
 
                 if self.state() < SessionState::Verification {
                     self.mark_loaded();

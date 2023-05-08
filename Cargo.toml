@@ -76,8 +76,8 @@ version = "0.6"
 features = ["v4_10"]
 
 [dependencies.matrix-sdk]
-git = "https://github.com/zecakeh/matrix-rust-sdk.git"
-rev = "2107e8f9ae8b9358e05e0522f01646d6159f555d"
+git = "https://github.com/matrix-org/matrix-rust-sdk.git"
+rev = "d6100915dfb233c90dab8d64512c0e6063be70e3"
 features = [
     "socks",
     "sso-login",
