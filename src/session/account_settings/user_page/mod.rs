@@ -124,11 +124,8 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl UserPage {
-    pub fn new(parent_window: &Option<gtk::Window>, session: &Session) -> Self {
-        glib::Object::builder()
-            .property("transient-for", parent_window)
-            .property("session", session)
-            .build()
+    pub fn new(session: &Session) -> Self {
+        glib::Object::builder().property("session", session).build()
     }
 
     /// The current session.

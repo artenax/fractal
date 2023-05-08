@@ -77,17 +77,14 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// Preference Window to display and update room details.
+    /// User devices page.
     pub struct DevicesPage(ObjectSubclass<imp::DevicesPage>)
         @extends gtk::Widget, gtk::Window, adw::Window, adw::PreferencesWindow, @implements gtk::Accessible;
 }
 
 impl DevicesPage {
-    pub fn new(parent_window: &Option<gtk::Window>, user: &User) -> Self {
-        glib::Object::builder()
-            .property("transient-for", parent_window)
-            .property("user", user)
-            .build()
+    pub fn new(user: &User) -> Self {
+        glib::Object::builder().property("user", user).build()
     }
 
     /// The logged-in user.
