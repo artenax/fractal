@@ -1,13 +1,15 @@
 use adw::{prelude::*, subclass::prelude::BinImpl};
 use gtk::{self, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
-use ruma::api::client::session::get_login_types::v3::SsoLoginType;
+use log::warn;
+use ruma::api::client::session::get_login_types::v3::LoginType;
 
-use super::idp_button::IdpButton;
-use crate::i18n::gettext_f;
+use super::{idp_button::IdpButton, Login};
+use crate::{
+    components::SpinnerButton, gettext_f, spawn, spawn_tokio, toast,
+    user_facing_error::UserFacingError, utils::BoundObjectWeakRef,
+};
 
 mod imp {
-    use std::cell::{Cell, RefCell};
-
     use glib::subclass::InitializingObject;
     use once_cell::sync::Lazy;
 
@@ -26,10 +28,10 @@ mod imp {
         pub sso_idp_box: TemplateChild<gtk::Box>,
         #[template_child]
         pub more_sso_option: TemplateChild<gtk::Button>,
-        /// The homeserver to log into.
-        pub homeserver: RefCell<Option<String>>,
-        /// Whether homeserver auto-discovery is enabled.
-        pub autodiscovery: Cell<bool>,
+        #[template_child]
+        pub next_button: TemplateChild<SpinnerButton>,
+        /// The parent `Login` object.
+        pub login: BoundObjectWeakRef<Login>,
     }
 
     #[glib::object_subclass]
@@ -40,6 +42,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -49,96 +52,78 @@ mod imp {
 
     impl ObjectImpl for LoginMethodPage {
         fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecString::builder("homeserver").build(),
-                    glib::ParamSpecBoolean::builder("autodiscovery").build(),
-                ]
-            });
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
+                Lazy::new(|| vec![glib::ParamSpecObject::builder::<Login>("login").build()]);
 
             PROPERTIES.as_ref()
         }
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            let obj = self.obj();
-
             match pspec.name() {
-                "homeserver" => obj.homeserver().to_value(),
-                "autodiscovery" => obj.autodiscovery().to_value(),
+                "login" => self.obj().login().to_value(),
                 _ => unimplemented!(),
             }
         }
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            let obj = self.obj();
-
             match pspec.name() {
-                "homeserver" => {
-                    obj.set_homeserver(value.get().unwrap());
-                }
-                "autodiscovery" => obj.set_autodiscovery(value.get().unwrap()),
+                "login" => self.obj().set_login(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self) {
-            self.parent_constructed();
-            let obj = self.obj();
-
-            self.username_entry
-                .connect_entry_activated(clone!(@weak obj => move|_| {
-                    let _ = obj.activate_action("login.next", None);
-                }));
-            self.username_entry
-                .connect_changed(clone!(@weak obj => move |_| {
-                    let _ = obj.activate_action("login.update-next", None);
-                }));
-
-            self.password_entry
-                .connect_entry_activated(clone!(@weak obj => move|_| {
-                    let _ = obj.activate_action("login.next", None);
-                }));
-            self.password_entry
-                .connect_changed(clone!(@weak obj => move |_| {
-                    let _ = obj.activate_action("login.update-next", None);
-                }));
+        fn dispose(&self) {
+            self.login.disconnect_signals();
         }
     }
 
     impl WidgetImpl for LoginMethodPage {}
-
     impl BinImpl for LoginMethodPage {}
 }
 
 glib::wrapper! {
-    /// A widget handling the login flows.
+    /// The login page allowing to login via password or to choose a SSO provider.
     pub struct LoginMethodPage(ObjectSubclass<imp::LoginMethodPage>)
         @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
 }
 
+#[gtk::template_callbacks]
 impl LoginMethodPage {
     pub fn new() -> Self {
         glib::Object::new()
     }
-
-    /// The homeserver to log into.
-    pub fn homeserver(&self) -> Option<String> {
-        self.imp().homeserver.borrow().clone()
+    /// The parent `Login` object.
+    pub fn login(&self) -> Option<Login> {
+        self.imp().login.obj()
     }
 
-    /// Set the homeserver to log into.
-    pub fn set_homeserver(&self, homeserver: Option<String>) {
-        self.imp().homeserver.replace(homeserver);
-    }
+    /// Set the parent `Login` object.
+    fn set_login(&self, login: Option<&Login>) {
+        let imp = self.imp();
 
-    /// Whether homeserver auto-discovery is enabled.
-    pub fn autodiscovery(&self) -> bool {
-        self.imp().autodiscovery.get()
-    }
+        imp.login.disconnect_signals();
 
-    /// Set whether homeserver auto-discovery is enabled.
-    pub fn set_autodiscovery(&self, autodiscovery: bool) {
-        self.imp().autodiscovery.set(autodiscovery)
+        if let Some(login) = login {
+            let domain_handler = login.connect_notify_local(
+                Some("domain"),
+                clone!(@weak self as obj => move |_, _| {
+                    obj.update_domain_name();
+                }),
+            );
+            let login_types_handler = login.connect_notify_local(
+                Some("login-types"),
+                clone!(@weak self as obj => move |_, _| {
+                    obj.update_sso();
+                }),
+            );
+
+            imp.login
+                .set(login, vec![domain_handler, login_types_handler]);
+        }
+
+        self.update_domain_name();
+        self.update_sso();
+        self.update_next_state();
     }
 
     /// The username entered by the user.
@@ -151,24 +136,39 @@ impl LoginMethodPage {
         self.imp().password_entry.text().into()
     }
 
-    /// Set the domain name to show in the title.
-    pub fn set_domain_name(&self, domain_name: &str) {
+    /// Update the domain name displayed in the title.
+    pub fn update_domain_name(&self) {
+        let Some(login) = self.login() else {
+            return;
+        };
+        let Some(domain) = login.domain() else {
+            return;
+        };
+
         self.imp().title.set_markup(&gettext_f(
             // Translators: Do NOT translate the content between '{' and '}', this is a variable
             // name.
-            "Connecting to {domain_name}",
+            "Log in to {domain_name}",
             &[(
                 "domain_name",
-                &format!("<span segment=\"word\">{domain_name}</span>"),
+                &format!("<span segment=\"word\">{domain}</span>"),
             )],
         ))
     }
 
-    pub fn update_sso(&self, login_types: Option<&SsoLoginType>) {
+    /// Update the SSO group.
+    pub fn update_sso(&self) {
+        let Some(login) = self.login() else {
+            return;
+        };
         let imp = self.imp();
 
-        let login_types = match login_types {
-            Some(t) => t,
+        let login_types = login.login_types();
+        let sso_login = match login_types.into_iter().find_map(|t| match t {
+            LoginType::Sso(sso) => Some(sso),
+            _ => None,
+        }) {
+            Some(sso) => sso,
             None => {
                 imp.sso_idp_box.set_visible(false);
                 imp.more_sso_option.set_visible(false);
@@ -181,7 +181,7 @@ impl LoginMethodPage {
         let mut has_unknown_methods = false;
         let mut has_known_methods = false;
 
-        for provider in &login_types.identity_providers {
+        for provider in &sso_login.identity_providers {
             let btn = IdpButton::new_from_identity_provider(provider);
 
             if let Some(btn) = btn {
@@ -196,18 +196,75 @@ impl LoginMethodPage {
         imp.more_sso_option.set_visible(has_unknown_methods);
     }
 
-    pub fn can_go_next(&self) -> bool {
-        let imp = self.imp();
-        let username_length = imp.username_entry.text().len();
-        let password_length = imp.password_entry.text().len();
+    /// Whether the current state allows to login with a password.
+    pub fn can_login_with_password(&self) -> bool {
+        let username_length = self.username().len();
+        let password_length = self.password().len();
         username_length != 0 && password_length != 0
     }
 
+    /// Update the state of the "Next" button.
+    #[template_callback]
+    fn update_next_state(&self) {
+        self.imp()
+            .next_button
+            .set_sensitive(self.can_login_with_password());
+    }
+
+    /// Login with the password login type.
+    #[template_callback]
+    fn login_with_password(&self) {
+        if !self.can_login_with_password() {
+            return;
+        }
+
+        spawn!(clone!(@weak self as obj => async move {
+            obj.login_with_password_inner().await;
+        }));
+    }
+
+    async fn login_with_password_inner(&self) {
+        let Some(login) = self.login() else {
+            return;
+        };
+        let imp = self.imp();
+
+        imp.next_button.set_loading(true);
+        login.freeze();
+
+        let username = self.username();
+        let password = self.password();
+
+        let client = login.client().unwrap();
+        let handle = spawn_tokio!(async move {
+            client
+                .login_username(&username, &password)
+                .initial_device_display_name("Fractal")
+                .send()
+                .await
+        });
+
+        match handle.await.unwrap() {
+            Ok(response) => {
+                login.handle_login_response(response).await;
+            }
+            Err(error) => {
+                warn!("Failed to log in: {error}");
+                toast!(self, error.to_user_facing());
+            }
+        }
+
+        imp.next_button.set_loading(false);
+        login.freeze();
+    }
+
+    /// Reset this page.
     pub fn clean(&self) {
         let imp = self.imp();
         imp.username_entry.set_text("");
         imp.password_entry.set_text("");
-
+        imp.next_button.set_loading(false);
+        self.update_next_state();
         self.clean_idp_box();
     }
 
@@ -222,6 +279,7 @@ impl LoginMethodPage {
         }
     }
 
+    /// Focus the default widget.
     pub fn focus_default(&self) {
         self.imp().username_entry.grab_focus();
     }

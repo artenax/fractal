@@ -350,14 +350,11 @@ impl Window {
     ///
     /// These are the default widgets:
     /// - `Greeter` screen => `Login` button.
-    /// - `Login screen` => `Next` button.
     fn set_default_by_child(&self) {
         let imp = self.imp();
 
         if imp.main_stack.visible_child() == Some(imp.greeter.get().upcast()) {
             self.set_default_widget(Some(&imp.greeter.default_widget()));
-        } else if imp.main_stack.visible_child() == Some(imp.login.get().upcast()) {
-            self.set_default_widget(Some(&imp.login.default_widget()));
         } else {
             self.set_default_widget(gtk::Widget::NONE);
         }

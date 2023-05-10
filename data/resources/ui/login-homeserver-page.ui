@@ -18,6 +18,16 @@
                 <property name="valign">center</property>
                 <property name="spacing">24</property>
                 <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Homeserver</property>
+                    <property name="wrap">true</property>
+                    <property name="justify">center</property>
+                    <style>
+                      <class name="title-1"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
                   <object class="GtkPicture">
                     <property name="file">resource:///org/gnome/Fractal/assets/homeserver.svg</property>
                   </object>
@@ -31,6 +41,8 @@
                         <style>
                           <class name="card"/>
                         </style>
+                        <signal name="changed" handler="update_next_state" swapped="yes"/>
+                        <signal name="entry-activated" handler="fetch_homeserver_details" swapped="yes"/>
                       </object>
                     </child>
                     <child>
@@ -50,10 +62,19 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="SpinnerButton" id="next_button">
+                    <property name="label" translatable="yes">Next</property>
+                    <property name="halign">center</property>
+                    <signal name="clicked" handler="fetch_homeserver_details" swapped="yes"/>
                     <style>
+                      <class name="suggested-action"/>
+                      <class name="standalone-button"/>
                       <class name="pill"/>
                     </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
                     <property name="halign">center</property>
                     <!-- Translators: As in 'Advanced Settings'. -->
                     <property name="label" translatable="yes">Advanced…</property>

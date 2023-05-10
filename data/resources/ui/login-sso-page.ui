@@ -13,15 +13,32 @@
             <property name="margin-start">12</property>
             <property name="margin-end">12</property>
             <property name="child">
-              <object class="GtkLabel">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="spacing">36</property>
                 <property name="valign">center</property>
-                <property name="wrap">True</property>
-                <property name="wrap-mode">word-char</property>
-                <property name="justify">center</property>
-                <property name="label" translatable="yes">Please follow the steps in the browser.</property>
-                <style>
-                  <class name="title-2"/>
-                </style>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="wrap">True</property>
+                    <property name="wrap-mode">word-char</property>
+                    <property name="justify">center</property>
+                    <property name="label" translatable="yes">Single Sign-On</property>
+                    <style>
+                      <class name="title-1"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="wrap">True</property>
+                    <property name="wrap-mode">word-char</property>
+                    <property name="justify">center</property>
+                    <property name="label" translatable="yes">Please follow the steps in the browser.</property>
+                    <style>
+                      <class name="title-4"/>
+                    </style>
+                  </object>
+                </child>
               </object>
             </property>
           </object>

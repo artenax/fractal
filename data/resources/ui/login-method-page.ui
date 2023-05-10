@@ -20,20 +20,26 @@
                 <child>
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
-                    <property name="spacing">6</property>
+                    <property name="spacing">12</property>
                     <property name="halign">center</property>
                     <child>
                       <object class="GtkLabel" id="title">
                         <style>
-                          <class name="title-4"/>
+                          <class name="title-1"/>
                         </style>
+                        <property name="wrap">true</property>
+                        <property name="justify">center</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkBox">
                         <property name="spacing">6</property>
                         <property name="halign">center</property>
-                        <property name="visible" bind-source="LoginMethodPage" bind-property="autodiscovery" bind-flags="sync-create"/>
+                        <binding name="visible">
+                          <lookup name="autodiscovery">
+                            <lookup name="login">LoginMethodPage</lookup>
+                          </lookup>
+                        </binding>
                         <property name="tooltip-text" translatable="yes">Homeserver URL</property>
                         <child>
                           <object class="GtkImage">
@@ -45,7 +51,12 @@
                             <style>
                               <class name="body"/>
                             </style>
-                            <property name="label" bind-source="LoginMethodPage" bind-property="homeserver" bind-flags="sync-create"/>
+                            <binding name="label">
+                              <lookup name="homeserver">
+                                <lookup name="login">LoginMethodPage</lookup>
+                              </lookup>
+                            </binding>
+                            <property name="ellipsize">center</property>
                           </object>
                         </child>
                       </object>
@@ -58,6 +69,8 @@
                       <class name="card"/>
                     </style>
                     <property name="title" translatable="true">Matrix Username</property>
+                    <signal name="changed" handler="update_next_state" swapped="yes"/>
+                    <signal name="entry-activated" handler="login_with_password" swapped="yes"/>
                   </object>
                 </child>
                 <child>
@@ -70,6 +83,8 @@
                           <class name="card"/>
                         </style>
                         <property name="title" translatable="true">Password</property>
+                        <signal name="changed" handler="update_next_state" swapped="yes"/>
+                        <signal name="entry-activated" handler="login_with_password" swapped="yes"/>
                       </object>
                     </child>
                     <child>
@@ -94,12 +109,24 @@
                 <child>
                   <object class="GtkButton" id="more_sso_option">
                     <style>
+                      <class name="standalone-button"/>
                       <class name="pill"/>
                     </style>
                     <property name="halign">center</property>
                     <property name="label" translatable="yes">More SSO Providers</property>
                     <property name="action-name">login.sso</property>
                     <property name="action-target">@ms nothing</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="SpinnerButton" id="next_button">
+                    <property name="label" translatable="yes">Next</property>
+                    <property name="halign">center</property>
+                    <style>
+                      <class name="suggested-action"/>
+                      <class name="standalone-button"/>
+                      <class name="pill"/>
+                    </style>
                   </object>
                 </child>
               </object>

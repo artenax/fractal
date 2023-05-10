@@ -7,8 +7,8 @@
         <child>
           <object class="GtkHeaderBar">
             <property name="title-widget">
-              <object class="AdwWindowTitle">
-                <property name="title" translatable="yes">Log In</property>
+              <object class="GtkBox">
+                <property name="visible">False</property>
               </object>
             </property>
             <child type="start">
@@ -17,15 +17,9 @@
                 <property name="action_name">login.prev</property>
               </object>
             </child>
-            <child type="end">
-              <object class="SpinnerButton" id="next_button">
-                <property name="action_name">login.next</property>
-                <property name="label" translatable="yes">_Next</property>
-                <style>
-                  <class name="suggested-action"/>
-                </style>
-              </object>
-            </child>
+            <style>
+              <class name="flat"/>
+            </style>
           </object>
         </child>
         <child>
@@ -40,7 +34,7 @@
                 <property name="name">homeserver</property>
                 <property name="child">
                   <object class="LoginHomeserverPage" id="homeserver_page">
-                    <property name="autodiscovery" bind-source="Login" bind-property="autodiscovery" bind-flags="sync-create"/>
+                    <property name="login">Login</property>
                   </object>
                 </property>
               </object>
@@ -50,8 +44,7 @@
                 <property name="name">method</property>
                 <property name="child">
                   <object class="LoginMethodPage" id="method_page">
-                    <property name="homeserver" bind-source="Login" bind-property="homeserver" bind-flags="sync-create"/>
-                    <property name="autodiscovery" bind-source="Login" bind-property="autodiscovery" bind-flags="sync-create"/>
+                    <property name="login">Login</property>
                   </object>
                 </property>
               </object>
