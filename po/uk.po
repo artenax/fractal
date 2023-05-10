@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-05-06 10:57+0000\n"
-"PO-Revision-Date: 2023-05-06 17:30+0300\n"
+"POT-Creation-Date: 2023-05-10 15:05+0000\n"
+"PO-Revision-Date: 2023-05-10 22:30+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -207,6 +207,11 @@ msgstr "Пароль"
 msgid "Confirm Passphrase"
 msgstr "Підтвердьте пароль"
 
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:128
+#| msgid "Save File"
+msgid "File"
+msgstr "Файл"
+
 #: data/resources/ui/account-settings-import-export-keys-subpage.ui:132
 msgid "Choose…"
 msgstr "Вибрати…"
@@ -353,6 +358,7 @@ msgid "No users matching the search were found."
 msgstr "Не знайдено жодного користувача, який відповідає критерію пошуку."
 
 #: data/resources/ui/content-invite-subpage.ui:122
+#: data/resources/ui/error-page.ui:11
 msgid "Error"
 msgstr "Помилка"
 
@@ -512,6 +518,10 @@ msgstr "Не вибрано жодної кімнати"
 msgid "Join a room to start chatting."
 msgstr "Увійдіть до кімнати, щоб почати спілкування."
 
+#: data/resources/ui/error-page.ui:18
+msgid "Secret Service Error"
+msgstr "Помилка «Секретної служби»"
+
 #: data/resources/ui/error-page.ui:40
 msgid ""
 "It seems like one of the Fractal sessions stored in the Secret Service is "
@@ -639,28 +649,19 @@ msgid "Event Source"
 msgstr "Джерело подій"
 
 #: data/resources/ui/greeter.ui:25 data/resources/ui/greeter.ui:33
-#| msgid "_About Fractal"
 msgid "About Fractal"
 msgstr "Про «Фрактал»"
 
-#: data/resources/ui/greeter.ui:49
-msgid ""
-"You are running an early stage development version. Be aware it is a work in "
-"progress and far from complete yet."
-msgstr ""
-"Ви працюєте із версією, яка перебуває на ранній стадії розробки. Слід "
-"врахувати, що цю роботу ще не завершено, і її результати далекі від повноти."
-
 #. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:88
+#: data/resources/ui/greeter.ui:83
 msgid "Welcome to Fractal"
 msgstr "Вітаємо у «Фракталі»"
 
-#: data/resources/ui/greeter.ui:113
+#: data/resources/ui/greeter.ui:108
 msgid "_Log in"
 msgstr "_Увійти"
 
-#: data/resources/ui/greeter.ui:123
+#: data/resources/ui/greeter.ui:118
 msgid "_Create Account"
 msgstr "С_творити обліковий запис"
 
@@ -816,6 +817,10 @@ msgstr "Додаткові надавачі SSO"
 #: data/resources/ui/login-sso-page.ui:21
 msgid "Please follow the steps in the browser."
 msgstr "Будь ласка, виконайте настанови з браузера."
+
+#: data/resources/ui/login.ui:11
+msgid "Log In"
+msgstr "Увійти"
 
 #: data/resources/ui/login.ui:23
 msgid "_Next"
@@ -1162,11 +1167,11 @@ msgstr "Сеанс успішно вилучено."
 msgid "Could not remove session from secret storage"
 msgstr "Не вдалося вилучити сеанс із зашифрованого сховища"
 
-#: src/greeter.rs:80 src/login/mod.rs:688 src/window.rs:408
+#: src/greeter.rs:77 src/login/mod.rs:688 src/window.rs:408
 msgid "No network connection"
 msgstr "Немає з'єднання з мережею"
 
-#: src/greeter.rs:85 src/login/mod.rs:693 src/window.rs:412
+#: src/greeter.rs:81 src/login/mod.rs:693 src/window.rs:412
 msgid "No Internet connection"
 msgstr "Відсутнє з'єднання з інтернетом"
 
@@ -2263,7 +2268,7 @@ msgid "Too long. Use a shorter address."
 msgstr "Задовга. Скористайтеся коротшою адресою."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room_list.rs:342
+#: src/session/room_list.rs:340
 msgid "Failed to join room {room_name}. Try again later."
 msgstr ""
 "Не вдалося долучитися до кімнати {room_name}. Повторіть спробу пізніше."
@@ -2521,6 +2526,14 @@ msgstr "Користувачем {user} надіслано наліпку."
 #: src/window.rs:287
 msgid "Failed to restore previous sessions"
 msgstr "Не вдалося відновити попередні сеанси"
+
+#~ msgid ""
+#~ "You are running an early stage development version. Be aware it is a work "
+#~ "in progress and far from complete yet."
+#~ msgstr ""
+#~ "Ви працюєте із версією, яка перебуває на ранній стадії розробки. Слід "
+#~ "врахувати, що цю роботу ще не завершено, і її результати далекі від "
+#~ "повноти."
 
 #~ msgid "Go there"
 #~ msgstr "Перейти туди"
@@ -2824,9 +2837,6 @@ msgstr "Не вдалося відновити попередні сеанси"
 
 #~ msgid "The domain may not be empty."
 #~ msgstr "Запис домену не може бути порожнім."
-
-#~ msgid "Log In"
-#~ msgstr "Увійти"
 
 #~ msgid "_User ID"
 #~ msgstr "Ід. _користувача"
