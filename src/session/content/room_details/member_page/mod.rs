@@ -207,11 +207,17 @@ impl MemberPage {
         let invited_members = self.build_filtered_list(members.clone(), Membership::Invite);
         let banned_members = self.build_filtered_list(members, Membership::Ban);
 
-        let main_list = ExtraLists::new(
-            &joined_members,
+        let extra_list = ExtraLists::new(
             &MembershipSubpageItem::new(Membership::Invite, &invited_members),
             &MembershipSubpageItem::new(Membership::Ban, &banned_members),
         );
+        let model_list = gio::ListStore::builder()
+            .item_type(gio::ListModel::static_type())
+            .build();
+        model_list.append(&extra_list);
+        model_list.append(&joined_members);
+
+        let main_list = gtk::FlattenListModel::new(Some(model_list));
 
         let mut list_stack_children = imp.list_stack_children.borrow_mut();
         let joined_view = MembersListView::new(&main_list);

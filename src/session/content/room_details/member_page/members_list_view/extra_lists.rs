@@ -11,7 +11,6 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct ExtraLists {
-        pub joined: OnceCell<gio::ListModel>,
         pub invited: OnceCell<MembershipSubpageItem>,
         pub banned: OnceCell<MembershipSubpageItem>,
         pub invited_is_empty: Cell<bool>,
@@ -29,9 +28,6 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::builder::<gio::ListModel>("joined")
-                        .construct_only()
-                        .build(),
                     glib::ParamSpecObject::builder::<MembershipSubpageItem>("invited")
                         .construct_only()
                         .build(),
@@ -48,7 +44,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "joined" => obj.set_joined(value.get().unwrap()),
                 "invited" => obj.set_invited(value.get().unwrap()),
                 "banned" => obj.set_banned(value.get().unwrap()),
                 _ => unimplemented!(),
@@ -59,7 +54,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "joined" => obj.joined().to_value(),
                 "invited" => obj.invited().to_value(),
                 "banned" => obj.banned().to_value(),
                 _ => unimplemented!(),
@@ -70,22 +64,15 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            let joined_members = obj.joined();
             let invited_members = obj.invited().model();
             let banned_members = obj.banned().model();
 
-            joined_members.connect_items_changed(
-                clone!(@weak obj => move |_, position, removed, added| {
-                    obj.items_changed(position + obj.n_visible_extras(), removed, added)
-                }),
-            );
-
             invited_members.connect_items_changed(clone!(@weak obj => move |_, _, _, _| {
-                obj.update_items();
+                obj.update_invited();
             }));
 
             banned_members.connect_items_changed(clone!(@weak obj => move |_, _, _, _| {
-                obj.update_items();
+                obj.update_banned();
             }));
 
             self.invited_is_empty.set(invited_members.n_items() == 0);
@@ -99,26 +86,33 @@ mod imp {
         }
 
         fn n_items(&self) -> u32 {
-            let obj = self.obj();
-            obj.joined().n_items() + obj.n_visible_extras()
+            let mut len = 0;
+
+            if !self.invited_is_empty.get() {
+                len += 1;
+            }
+            if !self.banned_is_empty.get() {
+                len += 1;
+            }
+
+            len
         }
 
         fn item(&self, position: u32) -> Option<glib::Object> {
-            let obj = self.obj();
+            let has_invited = !self.invited_is_empty.get();
+            let has_banned = !self.banned_is_empty.get();
 
-            if position == 0 && !self.invited_is_empty.get() {
+            if position == 0 && has_invited {
                 let invited = self.invited.get().unwrap();
                 return Some(invited.clone().upcast());
             }
 
-            if (position == 0 && self.invited_is_empty.get() && !self.banned_is_empty.get())
-                || (position == 1 && !self.banned_is_empty.get())
-            {
+            if has_banned && ((position == 0 && !has_invited) || (position == 1 && has_invited)) {
                 let banned = self.banned.get().unwrap();
                 return Some(banned.clone().upcast());
             }
 
-            obj.joined().item(position - obj.n_visible_extras())
+            None
         }
     }
 }
@@ -129,26 +123,11 @@ glib::wrapper! {
 }
 
 impl ExtraLists {
-    pub fn new(
-        joined: &impl IsA<gio::ListModel>,
-        invited: &MembershipSubpageItem,
-        banned: &MembershipSubpageItem,
-    ) -> Self {
+    pub fn new(invited: &MembershipSubpageItem, banned: &MembershipSubpageItem) -> Self {
         glib::Object::builder()
-            .property("joined", joined)
             .property("invited", invited)
             .property("banned", banned)
             .build()
-    }
-
-    /// The list of joined members.
-    pub fn joined(&self) -> &gio::ListModel {
-        self.imp().joined.get().unwrap()
-    }
-
-    /// Set the list of joined members.
-    fn set_joined(&self, model: gio::ListModel) {
-        self.imp().joined.set(model).unwrap();
     }
 
     /// The subpage item for invited members.
@@ -171,60 +150,45 @@ impl ExtraLists {
         self.imp().banned.set(item).unwrap();
     }
 
-    fn update_items(&self) {
+    fn update_invited(&self) {
         let imp = self.imp();
 
-        let invited_was_empty = imp.invited_is_empty.get();
-        let banned_was_empty = imp.banned_is_empty.get();
+        let was_empty = imp.invited_is_empty.get();
+        let is_empty = self.invited().model().n_items() == 0;
 
-        let invited_is_empty = self.invited().model().n_items() == 0;
-        let banned_is_empty = self.banned().model().n_items() == 0;
-
-        let invited_changed = invited_was_empty != invited_is_empty;
-        let banned_changed = banned_was_empty != banned_is_empty;
-
-        if !invited_changed && !banned_changed {
+        if was_empty == is_empty {
             // Nothing changed so don't do anything
             return;
         }
 
-        let mut position = 0;
-        let mut removed = 0;
-        let mut added = 0;
+        imp.invited_is_empty.set(is_empty);
 
-        if invited_changed {
-            if invited_is_empty {
-                removed = 1;
-            } else {
-                added = 1;
-            }
-        } else if !invited_is_empty {
-            position = 1;
-        }
+        let added = if was_empty { 1 } else { 0 };
+        // If it is not added, it is removed.
+        let removed = 1 - added;
 
-        if banned_changed {
-            if banned_is_empty {
-                removed += 1;
-            } else {
-                added += 1;
-            }
-        }
-
-        imp.invited_is_empty.set(invited_is_empty);
-        imp.banned_is_empty.set(banned_is_empty);
-
-        self.items_changed(position, removed, added);
+        self.items_changed(0, removed, added);
     }
 
-    fn n_visible_extras(&self) -> u32 {
+    fn update_banned(&self) {
         let imp = self.imp();
-        let mut len = 0;
-        if !imp.invited_is_empty.get() {
-            len += 1;
+
+        let was_empty = imp.banned_is_empty.get();
+        let is_empty = self.banned().model().n_items() == 0;
+
+        if was_empty == is_empty {
+            // Nothing changed so don't do anything
+            return;
         }
-        if !imp.banned_is_empty.get() {
-            len += 1;
-        }
-        len
+
+        imp.banned_is_empty.set(is_empty);
+
+        let position = if imp.invited_is_empty.get() { 0 } else { 1 };
+
+        let added = if was_empty { 1 } else { 0 };
+        // If it is not added, it is removed.
+        let removed = 1 - added;
+
+        self.items_changed(position, removed, added);
     }
 }
