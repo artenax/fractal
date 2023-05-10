@@ -8,7 +8,7 @@
           <object class="GtkHeaderBar">
             <property name="title-widget">
               <object class="AdwWindowTitle">
-                <property name="title">Log In</property>
+                <property name="title" translatable="yes">Log In</property>
               </object>
             </property>
             <child type="start">
