@@ -19,16 +19,14 @@ mod reaction_list;
 mod read_receipts;
 
 pub use self::{
-    event_actions::{EventActions, EventTexture},
-    reaction_group::ReactionGroup,
-    reaction_list::ReactionList,
+    event_actions::EventActions, reaction_group::ReactionGroup, reaction_list::ReactionList,
     read_receipts::ReadReceipts,
 };
 use super::{
     timeline::{TimelineItem, TimelineItemImpl},
     Member, Room,
 };
-use crate::{spawn_tokio, utils::media::filename_for_mime};
+use crate::{spawn_tokio, utils::matrix::get_media_content};
 
 /// The unique key to identify an event in a room.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -400,6 +398,14 @@ impl Event {
         self.imp().item.borrow().as_ref().unwrap().content().clone()
     }
 
+    /// The message of this `Event`, if any.
+    pub fn message(&self) -> Option<MessageType> {
+        match self.imp().item.borrow().as_ref().unwrap().content() {
+            TimelineItemContent::Message(msg) => Some(msg.msgtype().clone()),
+            _ => None,
+        }
+    }
+
     /// Whether this `Event` was edited.
     pub fn is_edited(&self) -> bool {
         let item_ref = self.imp().item.borrow();
@@ -472,7 +478,7 @@ impl Event {
             .unwrap()
     }
 
-    /// Fetch the content of the media message in this `SupportedEvent`.
+    /// Fetch the content of the media message in this `Event`.
     ///
     /// Compatible events:
     ///
@@ -490,85 +496,8 @@ impl Event {
             panic!("Trying to get the media content of an event of incompatible type");
         };
 
-        let media = self.room().session().client().media();
-        match message.msgtype() {
-            MessageType::File(content) => {
-                let content = content.clone();
-                let filename = content
-                    .filename
-                    .as_ref()
-                    .filter(|name| !name.is_empty())
-                    .or(Some(&content.body))
-                    .filter(|name| !name.is_empty())
-                    .cloned()
-                    .unwrap_or_else(|| {
-                        filename_for_mime(
-                            content
-                                .info
-                                .as_ref()
-                                .and_then(|info| info.mimetype.as_deref()),
-                            None,
-                        )
-                    });
-                let handle = spawn_tokio!(async move { media.get_file(content, true).await });
-                let data = handle.await.unwrap()?.unwrap();
-                Ok((filename, data))
-            }
-            MessageType::Image(content) => {
-                let content = content.clone();
-                let filename = if content.body.is_empty() {
-                    filename_for_mime(
-                        content
-                            .info
-                            .as_ref()
-                            .and_then(|info| info.mimetype.as_deref()),
-                        Some(mime::IMAGE),
-                    )
-                } else {
-                    content.body.clone()
-                };
-                let handle = spawn_tokio!(async move { media.get_file(content, true).await });
-                let data = handle.await.unwrap()?.unwrap();
-                Ok((filename, data))
-            }
-            MessageType::Video(content) => {
-                let content = content.clone();
-                let filename = if content.body.is_empty() {
-                    filename_for_mime(
-                        content
-                            .info
-                            .as_ref()
-                            .and_then(|info| info.mimetype.as_deref()),
-                        Some(mime::VIDEO),
-                    )
-                } else {
-                    content.body.clone()
-                };
-                let handle = spawn_tokio!(async move { media.get_file(content, true).await });
-                let data = handle.await.unwrap()?.unwrap();
-                Ok((filename, data))
-            }
-            MessageType::Audio(content) => {
-                let content = content.clone();
-                let filename = if content.body.is_empty() {
-                    filename_for_mime(
-                        content
-                            .info
-                            .as_ref()
-                            .and_then(|info| info.mimetype.as_deref()),
-                        Some(mime::AUDIO),
-                    )
-                } else {
-                    content.body.clone()
-                };
-                let handle = spawn_tokio!(async move { media.get_file(content, true).await });
-                let data = handle.await.unwrap()?.unwrap();
-                Ok((filename, data))
-            }
-            _ => {
-                panic!("Trying to get the media content of an event of incompatible type");
-            }
-        }
+        let client = self.room().session().client();
+        get_media_content(client, message.msgtype().clone()).await
     }
 
     /// Whether this `Event` is considered a message.

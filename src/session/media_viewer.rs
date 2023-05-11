@@ -1,13 +1,17 @@
 use adw::{prelude::*, subclass::prelude::*};
+use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, graphene, CompositeTemplate};
-use log::warn;
-use matrix_sdk::{room::timeline::TimelineItemContent, ruma::events::room::message::MessageType};
+use log::{error, warn};
+use matrix_sdk::ruma::events::room::message::MessageType;
+use ruma::OwnedEventId;
 
-use super::room::{EventActions, EventTexture};
+use super::Room;
 use crate::{
     components::{ContentType, ImagePaintable, MediaContentViewer, ScaleRevealer},
-    session::room::Event,
-    spawn, Window,
+    spawn, spawn_tokio, toast,
+    user_facing_error::UserFacingError,
+    utils::{matrix::get_media_content, media::save_to_file},
+    Window,
 };
 
 const ANIMATION_DURATION: u32 = 250;
@@ -28,7 +32,12 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/media-viewer.ui")]
     pub struct MediaViewer {
         pub fullscreened: Cell<bool>,
-        pub event: WeakRef<Event>,
+        /// The room containing the media message.
+        pub room: WeakRef<Room>,
+        /// The ID of the event containing the media message.
+        pub event_id: RefCell<Option<OwnedEventId>>,
+        /// The media message to display.
+        pub message: RefCell<Option<MessageType>>,
         pub body: RefCell<Option<String>>,
         pub animation: OnceCell<adw::TimedAnimation>,
         pub swipe_tracker: OnceCell<adw::SwipeTracker>,
@@ -58,6 +67,7 @@ mod imp {
             Self::Type::bind_template_callbacks(klass);
 
             klass.set_css_name("media-viewer");
+
             klass.install_action("media-viewer.close", None, move |obj, _, _| {
                 obj.close();
             });
@@ -67,6 +77,35 @@ mod imp {
                 "media-viewer.close",
                 None,
             );
+
+            // Menu actions
+            klass.install_action("media-viewer.copy-image", None, move |obj, _, _| {
+                obj.copy_image();
+            });
+
+            klass.install_action("media-viewer.save-image", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.save_file().await;
+                }));
+            });
+
+            klass.install_action("media-viewer.save-video", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.save_file().await;
+                }));
+            });
+
+            klass.install_action("media-viewer.save-audio", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.save_file().await;
+                }));
+            });
+
+            klass.install_action("media-viewer.permalink", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.copy_permalink().await;
+                }));
+            });
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -81,8 +120,11 @@ mod imp {
                     glib::ParamSpecBoolean::builder("fullscreened")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecObject::builder::<Event>("event")
-                        .explicit_notify()
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecString::builder("event-id")
+                        .read_only()
                         .build(),
                     glib::ParamSpecString::builder("body").read_only().build(),
                 ]
@@ -96,7 +138,6 @@ mod imp {
 
             match pspec.name() {
                 "fullscreened" => obj.set_fullscreened(value.get().unwrap()),
-                "event" => obj.set_event(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -106,7 +147,8 @@ mod imp {
 
             match pspec.name() {
                 "fullscreened" => obj.fullscreened().to_value(),
-                "event" => obj.event().to_value(),
+                "room" => obj.room().to_value(),
+                "event-id" => obj.event_id().as_ref().map(|e| e.as_str()).to_value(),
                 "body" => obj.body().to_value(),
                 _ => unimplemented!(),
             }
@@ -160,9 +202,6 @@ mod imp {
             }));
             self.swipe_tracker.set(swipe_tracker).unwrap();
 
-            self.menu
-                .set_menu_model(Some(Self::Type::event_media_menu_model()));
-
             // Bind `fullscreened` to the window property of the same name.
             obj.connect_notify_local(Some("root"), |obj, _| {
                 if let Some(window) = obj.root().and_then(|root| root.downcast::<Window>().ok()) {
@@ -179,6 +218,8 @@ mod imp {
                         obj.set_visible(false);
                     }
                 }));
+
+            obj.update_menu_actions();
         }
 
         fn dispose(&self) {
@@ -265,20 +306,33 @@ impl MediaViewer {
         animation.play();
     }
 
-    /// The media event to display.
-    pub fn event(&self) -> Option<Event> {
-        self.imp().event.upgrade()
+    /// The room containing the media message.
+    pub fn room(&self) -> Option<Room> {
+        self.imp().room.upgrade()
     }
 
-    /// Set the media event to display.
-    pub fn set_event(&self, event: Option<Event>) {
-        if event == self.event() {
-            return;
-        }
+    /// The ID of the event containing the media message.
+    pub fn event_id(&self) -> Option<OwnedEventId> {
+        self.imp().event_id.borrow().clone()
+    }
 
-        self.imp().event.set(event.as_ref());
+    /// The media message to display.
+    pub fn message(&self) -> Option<MessageType> {
+        self.imp().message.borrow().clone()
+    }
+
+    /// Set the media message to display in the given room.
+    pub fn set_message(&self, room: &Room, event_id: OwnedEventId, message: MessageType) {
+        let imp = self.imp();
+
+        imp.room.set(Some(room));
+        imp.event_id.replace(Some(event_id));
+        imp.message.replace(Some(message));
+
+        self.update_menu_actions();
         self.build();
-        self.notify("event");
+        self.notify("room");
+        self.notify("event-id");
     }
 
     /// The body of the media event.
@@ -323,19 +377,45 @@ impl MediaViewer {
         self.notify("fullscreened");
     }
 
+    /// Update the actions of the menu according to the current message.
+    fn update_menu_actions(&self) {
+        let imp = self.imp();
+
+        let borrowed_message = imp.message.borrow();
+        let message = borrowed_message.as_ref();
+        let has_image = message
+            .map(|m| matches!(m, MessageType::Image(_)))
+            .unwrap_or_default();
+        let has_video = message
+            .map(|m| matches!(m, MessageType::Video(_)))
+            .unwrap_or_default();
+        let has_audio = message
+            .map(|m| matches!(m, MessageType::Audio(_)))
+            .unwrap_or_default();
+
+        let has_event_id = imp.event_id.borrow().is_some();
+
+        self.action_set_enabled("media-viewer.copy-image", has_image);
+        self.action_set_enabled("media-viewer.save-image", has_image);
+        self.action_set_enabled("media-viewer.save-video", has_video);
+        self.action_set_enabled("media-viewer.save-audio", has_audio);
+        self.action_set_enabled("media-viewer.permalink", has_event_id);
+    }
+
     fn build(&self) {
         self.imp().media.show_loading();
 
-        let Some(event) = self.event() else {
+        let Some(room) = self.room() else {
             return;
         };
-        let TimelineItemContent::Message(content) = event.content() else {
+        let Some(message) = self.message() else {
             return;
         };
 
-        self.set_event_actions(Some(&event));
+        // self.set_event_actions(Some(&event));
+        let client = room.session().client();
 
-        match content.msgtype() {
+        match &message {
             MessageType::Image(image) => {
                 let image = image.clone();
                 self.set_body(Some(image.body));
@@ -345,7 +425,7 @@ impl MediaViewer {
                     clone!(@weak self as obj => async move {
                         let imp = obj.imp();
 
-                        match event.get_media_content().await {
+                        match get_media_content(client, message).await {
                             Ok(( _, data)) => {
                                 match ImagePaintable::from_bytes(&glib::Bytes::from(&data), image.info.and_then(|info| info.mimetype).as_deref()) {
                                     Ok(texture) => {
@@ -370,7 +450,7 @@ impl MediaViewer {
                     clone!(@weak self as obj => async move {
                         let imp = obj.imp();
 
-                        match event.get_media_content().await {
+                        match get_media_content(client, message).await {
                             Ok(( _, data)) => {
                                 // The GStreamer backend of GtkVideo doesn't work with input streams so
                                 // we need to store the file.
@@ -438,31 +518,64 @@ impl MediaViewer {
             self.activate_action("win.toggle-fullscreen", None).unwrap();
         }
     }
-}
 
-impl EventActions for MediaViewer {
-    fn texture(&self) -> Option<EventTexture> {
-        self.imp().media.texture().map(EventTexture::Original)
+    /// Copy the current image to the clipboard.
+    fn copy_image(&self) {
+        let Some(texture) = self
+            .imp()
+            .media
+            .texture() else {
+            return;
+        };
+        self.clipboard().set_texture(&texture);
+        toast!(self, gettext("Image copied to clipboard"));
     }
 
-    fn set_expression_watch(&self, key: &'static str, expr_watch: gtk::ExpressionWatch) {
-        self.imp()
-            .actions_expression_watches
-            .borrow_mut()
-            .insert(key, expr_watch);
+    /// Save the current file to the clipboard.
+    async fn save_file(&self) {
+        let Some(room) = self.room() else {
+            return;
+        };
+        let Some(message) = self.message() else {
+            return;
+        };
+        let client = room.session().client();
+
+        let (filename, data) = match get_media_content(client, message).await {
+            Ok(res) => res,
+            Err(error) => {
+                error!("Could not get event file: {error}");
+                toast!(self, error.to_user_facing());
+
+                return;
+            }
+        };
+
+        save_to_file(self, data, filename).await;
     }
 
-    fn expression_watch(&self, key: &&str) -> Option<gtk::ExpressionWatch> {
-        self.imp()
-            .actions_expression_watches
-            .borrow()
-            .get(key)
-            .cloned()
-    }
+    /// Copy the permalink of the event of the media message to the clipboard.
+    async fn copy_permalink(&self) {
+        let Some(room) = self.room() else {
+            return;
+        };
+        let Some(event_id) = self.event_id() else {
+            return;
+        };
+        let matrix_room = room.matrix_room();
 
-    fn clear_expression_watches(&self) {
-        for expr_watch in self.imp().actions_expression_watches.take().values() {
-            expr_watch.unwatch();
+        let handle =
+            spawn_tokio!(async move { matrix_room.matrix_to_event_permalink(event_id).await });
+
+        match handle.await.unwrap() {
+            Ok(permalink) => {
+                self.clipboard().set_text(&permalink.to_string());
+                toast!(self, gettext("Permalink copied to clipboard"));
+            }
+            Err(error) => {
+                error!("Could not get permalink: {error}");
+                toast!(self, gettext("Failed to copy the permalink"));
+            }
         }
     }
 }

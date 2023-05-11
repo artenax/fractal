@@ -1,6 +1,6 @@
 use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, prelude::*};
-use log::{debug, error};
+use log::error;
 use matrix_sdk::{room::timeline::TimelineItemContent, ruma::events::room::message::MessageType};
 use once_cell::sync::Lazy;
 use ruma::events::room::power_levels::PowerLevelAction;
@@ -11,7 +11,9 @@ use crate::{
         event_source_dialog::EventSourceDialog,
         room::{Event, EventKey},
     },
-    spawn, spawn_tokio, toast, UserFacingError,
+    spawn, spawn_tokio, toast,
+    utils::media::save_to_file,
+    UserFacingError,
 };
 
 // This is only safe because the trait `EventActions` can
@@ -33,18 +35,6 @@ where
             MenuModelSendSync(
                 gtk::Builder::from_resource("/org/gnome/Fractal/event-menu.ui")
                     .object::<gio::MenuModel>("message_menu_model")
-                    .unwrap(),
-            )
-        });
-        &MODEL.0
-    }
-
-    /// The `MenuModel` for common media message event actions.
-    fn event_media_menu_model() -> &'static gio::MenuModel {
-        static MODEL: Lazy<MenuModelSendSync> = Lazy::new(|| {
-            MenuModelSendSync(
-                gtk::Builder::from_resource("/org/gnome/Fractal/event-menu.ui")
-                    .object::<gio::MenuModel>("media_menu_model")
                     .unwrap(),
             )
         });
@@ -267,16 +257,8 @@ where
                                 .activate(clone!(@weak self as widget, @weak event => move |_, _, _| {
                                     let texture = widget.texture().expect("A widget with an image should have a texture");
 
-                                    match texture {
-                                        EventTexture::Original(texture) => {
-                                            widget.clipboard().set_texture(&texture);
-                                            toast!(widget, gettext("Image copied to clipboard"));
-                                        }
-                                        EventTexture::Thumbnail(texture) => {
-                                            widget.clipboard().set_texture(&texture);
-                                            toast!(widget, gettext("Thumbnail copied to clipboard"));
-                                        }
-                                    }
+                                    widget.clipboard().set_texture(&texture);
+                                    toast!(widget, gettext("Thumbnail copied to clipboard"));
                                 })
                             ).build(),
                             // Save the image to a file.
@@ -319,68 +301,20 @@ where
     /// Panics on an incompatible event.
     fn save_event_file(&self, event: Event) {
         spawn!(clone!(@weak self as obj => async move {
-            save_event_file_inner(&obj, event).await;
+            let (filename, data) = match event.get_media_content().await {
+                Ok(res) => res,
+                Err(error) => {
+                    error!("Could not get event file: {error}");
+                    toast!(obj, error.to_user_facing());
+
+                    return;
+                }
+            };
+
+            save_to_file(&obj, data, filename).await;
         }));
     }
 
     /// Get the texture displayed by this widget, if any.
-    fn texture(&self) -> Option<EventTexture>;
-}
-
-/// A texture from an event.
-pub enum EventTexture {
-    /// The texture is the original image.
-    Original(gdk::Texture),
-
-    /// The texture is a thumbnail of the image.
-    Thumbnail(gdk::Texture),
-}
-
-async fn save_event_file_inner(obj: &impl IsA<gtk::Widget>, event: Event) {
-    let (filename, data) = match event.get_media_content().await {
-        Ok(res) => res,
-        Err(error) => {
-            error!("Could not get event file: {error}");
-            toast!(obj, error.to_user_facing());
-
-            return;
-        }
-    };
-
-    let dialog = gtk::FileDialog::builder()
-        .title(gettext("Save File"))
-        .modal(true)
-        .accept_label(gettext("Save"))
-        .initial_name(filename)
-        .build();
-
-    match dialog
-        .save_future(
-            obj.root()
-                .as_ref()
-                .and_then(|r| r.downcast_ref::<gtk::Window>()),
-        )
-        .await
-    {
-        Ok(file) => {
-            if let Err(error) = file.replace_contents(
-                &data,
-                None,
-                false,
-                gio::FileCreateFlags::REPLACE_DESTINATION,
-                gio::Cancellable::NONE,
-            ) {
-                error!("Could not save file: {error}");
-                toast!(obj, gettext("Could not save file"));
-            }
-        }
-        Err(error) => {
-            if error.matches(gtk::DialogError::Dismissed) {
-                debug!("File dialog dismissed by user");
-            } else {
-                error!("Could not access file: {error}");
-                toast!(obj, gettext("Could not access file"));
-            }
-        }
-    };
+    fn texture(&self) -> Option<gdk::Texture>;
 }

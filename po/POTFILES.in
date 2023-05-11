@@ -42,6 +42,7 @@ data/resources/ui/login-homeserver-page.ui
 data/resources/ui/login-method-page.ui
 data/resources/ui/login-sso-page.ui
 data/resources/ui/login.ui
+data/resources/ui/media-viewer.ui
 data/resources/ui/member-menu.ui
 data/resources/ui/room-creation.ui
 data/resources/ui/session-verification.ui
@@ -88,6 +89,7 @@ src/session/content/room_history/verification_info_bar.rs
 src/session/content/verification/identity_verification_widget.rs
 src/session/content/verification/session_verification.rs
 src/session/join_room_dialog.rs
+src/session/media_viewer.rs
 src/session/mod.rs
 src/session/room/event/event_actions.rs
 src/session/room/member.rs

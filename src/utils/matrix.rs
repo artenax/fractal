@@ -4,7 +4,8 @@ use matrix_sdk::{config::RequestConfig, Client, ClientBuildError};
 use ruma::events::{room::message::MessageType, AnyMessageLikeEventContent, AnySyncTimelineEvent};
 use thiserror::Error;
 
-use crate::{gettext_f, secret::StoredSession, user_facing_error::UserFacingError};
+use super::media::filename_for_mime;
+use crate::{gettext_f, secret::StoredSession, spawn_tokio, user_facing_error::UserFacingError};
 
 /// The result of a password validation.
 #[derive(Debug, Default, Clone, Copy)]
@@ -170,4 +171,99 @@ pub async fn client_with_stored_session(
     client.restore_session(data).await?;
 
     Ok(client)
+}
+
+/// Fetch the content of the media message in the given message.
+///
+/// Compatible messages:
+///
+/// - File.
+/// - Image.
+/// - Video.
+/// - Audio.
+///
+/// Returns `Ok((filename, binary_content))` on success.
+///
+/// Returns `Err` if an error occurred while fetching the content. Panics on
+/// an incompatible event.
+pub async fn get_media_content(
+    client: Client,
+    message: MessageType,
+) -> Result<(String, Vec<u8>), matrix_sdk::Error> {
+    let media = client.media();
+
+    match message {
+        MessageType::File(content) => {
+            let filename = content
+                .filename
+                .as_ref()
+                .filter(|name| !name.is_empty())
+                .or(Some(&content.body))
+                .filter(|name| !name.is_empty())
+                .cloned()
+                .unwrap_or_else(|| {
+                    filename_for_mime(
+                        content
+                            .info
+                            .as_ref()
+                            .and_then(|info| info.mimetype.as_deref()),
+                        None,
+                    )
+                });
+            let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+            let data = handle.await.unwrap()?.unwrap();
+            Ok((filename, data))
+        }
+        MessageType::Image(content) => {
+            let filename = if content.body.is_empty() {
+                filename_for_mime(
+                    content
+                        .info
+                        .as_ref()
+                        .and_then(|info| info.mimetype.as_deref()),
+                    Some(mime::IMAGE),
+                )
+            } else {
+                content.body.clone()
+            };
+            let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+            let data = handle.await.unwrap()?.unwrap();
+            Ok((filename, data))
+        }
+        MessageType::Video(content) => {
+            let filename = if content.body.is_empty() {
+                filename_for_mime(
+                    content
+                        .info
+                        .as_ref()
+                        .and_then(|info| info.mimetype.as_deref()),
+                    Some(mime::VIDEO),
+                )
+            } else {
+                content.body.clone()
+            };
+            let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+            let data = handle.await.unwrap()?.unwrap();
+            Ok((filename, data))
+        }
+        MessageType::Audio(content) => {
+            let filename = if content.body.is_empty() {
+                filename_for_mime(
+                    content
+                        .info
+                        .as_ref()
+                        .and_then(|info| info.mimetype.as_deref()),
+                    Some(mime::AUDIO),
+                )
+            } else {
+                content.body.clone()
+            };
+            let handle = spawn_tokio!(async move { media.get_file(content, true).await });
+            let data = handle.await.unwrap()?.unwrap();
+            Ok((filename, data))
+        }
+        _ => {
+            panic!("Trying to get the media content of a message of incompatible type");
+        }
+    }
 }

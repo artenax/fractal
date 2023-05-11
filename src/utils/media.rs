@@ -4,8 +4,11 @@ use std::{cell::Cell, str::FromStr, sync::Mutex};
 
 use gettextrs::gettext;
 use gtk::{gio, glib, prelude::*};
+use log::{debug, error};
 use matrix_sdk::attachment::{BaseAudioInfo, BaseImageInfo, BaseVideoInfo};
 use mime::Mime;
+
+use crate::toast;
 
 /// Get a default filename for a mime type.
 ///
@@ -180,4 +183,44 @@ pub async fn get_audio_info(file: &gio::File) -> BaseAudioInfo {
 
     info.duration = media_info.duration().map(Into::into);
     info
+}
+
+/// Save the given data to a file with the given filename.
+pub async fn save_to_file(obj: &impl IsA<gtk::Widget>, data: Vec<u8>, filename: String) {
+    let dialog = gtk::FileDialog::builder()
+        .title(gettext("Save File"))
+        .modal(true)
+        .accept_label(gettext("Save"))
+        .initial_name(filename)
+        .build();
+
+    match dialog
+        .save_future(
+            obj.root()
+                .as_ref()
+                .and_then(|r| r.downcast_ref::<gtk::Window>()),
+        )
+        .await
+    {
+        Ok(file) => {
+            if let Err(error) = file.replace_contents(
+                &data,
+                None,
+                false,
+                gio::FileCreateFlags::REPLACE_DESTINATION,
+                gio::Cancellable::NONE,
+            ) {
+                error!("Could not save file: {error}");
+                toast!(obj, gettext("Could not save file"));
+            }
+        }
+        Err(error) => {
+            if error.matches(gtk::DialogError::Dismissed) {
+                debug!("File dialog dismissed by user");
+            } else {
+                error!("Could not access file: {error}");
+                toast!(obj, gettext("Could not access file"));
+            }
+        }
+    };
 }

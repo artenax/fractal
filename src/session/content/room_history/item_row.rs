@@ -1,6 +1,6 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
-use gtk::{gio, glib, glib::clone};
+use gtk::{gdk, gio, glib, glib::clone};
 use matrix_sdk::room::timeline::TimelineItemContent;
 
 use crate::{
@@ -9,7 +9,7 @@ use crate::{
         content::room_history::{
             message_row::MessageRow, DividerRow, RoomHistory, StateRow, TypingRow,
         },
-        room::{Event, EventActions, EventTexture, TimelineItem, VirtualItem, VirtualItemKind},
+        room::{Event, EventActions, TimelineItem, VirtualItem, VirtualItemKind},
     },
     utils::BoundObjectWeakRef,
 };
@@ -428,11 +428,10 @@ impl ItemRow {
 }
 
 impl EventActions for ItemRow {
-    fn texture(&self) -> Option<EventTexture> {
+    fn texture(&self) -> Option<gdk::Texture> {
         self.child()
             .and_then(|w| w.downcast::<MessageRow>().ok())
             .and_then(|r| r.texture())
-            .map(EventTexture::Thumbnail)
     }
 
     fn set_expression_watch(&self, key: &'static str, expr_watch: gtk::ExpressionWatch) {

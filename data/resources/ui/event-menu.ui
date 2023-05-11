@@ -79,35 +79,6 @@
       </item>
     </section>
   </menu>
-  <menu id="media_menu_model">
-    <section>
-      <item>
-        <attribute name="label" translatable="yes">_Copy Image</attribute>
-        <attribute name="action">event.copy-image</attribute>
-        <attribute name="hidden-when">action-missing</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">S_ave Image</attribute>
-        <attribute name="action">event.save-image</attribute>
-        <attribute name="hidden-when">action-missing</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">S_ave Video</attribute>
-        <attribute name="action">event.save-video</attribute>
-        <attribute name="hidden-when">action-missing</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">S_ave Audio</attribute>
-        <attribute name="action">event.save-audio</attribute>
-        <attribute name="hidden-when">action-missing</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">_Permalink</attribute>
-        <attribute name="action">event.permalink</attribute>
-        <attribute name="hidden-when">action-missing</attribute>
-      </item>
-    </section>
-  </menu>
   <menu id="state_menu_model">
     <section>
       <item>
