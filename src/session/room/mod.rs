@@ -1678,7 +1678,7 @@ impl Room {
         let avatar_url = matrix_room.avatar_url();
         let avatar_data = self.avatar_data();
 
-        if avatar_url.is_none() && matrix_room.clone_info().active_members_count() == 2 {
+        if avatar_url.is_none() && matrix_room.active_members_count() == 2 {
             // Fallback to other user's avatar if this is a 1-to-1 room.
 
             // First, make sure the members are loaded.
