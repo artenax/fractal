@@ -11,8 +11,10 @@ use crate::{
     account_switcher::AccountSwitcher,
     components::Spinner,
     config::{APP_ID, PROFILE},
-    secret::{self, SecretError},
-    spawn, spawn_tokio, Application, ErrorPage, Greeter, Login, Session,
+    secret::{self, SecretError, StoredSession},
+    spawn, spawn_tokio, toast,
+    user_facing_error::UserFacingError,
+    Application, ErrorPage, Greeter, Login, Session,
 };
 
 mod imp {
@@ -257,7 +259,7 @@ impl Window {
                         spawn!(
                             glib::PRIORITY_DEFAULT_IDLE,
                             clone!(@weak self as obj => async move {
-                                obj.imp().login.restore_previous_session(stored_session).await;
+                                obj.restore_stored_session(stored_session).await;
                             })
                         );
                     }
@@ -291,6 +293,20 @@ impl Window {
                     );
                 }
             },
+        }
+    }
+
+    /// Restore a stored session.
+    async fn restore_stored_session(&self, session_info: StoredSession) {
+        match Session::restore(session_info).await {
+            Ok(session) => {
+                session.prepare().await;
+                self.add_session(&session);
+            }
+            Err(error) => {
+                warn!("Failed to restore previous login: {error}");
+                toast!(self, error.to_user_facing());
+            }
         }
     }
 

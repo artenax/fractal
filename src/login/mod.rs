@@ -20,10 +20,8 @@ use self::{
     method_page::LoginMethodPage, sso_page::LoginSsoPage,
 };
 use crate::{
-    secret::{self, StoredSession},
-    spawn, spawn_tokio, toast,
-    user_facing_error::UserFacingError,
-    Application, Session, Window, RUNTIME,
+    secret, spawn, spawn_tokio, toast, user_facing_error::UserFacingError, Application, Session,
+    Window, RUNTIME,
 };
 
 #[derive(Clone, Debug, glib::Boxed)]
@@ -423,7 +421,7 @@ impl Login {
 
         match Session::new(homeserver, response.into()).await {
             Ok(session) => {
-                self.init_session(session, true).await;
+                self.init_session(session).await;
             }
             Err(error) => {
                 warn!("Failed to create new client: {error}");
@@ -440,48 +438,34 @@ impl Login {
         self.imp().homeserver_page.fetch_homeserver_details();
     }
 
-    pub async fn restore_previous_session(&self, session_info: StoredSession) {
-        match Session::restore(session_info).await {
-            Ok(session) => {
-                self.init_session(session, false).await;
-            }
-            Err(error) => {
-                warn!("Failed to restore previous login: {error}");
-                toast!(self, error.to_user_facing());
-            }
-        }
-    }
-
-    pub async fn init_session(&self, session: Session, is_new: bool) {
+    pub async fn init_session(&self, session: Session) {
         self.prune_client();
 
-        if is_new {
-            // Save ID of logging in session to GSettings
-            let settings = Application::default().settings();
-            if let Err(err) = settings.set_string("current-session", session.session_id()) {
-                warn!("Failed to save current session: {err}");
-            }
-
-            let session_info = session.info().clone();
-            let handle = spawn_tokio!(async move { secret::store_session(&session_info).await });
-
-            if let Err(error) = handle.await.unwrap() {
-                error!("Couldn't store session: {error}");
-
-                let (message, item) = error.into_parts();
-                self.parent_window().switch_to_error_page(
-                    &format!("{}\n\n{}", gettext("Unable to store session"), message),
-                    item,
-                );
-                return;
-            }
-
-            // Clean the `Login` when the session is ready because we won't need
-            // to restore it anymore.
-            session.connect_ready(clone!(@weak self as obj => move |_| {
-                obj.clean();
-            }));
+        // Save ID of logging in session to GSettings
+        let settings = Application::default().settings();
+        if let Err(err) = settings.set_string("current-session", session.session_id()) {
+            warn!("Failed to save current session: {err}");
         }
+
+        let session_info = session.info().clone();
+        let handle = spawn_tokio!(async move { secret::store_session(&session_info).await });
+
+        if let Err(error) = handle.await.unwrap() {
+            error!("Couldn't store session: {error}");
+
+            let (message, item) = error.into_parts();
+            self.parent_window().switch_to_error_page(
+                &format!("{}\n\n{}", gettext("Unable to store session"), message),
+                item,
+            );
+            return;
+        }
+
+        // Clean the `Login` when the session is ready because we won't need
+        // to restore it anymore.
+        session.connect_ready(clone!(@weak self as obj => move |_| {
+            obj.clean();
+        }));
 
         session.prepare().await;
         self.parent_window().add_session(&session);
