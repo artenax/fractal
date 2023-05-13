@@ -306,6 +306,59 @@ impl StoredSession {
         }
     }
 
+    /// Construct a `StoredSession` from its parts.
+    pub fn from_parts(
+        homeserver: Url,
+        path: PathBuf,
+        passphrase: String,
+        data: matrix_sdk::Session,
+    ) -> Self {
+        let matrix_sdk::Session {
+            access_token,
+            user_id,
+            device_id,
+            ..
+        } = data;
+
+        let secret = Secret {
+            access_token,
+            passphrase,
+        };
+
+        Self {
+            homeserver,
+            user_id,
+            device_id,
+            path,
+            secret,
+            version: CURRENT_VERSION,
+        }
+    }
+
+    /// Split this `StoredSession` into parts.
+    pub fn into_parts(self) -> (Url, PathBuf, String, matrix_sdk::Session) {
+        let Self {
+            homeserver,
+            user_id,
+            device_id,
+            path,
+            secret: Secret {
+                access_token,
+                passphrase,
+            },
+            ..
+        } = self;
+
+        let data = matrix_sdk::Session {
+            access_token,
+            user_id,
+            device_id,
+            refresh_token: None,
+        };
+
+        (homeserver, path, passphrase, data)
+    }
+
     /// Get the attributes from `self`.
     pub fn attributes(&self) -> HashMap<&str, String> {
         HashMap::from([
@@ -340,7 +393,7 @@ impl StoredSession {
         );
 
         spawn_tokio!(async move {
-            match matrix::client_with_stored_session(&self).await {
+            match matrix::client_with_stored_session(self.clone()).await {
                 Ok(client) => {
                     if let Err(error) = client.logout().await {
                         error!("Failed to log out old session: {error}");

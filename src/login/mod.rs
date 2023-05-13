@@ -1,10 +1,8 @@
-use std::{fs, path::PathBuf};
-
 use adw::{prelude::*, subclass::prelude::BinImpl};
 use gettextrs::gettext;
 use gtk::{self, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::{error, warn};
-use matrix_sdk::{Client, ClientBuildError};
+use matrix_sdk::Client;
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use ruma::{
     api::client::session::{get_login_types::v3::LoginType, login},
@@ -23,10 +21,10 @@ use self::{
     method_page::LoginMethodPage, sso_page::LoginSsoPage,
 };
 use crate::{
-    secret::{self, Secret, StoredSession},
+    secret::{self, StoredSession},
     spawn, spawn_tokio, toast,
     user_facing_error::UserFacingError,
-    utils::matrix::{self, ClientSetupError, HomeserverOrServerName},
+    utils::matrix,
     Application, Session, Window, RUNTIME,
 };
 
@@ -45,8 +43,8 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/login.ui")]
     pub struct Login {
-        /// The current created Matrix client and its configuration.
-        pub created_client: RefCell<Option<CreatedClient>>,
+        /// The Matrix client.
+        pub client: RefCell<Option<Client>>,
         /// The ID of the session that is currently logging in.
         pub current_session_id: RefCell<Option<String>>,
         #[template_child]
@@ -165,7 +163,7 @@ mod imp {
         }
 
         fn dispose(&self) {
-            self.obj().prune_created_client();
+            self.obj().prune_client();
         }
     }
 
@@ -191,40 +189,35 @@ impl Login {
             .expect("Login needs to have a parent window")
     }
 
-    pub fn created_client(&self) -> Option<CreatedClient> {
-        self.imp().created_client.borrow().clone()
-    }
-
+    /// The Matrix client.
     pub fn client(&self) -> Option<Client> {
-        self.imp()
-            .created_client
-            .borrow()
-            .as_ref()
-            .map(|c| c.client.clone())
+        self.imp().client.borrow().clone()
     }
 
-    pub fn prune_created_client(&self) {
-        if let Some(created_client) = self.imp().created_client.take() {
+    pub fn prune_client(&self) {
+        if let Some(client) = self.imp().client.take() {
             // The `Client` needs to access a tokio runtime when it is dropped.
             let guard = RUNTIME.enter();
             RUNTIME.block_on(async move {
-                if let Err(error) = fs::remove_dir_all(created_client.path) {
-                    error!("Failed to remove newly-created database: {error}");
-                }
-                drop(guard)
+                drop(client);
+                drop(guard);
             });
         }
     }
 
-    async fn set_created_client(&self, created_client: Option<CreatedClient>) {
-        let homeserver = if let Some(c) = &created_client {
-            Some(c.client.homeserver().await)
+    async fn set_client(&self, client: Option<Client>) {
+        let homeserver = if let Some(client) = client.clone() {
+            Some(
+                spawn_tokio!(async move { client.homeserver().await })
+                    .await
+                    .unwrap(),
+            )
         } else {
             None
         };
 
         self.set_homeserver(homeserver);
-        self.imp().created_client.replace(created_client);
+        self.imp().client.replace(client);
     }
 
     /// The ID of the session that is currently logging in.
@@ -333,7 +326,7 @@ impl Login {
     fn set_visible_child(&self, visible_child: &str) {
         // Clean up the created client when we come back to the homeserver selection.
         if visible_child == "homeserver" {
-            self.prune_created_client();
+            self.prune_client();
         }
 
         self.imp().main_stack.set_visible_child_name(visible_child);
@@ -423,22 +416,39 @@ impl Login {
 
     /// Handle the given response after successfully logging in.
     async fn handle_login_response(&self, response: login::v3::Response) {
-        let CreatedClient {
-            path, passphrase, ..
-        } = self.created_client().unwrap();
+        let client = self.client().unwrap();
+        // The homeserver could have changed with the login response so get it from the
+        // Client.
+        let homeserver = spawn_tokio!(async move { client.homeserver().await })
+            .await
+            .unwrap();
 
-        let session_info = StoredSession {
-            homeserver: self.homeserver().unwrap(),
-            user_id: response.user_id,
-            device_id: response.device_id,
-            path,
-            secret: Secret {
-                access_token: response.access_token,
-                passphrase,
-            },
-            version: secret::CURRENT_VERSION,
-        };
-        self.create_session(session_info, true).await;
+        let mut path = glib::user_data_dir();
+        path.push(glib::uuid_string_random().as_str());
+
+        let passphrase = thread_rng()
+            .sample_iter(Alphanumeric)
+            .take(30)
+            .map(char::from)
+            .collect();
+
+        let session_info = StoredSession::from_parts(homeserver, path, passphrase, response.into());
+
+        let session_info_clone = session_info.clone();
+        let handle =
+            spawn_tokio!(
+                async move { matrix::client_with_stored_session(session_info_clone).await }
+            );
+
+        match handle.await.unwrap() {
+            Ok(client) => {
+                self.create_session(client, session_info, true).await;
+            }
+            Err(error) => {
+                warn!("Failed to create new client: {error}");
+                toast!(self, error.to_user_facing());
+            }
+        }
     }
 
     /// Restore a matrix client with the current settings.
@@ -449,33 +459,16 @@ impl Login {
         self.imp().homeserver_page.fetch_homeserver_details();
     }
 
-    pub async fn restore_previous_session(&self, session: StoredSession) {
-        let handle = spawn_tokio!(async move {
-            let created_client = CreatedClient::new(
-                HomeserverOrServerName::Homeserver(&session.homeserver),
-                false,
-                Some(session.path.clone()),
-                Some(session.secret.passphrase.clone()),
-            )
-            .await?;
-
-            created_client
-                .client
-                .restore_session(matrix_sdk::Session {
-                    user_id: session.user_id.clone(),
-                    device_id: session.device_id.clone(),
-                    access_token: session.secret.access_token.clone(),
-                    refresh_token: None,
-                })
-                .await
-                .map(|_| (created_client, session))
-                .map_err(ClientSetupError::from)
-        });
+    pub async fn restore_previous_session(&self, session_info: StoredSession) {
+        let session_info_clone = session_info.clone();
+        let handle =
+            spawn_tokio!(
+                async move { matrix::client_with_stored_session(session_info_clone).await }
+            );
 
         match handle.await.unwrap() {
-            Ok((created_client, session_info)) => {
-                self.set_created_client(Some(created_client)).await;
-                self.create_session(session_info, false).await;
+            Ok(client) => {
+                self.create_session(client, session_info, false).await;
             }
             Err(error) => {
                 warn!("Failed to restore previous login: {error}");
@@ -484,17 +477,14 @@ impl Login {
         }
     }
 
-    pub async fn create_session(&self, session_info: StoredSession, is_new: bool) {
-        let client = self.imp().created_client.take().unwrap().client;
+    pub async fn create_session(&self, client: Client, session_info: StoredSession, is_new: bool) {
+        self.prune_client();
         let session = Session::new();
 
         if is_new {
             // Save ID of logging in session to GSettings
             let settings = Application::default().settings();
-            if let Err(err) = settings.set_string(
-                "current-session",
-                self.current_session_id().unwrap_or_default().as_str(),
-            ) {
+            if let Err(err) = settings.set_string("current-session", session_info.id()) {
                 warn!("Failed to save current session: {err}");
             }
 
@@ -532,7 +522,7 @@ impl Login {
 
         // Clean data.
         self.set_current_session_id(None);
-        self.prune_created_client();
+        self.prune_client();
         self.set_autodiscovery(true);
         self.set_login_types(vec![]);
         self.set_domain(None);
@@ -585,52 +575,5 @@ impl Login {
             imp.offline_banner.set_revealed(false);
             self.action_set_enabled("login.sso", true);
         }
-    }
-}
-
-/// A newly created Matrix client and its configuration.
-#[derive(Debug, Clone)]
-pub struct CreatedClient {
-    /// The Matrix client.
-    pub client: Client,
-
-    /// The path where the store is located.
-    pub path: PathBuf,
-
-    /// The passphrase to decrypt the store.
-    pub passphrase: String,
-}
-
-impl CreatedClient {
-    /// Create a Matrix `Client` for the given homeserver.
-    ///
-    /// Returns the `CreatedClient` and its ID.
-    async fn new(
-        homeserver: HomeserverOrServerName<'_>,
-        use_discovery: bool,
-        path: Option<PathBuf>,
-        passphrase: Option<String>,
-    ) -> Result<CreatedClient, ClientBuildError> {
-        let path = path.unwrap_or_else(|| {
-            let mut path = glib::user_data_dir();
-            path.push(glib::uuid_string_random().as_str());
-            path
-        });
-
-        let passphrase = passphrase.unwrap_or_else(|| {
-            thread_rng()
-                .sample_iter(Alphanumeric)
-                .take(30)
-                .map(char::from)
-                .collect()
-        });
-
-        let client = matrix::client(homeserver, use_discovery, &path, &passphrase).await?;
-
-        Ok(Self {
-            client,
-            path,
-            passphrase,
-        })
     }
 }

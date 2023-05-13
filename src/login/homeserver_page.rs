@@ -2,15 +2,14 @@ use adw::{prelude::*, subclass::prelude::BinImpl};
 use gettextrs::gettext;
 use gtk::{self, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::warn;
+use matrix_sdk::{config::RequestConfig, Client};
 use ruma::{IdParseError, OwnedServerName, ServerName};
 use url::{ParseError, Url};
 
-use super::{CreatedClient, Login};
+use super::Login;
 use crate::{
-    components::SpinnerButton,
-    gettext_f, spawn, spawn_tokio, toast,
-    user_facing_error::UserFacingError,
-    utils::{matrix::HomeserverOrServerName, BoundObjectWeakRef},
+    components::SpinnerButton, gettext_f, spawn, spawn_tokio, toast,
+    user_facing_error::UserFacingError, utils::BoundObjectWeakRef,
 };
 
 mod imp {
@@ -214,32 +213,28 @@ impl LoginHomeserverPage {
         let homeserver_url = self.homeserver_url();
 
         let handle = spawn_tokio!(async move {
-            let homeserver = if autodiscovery {
-                HomeserverOrServerName::ServerName(server_name.as_deref().unwrap())
+            let mut builder = Client::builder()
+                .request_config(RequestConfig::new().retry_limit(2))
+                .respect_login_well_known(autodiscovery);
+
+            builder = if autodiscovery {
+                builder.server_name(server_name.as_deref().unwrap())
             } else {
-                HomeserverOrServerName::Homeserver(homeserver_url.as_ref().unwrap())
+                builder.homeserver_url(homeserver_url.unwrap())
             };
 
-            CreatedClient::new(homeserver, autodiscovery, None, None).await
+            builder.build().await
         });
 
         match handle.await.unwrap() {
-            Ok(created_client) => {
-                let session_id = created_client
-                    .path
-                    .iter()
-                    .next_back()
-                    .and_then(|s| s.to_str())
-                    .unwrap();
-
+            Ok(client) => {
                 if autodiscovery {
                     login.set_domain(self.server_name())
                 } else {
                     login.set_domain(None);
                 }
 
-                login.set_current_session_id(Some(session_id.to_owned()));
-                login.set_created_client(Some(created_client)).await;
+                login.set_client(Some(client)).await;
 
                 self.homeserver_login_types().await;
             }
@@ -252,7 +247,7 @@ impl LoginHomeserverPage {
                 toast!(self, error.to_user_facing());
 
                 // Clean up the created client because it's bound to the homeserver.
-                login.prune_created_client();
+                login.prune_client();
             }
         };
 

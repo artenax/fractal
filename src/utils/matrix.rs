@@ -1,14 +1,8 @@
 //! Collection of methods related to the Matrix specification.
 
-use std::path::Path;
-
 use matrix_sdk::{config::RequestConfig, Client, ClientBuildError};
-use ruma::{
-    events::{room::message::MessageType, AnyMessageLikeEventContent, AnySyncTimelineEvent},
-    ServerName,
-};
+use ruma::events::{room::message::MessageType, AnyMessageLikeEventContent, AnySyncTimelineEvent};
 use thiserror::Error;
-use url::Url;
 
 use crate::{gettext_f, secret::StoredSession, user_facing_error::UserFacingError};
 
@@ -139,15 +133,6 @@ pub fn get_event_body(event: &AnySyncTimelineEvent, sender_name: &str) -> Option
     }
 }
 
-/// A homeserver URL or a server name.
-pub enum HomeserverOrServerName<'a> {
-    /// A homeserver URL.
-    Homeserver(&'a Url),
-
-    /// A server name.
-    ServerName(&'a ServerName),
-}
-
 /// All errors that can occur when setting up the Matrix client.
 #[derive(Error, Debug)]
 pub enum ClientSetupError {
@@ -166,46 +151,23 @@ impl UserFacingError for ClientSetupError {
     }
 }
 
-/// Create a [`Client`] with the given parameters.
-pub async fn client(
-    homeserver: HomeserverOrServerName<'_>,
-    use_discovery: bool,
-    path: &Path,
-    passphrase: &str,
-) -> Result<Client, ClientBuildError> {
-    let builder = match homeserver {
-        HomeserverOrServerName::Homeserver(url) => Client::builder().homeserver_url(url),
-        HomeserverOrServerName::ServerName(server_name) => {
-            Client::builder().server_name(server_name)
-        }
-    };
+/// Create a [`Client`] with the given stored session.
+pub async fn client_with_stored_session(
+    session: StoredSession,
+) -> Result<Client, ClientSetupError> {
+    let (homeserver, path, passphrase, data) = session.into_parts();
 
-    builder
-        .sqlite_store(path, Some(passphrase))
+    let client = Client::builder()
+        .homeserver_url(homeserver)
+        .sqlite_store(path, Some(&passphrase))
         // force_auth option to solve an issue with some servers configuration to require
         // auth for profiles:
         // https://gitlab.gnome.org/GNOME/fractal/-/issues/934
         .request_config(RequestConfig::new().retry_limit(2).force_auth())
-        .respect_login_well_known(use_discovery)
         .build()
-        .await
-}
-
-/// Create a [`Client`] with the given stored session.
-pub async fn client_with_stored_session(
-    session: &StoredSession,
-) -> Result<Client, ClientSetupError> {
-    let homeserver = HomeserverOrServerName::Homeserver(&session.homeserver);
-    let client = client(homeserver, false, &session.path, &session.secret.passphrase).await?;
-
-    client
-        .restore_session(matrix_sdk::Session {
-            user_id: session.user_id.clone(),
-            device_id: session.device_id.clone(),
-            access_token: session.secret.access_token.clone(),
-            refresh_token: None,
-        })
         .await?;
+
+    client.restore_session(data).await?;
 
     Ok(client)
 }
