@@ -7,6 +7,7 @@ use ruma::{
     api::client::session::{get_login_types::v3::LoginType, login},
     OwnedServerName,
 };
+use strum::{AsRefStr, EnumString};
 use url::Url;
 
 mod advanced_dialog;
@@ -27,6 +28,18 @@ use crate::{
 #[derive(Clone, Debug, glib::Boxed)]
 #[boxed_type(name = "BoxedLoginTypes")]
 pub struct BoxedLoginTypes(Vec<LoginType>);
+
+/// A page of the login stack.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, EnumString, AsRefStr)]
+#[strum(serialize_all = "kebab-case")]
+enum LoginPage {
+    /// The homeserver page.
+    Homeserver,
+    /// The page to select a login method.
+    Method,
+    /// The page to wait for SSO to be finished.
+    Sso,
+}
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -315,30 +328,38 @@ impl Login {
             .any(|t| matches!(t, LoginType::Password(_)))
     }
 
-    fn visible_child(&self) -> String {
-        self.imp().main_stack.visible_child_name().unwrap().into()
+    /// The visible page of the login stack.
+    fn visible_child(&self) -> LoginPage {
+        self.imp()
+            .main_stack
+            .visible_child_name()
+            .and_then(|s| s.as_str().try_into().ok())
+            .unwrap()
     }
 
-    fn set_visible_child(&self, visible_child: &str) {
+    /// Set the visible page of the login stack.
+    fn set_visible_child(&self, visible_child: LoginPage) {
         // Clean up the created client when we come back to the homeserver selection.
-        if visible_child == "homeserver" {
+        if visible_child == LoginPage::Homeserver {
             self.prune_client();
         }
 
-        self.imp().main_stack.set_visible_child_name(visible_child);
+        self.imp()
+            .main_stack
+            .set_visible_child_name(visible_child.as_ref());
     }
 
     fn go_previous(&self) {
-        match self.visible_child().as_ref() {
-            "method" => {
-                self.set_visible_child("homeserver");
+        match self.visible_child() {
+            LoginPage::Method => {
+                self.set_visible_child(LoginPage::Homeserver);
                 self.imp().method_page.clean();
             }
-            "sso" => {
+            LoginPage::Sso => {
                 self.set_visible_child(if self.supports_password() {
-                    "method"
+                    LoginPage::Method
                 } else {
-                    "homeserver"
+                    LoginPage::Homeserver
                 });
             }
             _ => {
@@ -359,7 +380,7 @@ impl Login {
     /// Show the appropriate login screen given the current login types.
     fn show_login_screen(&self) {
         if self.supports_password() {
-            self.set_visible_child("method");
+            self.set_visible_child(LoginPage::Method);
         } else {
             spawn!(clone!(@weak self as obj => async move {
                 obj.login_with_sso(None).await;
@@ -369,7 +390,7 @@ impl Login {
 
     /// Log in with the SSO login type.
     async fn login_with_sso(&self, idp_id: Option<String>) {
-        self.set_visible_child("sso");
+        self.set_visible_child(LoginPage::Sso);
         let client = self.client().unwrap();
 
         let handle = spawn_tokio!(async move {
@@ -487,7 +508,7 @@ impl Login {
         self.set_homeserver(None);
 
         // Reinitialize UI.
-        imp.main_stack.set_visible_child_name("homeserver");
+        self.set_visible_child(LoginPage::Homeserver);
         self.unfreeze();
     }
 
@@ -504,11 +525,11 @@ impl Login {
     /// Set focus to the proper widget of the current page.
     pub fn focus_default(&self) {
         let imp = self.imp();
-        match self.visible_child().as_ref() {
-            "homeserver" => {
+        match self.visible_child() {
+            LoginPage::Homeserver => {
                 imp.homeserver_page.focus_default();
             }
-            "method" => {
+            LoginPage::Method => {
                 imp.method_page.focus_default();
             }
             _ => {}
