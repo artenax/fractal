@@ -3,7 +3,6 @@ use gettextrs::gettext;
 use gtk::{self, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::{error, warn};
 use matrix_sdk::Client;
-use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use ruma::{
     api::client::session::{get_login_types::v3::LoginType, login},
     OwnedServerName,
@@ -24,7 +23,6 @@ use crate::{
     secret::{self, StoredSession},
     spawn, spawn_tokio, toast,
     user_facing_error::UserFacingError,
-    utils::matrix,
     Application, Session, Window, RUNTIME,
 };
 
@@ -423,26 +421,9 @@ impl Login {
             .await
             .unwrap();
 
-        let mut path = glib::user_data_dir();
-        path.push(glib::uuid_string_random().as_str());
-
-        let passphrase = thread_rng()
-            .sample_iter(Alphanumeric)
-            .take(30)
-            .map(char::from)
-            .collect();
-
-        let session_info = StoredSession::from_parts(homeserver, path, passphrase, response.into());
-
-        let session_info_clone = session_info.clone();
-        let handle =
-            spawn_tokio!(
-                async move { matrix::client_with_stored_session(session_info_clone).await }
-            );
-
-        match handle.await.unwrap() {
-            Ok(client) => {
-                self.create_session(client, session_info, true).await;
+        match Session::new(homeserver, response.into()).await {
+            Ok(session) => {
+                self.init_session(session, true).await;
             }
             Err(error) => {
                 warn!("Failed to create new client: {error}");
@@ -460,15 +441,9 @@ impl Login {
     }
 
     pub async fn restore_previous_session(&self, session_info: StoredSession) {
-        let session_info_clone = session_info.clone();
-        let handle =
-            spawn_tokio!(
-                async move { matrix::client_with_stored_session(session_info_clone).await }
-            );
-
-        match handle.await.unwrap() {
-            Ok(client) => {
-                self.create_session(client, session_info, false).await;
+        match Session::restore(session_info).await {
+            Ok(session) => {
+                self.init_session(session, false).await;
             }
             Err(error) => {
                 warn!("Failed to restore previous login: {error}");
@@ -477,18 +452,17 @@ impl Login {
         }
     }
 
-    pub async fn create_session(&self, client: Client, session_info: StoredSession, is_new: bool) {
+    pub async fn init_session(&self, session: Session, is_new: bool) {
         self.prune_client();
-        let session = Session::new();
 
         if is_new {
             // Save ID of logging in session to GSettings
             let settings = Application::default().settings();
-            if let Err(err) = settings.set_string("current-session", session_info.id()) {
+            if let Err(err) = settings.set_string("current-session", session.session_id()) {
                 warn!("Failed to save current session: {err}");
             }
 
-            let session_info = session_info.clone();
+            let session_info = session.info().clone();
             let handle = spawn_tokio!(async move { secret::store_session(&session_info).await });
 
             if let Err(error) = handle.await.unwrap() {
@@ -509,7 +483,7 @@ impl Login {
             }));
         }
 
-        session.prepare(client, session_info).await;
+        session.prepare().await;
         self.parent_window().add_session(&session);
     }
 

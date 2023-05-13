@@ -184,10 +184,10 @@ impl Window {
         let imp = &self.imp();
         let prev_has_sessions = self.has_sessions();
 
-        imp.sessions.add_named(session, session.session_id());
+        imp.sessions.add_named(session, Some(session.session_id()));
         let settings = Application::default().settings();
         let mut is_opened = false;
-        if session.session_id().unwrap() == settings.string("current-session") {
+        if session.session_id() == settings.string("current-session") {
             imp.sessions.set_visible_child(session);
             is_opened = true;
 
@@ -225,7 +225,7 @@ impl Window {
 
         // If the session was a new login that was logged out before being ready, go
         // back to the login screen.
-        if imp.login.current_session_id().as_deref() == session.session_id() {
+        if imp.login.current_session_id().as_deref() == Some(session.session_id()) {
             imp.login.restore_client();
             self.switch_to_login_page();
         } else if let Some(child) = imp.sessions.first_child() {

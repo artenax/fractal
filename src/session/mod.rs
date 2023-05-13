@@ -43,7 +43,9 @@ use matrix_sdk::{
     sync::SyncResponse,
     Client,
 };
+use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use tokio::task::JoinHandle;
+use url::Url;
 
 use self::{
     account_settings::AccountSettings,
@@ -66,7 +68,10 @@ use crate::{
     secret::{self, StoredSession},
     session::sidebar::ItemList,
     spawn, spawn_tokio, toast,
-    utils::check_if_reachable,
+    utils::{
+        check_if_reachable,
+        matrix::{self, ClientSetupError},
+    },
     Window,
 };
 
@@ -82,6 +87,10 @@ pub enum SessionState {
     Verification = 2,
     Ready = 3,
 }
+
+#[derive(Clone, Debug, glib::Boxed)]
+#[boxed_type(name = "BoxedStoredSession")]
+struct BoxedStoredSession(StoredSession);
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -210,6 +219,10 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
+                    glib::ParamSpecBoxed::builder::<BoxedStoredSession>("info")
+                        .write_only()
+                        .construct_only()
+                        .build(),
                     glib::ParamSpecString::builder("session-id")
                         .read_only()
                         .build(),
@@ -231,6 +244,16 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            match pspec.name() {
+                "info" => self
+                    .info
+                    .set(value.get::<BoxedStoredSession>().unwrap().0)
+                    .unwrap(),
+                _ => unimplemented!(),
+            }
+        }
+
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             let obj = self.obj();
 
@@ -247,6 +270,13 @@ mod imp {
         fn constructed(&self) {
             self.parent_constructed();
             let obj = self.obj();
+
+            let user = User::new(&obj, &obj.info().user_id);
+            self.user.set(user).unwrap();
+
+            self.settings
+                .set(SessionSettings::new(obj.session_id()))
+                .unwrap();
 
             self.notifications.set_session(Some(&obj));
 
@@ -285,7 +315,7 @@ mod imp {
                             // When the window becomes active, withdraw the notifications
                             // of the room that is displayed.
                             if window.is_active()
-                                && window.current_session_id().as_deref() == obj.session_id()
+                                && window.current_session_id().as_deref() == Some(obj.session_id())
                             {
                                 obj.notifications().withdraw_all_for_selected_room();
                             }
@@ -328,12 +358,46 @@ glib::wrapper! {
 }
 
 impl Session {
-    pub fn new() -> Self {
-        glib::Object::new()
+    /// Create a new session.
+    pub async fn new(homeserver: Url, data: matrix_sdk::Session) -> Result<Self, ClientSetupError> {
+        let mut path = glib::user_data_dir();
+        path.push(glib::uuid_string_random().as_str());
+
+        let passphrase = thread_rng()
+            .sample_iter(Alphanumeric)
+            .take(30)
+            .map(char::from)
+            .collect();
+
+        let stored_session = StoredSession::from_parts(homeserver, path, passphrase, data);
+
+        Self::restore(stored_session).await
     }
 
-    pub fn session_id(&self) -> Option<&str> {
-        self.imp().info.get().map(|info| info.id())
+    /// Restore a stored session.
+    pub async fn restore(stored_session: StoredSession) -> Result<Self, ClientSetupError> {
+        let obj = glib::Object::builder::<Self>()
+            .property("info", BoxedStoredSession(stored_session.clone()))
+            .build();
+
+        let client =
+            spawn_tokio!(async move { matrix::client_with_stored_session(stored_session).await })
+                .await
+                .unwrap()?;
+
+        obj.imp().client.set(client).unwrap();
+
+        Ok(obj)
+    }
+
+    /// The info to store this session.
+    pub fn info(&self) -> &StoredSession {
+        self.imp().info.get().unwrap()
+    }
+
+    /// The unique local ID for this session.
+    pub fn session_id(&self) -> &str {
+        self.info().id()
     }
 
     /// The current state of the session.
@@ -386,22 +450,8 @@ impl Session {
         room_search.set_search_mode(!room_search.is_search_mode());
     }
 
-    pub async fn prepare(&self, client: Client, session: StoredSession) {
-        let imp = self.imp();
-
-        imp.client.set(client).unwrap();
-
-        let user = User::new(self, &session.user_id);
-        imp.user.set(user).unwrap();
-        self.notify("user");
-
+    pub async fn prepare(&self) {
         self.update_user_profile();
-
-        imp.settings
-            .set(SessionSettings::new(session.id()))
-            .unwrap();
-
-        imp.info.set(session).unwrap();
         self.update_offline().await;
 
         self.room_list().load();

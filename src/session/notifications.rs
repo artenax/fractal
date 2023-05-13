@@ -94,9 +94,6 @@ impl Notifications {
         let Some(session) = self.session() else {
             return;
         };
-        let Some(session_id) = session.session_id() else {
-            return;
-        };
 
         // Don't show notifications if they are disabled.
         if !session.settings().notifications_enabled() {
@@ -105,6 +102,7 @@ impl Notifications {
 
         let app = Application::default();
         let window = app.main_window();
+        let session_id = session.session_id();
 
         // Don't show notifications for the current session if the window is active.
         if window.is_active() && window.current_session_id().as_deref() == Some(session_id) {
@@ -185,9 +183,6 @@ impl Notifications {
         let Some(session) = self.session() else {
             return;
         };
-        let Some(session_id) = session.session_id() else {
-            return;
-        };
 
         let Some(room) = session.selected_room() else {
             return;
@@ -198,7 +193,7 @@ impl Notifications {
             let app = Application::default();
 
             for event_id in notifications {
-                let id = notification_id(session_id, room_id, &event_id);
+                let id = notification_id(session.session_id(), room_id, &event_id);
                 app.withdraw_notification(&id);
             }
         }
@@ -212,15 +207,12 @@ impl Notifications {
         let Some(session) = self.session() else {
             return;
         };
-        let Some(session_id) = session.session_id() else {
-            return;
-        };
 
         let app = Application::default();
 
         for (room_id, notifications) in self.imp().list.take() {
             for event_id in notifications {
-                let id = notification_id(session_id, &room_id, &event_id);
+                let id = notification_id(session.session_id(), &room_id, &event_id);
                 app.withdraw_notification(&id);
             }
         }
