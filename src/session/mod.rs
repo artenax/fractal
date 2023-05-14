@@ -48,17 +48,13 @@ use tokio::task::JoinHandle;
 use url::Url;
 
 use self::{
-    account_settings::AccountSettings,
-    content::{verification::SessionVerification, Content},
-    join_room_dialog::JoinRoomDialog,
-    media_viewer::MediaViewer,
-    notifications::Notifications,
-    room_list::RoomList,
-    sidebar::Sidebar,
+    account_settings::AccountSettings, content::Content, join_room_dialog::JoinRoomDialog,
+    media_viewer::MediaViewer, notifications::Notifications, room_list::RoomList, sidebar::Sidebar,
     verification::VerificationList,
 };
 pub use self::{
     avatar::{AvatarData, AvatarImage, AvatarUriSource},
+    content::verification::SessionVerification,
     room::{Event, Room},
     room_creation::RoomCreation,
     settings::SessionSettings,
@@ -84,8 +80,7 @@ pub enum SessionState {
     #[default]
     Init = 0,
     InitialSync = 1,
-    Verification = 2,
-    Ready = 3,
+    Ready = 2,
 }
 
 #[derive(Clone, Debug, glib::Boxed)]
@@ -119,7 +114,6 @@ mod imp {
         pub item_list: OnceCell<ItemList>,
         pub user: OnceCell<User>,
         pub state: Cell<SessionState>,
-        pub logout_on_dispose: Cell<bool>,
         pub info: OnceCell<StoredSession>,
         pub sync_tokio_handle: RefCell<Option<JoinHandle<()>>>,
         pub offline_handler_id: RefCell<Option<SignalHandlerId>>,
@@ -158,7 +152,6 @@ mod imp {
 
             klass.install_action("session.logout", None, move |session, _, _| {
                 spawn!(clone!(@weak session => async move {
-                    session.imp().logout_on_dispose.set(false);
                     session.logout().await
                 }));
             });
@@ -202,12 +195,6 @@ mod imp {
                     widget.open_account_settings();
                 },
             );
-
-            klass.install_action("session.mark-ready", None, move |session, _, _| {
-                spawn!(clone!(@weak session => async move {
-                    session.mark_ready().await;
-                }));
-            });
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -270,9 +257,6 @@ mod imp {
         fn constructed(&self) {
             self.parent_constructed();
             let obj = self.obj();
-
-            let user = User::new(&obj, &obj.info().user_id);
-            self.user.set(user).unwrap();
 
             self.settings
                 .set(SessionSettings::new(obj.session_id()))
@@ -337,10 +321,6 @@ mod imp {
                 handle.abort();
             }
 
-            if self.logout_on_dispose.get() {
-                glib::MainContext::default().block_on(obj.logout());
-            }
-
             if let Some(handler_id) = self.window_active_handler_id.take() {
                 if let Some(window) = obj.root().and_then(|root| root.downcast::<Window>().ok()) {
                     window.disconnect(handler_id);
@@ -385,7 +365,12 @@ impl Session {
                 .await
                 .unwrap()?;
 
-        obj.imp().client.set(client).unwrap();
+        let imp = obj.imp();
+        imp.client.set(client).unwrap();
+
+        let user = User::new(&obj, &obj.info().user_id);
+        imp.user.set(user).unwrap();
+        obj.notify("user");
 
         Ok(obj)
     }
@@ -503,19 +488,8 @@ impl Session {
         self.imp().sync_tokio_handle.replace(Some(handle));
     }
 
-    async fn create_session_verification(&self) {
-        let stack = &self.imp().stack;
-
-        let widget = SessionVerification::new(self);
-        stack.add_named(&widget, Some("session-verification"));
-        stack.set_visible_child(&widget);
-        if let Some(window) = self.parent_window() {
-            window.switch_to_sessions_page();
-        }
-    }
-
     /// Whether this session is verified with cross-signing.
-    async fn is_verified(&self) -> bool {
+    pub async fn is_verified(&self) -> bool {
         let client = self.client();
         let e2ee_device_handle = spawn_tokio!(async move {
             let user_id = client.user_id().unwrap();
@@ -536,29 +510,7 @@ impl Session {
         }
     }
 
-    /// Check whether we need to proceed to session verification.
-    async fn check_verification(&self) {
-        let imp = self.imp();
-
-        if self.is_verified().await {
-            self.mark_ready().await;
-            return;
-        }
-
-        imp.logout_on_dispose.set(true);
-
-        self.create_session_verification().await;
-    }
-
-    pub async fn mark_ready(&self) {
-        let imp = self.imp();
-
-        imp.logout_on_dispose.set(false);
-
-        if let Some(session_verification) = imp.stack.child_by_name("session-verification") {
-            imp.stack.remove(&session_verification);
-        }
-
+    pub async fn finish_initialization(&self) {
         let obj_weak = glib::SendWeakRef::from(self.downgrade());
         self.client()
             .register_notification_handler(move |notification, _, _| {
@@ -575,8 +527,6 @@ impl Session {
                 }
             })
             .await;
-
-        self.set_state(SessionState::Ready);
     }
 
     /// The current settings for this session.
@@ -697,11 +647,11 @@ impl Session {
                 self.verification_list()
                     .handle_response_to_device(response.to_device);
 
-                if self.state() < SessionState::Verification {
-                    self.set_state(SessionState::Verification);
+                if self.state() < SessionState::Ready {
+                    self.set_state(SessionState::Ready);
 
                     spawn!(clone!(@weak self as obj => async move {
-                        obj.check_verification().await;
+                        obj.finish_initialization().await;
                     }));
                 }
             }

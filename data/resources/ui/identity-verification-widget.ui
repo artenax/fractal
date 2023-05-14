@@ -345,16 +345,6 @@
                         <property name="justify">center</property>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkButton" id="done_btn">
-                        <property name="label" translatable="yes">Done</property>
-                        <property name="halign">center</property>
-                        <style>
-                          <class name="suggested-action"/>
-                          <class name="pill"/>
-                        </style>
-                      </object>
-                    </child>
                   </object>
                 </property>
               </object>

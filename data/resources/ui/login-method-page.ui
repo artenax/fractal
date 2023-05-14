@@ -56,7 +56,7 @@
                                 <lookup name="login">LoginMethodPage</lookup>
                               </lookup>
                             </binding>
-                            <property name="ellipsize">center</property>
+                            <property name="ellipsize">end</property>
                           </object>
                         </child>
                       </object>
@@ -122,6 +122,7 @@
                   <object class="SpinnerButton" id="next_button">
                     <property name="label" translatable="yes">Next</property>
                     <property name="halign">center</property>
+                    <signal name="clicked" handler="login_with_password" swapped="yes"/>
                     <style>
                       <class name="suggested-action"/>
                       <class name="standalone-button"/>

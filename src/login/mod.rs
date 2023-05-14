@@ -21,8 +21,8 @@ use self::{
     method_page::LoginMethodPage, sso_page::LoginSsoPage,
 };
 use crate::{
-    secret, spawn, spawn_tokio, toast, user_facing_error::UserFacingError, Application, Session,
-    Window, RUNTIME,
+    secret, session::SessionVerification, spawn, spawn_tokio, toast,
+    user_facing_error::UserFacingError, Application, Session, Window, RUNTIME,
 };
 
 #[derive(Clone, Debug, glib::Boxed)]
@@ -39,6 +39,12 @@ enum LoginPage {
     Method,
     /// The page to wait for SSO to be finished.
     Sso,
+    /// The loading page.
+    Loading,
+    /// The session verification stack.
+    SessionVerification,
+    /// The login is completed.
+    Completed,
 }
 
 mod imp {
@@ -52,10 +58,6 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/login.ui")]
     pub struct Login {
-        /// The Matrix client.
-        pub client: RefCell<Option<Client>>,
-        /// The ID of the session that is currently logging in.
-        pub current_session_id: RefCell<Option<String>>,
         #[template_child]
         pub back_button: TemplateChild<gtk::Button>,
         #[template_child]
@@ -68,6 +70,8 @@ mod imp {
         pub sso_page: TemplateChild<LoginSsoPage>,
         #[template_child]
         pub offline_banner: TemplateChild<adw::Banner>,
+        #[template_child]
+        pub done_button: TemplateChild<gtk::Button>,
         pub prepared_source_id: RefCell<Option<SignalHandlerId>>,
         pub logged_out_source_id: RefCell<Option<SignalHandlerId>>,
         pub ready_source_id: RefCell<Option<SignalHandlerId>>,
@@ -79,6 +83,10 @@ mod imp {
         pub domain: RefCell<Option<OwnedServerName>>,
         /// The URL of the homeserver to log into.
         pub homeserver: RefCell<Option<Url>>,
+        /// The Matrix client used to log in.
+        pub client: RefCell<Option<Client>>,
+        /// The session that was just logged in.
+        pub session: RefCell<Option<Session>>,
     }
 
     #[glib::object_subclass]
@@ -89,10 +97,11 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
+
             klass.set_css_name("login");
             klass.set_accessible_role(gtk::AccessibleRole::Group);
 
-            klass.install_action("login.prev", None, move |widget, _, _| widget.go_previous());
             klass.install_action("login.sso", Some("ms"), move |widget, _, variant| {
                 let idp_id = variant.and_then(|v| v.get::<Option<String>>()).flatten();
                 spawn!(clone!(@weak widget => async move {
@@ -172,7 +181,10 @@ mod imp {
         }
 
         fn dispose(&self) {
-            self.obj().prune_client();
+            let obj = self.obj();
+
+            obj.drop_client();
+            obj.drop_session();
         }
     }
 
@@ -187,6 +199,7 @@ glib::wrapper! {
         @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
 }
 
+#[gtk::template_callbacks]
 impl Login {
     pub fn new() -> Self {
         glib::Object::new()
@@ -199,21 +212,21 @@ impl Login {
     }
 
     /// The Matrix client.
-    pub fn client(&self) -> Option<Client> {
-        self.imp().client.borrow().clone()
-    }
-
-    pub fn prune_client(&self) {
-        if let Some(client) = self.imp().client.take() {
-            // The `Client` needs to access a tokio runtime when it is dropped.
-            let guard = RUNTIME.enter();
-            RUNTIME.block_on(async move {
-                drop(client);
-                drop(guard);
-            });
+    pub async fn client(&self) -> Option<Client> {
+        if let Some(client) = self.imp().client.borrow().clone() {
+            return Some(client);
         }
+
+        // If the client was dropped, try to recreate it.
+        self.imp().homeserver_page.check_homeserver().await;
+        if let Some(client) = self.imp().client.borrow().clone() {
+            return Some(client);
+        }
+
+        None
     }
 
+    /// Set the Matrix client.
     async fn set_client(&self, client: Option<Client>) {
         let homeserver = if let Some(client) = client.clone() {
             Some(
@@ -229,16 +242,23 @@ impl Login {
         self.imp().client.replace(client);
     }
 
-    /// The ID of the session that is currently logging in.
-    ///
-    /// This will be set until the session is marked as `ready`.
-    pub fn current_session_id(&self) -> Option<String> {
-        self.imp().current_session_id.borrow().clone()
+    /// Drop the Matrix client.
+    pub fn drop_client(&self) {
+        if let Some(client) = self.imp().client.take() {
+            // The `Client` needs to access a tokio runtime when it is dropped.
+            let guard = RUNTIME.enter();
+            RUNTIME.block_on(async move {
+                drop(client);
+                drop(guard);
+            });
+        }
     }
 
-    /// Set the ID of the session that is currently logging in.
-    pub fn set_current_session_id(&self, session_id: Option<String>) {
-        self.imp().current_session_id.replace(session_id);
+    /// Drop the session and clean up its data from the system.
+    fn drop_session(&self) {
+        if let Some(session) = self.imp().session.take() {
+            glib::MainContext::default().block_on(session.logout());
+        }
     }
 
     /// The domain of the homeserver to log into.
@@ -339,33 +359,60 @@ impl Login {
 
     /// Set the visible page of the login stack.
     fn set_visible_child(&self, visible_child: LoginPage) {
-        // Clean up the created client when we come back to the homeserver selection.
-        if visible_child == LoginPage::Homeserver {
-            self.prune_client();
-        }
-
         self.imp()
             .main_stack
             .set_visible_child_name(visible_child.as_ref());
     }
 
-    fn go_previous(&self) {
+    /// The page to go back to for the current login stack page.
+    fn previous_page(&self) -> Option<LoginPage> {
         match self.visible_child() {
-            LoginPage::Method => {
-                self.set_visible_child(LoginPage::Homeserver);
+            LoginPage::Homeserver => None,
+            LoginPage::Method => Some(LoginPage::Homeserver),
+            LoginPage::Sso | LoginPage::Loading | LoginPage::SessionVerification => {
+                if self.supports_password() {
+                    Some(LoginPage::Method)
+                } else {
+                    Some(LoginPage::Homeserver)
+                }
+            }
+            // The go-back button should be deactivated.
+            LoginPage::Completed => None,
+        }
+    }
+
+    /// Go back to the previous step.
+    #[template_callback]
+    fn go_previous(&self) {
+        let session_verification = self.session_verification();
+        if let Some(session_verification) = &session_verification {
+            if session_verification.go_previous() {
+                // The session verification handled the action.
+                return;
+            }
+        }
+
+        let Some(previous_page) = self.previous_page() else {
+            self.parent_window().switch_to_greeter_page();
+            self.clean();
+            return;
+        };
+
+        self.set_visible_child(previous_page);
+
+        match previous_page {
+            LoginPage::Homeserver => {
+                // Drop the client because it is bound to the homeserver.
+                self.drop_client();
+                // Drop the session because it is bound to the homeserver and account.
+                self.drop_session();
                 self.imp().method_page.clean();
             }
-            LoginPage::Sso => {
-                self.set_visible_child(if self.supports_password() {
-                    LoginPage::Method
-                } else {
-                    LoginPage::Homeserver
-                });
+            LoginPage::Method => {
+                // Drop the session because it is bound to the account.
+                self.drop_session();
             }
-            _ => {
-                self.parent_window().switch_to_greeter_page();
-                self.clean();
-            }
+            _ => {}
         }
     }
 
@@ -391,7 +438,7 @@ impl Login {
     /// Log in with the SSO login type.
     async fn login_with_sso(&self, idp_id: Option<String>) {
         self.set_visible_child(LoginPage::Sso);
-        let client = self.client().unwrap();
+        let client = self.client().await.unwrap();
 
         let handle = spawn_tokio!(async move {
             let mut login = client
@@ -433,7 +480,7 @@ impl Login {
 
     /// Handle the given response after successfully logging in.
     async fn handle_login_response(&self, response: login::v3::Response) {
-        let client = self.client().unwrap();
+        let client = self.client().await.unwrap();
         // The homeserver could have changed with the login response so get it from the
         // Client.
         let homeserver = spawn_tokio!(async move { client.homeserver().await })
@@ -445,22 +492,18 @@ impl Login {
                 self.init_session(session).await;
             }
             Err(error) => {
-                warn!("Failed to create new client: {error}");
+                warn!("Failed to create session: {error}");
                 toast!(self, error.to_user_facing());
+
+                self.go_previous();
             }
         }
     }
 
-    /// Restore a matrix client with the current settings.
-    ///
-    /// This is necessary when going back from a cancelled verification after a
-    /// successful login, because we can't reuse a logged-out Matrix client.
-    pub fn restore_client(&self) {
-        self.imp().homeserver_page.fetch_homeserver_details();
-    }
-
     pub async fn init_session(&self, session: Session) {
-        self.prune_client();
+        self.set_visible_child(LoginPage::Loading);
+        self.drop_client();
+        self.imp().session.replace(Some(session.clone()));
 
         // Save ID of logging in session to GSettings
         let settings = Application::default().settings();
@@ -482,33 +525,79 @@ impl Login {
             return;
         }
 
-        // Clean the `Login` when the session is ready because we won't need
-        // to restore it anymore.
         session.connect_ready(clone!(@weak self as obj => move |_| {
-            obj.clean();
+            spawn!(clone!(@weak obj => async move {
+                obj.check_verification().await;
+            }));
         }));
-
         session.prepare().await;
-        self.parent_window().add_session(&session);
     }
 
+    /// Check whether the logged in session needs to be verified.
+    async fn check_verification(&self) {
+        let imp = self.imp();
+        let session = imp.session.borrow().clone().unwrap();
+
+        if session.is_verified().await {
+            self.finish_login();
+            return;
+        }
+
+        let stack = &imp.main_stack;
+        let widget = SessionVerification::new(self, &session);
+        stack.add_named(&widget, Some(LoginPage::SessionVerification.as_ref()));
+        stack.set_visible_child(&widget);
+    }
+
+    /// Get the session verification, if any.
+    fn session_verification(&self) -> Option<SessionVerification> {
+        self.imp()
+            .main_stack
+            .child_by_name(LoginPage::SessionVerification.as_ref())
+            .and_downcast()
+    }
+
+    /// Show the completed page.
+    #[template_callback]
+    pub fn show_completed(&self) {
+        let imp = self.imp();
+
+        imp.back_button.set_visible(false);
+        self.set_visible_child(LoginPage::Completed);
+        imp.done_button.grab_focus();
+    }
+
+    /// Finish the login process and show the session.
+    #[template_callback]
+    fn finish_login(&self) {
+        let session = self.imp().session.take().unwrap();
+        self.parent_window().add_session(&session);
+
+        self.clean();
+    }
+
+    /// Reset the login stack.
     pub fn clean(&self) {
         let imp = self.imp();
 
         // Clean pages.
         imp.homeserver_page.clean();
         imp.method_page.clean();
+        if let Some(session_verification) = self.session_verification() {
+            imp.main_stack.remove(&session_verification);
+        }
 
         // Clean data.
-        self.set_current_session_id(None);
-        self.prune_client();
         self.set_autodiscovery(true);
         self.set_login_types(vec![]);
         self.set_domain(None);
         self.set_homeserver(None);
+        self.drop_client();
+        self.drop_session();
 
         // Reinitialize UI.
         self.set_visible_child(LoginPage::Homeserver);
+        imp.back_button.set_visible(true);
         self.unfreeze();
     }
 

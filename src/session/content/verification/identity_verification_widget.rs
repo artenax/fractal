@@ -11,6 +11,7 @@ use crate::{
     components::SpinnerButton,
     contrib::{QRCode, QRCodeExt, QrCodeScanner},
     gettext_f,
+    login::Login,
     session::{
         user::UserExt,
         verification::{
@@ -56,8 +57,6 @@ mod imp {
         pub main_stack: TemplateChild<gtk::Stack>,
         #[template_child]
         pub qr_code_scanner: TemplateChild<QrCodeScanner>,
-        #[template_child]
-        pub done_btn: TemplateChild<gtk::Button>,
         pub state_handler: RefCell<Option<SignalHandlerId>>,
         pub name_handler: RefCell<Option<SignalHandlerId>>,
         pub supported_methods_handler: RefCell<Option<SignalHandlerId>>,
@@ -93,6 +92,8 @@ mod imp {
         pub wait_for_other_party_instructions: TemplateChild<gtk::Label>,
         #[template_child]
         pub confirm_scanned_qr_code_question: TemplateChild<gtk::Label>,
+        /// The ancestor login view, if this verification happens during login.
+        pub login: glib::WeakRef<Login>,
     }
 
     #[glib::object_subclass]
@@ -122,6 +123,9 @@ mod imp {
                     glib::ParamSpecObject::builder::<IdentityVerification>("request")
                         .explicit_notify()
                         .build(),
+                    glib::ParamSpecObject::builder::<Login>("login")
+                        .explicit_notify()
+                        .build(),
                 ]
             });
 
@@ -131,6 +135,7 @@ mod imp {
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "request" => self.obj().set_request(value.get().unwrap()),
+                "login" => self.obj().set_login(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -138,6 +143,7 @@ mod imp {
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "request" => self.obj().request().to_value(),
+                "login" => self.obj().login().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -194,14 +200,6 @@ mod imp {
                     imp.start_emoji_btn.set_sensitive(false);
                     obj.start_scanning();
                 }));
-
-            self.done_btn.connect_clicked(clone!(@weak obj => move |_| {
-                if let Some(request) = obj.request() {
-                    if request.mode() == VerificationMode::CurrentSession {
-                        obj.activate_action("session.mark-ready", None).unwrap();
-                    }
-                }
-            }));
 
             self.confirm_scanning_btn
                 .connect_clicked(clone!(@weak obj => move |button| {
@@ -261,6 +259,21 @@ glib::wrapper! {
 impl IdentityVerificationWidget {
     pub fn new(request: &IdentityVerification) -> Self {
         glib::Object::builder().property("request", request).build()
+    }
+
+    /// The ancestor login view, if this verification happens during login.
+    pub fn login(&self) -> Option<Login> {
+        self.imp().login.upgrade()
+    }
+
+    /// Set the ancestor login view.
+    pub fn set_login(&self, login: Option<Login>) {
+        if self.login() == login {
+            return;
+        }
+
+        self.imp().login.set(login.as_ref());
+        self.notify("login");
     }
 
     /// The object holding the data for the verification.
@@ -507,7 +520,6 @@ impl IdentityVerificationWidget {
                 imp.completed_message.set_label(&gettext(
                     "This session is ready to send and receive secure messages.",
                 ));
-                imp.done_btn.set_label(&gettext("Get Started"));
                 imp.confirm_scanned_qr_code_question
                     .set_label(&gettext("Does the other session show a confirmation?"));
             }
@@ -618,7 +630,11 @@ impl IdentityVerificationWidget {
             }
         }
 
-        imp.main_stack.set_visible_child_name("completed");
+        if let Some(login) = self.login() {
+            login.show_completed();
+        } else {
+            imp.main_stack.set_visible_child_name("completed");
+        }
     }
 }
 

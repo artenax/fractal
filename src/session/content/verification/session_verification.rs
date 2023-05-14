@@ -6,10 +6,8 @@ use log::{debug, error};
 use super::IdentityVerificationWidget;
 use crate::{
     components::{AuthDialog, AuthError, SpinnerButton},
-    session::{
-        verification::{IdentityVerification, VerificationState},
-        UserExt,
-    },
+    login::Login,
+    session::verification::{IdentityVerification, VerificationState},
     spawn, spawn_tokio, toast, Session, Window,
 };
 
@@ -36,9 +34,10 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/session-verification.ui")]
     pub struct SessionVerification {
         pub request: RefCell<Option<IdentityVerification>>,
+        /// The ancestor login view.
+        pub login: WeakRef<Login>,
+        /// The current session.
         pub session: WeakRef<Session>,
-        #[template_child]
-        pub header_title: TemplateChild<gtk::Label>,
         #[template_child]
         pub main_stack: TemplateChild<gtk::Stack>,
         #[template_child]
@@ -61,10 +60,6 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
-
-            klass.install_action("session-verification.previous", None, move |obj, _, _| {
-                obj.previous();
-            });
 
             klass.install_action(
                 "session-verification.show-recovery",
@@ -92,24 +87,35 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::builder::<Session>("session")
-                    .construct_only()
-                    .build()]
+                vec![
+                    glib::ParamSpecObject::builder::<Login>("login")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<Session>("session")
+                        .construct_only()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
         }
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
-                "session" => self.obj().set_session(value.get().unwrap()),
+                "login" => obj.set_login(value.get().unwrap()),
+                "session" => obj.set_session(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
-                "session" => self.obj().session().to_value(),
+                "login" => obj.login().to_value(),
+                "session" => obj.session().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -149,8 +155,21 @@ glib::wrapper! {
 }
 
 impl SessionVerification {
-    pub fn new(session: &Session) -> Self {
-        glib::Object::builder().property("session", session).build()
+    pub fn new(login: &Login, session: &Session) -> Self {
+        glib::Object::builder()
+            .property("login", login)
+            .property("session", session)
+            .build()
+    }
+
+    /// The ancestor login view.
+    pub fn login(&self) -> Option<Login> {
+        self.imp().login.upgrade()
+    }
+
+    /// Set the ancestor login view.
+    fn set_login(&self, login: Option<Login>) {
+        self.imp().login.set(login.as_ref())
     }
 
     /// The current session.
@@ -160,15 +179,7 @@ impl SessionVerification {
 
     /// Set the current session.
     fn set_session(&self, session: Option<Session>) {
-        let imp = self.imp();
-
-        if let Some(user) = session.as_ref().and_then(|s| s.user()) {
-            imp.header_title.set_text(user.user_id().as_str())
-        } else {
-            imp.header_title.set_text("");
-        }
-
-        imp.session.set(session.as_ref())
+        self.imp().session.set(session.as_ref())
     }
 
     fn request(&self) -> Option<IdentityVerification> {
@@ -365,7 +376,11 @@ impl SessionVerification {
         self.set_request(Some(request));
     }
 
-    fn previous(&self) {
+    /// Go to the previous step.
+    ///
+    /// Return `true` if the action was handled, `false` if the stack cannot go
+    /// back.
+    pub fn go_previous(&self) -> bool {
         let imp = self.imp();
         let main_stack = &imp.main_stack;
 
@@ -373,15 +388,15 @@ impl SessionVerification {
             match child_name.as_str() {
                 "recovery" => {
                     self.start();
-                    return;
+                    return true;
                 }
                 "recovery-passphrase" | "recovery-key" => {
                     main_stack.set_visible_child_name("recovery");
-                    return;
+                    return true;
                 }
                 "bootstrap" if imp.bootstrap_can_restart.get() => {
                     self.start();
-                    return;
+                    return true;
                 }
                 _ => {}
             }
@@ -390,12 +405,13 @@ impl SessionVerification {
         if let Some(request) = self.request() {
             if request.state() == VerificationState::RequestSend {
                 self.set_request(None);
-                self.activate_action("session.logout", None).unwrap();
+                false
             } else {
                 self.start();
+                true
             }
         } else {
-            self.activate_action("session.logout", None).unwrap();
+            false
         }
     }
 
@@ -430,7 +446,7 @@ impl SessionVerification {
             self.imp().bootstrap_setup_button.set_loading(false);
         } else {
             // TODO tell user that the a crypto identity was created
-            self.activate_action("session.mark-ready", None).unwrap();
+            self.login().unwrap().show_completed()
         }
     }
 }

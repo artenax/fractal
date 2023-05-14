@@ -235,7 +235,7 @@ impl LoginMethodPage {
         let username = self.username();
         let password = self.password();
 
-        let client = login.client().unwrap();
+        let client = login.client().await.unwrap();
         let handle = spawn_tokio!(async move {
             client
                 .login_username(&username, &password)
@@ -255,7 +255,7 @@ impl LoginMethodPage {
         }
 
         imp.next_button.set_loading(false);
-        login.freeze();
+        login.unfreeze();
     }
 
     /// Reset this page.

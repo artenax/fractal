@@ -41,6 +41,7 @@ data/resources/ui/login-advanced-dialog.ui
 data/resources/ui/login-homeserver-page.ui
 data/resources/ui/login-method-page.ui
 data/resources/ui/login-sso-page.ui
+data/resources/ui/login.ui
 data/resources/ui/member-menu.ui
 data/resources/ui/room-creation.ui
 data/resources/ui/session-verification.ui

@@ -5,379 +5,348 @@
       <class name="session-verification"/>
     </style>
     <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
+      <object class="GtkStack" id="main_stack">
+        <property name="transition-type">crossfade</property>
+        <property name="vexpand">True</property>
+        <property name="margin-top">24</property>
+        <property name="margin-bottom">24</property>
         <child>
-          <object class="GtkHeaderBar">
-            <property name="show-title-buttons">True</property>
-            <style>
-              <class name="flat"/>
-            </style>
-            <child type="start">
-              <object class="GtkButton">
-                <property name="visible">True</property>
-                <property name="icon-name">go-previous-symbolic</property>
-                <property name="action-name">session-verification.previous</property>
-                <style>
-                  <class name="circular"/>
-                </style>
-              </object>
-            </child>
-            <property name="title-widget">
-              <object class="GtkLabel" id="header_title">
-                <property name="single-line-mode">True</property>
-                <property name="ellipsize">end</property>
-                <property name="width-chars">5</property>
-                <style>
-                  <class name="title"/>
-                </style>
+          <object class="GtkStackPage">
+            <property name="name">wait-for-device</property>
+            <property name="child">
+              <object class="AdwClamp">
+                <property name="maximum-size">400</property>
+                <property name="tightening-threshold">300</property>
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">18</property>
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Get Another Device</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                        <style>
+                          <class name="title-1"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Accept the verification request from another session or device.</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkPicture">
+                        <property name="file">resource:///org/gnome/Fractal/assets/other-device.svg</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">No other devices logged into this account?</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">Recovery</property>
+                        <property name="halign">center</property>
+                        <property name="action-name">verification.show-recovery</property>
+                        <style>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">Reset</property>
+                        <property name="halign">center</property>
+                        <property name="action-name">session-verification.reset-identity</property>
+                        <style>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </property>
               </object>
             </property>
           </object>
         </child>
         <child>
-          <object class="GtkStack" id="main_stack">
-            <property name="transition-type">crossfade</property>
-            <property name="vexpand">True</property>
-            <property name="margin-top">24</property>
-            <property name="margin-bottom">24</property>
-            <child>
-              <object class="GtkStackPage">
-                <property name="name">wait-for-device</property>
+          <object class="GtkStackPage">
+            <property name="name">verification</property>
+            <property name="child">
+              <object class="IdentityVerificationWidget" id="verification_widget">
+                <property name="login" bind-source="SessionVerification" bind-property="login" bind-flags="sync-create"/>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">bootstrap</property>
+            <property name="child">
+              <object class="AdwClamp">
+                <property name="maximum-size">400</property>
+                <property name="tightening-threshold">300</property>
                 <property name="child">
-                  <object class="AdwClamp">
-                    <property name="maximum-size">400</property>
-                    <property name="tightening-threshold">300</property>
-                    <property name="child">
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">18</property>
-                        <property name="valign">center</property>
-                        <property name="halign">center</property>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">Get Another Device</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                            <style>
-                              <class name="title-1"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">Accept the verification request from another session or device.</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkPicture">
-                            <property name="file">resource:///org/gnome/Fractal/assets/other-device.svg</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">No other devices logged into this account?</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton">
-                            <property name="label" translatable="yes">Recovery</property>
-                            <property name="halign">center</property>
-                            <property name="action-name">verification.show-recovery</property>
-                            <style>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton">
-                            <property name="label" translatable="yes">Reset</property>
-                            <property name="halign">center</property>
-                            <property name="action-name">session-verification.reset-identity</property>
-                            <style>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">18</property>
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Set Up Encryption Identity</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                        <style>
+                          <class name="title-1"/>
+                        </style>
                       </object>
-                    </property>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="bootstrap_label">
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="SpinnerButton" id="bootstrap_setup_button">
+                        <property name="halign">center</property>
+                        <style>
+                          <class name="suggested-action"/>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="bootstrap_restart_button">
+                        <property name="label" translatable="yes">Restart verification</property>
+                        <property name="halign">center</property>
+                        <property name="action-name">session-verification.start</property>
+                        <style>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
                   </object>
                 </property>
               </object>
-            </child>
-            <child>
-              <object class="GtkStackPage">
-                <property name="name">verification</property>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">recovery</property>
+            <property name="child">
+              <object class="AdwClamp">
+                <property name="maximum-size">400</property>
+                <property name="tightening-threshold">300</property>
                 <property name="child">
-                  <object class="IdentityVerificationWidget" id="verification_widget"/>
-                </property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkStackPage">
-                <property name="name">bootstrap</property>
-                <property name="child">
-                  <object class="AdwClamp">
-                    <property name="maximum-size">400</property>
-                    <property name="tightening-threshold">300</property>
-                    <property name="child">
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">18</property>
-                        <property name="valign">center</property>
-                        <property name="halign">center</property>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">Set Up Encryption Identity</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                            <style>
-                              <class name="title-1"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="bootstrap_label">
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="SpinnerButton" id="bootstrap_setup_button">
-                            <property name="halign">center</property>
-                            <style>
-                              <class name="suggested-action"/>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="bootstrap_restart_button">
-                            <property name="label" translatable="yes">Restart verification</property>
-                            <property name="halign">center</property>
-                            <property name="action-name">session-verification.start</property>
-                            <style>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">18</property>
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Recovery</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                        <style>
+                          <class name="title-1"/>
+                        </style>
                       </object>
-                    </property>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Without another device you need a recovery passphrase or key to access your messages</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">Recovery Passphrase</property>
+                        <property name="halign">center</property>
+                        <style>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">Recovery Key</property>
+                        <property name="halign">center</property>
+                        <style>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">If you don’t have any of these you can reset your identity, but be aware this makes your old messages inaccessible forever.</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="halign">center</property>
+                        <property name="label" translatable="yes">Reset Identity</property>
+                        <style>
+                          <class name="destructive-action"/>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
                   </object>
                 </property>
               </object>
-            </child>
-            <child>
-              <object class="GtkStackPage">
-                <property name="name">recovery</property>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">recovery-passphrase</property>
+            <property name="child">
+              <object class="AdwClamp">
+                <property name="maximum-size">400</property>
+                <property name="tightening-threshold">300</property>
                 <property name="child">
-                  <object class="AdwClamp">
-                    <property name="maximum-size">400</property>
-                    <property name="tightening-threshold">300</property>
-                    <property name="child">
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">18</property>
-                        <property name="valign">center</property>
-                        <property name="halign">center</property>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">Recovery</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                            <style>
-                              <class name="title-1"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">Without another device you need a recovery passphrase or key to access your messages</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton">
-                            <property name="label" translatable="yes">Recovery Passphrase</property>
-                            <property name="halign">center</property>
-                            <style>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton">
-                            <property name="label" translatable="yes">Recovery Key</property>
-                            <property name="halign">center</property>
-                            <style>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">If you don’t have any of these you can reset your identity, but be aware this makes your old messages inaccessible forever.</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton">
-                            <property name="halign">center</property>
-                            <property name="label" translatable="yes">Reset Identity</property>
-                            <style>
-                              <class name="destructive-action"/>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">18</property>
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Recovery Passphrase</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                        <style>
+                          <class name="title-1"/>
+                        </style>
                       </object>
-                    </property>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Your Recovery Passphrase was set up when you first created this account.</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">If you opted for a Recovery Key instead go back and choose that option.</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwPasswordEntryRow">
+                        <style>
+                          <class name="card"/>
+                        </style>
+                        <property name="title" translatable="yes">Passphrase</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">Next</property>
+                        <property name="halign">center</property>
+                        <style>
+                          <class name="suggested-action"/>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
                   </object>
                 </property>
               </object>
-            </child>
-            <child>
-              <object class="GtkStackPage">
-                <property name="name">recovery-passphrase</property>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">recovery-key</property>
+            <property name="child">
+              <object class="AdwClamp">
+                <property name="maximum-size">400</property>
+                <property name="tightening-threshold">300</property>
                 <property name="child">
-                  <object class="AdwClamp">
-                    <property name="maximum-size">400</property>
-                    <property name="tightening-threshold">300</property>
-                    <property name="child">
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">18</property>
-                        <property name="valign">center</property>
-                        <property name="halign">center</property>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">Recovery Passphrase</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                            <style>
-                              <class name="title-1"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">Your Recovery Passphrase was set up when you first created this account.</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">If you opted for a Recovery Key instead go back and choose that option.</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="AdwPasswordEntryRow">
-                            <style>
-                              <class name="card"/>
-                            </style>
-                            <property name="title" translatable="yes">Passphrase</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton">
-                            <property name="label" translatable="yes">Next</property>
-                            <property name="halign">center</property>
-                            <style>
-                              <class name="suggested-action"/>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">18</property>
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Recovery Key</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                        <style>
+                          <class name="title-1"/>
+                        </style>
                       </object>
-                    </property>
-                  </object>
-                </property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkStackPage">
-                <property name="name">recovery-key</property>
-                <property name="child">
-                  <object class="AdwClamp">
-                    <property name="maximum-size">400</property>
-                    <property name="tightening-threshold">300</property>
-                    <property name="child">
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">18</property>
-                        <property name="valign">center</property>
-                        <property name="halign">center</property>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">Recovery Key</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                            <style>
-                              <class name="title-1"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">Your Recovery Key was set up when you first created this account.</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">If you opted for a Recovery Passphrase instead go back and choose that option.</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap-mode">word-char</property>
-                            <property name="justify">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkTextView">
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkListBox">
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Your Recovery Key was set up when you first created this account.</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">If you opted for a Recovery Passphrase instead go back and choose that option.</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">word-char</property>
+                        <property name="justify">center</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTextView">
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkListBox">
 
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton">
-                            <property name="label" translatable="yes">Next</property>
-                            <property name="halign">center</property>
-                            <style>
-                              <class name="suggested-action"/>
-                            </style>
-                          </object>
-                        </child>
                       </object>
-                    </property>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">Next</property>
+                        <property name="halign">center</property>
+                        <style>
+                          <class name="suggested-action"/>
+                        </style>
+                      </object>
+                    </child>
                   </object>
                 </property>
               </object>
-            </child>
+            </property>
           </object>
         </child>
       </object>

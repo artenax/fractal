@@ -189,17 +189,17 @@ impl LoginHomeserverPage {
     /// Fetch the login details of the homeserver.
     #[template_callback]
     pub fn fetch_homeserver_details(&self) {
-        if !self.can_go_next() {
-            return;
-        }
-
         spawn!(clone!(@weak self as obj => async move {
             obj.check_homeserver().await;
         }));
     }
 
     /// Check if the homeserver that was entered is valid.
-    async fn check_homeserver(&self) {
+    pub async fn check_homeserver(&self) {
+        if !self.can_go_next() {
+            return;
+        }
+
         let Some(login) = self.login() else {
             return;
         };
@@ -234,9 +234,9 @@ impl LoginHomeserverPage {
                     login.set_domain(None);
                 }
 
-                login.set_client(Some(client)).await;
+                login.set_client(Some(client.clone())).await;
 
-                self.homeserver_login_types().await;
+                self.homeserver_login_types(client).await;
             }
             Err(error) => {
                 if autodiscovery {
@@ -245,9 +245,6 @@ impl LoginHomeserverPage {
                     warn!("Failed to check homeserver: {error}");
                 }
                 toast!(self, error.to_user_facing());
-
-                // Clean up the created client because it's bound to the homeserver.
-                login.prune_client();
             }
         };
 
@@ -256,12 +253,11 @@ impl LoginHomeserverPage {
     }
 
     /// Fetch the login types supported by the homeserver.
-    async fn homeserver_login_types(&self) {
+    async fn homeserver_login_types(&self, client: Client) {
         let Some(login) = self.login() else {
             return;
         };
 
-        let client = login.client().unwrap();
         let handle = spawn_tokio!(async move { client.get_login_types().await });
 
         match handle.await.unwrap() {
@@ -272,6 +268,9 @@ impl LoginHomeserverPage {
             Err(error) => {
                 warn!("Failed to get available login types: {error}");
                 toast!(self, "Failed to get available login types.");
+
+                // Drop the client because it is bound to the homeserver.
+                login.drop_client();
             }
         };
     }

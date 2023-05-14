@@ -12,6 +12,7 @@ use crate::{
     components::Spinner,
     config::{APP_ID, PROFILE},
     secret::{self, SecretError, StoredSession},
+    session::SessionState,
     spawn, spawn_tokio, toast,
     user_facing_error::UserFacingError,
     Application, ErrorPage, Greeter, Login, Session,
@@ -193,18 +194,29 @@ impl Window {
             imp.sessions.set_visible_child(session);
             is_opened = true;
 
-            session.connect_ready(|session| {
+            if session.state() == SessionState::Ready {
                 session.show_content();
-            });
+            } else {
+                session.connect_ready(|session| {
+                    session.show_content();
+                });
+                self.switch_to_loading_page();
+            }
         } else if imp.waiting_sessions.get() > 0 {
             imp.waiting_sessions.set(imp.waiting_sessions.get() - 1);
         }
 
         if imp.waiting_sessions.get() == 0 && !is_opened {
             imp.sessions.set_visible_child(session);
-            session.connect_ready(|session| {
+
+            if session.state() == SessionState::Ready {
                 session.show_content();
-            });
+            } else {
+                session.connect_ready(|session| {
+                    session.show_content();
+                });
+                self.switch_to_loading_page();
+            }
         }
         // We need to grab the focus so that keyboard shortcuts work
         session.grab_focus();
@@ -216,8 +228,6 @@ impl Window {
         if !prev_has_sessions {
             self.notify("has-sessions");
         }
-
-        self.switch_to_loading_page();
     }
 
     fn remove_session(&self, session: &Session) {
@@ -225,12 +235,7 @@ impl Window {
 
         imp.sessions.remove(session);
 
-        // If the session was a new login that was logged out before being ready, go
-        // back to the login screen.
-        if imp.login.current_session_id().as_deref() == Some(session.session_id()) {
-            imp.login.restore_client();
-            self.switch_to_login_page();
-        } else if let Some(child) = imp.sessions.first_child() {
+        if let Some(child) = imp.sessions.first_child() {
             imp.sessions.set_visible_child(&child);
         } else {
             self.notify("has-sessions");
