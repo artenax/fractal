@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-05-07 09:42+0000\n"
-"PO-Revision-Date: 2023-05-07 15:50+0200\n"
+"POT-Creation-Date: 2023-05-13 14:28+0000\n"
+"PO-Revision-Date: 2023-05-14 15:35+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -150,12 +150,12 @@ msgstr ""
 "użytkownika Matrix:"
 
 #: data/resources/ui/account-settings-device-row.ui:63
-#: src/session/content/verification/identity_verification_widget.rs:531
-#: src/session/content/verification/identity_verification_widget.rs:536
-#: src/session/content/verification/identity_verification_widget.rs:539
-#: src/session/content/verification/identity_verification_widget.rs:556
-#: src/session/content/verification/identity_verification_widget.rs:560
-#: src/session/content/verification/identity_verification_widget.rs:564
+#: src/session/content/verification/identity_verification_widget.rs:494
+#: src/session/content/verification/identity_verification_widget.rs:499
+#: src/session/content/verification/identity_verification_widget.rs:502
+#: src/session/content/verification/identity_verification_widget.rs:519
+#: src/session/content/verification/identity_verification_widget.rs:523
+#: src/session/content/verification/identity_verification_widget.rs:527
 msgid "Verify Session"
 msgstr "Zweryfikuj sesję"
 
@@ -197,13 +197,17 @@ msgid "Backup Encryption Keys"
 msgstr "Wykonaj kopię zapasową kluczy szyfrowania"
 
 #: data/resources/ui/account-settings-import-export-keys-subpage.ui:80
-#: data/resources/ui/session-verification.ui:290
+#: data/resources/ui/session-verification.ui:298
 msgid "Passphrase"
 msgstr "Hasło"
 
 #: data/resources/ui/account-settings-import-export-keys-subpage.ui:97
 msgid "Confirm Passphrase"
 msgstr "Potwierdzenie hasła"
+
+#: data/resources/ui/account-settings-import-export-keys-subpage.ui:128
+msgid "File"
+msgstr "Plik"
 
 #: data/resources/ui/account-settings-import-export-keys-subpage.ui:132
 msgid "Choose…"
@@ -235,6 +239,7 @@ msgid "Advanced Information"
 msgstr "Zaawansowane informacje"
 
 #: data/resources/ui/account-settings-user-page.ui:63
+#: data/resources/ui/login-homeserver-page.ui:22
 msgid "Homeserver"
 msgstr "Serwer domowy"
 
@@ -268,6 +273,22 @@ msgstr "Eksport kluczy szyfrowania pokoju"
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:220
 msgid "Import Room Encryption Keys"
 msgstr "Import kluczy szyfrowania pokoju"
+
+#: data/resources/ui/account-settings-security-page.ui:28
+msgid "Cross-Signing"
+msgstr "Logowanie między urządzeniami"
+
+#: data/resources/ui/account-settings-security-page.ui:31
+msgid "Master key"
+msgstr "Klucz główny"
+
+#: data/resources/ui/account-settings-security-page.ui:41
+msgid "Self-signing key"
+msgstr "Samologujący się klucz"
+
+#: data/resources/ui/account-settings-security-page.ui:51
+msgid "User-signing key"
+msgstr "Klucz logujący użytkownika"
 
 #: data/resources/ui/account-settings.ui:4
 msgid "Account Settings"
@@ -351,6 +372,7 @@ msgid "No users matching the search were found."
 msgstr "Nie odnaleziono pasujących użytkowników."
 
 #: data/resources/ui/content-invite-subpage.ui:122
+#: data/resources/ui/error-page.ui:11
 msgid "Error"
 msgstr "Błąd"
 
@@ -509,6 +531,10 @@ msgstr "Nie wybrano pokoju"
 #: data/resources/ui/content.ui:37
 msgid "Join a room to start chatting."
 msgstr "Dołączenie do pokoju umożliwi rozpoczęcie rozmowy."
+
+#: data/resources/ui/error-page.ui:18
+msgid "Secret Service Error"
+msgstr "Błąd usługi Secret Service"
 
 #: data/resources/ui/error-page.ui:40
 msgid ""
@@ -694,52 +720,6 @@ msgstr "Gotowe"
 msgid "Confirm Scan"
 msgstr "Potwierdzenie zeskanowania"
 
-#: data/resources/ui/identity-verification-widget.ui:482
-msgid "Missing Cross-Signing Keys"
-msgstr "Brak kluczy logowania między urządzeniami"
-
-#: data/resources/ui/identity-verification-widget.ui:500
-msgid ""
-"Even though the verification was successful, the other device didn’t send us "
-"the necessary keys:"
-msgstr ""
-"Chociaż weryfikacja się powiodła, drugie urządzenie nie wysłało potrzebnych "
-"kluczy:"
-
-#: data/resources/ui/identity-verification-widget.ui:518
-msgid "User-signing key"
-msgstr "Klucz logujący użytkownika"
-
-#: data/resources/ui/identity-verification-widget.ui:538
-msgid "Self-signing key"
-msgstr "Samologujący się klucz"
-
-#: data/resources/ui/identity-verification-widget.ui:557
-msgid "You can wait a bit longer, or choose one of the following options:"
-msgstr "Można poczekać chwilę dłużej lub wybrać jedną z tych opcji:"
-
-#: data/resources/ui/identity-verification-widget.ui:578
-msgid "Verify your session with another device"
-msgstr "Weryfikacja sesji za pomocą innego urządzenia"
-
-#: data/resources/ui/identity-verification-widget.ui:601
-msgid "Reset cross-signing on your other device and retry verification"
-msgstr ""
-"Przywrócenie logowania między urządzeniami na drugim urządzeniu i ponowna "
-"próba weryfikacji"
-
-#: data/resources/ui/identity-verification-widget.ui:624
-msgid ""
-"Verify this session without another device, or reset cross-signing on this "
-"device"
-msgstr ""
-"Weryfikacja tej sesji bez innego urządzenia, albo przywrócenie logowania "
-"między urządzeniami na tym urządzeniu"
-
-#: data/resources/ui/identity-verification-widget.ui:633
-msgid "Restart verification"
-msgstr "Ponownie uruchom weryfikację"
-
 #: data/resources/ui/join-room-dialog.ui:4
 msgid "Join a Room"
 msgstr "Dołączenie do pokoju"
@@ -772,38 +752,45 @@ msgstr ""
 msgid "_Auto-discovery"
 msgstr "A_utomatyczne wykrywanie"
 
+#: data/resources/ui/login-homeserver-page.ui:66
+#: data/resources/ui/login-method-page.ui:123
+#: data/resources/ui/session-verification.ui:303
+#: data/resources/ui/session-verification.ui:368
+msgid "Next"
+msgstr "Dalej"
+
 #. Translators: As in 'Advanced Settings'.
-#: data/resources/ui/login-homeserver-page.ui:59
+#: data/resources/ui/login-homeserver-page.ui:80
 msgid "Advanced…"
 msgstr "Zaawansowane…"
 
-#: data/resources/ui/login-method-page.ui:37 src/login/homeserver_page.rs:112
+#: data/resources/ui/login-method-page.ui:43 src/login/homeserver_page.rs:134
 msgid "Homeserver URL"
 msgstr "Adres URL serwera domowego"
 
-#: data/resources/ui/login-method-page.ui:60
+#: data/resources/ui/login-method-page.ui:71
 msgid "Matrix Username"
 msgstr "Nazwa użytkownika Matrix"
 
-#: data/resources/ui/login-method-page.ui:72
+#: data/resources/ui/login-method-page.ui:85
 msgid "Password"
 msgstr "Hasło"
 
-#: data/resources/ui/login-method-page.ui:78
+#: data/resources/ui/login-method-page.ui:93
 msgid "_Forgot Password?"
 msgstr "_Nie pamiętasz hasła?"
 
-#: data/resources/ui/login-method-page.ui:100
+#: data/resources/ui/login-method-page.ui:116
 msgid "More SSO Providers"
 msgstr "Więcej dostawców pojedynczego logowania"
 
-#: data/resources/ui/login-sso-page.ui:21
+#: data/resources/ui/login-sso-page.ui:25
+msgid "Single Sign-On"
+msgstr "Pojedyncze logowanie"
+
+#: data/resources/ui/login-sso-page.ui:36
 msgid "Please follow the steps in the browser."
 msgstr "Proszę wykonać te kroki w przeglądarce."
-
-#: data/resources/ui/login.ui:23
-msgid "_Next"
-msgstr "_Dalej"
 
 #: data/resources/ui/member-menu.ui:6
 msgid "_Verify"
@@ -877,12 +864,12 @@ msgid "_Create Room"
 msgstr "_Utwórz pokój"
 
 #: data/resources/ui/session-verification.ui:59
-#: src/session/content/verification/identity_verification_widget.rs:573
+#: src/session/content/verification/identity_verification_widget.rs:536
 msgid "Get Another Device"
 msgstr "Inne urządzenie"
 
 #: data/resources/ui/session-verification.ui:70
-#: src/session/content/verification/identity_verification_widget.rs:575
+#: src/session/content/verification/identity_verification_widget.rs:538
 msgid "Accept the verification request from another session or device."
 msgstr "Proszę przyjąć prośbę o weryfikację z innej sesji lub urządzenia."
 
@@ -891,32 +878,25 @@ msgid "No other devices logged into this account?"
 msgstr "Żadne inne urządzenia nie są zalogowane na tym koncie?"
 
 #: data/resources/ui/session-verification.ui:91
-#: data/resources/ui/session-verification.ui:186
+#: data/resources/ui/session-verification.ui:194
 msgid "Recovery"
 msgstr "Odzyskiwanie"
 
 #: data/resources/ui/session-verification.ui:101
-#: src/session/content/verification/session_verification.rs:249
+#: src/session/content/verification/session_verification.rs:269
+#: src/session/content/verification/session_verification.rs:277
 msgid "Reset"
 msgstr "Przywróć"
 
 #: data/resources/ui/session-verification.ui:138
-msgid "Setup Encryption Identity"
-msgstr "Konfiguracja tożsamości szyfrowania"
+msgid "Set Up Encryption Identity"
+msgstr "Skonfiguruj tożsamość szyfrowania"
 
-#: data/resources/ui/session-verification.ui:149
-msgid ""
-"You need to setup an encryption identity, since this is the first time you "
-"logged into your account."
-msgstr ""
-"Należy skonfigurować tożsamość szyfrowania, jako że to pierwsze logowanie na "
-"tym koncie."
+#: data/resources/ui/session-verification.ui:165
+msgid "Restart verification"
+msgstr "Ponownie uruchom weryfikację"
 
-#: data/resources/ui/session-verification.ui:157
-msgid "Setup"
-msgstr "Konfiguracja"
-
-#: data/resources/ui/session-verification.ui:197
+#: data/resources/ui/session-verification.ui:205
 msgid ""
 "Without another device you need a recovery passphrase or key to access your "
 "messages"
@@ -924,17 +904,17 @@ msgstr ""
 "Bez innego urządzenia potrzebne jest hasło lub klucz odzyskiwania, aby "
 "uzyskać dostęp do wiadomości"
 
-#: data/resources/ui/session-verification.ui:205
-#: data/resources/ui/session-verification.ui:260
+#: data/resources/ui/session-verification.ui:213
+#: data/resources/ui/session-verification.ui:268
 msgid "Recovery Passphrase"
 msgstr "Hasło odzyskiwania"
 
-#: data/resources/ui/session-verification.ui:214
-#: data/resources/ui/session-verification.ui:324
+#: data/resources/ui/session-verification.ui:222
+#: data/resources/ui/session-verification.ui:332
 msgid "Recovery Key"
 msgstr "Klucz odzyskiwania"
 
-#: data/resources/ui/session-verification.ui:223
+#: data/resources/ui/session-verification.ui:231
 msgid ""
 "If you don’t have any of these you can reset your identity, but be aware "
 "this makes your old messages inaccessible forever."
@@ -942,32 +922,27 @@ msgstr ""
 "Jeśli nie ma żadnego z nich, można przywrócić swoją tożsamość, ale należy "
 "pamiętać, że spowoduje to utratę dostępu do starych wiadomości na zawsze."
 
-#: data/resources/ui/session-verification.ui:232
+#: data/resources/ui/session-verification.ui:240
 msgid "Reset Identity"
 msgstr "Przywróć tożsamość"
 
-#: data/resources/ui/session-verification.ui:271
+#: data/resources/ui/session-verification.ui:279
 msgid ""
 "Your Recovery Passphrase was set up when you first created this account."
 msgstr ""
 "Hasło odzyskiwania zostało skonfigurowane podczas tworzenia tego konta."
 
-#: data/resources/ui/session-verification.ui:279
+#: data/resources/ui/session-verification.ui:287
 msgid "If you opted for a Recovery Key instead go back and choose that option."
 msgstr ""
 "Jeśli zdecydowano się na klucz odzyskiwania zamiast hasła, należy wrócić "
 "i wybrać tę opcję."
 
-#: data/resources/ui/session-verification.ui:295
-#: data/resources/ui/session-verification.ui:360
-msgid "Next"
-msgstr "Dalej"
-
-#: data/resources/ui/session-verification.ui:335
+#: data/resources/ui/session-verification.ui:343
 msgid "Your Recovery Key was set up when you first created this account."
 msgstr "Klucz odzyskiwania został skonfigurowany podczas tworzenia tego konta."
 
-#: data/resources/ui/session-verification.ui:343
+#: data/resources/ui/session-verification.ui:351
 msgid ""
 "If you opted for a Recovery Passphrase instead go back and choose that "
 "option."
@@ -1145,35 +1120,35 @@ msgstr "Pomyślnie usunięto sesję."
 msgid "Could not remove session from secret storage"
 msgstr "Nie można usunąć sesji z przechowalni haseł"
 
-#: src/greeter.rs:77 src/login/mod.rs:688 src/window.rs:408
+#: src/greeter.rs:77 src/login/mod.rs:576 src/window.rs:405
 msgid "No network connection"
 msgstr "Brak połączenia z siecią"
 
-#: src/greeter.rs:81 src/login/mod.rs:693 src/window.rs:412
+#: src/greeter.rs:81 src/login/mod.rs:581 src/window.rs:409
 msgid "No Internet connection"
 msgstr "Brak połączenia z Internetem"
 
-#: src/login/homeserver_page.rs:107
+#: src/login/homeserver_page.rs:129
 msgid "Domain Name"
 msgstr "Nazwa domeny"
 
-#: src/login/homeserver_page.rs:109
+#: src/login/homeserver_page.rs:131
 msgid "The domain of your Matrix homeserver, for example gnome.org"
 msgstr "Domena serwera domowego Matrix, na przykład gnome.org"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/login/homeserver_page.rs:116
+#: src/login/homeserver_page.rs:138
 msgid "The URL of your Matrix homeserver, for example {address}"
 msgstr "Adres URL serwera domowego Matrix, na przykład {address}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/login/method_page.rs:159
-msgid "Connecting to {domain_name}"
-msgstr "Łączenie z domeną {domain_name}"
+#: src/login/method_page.rs:151
+msgid "Log in to {domain_name}"
+msgstr "Logowanie do {domain_name}"
 
-#: src/login/mod.rs:614
+#: src/login/mod.rs:509
 msgid "Unable to store session"
 msgstr "Nie można przechować sesji"
 
@@ -1490,6 +1465,14 @@ msgstr "Hasło nie zgadza się z hasłem użytym do wyeksportowania kluczy."
 msgid "Could not import the keys"
 msgstr "Nie można zaimportować kluczy"
 
+#: src/session/account_settings/security_page/mod.rs:170
+msgid "Available"
+msgstr "Dostępny"
+
+#: src/session/account_settings/security_page/mod.rs:174
+msgid "Not available"
+msgstr "Niedostępny"
+
 #: src/session/account_settings/user_page/change_password_subpage.rs:172
 msgid "Password must be at least 8 characters long"
 msgstr "Hasło musi mieć co najmniej 8 znaków"
@@ -1534,41 +1517,41 @@ msgstr "Pomyślnie zdezaktywowano konto"
 msgid "Could not deactivate account"
 msgstr "Nie można zdezaktywować konta"
 
-#: src/session/account_settings/user_page/mod.rs:222
+#: src/session/account_settings/user_page/mod.rs:219
 #: src/session/content/room_details/general_page/mod.rs:231
 msgid "Avatar removed successfully"
 msgstr "Pomyślnie usunięto awatar"
 
-#: src/session/account_settings/user_page/mod.rs:224
+#: src/session/account_settings/user_page/mod.rs:221
 #: src/session/content/room_details/general_page/mod.rs:233
 msgid "Avatar changed successfully"
 msgstr "Pomyślnie zmieniono awatar"
 
-#: src/session/account_settings/user_page/mod.rs:237
+#: src/session/account_settings/user_page/mod.rs:234
 #: src/session/content/room_details/general_page/mod.rs:252
 msgid "Could not load file"
 msgstr "Nie można wczytać pliku"
 
-#: src/session/account_settings/user_page/mod.rs:252
+#: src/session/account_settings/user_page/mod.rs:249
 #: src/session/content/room_details/general_page/mod.rs:273
 msgid "Could not upload avatar"
 msgstr "Nie można przesłać awatara"
 
-#: src/session/account_settings/user_page/mod.rs:281
+#: src/session/account_settings/user_page/mod.rs:278
 #: src/session/content/room_details/general_page/mod.rs:293
 msgid "Could not change avatar"
 msgstr "Nie można zmienić awatara"
 
-#: src/session/account_settings/user_page/mod.rs:315
+#: src/session/account_settings/user_page/mod.rs:312
 #: src/session/content/room_details/general_page/mod.rs:323
 msgid "Could not remove avatar"
 msgstr "Nie można usunąć awatara"
 
-#: src/session/account_settings/user_page/mod.rs:354
+#: src/session/account_settings/user_page/mod.rs:351
 msgid "Name changed successfully"
 msgstr "Pomyślnie zmieniono nazwę"
 
-#: src/session/account_settings/user_page/mod.rs:395
+#: src/session/account_settings/user_page/mod.rs:392
 msgid "Could not change display name"
 msgstr "Nie można zmienić wyświetlanej nazwy"
 
@@ -1612,15 +1595,15 @@ msgstr "Wykluczono"
 msgid "Invited"
 msgstr "Zaproszono"
 
-#: src/session/content/room_details/member_page/mod.rs:281
+#: src/session/content/room_details/member_page/mod.rs:287
 msgid "Invited Room Members"
 msgstr "Zaproszeni członkowie pokoju"
 
-#: src/session/content/room_details/member_page/mod.rs:282
+#: src/session/content/room_details/member_page/mod.rs:288
 msgid "Banned Room Members"
 msgstr "Wykluczeni członkowie pokoju"
 
-#: src/session/content/room_details/member_page/mod.rs:283
+#: src/session/content/room_details/member_page/mod.rs:289
 #: src/session/content/room_details/mod.rs:217
 msgid "Room Members"
 msgstr "Członkowie pokoju"
@@ -1925,17 +1908,17 @@ msgstr "{user_name} prosi o weryfikację"
 msgid "Verification in progress"
 msgstr "Trwa weryfikacja"
 
-#: src/session/content/verification/identity_verification_widget.rs:530
-#: src/session/content/verification/identity_verification_widget.rs:555
+#: src/session/content/verification/identity_verification_widget.rs:493
+#: src/session/content/verification/identity_verification_widget.rs:518
 msgid "Verify the new session from the current session."
 msgstr "Proszę zweryfikować nową sesję z obecnej."
 
-#: src/session/content/verification/identity_verification_widget.rs:533
+#: src/session/content/verification/identity_verification_widget.rs:496
 msgid "Scan the QR code from another session logged into this account."
 msgstr "Proszę zeskanować kod QR z innej sesji zalogowanej do tego konta."
 
-#: src/session/content/verification/identity_verification_widget.rs:535
-#: src/session/content/verification/identity_verification_widget.rs:559
+#: src/session/content/verification/identity_verification_widget.rs:498
+#: src/session/content/verification/identity_verification_widget.rs:522
 msgid ""
 "You scanned the QR code successfully. You may need to confirm the "
 "verification from the other session."
@@ -1943,64 +1926,64 @@ msgstr ""
 "Pomyślnie zeskanowano kod QR. Być może trzeba potwierdzić weryfikację "
 "z drugiej sesji."
 
-#: src/session/content/verification/identity_verification_widget.rs:538
+#: src/session/content/verification/identity_verification_widget.rs:501
 msgid "Scan this QR code from the other session."
 msgstr "Proszę zeskanować ten kod QR z drugiej sesji."
 
-#: src/session/content/verification/identity_verification_widget.rs:541
-#: src/session/content/verification/identity_verification_widget.rs:566
+#: src/session/content/verification/identity_verification_widget.rs:504
+#: src/session/content/verification/identity_verification_widget.rs:529
 msgid "Check if the same emoji appear in the same order on the other device."
 msgstr ""
 "Proszę sprawdzić, czy te same emoji są wyświetlanej w tej samej kolejności "
 "na drugim urządzeniu."
 
-#: src/session/content/verification/identity_verification_widget.rs:543
-#: src/session/content/verification/identity_verification_widget.rs:568
+#: src/session/content/verification/identity_verification_widget.rs:506
+#: src/session/content/verification/identity_verification_widget.rs:531
 msgid "Request Complete"
 msgstr "Ukończono prośbę"
 
-#: src/session/content/verification/identity_verification_widget.rs:545
+#: src/session/content/verification/identity_verification_widget.rs:508
 msgid "This session is ready to send and receive secure messages."
 msgstr ""
 "Ta sesja jest gotowa na wysyłanie i odbieranie zabezpieczonych wiadomości."
 
-#: src/session/content/verification/identity_verification_widget.rs:547
+#: src/session/content/verification/identity_verification_widget.rs:510
 msgid "Get Started"
 msgstr "Pierwsze kroki"
 
-#: src/session/content/verification/identity_verification_widget.rs:549
-#: src/session/content/verification/identity_verification_widget.rs:578
+#: src/session/content/verification/identity_verification_widget.rs:512
+#: src/session/content/verification/identity_verification_widget.rs:541
 msgid "Does the other session show a confirmation?"
 msgstr "Czy druga sesja wyświetla potwierdzenie?"
 
-#: src/session/content/verification/identity_verification_widget.rs:553
+#: src/session/content/verification/identity_verification_widget.rs:516
 msgid "Login Request From Another Session"
 msgstr "Prośba o zalogowanie z innej sesji"
 
-#: src/session/content/verification/identity_verification_widget.rs:558
+#: src/session/content/verification/identity_verification_widget.rs:521
 msgid "Scan the QR code displayed by the other session."
 msgstr "Proszę zeskanować kod QR wyświetlany przez drugą sesję."
 
-#: src/session/content/verification/identity_verification_widget.rs:562
+#: src/session/content/verification/identity_verification_widget.rs:525
 msgid "Scan this QR code from the newly logged in session."
 msgstr "Proszę zeskanować ten kod QR z nowo zalogowanej sesji."
 
-#: src/session/content/verification/identity_verification_widget.rs:570
+#: src/session/content/verification/identity_verification_widget.rs:533
 msgid "The new session is now ready to send and receive secure messages."
 msgstr ""
 "Nowa sesja jest teraz gotowa na wysyłanie i odbieranie zabezpieczonych "
 "wiadomości."
 
-#: src/session/content/verification/identity_verification_widget.rs:583
-#: src/session/content/verification/identity_verification_widget.rs:590
-#: src/session/content/verification/identity_verification_widget.rs:601
-#: src/session/content/verification/identity_verification_widget.rs:608
+#: src/session/content/verification/identity_verification_widget.rs:546
+#: src/session/content/verification/identity_verification_widget.rs:553
+#: src/session/content/verification/identity_verification_widget.rs:564
+#: src/session/content/verification/identity_verification_widget.rs:571
 msgid "Verification Request"
 msgstr "Prośba o weryfikację"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:588
+#: src/session/content/verification/identity_verification_widget.rs:551
 msgid ""
 "{user} asked to be verified. Verifying a user increases the security of the "
 "conversation."
@@ -2010,13 +1993,13 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:594
+#: src/session/content/verification/identity_verification_widget.rs:557
 msgid "Scan the QR code shown on the device of {user}."
 msgstr "Proszę zeskanować kod QR wyświetlany na urządzeniu użytkownika {user}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:599
+#: src/session/content/verification/identity_verification_widget.rs:562
 msgid ""
 "You scanned the QR code successfully. {user} may need to confirm the "
 "verification."
@@ -2026,14 +2009,14 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:605
+#: src/session/content/verification/identity_verification_widget.rs:568
 msgid "Ask {user} to scan this QR code from their session."
 msgstr ""
 "Proszę poprosić użytkownika {user} o zeskanowanie kodu QR z jego sesji."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:612
+#: src/session/content/verification/identity_verification_widget.rs:575
 msgid ""
 "Ask {user} if they see the following emoji appear in the same order on their "
 "screen."
@@ -2041,13 +2024,13 @@ msgstr ""
 "Proszę zapytać użytkownika {user}, czy widzi te emoji w tej samej kolejności "
 "na swoim ekranie."
 
-#: src/session/content/verification/identity_verification_widget.rs:616
+#: src/session/content/verification/identity_verification_widget.rs:579
 msgid "Verification Complete"
 msgstr "Ukończono weryfikację"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:619
+#: src/session/content/verification/identity_verification_widget.rs:582
 msgid ""
 "{user} is verified and you can now be sure that your communication will be "
 "private."
@@ -2057,56 +2040,69 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:623
+#: src/session/content/verification/identity_verification_widget.rs:586
 msgid "Waiting for {user}"
 msgstr "Oczekiwanie na użytkownika {user}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:629
+#: src/session/content/verification/identity_verification_widget.rs:592
 msgid "Ask {user} to accept the verification request."
 msgstr "Proszę poprosić użytkownika {user} o przyjęcie prośby o weryfikację."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:635
+#: src/session/content/verification/identity_verification_widget.rs:598
 msgid "Does {user} see a confirmation on their session?"
 msgstr "Czy użytkownik {user} widzi potwierdzenie w swojej sesji?"
 
-#. Translators: This is the tooltip when a signing key was received.
-#: src/session/content/verification/identity_verification_widget.rs:751
-msgid "Received"
-msgstr "Odebrano"
-
-#. Translators: This is the tooltip when a signing key is missing.
-#: src/session/content/verification/identity_verification_widget.rs:757
-msgid "Missing"
-msgstr "Brak"
-
-#: src/session/content/verification/session_verification.rs:246
+#: src/session/content/verification/session_verification.rs:258
 msgid ""
-"If you lost access to all other sessions you can create a new crypto "
-"identity. Be careful because this will reset all verified users and make "
-"previously encrypted conversations unreadable."
+"You need to set up an encryption identity, since this is the first time you "
+"logged into your account."
+msgstr ""
+"Należy skonfigurować tożsamość szyfrowania, jako że to pierwsze logowanie na "
+"tym koncie."
+
+#: src/session/content/verification/session_verification.rs:261
+msgid "Set Up"
+msgstr "Skonfiguruj"
+
+#: src/session/content/verification/session_verification.rs:266
+msgid ""
+"No other devices are available to verify this session. You can either "
+"restore cross-signing from another device and restart this process or reset "
+"the encryption identity."
+msgstr ""
+"Brak dostępnych innych urządzeń do weryfikacji tej sesji. Można przywrócić "
+"logowanie między urządzeniami z innego urządzenia i ponownie rozpocząć ten "
+"proces, albo przywrócić tożsamość szyfrowania."
+
+#: src/session/content/verification/session_verification.rs:274
+msgid ""
+"If you lost access to all other sessions, you can create a new encryption "
+"identity. Be careful because this will cancel the verifications of all users "
+"and sessions."
 msgstr ""
 "Jeśli utracono dostęp do wszystkich innych sesji, można utworzyć nową "
-"tożsamość kryptograficzną. Należy zachować ostrożność, ponieważ przywróci to "
-"wszystkich zweryfikowanych użytkowników i spowoduje, że poprzednio "
-"zaszyfrowane rozmowy będą nieczytelne."
+"tożsamość szyfrowania. Należy zachować ostrożność, ponieważ anuluje to "
+"weryfikację wszystkich użytkowników i sesji."
 
-#: src/session/content/verification/session_verification.rs:324
-msgid "You cancelled the authentication needed to create the encryption keys."
-msgstr "Anulowano uwierzytelnianie wymagane do utworzenia kluczy szyfrowania."
+#: src/session/content/verification/session_verification.rs:417
+msgid ""
+"You cancelled the authentication needed to create the encryption identity."
+msgstr ""
+"Anulowano uwierzytelnianie wymagane do utworzenia tożsamości szyfrowania."
 
-#: src/session/content/verification/session_verification.rs:328
-msgid "An error occurred during the creation of the encryption keys."
-msgstr "Wystąpił błąd podczas tworzenia kluczy szyfrowania."
+#: src/session/content/verification/session_verification.rs:423
+msgid "An error occurred during the creation of the encryption identity."
+msgstr "Wystąpił błąd podczas tworzenia tożsamości szyfrowania."
 
 #: src/session/join_room_dialog.rs:143
 msgid "_View"
 msgstr "_Wyświetl"
 
-#: src/session/mod.rs:713
+#: src/session/mod.rs:709
 msgid "Failed to logout the session."
 msgstr "Wylogowanie sesji się nie powiodło."
 
