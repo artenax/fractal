@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-05-11 11:35+0000\n"
-"PO-Revision-Date: 2023-05-12 21:01+0300\n"
+"POT-Creation-Date: 2023-05-13 14:28+0000\n"
+"PO-Revision-Date: 2023-05-14 14:19+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -241,6 +241,7 @@ msgid "Advanced Information"
 msgstr "Додаткова інформація"
 
 #: data/resources/ui/account-settings-user-page.ui:63
+#: data/resources/ui/login-homeserver-page.ui:22
 msgid "Homeserver"
 msgstr "Домашній сервер"
 
@@ -276,7 +277,6 @@ msgid "Import Room Encryption Keys"
 msgstr "Імпортувати ключі шифрування кімнати"
 
 #: data/resources/ui/account-settings-security-page.ui:28
-#| msgid "Missing Cross-Signing Keys"
 msgid "Cross-Signing"
 msgstr "Перехресне підписування"
 
@@ -759,42 +759,45 @@ msgstr ""
 msgid "_Auto-discovery"
 msgstr "_Автовизначення"
 
+#: data/resources/ui/login-homeserver-page.ui:66
+#: data/resources/ui/login-method-page.ui:123
+#: data/resources/ui/session-verification.ui:303
+#: data/resources/ui/session-verification.ui:368
+msgid "Next"
+msgstr "Далі"
+
 #. Translators: As in 'Advanced Settings'.
-#: data/resources/ui/login-homeserver-page.ui:59
+#: data/resources/ui/login-homeserver-page.ui:80
 msgid "Advanced…"
 msgstr "Додатково…"
 
-#: data/resources/ui/login-method-page.ui:37 src/login/homeserver_page.rs:112
+#: data/resources/ui/login-method-page.ui:43 src/login/homeserver_page.rs:134
 msgid "Homeserver URL"
 msgstr "Адреса домашнього сервера"
 
-#: data/resources/ui/login-method-page.ui:60
+#: data/resources/ui/login-method-page.ui:71
 msgid "Matrix Username"
 msgstr "Ім'я користувача Matrix"
 
-#: data/resources/ui/login-method-page.ui:72
+#: data/resources/ui/login-method-page.ui:85
 msgid "Password"
 msgstr "Пароль"
 
-#: data/resources/ui/login-method-page.ui:78
+#: data/resources/ui/login-method-page.ui:93
 msgid "_Forgot Password?"
 msgstr "За_були пароль?"
 
-#: data/resources/ui/login-method-page.ui:100
+#: data/resources/ui/login-method-page.ui:116
 msgid "More SSO Providers"
 msgstr "Додаткові надавачі SSO"
 
-#: data/resources/ui/login-sso-page.ui:21
+#: data/resources/ui/login-sso-page.ui:25
+msgid "Single Sign-On"
+msgstr "Єдина система розпізнавання"
+
+#: data/resources/ui/login-sso-page.ui:36
 msgid "Please follow the steps in the browser."
 msgstr "Будь ласка, виконайте настанови з браузера."
-
-#: data/resources/ui/login.ui:11
-msgid "Log In"
-msgstr "Увійти"
-
-#: data/resources/ui/login.ui:23
-msgid "_Next"
-msgstr "_Далі"
 
 #: data/resources/ui/member-menu.ui:6
 msgid "_Verify"
@@ -893,7 +896,6 @@ msgid "Reset"
 msgstr "Скинути"
 
 #: data/resources/ui/session-verification.ui:138
-#| msgid "Setup Encryption Identity"
 msgid "Set Up Encryption Identity"
 msgstr "Налаштовування профілю шифрування"
 
@@ -944,11 +946,6 @@ msgid ""
 msgstr ""
 "Якщо ви хочете вибрати ключ відновлення, поверніться і виберіть відповідний "
 "пункт."
-
-#: data/resources/ui/session-verification.ui:303
-#: data/resources/ui/session-verification.ui:368
-msgid "Next"
-msgstr "Далі"
 
 #: data/resources/ui/session-verification.ui:343
 msgid "Your Recovery Key was set up when you first created this account."
@@ -1131,35 +1128,36 @@ msgstr "Сеанс успішно вилучено."
 msgid "Could not remove session from secret storage"
 msgstr "Не вдалося вилучити сеанс із зашифрованого сховища"
 
-#: src/greeter.rs:77 src/login/mod.rs:688 src/window.rs:408
+#: src/greeter.rs:77 src/login/mod.rs:576 src/window.rs:405
 msgid "No network connection"
 msgstr "Немає з'єднання з мережею"
 
-#: src/greeter.rs:81 src/login/mod.rs:693 src/window.rs:412
+#: src/greeter.rs:81 src/login/mod.rs:581 src/window.rs:409
 msgid "No Internet connection"
 msgstr "Відсутнє з'єднання з інтернетом"
 
-#: src/login/homeserver_page.rs:107
+#: src/login/homeserver_page.rs:129
 msgid "Domain Name"
 msgstr "Назва домену"
 
-#: src/login/homeserver_page.rs:109
+#: src/login/homeserver_page.rs:131
 msgid "The domain of your Matrix homeserver, for example gnome.org"
 msgstr "Домен вашого домашнього сервера Matrix, наприклад gnome.org"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/login/homeserver_page.rs:116
+#: src/login/homeserver_page.rs:138
 msgid "The URL of your Matrix homeserver, for example {address}"
 msgstr "Адреса вашого домашнього сервера Matrix, наприклад {address}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/login/method_page.rs:159
-msgid "Connecting to {domain_name}"
-msgstr "Встановлюємо з'єднання із {domain_name}"
+#: src/login/method_page.rs:151
+#| msgid "Connecting to {domain_name}"
+msgid "Log in to {domain_name}"
+msgstr "Увійти до {domain_name}"
 
-#: src/login/mod.rs:614
+#: src/login/mod.rs:509
 msgid "Unable to store session"
 msgstr "Не вдалося зберегти сеанс"
 
@@ -1486,12 +1484,10 @@ msgid "Could not import the keys"
 msgstr "Не вдалося імпортувати ключі"
 
 #: src/session/account_settings/security_page/mod.rs:170
-#| msgid "No Preview Available"
 msgid "Available"
 msgstr "Доступний"
 
 #: src/session/account_settings/security_page/mod.rs:174
-#| msgid "No Preview Available"
 msgid "Not available"
 msgstr "Недоступний"
 
@@ -2075,9 +2071,6 @@ msgid "Does {user} see a confirmation on their session?"
 msgstr "Чи бачить {user} підтвердження у сеансі?"
 
 #: src/session/content/verification/session_verification.rs:258
-#| msgid ""
-#| "You need to setup an encryption identity, since this is the first time "
-#| "you logged into your account."
 msgid ""
 "You need to set up an encryption identity, since this is the first time you "
 "logged into your account."
@@ -2095,15 +2088,11 @@ msgid ""
 "restore cross-signing from another device and restart this process or reset "
 "the encryption identity."
 msgstr ""
-"Для перевірки цього сеансу немає жодного іншого пристрою. Ви можете або"
-" відновити перехресне підписування з іншого пристрою і перезапустити цей"
-" процес, або скинути профіль шифрування."
+"Для перевірки цього сеансу немає жодного іншого пристрою. Ви можете або "
+"відновити перехресне підписування з іншого пристрою і перезапустити цей "
+"процес, або скинути профіль шифрування."
 
 #: src/session/content/verification/session_verification.rs:274
-#| msgid ""
-#| "If you lost access to all other sessions you can create a new crypto "
-#| "identity. Be careful because this will reset all verified users and make "
-#| "previously encrypted conversations unreadable."
 msgid ""
 "If you lost access to all other sessions, you can create a new encryption "
 "identity. Be careful because this will cancel the verifications of all users "
@@ -2114,15 +2103,12 @@ msgstr ""
 "перевірених записів користувачів."
 
 #: src/session/content/verification/session_verification.rs:417
-#| msgid ""
-#| "You cancelled the authentication needed to create the encryption keys."
 msgid ""
 "You cancelled the authentication needed to create the encryption identity."
 msgstr ""
 "Вами скасовано розпізнавання, яке потрібне для створення профілю шифрування."
 
 #: src/session/content/verification/session_verification.rs:423
-#| msgid "An error occurred during the creation of the encryption keys."
 msgid "An error occurred during the creation of the encryption identity."
 msgstr "Під час створення профілю шифрування сталася помилка."
 
@@ -2522,6 +2508,12 @@ msgstr "Користувачем {user} надіслано наліпку."
 #: src/window.rs:287
 msgid "Failed to restore previous sessions"
 msgstr "Не вдалося відновити попередні сеанси"
+
+#~ msgid "Log In"
+#~ msgstr "Увійти"
+
+#~ msgid "_Next"
+#~ msgstr "_Далі"
 
 #~ msgid ""
 #~ "Even though the verification was successful, the other device didn’t send "
