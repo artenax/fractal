@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-05-13 14:28+0000\n"
-"PO-Revision-Date: 2023-05-14 14:19+0300\n"
+"POT-Creation-Date: 2023-05-14 14:18+0000\n"
+"PO-Revision-Date: 2023-05-15 21:51+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -152,12 +152,12 @@ msgstr ""
 "введіть свій ідентифікатор Matrix:"
 
 #: data/resources/ui/account-settings-device-row.ui:63
-#: src/session/content/verification/identity_verification_widget.rs:494
-#: src/session/content/verification/identity_verification_widget.rs:499
-#: src/session/content/verification/identity_verification_widget.rs:502
-#: src/session/content/verification/identity_verification_widget.rs:519
-#: src/session/content/verification/identity_verification_widget.rs:523
-#: src/session/content/verification/identity_verification_widget.rs:527
+#: src/session/content/verification/identity_verification_widget.rs:507
+#: src/session/content/verification/identity_verification_widget.rs:512
+#: src/session/content/verification/identity_verification_widget.rs:515
+#: src/session/content/verification/identity_verification_widget.rs:531
+#: src/session/content/verification/identity_verification_widget.rs:535
+#: src/session/content/verification/identity_verification_widget.rs:539
 msgid "Verify Session"
 msgstr "Перевірити сеанс"
 
@@ -199,7 +199,7 @@ msgid "Backup Encryption Keys"
 msgstr "Створити резервну копію ключів шифрування"
 
 #: data/resources/ui/account-settings-import-export-keys-subpage.ui:80
-#: data/resources/ui/session-verification.ui:298
+#: data/resources/ui/session-verification.ui:269
 msgid "Passphrase"
 msgstr "Пароль"
 
@@ -327,13 +327,13 @@ msgid "Authenticate via Browser"
 msgstr "Розпізнавання за допомогою браузера"
 
 #: data/resources/ui/components-auth-dialog.ui:113
-#: data/resources/ui/identity-verification-widget.ui:452
+#: data/resources/ui/identity-verification-widget.ui:442
 #: src/session/content/room_history/verification_info_bar.rs:176
 msgid "Cancel"
 msgstr "Скасувати"
 
 #: data/resources/ui/components-auth-dialog.ui:118
-#: data/resources/ui/identity-verification-widget.ui:442
+#: data/resources/ui/identity-verification-widget.ui:432
 msgid "Confirm"
 msgstr "Підтвердити"
 
@@ -717,11 +717,7 @@ msgstr "Не збігається"
 msgid "Match"
 msgstr "Збігається"
 
-#: data/resources/ui/identity-verification-widget.ui:350
-msgid "Done"
-msgstr "Виконано"
-
-#: data/resources/ui/identity-verification-widget.ui:419
+#: data/resources/ui/identity-verification-widget.ui:409
 msgid "Confirm Scan"
 msgstr "Підтвердити сканування"
 
@@ -761,8 +757,8 @@ msgstr "_Автовизначення"
 
 #: data/resources/ui/login-homeserver-page.ui:66
 #: data/resources/ui/login-method-page.ui:123
-#: data/resources/ui/session-verification.ui:303
-#: data/resources/ui/session-verification.ui:368
+#: data/resources/ui/session-verification.ui:274
+#: data/resources/ui/session-verification.ui:339
 msgid "Next"
 msgstr "Далі"
 
@@ -771,7 +767,7 @@ msgstr "Далі"
 msgid "Advanced…"
 msgstr "Додатково…"
 
-#: data/resources/ui/login-method-page.ui:43 src/login/homeserver_page.rs:134
+#: data/resources/ui/login-method-page.ui:43 src/login/homeserver_page.rs:133
 msgid "Homeserver URL"
 msgstr "Адреса домашнього сервера"
 
@@ -798,6 +794,21 @@ msgstr "Єдина система розпізнавання"
 #: data/resources/ui/login-sso-page.ui:36
 msgid "Please follow the steps in the browser."
 msgstr "Будь ласка, виконайте настанови з браузера."
+
+#: data/resources/ui/login.ui:91
+#| msgid "Scan Complete"
+msgid "Login Complete"
+msgstr "Вхід завершено"
+
+#: data/resources/ui/login.ui:107
+#: src/session/content/verification/identity_verification_widget.rs:521
+msgid "This session is ready to send and receive secure messages."
+msgstr "Цей сеанс готовий до надсилання і отримання захищених повідомлень."
+
+#: data/resources/ui/login.ui:112
+#| msgid "Start chat"
+msgid "Start Chatting"
+msgstr "Почати спілкування"
 
 #: data/resources/ui/member-menu.ui:6
 msgid "_Verify"
@@ -870,40 +881,40 @@ msgstr "Адреса кімнати"
 msgid "_Create Room"
 msgstr "С_творити кімнату"
 
-#: data/resources/ui/session-verification.ui:59
-#: src/session/content/verification/identity_verification_widget.rs:536
+#: data/resources/ui/session-verification.ui:28
+#: src/session/content/verification/identity_verification_widget.rs:548
 msgid "Get Another Device"
 msgstr "Отримати з іншого пристрою"
 
-#: data/resources/ui/session-verification.ui:70
-#: src/session/content/verification/identity_verification_widget.rs:538
+#: data/resources/ui/session-verification.ui:39
+#: src/session/content/verification/identity_verification_widget.rs:550
 msgid "Accept the verification request from another session or device."
 msgstr "Прийняти запит щодо перевірки з іншого сеансу або пристрою."
 
-#: data/resources/ui/session-verification.ui:83
+#: data/resources/ui/session-verification.ui:52
 msgid "No other devices logged into this account?"
 msgstr "З цим обліковим записом не пов'язано інших пристроїв?"
 
-#: data/resources/ui/session-verification.ui:91
-#: data/resources/ui/session-verification.ui:194
+#: data/resources/ui/session-verification.ui:60
+#: data/resources/ui/session-verification.ui:165
 msgid "Recovery"
 msgstr "Відновлення"
 
-#: data/resources/ui/session-verification.ui:101
-#: src/session/content/verification/session_verification.rs:269
-#: src/session/content/verification/session_verification.rs:277
+#: data/resources/ui/session-verification.ui:70
+#: src/session/content/verification/session_verification.rs:280
+#: src/session/content/verification/session_verification.rs:288
 msgid "Reset"
 msgstr "Скинути"
 
-#: data/resources/ui/session-verification.ui:138
+#: data/resources/ui/session-verification.ui:109
 msgid "Set Up Encryption Identity"
 msgstr "Налаштовування профілю шифрування"
 
-#: data/resources/ui/session-verification.ui:165
+#: data/resources/ui/session-verification.ui:136
 msgid "Restart verification"
 msgstr "Перезапустити перевірку"
 
-#: data/resources/ui/session-verification.ui:205
+#: data/resources/ui/session-verification.ui:176
 msgid ""
 "Without another device you need a recovery passphrase or key to access your "
 "messages"
@@ -911,17 +922,17 @@ msgstr ""
 "Без іншого пристрою вам знадобиться пароль чи ключ для відновлення для "
 "доступу до ваших повідомлень"
 
-#: data/resources/ui/session-verification.ui:213
-#: data/resources/ui/session-verification.ui:268
+#: data/resources/ui/session-verification.ui:184
+#: data/resources/ui/session-verification.ui:239
 msgid "Recovery Passphrase"
 msgstr "Пароль для відновлення"
 
-#: data/resources/ui/session-verification.ui:222
-#: data/resources/ui/session-verification.ui:332
+#: data/resources/ui/session-verification.ui:193
+#: data/resources/ui/session-verification.ui:303
 msgid "Recovery Key"
 msgstr "Ключ відновлення"
 
-#: data/resources/ui/session-verification.ui:231
+#: data/resources/ui/session-verification.ui:202
 msgid ""
 "If you don’t have any of these you can reset your identity, but be aware "
 "this makes your old messages inaccessible forever."
@@ -929,31 +940,31 @@ msgstr ""
 "Якщо у вас немає цих даних, ви можете скинути ваш профіль, але, варто "
 "зауважити, це призведе до втрати доступу до ваших старих повідомлень."
 
-#: data/resources/ui/session-verification.ui:240
+#: data/resources/ui/session-verification.ui:211
 msgid "Reset Identity"
 msgstr "Скинути профіль"
 
-#: data/resources/ui/session-verification.ui:279
+#: data/resources/ui/session-verification.ui:250
 msgid ""
 "Your Recovery Passphrase was set up when you first created this account."
 msgstr ""
 "Ваш пароль для відновлення було налаштовано під час створення цього "
 "облікового запису."
 
-#: data/resources/ui/session-verification.ui:287
+#: data/resources/ui/session-verification.ui:258
 msgid ""
 "If you opted for a Recovery Key instead go back and choose that option."
 msgstr ""
 "Якщо ви хочете вибрати ключ відновлення, поверніться і виберіть відповідний "
 "пункт."
 
-#: data/resources/ui/session-verification.ui:343
+#: data/resources/ui/session-verification.ui:314
 msgid "Your Recovery Key was set up when you first created this account."
 msgstr ""
 "Ваш ключ для відновлення було налаштовано під час створення цього облікового "
 "запису."
 
-#: data/resources/ui/session-verification.ui:351
+#: data/resources/ui/session-verification.ui:322
 msgid ""
 "If you opted for a Recovery Passphrase instead go back and choose that "
 "option."
@@ -1128,36 +1139,35 @@ msgstr "Сеанс успішно вилучено."
 msgid "Could not remove session from secret storage"
 msgstr "Не вдалося вилучити сеанс із зашифрованого сховища"
 
-#: src/greeter.rs:77 src/login/mod.rs:576 src/window.rs:405
+#: src/greeter.rs:77 src/login/mod.rs:634 src/window.rs:426
 msgid "No network connection"
 msgstr "Немає з'єднання з мережею"
 
-#: src/greeter.rs:81 src/login/mod.rs:581 src/window.rs:409
+#: src/greeter.rs:81 src/login/mod.rs:639 src/window.rs:430
 msgid "No Internet connection"
 msgstr "Відсутнє з'єднання з інтернетом"
 
-#: src/login/homeserver_page.rs:129
+#: src/login/homeserver_page.rs:128
 msgid "Domain Name"
 msgstr "Назва домену"
 
-#: src/login/homeserver_page.rs:131
+#: src/login/homeserver_page.rs:130
 msgid "The domain of your Matrix homeserver, for example gnome.org"
 msgstr "Домен вашого домашнього сервера Matrix, наприклад gnome.org"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/login/homeserver_page.rs:138
+#: src/login/homeserver_page.rs:137
 msgid "The URL of your Matrix homeserver, for example {address}"
 msgstr "Адреса вашого домашнього сервера Matrix, наприклад {address}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
 #: src/login/method_page.rs:151
-#| msgid "Connecting to {domain_name}"
 msgid "Log in to {domain_name}"
 msgstr "Увійти до {domain_name}"
 
-#: src/login/mod.rs:509
+#: src/login/mod.rs:522
 msgid "Unable to store session"
 msgstr "Не вдалося зберегти сеанс"
 
@@ -1290,7 +1300,7 @@ msgstr "Не вдалося отримати зашифровані дані у 
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:476
+#: src/secret.rs:529
 msgid "Fractal: Matrix credentials for {user_id}"
 msgstr "Фрактал: реєстраційні дані Matrix для {user_id}"
 
@@ -1923,19 +1933,19 @@ msgstr "{user_name} хоче пройти перевірку"
 msgid "Verification in progress"
 msgstr "Виконуємо перевірку"
 
-#: src/session/content/verification/identity_verification_widget.rs:493
-#: src/session/content/verification/identity_verification_widget.rs:518
+#: src/session/content/verification/identity_verification_widget.rs:506
+#: src/session/content/verification/identity_verification_widget.rs:530
 msgid "Verify the new session from the current session."
 msgstr "Перевірити новий сеанс з поточного сеансу."
 
-#: src/session/content/verification/identity_verification_widget.rs:496
+#: src/session/content/verification/identity_verification_widget.rs:509
 msgid "Scan the QR code from another session logged into this account."
 msgstr ""
 "Скануйте QR-код з іншого сеансу, де здійснено вхід до цього облікового "
 "запису."
 
-#: src/session/content/verification/identity_verification_widget.rs:498
-#: src/session/content/verification/identity_verification_widget.rs:522
+#: src/session/content/verification/identity_verification_widget.rs:511
+#: src/session/content/verification/identity_verification_widget.rs:534
 msgid ""
 "You scanned the QR code successfully. You may need to confirm the "
 "verification from the other session."
@@ -1943,62 +1953,54 @@ msgstr ""
 "Вами успішно скановано QR-код. Можливо, вам доведеться підтвердити перевірку "
 "в іншому сеансі."
 
-#: src/session/content/verification/identity_verification_widget.rs:501
+#: src/session/content/verification/identity_verification_widget.rs:514
 msgid "Scan this QR code from the other session."
 msgstr "Скануйте цей QR-код з іншого сеансу."
 
-#: src/session/content/verification/identity_verification_widget.rs:504
-#: src/session/content/verification/identity_verification_widget.rs:529
+#: src/session/content/verification/identity_verification_widget.rs:517
+#: src/session/content/verification/identity_verification_widget.rs:541
 msgid "Check if the same emoji appear in the same order on the other device."
 msgstr ""
 "Перевірте, чи ті самі емодзі було показано у тому самому порядку на іншому "
 "пристрої."
 
-#: src/session/content/verification/identity_verification_widget.rs:506
-#: src/session/content/verification/identity_verification_widget.rs:531
+#: src/session/content/verification/identity_verification_widget.rs:519
+#: src/session/content/verification/identity_verification_widget.rs:543
 msgid "Request Complete"
 msgstr "Запит завершено"
 
-#: src/session/content/verification/identity_verification_widget.rs:508
-msgid "This session is ready to send and receive secure messages."
-msgstr "Цей сеанс готовий до надсилання і отримання захищених повідомлень."
-
-#: src/session/content/verification/identity_verification_widget.rs:510
-msgid "Get Started"
-msgstr "Початок"
-
-#: src/session/content/verification/identity_verification_widget.rs:512
-#: src/session/content/verification/identity_verification_widget.rs:541
+#: src/session/content/verification/identity_verification_widget.rs:524
+#: src/session/content/verification/identity_verification_widget.rs:553
 msgid "Does the other session show a confirmation?"
 msgstr "Чи показано в іншому сеансі підтвердження?"
 
-#: src/session/content/verification/identity_verification_widget.rs:516
+#: src/session/content/verification/identity_verification_widget.rs:528
 msgid "Login Request From Another Session"
 msgstr "Запит щодо входу з іншого сеансу"
 
-#: src/session/content/verification/identity_verification_widget.rs:521
+#: src/session/content/verification/identity_verification_widget.rs:533
 msgid "Scan the QR code displayed by the other session."
 msgstr "Скануйте QR-код, який показано в іншому сеансі."
 
-#: src/session/content/verification/identity_verification_widget.rs:525
+#: src/session/content/verification/identity_verification_widget.rs:537
 msgid "Scan this QR code from the newly logged in session."
 msgstr "Скануйте цей QR-код з сеансу, до якого ви щойно увійшли."
 
-#: src/session/content/verification/identity_verification_widget.rs:533
+#: src/session/content/verification/identity_verification_widget.rs:545
 msgid "The new session is now ready to send and receive secure messages."
 msgstr ""
 "Тепер новий сеанс готовий до надсилання і отримання захищених повідомлень."
 
-#: src/session/content/verification/identity_verification_widget.rs:546
-#: src/session/content/verification/identity_verification_widget.rs:553
-#: src/session/content/verification/identity_verification_widget.rs:564
-#: src/session/content/verification/identity_verification_widget.rs:571
+#: src/session/content/verification/identity_verification_widget.rs:558
+#: src/session/content/verification/identity_verification_widget.rs:565
+#: src/session/content/verification/identity_verification_widget.rs:576
+#: src/session/content/verification/identity_verification_widget.rs:583
 msgid "Verification Request"
 msgstr "Запит щодо перевірки"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:551
+#: src/session/content/verification/identity_verification_widget.rs:563
 msgid ""
 "{user} asked to be verified. Verifying a user increases the security of the "
 "conversation."
@@ -2008,13 +2010,13 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:557
+#: src/session/content/verification/identity_verification_widget.rs:569
 msgid "Scan the QR code shown on the device of {user}."
 msgstr "Скануйте QR-код, який показано на пристрої {user}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:562
+#: src/session/content/verification/identity_verification_widget.rs:574
 msgid ""
 "You scanned the QR code successfully. {user} may need to confirm the "
 "verification."
@@ -2024,13 +2026,13 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:568
+#: src/session/content/verification/identity_verification_widget.rs:580
 msgid "Ask {user} to scan this QR code from their session."
 msgstr "Попросіть {user} сканувати цей QR-код з його/її сеансу."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:575
+#: src/session/content/verification/identity_verification_widget.rs:587
 msgid ""
 "Ask {user} if they see the following emoji appear in the same order on their "
 "screen."
@@ -2038,13 +2040,13 @@ msgstr ""
 "Запитати {user}, чи показано вказані нижче емодзі у тому самому порядку на "
 "екрані."
 
-#: src/session/content/verification/identity_verification_widget.rs:579
+#: src/session/content/verification/identity_verification_widget.rs:591
 msgid "Verification Complete"
 msgstr "Перевірку завершено"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:582
+#: src/session/content/verification/identity_verification_widget.rs:594
 msgid ""
 "{user} is verified and you can now be sure that your communication will be "
 "private."
@@ -2054,23 +2056,23 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:586
+#: src/session/content/verification/identity_verification_widget.rs:598
 msgid "Waiting for {user}"
 msgstr "Очікуємо на {user}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:592
+#: src/session/content/verification/identity_verification_widget.rs:604
 msgid "Ask {user} to accept the verification request."
 msgstr "Попросити {user} прийняти запит щодо перевірки."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:598
+#: src/session/content/verification/identity_verification_widget.rs:610
 msgid "Does {user} see a confirmation on their session?"
 msgstr "Чи бачить {user} підтвердження у сеансі?"
 
-#: src/session/content/verification/session_verification.rs:258
+#: src/session/content/verification/session_verification.rs:269
 msgid ""
 "You need to set up an encryption identity, since this is the first time you "
 "logged into your account."
@@ -2078,11 +2080,11 @@ msgstr ""
 "Вам слід налаштувати ваш профіль шифрування, оскільки ви вперше увійшли до "
 "вашого облікового запису."
 
-#: src/session/content/verification/session_verification.rs:261
+#: src/session/content/verification/session_verification.rs:272
 msgid "Set Up"
 msgstr "Налаштувати"
 
-#: src/session/content/verification/session_verification.rs:266
+#: src/session/content/verification/session_verification.rs:277
 msgid ""
 "No other devices are available to verify this session. You can either "
 "restore cross-signing from another device and restart this process or reset "
@@ -2092,7 +2094,7 @@ msgstr ""
 "відновити перехресне підписування з іншого пристрою і перезапустити цей "
 "процес, або скинути профіль шифрування."
 
-#: src/session/content/verification/session_verification.rs:274
+#: src/session/content/verification/session_verification.rs:285
 msgid ""
 "If you lost access to all other sessions, you can create a new encryption "
 "identity. Be careful because this will cancel the verifications of all users "
@@ -2102,13 +2104,13 @@ msgstr ""
 "криптопрофіль. Будьте дуже обережні, оскільки це призведе до скидання усіх "
 "перевірених записів користувачів."
 
-#: src/session/content/verification/session_verification.rs:417
+#: src/session/content/verification/session_verification.rs:433
 msgid ""
 "You cancelled the authentication needed to create the encryption identity."
 msgstr ""
 "Вами скасовано розпізнавання, яке потрібне для створення профілю шифрування."
 
-#: src/session/content/verification/session_verification.rs:423
+#: src/session/content/verification/session_verification.rs:439
 msgid "An error occurred during the creation of the encryption identity."
 msgstr "Під час створення профілю шифрування сталася помилка."
 
@@ -2472,42 +2474,48 @@ msgstr "звук"
 msgid "file"
 msgstr "файл"
 
-#: src/utils/matrix.rs:98
+#: src/utils/matrix.rs:92
 msgid "{user} sent an audio file."
 msgstr "Користувачем {user} надіслано звуковий файл."
 
-#: src/utils/matrix.rs:101 src/utils/matrix.rs:112 src/utils/matrix.rs:116
-#: src/utils/matrix.rs:120
+#: src/utils/matrix.rs:95 src/utils/matrix.rs:106 src/utils/matrix.rs:110
+#: src/utils/matrix.rs:114
 msgid "{user}: {message}"
 msgstr "{user}: {message}"
 
-#: src/utils/matrix.rs:104
+#: src/utils/matrix.rs:98
 msgid "{user} sent a file."
 msgstr "Користувачем {user} надіслано файл."
 
-#: src/utils/matrix.rs:106
+#: src/utils/matrix.rs:100
 msgid "{user} sent an image."
 msgstr "Користувачем {user} надіслано зображення."
 
-#: src/utils/matrix.rs:109
+#: src/utils/matrix.rs:103
 msgid "{user} sent their location."
 msgstr "Користувачем {user} надіслано дані щодо місця перебування."
 
-#: src/utils/matrix.rs:124
+#: src/utils/matrix.rs:118
 msgid "{user} sent a video."
 msgstr "Користувачем {user} надіслано відео."
 
-#: src/utils/matrix.rs:127
+#: src/utils/matrix.rs:121
 msgid "{user} sent a verification request."
 msgstr "Користувачем {user} надіслано запит щодо перевірки."
 
-#: src/utils/matrix.rs:135
+#: src/utils/matrix.rs:129
 msgid "{user} sent a sticker."
 msgstr "Користувачем {user} надіслано наліпку."
 
-#: src/window.rs:287
+#: src/window.rs:294
 msgid "Failed to restore previous sessions"
 msgstr "Не вдалося відновити попередні сеанси"
+
+#~ msgid "Done"
+#~ msgstr "Виконано"
+
+#~ msgid "Get Started"
+#~ msgstr "Початок"
 
 #~ msgid "Log In"
 #~ msgstr "Увійти"
@@ -2822,9 +2830,6 @@ msgstr "Не вдалося відновити попередні сеанси"
 
 #~ msgid "New direct chat"
 #~ msgstr "Новий чат"
-
-#~ msgid "Start chat"
-#~ msgstr "Почати чат"
 
 #~ msgid "Invitation"
 #~ msgstr "Запрошення"
