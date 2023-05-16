@@ -40,7 +40,7 @@ flatpak install --user gnome-nightly org.gnome.Sdk//master org.gnome.Platform//m
 flatpak install --user flathub org.freedesktop.Sdk.Extension.rust-stable//22.08
 
 # Install the required llvm extension from Flathub
-flatpak install --user flathub org.freedesktop.Sdk.Extension.llvm14//22.08
+flatpak install --user flathub org.freedesktop.Sdk.Extension.llvm15//22.08
 ```
 
 If you are building the flatpak manually you will also need flatpak-builder on your system, or the
@@ -105,7 +105,7 @@ To test changes you make to the code, re-run these three last commands.
 Some features that interact with the system require the app to be installed to test them (i.e.
 notifications, command line arguments, etc.).
 
-GNOME Builder allows to export a flatpak of the app after it has been successfully built.
+GNOME Builder can export a flatpak of the app after it has been successfully built.
 
 Fractal can then be installed with:
 
