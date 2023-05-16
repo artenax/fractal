@@ -1,3 +1,11 @@
+version = major_version
+if pre_release_version != ''
+  version += '.' + pre_release_version
+endif
+if devel_version != ''
+  version += '-' + devel_version
+endif
+
 global_conf = configuration_data()
 global_conf.set_quoted('APP_ID', application_id)
 global_conf.set_quoted('PKGDATADIR', pkgdatadir)

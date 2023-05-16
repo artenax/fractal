@@ -1,6 +1,6 @@
 project('fractal',
         'rust',
-        version: '5-alpha1',
+        version: '5.alpha1',
         license: 'GPL-3.0-or-later',
         meson_version: '>= 0.59')
 
@@ -8,7 +8,9 @@ i18n = import('i18n')
 gnome = import('gnome')
 
 base_id = 'org.gnome.Fractal'
-base_version = meson.project_version()
+
+major_version = '5'
+pre_release_version = 'alpha1'
 
 dependency('glib-2.0', version: '>= 2.72') # update when changing gtk version
 dependency('gio-2.0', version: '>= 2.72') # always same version as glib
@@ -65,15 +67,15 @@ else
 endif
 
 if is_release
-  version = base_version
+  devel_version = ''
   release_date = '' # should be unused with released versions
   application_id = base_id
 else
   vcs_tag = run_command('git', 'rev-parse', '--short', 'HEAD').stdout().strip()
   if vcs_tag == ''
-    version = '@0@+@1@'.format(base_version, profile.to_lower())
+    devel_version = profile.to_lower()
   else
-    version = '@0@+@1@'.format(base_version, vcs_tag)
+    devel_version = vcs_tag
   endif
   release_date = run_command('git', 'show', '-s', '--format=%cI').stdout().strip()
   application_id = '@0@.@1@'.format(base_id, profile)
@@ -81,7 +83,7 @@ endif
 
 meson.add_dist_script(
   'build-aux/dist-vendor.sh',
-  meson.project_build_root() / 'meson-dist' / meson.project_name() + '-' + base_version,
+  meson.project_build_root() / 'meson-dist' / meson.project_name() + '-' + major_version + '.' + pre_release_version,
   meson.project_source_root()
 )
 

@@ -29,12 +29,18 @@ endif
 if is_release
   development_release = ''
 else
+  release_version = major_version + '~'
+  if pre_release_version != ''
+    release_version += pre_release_version + '-'
+  endif
+  release_version += devel_version
+
   development_release = '''
     <release version="@0@" type="development" date="@1@">
       <description>
         <p>Development release.</p>
       </description>
-    </release>'''.format(version.replace('-', '~'), release_date)
+    </release>'''.format(release_version, release_date)
 endif
 appdata_conf = configuration_data()
 appdata_conf.set('app-id', application_id)
