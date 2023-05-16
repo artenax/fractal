@@ -51,7 +51,38 @@
   </content_rating>
 
   <releases>@development-release@
-    <release version="5~alpha1" type="development" date="2022-09-25" urgency="high">
+    <release version="5~beta1" type="development" date="2023-05-16">
+      <description>
+        <p>Fractal 5.beta1 is the first beta release since the rewrite of
+          Fractal to take advantage of GTK 4 and the Matrix Rust SDK. It is the
+          result of over two years of work.</p>
+        
+        <p>New features since Fractal 5.alpha1:</p>
+        <ul>
+          <li>Joining room by ID, by alias or with a Matrix URI</li>
+          <li>Creation of direct chats</li>
+          <li>Sending and displaying read receipts, read markers and typing
+            notifications</li>
+          <li>Notifications on new messages</li>
+          <li>Highlight messages with mentions</li>
+          <li>Added media file history viewers in the room details, thanks to
+            our GSoC intern Marco Melorio</li>
+          <li>Displaying the other user’s avatar as a room avatar for direct
+            chats</li>
+        </ul>
+
+        <p>Of course, there are a also a lot of less visible changes, fixes and
+          translations thanks to all our contributors, and our upstream
+          projects.</p>
+        
+        <p>As the version implies, this is still considered beta stage and might
+          trigger crashes or other bugs but overall should be pretty stable.</p>
+        
+        <p>A list of blocking issues for the release of version 5 can be found
+          in the Fractal v5 milestone on GitLab.</p>
+      </description>
+    </release>
+    <release version="5~alpha1" type="development" date="2022-09-25">
       <description>
         <p>Fractal 5.alpha1 is the first release since Fractal has been
           rewritten to take advantage of GTK 4 and the Matrix Rust SDK.
