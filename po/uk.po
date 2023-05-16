@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-05-14 14:18+0000\n"
-"PO-Revision-Date: 2023-05-15 21:51+0300\n"
+"POT-Creation-Date: 2023-05-16 13:12+0000\n"
+"PO-Revision-Date: 2023-05-16 20:04+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -208,6 +208,8 @@ msgid "Confirm Passphrase"
 msgstr "Підтвердьте пароль"
 
 #: data/resources/ui/account-settings-import-export-keys-subpage.ui:128
+#: data/resources/ui/content-room-details-general-page.ui:161
+#: src/session/content/room_details/mod.rs:284
 msgid "File"
 msgstr "Файл"
 
@@ -341,6 +343,14 @@ msgstr "Підтвердити"
 msgid "Try again"
 msgstr "Спробувати ще раз"
 
+#. Translators: As in 'Audio file'.
+#: data/resources/ui/content-audio-history-viewer.ui:12
+#: data/resources/ui/content-room-details-general-page.ui:177
+#: src/session/content/room_details/mod.rs:301
+#| msgid "audio"
+msgid "Audio"
+msgstr "Звук"
+
 #: data/resources/ui/content-explore-servers-popover.ui:35
 msgid "Add server…"
 msgstr "Додати сервер…"
@@ -353,11 +363,17 @@ msgstr "Не знайдено жодної кімнати, яка відпові
 msgid "Room List"
 msgstr "Список кімнат"
 
+#: data/resources/ui/content-file-history-viewer.ui:11
+#| msgid "File"
+msgid "Files"
+msgstr "Файли"
+
 #: data/resources/ui/content-invite-subpage.ui:18
 msgid "I_nvite"
 msgstr "Запр_осити"
 
 #: data/resources/ui/content-invite-subpage.ui:85
+#: data/resources/ui/create-dm-dialog.ui:64
 msgid "Search"
 msgstr "Шукати"
 
@@ -366,6 +382,7 @@ msgid "Search for users to invite them to this room."
 msgstr "Шукати користувачів для запрошення їх до цієї кімнати."
 
 #: data/resources/ui/content-invite-subpage.ui:115
+#: data/resources/ui/create-dm-dialog.ui:100
 msgid "No Users Found"
 msgstr "Користувачів не знайдено"
 
@@ -374,7 +391,7 @@ msgid "No users matching the search were found."
 msgstr "Не знайдено жодного користувача, який відповідає критерію пошуку."
 
 #: data/resources/ui/content-invite-subpage.ui:122
-#: data/resources/ui/error-page.ui:11
+#: data/resources/ui/create-dm-dialog.ui:112 data/resources/ui/error-page.ui:11
 msgid "Error"
 msgstr "Помилка"
 
@@ -388,13 +405,19 @@ msgstr "Під час пошуку відповідників сталася п�
 msgid "Invite"
 msgstr "Запросити"
 
-#: data/resources/ui/content-invite.ui:110 data/resources/ui/sidebar.ui:33
+#: data/resources/ui/content-invite.ui:110 data/resources/ui/sidebar.ui:37
 msgid "_Reject"
 msgstr "Від_хилити"
 
-#: data/resources/ui/content-invite.ui:120 data/resources/ui/sidebar.ui:28
+#: data/resources/ui/content-invite.ui:120 data/resources/ui/sidebar.ui:32
 msgid "_Accept"
 msgstr "При_йняти"
+
+#: data/resources/ui/content-media-history-viewer.ui:21
+#: data/resources/ui/content-room-details-general-page.ui:146
+#: src/session/content/room_details/mod.rs:268
+msgid "Media"
+msgstr "Мультимедіа"
 
 #: data/resources/ui/content-member-page.ui:19
 msgid "Search for Room Members"
@@ -406,7 +429,8 @@ msgid "Search for room members"
 msgstr "Пошук учасників в кімнаті"
 
 #: data/resources/ui/content-message-file.ui:25
-#: src/session/room/event/event_actions.rs:353
+#: src/session/content/room_details/history_viewer/file_row.rs:110
+#: src/utils/media.rs:193
 msgid "Save"
 msgstr "Зберегти"
 
@@ -415,7 +439,7 @@ msgid "Edited"
 msgstr "Змінено"
 
 #: data/resources/ui/content-room-details.ui:4
-#: src/session/content/room_details/mod.rs:201
+#: src/session/content/room_details/mod.rs:220
 msgid "Room Details"
 msgstr "Інформація про кімнату"
 
@@ -447,7 +471,7 @@ msgstr "З_апросити нового учасника"
 msgid "Room _Permalink"
 msgstr "С_тале посилання кімнати"
 
-#: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:62
+#: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:66
 msgid "_Leave Room"
 msgstr "По_лишити кімнату"
 
@@ -534,6 +558,29 @@ msgstr "Не вибрано жодної кімнати"
 msgid "Join a room to start chatting."
 msgstr "Увійдіть до кімнати, щоб почати спілкування."
 
+#: data/resources/ui/create-dm-dialog.ui:4
+#| msgid "New Direct Chat"
+msgid "Direct Chat"
+msgstr "Безпосереднє спілкування"
+
+#: data/resources/ui/create-dm-dialog.ui:41
+msgid "New Direct Chat"
+msgstr "Новий чат"
+
+#: data/resources/ui/create-dm-dialog.ui:65
+msgid "Search for people to start a new chat with"
+msgstr "Шукати тих, з ким слід почати спілкування"
+
+#: data/resources/ui/create-dm-dialog.ui:101
+#| msgid "No users matching the search were found."
+msgid "No users matching the search pattern were found"
+msgstr "Не знайдено жодного користувача, який відповідає критерію пошуку"
+
+#: data/resources/ui/create-dm-dialog.ui:113
+#| msgid "An error occurred while searching for matches."
+msgid "An error occurred while searching for matches"
+msgstr "Під час пошуку відповідників сталася помилка"
+
 #: data/resources/ui/error-page.ui:18
 msgid "Secret Service Error"
 msgstr "Помилка «Секретної служби»"
@@ -615,15 +662,15 @@ msgid "_Edit"
 msgstr "З_мінити"
 
 #. Translators: In this string, 'Forward' is a verb.
-#: data/resources/ui/event-menu.ui:24 data/resources/ui/event-menu.ui:115
+#: data/resources/ui/event-menu.ui:24 data/resources/ui/event-menu.ui:86
 msgid "_Forward"
 msgstr "П_ереспрямувати"
 
-#: data/resources/ui/event-menu.ui:31 data/resources/ui/event-menu.ui:122
+#: data/resources/ui/event-menu.ui:31 data/resources/ui/event-menu.ui:93
 msgid "_Select"
 msgstr "_Вибрати"
 
-#: data/resources/ui/event-menu.ui:38 data/resources/ui/event-menu.ui:129
+#: data/resources/ui/event-menu.ui:38 data/resources/ui/event-menu.ui:100
 msgid "_Copy Text"
 msgstr "_Копіювати текст"
 
@@ -631,34 +678,30 @@ msgstr "_Копіювати текст"
 msgid "_Copy Thumbnail"
 msgstr "_Копіювати мініатюру"
 
-#: data/resources/ui/event-menu.ui:49 data/resources/ui/event-menu.ui:90
+#: data/resources/ui/event-menu.ui:49 data/resources/ui/media-viewer.ui:11
 msgid "S_ave Image"
 msgstr "З_берегти зображення"
 
-#: data/resources/ui/event-menu.ui:54 data/resources/ui/event-menu.ui:95
+#: data/resources/ui/event-menu.ui:54 data/resources/ui/media-viewer.ui:16
 msgid "S_ave Video"
 msgstr "З_берегти відео"
 
-#: data/resources/ui/event-menu.ui:59 data/resources/ui/event-menu.ui:100
+#: data/resources/ui/event-menu.ui:59 data/resources/ui/media-viewer.ui:21
 msgid "S_ave Audio"
 msgstr "З_берегти звук"
 
-#: data/resources/ui/event-menu.ui:64 data/resources/ui/event-menu.ui:105
-#: data/resources/ui/event-menu.ui:135
+#: data/resources/ui/event-menu.ui:64 data/resources/ui/event-menu.ui:106
+#: data/resources/ui/media-viewer.ui:26
 msgid "_Permalink"
 msgstr "С_тале посилання"
 
-#: data/resources/ui/event-menu.ui:69 data/resources/ui/event-menu.ui:140
+#: data/resources/ui/event-menu.ui:69 data/resources/ui/event-menu.ui:111
 msgid "_View Source"
 msgstr "П_ереглянути код"
 
-#: data/resources/ui/event-menu.ui:76 data/resources/ui/event-menu.ui:147
+#: data/resources/ui/event-menu.ui:76 data/resources/ui/event-menu.ui:118
 msgid "Re_move"
 msgstr "В_илучити"
-
-#: data/resources/ui/event-menu.ui:85
-msgid "_Copy Image"
-msgstr "_Копіювати зображення"
 
 #: data/resources/ui/event-source-dialog.ui:5
 msgid "Event Source"
@@ -796,7 +839,6 @@ msgid "Please follow the steps in the browser."
 msgstr "Будь ласка, виконайте настанови з браузера."
 
 #: data/resources/ui/login.ui:91
-#| msgid "Scan Complete"
 msgid "Login Complete"
 msgstr "Вхід завершено"
 
@@ -806,9 +848,12 @@ msgid "This session is ready to send and receive secure messages."
 msgstr "Цей сеанс готовий до надсилання і отримання захищених повідомлень."
 
 #: data/resources/ui/login.ui:112
-#| msgid "Start chat"
 msgid "Start Chatting"
 msgstr "Почати спілкування"
+
+#: data/resources/ui/media-viewer.ui:6
+msgid "_Copy Image"
+msgstr "_Копіювати зображення"
 
 #: data/resources/ui/member-menu.ui:6
 msgid "_Verify"
@@ -998,74 +1043,79 @@ msgid "Close Room"
 msgstr "Закрити кімнату"
 
 #: data/resources/ui/sidebar.ui:6
+#| msgid "New Direct Chat"
+msgid "New _Direct Chat"
+msgstr "Нове _безпосереднє спілкування"
+
+#: data/resources/ui/sidebar.ui:10
 msgid "_New Room"
 msgstr "_Нова кімната"
 
-#: data/resources/ui/sidebar.ui:10
+#: data/resources/ui/sidebar.ui:14
 msgid "_Join Room"
 msgstr "_Увійти до кімнати"
 
-#: data/resources/ui/sidebar.ui:16
+#: data/resources/ui/sidebar.ui:20
 msgid "_Keyboard Shortcuts"
 msgstr "_Клавіатурні скорочення"
 
-#: data/resources/ui/sidebar.ui:20
+#: data/resources/ui/sidebar.ui:24
 msgid "_About Fractal"
 msgstr "_Про «Фрактал»"
 
-#: data/resources/ui/sidebar.ui:40
+#: data/resources/ui/sidebar.ui:44
 msgid "Move to _Favorites"
 msgstr "Пересунути до «_Улюблених»"
 
-#: data/resources/ui/sidebar.ui:45
+#: data/resources/ui/sidebar.ui:49
 msgid "Move to _Rooms"
 msgstr "Пересунути до «_Кімнат»"
 
-#: data/resources/ui/sidebar.ui:50
+#: data/resources/ui/sidebar.ui:54
 msgid "Move to _People"
 msgstr "Пересунути до «_Людей»"
 
-#: data/resources/ui/sidebar.ui:55
+#: data/resources/ui/sidebar.ui:59
 msgid "Move to Low _Priority"
 msgstr "Пересунути до «_Низький пріоритет»"
 
-#: data/resources/ui/sidebar.ui:67
+#: data/resources/ui/sidebar.ui:71
 msgid "Re_join Room"
 msgstr "Увійти до кімнати"
 
-#: data/resources/ui/sidebar.ui:72
+#: data/resources/ui/sidebar.ui:76
 msgid "_Forget Room"
 msgstr "За_бути про кімнату"
 
-#: data/resources/ui/sidebar.ui:91
+#: data/resources/ui/sidebar.ui:95
 msgid "Switch Accounts"
 msgstr "Перемкнути обліковий запис"
 
-#: data/resources/ui/sidebar.ui:113
+#: data/resources/ui/sidebar.ui:117
 msgid "App Settings Menu"
 msgstr "Меню параметрів програми"
 
-#: data/resources/ui/sidebar.ui:123
+#: data/resources/ui/sidebar.ui:127
 msgid "Toggle Room Search"
 msgstr "Увімкнути або вимкнути пошук кімнати"
 
-#: data/resources/ui/sidebar.ui:135
+#: data/resources/ui/sidebar.ui:139
 msgid "Room Search"
 msgstr "Пошук кімнати"
 
-#: data/resources/ui/sidebar.ui:136
+#: data/resources/ui/sidebar.ui:140
 msgid "Search for a room"
 msgstr "Пошук кімнати"
 
-#: data/resources/ui/sidebar.ui:142
+#: data/resources/ui/sidebar.ui:146
 msgid "Offline"
 msgstr "Поза мережею"
 
-#: data/resources/ui/sidebar.ui:157
+#: data/resources/ui/sidebar.ui:161
 msgid "Sidebar"
 msgstr "Бічна панель"
 
-#: data/resources/ui/sidebar.ui:158
+#: data/resources/ui/sidebar.ui:162
 msgid "Allows to navigate between rooms"
 msgstr "Дозволяє навігацію між кімнатами"
 
@@ -1460,7 +1510,7 @@ msgid "Import Encryption Keys From…"
 msgstr "Імпортувати ключі шифрування з…"
 
 #: src/session/account_settings/security_page/import_export_keys_subpage.rs:275
-#: src/session/room/event/event_actions.rs:382
+#: src/utils/media.rs:222
 msgid "Could not access file"
 msgstr "Не вдалося отримати доступ до файла"
 
@@ -1608,6 +1658,21 @@ msgstr "Не вдалося змінити назву кімнати"
 msgid "Could not change room topic"
 msgstr "Не вдалося змінити тему кімнати"
 
+#: src/session/content/room_details/history_viewer/audio_row.rs:121
+#| msgid "Unknown"
+msgid "Unknown duration"
+msgstr "Невідома тривалість"
+
+#: src/session/content/room_details/history_viewer/file_row.rs:109
+#: src/utils/media.rs:191
+msgid "Save File"
+msgstr "Зберегти файл"
+
+#: src/session/content/room_details/history_viewer/file_row.rs:159
+#| msgid "Unknown"
+msgid "Unknown size"
+msgstr "Невідомий розмір"
+
 #: src/session/content/room_details/invite_subpage/invitee_list.rs:287
 msgid "Member"
 msgstr "Учасник"
@@ -1632,11 +1697,11 @@ msgid "Banned Room Members"
 msgstr "Заблоковані учасники кімнати"
 
 #: src/session/content/room_details/member_page/mod.rs:289
-#: src/session/content/room_details/mod.rs:217
+#: src/session/content/room_details/mod.rs:236
 msgid "Room Members"
 msgstr "Учасники кімнати"
 
-#: src/session/content/room_details/mod.rs:233
+#: src/session/content/room_details/mod.rs:252
 msgid "Invite new Members"
 msgstr "Запросити нових учасників"
 
@@ -1712,13 +1777,13 @@ msgstr "Не вдалося отримати дані щодо поточног�
 msgid "Reply to {user}"
 msgstr "Відповідь {user}"
 
-#: src/session/content/room_history/mod.rs:795
-#: src/session/room/event/event_actions.rs:121
+#: src/session/content/room_history/mod.rs:795 src/session/media_viewer.rs:573
+#: src/session/room/event/event_actions.rs:111
 msgid "Permalink copied to clipboard"
 msgstr "Стале посилання скопійовано до буфера обміну"
 
-#: src/session/content/room_history/mod.rs:799
-#: src/session/room/event/event_actions.rs:125
+#: src/session/content/room_history/mod.rs:799 src/session/media_viewer.rs:577
+#: src/session/room/event/event_actions.rs:115
 msgid "Failed to copy the permalink"
 msgstr "Не вдалося скопіювати стале посилання"
 
@@ -2114,35 +2179,37 @@ msgstr ""
 msgid "An error occurred during the creation of the encryption identity."
 msgstr "Під час створення профілю шифрування сталася помилка."
 
+#: src/session/create_dm_dialog/mod.rs:165
+#| msgid "An error occurred while searching for matches."
+msgid "An error occurred while searching for users"
+msgstr "Під час пошуку користувачів сталася помилка"
+
+#: src/session/create_dm_dialog/mod.rs:194
+#| msgid "Failed to retrieve current location."
+msgid "Failed to create a new Direct Chat"
+msgstr "Не вдалося розпочати безпосереднє спілкування"
+
 #: src/session/join_room_dialog.rs:143
 msgid "_View"
 msgstr "П_ерегляд"
 
-#: src/session/mod.rs:709
-msgid "Failed to logout the session."
-msgstr "Не вдалося вийти з сеансу."
-
-#: src/session/room/event/event_actions.rs:227
-#: src/session/room/event/event_actions.rs:248
-#: src/session/room/event/event_actions.rs:259
-msgid "Message copied to clipboard"
-msgstr "Повідомлення скопійовано до буфера обміну"
-
-#: src/session/room/event/event_actions.rs:273
+#: src/session/media_viewer.rs:531
 msgid "Image copied to clipboard"
 msgstr "Зображення скопійовано до буфера обміну"
 
-#: src/session/room/event/event_actions.rs:277
+#: src/session/mod.rs:720
+msgid "Failed to logout the session."
+msgstr "Не вдалося вийти з сеансу."
+
+#: src/session/room/event/event_actions.rs:217
+#: src/session/room/event/event_actions.rs:238
+#: src/session/room/event/event_actions.rs:249
+msgid "Message copied to clipboard"
+msgstr "Повідомлення скопійовано до буфера обміну"
+
+#: src/session/room/event/event_actions.rs:261
 msgid "Thumbnail copied to clipboard"
 msgstr "Мініатюру скопійовано до буфера обміну"
-
-#: src/session/room/event/event_actions.rs:351
-msgid "Save File"
-msgstr "Зберегти файл"
-
-#: src/session/room/event/event_actions.rs:374
-msgid "Could not save file"
-msgstr "Не вдалося зберегти файл"
 
 #: src/session/room/member.rs:42
 msgid "Left"
@@ -2455,55 +2522,59 @@ msgid "Could not open the store."
 msgstr "Не вдалося відкрити сховище."
 
 #. Translators: Default name for image files.
-#: src/utils/media.rs:30
+#: src/utils/media.rs:33
 msgid "image"
 msgstr "зображення"
 
 #. Translators: Default name for video files.
-#: src/utils/media.rs:32
+#: src/utils/media.rs:35
 msgid "video"
 msgstr "відео"
 
 #. Translators: Default name for audio files.
-#: src/utils/media.rs:34
+#: src/utils/media.rs:37
 msgid "audio"
 msgstr "звук"
 
 #. Translators: Default name for files.
-#: src/utils/media.rs:36
+#: src/utils/media.rs:39
 msgid "file"
 msgstr "файл"
 
-#: src/utils/matrix.rs:92
+#: src/utils/media.rs:214
+msgid "Could not save file"
+msgstr "Не вдалося зберегти файл"
+
+#: src/utils/matrix.rs:93
 msgid "{user} sent an audio file."
 msgstr "Користувачем {user} надіслано звуковий файл."
 
-#: src/utils/matrix.rs:95 src/utils/matrix.rs:106 src/utils/matrix.rs:110
-#: src/utils/matrix.rs:114
+#: src/utils/matrix.rs:96 src/utils/matrix.rs:107 src/utils/matrix.rs:111
+#: src/utils/matrix.rs:115
 msgid "{user}: {message}"
 msgstr "{user}: {message}"
 
-#: src/utils/matrix.rs:98
+#: src/utils/matrix.rs:99
 msgid "{user} sent a file."
 msgstr "Користувачем {user} надіслано файл."
 
-#: src/utils/matrix.rs:100
+#: src/utils/matrix.rs:101
 msgid "{user} sent an image."
 msgstr "Користувачем {user} надіслано зображення."
 
-#: src/utils/matrix.rs:103
+#: src/utils/matrix.rs:104
 msgid "{user} sent their location."
 msgstr "Користувачем {user} надіслано дані щодо місця перебування."
 
-#: src/utils/matrix.rs:118
+#: src/utils/matrix.rs:119
 msgid "{user} sent a video."
 msgstr "Користувачем {user} надіслано відео."
 
-#: src/utils/matrix.rs:121
+#: src/utils/matrix.rs:122
 msgid "{user} sent a verification request."
 msgstr "Користувачем {user} надіслано запит щодо перевірки."
 
-#: src/utils/matrix.rs:129
+#: src/utils/matrix.rs:130
 msgid "{user} sent a sticker."
 msgstr "Користувачем {user} надіслано наліпку."
 
@@ -2821,9 +2892,6 @@ msgstr "Не вдалося відновити попередні сеанси"
 
 #~ msgid "Apply"
 #~ msgstr "_Застосувати"
-
-#~ msgid "New Direct Chat"
-#~ msgstr "Новий чат"
 
 #~ msgid "Play"
 #~ msgstr "Відтворити"
