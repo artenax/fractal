@@ -297,11 +297,12 @@ impl RoomDetails {
                     audio_page
                 };
 
+                // Translators: As in 'Audio file'.
                 self.set_title(Some(&gettext("Audio")));
                 imp.main_stack.set_visible_child(&audio_page);
             }
             PageName::None => {
-                warn!("Can't switch to PageName::None");
+                warn!("Can’t switch to PageName::None");
             }
         }
 

@@ -8,6 +8,7 @@
           <object class="GtkHeaderBar">
             <property name="title-widget">
               <object class="AdwWindowTitle">
+                <!-- Translators: As in 'Audio file'. -->
                 <property name="title" translatable="yes">Audio</property>
               </object>
             </property>

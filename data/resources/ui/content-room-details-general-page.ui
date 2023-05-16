@@ -173,6 +173,7 @@
                     </child>
                     <child>
                       <object class="AdwActionRow">
+                        <!-- Translators: As in 'Audio file'. -->
                         <property name="title" translatable="yes">Audio</property>
                         <property name="action-name">details.next-page</property>
                         <property name="action-target">'audio-history'</property>
