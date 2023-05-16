@@ -43,6 +43,9 @@ flatpak install --user flathub org.freedesktop.Sdk.Extension.rust-stable//22.08
 flatpak install --user flathub org.freedesktop.Sdk.Extension.llvm14//22.08
 ```
 
+If you are building the flatpak manually you will also need flatpak-builder on your system, or the
+`org.flatpak.Builder` flatpak.
+
 ### GNOME Builder
 
 Using [GNOME Builder](https://wiki.gnome.org/Apps/Builder) with [flatpak](https://flatpak.org/) is
@@ -102,12 +105,21 @@ To test changes you make to the code, re-run these three last commands.
 Some features that interact with the system require the app to be installed to test them (i.e.
 notifications, command line arguments, etc.).
 
-Move inside the `build-aux` folder and then build and install the app:
+GNOME Builder allows to export a flatpak of the app after it has been successfully built.
+
+Fractal can then be installed with:
 
 ```sh
-cd build-aux
-flatpak-builder --user --install app org.gnome.Fractal.Hack.json
+flatpak install --user --bundle path/to/org.gnome.Fractal.Hack.flatpak 
 ```
+
+Alternatively, it can be built and installed with flatpak-builder:
+
+```sh
+flatpak-builder --user --install app build-aux/org.gnome.Fractal.Hack.json
+```
+
+_Note that the `flatpak-builder` command can be replaced with `flatpak run org.flatpak.Builder`._
 
 It can then be entirely removed from your system with:
 
