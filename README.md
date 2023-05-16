@@ -11,20 +11,15 @@ collaboration in large groups, such as free software projects.
 
 ## Work in Progress
 
-We already talked several times in the past about rewriting the application, but for different
-reasons we didn't do it. Now that the [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk)
-exists, which does a lot of the heavy lifting for us, we have a good starting point to build Fractal
-without the need to implement every single feature from the Matrix API. Finally with the release of
-GTK4 we would need to rework most of Fractal's code anyways. Therefore, it just makes sense to start
-over and build Fractal with all the features (e.g end-to-end encryption) we have in mind.
+Up until the 4.4 series, Fractal was built with GTK 3 and used its own implementation of the Matrix
+API. With the availability of the [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk)
+and [GTK 4](https://www.gtk.org/), the technological landscape had changed enough that a full
+rewrite made more sense than simply trying to port the complex codebase that we had. That effort
+started in March 2021 and the result is the current [Fractal 5 beta](#beta-version) (and
+[nightly](#development-version)).
 
-A year ago we started working on rewriting [Fractal](https://gitlab.gnome.org/GNOME/fractal/) from
-scratch using [GTK4](https://www.gtk.org/) and the [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk).
-This effort was called Fractal Next.
-
-Fractal Next now replaced our previous codebase, and has become the new nightly version. It isn't
-yet ready for a release and you can follow along our progress towards it by looking at the
-[Fractal v5 (Fractal-next)](https://gitlab.gnome.org/GNOME/fractal/-/milestones/18) milestone.
+You can follow along our progress towards the stable release by looking at the
+[Fractal 5](https://gitlab.gnome.org/GNOME/fractal/-/milestones/18) milestone.
 
 ## Installation instructions
 
@@ -33,7 +28,7 @@ yet ready for a release and you can follow along our progress towards it by look
 The current stable version is 4.4.2 (released March 2023).
 
 Flatpak is the recommended installation method.
-Until our next iteration is ready, you can get the official Fractal Flatpak on Flathub.
+Until our next iteration is ready, you can get the official Fractal Flatpak from Flathub.
 
 <a href="https://flathub.org/apps/details/org.gnome.Fractal">
 <img
@@ -44,12 +39,49 @@ Until our next iteration is ready, you can get the official Fractal Flatpak on F
 />
 </a>
 
+### Beta version
+
+The current beta version is 5.beta1 (released May 16th 2023).
+
+It is available as a Flatpak on Flathub Beta.
+
+To get it, first set up the Flatpak remote:
+
+```sh
+flatpak remote-add --if-not-exists flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
+```
+
+Or download and install the [repository file](https://flathub.org/beta-repo/flathub-beta.flatpakrepo).
+
+Then install the application:
+
+```sh
+flatpak install --user flathub-beta org.gnome.Fractal
+```
+
+Or download and install the [application file](https://flathub.org/beta-repo/appstream/org.gnome.Fractal.flatpakref).
+
+Finally, run the application:
+
+```sh
+flatpak run org.gnome.Fractal//beta
+```
+
+If you want to run the beta version by default instead of the stable version, use this command:
+
+```sh
+flatpak make-current org.gnome.Fractal beta
+```
+
+_Note that you can go back to using the stable version by default by using the same command and
+replacing `beta` with `stable`._
+
 ### Development version
 
-If you want to try Fractal Next without building it yourself, it is available as a nightly Flatpak
+If you want to try the upcoming version of Fractal without building it yourself, it is available as a nightly Flatpak
 in the gnome-nightly repo.
 
-First, setup the GNOME nightlies.
+First, set up the GNOME nightlies.
 
 <a href="https://nightly.gnome.org/gnome-nightly.flatpakrepo ">
 <img
@@ -92,15 +124,16 @@ to store those secrets. Therefore, you need to have software providing that serv
 like gnome-keyring, KeepassXC ([setup guide](https://avaldes.co/2020/01/28/secret-service-keepassxc.html)),
 or a recent version of KWallet. If you are using GNOME this should just work.
 
-With the nightly Flatpak, Fractal uses the [Secret portal](https://docs.flatpak.org/en/latest/portal-api-reference.html#gdbus-org.freedesktop.portal.Secret)
+With the nightly and beta Flatpaks, Fractal uses the [Secret portal](https://docs.flatpak.org/en/latest/portal-api-reference.html#gdbus-org.freedesktop.portal.Secret)
 to store those secrets. Once again, if you are using GNOME this should just work. If you are using a
 different desktop environment or are facing issues, make sure `xdg-desktop-portal` is installed
 along with a service that provides the [Secret portal backend interface](https://docs.flatpak.org/en/latest/portal-api-reference.html#gdbus-org.freedesktop.impl.portal.Secret),
 which is currently only implemented by gnome-keyring.
 
 If you prefer to use other software that only implements the Secret Service API while using the
-nightly Flatpak, you need to make sure that no service implementing the Secret portal backend
-interface is running, and you need to allow Fractal to access the D-Bus service with this command:
+nightly or beta Flatpak, you need to make sure that no service implementing the Secret portal
+backend interface is running, and you need to allow Fractal to access the D-Bus service with this
+command:
 
 ```sh
 flatpak override --user --talk-name=org.freedesktop.secrets org.gnome.Fractal.Devel
