@@ -1,9 +1,11 @@
 use std::{collections::HashMap, ffi::OsStr, fmt, fs, path::PathBuf, string::FromUtf8Error};
 
 use gettextrs::gettext;
+use gtk::glib;
 use log::{debug, error, warn};
 use matrix_sdk::ruma::{DeviceId, OwnedDeviceId, OwnedUserId, UserId};
 use oo7::{Item, Keyring};
+use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use serde_json::error::Error as JsonError;
 use thiserror::Error;
@@ -306,19 +308,23 @@ impl StoredSession {
         }
     }
 
-    /// Construct a `StoredSession` from its parts.
-    pub fn from_parts(
-        homeserver: Url,
-        path: PathBuf,
-        passphrase: String,
-        data: matrix_sdk::Session,
-    ) -> Self {
+    /// Construct a `StoredSession` from the given login data.
+    pub fn with_login_data(homeserver: Url, data: matrix_sdk::Session) -> Self {
         let matrix_sdk::Session {
             access_token,
             user_id,
             device_id,
             ..
         } = data;
+
+        let mut path = glib::user_data_dir();
+        path.push(glib::uuid_string_random().as_str());
+
+        let passphrase = thread_rng()
+            .sample_iter(Alphanumeric)
+            .take(30)
+            .map(char::from)
+            .collect();
 
         let secret = Secret {
             access_token,
@@ -383,37 +389,82 @@ impl StoredSession {
             .unwrap()
     }
 
+    /// Write this session to the `SecretService`, overwriting any previously
+    /// stored session with the same attributes.
+    pub async fn store(&self) -> Result<(), SecretError> {
+        let keyring = Keyring::new().await?;
+
+        let attrs = self.attributes();
+        let attributes = attrs.iter().map(|(k, v)| (*k, v.as_ref())).collect();
+        let secret = rmp_serde::to_vec_named(&self.secret).unwrap();
+
+        keyring
+            .create_item(
+                &gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    "Fractal: Matrix credentials for {user_id}",
+                    &[("user_id", self.user_id.as_str())],
+                ),
+                attributes,
+                secret,
+                true,
+            )
+            .await?;
+
+        Ok(())
+    }
+
     /// Delete this session from the system.
-    pub async fn delete(self, item: Item) {
+    pub async fn delete(self, item: Option<Item>, logout: bool) {
         debug!(
-            "Removing session {} found for user {} with ID {}…",
+            "Removing stored session {} with version {} for Matrix user {}…",
+            self.id(),
             self.version,
             self.user_id,
-            self.id()
         );
 
         spawn_tokio!(async move {
-            match matrix::client_with_stored_session(self.clone()).await {
-                Ok(client) => {
-                    if let Err(error) = client.logout().await {
-                        error!("Failed to log out old session: {error}");
+            if logout {
+                debug!("Logging out session");
+                match matrix::client_with_stored_session(self.clone()).await {
+                    Ok(client) => {
+                        if let Err(error) = client.logout().await {
+                            error!("Failed to log out session: {error}");
+                        }
                     }
-                }
-                Err(error) => {
-                    error!("Failed to build client to log out old session: {error}")
+                    Err(error) => {
+                        error!("Failed to build client to log out session: {error}")
+                    }
                 }
             }
 
-            if let Err(error) = item.delete().await {
-                error!("Failed to delete old session from Secret Service: {error}");
-            };
+            if let Some(item) = item {
+                if let Err(error) = item.delete().await {
+                    error!("Failed to delete session item from Secret Service: {error}");
+                };
+            } else if let Err(error) = self.delete_from_secret_service().await {
+                error!("Failed to delete session data from Secret Service: {error}");
+            }
 
             if let Err(error) = fs::remove_dir_all(self.path) {
-                error!("Failed to remove database from old session: {error}");
+                error!("Failed to remove session database: {error}");
             }
         })
         .await
         .unwrap();
+    }
+
+    /// Remove this session from the `SecretService`
+    async fn delete_from_secret_service(&self) -> Result<(), SecretError> {
+        let keyring = Keyring::new().await?;
+
+        let attrs = self.attributes();
+        let attributes = attrs.iter().map(|(k, v)| (*k, v.as_ref())).collect();
+
+        keyring.delete(attributes).await?;
+
+        Ok(())
     }
 
     /// Migrate this session to version 2.
@@ -421,10 +472,10 @@ impl StoredSession {
     /// This implies moving the database under the profile's directory.
     pub async fn migrate_to_v2(mut self, item: Item) {
         warn!(
-            "Session version {} found for user {} with ID {}, migrating to version 2…",
+            "Session {} with version {} found for user {}, migrating to version 2…",
+            self.id(),
             self.version,
             self.user_id,
-            self.id()
         );
 
         spawn_tokio!(async move {
@@ -448,7 +499,7 @@ impl StoredSession {
                 error!("Failed to remove outdated session: {error}");
             }
 
-            if let Err(error) = store_session(&self).await {
+            if let Err(error) = self.store().await {
                 error!("Failed to store updated session: {error}");
             }
         })
@@ -510,42 +561,4 @@ pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
     }
 
     Ok(sessions)
-}
-
-/// Writes a session to the `SecretService`, overwriting any previously stored
-/// session with the same `homeserver`, `username` and `device-id`.
-pub async fn store_session(session: &StoredSession) -> Result<(), SecretError> {
-    let keyring = Keyring::new().await?;
-
-    let attrs = session.attributes();
-    let attributes = attrs.iter().map(|(k, v)| (*k, v.as_ref())).collect();
-    let secret = rmp_serde::to_vec_named(&session.secret).unwrap();
-
-    keyring
-        .create_item(
-            &gettext_f(
-                // Translators: Do NOT translate the content between '{' and '}', this is a
-                // variable name.
-                "Fractal: Matrix credentials for {user_id}",
-                &[("user_id", session.user_id.as_str())],
-            ),
-            attributes,
-            secret,
-            true,
-        )
-        .await?;
-
-    Ok(())
-}
-
-/// Removes a session from the `SecretService`
-pub async fn remove_session(session: &StoredSession) -> Result<(), SecretError> {
-    let keyring = Keyring::new().await?;
-
-    let attrs = session.attributes();
-    let attributes = attrs.iter().map(|(k, v)| (*k, v.as_ref())).collect();
-
-    keyring.delete(attributes).await?;
-
-    Ok(())
 }

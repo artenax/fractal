@@ -14,7 +14,7 @@ mod sidebar;
 mod user;
 pub mod verification;
 
-use std::{collections::HashSet, fs, time::Duration};
+use std::{collections::HashSet, time::Duration};
 
 use adw::{prelude::*, subclass::prelude::*};
 use futures::StreamExt;
@@ -44,7 +44,6 @@ use matrix_sdk::{
     sync::SyncResponse,
     Client,
 };
-use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use tokio::task::JoinHandle;
 use url::Url;
 
@@ -63,7 +62,7 @@ pub use self::{
     user::{User, UserActions, UserExt},
 };
 use crate::{
-    secret::{self, StoredSession},
+    secret::StoredSession,
     session::sidebar::ItemList,
     spawn, spawn_tokio, toast,
     utils::{
@@ -346,16 +345,7 @@ glib::wrapper! {
 impl Session {
     /// Create a new session.
     pub async fn new(homeserver: Url, data: matrix_sdk::Session) -> Result<Self, ClientSetupError> {
-        let mut path = glib::user_data_dir();
-        path.push(glib::uuid_string_random().as_str());
-
-        let passphrase = thread_rng()
-            .sample_iter(Alphanumeric)
-            .take(30)
-            .map(char::from)
-            .collect();
-
-        let stored_session = StoredSession::from_parts(homeserver, path, passphrase, data);
+        let stored_session = StoredSession::with_login_data(homeserver, data);
 
         Self::restore(stored_session).await
     }
@@ -743,7 +733,6 @@ impl Session {
 
     async fn cleanup_session(&self) {
         let imp = self.imp();
-        let info = imp.info.get().unwrap();
 
         self.set_state(SessionState::LoggedOut);
 
@@ -755,15 +744,7 @@ impl Session {
             settings.delete();
         }
 
-        let session_info = info.clone();
-        let handle = spawn_tokio!(async move { secret::remove_session(&session_info).await });
-        if let Err(error) = handle.await.unwrap() {
-            error!("Failed to remove credentials from SecretService after logout: {error}");
-        }
-
-        if let Err(error) = fs::remove_dir_all(info.path.clone()) {
-            error!("Failed to remove database after logout: {error}");
-        }
+        imp.info.get().unwrap().clone().delete(None, false).await;
 
         self.notifications().clear();
 

@@ -21,8 +21,8 @@ use self::{
     method_page::LoginMethodPage, sso_page::LoginSsoPage,
 };
 use crate::{
-    secret, session::SessionVerification, spawn, spawn_tokio, toast,
-    user_facing_error::UserFacingError, Application, Session, Window, RUNTIME,
+    session::SessionVerification, spawn, spawn_tokio, toast, user_facing_error::UserFacingError,
+    Application, Session, Window, RUNTIME,
 };
 
 #[derive(Clone, Debug, glib::Boxed)]
@@ -512,7 +512,7 @@ impl Login {
         }
 
         let session_info = session.info().clone();
-        let handle = spawn_tokio!(async move { secret::store_session(&session_info).await });
+        let handle = spawn_tokio!(async move { session_info.store().await });
 
         if let Err(error) = handle.await.unwrap() {
             error!("Couldn't store session: {error}");
