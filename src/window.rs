@@ -275,8 +275,8 @@ impl Window {
                     if session.version == 0 {
                         warn!("Found old session with sled store, removing…");
                         session.delete(Some(item), true).await
-                    } else if session.version < 2 {
-                        session.migrate_to_v2(item).await
+                    } else if session.version < 3 {
+                        session.migrate_to_v3(item).await
                     }
 
                     // Restart.

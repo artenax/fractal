@@ -4,6 +4,7 @@ use gettextrs::gettext;
 use gtk::glib;
 use log::{debug, error, warn};
 use matrix_sdk::ruma::{DeviceId, OwnedDeviceId, OwnedUserId, UserId};
+use once_cell::sync::Lazy;
 use oo7::{Item, Keyring};
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use serde::{Deserialize, Serialize};
@@ -18,8 +19,10 @@ use crate::{
     utils::matrix,
 };
 
-pub const CURRENT_VERSION: u8 = 2;
+pub const CURRENT_VERSION: u8 = 3;
 const SCHEMA_ATTRIBUTE: &str = "xdg:schema";
+
+static DATA_PATH: Lazy<PathBuf> = Lazy::new(|| glib::user_data_dir().join(PROFILE.as_str()));
 
 /// Any error that can happen when interacting with the secret service.
 #[derive(Debug, Error)]
@@ -317,8 +320,7 @@ impl StoredSession {
             ..
         } = data;
 
-        let mut path = glib::user_data_dir();
-        path.push(glib::uuid_string_random().as_str());
+        let path = DATA_PATH.join(glib::uuid_string_random().as_str());
 
         let passphrase = thread_rng()
             .sample_iter(Alphanumeric)
@@ -467,33 +469,36 @@ impl StoredSession {
         Ok(())
     }
 
-    /// Migrate this session to version 2.
+    /// Migrate this session to version 3.
     ///
     /// This implies moving the database under the profile's directory.
-    pub async fn migrate_to_v2(mut self, item: Item) {
+    pub async fn migrate_to_v3(mut self, item: Item) {
         warn!(
-            "Session {} with version {} found for user {}, migrating to version 2…",
+            "Session {} with version {} found for user {}, migrating to version 3…",
             self.id(),
             self.version,
             self.user_id,
         );
 
-        spawn_tokio!(async move {
-            let new_path = self
-                .path
-                .with_file_name(format!("{}/{}", PROFILE.as_str(), self.id()));
-            debug!("Moving database to: {}", new_path.to_string_lossy());
+        let target_path = DATA_PATH.join(self.id());
 
-            if let Err(error) = fs::create_dir_all(&new_path) {
+        if self.path == target_path {
+            return;
+        }
+
+        spawn_tokio!(async move {
+            debug!("Moving database to: {}", target_path.to_string_lossy());
+
+            if let Err(error) = fs::create_dir_all(&target_path) {
                 error!("Failed to create new directory: {error}");
             }
 
-            if let Err(error) = fs::rename(&self.path, &new_path) {
+            if let Err(error) = fs::rename(&self.path, &target_path) {
                 error!("Failed to move database: {error}");
             }
 
-            self.path = new_path;
-            self.version = 2;
+            self.path = target_path;
+            self.version = 3;
 
             if let Err(error) = item.delete().await {
                 error!("Failed to remove outdated session: {error}");
