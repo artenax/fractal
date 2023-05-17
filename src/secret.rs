@@ -482,11 +482,7 @@ impl StoredSession {
 
         let target_path = DATA_PATH.join(self.id());
 
-        if self.path == target_path {
-            return;
-        }
-
-        spawn_tokio!(async move {
+        if self.path != target_path {
             debug!("Moving database to: {}", target_path.to_string_lossy());
 
             if let Err(error) = fs::create_dir_all(&target_path) {
@@ -498,8 +494,11 @@ impl StoredSession {
             }
 
             self.path = target_path;
-            self.version = 3;
+        }
 
+        self.version = 3;
+
+        spawn_tokio!(async move {
             if let Err(error) = item.delete().await {
                 error!("Failed to remove outdated session: {error}");
             }
