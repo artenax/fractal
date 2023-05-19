@@ -48,7 +48,7 @@ It is available as a Flatpak on Flathub Beta.
 To get it, first set up the Flatpak remote:
 
 ```sh
-flatpak remote-add --if-not-exists flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
+flatpak remote-add --user --if-not-exists flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
 ```
 
 Or download and install the [repository file](https://flathub.org/beta-repo/flathub-beta.flatpakrepo).
