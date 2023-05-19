@@ -222,55 +222,56 @@ impl DmUserList {
                 let mut users: Vec<DmUser> = vec![];
                 for item in response.results.into_iter() {
                     let other_user_id = &item.user_id;
-                    let Some(rooms) = dm_rooms.get(other_user_id) else {
-                            continue;
-                        };
+                    let room = if let Some(rooms) = dm_rooms.get(other_user_id) {
+                        let mut final_rooms: Vec<Room> = vec![];
+                        for room in rooms {
+                            let Some(room) = room.upgrade() else { continue; };
+                            let members = room.members();
 
-                    let mut final_rooms: Vec<Room> = vec![];
-                    for room in rooms {
-                        let Some(room) = room.upgrade() else { continue; };
-                        let members = room.members();
+                            if !room.is_joined() || room.matrix_room().active_members_count() > 2 {
+                                continue;
+                            }
 
-                        if !room.is_joined() || room.matrix_room().active_members_count() > 2 {
-                            continue;
-                        }
+                            // Make sure we have all members loaded, in most cases members should
+                            // already be loaded
+                            room.load_members().await;
 
-                        // Make sure we have all members loaded, in most cases members should
-                        // already be loaded
-                        room.load_members().await;
-
-                        if members.n_items() >= 1 {
-                            let mut found_others = false;
-                            for member in members.iter::<Member>() {
-                                match member {
-                                    Ok(member) => {
-                                        if member.user_id() != own_user_id
-                                            && &member.user_id() != other_user_id
-                                        {
-                                            // We found other members in this room, let's ignore the
-                                            // room
-                                            found_others = true;
+                            if members.n_items() >= 1 {
+                                let mut found_others = false;
+                                for member in members.iter::<Member>() {
+                                    match member {
+                                        Ok(member) => {
+                                            if member.user_id() != own_user_id
+                                                && &member.user_id() != other_user_id
+                                            {
+                                                // We found other members in this room, let's ignore
+                                                // the
+                                                // room
+                                                found_others = true;
+                                                break;
+                                            }
+                                        }
+                                        Err(error) => {
+                                            debug!("Error iterating through room members: {error}");
                                             break;
                                         }
                                     }
-                                    Err(error) => {
-                                        debug!("Error iterating through room members: {error}");
-                                        break;
-                                    }
+                                }
+
+                                if found_others {
+                                    continue;
                                 }
                             }
 
-                            if found_others {
-                                continue;
-                            }
+                            final_rooms.push(room);
                         }
 
-                        final_rooms.push(room);
-                    }
-
-                    let room = final_rooms
-                        .into_iter()
-                        .max_by(|x, y| x.latest_unread().cmp(&y.latest_unread()));
+                        final_rooms
+                            .into_iter()
+                            .max_by(|x, y| x.latest_unread().cmp(&y.latest_unread()))
+                    } else {
+                        None
+                    };
 
                     let user = DmUser::new(
                         &session,
