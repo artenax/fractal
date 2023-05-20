@@ -1,4 +1,3 @@
-use adw::subclass::prelude::BinImpl;
 use gtk::{self, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
 use super::avatar_with_selection::AvatarWithSelection;
@@ -77,7 +76,6 @@ mod imp {
     }
 
     impl WidgetImpl for SessionItemRow {}
-    impl BinImpl for SessionItemRow {}
     impl ListBoxRowImpl for SessionItemRow {}
 }
 
