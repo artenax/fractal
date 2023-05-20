@@ -1,12 +1,12 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
-use gtk::{gdk, glib, CompositeTemplate};
+use gtk::{gdk, glib, glib::clone, CompositeTemplate};
 use ruma::{
     matrix_uri::MatrixId, MatrixToUri, MatrixUri, OwnedRoomOrAliasId, OwnedServerName,
     RoomOrAliasId,
 };
 
-use crate::session::Session;
+use crate::{session::Session, spawn, toast};
 
 mod imp {
     use glib::{object::WeakRef, subclass::InitializingObject};
@@ -148,15 +148,25 @@ impl JoinRoomDialog {
 
     /// Join the room that was entered, if it is valid.
     fn join_room(&self) {
-        let Some(session) = self.session() else {
-            return;
-        };
-
         let Some((room_id, via)) = parse_room(&self.imp().entry.text()) else {
             return;
         };
 
-        session.room_list().join_or_view((&*room_id).into(), via);
+        let Some(session) = self.session() else {
+            return;
+        };
+        let room_list = session.room_list();
+
+        // Join or view the room with the given identifier.
+        if let Some(room) = room_list.joined_room((&*room_id).into()) {
+            session.select_room(Some(room));
+        } else {
+            spawn!(clone!(@weak self as obj, @weak room_list => async move {
+                if let Err(error) = room_list.join_by_id_or_alias(room_id, via).await {
+                    toast!(obj, error);
+                }
+            }));
+        }
     }
 }
 

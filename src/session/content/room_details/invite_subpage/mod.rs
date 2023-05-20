@@ -1,4 +1,5 @@
 use adw::subclass::prelude::*;
+use gettextrs::ngettext;
 use gtk::{gdk, glib, glib::clone, prelude::*, CompositeTemplate};
 
 mod invitee;
@@ -11,8 +12,8 @@ use self::{
 };
 use crate::{
     components::{Pill, Spinner, SpinnerButton},
-    session::{Room, User},
-    spawn,
+    session::{Room, User, UserExt},
+    spawn, toast,
 };
 
 mod imp {
@@ -297,9 +298,16 @@ impl InviteSubpage {
             .ok()
     }
 
+    /// Invite the selected users to the room.
     fn invite(&self) {
         self.imp().invite_button.set_loading(true);
 
+        spawn!(clone!(@weak self as obj => async move {
+            obj.invite_inner().await;
+        }));
+    }
+
+    async fn invite_inner(&self) {
         let Some(room) = self.room() else {
             return;
         };
@@ -312,11 +320,38 @@ impl InviteSubpage {
             .into_iter()
             .map(glib::object::Cast::upcast)
             .collect();
-        spawn!(clone!(@weak self as obj => async move {
-            room.invite(invitees.as_slice()).await;
-            obj.close();
-            obj.imp().invite_button.set_loading(false);
-        }));
+
+        match room.invite(&invitees).await {
+            Ok(()) => {
+                self.close();
+            }
+            Err(failed_users) => {
+                for invitee in &invitees {
+                    if !failed_users.contains(&invitee) {
+                        user_list.remove_invitee(&invitee.user_id())
+                    }
+                }
+
+                let n = failed_users.len();
+                let first_failed = failed_users.first().unwrap();
+
+                toast!(
+                    self,
+                    ngettext(
+                        // Translators: Do NOT translate the content between '{' and '}', these
+                        // are variable names.
+                        "Failed to invite {user} to {room}. Try again later.",
+                        "Failed to invite {n} users to {room}. Try again later.",
+                        n as u32,
+                    ),
+                    @user = first_failed,
+                    @room,
+                    n = n.to_string(),
+                );
+            }
+        }
+
+        self.imp().invite_button.set_loading(false);
     }
 
     fn update_view(&self) {

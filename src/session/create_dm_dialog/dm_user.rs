@@ -103,7 +103,7 @@ impl DmUser {
     ////
     /// If A DM chat exists already no new room is created and the existing one
     /// is returned.
-    pub async fn start_chat(&self) -> Result<Room, matrix_sdk::Error> {
+    pub async fn start_chat(&self) -> Result<Room, ()> {
         let session = self.session();
         let client = session.client();
         let other_user = self.user_id();
@@ -116,8 +116,11 @@ impl DmUser {
             // We can be sure that this room has only ourself and maybe the other user as
             // member.
             if room.matrix_room().active_members_count() < 2 {
-                room.invite(&[self.clone().upcast()]).await;
                 debug!("{other_user} left the chat, re-invite them");
+
+                if room.invite(&[self.clone().upcast()]).await.is_err() {
+                    return Err(());
+                }
             }
 
             return Ok(room);
@@ -137,7 +140,7 @@ impl DmUser {
             }
             Err(error) => {
                 error!("Couldn’t create a new Direct Chat: {error}");
-                Err(error)
+                Err(())
             }
         }
     }

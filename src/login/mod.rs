@@ -257,7 +257,9 @@ impl Login {
     /// Drop the session and clean up its data from the system.
     fn drop_session(&self) {
         if let Some(session) = self.imp().session.take() {
-            glib::MainContext::default().block_on(session.logout());
+            glib::MainContext::default().block_on(async move {
+                let _ = session.logout().await;
+            });
         }
     }
 

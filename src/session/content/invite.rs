@@ -1,11 +1,12 @@
 use adw::subclass::prelude::*;
+use gettextrs::gettext;
 use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
 
 use crate::{
     components::{Avatar, LabelWithWidgets, Pill, SpinnerButton},
     gettext_f,
     session::room::{Room, RoomType},
-    spawn,
+    spawn, toast,
 };
 
 mod imp {
@@ -217,6 +218,16 @@ impl Invite {
             clone!(@weak self as obj, @strong room => move || async move {
                     let result = room.accept_invite().await;
                     if result.is_err() {
+                        toast!(
+                            obj,
+                            gettext(
+                                // Translators: Do NOT translate the content between '{' and '}', this
+                                // is a variable name.
+                                "Failed to accept invitation for {room}. Try again later.",
+                            ),
+                            @room,
+                        );
+
                         obj.imp().accept_requests.borrow_mut().remove(&room);
                         obj.reset();
                     }
@@ -239,6 +250,16 @@ impl Invite {
             clone!(@weak self as obj, @strong room => move || async move {
                     let result = room.reject_invite().await;
                     if result.is_err() {
+                        toast!(
+                            obj,
+                            gettext(
+                                // Translators: Do NOT translate the content between '{' and '}', this
+                                // is a variable name.
+                                "Failed to reject invitation for {room}. Try again later.",
+                            ),
+                            @room,
+                        );
+
                         obj.imp().reject_requests.borrow_mut().remove(&room);
                         obj.reset();
                     }

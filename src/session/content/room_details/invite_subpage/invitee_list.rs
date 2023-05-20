@@ -246,7 +246,7 @@ impl InviteeList {
                                         if user.is_invited() && user.invite_exception().is_none() {
                                             obj.add_invitee(user.clone());
                                         } else {
-                                            obj.remove_invitee(user.user_id())
+                                            obj.remove_invitee(&user.user_id())
                                         }
                                     }),
                                 );
@@ -365,8 +365,8 @@ impl InviteeList {
             .collect()
     }
 
-    fn remove_invitee(&self, user_id: OwnedUserId) {
-        let removed = self.imp().invitee_list.borrow_mut().remove(&user_id);
+    pub fn remove_invitee(&self, user_id: &UserId) {
+        let removed = self.imp().invitee_list.borrow_mut().remove(user_id);
         if let Some(user) = removed {
             user.set_invited(false);
             self.emit_by_name::<()>("invitee-removed", &[&user]);

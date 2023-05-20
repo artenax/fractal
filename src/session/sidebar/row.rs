@@ -1,4 +1,5 @@
 use adw::{prelude::*, subclass::prelude::*};
+use gettextrs::gettext;
 use gtk::{gdk, glib, glib::clone};
 
 use super::{CategoryType, EntryType};
@@ -10,6 +11,7 @@ use crate::{
         },
         verification::IdentityVerification,
     },
+    spawn, toast,
     utils::BoundObjectWeakRef,
 };
 
@@ -312,18 +314,52 @@ impl Row {
         if let Ok(room) = value.get::<Room>() {
             if let Some(target_type) = self.room_type() {
                 if room.category().can_change_to(target_type) {
-                    room.set_category(target_type);
+                    spawn!(clone!(@weak self as obj, @weak room => async move {
+                        obj.set_room_category(&room, target_type).await;
+                    }));
                     ret = true;
                 }
             } else if let Some(entry_type) = self.entry_type() {
                 if room.category() == RoomType::Left && entry_type == EntryType::Forget {
-                    room.forget();
+                    spawn!(clone!(@weak self as obj, @weak room => async move {
+                        obj.forget_room(&room).await;
+                    }));
                     ret = true;
                 }
             }
         }
         self.sidebar().set_drop_source_type(None);
         ret
+    }
+
+    /// Change the category of the given room room.
+    async fn set_room_category(&self, room: &Room, category: RoomType) {
+        let previous_category = room.category();
+
+        if room.set_category(category).await.is_err() {
+            toast!(
+                self,
+                gettext(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                    "Failed to move {room} from {previous_category} to {new_category}.",
+                ),
+                @room,
+                previous_category = previous_category.to_string(),
+                new_category = category.to_string(),
+            );
+        }
+    }
+
+    /// Forget the given room.
+    async fn forget_room(&self, room: &Room) {
+        if room.forget().await.is_err() {
+            toast!(
+                self,
+                // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                gettext("Failed to forget {room}."),
+                @room,
+            );
+        }
     }
 
     /// Update the disabled or empty state of this drop target.

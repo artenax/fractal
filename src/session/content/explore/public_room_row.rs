@@ -5,6 +5,8 @@ use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate
 use crate::{
     components::{Avatar, Spinner, SpinnerButton},
     session::content::explore::PublicRoom,
+    spawn, toast,
+    window::Window,
 };
 
 mod imp {
@@ -79,9 +81,7 @@ mod imp {
             self.parent_constructed();
             self.button
                 .connect_clicked(clone!(@weak self as imp => move |_| {
-                    if let Some(public_room) = &*imp.public_room.borrow() {
-                        public_room.join_or_view();
-                    };
+                    imp.obj().join_or_view();
                 }));
         }
 
@@ -212,5 +212,28 @@ impl PublicRoomRow {
         }
 
         button.set_loading(public_room.is_pending());
+    }
+
+    /// Join or view the public room.
+    pub fn join_or_view(&self) {
+        let Some(public_room) = self.public_room() else {
+            return;
+        };
+        let room_list = public_room.room_list();
+
+        if let Some(room) = public_room.room() {
+            if let Some(window) = self.root().and_downcast::<Window>() {
+                let session = room_list.session();
+                window.show_room(session.session_id(), room.room_id());
+            }
+        } else if let Some(matrix_public_room) = public_room.matrix_public_room() {
+            let room_id = matrix_public_room.room_id.clone();
+
+            spawn!(clone!(@weak self as obj, @weak room_list => async move {
+                if let Err(error) = room_list.join_by_id_or_alias(room_id.into(), vec![]).await {
+                    toast!(obj, error);
+                }
+            }));
+        }
     }
 }

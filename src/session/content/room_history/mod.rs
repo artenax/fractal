@@ -178,8 +178,10 @@ mod imp {
                     widget.send_text_message();
                 },
             );
-            klass.install_action("room-history.leave", None, move |widget, _, _| {
-                widget.leave();
+            klass.install_action("room-history.leave", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.leave().await;
+                }));
             });
 
             klass.install_action("room-history.try-again", None, move |widget, _, _| {
@@ -779,9 +781,24 @@ impl RoomHistory {
         self.clear_related_event();
     }
 
-    pub fn leave(&self) {
-        if let Some(room) = &*self.imp().room.borrow() {
-            room.set_category(RoomType::Left);
+    /// Leave the room.
+    pub async fn leave(&self) {
+        let Some(room) = self.room() else {
+            return;
+        };
+        let previous_category = room.category();
+
+        if room.set_category(RoomType::Left).await.is_err() {
+            toast!(
+                self,
+                gettext(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                    "Failed to move {room} from {previous_category} to {new_category}.",
+                ),
+                @room,
+                previous_category = previous_category.to_string(),
+                new_category = RoomType::Left.to_string(),
+            );
         }
     }
 
@@ -1440,10 +1457,16 @@ impl RoomHistory {
             let Some(successor) = room.successor() else {
                 return;
             };
+            let successor = successor.to_owned();
 
-            room.session()
-                .room_list()
-                .join_by_id_or_alias(successor.to_owned().into(), vec![]);
+            spawn!(clone!(@weak self as obj, @weak room => async move {
+                if let Err(error) = room.session()
+                    .room_list()
+                    .join_by_id_or_alias(successor.into(), vec![]).await
+                {
+                    toast!(obj, error);
+                }
+            }));
         }
     }
 }

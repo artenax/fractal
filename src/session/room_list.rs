@@ -14,7 +14,7 @@ use matrix_sdk::{
 use crate::{
     gettext_f,
     session::{room::Room, Session},
-    spawn, spawn_tokio, toast,
+    spawn_tokio,
 };
 
 mod imp {
@@ -314,7 +314,11 @@ impl RoomList {
     }
 
     /// Join the room with the given identifier.
-    pub fn join_by_id_or_alias(&self, identifier: OwnedRoomOrAliasId, via: Vec<OwnedServerName>) {
+    pub async fn join_by_id_or_alias(
+        &self,
+        identifier: OwnedRoomOrAliasId,
+        via: Vec<OwnedServerName>,
+    ) -> Result<(), String> {
         let client = self.session().client();
         let identifier_clone = identifier.clone();
 
@@ -326,26 +330,25 @@ impl RoomList {
                 .await
         });
 
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                match handle.await.unwrap() {
-                    Ok(matrix_room) => obj.pending_rooms_replace_or_remove(&identifier, matrix_room.room_id()),
-                    Err(error) => {
-                        obj.pending_rooms_remove(&identifier);
-                        error!("Joining room {identifier} failed: {error}");
+        match handle.await.unwrap() {
+            Ok(matrix_room) => {
+                self.pending_rooms_replace_or_remove(&identifier, matrix_room.room_id());
+                Ok(())
+            }
+            Err(error) => {
+                self.pending_rooms_remove(&identifier);
+                error!("Joining room {identifier} failed: {error}");
 
-                        let error = gettext_f(
-                            // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-                            "Failed to join room {room_name}. Try again later.",
-                            &[("room_name", identifier.as_str())]
-                        );
+                let error = gettext_f(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a
+                    // variable name.
+                    "Failed to join room {room_name}. Try again later.",
+                    &[("room_name", identifier.as_str())],
+                );
 
-                        toast!(obj.session(), error);
-                    }
-                }
-            })
-        );
+                Err(error)
+            }
+        }
     }
 
     pub fn connect_pending_rooms_changed<F: Fn(&Self) + 'static>(
@@ -365,15 +368,6 @@ impl RoomList {
     pub fn joined_room(&self, identifier: RoomIdentifier) -> Option<Room> {
         self.get_by_identifier(identifier)
             .filter(|room| room.is_joined())
-    }
-
-    /// Join or view the room with the given identifier.
-    pub fn join_or_view(&self, identifier: RoomIdentifier, via: Vec<OwnedServerName>) {
-        if let Some(room) = self.joined_room(identifier) {
-            self.session().select_room(Some(room));
-        } else {
-            self.join_by_id_or_alias(identifier.into(), via);
-        }
     }
 
     /// Add a room that was tombstoned but for which we haven't joined the

@@ -1,10 +1,12 @@
 use adw::subclass::prelude::BinImpl;
+use gettextrs::gettext;
 use gtk::{gdk, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 
 use super::Row;
 use crate::{
     components::{ContextMenuBin, ContextMenuBinExt, ContextMenuBinImpl},
     session::room::{HighlightFlags, Room, RoomType},
+    spawn, toast,
 };
 
 mod imp {
@@ -39,34 +41,52 @@ mod imp {
 
             klass.set_accessible_role(gtk::AccessibleRole::Group);
 
-            klass.install_action("room-row.accept-invite", None, move |widget, _, _| {
-                widget.set_room_as_normal_or_direct();
+            klass.install_action("room-row.accept-invite", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.set_room_as_normal_or_direct().await;
+                }));
             });
-            klass.install_action("room-row.reject-invite", None, move |widget, _, _| {
-                widget.room().unwrap().set_category(RoomType::Left)
-            });
-
-            klass.install_action("room-row.set-favorite", None, move |widget, _, _| {
-                widget.room().unwrap().set_category(RoomType::Favorite);
-            });
-            klass.install_action("room-row.set-normal", None, move |widget, _, _| {
-                widget.room().unwrap().set_category(RoomType::Normal);
-            });
-            klass.install_action("room-row.set-lowpriority", None, move |widget, _, _| {
-                widget.room().unwrap().set_category(RoomType::LowPriority);
-            });
-            klass.install_action("room-row.set-direct", None, move |widget, _, _| {
-                widget.room().unwrap().set_category(RoomType::Direct);
+            klass.install_action("room-row.reject-invite", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.set_category(RoomType::Left).await
+                }));
             });
 
-            klass.install_action("room-row.leave", None, move |widget, _, _| {
-                widget.room().unwrap().set_category(RoomType::Left);
+            klass.install_action("room-row.set-favorite", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.set_category(RoomType::Favorite).await
+                }));
             });
-            klass.install_action("room-row.join", None, move |widget, _, _| {
-                widget.set_room_as_normal_or_direct();
+            klass.install_action("room-row.set-normal", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.set_category(RoomType::Normal).await
+                }));
             });
-            klass.install_action("room-row.forget", None, move |widget, _, _| {
-                widget.room().unwrap().forget();
+            klass.install_action("room-row.set-lowpriority", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.set_category(RoomType::LowPriority).await
+                }));
+            });
+            klass.install_action("room-row.set-direct", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.set_category(RoomType::Direct).await
+                }));
+            });
+
+            klass.install_action("room-row.leave", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.set_category(RoomType::Left).await
+                }));
+            });
+            klass.install_action("room-row.join", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.set_room_as_normal_or_direct().await;
+                }));
+            });
+            klass.install_action("room-row.forget", None, move |obj, _, _| {
+                spawn!(clone!(@weak obj => async move {
+                    obj.forget().await
+                }));
             });
         }
 
@@ -350,7 +370,66 @@ impl RoomRow {
         row.remove_css_class("drag");
     }
 
-    fn set_room_as_normal_or_direct(&self) {
-        self.room().unwrap().set_joined();
+    async fn set_room_as_normal_or_direct(&self) {
+        let Some(room) = self.room() else {
+            return;
+        };
+        let previous_category = room.category();
+
+        let category = if room.is_direct().await {
+            RoomType::Direct
+        } else {
+            RoomType::Normal
+        };
+
+        if room.set_category(category).await.is_err() {
+            toast!(
+                self,
+                gettext(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                    "Failed to move {room} from {previous_category} to {new_category}.",
+                ),
+                @room,
+                previous_category = previous_category.to_string(),
+                new_category = category.to_string(),
+            );
+        }
+    }
+
+    /// Change the category of this room.
+    async fn set_category(&self, category: RoomType) {
+        let Some(room) = self.room() else {
+            return;
+        };
+        let previous_category = room.category();
+
+        if room.set_category(category).await.is_err() {
+            toast!(
+                self,
+                gettext(
+                    // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                    "Failed to move {room} from {previous_category} to {new_category}.",
+                ),
+                @room,
+                previous_category = previous_category.to_string(),
+                new_category = category.to_string(),
+            );
+        }
+    }
+
+    /// Forget this room.
+    async fn forget(&self) {
+        let Some(room) = self.room() else {
+            return;
+        };
+
+        if room.forget().await.is_err() {
+            toast!(
+                self,
+                // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+                gettext("Failed to forget {room}."),
+                @room,
+            );
+        }
     }
 }

@@ -1,5 +1,5 @@
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
-use matrix_sdk::ruma::{directory::PublicRoomsChunk, RoomId, RoomOrAliasId};
+use matrix_sdk::ruma::directory::PublicRoomsChunk;
 
 use crate::session::{room::Room, AvatarData, AvatarImage, AvatarUriSource, RoomList};
 
@@ -180,15 +180,5 @@ impl PublicRoom {
 
     pub fn matrix_public_room(&self) -> Option<&PublicRoomsChunk> {
         self.imp().matrix_public_room.get()
-    }
-
-    pub fn join_or_view(&self) {
-        if let Some(room) = self.room() {
-            self.room_list().session().select_room(Some(room.clone()));
-        } else if let Some(matrix_public_room) = self.matrix_public_room() {
-            let room_id: &RoomId = matrix_public_room.room_id.as_ref();
-            self.room_list()
-                .join_by_id_or_alias(<&RoomOrAliasId>::from(room_id).to_owned(), vec![]);
-        }
     }
 }

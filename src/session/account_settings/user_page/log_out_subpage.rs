@@ -4,7 +4,7 @@ use gtk::{
     CompositeTemplate,
 };
 
-use crate::{components::SpinnerButton, session::Session, spawn};
+use crate::{components::SpinnerButton, session::Session, spawn, toast};
 
 mod imp {
     use glib::{subclass::InitializingObject, WeakRef};
@@ -100,8 +100,11 @@ impl LogOutSubpage {
         make_backup_button.set_sensitive(false);
 
         spawn!(
-            clone!(@weak logout_button, @weak make_backup_button, @weak session => async move {
-                session.logout().await;
+            clone!(@weak self as obj, @weak logout_button, @weak make_backup_button, @weak session => async move {
+                if let Err(error) = session.logout().await {
+                    toast!(obj, error);
+                }
+
                 logout_button.set_loading(false);
                 make_backup_button.set_sensitive(true);
             })

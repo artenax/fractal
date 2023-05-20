@@ -2,10 +2,11 @@ use adw::subclass::prelude::*;
 use gtk::{gdk, glib, glib::clone, prelude::*, CompositeTemplate};
 
 mod dm_user;
-use self::dm_user::DmUser;
 mod dm_user_list;
 mod dm_user_row;
+
 use self::{
+    dm_user::DmUser,
     dm_user_list::{DmUserList, DmUserListState},
     dm_user_row::DmUserRow,
 };
@@ -177,23 +178,32 @@ impl CreateDmDialog {
 
     #[template_callback]
     fn row_activated_cb(&self, row: gtk::ListBoxRow) {
-        let Some(user): Option<DmUser> = row.downcast::<DmUserRow>().ok().and_then(|r| r.user()) else { return; };
+        let Some(user) = row.downcast_ref::<DmUserRow>().and_then(|r| r.user()) else {
+            return;
+        };
 
         // TODO: For now we show the loading page while we create the room,
         // ideally we would like to have the same behavior as Element:
         // Create the room only once the user sends a message
-        self.imp().stack.set_visible_child_name("loading-page");
-        self.imp().search_entry.set_sensitive(false);
+        let imp = self.imp();
+        imp.stack.set_visible_child_name("loading-page");
+        imp.search_entry.set_sensitive(false);
+
         spawn!(clone!(@weak self as obj, @weak user => async move {
-            match user.start_chat().await {
-                Ok(room) => {
-                    user.session().select_room(Some(room));
-                    obj.close();
-                }
-                Err(_) => {
-                    obj.show_error(&gettext("Failed to create a new Direct Chat"));
-                }
-            }
+            obj.start_chat(&user).await;
         }));
+    }
+
+    async fn start_chat(&self, user: &DmUser) {
+        match user.start_chat().await {
+            Ok(room) => {
+                user.session().select_room(Some(room));
+                self.close();
+            }
+            Err(_) => {
+                self.show_error(&gettext("Failed to create a new Direct Chat"));
+                self.imp().search_entry.set_sensitive(true);
+            }
+        }
     }
 }

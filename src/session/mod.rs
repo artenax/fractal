@@ -64,7 +64,7 @@ pub use self::{
 use crate::{
     secret::StoredSession,
     session::sidebar::ItemList,
-    spawn, spawn_tokio, toast,
+    spawn, spawn_tokio,
     utils::{
         check_if_reachable,
         matrix::{self, ClientSetupError},
@@ -681,7 +681,7 @@ impl Session {
         dialog.present();
     }
 
-    pub async fn logout(&self) {
+    pub async fn logout(&self) -> Result<(), String> {
         let stack = &self.imp().stack;
 
         debug!("The session is about to be logged out");
@@ -698,10 +698,15 @@ impl Session {
         });
 
         match handle.await.unwrap() {
-            Ok(_) => self.cleanup_session().await,
+            Ok(_) => {
+                self.cleanup_session().await;
+
+                Ok(())
+            }
             Err(error) => {
                 error!("Couldn’t logout the session: {error}");
-                toast!(self, gettext("Failed to logout the session."));
+
+                Err(gettext("Failed to logout the session."))
             }
         }
     }

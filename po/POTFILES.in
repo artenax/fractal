@@ -79,6 +79,7 @@ src/session/content/room_details/general_page/mod.rs
 src/session/content/room_details/history_viewer/audio_row.rs
 src/session/content/room_details/history_viewer/file_row.rs
 src/session/content/room_details/invite_subpage/invitee_list.rs
+src/session/content/room_details/invite_subpage/mod.rs
 src/session/content/room_details/member_page/mod.rs
 src/session/content/room_details/mod.rs
 src/session/content/room_history/item_row.rs
@@ -107,6 +108,8 @@ src/session/room_list.rs
 src/session/sidebar/category/category_row.rs
 src/session/sidebar/category/category_type.rs
 src/session/sidebar/entry_type.rs
+src/session/sidebar/room_row.rs
+src/session/sidebar/row.rs
 src/session/verification/identity_verification.rs
 src/user_facing_error.rs
 src/utils/media.rs

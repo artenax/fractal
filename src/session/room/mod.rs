@@ -10,7 +10,7 @@ mod typing_list;
 
 use std::{cell::RefCell, io::Cursor};
 
-use gettextrs::{gettext, ngettext};
+use gettextrs::gettext;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, warn};
 use matrix_sdk::{
@@ -58,7 +58,7 @@ use crate::{
         sidebar::{SidebarItem, SidebarItemImpl},
         AvatarData, AvatarImage, AvatarUriSource, Session, User,
     },
-    spawn, spawn_tokio, toast,
+    spawn, spawn_tokio,
 };
 
 mod imp {
@@ -143,7 +143,7 @@ mod imp {
                         .read_only()
                         .build(),
                     glib::ParamSpecEnum::builder::<RoomType>("category")
-                        .explicit_notify()
+                        .read_only()
                         .build(),
                     glib::ParamSpecString::builder("topic").read_only().build(),
                     glib::ParamSpecUInt64::builder("latest-unread")
@@ -184,7 +184,6 @@ mod imp {
 
             match pspec.name() {
                 "session" => self.session.set(value.get().ok().as_ref()),
-                "category" => obj.set_category(value.get().unwrap()),
                 "room-id" => self
                     .room_id
                     .set(RoomId::parse(value.get::<&str>().unwrap()).unwrap())
@@ -299,18 +298,13 @@ impl Room {
         self.imp().room_id.get().unwrap()
     }
 
-    /// Set the proper category for this joined room.
-    pub fn set_joined(&self) {
+    /// Whether this room is direct or not.
+    pub async fn is_direct(&self) -> bool {
         let matrix_room = self.matrix_room();
 
-        let handle = spawn_tokio!(async move { matrix_room.is_direct().await.unwrap_or_default() });
-        spawn!(clone!(@weak self as obj => async move {
-            if handle.await.unwrap() {
-                obj.set_category(RoomType::Direct);
-            } else {
-                obj.set_category(RoomType::Normal);
-            }
-        }));
+        spawn_tokio!(async move { matrix_room.is_direct().await.unwrap_or_default() })
+            .await
+            .unwrap()
     }
 
     pub fn matrix_room(&self) -> MatrixRoom {
@@ -346,10 +340,10 @@ impl Room {
     }
 
     /// Forget a room that is left.
-    pub fn forget(&self) {
+    pub async fn forget(&self) -> MatrixResult<()> {
         if self.category() != RoomType::Left {
             warn!("Cannot forget a room that is not left");
-            return;
+            return Ok(());
         }
 
         let matrix_room = self.matrix_room();
@@ -361,29 +355,20 @@ impl Room {
             }
         });
 
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                match handle.await.unwrap() {
-                    Ok(_) => {
-                        obj.emit_by_name::<()>("room-forgotten", &[]);
-                    }
-                    Err(error) => {
-                        error!("Couldn’t forget the room: {error}");
+        match handle.await.unwrap() {
+            Ok(_) => {
+                self.emit_by_name::<()>("room-forgotten", &[]);
+                Ok(())
+            }
+            Err(error) => {
+                error!("Couldn’t forget the room: {error}");
 
-                        toast!(
-                            obj.session(),
-                            // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-                            gettext("Failed to forget {room}."),
-                            @room = &obj,
-                        );
+                // Load the previous category
+                self.load_category();
 
-                        // Load the previous category
-                        obj.load_category();
-                    },
-                };
-            })
-        );
+                Err(error)
+            }
+        }
     }
 
     pub fn is_joined(&self) -> bool {
@@ -417,31 +402,33 @@ impl Room {
     ///
     /// Note: Rooms can't be moved to the invite category and they can't be
     /// moved once they are upgraded.
-    pub fn set_category(&self, category: RoomType) {
+    pub async fn set_category(&self, category: RoomType) -> MatrixResult<()> {
         let matrix_room = self.matrix_room();
         let previous_category = self.category();
 
         if previous_category == category {
-            return;
+            return Ok(());
         }
 
         if previous_category == RoomType::Outdated {
             warn!("Can't set the category of an upgraded room");
-            return;
+            return Ok(());
         }
 
         match category {
             RoomType::Invited => {
                 warn!("Rooms can’t be moved to the invite Category");
-                return;
+                return Ok(());
             }
             RoomType::Outdated => {
                 // Outdated rooms don't need to propagate anything to the server
                 self.set_category_internal(category);
-                return;
+                return Ok(());
             }
             _ => {}
         }
+
+        self.set_category_internal(category);
 
         let handle = spawn_tokio!(async move {
             match matrix_room {
@@ -615,33 +602,17 @@ impl Room {
             Result::<_, matrix_sdk::Error>::Ok(())
         });
 
-        spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                match handle.await.unwrap() {
-                        Ok(_) => {},
-                        Err(error) => {
-                            error!("Couldn’t set the room category: {error}");
+        match handle.await.unwrap() {
+            Ok(_) => Ok(()),
+            Err(error) => {
+                error!("Couldn’t set the room category: {error}");
 
-                            toast!(
-                                obj.session(),
-                                gettext(
-                                    // Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-                                    "Failed to move {room} from {previous_category} to {new_category}.",
-                                ),
-                                @room = obj,
-                                previous_category = previous_category.to_string(),
-                                new_category = category.to_string(),
-                            );
+                // Load the previous category
+                self.load_category();
 
-                            // Load the previous category
-                            obj.load_category();
-                        },
-                };
-            })
-        );
-
-        self.set_category_internal(category);
+                Err(error)
+            }
+        }
     }
 
     pub fn load_category(&self) {
@@ -1303,17 +1274,6 @@ impl Room {
             Ok(_) => Ok(()),
             Err(error) => {
                 error!("Accepting invitation failed: {error}");
-
-                toast!(
-                    self.session(),
-                    gettext(
-                        // Translators: Do NOT translate the content between '{' and '}', this
-                        // is a variable name.
-                        "Failed to accept invitation for {room}. Try again later.",
-                    ),
-                    @room = self,
-                );
-
                 Err(error)
             }
         }
@@ -1332,16 +1292,6 @@ impl Room {
             Ok(_) => Ok(()),
             Err(error) => {
                 error!("Rejecting invitation failed: {error}");
-
-                toast!(
-                    self.session(),
-                    gettext(
-                        // Translators: Do NOT translate the content between '{' and '}', this
-                        // is a variable name.
-                        "Failed to reject invitation for {room}. Try again later.",
-                    ),
-                    @room = self,
-                );
 
                 Err(error)
             }
@@ -1525,21 +1475,25 @@ impl Room {
         });
     }
 
-    pub async fn invite(&self, users: &[User]) {
+    /// Invite the given users to this room.
+    ///
+    /// Returns `Ok(())` if all the invites are sent successfully, otherwise
+    /// returns the list of users who could not be invited.
+    pub async fn invite<'a>(&self, users: &'a [User]) -> Result<(), Vec<&'a User>> {
         let MatrixRoom::Joined(matrix_room) = self.matrix_room() else {
             error!("Can’t invite users, because this room isn’t a joined room");
-            return;
+            return Ok(());
         };
         let user_ids: Vec<OwnedUserId> = users.iter().map(|user| user.user_id()).collect();
 
         let handle = spawn_tokio!(async move {
-            let invitiations = user_ids
+            let invitations = user_ids
                 .iter()
                 .map(|user_id| matrix_room.invite_user_by_id(user_id));
-            futures::future::join_all(invitiations).await
+            futures::future::join_all(invitations).await
         });
 
-        let mut failed_invites: Vec<User> = Vec::new();
+        let mut failed_invites = Vec::new();
         for (index, result) in handle.await.unwrap().iter().enumerate() {
             match result {
                 Ok(_) => {}
@@ -1548,43 +1502,15 @@ impl Room {
                         "Failed to invite user with id {}: {error}",
                         users[index].user_id(),
                     );
-                    failed_invites.push(users[index].clone());
+                    failed_invites.push(&users[index]);
                 }
             }
         }
 
-        if !failed_invites.is_empty() {
-            let no_failed = failed_invites.len();
-            let first_failed = failed_invites.first().unwrap();
-
-            // TODO: should we show all the failed users?
-            if no_failed == 1 {
-                toast!(
-                    self.session(),
-                    gettext(
-                        // Translators: Do NOT translate the content between '{' and '}', this
-                        // is a variable name.
-                        "Failed to invite {user} to {room}. Try again later.",
-                    ),
-                    @user = first_failed,
-                    @room = self,
-                );
-            } else {
-                let n = (no_failed - 1) as u32;
-                toast!(
-                    self.session(),
-                    ngettext(
-                        // Translators: Do NOT translate the content between '{' and '}', this
-                        // is a variable name.
-                        "Failed to invite {user} and 1 other user to {room}. Try again later.",
-                        "Failed to invite {user} and {n} other users to {room}. Try again later.",
-                        n,
-                    ),
-                    @user = first_failed,
-                    @room = self,
-                    n = n.to_string(),
-                );
-            };
+        if failed_invites.is_empty() {
+            Ok(())
+        } else {
+            Err(failed_invites)
         }
     }
 
