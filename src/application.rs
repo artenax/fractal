@@ -147,14 +147,15 @@ impl Application {
             app.main_window().switch_to_sessions_page();
         }));
         self.add_action(&show_sessions_action);
+
         let win = self.main_window();
-        win.connect_notify_local(
-            Some("has-sessions"),
-            clone!(@weak show_sessions_action => move |win, _| {
-                show_sessions_action.set_enabled(win.has_sessions());
+        let session_list = win.session_list();
+        session_list.connect_is_empty_notify(
+            clone!(@weak show_sessions_action => move |session_list| {
+                show_sessions_action.set_enabled(!session_list.is_empty());
             }),
         );
-        show_sessions_action.set_enabled(win.has_sessions());
+        show_sessions_action.set_enabled(!session_list.is_empty());
     }
 
     /// Sets up keyboard shortcuts for application and window actions.

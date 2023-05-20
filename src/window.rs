@@ -13,6 +13,7 @@ use crate::{
     config::{APP_ID, PROFILE},
     secret::{self, SecretError, StoredSession},
     session::SessionState,
+    session_list::SessionList,
     spawn, spawn_tokio, toast,
     user_facing_error::UserFacingError,
     Application, ErrorPage, Greeter, Login, Session,
@@ -45,6 +46,12 @@ mod imp {
         pub offline_banner: TemplateChild<adw::Banner>,
         #[template_child]
         pub spinner: TemplateChild<Spinner>,
+        /// The list of logged-in sessions.
+        pub session_list: SessionList,
+        /// The selection of the logged-in sessions.
+        ///
+        /// The one that is selected being the one that is visible.
+        pub session_selection: gtk::SingleSelection,
         pub account_switcher: AccountSwitcher,
         pub waiting_sessions: Cell<usize>,
     }
@@ -90,9 +97,14 @@ mod imp {
     impl ObjectImpl for Window {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoolean::builder("has-sessions")
-                    .read_only()
-                    .build()]
+                vec![
+                    glib::ParamSpecObject::builder::<SessionList>("session-list")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<gtk::SingleSelection>("session-selection")
+                        .read_only()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -100,7 +112,8 @@ mod imp {
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "has-sessions" => self.obj().has_sessions().to_value(),
+                "session-list" => self.obj().session_list().to_value(),
+                "session-selection" => self.obj().session_selection().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -137,11 +150,23 @@ mod imp {
 
             obj.set_default_by_child();
 
+            self.session_selection.set_model(Some(&self.session_list));
+            self.session_selection.set_autoselect(true);
+
+            self.session_selection.connect_selected_item_notify(
+                clone!(@weak self as imp => move |session_selection| {
+                    if let Some(session) = session_selection.selected_item().and_downcast::<Session>() {
+                        imp.sessions.set_visible_child(&session);
+                    }
+                }),
+            );
+
             spawn!(clone!(@weak obj => async move {
                 obj.restore_sessions().await;
             }));
 
-            self.account_switcher.set_pages(Some(self.sessions.pages()));
+            self.account_switcher
+                .set_session_selection(Some(self.session_selection.clone()));
 
             let monitor = gio::NetworkMonitor::default();
             monitor.connect_network_changed(clone!(@weak obj => move |_, _| {
@@ -183,15 +208,29 @@ impl Window {
             .build()
     }
 
+    /// The list of logged-in sessions with a selection.
+    ///
+    /// The one that is selected being the one that is visible.
+    pub fn session_list(&self) -> &SessionList {
+        &self.imp().session_list
+    }
+
+    /// The selection of the logged-in sessions.
+    ///
+    /// The one that is selected being the one that is visible.
+    pub fn session_selection(&self) -> &gtk::SingleSelection {
+        &self.imp().session_selection
+    }
+
     pub fn add_session(&self, session: &Session) {
         let imp = &self.imp();
-        let prev_has_sessions = self.has_sessions();
 
+        let index = imp.session_list.add(session.clone());
         imp.sessions.add_named(session, Some(session.session_id()));
         let settings = Application::default().settings();
         let mut is_opened = false;
         if session.session_id() == settings.string("current-session") {
-            imp.sessions.set_visible_child(session);
+            imp.session_selection.set_selected(index as u32);
             is_opened = true;
 
             if session.state() == SessionState::Ready {
@@ -207,7 +246,7 @@ impl Window {
         }
 
         if imp.waiting_sessions.get() == 0 && !is_opened {
-            imp.sessions.set_visible_child(session);
+            imp.session_selection.set_selected(index as u32);
 
             if session.state() == SessionState::Ready {
                 session.show_content();
@@ -224,21 +263,15 @@ impl Window {
         session.connect_logged_out(clone!(@weak self as obj => move |session| {
             obj.remove_session(session)
         }));
-
-        if !prev_has_sessions {
-            self.notify("has-sessions");
-        }
     }
 
     fn remove_session(&self, session: &Session) {
         let imp = self.imp();
 
+        imp.session_list.remove(session.session_id());
         imp.sessions.remove(session);
 
-        if let Some(child) = imp.sessions.first_child() {
-            imp.sessions.set_visible_child(&child);
-        } else {
-            self.notify("has-sessions");
+        if imp.session_list.is_empty() {
             self.switch_to_greeter_page();
         }
     }
@@ -315,31 +348,26 @@ impl Window {
         }
     }
 
-    /// Whether this window has sessions.
-    pub fn has_sessions(&self) -> bool {
-        self.imp().sessions.pages().n_items() > 0
-    }
-
-    /// Get the session with the given ID.
-    pub fn session_by_id(&self, session_id: &str) -> Option<Session> {
-        self.imp()
-            .sessions
-            .child_by_name(session_id)
-            .and_then(|w| w.downcast().ok())
-    }
-
     /// The ID of the currently visible session, if any.
     pub fn current_session_id(&self) -> Option<String> {
-        let imp = self.imp();
-        imp.main_stack
-            .visible_child()
-            .filter(|child| child == imp.sessions.upcast_ref::<gtk::Widget>())?;
-        imp.sessions.visible_child_name().map(Into::into)
+        Some(
+            self.imp()
+                .session_selection
+                .selected_item()
+                .and_downcast::<Session>()?
+                .session_id()
+                .to_owned(),
+        )
     }
 
     /// Set the current session by its ID.
     pub fn set_current_session_by_id(&self, session_id: &str) {
-        self.imp().sessions.set_visible_child_name(session_id);
+        let imp = self.imp();
+
+        if let Some(index) = imp.session_list.index(session_id) {
+            imp.session_selection.set_selected(index as u32);
+        }
+
         self.switch_to_sessions_page();
     }
 
@@ -435,7 +463,7 @@ impl Window {
     }
 
     pub fn show_room(&self, session_id: &str, room_id: &RoomId) {
-        if let Some(session) = self.session_by_id(session_id) {
+        if let Some(session) = self.session_list().get(session_id) {
             session.select_room_by_id(room_id);
             self.set_current_session_by_id(session_id);
         }

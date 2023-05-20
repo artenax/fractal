@@ -2,20 +2,20 @@
 <interface>
   <template class="AccountSwitcher" parent="GtkPopover">
     <child>
-      <object class="GtkListBox" id="sessions">
-        <property name="activate_on_single_click">true</property>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
         <child>
-          <object class="GtkListBoxRow">
-            <property name="selectable">false</property>
-            <property name="activatable">false</property>
-            <property name="child">
-              <object class="GtkSeparator"/>
-            </property>
+          <object class="GtkListBox" id="sessions">
+            <property name="activate_on_single_click">true</property>
+            <signal name="row-activated" handler="select_row" swapped="yes"/>
           </object>
         </child>
         <child>
-          <object class="GtkListBoxRow">
-            <property name="selectable">false</property>
+          <object class="GtkSeparator"/>
+        </child>
+        <child>
+          <object class="GtkButton">
             <property name="action-name">app.new-session</property>
             <property name="child">
               <object class="GtkBox">
@@ -37,13 +37,11 @@
             </property>
             <style>
               <class name="account-switcher-row"/>
+              <class name="flat"/>
             </style>
           </object>
         </child>
       </object>
     </child>
-    <style>
-      <class name="account-switcher"/>
-    </style>
   </template>
 </interface>

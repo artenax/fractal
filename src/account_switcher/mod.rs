@@ -2,19 +2,16 @@ use gtk::{
     glib::{self, clone},
     prelude::*,
     subclass::prelude::*,
-    CompositeTemplate, SelectionModel,
+    CompositeTemplate,
 };
-
-use crate::session::Session;
 
 mod avatar_with_selection;
 mod session_item;
 
-use session_item::SessionItemRow;
+use self::session_item::SessionItemRow;
+use crate::utils::BoundObjectWeakRef;
 
 mod imp {
-    use std::cell::RefCell;
-
     use glib::subclass::InitializingObject;
     use once_cell::sync::Lazy;
 
@@ -25,9 +22,8 @@ mod imp {
     pub struct AccountSwitcher {
         #[template_child]
         pub sessions: TemplateChild<gtk::ListBox>,
-        pub pages: RefCell<Option<gtk::SelectionModel>>,
-        pub pages_handler: RefCell<Option<glib::SignalHandlerId>>,
-        pub selection_handler: RefCell<Option<glib::SignalHandlerId>>,
+        /// The model containing the logged-in sessions selection.
+        pub session_selection: BoundObjectWeakRef<gtk::SingleSelection>,
     }
 
     #[glib::object_subclass]
@@ -38,6 +34,9 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
+
+            klass.set_css_name("account-switcher");
 
             klass.install_action("account-switcher.close", None, move |item, _, _| {
                 item.popdown();
@@ -53,7 +52,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::builder::<gtk::SelectionModel>("pages")
+                    glib::ParamSpecObject::builder::<gtk::SingleSelection>("session-selection")
                         .explicit_notify()
                         .build(),
                 ]
@@ -64,36 +63,20 @@ mod imp {
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "pages" => self.obj().set_pages(value.get().unwrap()),
+                "session-selection" => self.obj().set_session_selection(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "pages" => self.obj().pages().to_value(),
+                "session-selection" => self.obj().session_selection().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn constructed(&self) {
-            self.parent_constructed();
-
-            self.sessions.connect_row_activated(move |_, row| {
-                row.activate_action("account-switcher.close", None).unwrap();
-
-                if let Some(session) = row
-                    .downcast_ref::<SessionItemRow>()
-                    .and_then(|row| row.session())
-                {
-                    session
-                        .parent()
-                        .unwrap()
-                        .downcast::<gtk::Stack>()
-                        .unwrap()
-                        .set_visible_child(&session);
-                }
-            });
+        fn dispose(&self) {
+            self.session_selection.disconnect_signals();
         }
     }
 
@@ -106,95 +89,75 @@ glib::wrapper! {
         @extends gtk::Widget, gtk::Popover, @implements gtk::Accessible;
 }
 
+#[gtk::template_callbacks]
 impl AccountSwitcher {
     pub fn new() -> Self {
         glib::Object::new()
     }
 
-    /// Set the model containing the stack pages for each logged in account.
-    pub fn set_pages(&self, pages: Option<gtk::SelectionModel>) {
-        let imp = self.imp();
-        let prev_pages = self.pages();
+    /// The model containing the logged-in sessions selection.
+    pub fn session_selection(&self) -> Option<gtk::SingleSelection> {
+        self.imp().session_selection.obj()
+    }
 
-        if pages == prev_pages {
+    /// Set the model containing the logged-in sessions selection.
+    pub fn set_session_selection(&self, selection: Option<gtk::SingleSelection>) {
+        let imp = self.imp();
+        let prev_selection = self.session_selection();
+
+        if selection == prev_selection {
             return;
         }
-        if let Some(prev_pages) = prev_pages {
-            if let Some(handler) = imp.pages_handler.take() {
-                prev_pages.disconnect(handler);
-            }
 
-            if let Some(handler) = imp.selection_handler.take() {
-                prev_pages.disconnect(handler);
-            }
-        }
+        imp.session_selection.disconnect_signals();
 
-        if let Some(ref pages) = pages {
-            let handler = pages.connect_items_changed(
-                clone!(@weak self as obj => move |model, position, removed, added| {
-                    obj.update_rows(model, position, removed, added);
+        imp.sessions.bind_model(selection.as_ref(), |session| {
+            let row = SessionItemRow::new(session.downcast_ref().unwrap());
+            row.upcast()
+        });
+
+        if let Some(selection) = &selection {
+            let selected_handler = selection.connect_selection_changed(
+                clone!(@weak self as obj => move |selection, pos, n_items| {
+                    obj.update_selected_item(selection.selected(), pos, n_items);
                 }),
             );
-
-            imp.pages_handler.replace(Some(handler));
-
-            let handler = pages.connect_selection_changed(
-                clone!(@weak self as obj => move |_, position, n_items| {
-                    obj.update_selection(position, n_items);
-                }),
-            );
-
-            imp.selection_handler.replace(Some(handler));
-
-            self.update_rows(pages, 0, 0, pages.n_items());
-        }
-
-        self.imp().pages.replace(pages);
-        self.notify("pages");
-    }
-
-    /// The model containing the stack pages for each logged in account.
-    pub fn pages(&self) -> Option<gtk::SelectionModel> {
-        self.imp().pages.borrow().clone()
-    }
-
-    fn update_rows(&self, model: &SelectionModel, position: u32, removed: u32, added: u32) {
-        let listbox = self.imp().sessions.get();
-        for _ in 0..removed {
-            if let Some(row) = listbox.row_at_index(position as i32) {
-                listbox.remove(&row);
+            let selected = selection.selected();
+            if selected != gtk::INVALID_LIST_POSITION {
+                self.update_selected_item(selected, selected, 1);
             }
+
+            imp.session_selection.set(selection, vec![selected_handler]);
         }
-        for i in position..(position + added) {
-            let row = SessionItemRow::new(
-                &model
-                    .item(i)
-                    .unwrap()
-                    .downcast::<gtk::StackPage>()
-                    .unwrap()
-                    .child()
-                    .downcast::<Session>()
-                    .unwrap(),
-            );
-            row.set_selected(model.is_selected(i));
-            listbox.insert(&row, i as i32);
-        }
+
+        self.notify("session-selection");
     }
 
-    fn update_selection(&self, position: u32, n_items: u32) {
-        let imp = self.imp();
-        let pages = imp.pages.borrow();
-        let Some(pages) = &*pages else {
+    /// Select the given row in the session list.
+    #[template_callback]
+    fn select_row(&self, row: gtk::ListBoxRow) {
+        self.popdown();
+
+        let Some(selection) = self.session_selection() else {
             return;
         };
 
-        for i in position..(position + n_items) {
+        // The index is -1 when it is not in a GtkListBox, but we just got it from the
+        // GtkListBox so we can safely assume it's a valid u32.
+        selection.set_selected(row.index() as u32);
+    }
+
+    /// Update the selected item in the session list.
+    fn update_selected_item(&self, selected: u32, start: u32, n_items: u32) {
+        let imp = self.imp();
+
+        for i in start..(start + n_items) {
             if let Some(row) = imp
                 .sessions
                 .row_at_index(i as i32)
-                .and_then(|row| row.downcast::<SessionItemRow>().ok())
+                .and_downcast::<SessionItemRow>()
             {
-                row.set_selected(pages.is_selected(i));
+                row.set_selected(i == selected);
             }
         }
     }

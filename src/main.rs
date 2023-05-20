@@ -18,6 +18,7 @@ mod i18n;
 mod login;
 mod secret;
 mod session;
+mod session_list;
 mod user_facing_error;
 mod utils;
 mod window;

@@ -64,6 +64,7 @@
             <signal name="clicked" handler="show_account_settings" swapped="true"/>
             <style>
               <class name="circular"/>
+              <class name="raised"/>
             </style>
           </object>
         </child>
