@@ -151,12 +151,6 @@ mod imp {
                 },
             );
 
-            klass.install_action("session.logout", None, move |session, _, _| {
-                spawn!(clone!(@weak session => async move {
-                    session.logout().await
-                }));
-            });
-
             klass.install_action("session.show-content", None, move |session, _, _| {
                 session.show_content();
             });
