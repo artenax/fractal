@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="UserEntryRow" parent="GtkListBoxRow">
+  <template class="SessionItemRow" parent="GtkListBoxRow">
     <property name="selectable">false</property>
     <style>
       <class name="account-switcher-row"/>
@@ -9,12 +9,12 @@
       <object class="GtkBox">
         <property name="spacing">10</property>
         <child>
-          <object class="AvatarWithSelection" id="account_avatar">
+          <object class="AvatarWithSelection" id="avatar">
             <property name="size">40</property>
             <binding name="data">
               <lookup name="avatar-data" type="User">
                 <lookup name="user" type="Session">
-                  <lookup name="session">UserEntryRow</lookup>
+                  <lookup name="session">SessionItemRow</lookup>
                 </lookup>
               </lookup>
             </binding>
@@ -31,7 +31,7 @@
                 <binding name="label">
                   <lookup name="display-name" type="User">
                     <lookup name="user" type="Session">
-                      <lookup name="session">UserEntryRow</lookup>
+                      <lookup name="session">SessionItemRow</lookup>
                     </lookup>
                   </lookup>
                 </binding>
@@ -44,7 +44,7 @@
                 <binding name="label">
                   <lookup name="user-id" type="User">
                     <lookup name="user" type="Session">
-                      <lookup name="session">UserEntryRow</lookup>
+                      <lookup name="session">SessionItemRow</lookup>
                     </lookup>
                   </lookup>
                 </binding>

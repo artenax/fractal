@@ -8,9 +8,9 @@ use gtk::{
 use crate::session::Session;
 
 mod avatar_with_selection;
-mod user_entry;
+mod session_item;
 
-use user_entry::UserEntryRow;
+use session_item::SessionItemRow;
 
 mod imp {
     use std::cell::RefCell;
@@ -24,7 +24,7 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/sidebar-account-switcher.ui")]
     pub struct AccountSwitcher {
         #[template_child]
-        pub entries: TemplateChild<gtk::ListBox>,
+        pub sessions: TemplateChild<gtk::ListBox>,
         pub pages: RefCell<Option<gtk::SelectionModel>>,
         pub pages_handler: RefCell<Option<glib::SignalHandlerId>>,
         pub selection_handler: RefCell<Option<glib::SignalHandlerId>>,
@@ -79,11 +79,11 @@ mod imp {
         fn constructed(&self) {
             self.parent_constructed();
 
-            self.entries.connect_row_activated(move |_, row| {
+            self.sessions.connect_row_activated(move |_, row| {
                 row.activate_action("account-switcher.close", None).unwrap();
 
                 if let Some(session) = row
-                    .downcast_ref::<UserEntryRow>()
+                    .downcast_ref::<SessionItemRow>()
                     .and_then(|row| row.session())
                 {
                     session
@@ -159,14 +159,14 @@ impl AccountSwitcher {
     }
 
     fn update_rows(&self, model: &SelectionModel, position: u32, removed: u32, added: u32) {
-        let listbox = self.imp().entries.get();
+        let listbox = self.imp().sessions.get();
         for _ in 0..removed {
             if let Some(row) = listbox.row_at_index(position as i32) {
                 listbox.remove(&row);
             }
         }
         for i in position..(position + added) {
-            let row = UserEntryRow::new(
+            let row = SessionItemRow::new(
                 &model
                     .item(i)
                     .unwrap()
@@ -190,9 +190,9 @@ impl AccountSwitcher {
 
         for i in position..(position + n_items) {
             if let Some(row) = imp
-                .entries
+                .sessions
                 .row_at_index(i as i32)
-                .and_then(|row| row.downcast::<UserEntryRow>().ok())
+                .and_then(|row| row.downcast::<SessionItemRow>().ok())
             {
                 row.set_selected(pages.is_selected(i));
             }

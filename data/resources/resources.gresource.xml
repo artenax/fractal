@@ -136,6 +136,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="qr-code-scanner.ui">ui/qr-code-scanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="room-creation.ui">ui/room-creation.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="room-title.ui">ui/room-title.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="session-item-row.ui">ui/session-item-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="session-verification.ui">ui/session-verification.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="session.ui">ui/session.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="shortcuts.ui">ui/shortcuts.ui</file>
@@ -146,9 +147,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="sidebar-verification-row.ui">ui/sidebar-verification-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="sidebar.ui">ui/sidebar.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="spinner-button.ui">ui/spinner-button.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks" alias="user-entry-row.ui">ui/user-entry-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="verification-emoji.ui">ui/verification-emoji.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="window.ui">ui/window.ui</file>
   </gresource>
 </gresources>
-

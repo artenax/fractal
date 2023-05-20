@@ -11,21 +11,22 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/user-entry-row.ui")]
-    pub struct UserEntryRow {
+    #[template(resource = "/org/gnome/Fractal/session-item-row.ui")]
+    pub struct SessionItemRow {
         #[template_child]
-        pub account_avatar: TemplateChild<AvatarWithSelection>,
+        pub avatar: TemplateChild<AvatarWithSelection>,
         #[template_child]
         pub display_name: TemplateChild<gtk::Label>,
         #[template_child]
         pub user_id: TemplateChild<gtk::Label>,
+        /// The session this item represents.
         pub session: glib::WeakRef<Session>,
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for UserEntryRow {
-        const NAME: &'static str = "UserEntryRow";
-        type Type = super::UserEntryRow;
+    impl ObjectSubclass for SessionItemRow {
+        const NAME: &'static str = "SessionItemRow";
+        type Type = super::SessionItemRow;
         type ParentType = gtk::ListBoxRow;
 
         fn class_init(klass: &mut Self::Class) {
@@ -38,7 +39,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for UserEntryRow {
+    impl ObjectImpl for SessionItemRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
@@ -75,18 +76,19 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for UserEntryRow {}
-    impl BinImpl for UserEntryRow {}
-    impl ListBoxRowImpl for UserEntryRow {}
+    impl WidgetImpl for SessionItemRow {}
+    impl BinImpl for SessionItemRow {}
+    impl ListBoxRowImpl for SessionItemRow {}
 }
 
 glib::wrapper! {
-    pub struct UserEntryRow(ObjectSubclass<imp::UserEntryRow>)
+    /// A `GtkListBoxRow` representing a logged-in session.
+    pub struct SessionItemRow(ObjectSubclass<imp::SessionItemRow>)
         @extends gtk::Widget, gtk::ListBoxRow, @implements gtk::Accessible;
 }
 
 #[gtk::template_callbacks]
-impl UserEntryRow {
+impl SessionItemRow {
     pub fn new(session: &Session) -> Self {
         glib::Object::builder().property("session", session).build()
     }
@@ -95,11 +97,11 @@ impl UserEntryRow {
     pub fn set_selected(&self, selected: bool) {
         let imp = self.imp();
 
-        if imp.account_avatar.is_selected() == selected {
+        if imp.avatar.is_selected() == selected {
             return;
         }
 
-        imp.account_avatar.set_selected(selected);
+        imp.avatar.set_selected(selected);
 
         if selected {
             imp.display_name.add_css_class("bold");
@@ -112,7 +114,7 @@ impl UserEntryRow {
 
     /// Whether this session is selected.
     pub fn is_selected(&self) -> bool {
-        self.imp().account_avatar.is_selected()
+        self.imp().avatar.is_selected()
     }
 
     #[template_callback]
@@ -128,12 +130,12 @@ impl UserEntryRow {
             .unwrap();
     }
 
-    /// The session this entry represents.
+    /// The session this item represents.
     pub fn session(&self) -> Option<Session> {
         self.imp().session.upgrade()
     }
 
-    /// Set the session this entry represents.
+    /// Set the session this item represents.
     pub fn set_session(&self, session: Option<&Session>) {
         self.imp().session.set(session);
     }
