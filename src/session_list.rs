@@ -1,7 +1,7 @@
 use gtk::{gio, glib, glib::SignalHandlerId, prelude::*, subclass::prelude::*};
 use indexmap::map::IndexMap;
 
-use crate::session::Session;
+use crate::session::model::Session;
 
 mod imp {
     use std::cell::RefCell;

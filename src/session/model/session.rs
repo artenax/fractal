@@ -29,16 +29,12 @@ use matrix_sdk::{
 use tokio::task::JoinHandle;
 use url::Url;
 
+use super::{
+    ItemList, Notifications, RoomList, SessionSettings, SidebarListModel, User, VerificationList,
+};
 use crate::{
+    prelude::*,
     secret::StoredSession,
-    session::{
-        notifications::Notifications,
-        room_list::RoomList,
-        settings::SessionSettings,
-        sidebar::{ItemList, SidebarListModel},
-        user::{User, UserExt},
-        verification::VerificationList,
-    },
     spawn, spawn_tokio,
     utils::{
         check_if_reachable,

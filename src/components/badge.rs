@@ -1,7 +1,7 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::glib;
 
-use crate::session::room::{MemberRole, PowerLevel, POWER_LEVEL_MAX, POWER_LEVEL_MIN};
+use crate::session::model::{MemberRole, PowerLevel, POWER_LEVEL_MAX, POWER_LEVEL_MIN};
 
 mod imp {
     use std::cell::Cell;

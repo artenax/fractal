@@ -8,8 +8,8 @@ use url::{ParseError, Url};
 
 use super::Login;
 use crate::{
-    components::SpinnerButton, gettext_f, spawn, spawn_tokio, toast,
-    user_facing_error::UserFacingError, utils::BoundObjectWeakRef,
+    components::SpinnerButton, gettext_f, prelude::*, spawn, spawn_tokio, toast,
+    utils::BoundObjectWeakRef,
 };
 
 mod imp {

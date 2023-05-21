@@ -3,7 +3,7 @@ use gettextrs::gettext;
 use gtk::{self, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 use log::error;
 
-use crate::{spawn, toast, window::Window};
+use crate::{spawn, toast, Window};
 
 pub enum ErrorSubpage {
     SecretErrorSession,

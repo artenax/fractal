@@ -7,14 +7,9 @@ use gtk::{
 use log::{error, warn};
 use ruma::RoomId;
 
+use super::{Content, CreateDmDialog, JoinRoomDialog, MediaViewer, RoomCreation, Sidebar};
 use crate::{
-    session::{
-        content::Content,
-        join_room_dialog::JoinRoomDialog,
-        media_viewer::MediaViewer,
-        sidebar::{Selection, Sidebar, SidebarListModel},
-        CreateDmDialog, Event, Room, RoomCreation, Session,
-    },
+    session::model::{Event, Room, Selection, Session, SidebarListModel},
     spawn, toast, Window,
 };
 

@@ -12,12 +12,7 @@ use serde_json::error::Error as JsonError;
 use thiserror::Error;
 use url::Url;
 
-use crate::{
-    config::{APP_ID, PROFILE},
-    gettext_f, spawn_tokio,
-    user_facing_error::UserFacingError,
-    utils::matrix,
-};
+use crate::{gettext_f, prelude::*, spawn_tokio, utils::matrix, APP_ID, PROFILE};
 
 pub const CURRENT_VERSION: u8 = 3;
 const SCHEMA_ATTRIBUTE: &str = "xdg:schema";

@@ -4,7 +4,7 @@ use gtk::{glib, prelude::*, CompositeTemplate};
 use crate::{
     components::Avatar,
     prelude::*,
-    session::{Room, User},
+    session::model::{Room, User},
 };
 
 mod imp {

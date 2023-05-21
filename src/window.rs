@@ -10,13 +10,17 @@ use ruma::RoomId;
 use crate::{
     account_switcher::AccountSwitcher,
     components::Spinner,
-    config::{APP_ID, PROFILE},
+    error_page::ErrorPage,
+    greeter::Greeter,
+    login::Login,
+    prelude::*,
     secret::{self, SecretError, StoredSession},
-    session::{AccountSettings, SessionState, SessionView},
+    session::{
+        model::{Session, SessionState},
+        view::{AccountSettings, SessionView},
+    },
     session_list::SessionList,
-    spawn, spawn_tokio, toast,
-    user_facing_error::UserFacingError,
-    Application, ErrorPage, Greeter, Login, Session,
+    spawn, spawn_tokio, toast, Application, APP_ID, PROFILE,
 };
 
 mod imp {

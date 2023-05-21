@@ -1,7 +1,7 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, prelude::*, CompositeTemplate};
 
-use crate::session::{AvatarData, AvatarImage};
+use crate::session::model::{AvatarData, AvatarImage};
 
 mod imp {
     use std::cell::RefCell;

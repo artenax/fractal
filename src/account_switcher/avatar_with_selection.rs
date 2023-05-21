@@ -1,7 +1,7 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, prelude::*, CompositeTemplate};
 
-use crate::{components::Avatar, session::AvatarData};
+use crate::{components::Avatar, session::model::AvatarData};
 
 mod imp {
     use glib::subclass::InitializingObject;

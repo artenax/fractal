@@ -1,7 +1,7 @@
 use gtk::{self, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
 use super::avatar_with_selection::AvatarWithSelection;
-use crate::session::Session;
+use crate::session::model::Session;
 
 mod imp {
     use glib::subclass::InitializingObject;

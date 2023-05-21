@@ -1,7 +1,7 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
 
-use crate::session::room::ReactionList;
+use crate::session::model::ReactionList;
 
 struct ReactionGridItem<'a> {
     key: &'a str,

@@ -12,7 +12,7 @@ use log::{debug, error};
 
 use super::{ActionButton, ActionState, ImagePaintable};
 use crate::{
-    session::{AvatarData, AvatarImage},
+    session::model::{AvatarData, AvatarImage},
     spawn, toast,
     utils::and_expr,
 };

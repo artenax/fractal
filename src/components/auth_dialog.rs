@@ -18,10 +18,7 @@ use matrix_sdk::{
 };
 use ruma::assign;
 
-use crate::{
-    session::{Session, UserExt},
-    spawn, spawn_tokio,
-};
+use crate::{prelude::*, session::model::Session, spawn, spawn_tokio};
 
 #[derive(Debug)]
 pub enum AuthError {

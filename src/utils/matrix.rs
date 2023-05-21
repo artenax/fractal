@@ -5,7 +5,7 @@ use ruma::events::{room::message::MessageType, AnyMessageLikeEventContent, AnySy
 use thiserror::Error;
 
 use super::media::filename_for_mime;
-use crate::{gettext_f, secret::StoredSession, spawn_tokio, user_facing_error::UserFacingError};
+use crate::{gettext_f, prelude::*, secret::StoredSession, spawn_tokio};
 
 /// The result of a password validation.
 #[derive(Debug, Default, Clone, Copy)]

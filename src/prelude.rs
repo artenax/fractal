@@ -1,4 +1,5 @@
 pub use crate::{
     components::{ToastableWindowExt, ToastableWindowImpl},
-    session::{room::TimelineItemExt, UserExt},
+    session::model::{TimelineItemExt, UserExt},
+    user_facing_error::UserFacingError,
 };

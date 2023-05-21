@@ -21,8 +21,9 @@ use self::{
     method_page::LoginMethodPage, sso_page::LoginSsoPage,
 };
 use crate::{
-    session::SessionVerification, spawn, spawn_tokio, toast, user_facing_error::UserFacingError,
-    Application, Session, Window, RUNTIME,
+    prelude::*,
+    session::{model::Session, view::SessionVerification},
+    spawn, spawn_tokio, toast, Application, Window, RUNTIME,
 };
 
 #[derive(Clone, Debug, glib::Boxed)]
