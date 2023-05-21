@@ -98,7 +98,7 @@ src/session/content/verification/session_verification.rs
 src/session/create_dm_dialog/mod.rs
 src/session/join_room_dialog.rs
 src/session/media_viewer.rs
-src/session/mod.rs
+src/session/model/session.rs
 src/session/room/event/event_actions.rs
 src/session/room/member.rs
 src/session/room/member_role.rs
