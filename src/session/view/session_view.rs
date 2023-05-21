@@ -7,14 +7,16 @@ use gtk::{
 use log::{error, warn};
 use ruma::RoomId;
 
-use super::{
-    content::Content,
-    join_room_dialog::JoinRoomDialog,
-    media_viewer::MediaViewer,
-    sidebar::{Selection, Sidebar, SidebarListModel},
-    CreateDmDialog, Event, Room, RoomCreation, Session,
+use crate::{
+    session::{
+        content::Content,
+        join_room_dialog::JoinRoomDialog,
+        media_viewer::MediaViewer,
+        sidebar::{Selection, Sidebar, SidebarListModel},
+        CreateDmDialog, Event, Room, RoomCreation, Session,
+    },
+    spawn, toast, Window,
 };
-use crate::{spawn, toast, Window};
 
 mod imp {
     use std::cell::RefCell;
