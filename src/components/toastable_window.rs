@@ -8,7 +8,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/components-toastable-window.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/components/toastable_window.ui")]
     pub struct ToastableWindow {
         #[template_child]
         pub toast_overlay: TemplateChild<adw::ToastOverlay>,

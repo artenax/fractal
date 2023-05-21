@@ -31,7 +31,9 @@ mod imp {
     use crate::utils::template_callbacks::TemplateCallbacks;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-message-row.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/message_row/mod.ui"
+    )]
     pub struct MessageRow {
         #[template_child]
         pub avatar: TemplateChild<Avatar>,

@@ -16,7 +16,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/login-method-page.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/login/method_page.ui")]
     pub struct LoginMethodPage {
         #[template_child]
         pub title: TemplateChild<gtk::Label>,

@@ -25,7 +25,9 @@ mod imp {
     use crate::utils::template_callbacks::TemplateCallbacks;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-state-row.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/state_row/mod.ui"
+    )]
     pub struct StateRow {
         #[template_child]
         pub content: TemplateChild<adw::Bin>,

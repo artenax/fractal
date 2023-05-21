@@ -15,7 +15,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/pill.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/components/pill.ui")]
     pub struct Pill {
         /// The user displayed by this widget
         pub user: RefCell<Option<User>>,

@@ -57,7 +57,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/login.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/login/mod.ui")]
     pub struct Login {
         #[template_child]
         pub back_button: TemplateChild<gtk::Button>,

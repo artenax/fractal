@@ -27,7 +27,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/room-creation.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/room_creation.ui")]
     pub struct RoomCreation {
         pub session: WeakRef<Session>,
         #[template_child]

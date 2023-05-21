@@ -35,7 +35,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-member-page.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_details/member_page/mod.ui"
+    )]
     pub struct MemberPage {
         pub room: RefCell<Option<Room>>,
         #[template_child]

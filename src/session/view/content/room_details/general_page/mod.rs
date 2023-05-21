@@ -40,7 +40,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-room-details-general-page.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_details/general_page/mod.ui"
+    )]
     pub struct GeneralPage {
         pub room: OnceCell<Room>,
         #[template_child]

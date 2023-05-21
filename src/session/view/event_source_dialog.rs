@@ -11,7 +11,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/event-source-dialog.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/event_source_dialog.ui")]
     pub struct EventSourceDialog {
         pub event: OnceCell<Event>,
         #[template_child]

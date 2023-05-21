@@ -25,7 +25,7 @@ mod imp {
     }
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/context-menu-bin.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/components/context_menu_bin.ui")]
     pub struct ContextMenuBin {
         #[template_child]
         pub click_gesture: TemplateChild<gtk::GestureClick>,

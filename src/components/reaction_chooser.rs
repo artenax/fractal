@@ -56,7 +56,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/components-reaction-chooser.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/components/reaction_chooser.ui")]
     pub struct ReactionChooser {
         /// The `ReactionList` associated to this chooser
         pub reactions: RefCell<Option<ReactionList>>,

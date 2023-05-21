@@ -18,7 +18,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/create-dm-dialog.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/create_dm_dialog/mod.ui")]
     pub struct CreateDmDialog {
         pub session: WeakRef<Session>,
         #[template_child]

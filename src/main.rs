@@ -49,6 +49,8 @@ fn main() {
 
     let res = gio::Resource::load(RESOURCES_FILE).expect("Could not load gresource file");
     gio::resources_register(&res);
+    let ui_res = gio::Resource::load(UI_RESOURCES_FILE).expect("Could not load UI gresource file");
+    gio::resources_register(&ui_res);
 
     IconTheme::for_display(&Display::default().unwrap())
         .add_resource_path("/org/gnome/Fractal/icons");

@@ -19,7 +19,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-explore-servers-popover.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/content/explore/servers_popover.ui")]
     pub struct ExploreServersPopover {
         pub session: WeakRef<Session>,
         pub server_list: RefCell<Option<ServerList>>,

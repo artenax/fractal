@@ -10,7 +10,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/room-title.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/components/room_title.ui")]
     pub struct RoomTitle {
         // The markup for the title
         pub title: RefCell<Option<String>>,

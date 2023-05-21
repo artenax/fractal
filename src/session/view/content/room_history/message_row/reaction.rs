@@ -10,7 +10,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-message-reaction.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/message_row/reaction.ui"
+    )]
     pub struct MessageReaction {
         /// The reaction group to display.
         pub group: OnceCell<ReactionGroup>,

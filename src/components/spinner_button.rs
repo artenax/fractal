@@ -9,7 +9,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/spinner-button.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/components/spinner_button.ui")]
     pub struct SpinnerButton {
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,

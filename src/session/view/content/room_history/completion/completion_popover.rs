@@ -37,7 +37,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-completion-popover.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/completion/completion_popover.ui"
+    )]
     pub struct CompletionPopover {
         #[template_child]
         pub list: TemplateChild<gtk::ListBox>,

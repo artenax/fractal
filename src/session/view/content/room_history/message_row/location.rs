@@ -13,7 +13,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-message-location.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/message_row/location.ui"
+    )]
     pub struct MessageLocation {
         #[template_child]
         pub overlay: TemplateChild<gtk::Overlay>,

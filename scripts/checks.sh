@@ -304,7 +304,7 @@ run_typos() {
 #
 # This assumes the following:
 #   - POTFILES is located at 'po/POTFILES.in'
-#   - UI (Glade) files are located in 'data/resources/ui' and use 'translatable="yes"'
+#   - UI (Glade) files are located in 'src' and use 'translatable="yes"'
 #   - Rust files are located in 'src' and use '*gettext' methods or macros
 check_potfiles() {
     echo -e "$Checking po/POTFILES.in…"
@@ -354,7 +354,7 @@ check_potfiles() {
     fi
 
     # Get UI files with 'translatable="yes"'.
-    ui_files=(`grep -lIr 'translatable="yes"' data/resources/ui/*`)
+    ui_files=(`grep -lIr 'translatable="yes"' src/*`)
 
     # Get Rust files with regex 'gettext(_f)?\('.
     rs_files=(`grep -lIrE 'gettext(_f)?\(' src/*`)
@@ -463,11 +463,12 @@ check_potfiles() {
     fi
 }
 
-# Check if files in data/resources/resources.gresource.xml are sorted alphabetically.
+# Check if files in resource files are sorted alphabetically.
 check_resources() {
-    echo -e "$Checking data/resources/resources.gresource.xml…"
+    echo -e "$Checking $1…"
 
     local ret=0
+    local files=()
 
     # Get files.
     regex="<file .*>(.*)</file>"
@@ -475,14 +476,14 @@ check_resources() {
         if [[ $line =~ $regex ]]; then
             files+=("${BASH_REMATCH[1]}")
         fi
-    done < data/resources/resources.gresource.xml
+    done < $1
 
     # Check sorted alphabetically
-    to_sort=("${files[@]}")
+    local to_sort=("${files[@]}")
     sort
     for i in ${!files[@]}; do
         if [[ "${files[$i]}" != "${to_sort[$i]}" ]]; then
-            echo -e "$error Found file '${files[$i]#src/}' before '${to_sort[$i]#src/}' in resources.gresource.xml"
+            echo -e "$error Found file '${files[$i]#src/}' before '${to_sort[$i]#src/}' in $1"
             ret=1
             break
         fi
@@ -490,11 +491,11 @@ check_resources() {
 
     if [[ ret -eq 1 ]]; then
         echo ""
-        echo -e "  Checking data/resources/resources.gresource.xml result: $fail"
+        echo -e "  Checking $1 result: $fail"
         echo "Please fix the above issues"
         exit 1
     else
-        echo -e "  Checking data/resources/resources.gresource.xml result: $ok"
+        echo -e "  Checking $1 result: $ok"
     fi
 }
 
@@ -600,10 +601,19 @@ echo ""
 if [[ $git_staged -eq 1 ]]; then
    staged_files=`git diff --name-only --cached | xargs ls -d 2>/dev/null | grep data/resources/resources.gresource.xml`
    if [[ -z $staged_files ]]; then
-        check_resources
+        check_resources "data/resources/resources.gresource.xml"
    fi
 else
-   check_resources
+   check_resources "data/resources/resources.gresource.xml"
+fi
+echo ""
+if [[ $git_staged -eq 1 ]]; then
+   staged_files=`git diff --name-only --cached | xargs ls -d 2>/dev/null | grep src/ui-resources.gresource.xml`
+   if [[ -z $staged_files ]]; then
+        check_resources "src/ui-resources.gresource.xml"
+   fi
+else
+   check_resources "src/ui-resources.gresource.xml"
 fi
 echo ""
 run_cargo_sort

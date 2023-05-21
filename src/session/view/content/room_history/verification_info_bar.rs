@@ -17,7 +17,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-verification-info-bar.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/verification_info_bar.ui"
+    )]
     pub struct VerificationInfoBar {
         #[template_child]
         pub revealer: TemplateChild<gtk::Revealer>,

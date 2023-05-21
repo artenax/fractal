@@ -1,3 +1,12 @@
+# UI resources
+ui_resources = gnome.compile_resources(
+  'ui-resources',
+  'ui-resources.gresource.xml',
+  gresource_bundle: true,
+  install: true,
+  install_dir: pkgdatadir,
+)
+
 version = major_version
 if pre_release_version != ''
   version += '.' + pre_release_version
@@ -48,7 +57,7 @@ cargo_build = custom_target(
   console: true,
   install: true,
   install_dir: bindir,
-  depends: resources,
+  depends: [resources, ui_resources],
   command: [
     'env',
     cargo_env,

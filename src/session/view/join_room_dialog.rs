@@ -14,7 +14,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/join-room-dialog.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/join_room_dialog.ui")]
     pub struct JoinRoomDialog {
         pub session: WeakRef<Session>,
         #[template_child]

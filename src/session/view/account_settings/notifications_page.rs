@@ -19,7 +19,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/account-settings-notifications-page.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/account_settings/notifications_page.ui"
+    )]
     pub struct NotificationsPage {
         /// The current session.
         pub session: WeakRef<Session>,

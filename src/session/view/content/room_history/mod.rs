@@ -104,7 +104,7 @@ mod imp {
     use crate::Application;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-room-history.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/content/room_history/mod.ui")]
     pub struct RoomHistory {
         pub compact: Cell<bool>,
         pub room: RefCell<Option<Room>>,

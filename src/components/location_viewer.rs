@@ -14,7 +14,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/components-location-viewer.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/components/location_viewer.ui")]
     pub struct LocationViewer {
         #[template_child]
         pub map: TemplateChild<shumate::SimpleMap>,

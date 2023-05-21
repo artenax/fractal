@@ -27,7 +27,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/error-page.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/error_page.ui")]
     pub struct ErrorPage {
         #[template_child]
         pub page: TemplateChild<adw::StatusPage>,

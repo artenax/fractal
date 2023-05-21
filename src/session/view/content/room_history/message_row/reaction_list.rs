@@ -10,7 +10,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-message-reaction-list.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/message_row/reaction_list.ui"
+    )]
     pub struct MessageReactionList {
         #[template_child]
         pub flow_box: TemplateChild<gtk::FlowBox>,

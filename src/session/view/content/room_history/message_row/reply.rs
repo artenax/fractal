@@ -9,7 +9,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-message-reply.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/message_row/reply.ui"
+    )]
     pub struct MessageReply {
         #[template_child]
         pub related_content_sender: TemplateChild<gtk::Label>,

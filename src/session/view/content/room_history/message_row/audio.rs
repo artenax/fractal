@@ -24,7 +24,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-message-audio.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/message_row/audio.ui"
+    )]
     pub struct MessageAudio {
         /// The body of the audio message.
         pub body: RefCell<Option<String>>,

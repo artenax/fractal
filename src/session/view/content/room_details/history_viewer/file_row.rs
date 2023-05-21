@@ -16,7 +16,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-file-history-viewer-row.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_details/history_viewer/file_row.ui"
+    )]
     pub struct FileRow {
         pub event: RefCell<Option<HistoryViewerEvent>>,
         pub file: RefCell<Option<gio::File>>,

@@ -19,7 +19,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/account-settings-devices-page.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/account_settings/devices_page/mod.ui"
+    )]
     pub struct DevicesPage {
         pub user: RefCell<Option<User>>,
         #[template_child]

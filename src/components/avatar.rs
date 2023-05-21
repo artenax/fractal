@@ -12,7 +12,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/components-avatar.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/components/avatar.ui")]
     pub struct Avatar {
         /// A `Room` or `User`
         pub data: RefCell<Option<AvatarData>>,

@@ -10,7 +10,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-state-creation.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/state_row/creation.ui"
+    )]
     pub struct StateCreation {
         #[template_child]
         pub previous_room_btn: TemplateChild<gtk::Button>,

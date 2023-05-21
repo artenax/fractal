@@ -47,7 +47,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/components-media-content-viewer.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/components/media_content_viewer.ui")]
     pub struct MediaContentViewer {
         /// Whether to play the media content automatically.
         pub autoplay: Cell<bool>,

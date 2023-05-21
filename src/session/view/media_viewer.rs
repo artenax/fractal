@@ -29,7 +29,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/media-viewer.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/media_viewer.ui")]
     pub struct MediaViewer {
         pub fullscreened: Cell<bool>,
         /// The room containing the media message.

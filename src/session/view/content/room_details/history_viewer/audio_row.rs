@@ -20,7 +20,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-audio-history-viewer-row.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_details/history_viewer/audio_row.ui"
+    )]
     pub struct AudioRow {
         pub event: RefCell<Option<HistoryViewerEvent>>,
         pub media_file: RefCell<Option<gtk::MediaFile>>,

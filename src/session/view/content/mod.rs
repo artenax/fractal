@@ -24,7 +24,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/content/mod.ui")]
     pub struct Content {
         pub compact: Cell<bool>,
         pub session: WeakRef<Session>,

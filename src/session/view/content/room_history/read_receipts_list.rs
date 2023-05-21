@@ -19,7 +19,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-read-receipts-list.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/read_receipts_list.ui"
+    )]
     pub struct ReadReceiptsList {
         #[template_child]
         pub label: TemplateChild<gtk::Label>,

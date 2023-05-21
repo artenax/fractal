@@ -16,7 +16,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-typing-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/content/room_history/typing_row.ui")]
     pub struct TypingRow {
         #[template_child]
         pub avatar_box: TemplateChild<OverlappingBox>,

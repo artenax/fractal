@@ -89,7 +89,22 @@
                         <property name="margin-start">24</property>
                         <property name="factory">
                           <object class="GtkBuilderListItemFactory">
-                            <property name="resource">/org/gnome/Fractal/content-explore-item.ui</property>
+                            <property name="bytes"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="GtkListItem">
+    <property name="activatable">False</property>
+    <property name="selectable">False</property>
+    <property name="child">
+      <object class="ContentPublicRoomRow">
+        <binding name="public-room">
+            <lookup name="item">GtkListItem</lookup>
+        </binding>
+      </object>
+    </property>
+  </template>
+</interface>
+                            ]]></property>
                           </object>
                         </property>
                         <accessibility>

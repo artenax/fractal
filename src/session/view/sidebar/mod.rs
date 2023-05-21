@@ -31,7 +31,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/sidebar.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/sidebar/mod.ui")]
     pub struct Sidebar {
         pub compact: Cell<bool>,
         #[template_child]

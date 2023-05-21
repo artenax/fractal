@@ -18,7 +18,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-media-history-viewer.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_details/history_viewer/media.ui"
+    )]
     pub struct MediaHistoryViewer {
         pub room_timeline: OnceCell<Timeline>,
         #[template_child]

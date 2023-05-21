@@ -22,7 +22,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-member-page-list-view.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_details/member_page/members_list_view/mod.ui"
+    )]
     pub struct MembersListView {
         #[template_child]
         pub members_list_view: TemplateChild<gtk::ListView>,

@@ -20,7 +20,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/account-settings-deactivate-account-subpage.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/account_settings/user_page/deactivate_account_subpage.ui"
+    )]
     pub struct DeactivateAccountSubpage {
         pub session: WeakRef<Session>,
         #[template_child]

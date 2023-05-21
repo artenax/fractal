@@ -30,7 +30,7 @@
                 <child>
                   <object class="GtkLabel">
                     <property name="use-underline">true</property>
-                    <property name="label">_Add Account</property>
+                    <property name="label" translatable="yes">_Add Account</property>
                   </object>
                 </child>
               </object>

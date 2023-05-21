@@ -11,7 +11,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-completion-row.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/completion/completion_row.ui"
+    )]
     pub struct CompletionRow {
         #[template_child]
         pub avatar: TemplateChild<Avatar>,

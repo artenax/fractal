@@ -18,7 +18,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/sidebar-account-switcher.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/account_switcher/mod.ui")]
     pub struct AccountSwitcher {
         #[template_child]
         pub sessions: TemplateChild<gtk::ListBox>,

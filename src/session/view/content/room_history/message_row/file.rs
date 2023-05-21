@@ -12,7 +12,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-message-file.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/message_row/file.ui"
+    )]
     pub struct MessageFile {
         /// The filename of the file
         pub filename: RefCell<Option<String>>,

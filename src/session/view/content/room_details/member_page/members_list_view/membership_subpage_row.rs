@@ -11,7 +11,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-member-page-membership-subpage-row.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_details/member_page/members_list_view/membership_subpage_row.ui"
+    )]
     pub struct MembershipSubpageRow {
         /// The item of this row.
         pub item: RefCell<Option<MembershipSubpageItem>>,

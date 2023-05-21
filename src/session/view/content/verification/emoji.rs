@@ -7,7 +7,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/verification-emoji.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/content/verification/emoji.ui")]
     pub struct Emoji {
         #[template_child]
         pub emoji: TemplateChild<gtk::Label>,

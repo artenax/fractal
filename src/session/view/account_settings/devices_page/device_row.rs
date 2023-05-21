@@ -18,7 +18,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/account-settings-device-row.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/account_settings/devices_page/device_row.ui"
+    )]
     pub struct DeviceRow {
         #[template_child]
         pub display_name: TemplateChild<gtk::Label>,

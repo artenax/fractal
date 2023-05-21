@@ -13,7 +13,9 @@ mod imp {
     use crate::utils::template_callbacks::TemplateCallbacks;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-invitee-row.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_details/invite_subpage/invitee_row.ui"
+    )]
     pub struct InviteeRow {
         pub user: RefCell<Option<Invitee>>,
         pub binding: RefCell<Option<glib::Binding>>,

@@ -13,7 +13,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/account-settings-security-page.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/account_settings/security_page/mod.ui"
+    )]
     pub struct SecurityPage {
         pub session: WeakRef<Session>,
         #[template_child]

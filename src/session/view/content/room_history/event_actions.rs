@@ -32,9 +32,11 @@ where
     fn event_message_menu_model() -> &'static gio::MenuModel {
         static MODEL: Lazy<MenuModelSendSync> = Lazy::new(|| {
             MenuModelSendSync(
-                gtk::Builder::from_resource("/org/gnome/Fractal/event-menu.ui")
-                    .object::<gio::MenuModel>("message_menu_model")
-                    .unwrap(),
+                gtk::Builder::from_resource(
+                    "/org/gnome/Fractal/ui/session/view/content/room_history/event_actions.ui",
+                )
+                .object::<gio::MenuModel>("message_menu_model")
+                .unwrap(),
             )
         });
         &MODEL.0
@@ -44,9 +46,11 @@ where
     fn event_state_menu_model() -> &'static gio::MenuModel {
         static MODEL: Lazy<MenuModelSendSync> = Lazy::new(|| {
             MenuModelSendSync(
-                gtk::Builder::from_resource("/org/gnome/Fractal/event-menu.ui")
-                    .object::<gio::MenuModel>("state_menu_model")
-                    .unwrap(),
+                gtk::Builder::from_resource(
+                    "/org/gnome/Fractal/ui/session/view/content/room_history/event_actions.ui",
+                )
+                .object::<gio::MenuModel>("state_menu_model")
+                .unwrap(),
             )
         });
         &MODEL.0

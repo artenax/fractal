@@ -10,7 +10,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/avatar-with-selection.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/account_switcher/avatar_with_selection.ui")]
     pub struct AvatarWithSelection {
         #[template_child]
         pub child_avatar: TemplateChild<Avatar>,

@@ -25,7 +25,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-invite-subpage.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_details/invite_subpage/mod.ui"
+    )]
     pub struct InviteSubpage {
         pub room: RefCell<Option<Room>>,
         #[template_child]

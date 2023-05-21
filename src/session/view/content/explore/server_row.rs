@@ -9,7 +9,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-explore-server-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/content/explore/server_row.ui")]
     pub struct ExploreServerRow {
         /// The server displayed by this row.
         pub server: OnceCell<Server>,

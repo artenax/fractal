@@ -29,7 +29,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/account-settings-import-export-keys-subpage.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/account_settings/security_page/import_export_keys_subpage.ui"
+    )]
     pub struct ImportExportKeysSubpage {
         pub session: WeakRef<Session>,
         #[template_child]

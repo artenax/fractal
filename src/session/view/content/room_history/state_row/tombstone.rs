@@ -11,7 +11,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-state-tombstone.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/state_row/tombstone.ui"
+    )]
     pub struct StateTombstone {
         #[template_child]
         pub new_room_btn: TemplateChild<gtk::Button>,

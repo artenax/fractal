@@ -31,7 +31,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/session-verification.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/verification/session_verification.ui"
+    )]
     pub struct SessionVerification {
         pub request: RefCell<Option<IdentityVerification>>,
         /// The ancestor login view.

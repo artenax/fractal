@@ -11,7 +11,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/create-dm-dialog-user-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/create_dm_dialog/dm_user_row.ui")]
     pub struct DmUserRow {
         pub user: RefCell<Option<DmUser>>,
     }

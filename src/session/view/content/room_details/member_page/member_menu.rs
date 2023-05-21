@@ -126,7 +126,7 @@ impl MemberMenu {
     fn popover_menu(&self) -> &gtk::PopoverMenu {
         self.imp().popover.get_or_init(|| {
             gtk::PopoverMenu::from_model(Some(
-                &gtk::Builder::from_resource("/org/gnome/Fractal/member-menu.ui")
+                &gtk::Builder::from_resource("/org/gnome/Fractal/ui/session/view/content/room_details/member_page/member_menu.ui")
                     .object::<gio::MenuModel>("menu_model")
                     .unwrap(),
             ))

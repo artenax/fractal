@@ -17,7 +17,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-public-room-row.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/content/explore/public_room_row.ui")]
     pub struct PublicRoomRow {
         pub public_room: RefCell<Option<PublicRoom>>,
         #[template_child]

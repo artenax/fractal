@@ -22,7 +22,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/session-view.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/session_view.ui")]
     pub struct SessionView {
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,

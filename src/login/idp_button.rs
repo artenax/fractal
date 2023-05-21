@@ -94,7 +94,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/login-idp-button.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/login/idp_button.ui")]
     pub struct IdpButton {
         pub brand: Cell<IdpBrand>,
         pub id: RefCell<Option<String>>,

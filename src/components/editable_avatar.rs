@@ -42,7 +42,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/components-editable-avatar.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/components/editable_avatar.ui")]
     pub struct EditableAvatar {
         /// The [`AvatarData`] to display.
         pub data: RefCell<Option<AvatarData>>,

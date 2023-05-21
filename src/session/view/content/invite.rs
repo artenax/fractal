@@ -20,7 +20,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-invite.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/session/view/content/invite.ui")]
     pub struct Invite {
         pub compact: Cell<bool>,
         pub room: RefCell<Option<Room>>,

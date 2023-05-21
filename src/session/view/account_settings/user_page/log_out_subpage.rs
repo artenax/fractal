@@ -12,7 +12,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/account-settings-log-out-subpage.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/account_settings/user_page/log_out_subpage.ui"
+    )]
     pub struct LogOutSubpage {
         pub session: WeakRef<Session>,
         #[template_child]

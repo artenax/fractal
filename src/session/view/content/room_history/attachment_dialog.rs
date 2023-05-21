@@ -9,7 +9,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/attachment-dialog.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_history/attachment_dialog.ui"
+    )]
     pub struct AttachmentDialog {
         pub send: Cell<bool>,
         #[template_child]

@@ -7,7 +7,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/login-sso-page.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/login/sso_page.ui")]
     pub struct LoginSsoPage {}
 
     #[glib::object_subclass]

@@ -19,7 +19,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/login-homeserver-page.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/login/homeserver_page.ui")]
     pub struct LoginHomeserverPage {
         #[template_child]
         pub homeserver_entry: TemplateChild<adw::EntryRow>,

@@ -24,7 +24,9 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/content-media-history-viewer-item.ui")]
+    #[template(
+        resource = "/org/gnome/Fractal/ui/session/view/content/room_details/history_viewer/media_item.ui"
+    )]
     pub struct MediaItem {
         pub event: RefCell<Option<HistoryViewerEvent>>,
         pub overlay_icon: RefCell<Option<gtk::Image>>,

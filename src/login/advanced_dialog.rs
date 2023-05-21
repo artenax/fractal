@@ -10,7 +10,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/login-advanced-dialog.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/login/advanced_dialog.ui")]
     pub struct LoginAdvancedDialog {
         pub autodiscovery: Cell<bool>,
     }

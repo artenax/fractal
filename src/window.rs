@@ -30,7 +30,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/org/gnome/Fractal/window.ui")]
+    #[template(resource = "/org/gnome/Fractal/ui/window.ui")]
     pub struct Window {
         #[template_child]
         pub main_stack: TemplateChild<gtk::Stack>,
@@ -129,7 +129,7 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            let builder = gtk::Builder::from_resource("/org/gnome/Fractal/shortcuts.ui");
+            let builder = gtk::Builder::from_resource("/org/gnome/Fractal/ui/shortcuts.ui");
             let shortcuts = builder.object("shortcuts").unwrap();
             obj.set_help_overlay(Some(&shortcuts));
 
