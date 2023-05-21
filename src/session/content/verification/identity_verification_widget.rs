@@ -5,6 +5,7 @@ use gettextrs::gettext;
 use gtk::{gio, glib, glib::clone, prelude::*, CompositeTemplate};
 use log::{error, warn};
 use matrix_sdk::encryption::verification::QrVerificationData;
+use ruma::events::key::verification::cancel::CancelCode;
 
 use super::Emoji;
 use crate::{
@@ -19,7 +20,7 @@ use crate::{
             VerificationSupportedMethods,
         },
     },
-    spawn,
+    spawn, toast,
 };
 
 mod imp {
@@ -456,10 +457,8 @@ impl IdentityVerificationWidget {
                     obj.handle_completed().await;
                 }));
             }
-            VerificationState::Cancelled
-            | VerificationState::Dismissed
-            | VerificationState::Error
-            | VerificationState::Passive => {}
+            VerificationState::Cancelled | VerificationState::Error => self.show_error(),
+            VerificationState::Dismissed | VerificationState::Passive => {}
         }
     }
 
@@ -635,6 +634,40 @@ impl IdentityVerificationWidget {
         } else {
             imp.main_stack.set_visible_child_name("completed");
         }
+    }
+
+    fn show_error(&self) {
+        let Some(request) = self.request() else {
+            return;
+        };
+
+        if request.hide_error() {
+            return;
+        }
+
+        let error_message = if let Some(info) = request.cancel_info() {
+            match info.cancel_code() {
+                CancelCode::User => Some(gettext("You cancelled the verification process.")),
+                CancelCode::Timeout => Some(gettext(
+                    "The verification process failed because it reached a timeout.",
+                )),
+                CancelCode::Accepted => {
+                    Some(gettext("You accepted the request from an other session."))
+                }
+                _ => match info.cancel_code().as_str() {
+                    "m.mismatched_sas" => Some(gettext("The emoji did not match.")),
+                    _ => None,
+                },
+            }
+        } else {
+            None
+        };
+
+        let error_message = error_message.unwrap_or_else(|| {
+            gettext("An unknown error occurred during the verification process.")
+        });
+
+        toast!(self, error_message);
     }
 }
 
