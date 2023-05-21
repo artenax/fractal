@@ -1,7 +1,10 @@
 use gtk::{gdk, glib, prelude::*, subclass::prelude::*};
 
 use super::AvatarImage;
-use crate::utils::notifications::{paintable_as_notification_icon, string_as_notification_icon};
+use crate::{
+    application::Application,
+    utils::notifications::{paintable_as_notification_icon, string_as_notification_icon},
+};
 
 mod imp {
     use std::cell::RefCell;
@@ -109,11 +112,13 @@ impl AvatarData {
     /// Get this avatar as a notification icon.
     ///
     /// Returns `None` if an error occurred while generating the icon.
-    pub fn as_notification_icon(&self, helper_widget: &gtk::Widget) -> Option<gdk::Texture> {
+    pub fn as_notification_icon(&self) -> Option<gdk::Texture> {
+        let window = Application::default().main_window().upcast();
+
         let icon = if let Some(paintable) = self.image().paintable() {
-            paintable_as_notification_icon(paintable.upcast_ref(), helper_widget)
+            paintable_as_notification_icon(paintable.upcast_ref(), &window)
         } else {
-            string_as_notification_icon(&self.display_name().unwrap_or_default(), helper_widget)
+            string_as_notification_icon(&self.display_name().unwrap_or_default(), &window)
         };
 
         match icon {
