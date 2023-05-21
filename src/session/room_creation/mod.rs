@@ -17,7 +17,9 @@ use ruma::events::{room::encryption::RoomEncryptionEventContent, InitialStateEve
 use crate::{
     components::SpinnerButton,
     session::{user::UserExt, Session},
-    spawn, spawn_tokio, UserFacingError,
+    spawn, spawn_tokio,
+    window::Window,
+    UserFacingError,
 };
 
 // MAX length of room addresses
@@ -202,8 +204,11 @@ impl RoomCreation {
                 match handle.await.unwrap() {
                     Ok(matrix_room) => {
                         if let Some(session) = obj.session() {
+                            let Some(window) = obj.transient_for().and_downcast::<Window>() else {
+                                return;
+                            };
                             let room = session.room_list().get_wait(matrix_room.room_id()).await;
-                            session.select_room(room);
+                            window.session_view().select_room(room);
                         }
                         obj.close();
                     },

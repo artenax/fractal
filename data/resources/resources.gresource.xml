@@ -138,7 +138,7 @@
     <file compressed="true" preprocess="xml-stripblanks" alias="room-title.ui">ui/room-title.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="session-item-row.ui">ui/session-item-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="session-verification.ui">ui/session-verification.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks" alias="session.ui">ui/session.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks" alias="session-view.ui">ui/session-view.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="shortcuts.ui">ui/shortcuts.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="sidebar-account-switcher.ui">ui/sidebar-account-switcher.ui</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="sidebar-category-row.ui">ui/sidebar-category-row.ui</file>

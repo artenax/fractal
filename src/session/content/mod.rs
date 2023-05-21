@@ -31,6 +31,7 @@ mod imp {
     pub struct Content {
         pub compact: Cell<bool>,
         pub session: WeakRef<Session>,
+        pub item_binding: RefCell<Option<glib::Binding>>,
         pub item: RefCell<Option<glib::Object>>,
         pub signal_handler: RefCell<Option<SignalHandlerId>>,
         #[template_child]
@@ -115,6 +116,10 @@ mod imp {
                         imp.identity_verification_widget.set_request(None);
                     }
                 }));
+
+            if let Some(binding) = self.item_binding.take() {
+                binding.unbind()
+            }
         }
     }
 
@@ -156,7 +161,24 @@ impl Content {
             return;
         }
 
-        self.imp().session.set(session.as_ref());
+        let imp = self.imp();
+
+        if let Some(binding) = imp.item_binding.take() {
+            binding.unbind();
+        }
+
+        if let Some(session) = &session {
+            let item_binding = session
+                .sidebar_list_model()
+                .selection_model()
+                .bind_property("selected-item", self, "item")
+                .sync_create()
+                .build();
+
+            imp.item_binding.replace(Some(item_binding));
+        }
+
+        imp.session.set(session.as_ref());
         self.notify("session");
     }
 

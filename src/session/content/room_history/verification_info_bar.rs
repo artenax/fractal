@@ -8,6 +8,7 @@ use crate::{
         user::UserExt,
         verification::{IdentityVerification, VerificationState},
     },
+    window::Window,
 };
 
 mod imp {
@@ -45,10 +46,14 @@ mod imp {
 
             klass.set_accessible_role(gtk::AccessibleRole::Group);
 
-            klass.install_action("verification.accept", None, move |widget, _, _| {
-                let request = widget.request().unwrap();
+            klass.install_action("verification.accept", None, move |obj, _, _| {
+                let Some(window) = obj.root().and_downcast::<Window>() else {
+                    return;
+                };
+
+                let request = obj.request().unwrap();
                 request.accept();
-                request.session().select_item(Some(request.upcast()));
+                window.session_view().select_item(Some(request.upcast()));
             });
 
             klass.install_action("verification.decline", None, move |widget, _, _| {

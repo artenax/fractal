@@ -5,7 +5,7 @@ use ruma::{
     RoomId,
 };
 
-use super::Session;
+use super::{Room, Session};
 use crate::{
     application::AppShowRoomPayload, prelude::*, utils::matrix::get_event_body, Application,
 };
@@ -171,17 +171,12 @@ impl Notifications {
             .push(event_id.to_owned());
     }
 
-    /// Ask the system to remove the known notifications for the currently
-    /// selected room.
+    /// Ask the system to remove the known notifications for the given room.
     ///
     /// Only the notifications that were shown since the application's startup
     /// are known, older ones might still be present.
-    pub fn withdraw_all_for_selected_room(&self) {
+    pub fn withdraw_all_for_room(&self, room: &Room) {
         let Some(session) = self.session() else {
-            return;
-        };
-
-        let Some(room) = session.selected_room() else {
             return;
         };
 

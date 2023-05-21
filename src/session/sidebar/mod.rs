@@ -7,6 +7,7 @@ mod room_row;
 mod row;
 mod selection;
 mod sidebar_item;
+mod sidebar_list_model;
 mod verification_row;
 
 use adw::{prelude::*, subclass::prelude::*};
@@ -14,7 +15,7 @@ use gtk::{gio, glib, glib::clone, CompositeTemplate};
 use log::error;
 
 use self::{
-    category::CategoryRow, entry_row::EntryRow, room_row::RoomRow, row::Row, selection::Selection,
+    category::CategoryRow, entry_row::EntryRow, room_row::RoomRow, row::Row,
     verification_row::VerificationRow,
 };
 pub use self::{
@@ -22,7 +23,9 @@ pub use self::{
     entry::Entry,
     entry_type::EntryType,
     item_list::ItemList,
+    selection::Selection,
     sidebar_item::{SidebarItem, SidebarItemExt, SidebarItemImpl},
+    sidebar_list_model::SidebarListModel,
 };
 use crate::{
     components::Avatar,
@@ -47,7 +50,6 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/sidebar.ui")]
     pub struct Sidebar {
         pub compact: Cell<bool>,
-        pub selected_item: RefCell<Option<glib::Object>>,
         #[template_child]
         pub headerbar: TemplateChild<adw::HeaderBar>,
         #[template_child]
@@ -70,7 +72,9 @@ mod imp {
         pub drop_source_type: Cell<Option<RoomType>>,
         /// The type of the drop target that is currently hovered.
         pub drop_active_target_type: Cell<Option<RoomType>>,
-        pub drop_binding: RefCell<Option<glib::Binding>>,
+        /// The list model of this sidebar.
+        pub list_model: glib::WeakRef<SidebarListModel>,
+        pub bindings: RefCell<Vec<glib::Binding>>,
         pub offline_handler_id: RefCell<Option<SignalHandlerId>>,
     }
 
@@ -103,10 +107,7 @@ mod imp {
                     glib::ParamSpecBoolean::builder("compact")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecObject::builder::<ItemList>("item-list")
-                        .write_only()
-                        .build(),
-                    glib::ParamSpecObject::builder::<glib::Object>("selected-item")
+                    glib::ParamSpecObject::builder::<SidebarListModel>("list-model")
                         .explicit_notify()
                         .build(),
                     glib::ParamSpecEnum::builder::<CategoryType>("drop-source-type")
@@ -127,8 +128,7 @@ mod imp {
             match pspec.name() {
                 "compact" => obj.set_compact(value.get().unwrap()),
                 "user" => obj.set_user(value.get().unwrap()),
-                "item-list" => obj.set_item_list(value.get().unwrap()),
-                "selected-item" => obj.set_selected_item(value.get().unwrap()),
+                "list-model" => obj.set_list_model(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -139,7 +139,7 @@ mod imp {
             match pspec.name() {
                 "compact" => obj.compact().to_value(),
                 "user" => obj.user().to_value(),
-                "selected-item" => obj.selected_item().to_value(),
+                "list-model" => obj.list_model().to_value(),
                 "drop-source-type" => obj
                     .drop_source_type()
                     .map(CategoryType::from)
@@ -262,70 +262,51 @@ impl Sidebar {
         self.imp().compact.set(compact)
     }
 
-    /// The selected item in this sidebar.
-    pub fn selected_item(&self) -> Option<glib::Object> {
-        self.imp().selected_item.borrow().clone()
-    }
-
     pub fn room_search_bar(&self) -> gtk::SearchBar {
         self.imp().room_search.clone()
     }
 
-    /// Set the list of items in the sidebar.
-    pub fn set_item_list(&self, item_list: Option<ItemList>) {
-        let imp = self.imp();
-
-        if let Some(binding) = imp.drop_binding.take() {
-            binding.unbind();
-        }
-
-        let item_list = match item_list {
-            Some(item_list) => item_list,
-            None => {
-                imp.listview.set_model(gtk::SelectionModel::NONE);
-                return;
-            }
-        };
-
-        imp.drop_binding.replace(Some(
-            self.bind_property("drop-source-type", &item_list, "show-all-for-category")
-                .flags(glib::BindingFlags::SYNC_CREATE)
-                .build(),
-        ));
-
-        let tree_model = gtk::TreeListModel::new(item_list, false, true, |item| {
-            item.clone().downcast::<gio::ListModel>().ok()
-        });
-
-        let room_expression =
-            gtk::TreeListRow::this_expression("item").chain_property::<Room>("display-name");
-        let filter = gtk::StringFilter::builder()
-            .match_mode(gtk::StringFilterMatchMode::Substring)
-            .expression(&room_expression)
-            .ignore_case(true)
-            .build();
-        imp.room_search_entry
-            .bind_property("text", &filter, "search")
-            .flags(glib::BindingFlags::SYNC_CREATE)
-            .build();
-        let filter_model = gtk::FilterListModel::new(Some(tree_model), Some(filter));
-
-        let selection = Selection::new(Some(&filter_model));
-        self.bind_property("selected-item", &selection, "selected-item")
-            .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::BIDIRECTIONAL)
-            .build();
-
-        imp.listview.set_model(Some(&selection));
+    /// The list model of this sidebar.
+    pub fn list_model(&self) -> Option<SidebarListModel> {
+        self.imp().list_model.upgrade()
     }
 
-    /// Set the selected item in this sidebar.
-    pub fn set_selected_item(&self, selected_item: Option<glib::Object>) {
-        if self.selected_item() == selected_item {
+    /// Set the list model of the sidebar.
+    pub fn set_list_model(&self, list_model: Option<SidebarListModel>) {
+        if self.list_model() == list_model {
             return;
         }
 
-        self.imp().selected_item.replace(selected_item);
-        self.notify("selected-item");
+        let imp = self.imp();
+
+        for binding in imp.bindings.take() {
+            binding.unbind();
+        }
+
+        if let Some(list_model) = &list_model {
+            let bindings = vec![
+                self.bind_property(
+                    "drop-source-type",
+                    list_model.item_list(),
+                    "show-all-for-category",
+                )
+                .sync_create()
+                .build(),
+                list_model
+                    .string_filter()
+                    .bind_property("search", &*imp.room_search_entry, "text")
+                    .sync_create()
+                    .bidirectional()
+                    .build(),
+            ];
+
+            imp.bindings.replace(bindings);
+        }
+
+        imp.listview
+            .set_model(list_model.as_ref().map(|m| m.selection_model()));
+        imp.list_model.set(list_model.as_ref());
+        self.notify("list-model");
     }
 
     /// The logged-in user.

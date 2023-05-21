@@ -13,6 +13,7 @@ mod settings;
 mod sidebar;
 mod user;
 pub mod verification;
+mod view;
 
 use std::{collections::HashSet, time::Duration};
 
@@ -20,11 +21,10 @@ use adw::{prelude::*, subclass::prelude::*};
 use futures::StreamExt;
 use gettextrs::gettext;
 use gtk::{
-    self, gdk, gio, glib,
+    self, gio, glib,
     glib::{clone, signal::SignalHandlerId},
-    CompositeTemplate,
 };
-use log::{debug, error, warn};
+use log::{debug, error};
 use matrix_sdk::{
     config::SyncSettings,
     room::Room as MatrixRoom,
@@ -39,7 +39,6 @@ use matrix_sdk::{
             direct::DirectEventContent, room::encryption::SyncRoomEncryptionEvent,
             GlobalAccountDataEvent,
         },
-        RoomId,
     },
     sync::SyncResponse,
     Client,
@@ -47,12 +46,8 @@ use matrix_sdk::{
 use tokio::task::JoinHandle;
 use url::Url;
 
-use self::{
-    account_settings::AccountSettings, content::Content, join_room_dialog::JoinRoomDialog,
-    media_viewer::MediaViewer, notifications::Notifications, room_list::RoomList, sidebar::Sidebar,
-    verification::VerificationList,
-};
 pub use self::{
+    account_settings::AccountSettings,
     avatar::{AvatarData, AvatarImage, AvatarUriSource},
     content::verification::SessionVerification,
     create_dm_dialog::CreateDmDialog,
@@ -60,16 +55,20 @@ pub use self::{
     room_creation::RoomCreation,
     settings::SessionSettings,
     user::{User, UserActions, UserExt},
+    view::SessionView,
+};
+use self::{
+    media_viewer::MediaViewer, notifications::Notifications, room_list::RoomList,
+    verification::VerificationList,
 };
 use crate::{
     secret::StoredSession,
-    session::sidebar::ItemList,
+    session::sidebar::{ItemList, SidebarListModel},
     spawn, spawn_tokio,
     utils::{
         check_if_reachable,
         matrix::{self, ClientSetupError},
     },
-    Window,
 };
 
 /// The state of the session.
@@ -91,28 +90,14 @@ struct BoxedStoredSession(StoredSession);
 mod imp {
     use std::cell::{Cell, RefCell};
 
-    use glib::subclass::InitializingObject;
     use once_cell::{sync::Lazy, unsync::OnceCell};
 
     use super::*;
 
-    #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/org/gnome/Fractal/session.ui")]
+    #[derive(Debug, Default)]
     pub struct Session {
-        #[template_child]
-        pub stack: TemplateChild<gtk::Stack>,
-        #[template_child]
-        pub overlay: TemplateChild<gtk::Overlay>,
-        #[template_child]
-        pub leaflet: TemplateChild<adw::Leaflet>,
-        #[template_child]
-        pub sidebar: TemplateChild<Sidebar>,
-        #[template_child]
-        pub content: TemplateChild<Content>,
-        #[template_child]
-        pub media_viewer: TemplateChild<MediaViewer>,
         pub client: OnceCell<Client>,
-        pub item_list: OnceCell<ItemList>,
+        pub sidebar_list_model: OnceCell<SidebarListModel>,
         pub user: OnceCell<User>,
         pub state: Cell<SessionState>,
         pub info: OnceCell<StoredSession>,
@@ -120,7 +105,6 @@ mod imp {
         pub offline_handler_id: RefCell<Option<SignalHandlerId>>,
         pub offline: Cell<bool>,
         pub settings: OnceCell<SessionSettings>,
-        pub window_active_handler_id: RefCell<Option<SignalHandlerId>>,
         pub notifications: Notifications,
     }
 
@@ -128,77 +112,6 @@ mod imp {
     impl ObjectSubclass for Session {
         const NAME: &'static str = "Session";
         type Type = super::Session;
-        type ParentType = adw::Bin;
-
-        fn class_init(klass: &mut Self::Class) {
-            Self::bind_template(klass);
-
-            klass.install_action("session.close-room", None, move |session, _, _| {
-                session.select_room(None);
-            });
-
-            klass.install_action(
-                "session.show-room",
-                Some("s"),
-                move |session, _, parameter| {
-                    if let Ok(room_id) =
-                        <&RoomId>::try_from(&*parameter.unwrap().get::<String>().unwrap())
-                    {
-                        session.select_room_by_id(room_id);
-                    } else {
-                        error!("Can't show room because the provided id is invalid");
-                    }
-                },
-            );
-
-            klass.install_action("session.show-content", None, move |session, _, _| {
-                session.show_content();
-            });
-
-            klass.install_action("session.room-creation", None, move |session, _, _| {
-                session.show_room_creation_dialog();
-            });
-
-            klass.install_action("session.show-join-room", None, move |widget, _, _| {
-                spawn!(clone!(@weak widget => async move {
-                    widget.show_join_room_dialog().await;
-                }));
-            });
-
-            klass.install_action("session.create-dm", None, move |session, _, _| {
-                session.show_create_dm_dialog();
-            });
-
-            klass.add_binding_action(
-                gdk::Key::Escape,
-                gdk::ModifierType::empty(),
-                "session.close-room",
-                None,
-            );
-
-            klass.install_action("session.toggle-room-search", None, move |session, _, _| {
-                session.toggle_room_search();
-            });
-
-            klass.add_binding_action(
-                gdk::Key::k,
-                gdk::ModifierType::CONTROL_MASK,
-                "session.toggle-room-search",
-                None,
-            );
-
-            klass.install_action(
-                "session.open-account-settings",
-                None,
-                move |widget, _, _| {
-                    widget.open_account_settings();
-                },
-            );
-        }
-
-        fn instance_init(obj: &InitializingObject<Self>) {
-            obj.init_template();
-        }
     }
 
     impl ObjectImpl for Session {
@@ -212,7 +125,7 @@ mod imp {
                     glib::ParamSpecString::builder("session-id")
                         .read_only()
                         .build(),
-                    glib::ParamSpecObject::builder::<ItemList>("item-list")
+                    glib::ParamSpecObject::builder::<SidebarListModel>("sidebar-list-model")
                         .read_only()
                         .build(),
                     glib::ParamSpecObject::builder::<User>("user")
@@ -245,7 +158,7 @@ mod imp {
 
             match pspec.name() {
                 "session-id" => obj.session_id().to_value(),
-                "item-list" => obj.item_list().to_value(),
+                "sidebar-list-model" => obj.sidebar_list_model().to_value(),
                 "user" => obj.user().to_value(),
                 "offline" => obj.is_offline().to_value(),
                 "state" => obj.state().to_value(),
@@ -263,17 +176,6 @@ mod imp {
 
             self.notifications.set_session(Some(&obj));
 
-            self.sidebar.connect_notify_local(
-                Some("selected-item"),
-                clone!(@weak self as imp => move |_, _| {
-                    if imp.sidebar.selected_item().is_none() {
-                        imp.leaflet.navigate(adw::NavigationDirection::Back);
-                    } else {
-                        imp.leaflet.navigate(adw::NavigationDirection::Forward);
-                    }
-                }),
-            );
-
             let monitor = gio::NetworkMonitor::default();
             let handler_id = monitor.connect_network_changed(clone!(@weak obj => move |_, _| {
                 spawn!(clone!(@weak obj => async move {
@@ -282,35 +184,9 @@ mod imp {
             }));
 
             self.offline_handler_id.replace(Some(handler_id));
-
-            self.content.connect_notify_local(
-                Some("item"),
-                clone!(@weak obj => move |_, _| {
-                    // When switching to a room, withdraw its notifications.
-                    obj.notifications().withdraw_all_for_selected_room();
-                }),
-            );
-
-            obj.connect_parent_notify(|obj| {
-                if let Some(window) = obj.root().and_then(|root| root.downcast::<Window>().ok()) {
-                    let handler_id =
-                        window.connect_is_active_notify(clone!(@weak obj => move |window| {
-                            // When the window becomes active, withdraw the notifications
-                            // of the room that is displayed.
-                            if window.is_active()
-                                && window.current_session_id().as_deref() == Some(obj.session_id())
-                            {
-                                obj.notifications().withdraw_all_for_selected_room();
-                            }
-                        }));
-                    obj.imp().window_active_handler_id.replace(Some(handler_id));
-                }
-            });
         }
 
         fn dispose(&self) {
-            let obj = self.obj();
-
             // Needs to be disconnected or else it may restart the sync
             if let Some(handler_id) = self.offline_handler_id.take() {
                 gio::NetworkMonitor::default().disconnect(handler_id);
@@ -319,21 +195,13 @@ mod imp {
             if let Some(handle) = self.sync_tokio_handle.take() {
                 handle.abort();
             }
-
-            if let Some(handler_id) = self.window_active_handler_id.take() {
-                if let Some(window) = obj.root().and_then(|root| root.downcast::<Window>().ok()) {
-                    window.disconnect(handler_id);
-                }
-            }
         }
     }
-    impl WidgetImpl for Session {}
-    impl BinImpl for Session {}
 }
 
 glib::wrapper! {
-    pub struct Session(ObjectSubclass<imp::Session>)
-        @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
+    /// A Matrix user session.
+    pub struct Session(ObjectSubclass<imp::Session>);
 }
 
 impl Session {
@@ -392,37 +260,6 @@ impl Session {
 
         self.imp().state.set(state);
         self.notify("state");
-    }
-
-    /// The currently selected room, if any.
-    pub fn selected_room(&self) -> Option<Room> {
-        self.imp()
-            .content
-            .item()
-            .and_then(|item| item.downcast().ok())
-    }
-
-    pub fn select_room(&self, room: Option<Room>) {
-        self.imp()
-            .sidebar
-            .set_selected_item(room.map(|item| item.upcast()));
-    }
-
-    pub fn select_item(&self, item: Option<glib::Object>) {
-        self.imp().sidebar.set_selected_item(item);
-    }
-
-    pub fn select_room_by_id(&self, room_id: &RoomId) {
-        if let Some(room) = self.room_list().get(room_id) {
-            self.select_room(Some(room));
-        } else {
-            warn!("A room with id {room_id} couldn't be found");
-        }
-    }
-
-    fn toggle_room_search(&self) {
-        let room_search = self.imp().sidebar.room_search_bar();
-        room_search.set_search_mode(!room_search.is_search_mode());
     }
 
     pub async fn prepare(&self) {
@@ -525,18 +362,19 @@ impl Session {
     }
 
     pub fn room_list(&self) -> &RoomList {
-        self.item_list().room_list()
+        self.sidebar_list_model().item_list().room_list()
     }
 
     pub fn verification_list(&self) -> &VerificationList {
-        self.item_list().verification_list()
+        self.sidebar_list_model().item_list().verification_list()
     }
 
-    /// The list of items in the sidebar.
-    pub fn item_list(&self) -> &ItemList {
-        self.imp()
-            .item_list
-            .get_or_init(|| ItemList::new(&RoomList::new(self), &VerificationList::new(self)))
+    /// The list model of the sidebar.
+    pub fn sidebar_list_model(&self) -> &SidebarListModel {
+        self.imp().sidebar_list_model.get_or_init(|| {
+            let item_list = ItemList::new(&RoomList::new(self), &VerificationList::new(self));
+            SidebarListModel::new(&item_list)
+        })
     }
 
     /// The user of this session.
@@ -656,40 +494,8 @@ impl Session {
         }
     }
 
-    /// Returns the parent GtkWindow containing this widget.
-    fn parent_window(&self) -> Option<Window> {
-        self.root()?.downcast().ok()
-    }
-
-    fn open_account_settings(&self) {
-        let window = AccountSettings::new(self.parent_window().as_ref(), self);
-        window.present();
-    }
-
-    fn show_room_creation_dialog(&self) {
-        let window = RoomCreation::new(self.parent_window().as_ref(), self);
-        window.present();
-    }
-
-    fn show_create_dm_dialog(&self) {
-        let window = CreateDmDialog::new(self.parent_window().as_ref(), self);
-        window.present();
-    }
-
-    async fn show_join_room_dialog(&self) {
-        let dialog = JoinRoomDialog::new(self.parent_window().as_ref(), self);
-        dialog.present();
-    }
-
     pub async fn logout(&self) -> Result<(), String> {
-        let stack = &self.imp().stack;
-
         debug!("The session is about to be logged out");
-
-        // First stop the verification in progress
-        if let Some(session_verification) = stack.child_by_name("session-verification") {
-            stack.remove(&session_verification);
-        }
 
         let client = self.client();
         let handle = spawn_tokio!(async move {
@@ -726,10 +532,6 @@ impl Session {
         );
     }
 
-    pub fn handle_paste_action(&self) {
-        self.imp().content.handle_paste_action();
-    }
-
     async fn cleanup_session(&self) {
         let imp = self.imp();
 
@@ -748,30 +550,6 @@ impl Session {
         self.notifications().clear();
 
         debug!("The logged out session was cleaned up");
-    }
-
-    /// Show the content of the session
-    pub fn show_content(&self) {
-        let imp = self.imp();
-
-        imp.stack.set_visible_child(&*imp.overlay);
-
-        if let Some(window) = self.parent_window() {
-            window.switch_to_sessions_page();
-        }
-    }
-
-    /// Show a media event.
-    pub fn show_media(&self, event: &Event, source_widget: &impl IsA<gtk::Widget>) {
-        let Some(message) = event.message() else {
-            error!("Trying to open the media viewer with an event that is not a message");
-            return;
-        };
-
-        let imp = self.imp();
-        imp.media_viewer
-            .set_message(&event.room(), event.event_id().unwrap(), message);
-        imp.media_viewer.reveal(source_widget);
     }
 
     fn setup_direct_room_handler(&self) {

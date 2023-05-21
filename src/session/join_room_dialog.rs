@@ -6,7 +6,7 @@ use ruma::{
     RoomOrAliasId,
 };
 
-use crate::{session::Session, spawn, toast};
+use crate::{session::Session, spawn, toast, window::Window};
 
 mod imp {
     use glib::{object::WeakRef, subclass::InitializingObject};
@@ -159,7 +159,11 @@ impl JoinRoomDialog {
 
         // Join or view the room with the given identifier.
         if let Some(room) = room_list.joined_room((&*room_id).into()) {
-            session.select_room(Some(room));
+            let Some(window) = self.root().and_downcast::<Window>() else {
+                return;
+            };
+
+            window.session_view().select_room(Some(room));
         } else {
             spawn!(clone!(@weak self as obj, @weak room_list => async move {
                 if let Err(error) = room_list.join_by_id_or_alias(room_id, via).await {

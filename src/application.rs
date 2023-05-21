@@ -142,20 +142,20 @@ impl Application {
                 .build(),
         ]);
 
-        let show_sessions_action = gio::SimpleAction::new("show-sessions", None);
-        show_sessions_action.connect_activate(clone!(@weak self as app => move |_, _| {
-            app.main_window().switch_to_sessions_page();
+        let show_session_action = gio::SimpleAction::new("show-session", None);
+        show_session_action.connect_activate(clone!(@weak self as app => move |_, _| {
+            app.main_window().switch_to_session_page();
         }));
-        self.add_action(&show_sessions_action);
+        self.add_action(&show_session_action);
 
         let win = self.main_window();
         let session_list = win.session_list();
         session_list.connect_is_empty_notify(
-            clone!(@weak show_sessions_action => move |session_list| {
-                show_sessions_action.set_enabled(!session_list.is_empty());
+            clone!(@weak show_session_action => move |session_list| {
+                show_session_action.set_enabled(!session_list.is_empty());
             }),
         );
-        show_sessions_action.set_enabled(!session_list.is_empty());
+        show_session_action.set_enabled(!session_list.is_empty());
     }
 
     /// Sets up keyboard shortcuts for application and window actions.

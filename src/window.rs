@@ -12,7 +12,7 @@ use crate::{
     components::Spinner,
     config::{APP_ID, PROFILE},
     secret::{self, SecretError, StoredSession},
-    session::SessionState,
+    session::{AccountSettings, SessionState, SessionView},
     session_list::SessionList,
     spawn, spawn_tokio, toast,
     user_facing_error::UserFacingError,
@@ -39,7 +39,7 @@ mod imp {
         #[template_child]
         pub error_page: TemplateChild<ErrorPage>,
         #[template_child]
-        pub sessions: TemplateChild<gtk::Stack>,
+        pub session: TemplateChild<SessionView>,
         #[template_child]
         pub toast_overlay: TemplateChild<adw::ToastOverlay>,
         #[template_child]
@@ -77,16 +77,19 @@ mod imp {
                 "win.paste",
                 None,
             );
-            klass.install_action("win.paste", None, move |widget, _, _| {
-                if let Some(session) = widget
-                    .imp()
-                    .sessions
-                    .visible_child()
-                    .and_then(|c| c.downcast::<Session>().ok())
-                {
-                    session.handle_paste_action();
-                }
+            klass.install_action("win.paste", None, move |obj, _, _| {
+                obj.imp().session.handle_paste_action();
             });
+
+            klass.install_action(
+                "win.open-account-settings",
+                Some("s"),
+                move |obj, _, variant| {
+                    if let Some(session_id) = variant.and_then(|v| v.get::<String>()) {
+                        obj.open_account_settings(&session_id);
+                    }
+                },
+            );
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -153,14 +156,6 @@ mod imp {
             self.session_selection.set_model(Some(&self.session_list));
             self.session_selection.set_autoselect(true);
 
-            self.session_selection.connect_selected_item_notify(
-                clone!(@weak self as imp => move |session_selection| {
-                    if let Some(session) = session_selection.selected_item().and_downcast::<Session>() {
-                        imp.sessions.set_visible_child(&session);
-                    }
-                }),
-            );
-
             spawn!(clone!(@weak obj => async move {
                 obj.restore_sessions().await;
             }));
@@ -226,7 +221,6 @@ impl Window {
         let imp = &self.imp();
 
         let index = imp.session_list.add(session.clone());
-        imp.sessions.add_named(session, Some(session.session_id()));
         let settings = Application::default().settings();
         let mut is_opened = false;
         if session.session_id() == settings.string("current-session") {
@@ -234,11 +228,11 @@ impl Window {
             is_opened = true;
 
             if session.state() == SessionState::Ready {
-                session.show_content();
+                imp.session.show_content();
             } else {
-                session.connect_ready(|session| {
-                    session.show_content();
-                });
+                session.connect_ready(clone!(@weak self as obj => move |_| {
+                    obj.imp().session.show_content();
+                }));
                 self.switch_to_loading_page();
             }
         } else if imp.waiting_sessions.get() > 0 {
@@ -249,16 +243,16 @@ impl Window {
             imp.session_selection.set_selected(index as u32);
 
             if session.state() == SessionState::Ready {
-                session.show_content();
+                imp.session.show_content();
             } else {
-                session.connect_ready(|session| {
-                    session.show_content();
-                });
+                session.connect_ready(clone!(@weak self as obj => move |_| {
+                    obj.imp().session.show_content();
+                }));
                 self.switch_to_loading_page();
             }
         }
         // We need to grab the focus so that keyboard shortcuts work
-        session.grab_focus();
+        imp.session.grab_focus();
 
         session.connect_logged_out(clone!(@weak self as obj => move |session| {
             obj.remove_session(session)
@@ -269,7 +263,6 @@ impl Window {
         let imp = self.imp();
 
         imp.session_list.remove(session.session_id());
-        imp.sessions.remove(session);
 
         if imp.session_list.is_empty() {
             self.switch_to_greeter_page();
@@ -361,14 +354,19 @@ impl Window {
     }
 
     /// Set the current session by its ID.
-    pub fn set_current_session_by_id(&self, session_id: &str) {
+    ///
+    /// Returns `true` if the session was set as the current session.
+    pub fn set_current_session_by_id(&self, session_id: &str) -> bool {
         let imp = self.imp();
 
         if let Some(index) = imp.session_list.index(session_id) {
             imp.session_selection.set_selected(index as u32);
+        } else {
+            return false;
         }
 
-        self.switch_to_sessions_page();
+        self.switch_to_session_page();
+        true
     }
 
     pub fn save_window_size(&self) -> Result<(), glib::BoolError> {
@@ -414,9 +412,9 @@ impl Window {
         imp.main_stack.set_visible_child(&*imp.loading);
     }
 
-    pub fn switch_to_sessions_page(&self) {
+    pub fn switch_to_session_page(&self) {
         let imp = self.imp();
-        imp.main_stack.set_visible_child(&imp.sessions.get());
+        imp.main_stack.set_visible_child(&imp.session.get());
     }
 
     pub fn switch_to_login_page(&self) {
@@ -445,6 +443,11 @@ impl Window {
         &self.imp().account_switcher
     }
 
+    /// The `SessionView` of this window.
+    pub fn session_view(&self) -> &SessionView {
+        &self.imp().session
+    }
+
     fn update_network_state(&self) {
         let imp = self.imp();
         let monitor = gio::NetworkMonitor::default();
@@ -462,13 +465,13 @@ impl Window {
         }
     }
 
+    /// Show the given room for the given session.
     pub fn show_room(&self, session_id: &str, room_id: &RoomId) {
-        if let Some(session) = self.session_list().get(session_id) {
-            session.select_room_by_id(room_id);
-            self.set_current_session_by_id(session_id);
-        }
+        if self.set_current_session_by_id(session_id) {
+            self.imp().session.select_room_by_id(room_id);
 
-        self.present();
+            self.present();
+        }
     }
 
     pub fn save_current_visible_session(&self) -> Result<(), glib::BoolError> {
@@ -480,5 +483,16 @@ impl Window {
         )?;
 
         Ok(())
+    }
+
+    /// Open the account settings for the session with the given ID.
+    pub fn open_account_settings(&self, session_id: &str) {
+        let Some(session) = self.session_list().get(session_id) else {
+            error!("Tried to open account settings of unknown session with ID '{session_id}'");
+            return;
+        };
+
+        let window = AccountSettings::new(Some(self), &session);
+        window.present();
     }
 }

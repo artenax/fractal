@@ -123,9 +123,11 @@ impl SessionItemRow {
 
         self.activate_action("account-switcher.close", None)
             .unwrap();
-        session
-            .activate_action("session.open-account-settings", None)
-            .unwrap();
+        self.activate_action(
+            "win.open-account-settings",
+            Some(&session.session_id().to_variant()),
+        )
+        .unwrap();
     }
 
     /// The session this item represents.

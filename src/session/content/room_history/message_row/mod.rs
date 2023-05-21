@@ -19,7 +19,7 @@ use matrix_sdk::ruma::events::room::message::MessageType;
 pub use self::content::ContentFormat;
 use self::{content::MessageContent, media::MessageMedia, reaction_list::MessageReactionList};
 use super::ReadReceiptsList;
-use crate::{components::Avatar, prelude::*, session::room::Event};
+use crate::{components::Avatar, prelude::*, session::room::Event, window::Window};
 
 mod imp {
     use std::cell::RefCell;
@@ -228,15 +228,23 @@ impl MessageRow {
         self.imp().content.texture()
     }
 
+    /// Open the media viewer with the media content of this row.
     fn show_media(&self) {
         let imp = self.imp();
-        if let Some(event) = imp.event.borrow().as_ref() {
-            if let Some(message) = event.message() {
-                if matches!(message, MessageType::Image(_) | MessageType::Video(_)) {
-                    let media_widget = imp.content.child().and_downcast::<MessageMedia>().unwrap();
-                    event.room().session().show_media(event, &media_widget);
-                }
-            }
+        let Some(window) = self.root().and_downcast::<Window>() else {
+            return;
+        };
+        let borrowed_event = imp.event.borrow();
+        let Some(event) = borrowed_event.as_ref() else {
+            return;
+        };
+        let Some(message) = event.message() else {
+            return;
+        };
+
+        if matches!(message, MessageType::Image(_) | MessageType::Video(_)) {
+            let media_widget = imp.content.child().and_downcast::<MessageMedia>().unwrap();
+            window.session_view().show_media(event, &media_widget);
         }
     }
 }

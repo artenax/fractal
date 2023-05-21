@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="Session" parent="AdwBin">
+  <template class="SessionView" parent="AdwBin">
     <property name="child">
       <object class="GtkStack" id="stack">
         <property name="visible-child">overlay</property>
@@ -18,8 +18,16 @@
                 <child>
                   <object class="Sidebar" id="sidebar">
                     <property name="compact" bind-source="leaflet" bind-property="folded" bind-flags="sync-create"/>
-                    <property name="user" bind-source="Session" bind-property="user" bind-flags="sync-create"/>
-                    <property name="item-list" bind-source="Session" bind-property="item-list" bind-flags="sync-create"/>
+                    <binding name="user">
+                      <lookup name="user">
+                        <lookup name="session">SessionView</lookup>
+                      </lookup>
+                    </binding>
+                    <binding name="list-model">
+                      <lookup name="sidebar-list-model">
+                        <lookup name="session">SessionView</lookup>
+                      </lookup>
+                    </binding>
                   </object>
                 </child>
                 <child>
@@ -33,8 +41,7 @@
                 <child>
                   <object class="Content" id="content">
                     <property name="compact" bind-source="leaflet" bind-property="folded" bind-flags="sync-create"/>
-                    <property name="item" bind-source="sidebar" bind-property="selected-item" bind-flags="sync-create | bidirectional"/>
-                    <property name="session">Session</property>
+                    <property name="session" bind-source="SessionView" bind-property="session" bind-flags="sync-create"/>
                   </object>
                 </child>
               </object>

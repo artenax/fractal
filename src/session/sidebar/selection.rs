@@ -228,7 +228,7 @@ impl Selection {
     }
 
     /// Set the selected item.
-    fn set_selected_item(&self, item: Option<glib::Object>) {
+    pub fn set_selected_item(&self, item: Option<glib::Object>) {
         let imp = self.imp();
 
         let selected_item = self.selected_item();
@@ -312,5 +312,11 @@ impl Selection {
         }
 
         self.items_changed(position, removed, added);
+    }
+}
+
+impl Default for Selection {
+    fn default() -> Self {
+        Self::new(gio::ListModel::NONE)
     }
 }

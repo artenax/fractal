@@ -2,7 +2,7 @@ use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{glib, glib::clone, CompositeTemplate};
 
-use crate::{session::Room, spawn, toast, utils::BoundObjectWeakRef};
+use crate::{session::Room, spawn, toast, utils::BoundObjectWeakRef, window::Window};
 
 mod imp {
     use glib::subclass::InitializingObject;
@@ -138,7 +138,11 @@ impl StateTombstone {
 
         // Join or view the room with the given identifier.
         if let Some(successor_room) = room_list.joined_room(successor.into()) {
-            session.select_room(Some(successor_room));
+            let Some(window) = self.root().and_downcast::<Window>() else {
+                return;
+            };
+
+            window.session_view().select_room(Some(successor_room));
         } else {
             let successor = successor.to_owned();
 

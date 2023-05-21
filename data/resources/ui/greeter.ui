@@ -13,7 +13,7 @@
             </property>
             <child type="start">
               <object class="GtkButton" id="back_button">
-                <property name="action-name">app.show-sessions</property>
+                <property name="action-name">app.show-session</property>
                 <property name="visible" bind-source="back_button" bind-property="sensitive" bind-flags="sync-create"/>
                 <property name="icon-name">go-previous-symbolic</property>
               </object>

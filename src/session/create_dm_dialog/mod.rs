@@ -10,11 +10,7 @@ use self::{
     dm_user_list::{DmUserList, DmUserListState},
     dm_user_row::DmUserRow,
 };
-use crate::{
-    gettext,
-    session::{user::UserExt, Session},
-    spawn,
-};
+use crate::{gettext, session::Session, spawn, window::Window};
 
 mod imp {
     use glib::{object::WeakRef, subclass::InitializingObject};
@@ -197,7 +193,11 @@ impl CreateDmDialog {
     async fn start_chat(&self, user: &DmUser) {
         match user.start_chat().await {
             Ok(room) => {
-                user.session().select_room(Some(room));
+                let Some(window) = self.transient_for().and_downcast::<Window>() else {
+                    return;
+                };
+
+                window.session_view().select_room(Some(room));
                 self.close();
             }
             Err(_) => {
