@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="AccountSwitcher" parent="GtkPopover">
+    <style>
+      <class name="account-switcher"/>
+    </style>
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>

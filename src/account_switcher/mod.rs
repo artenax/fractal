@@ -36,8 +36,6 @@ mod imp {
             Self::bind_template(klass);
             Self::Type::bind_template_callbacks(klass);
 
-            klass.set_css_name("account-switcher");
-
             klass.install_action("account-switcher.close", None, move |item, _, _| {
                 item.popdown();
             });

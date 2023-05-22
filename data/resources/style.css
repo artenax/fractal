@@ -208,21 +208,21 @@ login {
 
 /* Account switcher */
 
-account-switcher list {
+.account-switcher list {
   background-color: transparent;
 }
 
-account-switcher .account-switcher-row {
+.account-switcher .account-switcher-row {
   border-radius: 10px;
   margin: 3px 0px;
   padding: 6px 12px;
 }
 
-account-switcher .account-switcher-row:first-child {
+.account-switcher .account-switcher-row:first-child {
   margin-top: 0px;
 }
 
-account-switcher button.account-switcher-row {
+.account-switcher button.account-switcher-row {
   font-weight: normal;
   margin-bottom: 0;
 }
