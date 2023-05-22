@@ -24,6 +24,8 @@ mod imp {
         pub sessions: TemplateChild<gtk::ListBox>,
         /// The model containing the logged-in sessions selection.
         pub session_selection: BoundObjectWeakRef<gtk::SingleSelection>,
+        /// The selected row.
+        pub selected_row: glib::WeakRef<SessionItemRow>,
     }
 
     #[glib::object_subclass]
@@ -115,20 +117,21 @@ impl AccountSwitcher {
         });
 
         if let Some(selection) = &selection {
-            let selected_handler = selection.connect_selection_changed(
-                clone!(@weak self as obj => move |selection, pos, n_items| {
-                    obj.update_selected_item(selection.selected(), pos, n_items);
+            let selected_handler = selection.connect_selected_item_notify(
+                clone!(@weak self as obj => move |selection| {
+                    obj.update_selected_item(selection.selected());
                 }),
             );
-            let selected = selection.selected();
-            if selected != gtk::INVALID_LIST_POSITION {
-                self.update_selected_item(selected, selected, 1);
-            }
+            self.update_selected_item(selection.selected());
 
             imp.session_selection.set(selection, vec![selected_handler]);
         }
 
         self.notify("session-selection");
+    }
+
+    fn selected_row(&self) -> Option<SessionItemRow> {
+        self.imp().selected_row.upgrade()
     }
 
     /// Select the given row in the session list.
@@ -146,18 +149,30 @@ impl AccountSwitcher {
     }
 
     /// Update the selected item in the session list.
-    fn update_selected_item(&self, selected: u32, start: u32, n_items: u32) {
+    fn update_selected_item(&self, selected: u32) {
         let imp = self.imp();
 
-        for i in start..(start + n_items) {
-            if let Some(row) = imp
-                .sessions
-                .row_at_index(i as i32)
+        let old_selected = self.selected_row();
+        let new_selected = if selected == gtk::INVALID_LIST_POSITION {
+            None
+        } else {
+            imp.sessions
+                .row_at_index(selected as i32)
                 .and_downcast::<SessionItemRow>()
-            {
-                row.set_selected(i == selected);
-            }
+        };
+
+        if old_selected == new_selected {
+            return;
         }
+
+        if let Some(row) = &old_selected {
+            row.set_selected(false);
+        }
+        if let Some(row) = &new_selected {
+            row.set_selected(true);
+        }
+
+        imp.selected_row.set(new_selected.as_ref());
     }
 }
 
