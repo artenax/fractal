@@ -136,8 +136,10 @@ backend interface is running, and you need to allow Fractal to access the D-Bus 
 command:
 
 ```sh
-flatpak override --user --talk-name=org.freedesktop.secrets org.gnome.Fractal.Devel
+flatpak override --user --talk-name=org.freedesktop.secrets org.gnome.Fractal
 ```
+
+_For the nightly version, change the application name to `org.gnome.Fractal.Devel`._
 
 Or with [Flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal), by adding
 `org.freedesktop.secrets` in the **Session Bus** > **Talk** list of Fractal.
