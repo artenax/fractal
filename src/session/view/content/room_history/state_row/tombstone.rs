@@ -119,7 +119,7 @@ impl StateTombstone {
     /// Update the button of the label.
     fn update_button_label(&self, room: &Room) {
         let button = &self.imp().new_room_btn;
-        if room.successor_room().is_some() {
+        if room.successor().is_some() {
             button.set_label(&gettext("View"));
         } else {
             button.set_label(&gettext("Join"));
@@ -132,24 +132,19 @@ impl StateTombstone {
         let Some(room) = self.room() else {
             return;
         };
-        let Some(successor) = room.successor() else {
-            return;
-        };
         let session = room.session();
         let room_list = session.room_list();
 
         // Join or view the room with the given identifier.
-        if let Some(successor_room) = room_list.joined_room(successor.into()) {
+        if let Some(successor) = room.successor() {
             let Some(window) = self.root().and_downcast::<Window>() else {
                 return;
             };
 
-            window.session_view().select_room(Some(successor_room));
-        } else {
-            let successor = successor.to_owned();
-
+            window.session_view().select_room(Some(successor));
+        } else if let Some(successor_id) = room.successor_id().map(ToOwned::to_owned) {
             spawn!(clone!(@weak self as obj, @weak room_list => async move {
-                if let Err(error) = room_list.join_by_id_or_alias(successor.into(), vec![]).await {
+                if let Err(error) = room_list.join_by_id_or_alias(successor_id.into(), vec![]).await {
                     toast!(obj, error);
                 }
             }));

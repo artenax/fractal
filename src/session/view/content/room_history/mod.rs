@@ -1428,11 +1428,11 @@ impl RoomHistory {
         let tombstoned_expr = gtk::ClosureExpression::new::<bool>(
             [
                 Room::this_expression("category"),
-                Room::this_expression("successor"),
+                Room::this_expression("successor-id"),
             ],
             closure!(
-                |room: Room, category: RoomType, successor: Option<String>| {
-                    successor.is_some() && room.is_joined() && category != RoomType::Outdated
+                |room: Room, category: RoomType, successor_id: Option<String>| {
+                    successor_id.is_some() && room.is_joined() && category != RoomType::Outdated
                 }
             ),
         );
@@ -1460,15 +1460,15 @@ impl RoomHistory {
             .evaluate_as::<bool>()
             .unwrap_or_default()
         {
-            let Some(successor) = room.successor() else {
+            let Some(successor_id) = room.successor_id() else {
                 return;
             };
-            let successor = successor.to_owned();
+            let successor_id = successor_id.to_owned();
 
             spawn!(clone!(@weak self as obj, @weak room => async move {
                 if let Err(error) = room.session()
                     .room_list()
-                    .join_by_id_or_alias(successor.into(), vec![]).await
+                    .join_by_id_or_alias(successor_id.into(), vec![]).await
                 {
                     toast!(obj, error);
                 }

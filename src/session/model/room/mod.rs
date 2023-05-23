@@ -87,11 +87,11 @@ mod imp {
         /// The highlight state of the room,
         pub highlight: Cell<HighlightFlags>,
         /// The ID of the room that was upgraded and that this one replaces.
-        pub predecessor: OnceCell<OwnedRoomId>,
+        pub predecessor_id: OnceCell<OwnedRoomId>,
         /// The ID of the successor of this Room, if this room was upgraded.
-        pub successor: OnceCell<OwnedRoomId>,
+        pub successor_id: OnceCell<OwnedRoomId>,
         /// The successor of this Room, if this room was upgraded.
-        pub successor_room: WeakRef<super::Room>,
+        pub successor: WeakRef<super::Room>,
         /// The most recent verification request event.
         pub verification: RefCell<Option<IdentityVerification>>,
         /// Whether this room is encrypted
@@ -149,13 +149,13 @@ mod imp {
                     glib::ParamSpecObject::builder::<MemberList>("members")
                         .read_only()
                         .build(),
-                    glib::ParamSpecString::builder("predecessor")
+                    glib::ParamSpecString::builder("predecessor-id")
                         .read_only()
                         .build(),
-                    glib::ParamSpecString::builder("successor")
+                    glib::ParamSpecString::builder("successor-id")
                         .read_only()
                         .build(),
-                    glib::ParamSpecObject::builder::<super::Room>("successor-room")
+                    glib::ParamSpecObject::builder::<super::Room>("successor")
                         .read_only()
                         .build(),
                     glib::ParamSpecObject::builder::<IdentityVerification>("verification")
@@ -206,9 +206,9 @@ mod imp {
                 "notification-count" => obj.notification_count().to_value(),
                 "latest-unread" => obj.latest_unread().to_value(),
                 "latest-read" => obj.latest_read().to_value(),
-                "predecessor" => obj.predecessor().map(|id| id.as_str()).to_value(),
-                "successor" => obj.successor().map(|id| id.as_str()).to_value(),
-                "successor-room" => obj.successor_room().to_value(),
+                "predecessor-id" => obj.predecessor_id().map(|id| id.as_str()).to_value(),
+                "successor-id" => obj.successor_id().map(|id| id.as_str()).to_value(),
+                "successor" => obj.successor().to_value(),
                 "verification" => obj.verification().to_value(),
                 "encrypted" => obj.is_encrypted().to_value(),
                 "typing-list" => obj.typing_list().to_value(),
@@ -1342,47 +1342,47 @@ impl Room {
 
     /// The ID of the predecessor of this room, if this room is an upgrade to a
     /// previous room.
-    pub fn predecessor(&self) -> Option<&RoomId> {
-        self.imp().predecessor.get().map(std::ops::Deref::deref)
+    pub fn predecessor_id(&self) -> Option<&RoomId> {
+        self.imp().predecessor_id.get().map(std::ops::Deref::deref)
     }
 
     /// Load the predecessor of this room.
-    fn load_predecessor(&self) -> Option<()> {
-        let imp = self.imp();
-
-        if imp.predecessor.get().is_some() {
-            return None;
+    fn load_predecessor(&self) {
+        if self.predecessor_id().is_some() {
+            return;
         }
 
-        let event = self.matrix_room().create_content()?;
-        let room_id = event.predecessor?.room_id;
+        let Some(event) = self.matrix_room().create_content() else {
+            return;
+        };
+        let Some(predecessor) = event.predecessor else {
+            return;
+        };
 
-        imp.predecessor.set(room_id).unwrap();
-        self.notify("predecessor");
-        Some(())
+        self.imp().predecessor_id.set(predecessor.room_id).unwrap();
+        self.notify("predecessor-id");
     }
 
     /// The ID of the successor of this Room, if this room was upgraded.
-    pub fn successor(&self) -> Option<&RoomId> {
-        self.imp().successor.get().map(std::ops::Deref::deref)
+    pub fn successor_id(&self) -> Option<&RoomId> {
+        self.imp().successor_id.get().map(std::ops::Deref::deref)
     }
 
-    /// The successor of this Room, if this room was upgraded.
-    pub fn successor_room(&self) -> Option<Room> {
-        self.imp().successor_room.upgrade()
+    /// The successor of this Room, if this room was upgraded and the successor
+    /// was joined.
+    pub fn successor(&self) -> Option<Room> {
+        self.imp().successor.upgrade()
     }
 
-    /// Set the successor of this Room, if this room was upgraded.
-    fn set_successor_room(&self, successor_room: &Room) {
-        self.imp().successor_room.set(Some(successor_room));
-        self.notify("successor-room")
+    /// Set the successor of this Room.
+    fn set_successor(&self, successor: &Room) {
+        self.imp().successor.set(Some(successor));
+        self.notify("successor")
     }
 
     /// Load the successor of this room.
     pub fn load_successor(&self) {
-        let imp = self.imp();
-
-        if imp.successor.get().is_some() {
+        if self.successor_id().is_some() {
             return;
         }
 
@@ -1390,8 +1390,11 @@ impl Room {
             return;
         };
 
-        imp.successor.set(room_tombstone.replacement_room).unwrap();
-        self.notify("successor");
+        self.imp()
+            .successor_id
+            .set(room_tombstone.replacement_room)
+            .unwrap();
+        self.notify("successor-id");
 
         if !self.update_outdated() {
             self.session()
@@ -1410,12 +1413,12 @@ impl Room {
             return true;
         }
 
-        let Some(successor) = self.imp().successor.get() else {
+        let Some(successor_id) = self.successor_id() else {
             return false;
         };
 
-        if let Some(successor_room) = self.session().room_list().get(successor) {
-            self.set_successor_room(&successor_room);
+        if let Some(successor) = self.session().room_list().get(successor_id) {
+            self.set_successor(&successor);
             self.set_category_internal(RoomType::Outdated);
             true
         } else {
