@@ -15,7 +15,7 @@ use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, warn};
 use matrix_sdk::{
     attachment::{generate_image_thumbnail, AttachmentConfig, AttachmentInfo, Thumbnail},
-    deserialized_responses::SyncTimelineEvent,
+    deserialized_responses::{MemberEvent, SyncTimelineEvent},
     room::Room as MatrixRoom,
     ruma::{
         api::client::sync::sync_events::v3::InvitedRoom,
@@ -23,15 +23,14 @@ use matrix_sdk::{
             reaction::ReactionEventContent,
             receipt::{ReceiptEventContent, ReceiptType},
             relation::Annotation,
-            room::member::MembershipState,
             tag::{TagInfo, TagName},
-            AnyRoomAccountDataEvent, AnyStrippedStateEvent, AnySyncStateEvent,
-            AnySyncTimelineEvent, StateEventType, SyncStateEvent,
+            AnyRoomAccountDataEvent, AnySyncStateEvent, AnySyncTimelineEvent, StateEventType,
+            SyncStateEvent,
         },
         OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
     },
     sync::{JoinedRoom, LeftRoom},
-    DisplayName, Result as MatrixResult, RoomMemberships,
+    DisplayName, Result as MatrixResult, RoomMemberships, RoomState,
 };
 use ruma::events::{
     receipt::ReceiptThread, room::power_levels::PowerLevelAction, typing::TypingEventContent,
@@ -335,6 +334,10 @@ impl Room {
         self.load_category();
         self.setup_receipts();
         self.setup_typing();
+
+        spawn!(clone!(@weak self as obj => async move {
+            obj.load_inviter().await;
+        }));
     }
 
     /// Forget a room that is left.
@@ -1017,36 +1020,51 @@ impl Room {
         self.imp().inviter.borrow().clone()
     }
 
-    /// Handle stripped state events.
-    ///
-    /// Events passed to this function aren't added to the timeline.
-    pub fn handle_invite_events(&self, events: Vec<AnyStrippedStateEvent>) {
-        let invite_event = events
-            .iter()
-            .find(|event| {
-                if let AnyStrippedStateEvent::RoomMember(event) = event {
-                    event.content.membership == MembershipState::Invite
-                        && event.state_key == self.session().user().unwrap().user_id().as_str()
-                } else {
-                    false
-                }
-            })
-            .unwrap();
+    /// Load the member that invited us to this room, when applicable.
+    async fn load_inviter(&self) {
+        let matrix_room = self.matrix_room();
 
-        let inviter_id = invite_event.sender();
-
-        let inviter_event = events.iter().find(|event| {
-            if let AnyStrippedStateEvent::RoomMember(event) = event {
-                event.state_key == inviter_id.as_str()
-            } else {
-                false
-            }
-        });
-
-        let inviter = Member::new(self, inviter_id);
-        if let Some(AnyStrippedStateEvent::RoomMember(event)) = inviter_event {
-            inviter.update_from_member_event(event);
+        if matrix_room.state() != RoomState::Invited {
+            return;
         }
+
+        let Some(own_user_id) = self.session().user().map(|user| user.user_id()) else {
+            return;
+        };
+
+        let matrix_room_clone = matrix_room.clone();
+        let handle =
+            spawn_tokio!(async move { matrix_room_clone.get_member_no_sync(&own_user_id).await });
+
+        let own_member = match handle.await.unwrap() {
+            Ok(Some(member)) => member,
+            Ok(None) => return,
+            Err(error) => {
+                error!("Failed to get room member: {error}");
+                return;
+            }
+        };
+
+        let inviter_id = match &**own_member.event() {
+            MemberEvent::Sync(_) => return,
+            MemberEvent::Stripped(event) => event.sender.clone(),
+        };
+
+        let inviter_id_clone = inviter_id.clone();
+        let handle =
+            spawn_tokio!(async move { matrix_room.get_member_no_sync(&inviter_id_clone).await });
+
+        let inviter_member = match handle.await.unwrap() {
+            Ok(Some(member)) => member,
+            Ok(None) => return,
+            Err(error) => {
+                error!("Failed to get room member: {error}");
+                return;
+            }
+        };
+
+        let inviter = Member::new(self, &inviter_id);
+        inviter.update_from_room_member(&inviter_member);
 
         self.imp().inviter.replace(Some(inviter));
         self.notify("inviter");
@@ -1317,24 +1335,8 @@ impl Room {
         self.update_for_events(response_room.timeline.events);
     }
 
-    pub fn handle_invited_response(&self, response_room: InvitedRoom) {
+    pub fn handle_invited_response(&self, _response_room: InvitedRoom) {
         self.set_matrix_room(self.session().client().get_room(self.room_id()).unwrap());
-
-        self.handle_invite_events(
-            response_room
-                .invite_state
-                .events
-                .into_iter()
-                .filter_map(|event| {
-                    if let Ok(event) = event.deserialize() {
-                        Some(event)
-                    } else {
-                        error!("Couldn’t deserialize event: {event:?}");
-                        None
-                    }
-                })
-                .collect(),
-        )
     }
 
     /// Connect to the signal sent when a room was forgotten.
