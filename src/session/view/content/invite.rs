@@ -112,8 +112,10 @@ mod imp {
 
             // Translators: Do NOT translate the content between '{' and '}', this is a
             // variable name.
-            self.inviter
-                .set_label(Some(gettext_f("{user} invited you", &[("user", "widget")])));
+            self.inviter.set_label(Some(gettext_f(
+                "{user} invited you",
+                &[("user", "<widget>")],
+            )));
         }
     }
 
