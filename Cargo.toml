@@ -92,7 +92,18 @@ features = [
 # version = "0.8.2"
 git = "https://github.com/ruma/ruma.git"
 rev = "54a4223caa1c1052464ecdba0f1e08f126e07bcd"
-features = ["unstable-unspecified", "client-api-c", "unstable-sanitize"]
+features = [
+    "unstable-unspecified",
+    "client-api-c",
+    "unstable-sanitize", 
+    "compat-key-id",
+    "compat-user-id",
+    "compat-empty-string-null",
+    "compat-null",
+    "compat-optional",
+    "compat-unset-avatar",
+    "compat-get-3pids",
+]
 
 [dependencies.shumate]
 package = "libshumate"
