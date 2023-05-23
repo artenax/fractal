@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-05-22 10:20+0000\n"
-"PO-Revision-Date: 2023-05-22 18:37+0300\n"
+"POT-Creation-Date: 2023-05-23 16:09+0000\n"
+"PO-Revision-Date: 2023-05-23 22:47+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -97,7 +97,6 @@ msgid "The Fractal Team"
 msgstr "Команда «Фрактал»"
 
 #: src/account_switcher/mod.ui:36
-#| msgid "_Create Account"
 msgid "_Add Account"
 msgstr "Д_одати обліковий запис"
 
@@ -584,18 +583,18 @@ msgstr "Модератор"
 msgid "Normal user"
 msgstr "Звичайний користувач"
 
-#: src/session/model/room/mod.rs:941
+#: src/session/model/room/mod.rs:947
 msgid "Unknown"
 msgstr "Невідомий"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/model/room/mod.rs:969
+#: src/session/model/room/mod.rs:975
 msgid "Empty Room (was {user})"
 msgstr "Порожня кімната (був {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/model/room/mod.rs:971
+#: src/session/model/room/mod.rs:977
 msgid "Empty Room"
 msgstr "Порожня кімната"
 
@@ -1131,13 +1130,15 @@ msgstr "Не знайдено жодної кімнати, яка відпові
 msgid "Room List"
 msgstr "Список кімнат"
 
+#. Translators: This is a verb, as in 'View Room'.
 #: src/session/view/content/explore/public_room_row.rs:208
+#: src/session/view/content/room_history/mod.rs:1466
 #: src/session/view/content/room_history/state_row/tombstone.rs:123
 msgid "View"
 msgstr "Перегляд"
 
 #: src/session/view/content/explore/public_room_row.rs:210
-#: src/session/view/content/room_history/mod.ui:93
+#: src/session/view/content/room_history/mod.rs:1469
 #: src/session/view/content/room_history/state_row/tombstone.rs:125
 msgid "Join"
 msgstr "Увійти"
@@ -1353,13 +1354,13 @@ msgid "_Send"
 msgstr "_Надіслати"
 
 #: src/session/view/content/room_history/event_actions.rs:114
-#: src/session/view/content/room_history/mod.rs:818
+#: src/session/view/content/room_history/mod.rs:842
 #: src/session/view/media_viewer.rs:573
 msgid "Permalink copied to clipboard"
 msgstr "Стале посилання скопійовано до буфера обміну"
 
 #: src/session/view/content/room_history/event_actions.rs:118
-#: src/session/view/content/room_history/mod.rs:822
+#: src/session/view/content/room_history/mod.rs:846
 #: src/session/view/media_viewer.rs:577
 msgid "Failed to copy the permalink"
 msgstr "Не вдалося скопіювати стале посилання"
@@ -1507,54 +1508,65 @@ msgstr "Не вдалося отримати дані щодо поточног�
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/view/content/room_history/mod.rs:690
+#: src/session/view/content/room_history/mod.rs:714
 msgid "Reply to {user}"
 msgstr "Відповідь {user}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/mod.rs:802
+#: src/session/view/content/room_history/mod.rs:826
 #: src/session/view/sidebar/room_row.rs:390
 #: src/session/view/sidebar/room_row.rs:411 src/session/view/sidebar/row.rs:340
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "Не вдалося пересунути {room} з {previous_category} до {new_category}."
 
-#: src/session/view/content/room_history/mod.rs:1031
+#: src/session/view/content/room_history/mod.rs:1055
 msgid "Your Location"
 msgstr "Ваше місце перебування"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/session/view/content/room_history/mod.rs:1043
+#: src/session/view/content/room_history/mod.rs:1067
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Розташування користувача {geo_uri} {iso8601_datetime}"
 
-#: src/session/view/content/room_history/mod.rs:1088
+#: src/session/view/content/room_history/mod.rs:1112
 msgid "Select File"
 msgstr "Виберіть файл"
 
-#: src/session/view/content/room_history/mod.rs:1090
+#: src/session/view/content/room_history/mod.rs:1114
 msgid "Select"
 msgstr "Вибрати"
 
-#: src/session/view/content/room_history/mod.rs:1109
+#: src/session/view/content/room_history/mod.rs:1133
 msgid "Could not open file"
 msgstr "Не вдалося відкрити файл"
 
-#: src/session/view/content/room_history/mod.rs:1154
+#: src/session/view/content/room_history/mod.rs:1178
 msgid "Error reading file"
 msgstr "Помилка при зчитуванні файла"
 
-#: src/session/view/content/room_history/mod.rs:1180
+#: src/session/view/content/room_history/mod.rs:1204
 msgid "Error getting file from drop"
 msgstr "Помилка під час отримання файла зі скидання"
 
-#: src/session/view/content/room_history/mod.rs:1212
+#: src/session/view/content/room_history/mod.rs:1236
 msgid "Error getting image from clipboard"
 msgstr "Помилка під час отримання зображення з буфера обміну"
 
-#: src/session/view/content/room_history/mod.rs:1229
+#: src/session/view/content/room_history/mod.rs:1253
 msgid "Error getting file from clipboard"
 msgstr "Помилка під час отримання файла з буфера обміну"
+
+#: src/session/view/content/room_history/mod.rs:1464
+#: src/session/view/content/room_history/mod.rs:1468
+#: src/session/view/content/room_history/state_row/tombstone.ui:14
+msgid "There is a newer version of this room"
+msgstr "Існує новіша версія цієї кімнати"
+
+#: src/session/view/content/room_history/mod.rs:1471
+#| msgid "This room was upgraded."
+msgid "This room was closed"
+msgstr "Цю кімнату було закрито"
 
 #: src/session/view/content/room_history/mod.ui:6
 msgid "Room _Details"
@@ -1589,52 +1601,47 @@ msgstr "Назад"
 msgid "Room Settings"
 msgstr "Параметри кімнати"
 
-#: src/session/view/content/room_history/mod.ui:92
-#: src/session/view/content/room_history/state_row/tombstone.ui:14
-msgid "There is a newer version of this room"
-msgstr "Існує новіша версія цієї кімнати"
-
-#: src/session/view/content/room_history/mod.ui:125
+#: src/session/view/content/room_history/mod.ui:123
 msgid "Unable to load room"
 msgstr "Не вдалося завантажити кімнату"
 
-#: src/session/view/content/room_history/mod.ui:126
+#: src/session/view/content/room_history/mod.ui:124
 msgid "Check your network connection."
 msgstr "Перевірте ваше з'єднання з мережею."
 
-#: src/session/view/content/room_history/mod.ui:129
+#: src/session/view/content/room_history/mod.ui:127
 msgid "Try Again"
 msgstr "Повторити спробу"
 
-#: src/session/view/content/room_history/mod.ui:154
+#: src/session/view/content/room_history/mod.ui:152
 msgid "Scroll to bottom"
 msgstr "Прокрутіть донизу"
 
-#: src/session/view/content/room_history/mod.ui:166
+#: src/session/view/content/room_history/mod.ui:164
 msgid "Drop Here to Send"
 msgstr "Скиньте сюди, щоб надіслати"
 
-#: src/session/view/content/room_history/mod.ui:186
+#: src/session/view/content/room_history/mod.ui:184
 msgid "Room History"
 msgstr "Журнал кімнати"
 
-#: src/session/view/content/room_history/mod.ui:277
+#: src/session/view/content/room_history/mod.ui:275
 msgid "Browse Attachment"
 msgstr "Навігація долученням"
 
-#: src/session/view/content/room_history/mod.ui:287
+#: src/session/view/content/room_history/mod.ui:285
 msgid "Open Emoji Picker"
 msgstr "Відкрити вибір емодзі"
 
-#: src/session/view/content/room_history/mod.ui:308
+#: src/session/view/content/room_history/mod.ui:306
 msgid "Message Entry"
 msgstr "Введення повідомлення"
 
-#: src/session/view/content/room_history/mod.ui:323
+#: src/session/view/content/room_history/mod.ui:321
 msgid "Open Message Menu"
 msgstr "Відкрити меню повідомлення"
 
-#: src/session/view/content/room_history/mod.ui:338
+#: src/session/view/content/room_history/mod.ui:336
 msgid "Send Message"
 msgstr "Надіслати повідомлення"
 
@@ -2763,9 +2770,6 @@ msgstr "Не вдалося відновити попередні сеанси"
 
 #~ msgid "Retry"
 #~ msgstr "Повторити"
-
-#~ msgid "This room was upgraded."
-#~ msgstr "Цю кімнату було оновлено."
 
 #~ msgid "Switch to new Room"
 #~ msgstr "Перемкнутися на нову кімнату"
