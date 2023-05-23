@@ -386,7 +386,9 @@ impl Room {
     }
 
     fn set_category_internal(&self, category: RoomType) {
-        if self.category() == category {
+        let old_category = self.category();
+
+        if old_category == RoomType::Outdated || old_category == category {
             return;
         }
 
