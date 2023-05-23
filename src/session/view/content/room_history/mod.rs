@@ -108,9 +108,8 @@ mod imp {
     pub struct RoomHistory {
         pub compact: Cell<bool>,
         pub room: RefCell<Option<Room>>,
-        pub category_handler: RefCell<Option<SignalHandlerId>>,
-        pub empty_timeline_handler: RefCell<Option<SignalHandlerId>>,
-        pub state_timeline_handler: RefCell<Option<SignalHandlerId>>,
+        pub room_handlers: RefCell<Vec<SignalHandlerId>>,
+        pub timeline_handlers: RefCell<Vec<SignalHandlerId>>,
         pub md_enabled: Cell<bool>,
         pub is_auto_scrolling: Cell<bool>,
         pub sticky: Cell<bool>,
@@ -517,16 +516,12 @@ impl RoomHistory {
         }
 
         if let Some(room) = self.room() {
-            if let Some(category_handler) = imp.category_handler.take() {
-                room.disconnect(category_handler);
+            for handler in imp.room_handlers.take() {
+                room.disconnect(handler);
             }
 
-            if let Some(empty_timeline_handler) = imp.empty_timeline_handler.take() {
-                room.timeline().disconnect(empty_timeline_handler);
-            }
-
-            if let Some(state_timeline_handler) = imp.state_timeline_handler.take() {
-                room.timeline().disconnect(state_timeline_handler);
+            for handler in imp.timeline_handlers.take() {
+                room.timeline().disconnect(handler);
             }
 
             for (_, expr_watch) in imp.room_expr_watches.take() {
@@ -548,23 +543,23 @@ impl RoomHistory {
         if let Some(ref room) = room {
             let timeline = room.timeline();
 
-            let handler_id = room.connect_notify_local(
+            let category_handler = room.connect_notify_local(
                 Some("category"),
                 clone!(@weak self as obj => move |_, _| {
                     obj.update_room_state();
                 }),
             );
-            imp.category_handler.replace(Some(handler_id));
 
-            let handler_id = timeline.connect_notify_local(
+            imp.room_handlers.replace(vec![category_handler]);
+
+            let empty_handler = timeline.connect_notify_local(
                 Some("empty"),
                 clone!(@weak self as obj => move |_, _| {
                     obj.update_view();
                 }),
             );
-            imp.empty_timeline_handler.replace(Some(handler_id));
 
-            let handler_id = timeline.connect_notify_local(
+            let state_handler = timeline.connect_notify_local(
                 Some("state"),
                 clone!(@weak self as obj => move |timeline, _| {
                     obj.update_view();
@@ -576,7 +571,9 @@ impl RoomHistory {
                     }
                 }),
             );
-            imp.state_timeline_handler.replace(Some(handler_id));
+
+            imp.timeline_handlers
+                .replace(vec![empty_handler, state_handler]);
 
             timeline.remove_empty_typing_row();
             self.trigger_read_receipts_update();
