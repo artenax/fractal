@@ -244,7 +244,10 @@ impl RoomList {
     pub fn load(&self) {
         let session = self.session();
         let client = session.client();
-        let matrix_rooms = client.rooms();
+        let mut matrix_rooms = client.rooms();
+        // FIXME: This is an issue in the SDK, Client::rooms doesn't return invited
+        // rooms as documented.
+        matrix_rooms.extend(client.invited_rooms().into_iter().map(|r| r.into()));
         let added = matrix_rooms.len();
 
         if added > 0 {
