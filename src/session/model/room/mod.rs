@@ -152,6 +152,9 @@ mod imp {
                     glib::ParamSpecString::builder("predecessor-id")
                         .read_only()
                         .build(),
+                    glib::ParamSpecBoolean::builder("is-tombstoned")
+                        .read_only()
+                        .build(),
                     glib::ParamSpecString::builder("successor-id")
                         .read_only()
                         .build(),
@@ -207,6 +210,7 @@ mod imp {
                 "latest-unread" => obj.latest_unread().to_value(),
                 "latest-read" => obj.latest_read().to_value(),
                 "predecessor-id" => obj.predecessor_id().map(|id| id.as_str()).to_value(),
+                "is-tombstoned" => obj.is_tombstoned().to_value(),
                 "successor-id" => obj.successor_id().map(|id| id.as_str()).to_value(),
                 "successor" => obj.successor().to_value(),
                 "verification" => obj.verification().to_value(),
@@ -327,7 +331,7 @@ impl Room {
 
         self.load_display_name();
         self.load_predecessor();
-        self.load_successor();
+        self.load_tombstone();
         self.load_category();
         self.setup_receipts();
         self.setup_typing();
@@ -1085,7 +1089,7 @@ impl Room {
                         self.power_levels().update_from_event(event.clone());
                     }
                     AnySyncStateEvent::RoomTombstone(_) => {
-                        self.load_successor();
+                        self.load_tombstone();
                     }
                     _ => {}
                 }
@@ -1363,6 +1367,11 @@ impl Room {
         self.notify("predecessor-id");
     }
 
+    /// Whether this room was tombstoned.
+    pub fn is_tombstoned(&self) -> bool {
+        self.matrix_room().is_tombstoned()
+    }
+
     /// The ID of the successor of this Room, if this room was upgraded.
     pub fn successor_id(&self) -> Option<&RoomId> {
         self.imp().successor_id.get().map(std::ops::Deref::deref)
@@ -1380,27 +1389,28 @@ impl Room {
         self.notify("successor")
     }
 
-    /// Load the successor of this room.
-    pub fn load_successor(&self) {
-        if self.successor_id().is_some() {
+    /// Load the tombstone for this room.
+    pub fn load_tombstone(&self) {
+        let imp = self.imp();
+
+        if !self.is_tombstoned() {
             return;
         }
 
-        let Some(room_tombstone) = self.matrix_room().tombstone() else {
-            return;
+        if let Some(room_tombstone) = self.matrix_room().tombstone() {
+            imp.successor_id
+                .set(room_tombstone.replacement_room)
+                .unwrap();
+            self.notify("successor-id");
         };
-
-        self.imp()
-            .successor_id
-            .set(room_tombstone.replacement_room)
-            .unwrap();
-        self.notify("successor-id");
 
         if !self.update_outdated() {
             self.session()
                 .room_list()
                 .add_tombstoned_room(self.room_id().to_owned());
         }
+
+        self.notify("is-tombstoned");
     }
 
     /// Update whether this `Room` is outdated.
@@ -1413,17 +1423,41 @@ impl Room {
             return true;
         }
 
-        let Some(successor_id) = self.successor_id() else {
-            return false;
-        };
+        let session = self.session();
+        let room_list = session.room_list();
 
-        if let Some(successor) = self.session().room_list().get(successor_id) {
-            self.set_successor(&successor);
-            self.set_category_internal(RoomType::Outdated);
-            true
-        } else {
-            false
+        if let Some(successor_id) = self.successor_id() {
+            if let Some(successor) = room_list.get(successor_id) {
+                // The Matrix spec says that we should use the "predecessor" field of the
+                // m.room.create event of the successor, not the "successor" field of the
+                // m.room.tombstone event, so check it just to be sure.
+                if let Some(predecessor_id) = successor.predecessor_id() {
+                    if predecessor_id == self.room_id() {
+                        self.set_successor(&successor);
+                        self.set_category_internal(RoomType::Outdated);
+                        return true;
+                    }
+                }
+            }
         }
+
+        // The tombstone event can be redacted and we lose the successor, so search in
+        // the room predecessors of other rooms.
+        for room in room_list.iter::<Room>() {
+            let Ok(room) = room else {
+                break;
+            };
+
+            if let Some(predecessor_id) = room.predecessor_id() {
+                if predecessor_id == self.room_id() {
+                    self.set_successor(&room);
+                    self.set_category_internal(RoomType::Outdated);
+                    return true;
+                }
+            }
+        }
+
+        false
     }
 
     pub fn send_attachment(
