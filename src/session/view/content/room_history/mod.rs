@@ -21,7 +21,7 @@ use geo_uri::GeoUri;
 use gettextrs::gettext;
 use gtk::{
     gdk, gio, glib,
-    glib::{clone, closure, signal::Inhibit, FromVariant},
+    glib::{clone, signal::Inhibit, FromVariant},
     prelude::*,
     CompositeTemplate,
 };
@@ -75,6 +75,7 @@ use crate::{
         media::{filename_for_mime, get_audio_info, get_image_info, get_video_info, load_file},
         template_callbacks::TemplateCallbacks,
     },
+    Window,
 };
 
 /// The time to wait before considering that scrolling has ended.
@@ -550,7 +551,33 @@ impl RoomHistory {
                 }),
             );
 
-            imp.room_handlers.replace(vec![category_handler]);
+            let tombstoned_handler = room.connect_notify_local(
+                Some("tombstoned"),
+                clone!(@weak self as obj => move |_, _| {
+                    obj.update_tombstoned_banner();
+                }),
+            );
+
+            let successor_handler = room.connect_notify_local(
+                Some("successor"),
+                clone!(@weak self as obj => move |_, _| {
+                    obj.update_tombstoned_banner();
+                }),
+            );
+
+            let successor_room_handler = room.connect_notify_local(
+                Some("successor-room"),
+                clone!(@weak self as obj => move |_, _| {
+                    obj.update_tombstoned_banner();
+                }),
+            );
+
+            imp.room_handlers.replace(vec![
+                category_handler,
+                tombstoned_handler,
+                successor_handler,
+                successor_room_handler,
+            ]);
 
             let empty_handler = timeline.connect_notify_local(
                 Some("empty"),
@@ -585,7 +612,6 @@ impl RoomHistory {
                 })
             );
             self.init_invite_action(room);
-            self.init_room_tombstoned(room);
             self.scroll_down();
         }
 
@@ -599,6 +625,7 @@ impl RoomHistory {
         self.start_loading();
         self.update_room_state();
         self.update_completion();
+        self.update_tombstoned_banner();
         self.notify("room");
         self.notify("empty");
     }
@@ -1419,49 +1446,54 @@ impl RoomHistory {
         }
     }
 
-    /// Initialize the banner that is revealed when the room is tombstoned and
-    /// offers to join the room's successor.
-    fn init_room_tombstoned(&self, room: &Room) {
-        let tombstoned_expr = gtk::ClosureExpression::new::<bool>(
-            [
-                Room::this_expression("category"),
-                Room::this_expression("successor-id"),
-            ],
-            closure!(
-                |room: Room, category: RoomType, successor_id: Option<String>| {
-                    successor_id.is_some() && room.is_joined() && category != RoomType::Outdated
-                }
-            ),
-        );
-        let tombstoned_watch =
-            tombstoned_expr.bind(&*self.imp().tombstoned_banner, "revealed", Some(room));
+    /// Update the tombstoned banner according to the state of the current room.
+    fn update_tombstoned_banner(&self) {
+        let banner = &self.imp().tombstoned_banner;
 
-        self.imp()
-            .room_expr_watches
-            .borrow_mut()
-            .insert("tombstoned", tombstoned_watch);
+        let Some(room) = self.room() else {
+            banner.set_revealed(false);
+            return;
+        };
+
+        if !room.is_tombstoned() {
+            banner.set_revealed(false);
+            return;
+        }
+
+        if room.successor().is_some() {
+            banner.set_title(&gettext("There is a newer version of this room"));
+            // Translators: This is a verb, as in 'View Room'.
+            banner.set_button_label(Some(&gettext("View")));
+        } else if room.successor_id().is_some() {
+            banner.set_title(&gettext("There is a newer version of this room"));
+            banner.set_button_label(Some(&gettext("Join")));
+        } else {
+            banner.set_title(&gettext("This room was closed"));
+            banner.set_button_label(None);
+        }
+
+        banner.set_revealed(true);
     }
 
-    /// Join the room's successor, if possible.
+    /// Join or view the room's successor, if possible.
     #[template_callback]
-    fn join_successor(&self) {
+    fn join_or_view_successor(&self) {
         let Some(room) = self.room() else {
             return;
         };
-        let room_expr_watches = self.imp().room_expr_watches.borrow();
-        let Some(room_tombstoned_watch) = room_expr_watches.get("tombstoned") else {
-            return;
-        };
 
-        if room_tombstoned_watch
-            .evaluate_as::<bool>()
-            .unwrap_or_default()
-        {
-            let Some(successor_id) = room.successor_id() else {
+        if !room.is_joined() || !room.is_tombstoned() {
+            return;
+        }
+
+        if let Some(successor) = room.successor() {
+            let Some(window) = self.root().and_downcast::<Window>() else {
                 return;
             };
-            let successor_id = successor_id.to_owned();
 
+            let session = room.session();
+            window.show_room(session.session_id(), successor.room_id());
+        } else if let Some(successor_id) = room.successor_id().map(ToOwned::to_owned) {
             spawn!(clone!(@weak self as obj, @weak room => async move {
                 if let Err(error) = room.session()
                     .room_list()
