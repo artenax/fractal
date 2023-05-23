@@ -18,7 +18,6 @@ use matrix_sdk::{
     deserialized_responses::{MemberEvent, SyncTimelineEvent},
     room::Room as MatrixRoom,
     ruma::{
-        api::client::sync::sync_events::v3::InvitedRoom,
         events::{
             reaction::ReactionEventContent,
             receipt::{ReceiptEventContent, ReceiptType},
@@ -1316,14 +1315,16 @@ impl Room {
         }
     }
 
-    pub fn handle_left_response(&self, response_room: LeftRoom) {
+    /// Reload the room from the SDK when it might have changed.
+    pub fn update_matrix_room(&self) {
         self.set_matrix_room(self.session().client().get_room(self.room_id()).unwrap());
+    }
+
+    pub fn handle_left_response(&self, response_room: LeftRoom) {
         self.update_for_events(response_room.timeline.events);
     }
 
     pub fn handle_joined_response(&self, response_room: JoinedRoom) {
-        self.set_matrix_room(self.session().client().get_room(self.room_id()).unwrap());
-
         if response_room
             .account_data
             .iter()
@@ -1333,10 +1334,6 @@ impl Room {
         }
 
         self.update_for_events(response_room.timeline.events);
-    }
-
-    pub fn handle_invited_response(&self, _response_room: InvitedRoom) {
-        self.set_matrix_room(self.session().client().get_room(self.room_id()).unwrap());
     }
 
     /// Connect to the signal sent when a room was forgotten.

@@ -280,6 +280,7 @@ impl RoomList {
             };
 
             self.pending_rooms_remove((*room_id).into());
+            room.update_matrix_room();
             room.handle_left_response(left_room);
         }
 
@@ -293,10 +294,11 @@ impl RoomList {
             };
 
             self.pending_rooms_remove((*room_id).into());
+            room.update_matrix_room();
             room.handle_joined_response(joined_room);
         }
 
-        for (room_id, invited_room) in rooms.invite {
+        for (room_id, _invited_room) in rooms.invite {
             let room = match self.get(&room_id) {
                 Some(room) => room,
                 None => new_rooms
@@ -306,7 +308,7 @@ impl RoomList {
             };
 
             self.pending_rooms_remove((*room_id).into());
-            room.handle_invited_response(invited_room);
+            room.update_matrix_room();
         }
 
         if !new_rooms.is_empty() {
