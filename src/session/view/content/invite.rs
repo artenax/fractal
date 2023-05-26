@@ -207,67 +207,65 @@ impl Invite {
         self.action_set_enabled("invite.reject", true);
     }
 
-    fn accept(&self) -> Option<()> {
+    /// Accept the invite.
+    fn accept(&self) {
+        let Some(room) = self.room() else {
+            return;
+        };
         let imp = self.imp();
-        let room = self.room()?;
 
         self.action_set_enabled("invite.accept", false);
         self.action_set_enabled("invite.reject", false);
         imp.accept_button.set_loading(true);
         imp.accept_requests.borrow_mut().insert(room.clone());
 
-        spawn!(
-            clone!(@weak self as obj, @strong room => move || async move {
-                    let result = room.accept_invite().await;
-                    if result.is_err() {
-                        toast!(
-                            obj,
-                            gettext(
-                                // Translators: Do NOT translate the content between '{' and '}', this
-                                // is a variable name.
-                                "Failed to accept invitation for {room}. Try again later.",
-                            ),
-                            @room,
-                        );
+        spawn!(clone!(@weak self as obj, @strong room => async move {
+            let result = room.accept_invite().await;
+            if result.is_err() {
+                toast!(
+                    obj,
+                    gettext(
+                        // Translators: Do NOT translate the content between '{' and '}', this
+                        // is a variable name.
+                        "Failed to accept invitation for {room}. Try again later.",
+                    ),
+                    @room,
+                );
 
-                        obj.imp().accept_requests.borrow_mut().remove(&room);
-                        obj.reset();
-                    }
-            })()
-        );
-
-        Some(())
+                obj.imp().accept_requests.borrow_mut().remove(&room);
+                obj.reset();
+            }
+        }));
     }
 
-    fn reject(&self) -> Option<()> {
+    /// Reject the invite.
+    fn reject(&self) {
+        let Some(room) = self.room() else {
+            return;
+        };
         let imp = self.imp();
-        let room = self.room()?;
 
         self.action_set_enabled("invite.accept", false);
         self.action_set_enabled("invite.reject", false);
         imp.reject_button.set_loading(true);
         imp.reject_requests.borrow_mut().insert(room.clone());
 
-        spawn!(
-            clone!(@weak self as obj, @strong room => move || async move {
-                    let result = room.reject_invite().await;
-                    if result.is_err() {
-                        toast!(
-                            obj,
-                            gettext(
-                                // Translators: Do NOT translate the content between '{' and '}', this
-                                // is a variable name.
-                                "Failed to reject invitation for {room}. Try again later.",
-                            ),
-                            @room,
-                        );
+        spawn!(clone!(@weak self as obj, @strong room => async move {
+            let result = room.reject_invite().await;
+            if result.is_err() {
+                toast!(
+                    obj,
+                    gettext(
+                        // Translators: Do NOT translate the content between '{' and '}', this
+                        // is a variable name.
+                        "Failed to reject invitation for {room}. Try again later.",
+                    ),
+                    @room,
+                );
 
-                        obj.imp().reject_requests.borrow_mut().remove(&room);
-                        obj.reset();
-                    }
-            })()
-        );
-
-        Some(())
+                obj.imp().reject_requests.borrow_mut().remove(&room);
+                obj.reset();
+            }
+        }));
     }
 }
