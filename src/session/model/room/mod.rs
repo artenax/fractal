@@ -1636,35 +1636,42 @@ impl Room {
         let avatar_url = matrix_room.avatar_url();
         let avatar_data = self.avatar_data();
 
-        if avatar_url.is_none() && matrix_room.active_members_count() == 2 {
-            // Fallback to other user's avatar if this is a 1-to-1 room.
+        let members_count = matrix_room.active_members_count();
+        if avatar_url.is_none() && members_count > 0 && members_count <= 2 {
+            // Check if this is a 1-to-1 room to see if we can use a fallback.
 
             // First, make sure the members are loaded.
             self.load_members().await;
 
             let own_user_id = self.session().user().unwrap().user_id();
             let members = self.members();
+            let mut has_own_member = false;
+            let mut other_member = None;
 
-            if members.n_items() >= 1 {
-                // Try to get the member from the list.
-                for member in members.iter::<Member>() {
-                    match member {
-                        Ok(member) => {
-                            if member.user_id() != own_user_id
-                                && matches!(
-                                    member.membership(),
-                                    Membership::Join | Membership::Invite
-                                )
-                            {
-                                avatar_data.set_image(member.avatar_data().image());
-                                return;
-                            }
-                        }
-                        Err(error) => {
-                            debug!("Error iterating through room members: {error}");
-                            break;
-                        }
+            // Get the other member from the list.
+            for member in members.iter::<Member>() {
+                let Ok(member) = member else {
+                    break;
+                };
+
+                if matches!(member.membership(), Membership::Join | Membership::Invite) {
+                    if member.user_id() == own_user_id {
+                        has_own_member = true;
+                    } else {
+                        other_member = Some(member);
                     }
+                }
+
+                if has_own_member && other_member.is_some() {
+                    break;
+                }
+            }
+
+            // Fallback to other user's avatar if this is a 1-to-1 room.
+            if members_count == 1 || (members_count == 2 && has_own_member) {
+                if let Some(other_member) = other_member {
+                    avatar_data.set_image(other_member.avatar_data().image());
+                    return;
                 }
             }
         }
