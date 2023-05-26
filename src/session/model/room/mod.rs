@@ -311,21 +311,32 @@ impl Room {
     fn set_matrix_room(&self, matrix_room: MatrixRoom) {
         let imp = self.imp();
 
+        let new_state = matrix_room.state();
+
         // Check if the previous type was different
-        if let Some(ref old_matrix_room) = *imp.matrix_room.borrow() {
-            let changed = match old_matrix_room {
-                MatrixRoom::Joined(_) => !matches!(matrix_room, MatrixRoom::Joined(_)),
-                MatrixRoom::Left(_) => !matches!(matrix_room, MatrixRoom::Left(_)),
-                MatrixRoom::Invited(_) => !matches!(matrix_room, MatrixRoom::Invited(_)),
-            };
-            if changed {
-                debug!("The matrix room struct for `Room` changed");
-            } else {
+        if let Some(old_matrix_room) = imp.matrix_room.borrow().as_ref() {
+            let old_state = old_matrix_room.state();
+
+            if new_state == old_state {
                 return;
+            }
+
+            debug!("The matrix room struct for `Room` changed");
+
+            if old_state == RoomState::Invited && new_state == RoomState::Left {
+                // We rejected the invite or the invite was retracted, we should close the room
+                // if it is opened.
+                let session = self.session();
+                let selection = session.sidebar_list_model().selection_model();
+                if let Some(selected_room) = selection.selected_item().and_downcast::<Room>() {
+                    if selected_room == *self {
+                        selection.set_selected_item(None);
+                    }
+                }
             }
         }
 
-        if matrix_room.state() == RoomState::Joined {
+        if new_state == RoomState::Joined {
             // If we where invited or left before, the list was likely not completed or
             // might have changed.
             imp.members_loaded.set(false);
