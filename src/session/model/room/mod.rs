@@ -345,6 +345,11 @@ impl Room {
         }));
     }
 
+    /// The state of the room.
+    pub fn state(&self) -> RoomState {
+        self.matrix_room().state()
+    }
+
     /// Forget a room that is left.
     pub async fn forget(&self) -> MatrixResult<()> {
         if self.category() != RoomType::Left {
@@ -1167,12 +1172,32 @@ impl Room {
             Ok(members) => {
                 // Add all members needed to display room events.
                 self.members().update_from_room_members(&members);
+                return;
             }
             Err(error) => {
                 self.imp().members_loaded.set(false);
-                error!("Couldn’t load room members: {error}")
+                error!("Failed to load room members from server: {error}");
             }
-        };
+        }
+
+        // Use the members already received by the SDK as a fallback.
+        let matrix_room = self.matrix_room();
+        let handle = spawn_tokio!(async move {
+            let mut memberships = RoomMemberships::all();
+            memberships.remove(RoomMemberships::LEAVE);
+
+            matrix_room.members_no_sync(memberships).await
+        });
+
+        match handle.await.unwrap() {
+            Ok(members) => {
+                // Add all members needed to display room events.
+                self.members().update_from_room_members(&members);
+            }
+            Err(error) => {
+                error!("Failed to load room members from store: {error}");
+            }
+        }
     }
 
     fn load_power_levels(&self) {
@@ -1642,10 +1667,26 @@ impl Room {
         let avatar_url = matrix_room.avatar_url();
         let avatar_data = self.avatar_data();
 
-        let members_count = matrix_room.active_members_count();
-        if avatar_url.is_none() && members_count > 0 && members_count <= 2 {
-            // Check if this is a 1-to-1 room to see if we can use a fallback.
+        let members_count = if matrix_room.state() == RoomState::Invited {
+            // We don't have the members count for invited rooms, use the SDK's
+            // members instead.
+            let matrix_room_clone = matrix_room.clone();
+            spawn_tokio!(async move {
+                matrix_room_clone
+                    .members_no_sync(RoomMemberships::ACTIVE)
+                    .await
+            })
+            .await
+            .unwrap()
+            .map(|m| m.len() as u64)
+            .unwrap_or_default()
+        } else {
+            matrix_room.active_members_count()
+        };
 
+        // Check if this is a 1-to-1 room to see if we can use a fallback.
+        // We don't have the active member count for invited rooms so process them too.
+        if avatar_url.is_none() && members_count > 0 && members_count <= 2 {
             // First, make sure the members are loaded.
             self.load_members().await;
 

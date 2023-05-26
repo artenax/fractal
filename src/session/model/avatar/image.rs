@@ -97,7 +97,8 @@ mod imp {
                     },
                     |url| url.as_str().to_value(),
                 ),
-                "uri_source" => obj.uri_source().to_value(),
+                "uri-source" => obj.uri_source().to_value(),
+                "session" => obj.session().to_value(),
                 _ => unimplemented!(),
             }
         }
