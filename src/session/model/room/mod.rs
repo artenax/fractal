@@ -325,6 +325,12 @@ impl Room {
             }
         }
 
+        if matrix_room.state() == RoomState::Joined {
+            // If we where invited or left before, the list was likely not completed or
+            // might have changed.
+            imp.members_loaded.set(false);
+        }
+
         imp.matrix_room.replace(Some(matrix_room));
 
         self.load_display_name();
