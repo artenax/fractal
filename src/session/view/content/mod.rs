@@ -208,7 +208,7 @@ impl Content {
                 let handler_id = item.connect_notify_local(
                     Some("category"),
                     clone!(@weak self as obj => move |_, _| {
-                            obj.set_visible_child();
+                        obj.update_visible_child();
                     }),
                 );
 
@@ -230,7 +230,7 @@ impl Content {
         }
 
         imp.item.replace(item);
-        self.set_visible_child();
+        self.update_visible_child();
         self.notify("item");
     }
 
@@ -239,7 +239,8 @@ impl Content {
         self.imp().item.borrow().clone()
     }
 
-    fn set_visible_child(&self) {
+    /// Update the visible child according to the current item.
+    fn update_visible_child(&self) {
         let imp = self.imp();
 
         match self.item() {
