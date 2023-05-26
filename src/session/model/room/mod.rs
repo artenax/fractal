@@ -849,7 +849,7 @@ impl Room {
             .user_ids
             .into_iter()
             .filter_map(|user_id| {
-                (user_id != own_user_id).then(|| self.members().member_by_id(user_id))
+                (user_id != own_user_id).then(|| self.members().get_or_create(user_id))
             })
             .collect();
 

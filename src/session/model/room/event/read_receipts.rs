@@ -124,7 +124,7 @@ impl ReadReceipts {
 
         *members = new_read_receipts
             .into_iter()
-            .map(|(user_id, _)| room.members().member_by_id(user_id))
+            .map(|(user_id, _)| room.members().get_or_create(user_id))
             .collect();
 
         // We can't have the borrow active when items_changed is emitted because that

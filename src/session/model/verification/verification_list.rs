@@ -229,10 +229,10 @@ impl VerificationList {
 
                         let user_to_verify = if *request.to == *user.user_id() {
                             // The request was sent by another user to verify us
-                            room.members().member_by_id(message.sender.clone())
+                            room.members().get_or_create(message.sender.clone())
                         } else if *message.sender == *user.user_id() {
                             // The request was sent by us to verify another user
-                            room.members().member_by_id(request.to.clone())
+                            room.members().get_or_create(request.to.clone())
                         } else {
                             // Ignore the request when it doesn't verify us or wasn't set by us
                             continue;

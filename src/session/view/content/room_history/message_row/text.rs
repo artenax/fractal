@@ -409,7 +409,7 @@ fn extract_mentions(s: &str, room: &Room) -> (String, Vec<Pill>) {
                 }
             }
             MatrixId::User(user_id) => {
-                let user = room.members().member_by_id(user_id).upcast();
+                let user = room.members().get_or_create(user_id).upcast();
                 Pill::for_user(&user)
             }
             _ => continue,

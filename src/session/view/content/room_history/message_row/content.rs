@@ -137,7 +137,7 @@ impl MessageContent {
                         let room = event.room();
                         let sender = room
                             .members()
-                            .member_by_id(related_content.sender().to_owned());
+                            .get_or_create(related_content.sender().to_owned());
                         let reply = MessageReply::new();
                         reply.set_related_content_sender(sender.upcast_ref());
                         build_content(

@@ -346,7 +346,7 @@ impl Event {
 
     /// The sender of this `Event`.
     pub fn sender(&self) -> Member {
-        self.room().members().member_by_id(self.sender_id())
+        self.room().members().get_or_create(self.sender_id())
     }
 
     /// The timestamp of this `Event` as the number of milliseconds

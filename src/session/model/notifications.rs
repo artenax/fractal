@@ -130,7 +130,7 @@ impl Notifications {
 
         let sender_name = room
             .members()
-            .member_by_id(event.sender().to_owned())
+            .get_or_create(event.sender().to_owned())
             .display_name();
 
         let body = match get_event_body(&event, &sender_name) {

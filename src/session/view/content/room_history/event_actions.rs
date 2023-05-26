@@ -131,7 +131,7 @@ where
                     .user()
                     .map(|user| user.user_id())
                     .unwrap();
-                let user = event.room().members().member_by_id(user_id);
+                let user = event.room().members().get_or_create(user_id);
 
                 // Remove message
                 fn update_remove_action(

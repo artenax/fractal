@@ -127,7 +127,7 @@ impl MemberList {
     /// Returns the member with the given ID.
     ///
     /// Creates a new member first if there is no member with the given ID.
-    pub fn member_by_id(&self, user_id: OwnedUserId) -> Member {
+    pub fn get_or_create(&self, user_id: OwnedUserId) -> Member {
         let mut members = self.imp().members.borrow_mut();
         let mut was_member_added = false;
         let prev_len = members.len();
@@ -158,7 +158,7 @@ impl MemberList {
         &self,
         event: &OriginalSyncStateEvent<RoomMemberEventContent>,
     ) {
-        self.member_by_id(event.state_key.to_owned())
+        self.get_or_create(event.state_key.to_owned())
             .update_from_member_event(event);
     }
 
