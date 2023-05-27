@@ -226,10 +226,11 @@ impl Window {
 
         let index = imp.session_list.add(session.clone());
         let settings = Application::default().settings();
-        let mut is_opened = false;
-        if session.session_id() == settings.string("current-session") {
+        if session.session_id() == settings.string("current-session")
+            || imp.waiting_sessions.get() == 1
+        {
+            imp.waiting_sessions.set(0);
             imp.session_selection.set_selected(index as u32);
-            is_opened = true;
 
             if session.state() == SessionState::Ready {
                 imp.session.show_content();
@@ -243,18 +244,19 @@ impl Window {
             imp.waiting_sessions.set(imp.waiting_sessions.get() - 1);
         }
 
-        if imp.waiting_sessions.get() == 0 && !is_opened {
-            imp.session_selection.set_selected(index as u32);
-
-            if session.state() == SessionState::Ready {
-                imp.session.show_content();
-            } else {
-                session.connect_ready(clone!(@weak self as obj => move |_| {
-                    obj.imp().session.show_content();
+        // Start listening to notifications when the session is ready.
+        if session.state() == SessionState::Ready {
+            spawn!(clone!(@weak session => async move {
+                session.init_notifications().await
+            }));
+        } else {
+            session.connect_ready(|session| {
+                spawn!(clone!(@weak session => async move {
+                    session.init_notifications().await
                 }));
-                self.switch_to_loading_page();
-            }
+            });
         }
+
         // We need to grab the focus so that keyboard shortcuts work
         imp.session.grab_focus();
 

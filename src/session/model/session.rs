@@ -308,23 +308,29 @@ impl Session {
         }
     }
 
-    pub async fn finish_initialization(&self) {
+    /// Start listening to notifications.
+    pub async fn init_notifications(&self) {
         let obj_weak = glib::SendWeakRef::from(self.downgrade());
-        self.client()
-            .register_notification_handler(move |notification, _, _| {
-                let obj_weak = obj_weak.clone();
-                async move {
-                    let ctx = glib::MainContext::default();
-                    ctx.spawn(async move {
-                        spawn!(async move {
-                            if let Some(obj) = obj_weak.upgrade() {
-                                obj.notifications().show(notification);
-                            }
+        let client = self.client();
+        spawn_tokio!(async move {
+            client
+                .register_notification_handler(move |notification, _, _| {
+                    let obj_weak = obj_weak.clone();
+                    async move {
+                        let ctx = glib::MainContext::default();
+                        ctx.spawn(async move {
+                            spawn!(async move {
+                                if let Some(obj) = obj_weak.upgrade() {
+                                    obj.notifications().show(notification);
+                                }
+                            });
                         });
-                    });
-                }
-            })
-            .await;
+                    }
+                })
+                .await;
+        })
+        .await
+        .unwrap();
     }
 
     /// The current settings for this session.
@@ -448,10 +454,6 @@ impl Session {
 
                 if self.state() < SessionState::Ready {
                     self.set_state(SessionState::Ready);
-
-                    spawn!(clone!(@weak self as obj => async move {
-                        obj.finish_initialization().await;
-                    }));
                 }
             }
             Err(error) => {
