@@ -6,7 +6,6 @@ use html2pango::{
     block::{markup_html, HtmlBlock},
     html_escape, markup_links,
 };
-use log::warn;
 use matrix_sdk::ruma::{
     events::room::message::{FormattedBody, MessageFormat},
     matrix_uri::MatrixId,
@@ -78,11 +77,11 @@ impl MessageText {
     ) {
         if let Some(html_blocks) = formatted
             .filter(is_valid_formatted_body)
-            .and_then(|formatted| parse_formatted_body(strip_reply(&formatted.body)))
+            .and_then(|formatted| parse_formatted_body(&formatted.body))
         {
             self.build_html(html_blocks, room, format);
         } else {
-            let body = linkify(strip_reply(&body));
+            let body = linkify(&body);
             self.build_text(body, WithMentions::Yes(room), format);
         }
     }
@@ -103,7 +102,7 @@ impl MessageText {
             .and_then(|formatted| parse_formatted_body(&formatted.body).map(|_| formatted.body))
         {
             let formatted = FormattedBody {
-                body: format!("{} {}", sender.html_mention(), strip_reply(&body)),
+                body: format!("{} {}", sender.html_mention(), &body),
                 format: MessageFormat::Html,
             };
 
@@ -338,21 +337,6 @@ fn create_widget_for_html_block(
             w.upcast()
         }
         HtmlBlock::Separator => gtk::Separator::new(gtk::Orientation::Horizontal).upcast(),
-    }
-}
-
-/// Remove the content between `mx-reply` tags.
-///
-/// Returns the unchanged string if none was found to be able to chain calls.
-fn strip_reply(text: &str) -> &str {
-    if let Some(end) = text.find("</mx-reply>") {
-        if !text.starts_with("<mx-reply>") {
-            warn!("Received a rich reply that doesn't start with '<mx-reply>'");
-        }
-
-        &text[end + 11..]
-    } else {
-        text
     }
 }
 
