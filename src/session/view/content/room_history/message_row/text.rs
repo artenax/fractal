@@ -27,10 +27,19 @@ enum WithMentions<'a> {
 }
 
 mod imp {
+    use std::cell::{Cell, RefCell};
+
+    use once_cell::sync::Lazy;
+
     use super::*;
 
     #[derive(Debug, Default)]
-    pub struct MessageText {}
+    pub struct MessageText {
+        /// The original text of the message that is displayed.
+        pub original_text: RefCell<String>,
+        /// The text format.
+        pub format: Cell<ContentFormat>,
+    }
 
     #[glib::object_subclass]
     impl ObjectSubclass for MessageText {
@@ -39,7 +48,32 @@ mod imp {
         type ParentType = adw::Bin;
     }
 
-    impl ObjectImpl for MessageText {}
+    impl ObjectImpl for MessageText {
+        fn properties() -> &'static [glib::ParamSpec] {
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![
+                    glib::ParamSpecString::builder("original-text")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecEnum::builder::<ContentFormat>("format")
+                        .read_only()
+                        .build(),
+                ]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
+            match pspec.name() {
+                "original-text" => obj.original_text().to_value(),
+                "format" => obj.format().to_value(),
+                _ => unimplemented!(),
+            }
+        }
+    }
 
     impl WidgetImpl for MessageText {}
 
@@ -62,7 +96,14 @@ impl MessageText {
 
     /// Display the given plain text.
     pub fn with_text(&self, body: String, format: ContentFormat) {
-        self.build_text(body, WithMentions::No, format);
+        if !self.original_text_changed(&body) && !self.format_changed(format) {
+            return;
+        }
+
+        self.set_original_text(body.clone());
+        self.set_format(format);
+
+        self.build_text(body, WithMentions::No);
     }
 
     /// Display the given text with markup.
@@ -75,15 +116,30 @@ impl MessageText {
         room: &Room,
         format: ContentFormat,
     ) {
-        if let Some(html_blocks) = formatted
-            .filter(is_valid_formatted_body)
-            .and_then(|formatted| parse_formatted_body(&formatted.body))
-        {
-            self.build_html(html_blocks, room, format);
-        } else {
-            let body = linkify(&body);
-            self.build_text(body, WithMentions::Yes(room), format);
+        if let Some(formatted) = formatted.filter(is_valid_formatted_body).map(|f| f.body) {
+            if !self.original_text_changed(&formatted) && !self.format_changed(format) {
+                return;
+            }
+
+            if let Some(html_blocks) = parse_formatted_body(&formatted) {
+                self.set_original_text(formatted);
+                self.set_format(format);
+
+                self.build_html(html_blocks, room);
+                return;
+            }
         }
+
+        if !self.original_text_changed(&body) && !self.format_changed(format) {
+            return;
+        }
+
+        let linkified_body = linkify(&body);
+
+        self.set_original_text(body);
+        self.set_format(format);
+
+        self.build_text(linkified_body, WithMentions::Yes(room));
     }
 
     /// Display the given emote for `sender`.
@@ -97,27 +153,35 @@ impl MessageText {
         room: &Room,
         format: ContentFormat,
     ) {
-        if let Some(body) = formatted
-            .filter(is_valid_formatted_body)
-            .and_then(|formatted| parse_formatted_body(&formatted.body).map(|_| formatted.body))
-        {
-            let formatted = FormattedBody {
-                body: format!("{} {}", sender.html_mention(), &body),
-                format: MessageFormat::Html,
-            };
+        if let Some(body) = formatted.filter(is_valid_formatted_body).map(|f| f.body) {
+            let formatted = format!("{} {}", sender.html_mention(), &body);
 
-            let html = parse_formatted_body(&formatted.body).unwrap();
-            self.build_html(html, room, format);
-        } else {
-            self.build_text(
-                format!("{} {}", sender.html_mention(), linkify(&body)),
-                WithMentions::Yes(room),
-                format,
-            );
+            if !self.original_text_changed(&formatted) && !self.format_changed(format) {
+                return;
+            }
+
+            if let Some(html_blocks) = parse_formatted_body(&formatted) {
+                self.set_original_text(formatted);
+                self.set_format(format);
+
+                self.build_html(html_blocks, room);
+                return;
+            }
         }
+
+        let body = format!("{} {}", sender.html_mention(), linkify(&body));
+
+        if !self.original_text_changed(&body) && !self.format_changed(format) {
+            return;
+        }
+
+        self.set_original_text(body.clone());
+        self.set_format(format);
+
+        self.build_text(body, WithMentions::Yes(room));
     }
 
-    fn build_text(&self, text: String, with_mentions: WithMentions, format: ContentFormat) {
+    fn build_text(&self, text: String, with_mentions: WithMentions) {
         let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<LabelWithWidgets>())
         {
             child
@@ -144,14 +208,14 @@ impl MessageText {
             child.set_label(Some(text));
         }
 
-        child.set_ellipsize(format == ContentFormat::Ellipsized);
+        child.set_ellipsize(self.format() == ContentFormat::Ellipsized);
     }
 
-    fn build_html(&self, blocks: Vec<HtmlBlock>, room: &Room, format: ContentFormat) {
+    fn build_html(&self, blocks: Vec<HtmlBlock>, room: &Room) {
         let child = gtk::Box::new(gtk::Orientation::Vertical, 6);
         self.set_child(Some(&child));
 
-        let ellipsize = format == ContentFormat::Ellipsized;
+        let ellipsize = self.format() == ContentFormat::Ellipsized;
         let len = blocks.len();
         for block in blocks {
             let widget = create_widget_for_html_block(&block, room, ellipsize, len > 1);
@@ -161,6 +225,38 @@ impl MessageText {
                 break;
             }
         }
+    }
+
+    /// The original text of the message that is displayed.
+    pub fn original_text(&self) -> String {
+        self.imp().original_text.borrow().clone()
+    }
+
+    /// Whether the given text is different than the current original text.
+    fn original_text_changed(&self, text: &str) -> bool {
+        *self.imp().original_text.borrow() != text
+    }
+
+    /// Set the original text of the message to display.
+    fn set_original_text(&self, text: String) {
+        self.imp().original_text.replace(text);
+        self.notify("original-text");
+    }
+
+    /// The text format.
+    pub fn format(&self) -> ContentFormat {
+        self.imp().format.get()
+    }
+
+    /// Whether the given format is different than the current format.
+    fn format_changed(&self, format: ContentFormat) -> bool {
+        self.format() != format
+    }
+
+    /// Set the text format.
+    fn set_format(&self, format: ContentFormat) {
+        self.imp().format.set(format);
+        self.notify("format");
     }
 }
 
