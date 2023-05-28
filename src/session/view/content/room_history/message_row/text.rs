@@ -62,14 +62,14 @@ impl MessageText {
     }
 
     /// Display the given plain text.
-    pub fn text(&self, body: String, format: ContentFormat) {
+    pub fn with_text(&self, body: String, format: ContentFormat) {
         self.build_text(body, WithMentions::No, format);
     }
 
     /// Display the given text with markup.
     ///
     /// It will detect if it should display the body or the formatted body.
-    pub fn markup(
+    pub fn with_markup(
         &self,
         formatted: Option<FormattedBody>,
         body: String,
@@ -90,7 +90,7 @@ impl MessageText {
     /// Display the given emote for `sender`.
     ///
     /// It will detect if it should display the body or the formatted body.
-    pub fn emote(
+    pub fn with_emote(
         &self,
         formatted: Option<FormattedBody>,
         body: String,

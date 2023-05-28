@@ -212,7 +212,7 @@ fn build_content(
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.emote(
+                    child.with_emote(
                         message.formatted.clone(),
                         message.body.clone(),
                         sender,
@@ -278,7 +278,7 @@ fn build_content(
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.markup(
+                    child.with_markup(
                         message.formatted.clone(),
                         message.body.clone(),
                         room,
@@ -295,7 +295,7 @@ fn build_content(
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.text(message.body.clone(), format);
+                    child.with_text(message.body.clone(), format);
                 }
                 MessageType::Text(message) => {
                     let child = if let Some(Ok(child)) =
@@ -307,7 +307,7 @@ fn build_content(
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.markup(
+                    child.with_markup(
                         message.formatted.clone(),
                         message.body.clone(),
                         room,
@@ -337,7 +337,7 @@ fn build_content(
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.text(gettext("Identity verification was started"), format);
+                    child.with_text(gettext("Identity verification was started"), format);
                 }
                 msgtype => {
                     warn!("Event not supported: {msgtype:?}");
@@ -350,7 +350,7 @@ fn build_content(
                         parent.set_child(Some(&child));
                         child
                     };
-                    child.text(gettext("Unsupported event"), format);
+                    child.with_text(gettext("Unsupported event"), format);
                 }
             }
         }
@@ -374,7 +374,7 @@ fn build_content(
                 parent.set_child(Some(&child));
                 child
             };
-            child.text(gettext("Unable to decrypt this message, decryption will be retried once the keys are available."), format);
+            child.with_text(gettext("Unable to decrypt this message, decryption will be retried once the keys are available."), format);
         }
         content => {
             warn!("Unsupported event content: {content:?}");
@@ -386,7 +386,7 @@ fn build_content(
                 parent.set_child(Some(&child));
                 child
             };
-            child.text(gettext("Unsupported event"), format);
+            child.with_text(gettext("Unsupported event"), format);
         }
     }
 }
