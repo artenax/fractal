@@ -1,4 +1,4 @@
-use gtk::{glib, glib::clone, pango, prelude::*, subclass::prelude::*};
+use gtk::{glib, pango, prelude::*, subclass::prelude::*};
 
 pub const DEFAULT_PLACEHOLDER: &str = "<widget>";
 const OBJECT_REPLACEMENT_CHARACTER: &str = "\u{FFFC}";
@@ -84,12 +84,6 @@ mod imp {
             label.set_xalign(0.0);
             label.set_valign(gtk::Align::Start);
             label.add_css_class("line-height");
-            label.connect_notify_local(
-                Some("label"),
-                clone!(@weak obj => move |_, _| {
-                    obj.invalidate_child_widgets();
-                }),
-            );
         }
 
         fn dispose(&self) {
@@ -217,11 +211,24 @@ impl LabelWithWidgets {
 
     fn invalidate_child_widgets(&self) {
         self.imp().widgets_sizes.borrow_mut().clear();
+        self.allocate_shapes();
         self.queue_resize();
     }
 
     fn allocate_shapes(&self) {
         let imp = self.imp();
+
+        if imp.text.borrow().as_ref().map_or(true, |s| s.is_empty()) {
+            // No need to compute shapes if the label is empty.
+            return;
+        }
+
+        if imp.widgets.borrow().is_empty() {
+            // There should be no attributes if there are no widgets.
+            imp.label.set_attributes(None);
+            return;
+        }
+
         let mut widgets_sizes = imp.widgets_sizes.borrow_mut();
 
         let mut child_size_changed = false;
@@ -340,34 +347,41 @@ impl LabelWithWidgets {
 
     fn update_label(&self) {
         let imp = self.imp();
-        if self.ellipsize() {
-            // Workaround: if both wrap and ellipsize are set, and there are
-            // widgets inserted, GtkLabel reports an erroneous minimum width.
-            imp.label.set_wrap(false);
-            imp.label.set_ellipsize(pango::EllipsizeMode::End);
+        let old_label = imp.label.text();
+        let old_ellipsize = imp.label.ellipsize() == pango::EllipsizeMode::End;
+        let new_ellipsize = self.ellipsize();
 
-            if let Some(label) = imp.text.borrow().as_ref() {
-                let placeholder = imp.placeholder.borrow();
-                let placeholder = placeholder.as_deref().unwrap_or(DEFAULT_PLACEHOLDER);
-                let label = label.replace(placeholder, OBJECT_REPLACEMENT_CHARACTER);
-                let label = if let Some(pos) = label.find('\n') {
+        let new_label = if let Some(label) = imp.text.borrow().as_ref() {
+            let placeholder = imp.placeholder.borrow();
+            let placeholder = placeholder.as_deref().unwrap_or(DEFAULT_PLACEHOLDER);
+            let label = label.replace(placeholder, OBJECT_REPLACEMENT_CHARACTER);
+
+            if new_ellipsize {
+                if let Some(pos) = label.find('\n') {
                     format!("{}…", &label[0..pos])
                 } else {
                     label
-                };
-                imp.label.set_label(&label);
+                }
+            } else {
+                label
             }
         } else {
-            imp.label.set_wrap(true);
-            imp.label.set_ellipsize(pango::EllipsizeMode::None);
+            String::new()
+        };
 
-            if let Some(label) = imp.text.borrow().as_ref() {
-                let placeholder = imp.placeholder.borrow();
-                let placeholder = placeholder.as_deref().unwrap_or(DEFAULT_PLACEHOLDER);
-                let label = label.replace(placeholder, OBJECT_REPLACEMENT_CHARACTER);
-                imp.label.set_label(&label);
+        if old_ellipsize != new_ellipsize || old_label != new_label {
+            if new_ellipsize {
+                // Workaround: if both wrap and ellipsize are set, and there are
+                // widgets inserted, GtkLabel reports an erroneous minimum width.
+                imp.label.set_wrap(false);
+                imp.label.set_ellipsize(pango::EllipsizeMode::End);
+            } else {
+                imp.label.set_wrap(true);
+                imp.label.set_ellipsize(pango::EllipsizeMode::None);
             }
+
+            imp.label.set_label(&new_label);
+            self.invalidate_child_widgets();
         }
-        self.invalidate_child_widgets();
     }
 }
