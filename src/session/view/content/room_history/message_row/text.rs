@@ -212,17 +212,22 @@ impl MessageText {
     }
 
     fn build_html(&self, blocks: Vec<HtmlBlock>, room: &Room) {
-        let child = gtk::Box::new(gtk::Orientation::Vertical, 6);
-        self.set_child(Some(&child));
-
         let ellipsize = self.format() == ContentFormat::Ellipsized;
-        let len = blocks.len();
-        for block in blocks {
-            let widget = create_widget_for_html_block(&block, room, ellipsize, len > 1);
-            child.append(&widget);
 
-            if ellipsize {
-                break;
+        if blocks.len() == 1 {
+            let widget = create_widget_for_html_block(&blocks[0], room, ellipsize, false);
+            self.set_child(Some(&widget));
+        } else {
+            let child = gtk::Box::new(gtk::Orientation::Vertical, 6);
+            self.set_child(Some(&child));
+
+            for block in blocks {
+                let widget = create_widget_for_html_block(&block, room, ellipsize, true);
+                child.append(&widget);
+
+                if ellipsize {
+                    break;
+                }
             }
         }
     }
