@@ -1,7 +1,7 @@
 use std::fmt::Write;
 
 use adw::{prelude::BinExt, subclass::prelude::*};
-use gtk::{glib, prelude::*};
+use gtk::{glib, pango, prelude::*};
 use html2pango::{
     block::{markup_html, HtmlBlock},
     html_escape, markup_links,
@@ -182,33 +182,50 @@ impl MessageText {
     }
 
     fn build_text(&self, text: String, with_mentions: WithMentions) {
-        let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<LabelWithWidgets>())
-        {
-            child
-        } else {
-            let child = LabelWithWidgets::new();
-            self.set_child(Some(&child));
-            child
+        let ellipsize = self.format() == ContentFormat::Ellipsized;
+
+        let (linkified, (label, widgets)) = match with_mentions {
+            WithMentions::Yes(room) => (true, extract_mentions(&text, room)),
+            WithMentions::No => (false, (text, Vec::new())),
         };
 
-        if EMOJI_REGEX.is_match(&text) {
-            child.add_css_class("emoji");
-        } else {
-            child.remove_css_class("emoji");
-        }
+        if widgets.is_empty() {
+            let child = if let Some(child) = self.child().and_downcast::<gtk::Label>() {
+                child
+            } else {
+                let child = new_label();
+                self.set_child(Some(&child));
+                child
+            };
 
-        if let WithMentions::Yes(room) = with_mentions {
-            let (label, widgets) = extract_mentions(&text, room);
+            if EMOJI_REGEX.is_match(&label) {
+                child.add_css_class("emoji");
+            } else {
+                child.remove_css_class("emoji");
+            }
+
+            child.set_ellipsize(if ellipsize {
+                pango::EllipsizeMode::End
+            } else {
+                pango::EllipsizeMode::None
+            });
+
+            child.set_use_markup(linkified);
+            child.set_label(&label);
+        } else {
+            let child = if let Some(child) = self.child().and_downcast::<LabelWithWidgets>() {
+                child
+            } else {
+                let child = LabelWithWidgets::new();
+                self.set_child(Some(&child));
+                child
+            };
+
+            child.set_ellipsize(ellipsize);
             child.set_use_markup(true);
             child.set_label(Some(label));
             child.set_widgets(widgets);
-        } else {
-            child.set_use_markup(false);
-            child.set_widgets(Vec::<gtk::Widget>::new());
-            child.set_label(Some(text));
         }
-
-        child.set_ellipsize(self.format() == ContentFormat::Ellipsized);
     }
 
     fn build_html(&self, blocks: Vec<HtmlBlock>, room: &Room) {
@@ -306,16 +323,9 @@ fn create_widget_for_html_block(
 ) -> gtk::Widget {
     match block {
         HtmlBlock::Heading(n, s) => {
-            let (label, widgets) = extract_mentions(s, room);
-            let mut label = hoverify_links(&label);
-            if ellipsize && has_more && !label.ends_with('…') && !label.ends_with("...") {
-                label.push('…');
-            }
-            let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
-            w.set_use_markup(true);
+            let w = create_label_for_html(s, room, ellipsize, has_more);
             w.add_css_class(&format!("h{n}"));
-            w.set_ellipsize(ellipsize);
-            w.upcast()
+            w
         }
         HtmlBlock::UList(elements) => {
             let bx = gtk::Box::new(gtk::Orientation::Vertical, 6);
@@ -324,20 +334,12 @@ fn create_widget_for_html_block(
 
             for li in elements.iter() {
                 let h_box = gtk::Box::new(gtk::Orientation::Horizontal, 6);
+
                 let bullet = gtk::Label::new(Some("•"));
                 bullet.set_valign(gtk::Align::Start);
-                let (label, widgets) = extract_mentions(li, room);
-                let mut label = hoverify_links(&label);
-                if ellipsize
-                    && (has_more || elements.len() > 1)
-                    && !label.ends_with('…')
-                    && !label.ends_with("...")
-                {
-                    label.push('…');
-                }
-                let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
-                w.set_use_markup(true);
-                w.set_ellipsize(ellipsize);
+
+                let w = create_label_for_html(li, room, ellipsize, has_more || elements.len() > 1);
+
                 h_box.append(&bullet);
                 h_box.append(&w);
                 bx.append(&h_box);
@@ -356,20 +358,12 @@ fn create_widget_for_html_block(
 
             for (i, ol) in elements.iter().enumerate() {
                 let h_box = gtk::Box::new(gtk::Orientation::Horizontal, 6);
+
                 let bullet = gtk::Label::new(Some(&format!("{}.", i + 1)));
                 bullet.set_valign(gtk::Align::Start);
-                let (label, widgets) = extract_mentions(ol, room);
-                let mut label = hoverify_links(&label);
-                if ellipsize
-                    && (has_more || elements.len() > 1)
-                    && !label.ends_with('…')
-                    && !label.ends_with("...")
-                {
-                    label.push('…');
-                }
-                let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
-                w.set_use_markup(true);
-                w.set_ellipsize(ellipsize);
+
+                let w = create_label_for_html(ol, room, ellipsize, has_more || elements.len() > 1);
+
                 h_box.append(&bullet);
                 h_box.append(&w);
                 bx.append(&h_box);
@@ -390,10 +384,17 @@ fn create_widget_for_html_block(
                 } else {
                     format!("<tt>{s}</tt>")
                 };
-                let w = LabelWithWidgets::with_label_and_widgets(&label, Vec::<gtk::Widget>::new());
-                w.set_use_markup(true);
-                w.set_ellipsize(ellipsize);
-                w.upcast()
+
+                gtk::Label::builder()
+                    .label(label)
+                    .use_markup(true)
+                    .ellipsize(if ellipsize {
+                        pango::EllipsizeMode::End
+                    } else {
+                        pango::EllipsizeMode::None
+                    })
+                    .build()
+                    .upcast()
             } else {
                 let scrolled = gtk::ScrolledWindow::new();
                 scrolled.set_policy(gtk::PolicyType::Automatic, gtk::PolicyType::Never);
@@ -426,17 +427,7 @@ fn create_widget_for_html_block(
             }
             bx.upcast()
         }
-        HtmlBlock::Text(s) => {
-            let (label, widgets) = extract_mentions(s, room);
-            let mut label = hoverify_links(&label);
-            if ellipsize && has_more && !label.ends_with('…') && !label.ends_with("...") {
-                label.push('…');
-            }
-            let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
-            w.set_use_markup(true);
-            w.set_ellipsize(ellipsize);
-            w.upcast()
-        }
+        HtmlBlock::Text(s) => create_label_for_html(s, room, ellipsize, has_more).upcast(),
         HtmlBlock::Separator => gtk::Separator::new(gtk::Orientation::Horizontal).upcast(),
     }
 }
@@ -519,4 +510,38 @@ fn extract_mentions(s: &str, room: &Room) -> (String, Vec<Pill>) {
     let widgets = widgets.into_iter().map(|(_, _, widget)| widget).collect();
 
     (label, widgets)
+}
+
+fn new_label() -> gtk::Label {
+    gtk::Label::builder()
+        .wrap(true)
+        .wrap_mode(pango::WrapMode::WordChar)
+        .xalign(0.0)
+        .valign(gtk::Align::Start)
+        .css_classes(["line-height"])
+        .build()
+}
+
+fn create_label_for_html(label: &str, room: &Room, ellipsize: bool, cut_text: bool) -> gtk::Widget {
+    let (label, widgets) = extract_mentions(label, room);
+    let mut label = hoverify_links(&label);
+    if ellipsize && cut_text && !label.ends_with('…') && !label.ends_with("...") {
+        label.push('…');
+    }
+
+    if widgets.is_empty() {
+        let w = new_label();
+        w.set_markup(&label);
+        w.set_ellipsize(if ellipsize {
+            pango::EllipsizeMode::End
+        } else {
+            pango::EllipsizeMode::None
+        });
+        w.upcast()
+    } else {
+        let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
+        w.set_use_markup(true);
+        w.set_ellipsize(ellipsize);
+        w.upcast()
+    }
 }
