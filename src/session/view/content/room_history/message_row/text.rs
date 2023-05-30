@@ -189,6 +189,10 @@ impl MessageText {
             WithMentions::No => (false, (text, Vec::new())),
         };
 
+        // FIXME: This should not be necessary but spaces at the end of the string cause
+        // criticals.
+        let label = label.trim_end_matches(' ');
+
         if widgets.is_empty() {
             let child = if let Some(child) = self.child().and_downcast::<gtk::Label>() {
                 child
@@ -198,7 +202,7 @@ impl MessageText {
                 child
             };
 
-            if EMOJI_REGEX.is_match(&label) {
+            if EMOJI_REGEX.is_match(label) {
                 child.add_css_class("emoji");
             } else {
                 child.remove_css_class("emoji");
@@ -211,7 +215,7 @@ impl MessageText {
             });
 
             child.set_use_markup(linkified);
-            child.set_label(&label);
+            child.set_label(label);
         } else {
             let child = if let Some(child) = self.child().and_downcast::<LabelWithWidgets>() {
                 child
@@ -223,7 +227,7 @@ impl MessageText {
 
             child.set_ellipsize(ellipsize);
             child.set_use_markup(true);
-            child.set_label(Some(label));
+            child.set_label(Some(label.to_owned()));
             child.set_widgets(widgets);
         }
     }
@@ -523,6 +527,9 @@ fn new_label() -> gtk::Label {
 }
 
 fn create_label_for_html(label: &str, room: &Room, ellipsize: bool, cut_text: bool) -> gtk::Widget {
+    // FIXME: This should not be necessary but spaces at the end of the string cause
+    // criticals.
+    let label = label.trim_end_matches(' ');
     let (label, widgets) = extract_mentions(label, room);
     let mut label = hoverify_links(&label);
     if ellipsize && cut_text && !label.ends_with('…') && !label.ends_with("...") {
