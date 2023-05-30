@@ -37,10 +37,10 @@ mod imp {
                     glib::ParamSpecString::builder("placeholder")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecString::builder("use-markup")
+                    glib::ParamSpecBoolean::builder("use-markup")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecString::builder("ellipsize")
+                    glib::ParamSpecBoolean::builder("ellipsize")
                         .explicit_notify()
                         .build(),
                 ]
