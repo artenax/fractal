@@ -105,7 +105,7 @@
                                       <class name="pill"/>
                                       <class name="suggested-action"/>
                                     </style>
-                                    <property name="label" translatable="true">_Log in</property>
+                                    <property name="label" translatable="yes">_Log in</property>
                                     <property name="use-underline">true</property>
                                     <property name="action-name">app.show-login</property>
                                   </object>
@@ -115,7 +115,7 @@
                                     <style>
                                       <class name="pill"/>
                                     </style>
-                                    <property name="label" translatable="true">_Create Account</property>
+                                    <property name="label" translatable="yes">_Create Account</property>
                                     <property name="use-underline">true</property>
                                     <property name="action-name">app.create-account</property>
                                   </object>

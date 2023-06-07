@@ -68,7 +68,7 @@
                     <style>
                       <class name="card"/>
                     </style>
-                    <property name="title" translatable="true">Matrix Username</property>
+                    <property name="title" translatable="yes">Matrix Username</property>
                     <signal name="changed" handler="update_next_state" swapped="yes"/>
                     <signal name="entry-activated" handler="login_with_password" swapped="yes"/>
                   </object>
@@ -82,7 +82,7 @@
                         <style>
                           <class name="card"/>
                         </style>
-                        <property name="title" translatable="true">Password</property>
+                        <property name="title" translatable="yes">Password</property>
                         <signal name="changed" handler="update_next_state" swapped="yes"/>
                         <signal name="entry-activated" handler="login_with_password" swapped="yes"/>
                       </object>
