@@ -225,7 +225,7 @@ impl EditableAvatar {
 
     /// Set the state of the edit.
     ///
-    /// This is public for debuggin purpose, the other methods to change state
+    /// This is public for debugging purposes, the other methods to change state
     /// should be preferred.
     pub fn set_state(&self, state: EditableAvatarState) {
         if self.state() == state {
