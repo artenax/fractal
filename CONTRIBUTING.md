@@ -82,7 +82,7 @@ After that, move into the directory where you cloned Fractal and setup the proje
 fenv gen build-aux/org.gnome.Fractal.Hack.json
 
 # Initialize the build system
-fenv exec -- meson --prefix=/app _build
+fenv exec -- meson setup --prefix=/app _build
 ```
 
 Finally, build and run the application:
@@ -133,7 +133,7 @@ If you decide to ignore our recommendation and build on your host system, outsid
 will need Meson and Ninja.
 
 ```sh
-meson . _build --prefix=/usr/local
+meson setup --prefix=/usr/local _build
 ninja -C _build
 sudo ninja -C _build install
 ```
