@@ -93,19 +93,19 @@ impl Badge {
         let role = MemberRole::from(power_level);
 
         let visible = match role {
-            MemberRole::ADMIN => {
+            MemberRole::Admin => {
                 label.set_text(&format!("{role} {power_level}"));
                 self.add_css_class("admin");
                 self.remove_css_class("mod");
                 true
             }
-            MemberRole::MOD => {
+            MemberRole::Mod => {
                 label.set_text(&format!("{role} {power_level}"));
                 self.add_css_class("mod");
                 self.remove_css_class("admin");
                 true
             }
-            MemberRole::PEASANT if power_level != 0 => {
+            MemberRole::Peasant if power_level != 0 => {
                 label.set_text(&power_level.to_string());
                 self.remove_css_class("admin");
                 self.remove_css_class("mod");
