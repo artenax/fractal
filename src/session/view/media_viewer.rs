@@ -521,10 +521,7 @@ impl MediaViewer {
 
     /// Copy the current image to the clipboard.
     fn copy_image(&self) {
-        let Some(texture) = self
-            .imp()
-            .media
-            .texture() else {
+        let Some(texture) = self.imp().media.texture() else {
             return;
         };
         self.clipboard().set_texture(&texture);

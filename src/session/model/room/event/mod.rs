@@ -467,7 +467,7 @@ impl Event {
     /// This is a no-op if called for a local event.
     pub async fn fetch_missing_details(&self) -> Result<(), MatrixError> {
         let Some(event_id) = self.event_id() else {
-            return Ok(())
+            return Ok(());
         };
 
         let timeline = self.room().timeline().matrix_timeline();

@@ -78,7 +78,13 @@ mod imp {
                 return true;
             }
 
-            let Some(value) = self.expression.borrow().as_ref().and_then(|e| e.evaluate(Some(item))).map(|v| v.get::<CategoryType>().unwrap()) else {
+            let Some(value) = self
+                .expression
+                .borrow()
+                .as_ref()
+                .and_then(|e| e.evaluate(Some(item)))
+                .map(|v| v.get::<CategoryType>().unwrap())
+            else {
                 return false;
             };
 

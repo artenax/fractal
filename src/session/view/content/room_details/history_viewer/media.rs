@@ -91,7 +91,8 @@ impl MediaHistoryViewer {
         let imp = self.imp();
         let event = item.event().unwrap();
 
-        let Some(AnyMessageLikeEventContent::RoomMessage(message)) = event.original_content() else {
+        let Some(AnyMessageLikeEventContent::RoomMessage(message)) = event.original_content()
+        else {
             error!("Trying to open the media viewer with an event that is not a message");
             return;
         };

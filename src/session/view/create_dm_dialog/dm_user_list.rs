@@ -226,7 +226,9 @@ impl DmUserList {
                     let room = if let Some(rooms) = dm_rooms.get(other_user_id) {
                         let mut final_rooms: Vec<Room> = vec![];
                         for room in rooms {
-                            let Some(room) = room.upgrade() else { continue; };
+                            let Some(room) = room.upgrade() else {
+                                continue;
+                            };
                             let members = room.members();
 
                             if !room.is_joined() || room.matrix_room().active_members_count() > 2 {
