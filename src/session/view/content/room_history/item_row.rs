@@ -1,7 +1,7 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone};
-use matrix_sdk::room::timeline::TimelineItemContent;
+use matrix_sdk_ui::timeline::TimelineItemContent;
 
 use super::{DividerRow, EventActions, MessageRow, RoomHistory, StateRow, TypingRow};
 use crate::{

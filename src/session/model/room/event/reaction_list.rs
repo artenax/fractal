@@ -1,5 +1,5 @@
 use gtk::{gio, glib, prelude::*, subclass::prelude::*};
-use matrix_sdk::room::timeline::BundledReactions;
+use matrix_sdk_ui::timeline::BundledReactions;
 
 use super::ReactionGroup;
 use crate::session::model::User;

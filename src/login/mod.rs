@@ -445,6 +445,7 @@ impl Login {
 
         let handle = spawn_tokio!(async move {
             let mut login = client
+                .matrix_auth()
                 .login_sso(|sso_url| async move {
                     let ctx = glib::MainContext::default();
                     ctx.spawn(async move {
@@ -490,7 +491,7 @@ impl Login {
             .await
             .unwrap();
 
-        match Session::new(homeserver, response.into()).await {
+        match Session::new(homeserver, (&response).into()).await {
             Ok(session) => {
                 self.init_session(session).await;
             }

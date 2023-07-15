@@ -1,5 +1,5 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
-use matrix_sdk::room::timeline::ReactionGroup as SdkReactionGroup;
+use matrix_sdk_ui::timeline::ReactionGroup as SdkReactionGroup;
 
 use super::EventKey;
 use crate::{prelude::*, session::model::User};
@@ -117,15 +117,15 @@ impl ReactionGroup {
             .borrow()
             .as_ref()
             .and_then(|reactions| {
-                reactions.iter().find_map(|(timeline_key, sender)| {
-                    (*sender == user_id).then(|| match timeline_key {
+                reactions
+                    .by_sender(&user_id)
+                    .next()
+                    .and_then(|timeline_key| match timeline_key {
                         (Some(txn_id), None) => Some(EventKey::TransactionId(txn_id.clone())),
                         (_, Some(event_id)) => Some(EventKey::EventId(event_id.clone())),
                         _ => None,
                     })
-                })
             })
-            .flatten()
     }
 
     /// Whether this group has a reaction from the logged-in user.
@@ -135,7 +135,7 @@ impl ReactionGroup {
             .reactions
             .borrow()
             .as_ref()
-            .filter(|reactions| reactions.iter().any(|(_, sender)| *sender == user_id))
+            .filter(|reactions| reactions.by_sender(&user_id).next().is_some())
             .is_some()
     }
 

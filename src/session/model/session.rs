@@ -9,22 +9,20 @@ use gtk::{
 };
 use log::{debug, error};
 use matrix_sdk::{
-    config::SyncSettings,
-    room::Room as MatrixRoom,
-    ruma::{
-        api::client::{
-            error::ErrorKind,
-            filter::{FilterDefinition, LazyLoadOptions, RoomEventFilter, RoomFilter},
-            session::logout,
-        },
-        assign,
-        events::{
-            direct::DirectEventContent, room::encryption::SyncRoomEncryptionEvent,
-            GlobalAccountDataEvent,
-        },
+    config::SyncSettings, matrix_auth::Session as MatrixSession, room::Room as MatrixRoom,
+    sync::SyncResponse, Client,
+};
+use ruma::{
+    api::client::{
+        error::ErrorKind,
+        filter::{FilterDefinition, LazyLoadOptions, RoomEventFilter, RoomFilter},
+        session::logout,
     },
-    sync::SyncResponse,
-    Client,
+    assign,
+    events::{
+        direct::DirectEventContent, room::encryption::SyncRoomEncryptionEvent,
+        GlobalAccountDataEvent,
+    },
 };
 use tokio::task::JoinHandle;
 use url::Url;
@@ -177,7 +175,7 @@ glib::wrapper! {
 
 impl Session {
     /// Create a new session.
-    pub async fn new(homeserver: Url, data: matrix_sdk::Session) -> Result<Self, ClientSetupError> {
+    pub async fn new(homeserver: Url, data: MatrixSession) -> Result<Self, ClientSetupError> {
         let stored_session = StoredSession::with_login_data(homeserver, data);
 
         Self::restore(stored_session).await

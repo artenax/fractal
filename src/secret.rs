@@ -3,10 +3,14 @@ use std::{collections::HashMap, ffi::OsStr, fmt, fs, path::PathBuf, string::From
 use gettextrs::gettext;
 use gtk::glib;
 use log::{debug, error, warn};
-use matrix_sdk::ruma::{DeviceId, OwnedDeviceId, OwnedUserId, UserId};
+use matrix_sdk::{
+    matrix_auth::{Session as MatrixSession, SessionTokens},
+    SessionMeta,
+};
 use once_cell::sync::Lazy;
 use oo7::{Item, Keyring};
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
+use ruma::{DeviceId, OwnedDeviceId, OwnedUserId, UserId};
 use serde::{Deserialize, Serialize};
 use serde_json::error::Error as JsonError;
 use thiserror::Error;
@@ -307,12 +311,10 @@ impl StoredSession {
     }
 
     /// Construct a `StoredSession` from the given login data.
-    pub fn with_login_data(homeserver: Url, data: matrix_sdk::Session) -> Self {
-        let matrix_sdk::Session {
-            access_token,
-            user_id,
-            device_id,
-            ..
+    pub fn with_login_data(homeserver: Url, data: MatrixSession) -> Self {
+        let MatrixSession {
+            meta: SessionMeta { user_id, device_id },
+            tokens: SessionTokens { access_token, .. },
         } = data;
 
         let path = DATA_PATH.join(glib::uuid_string_random().as_str());
@@ -339,7 +341,7 @@ impl StoredSession {
     }
 
     /// Split this `StoredSession` into parts.
-    pub fn into_parts(self) -> (Url, PathBuf, String, matrix_sdk::Session) {
+    pub fn into_parts(self) -> (Url, PathBuf, String, MatrixSession) {
         let Self {
             homeserver,
             user_id,
@@ -352,11 +354,12 @@ impl StoredSession {
             ..
         } = self;
 
-        let data = matrix_sdk::Session {
-            access_token,
-            user_id,
-            device_id,
-            refresh_token: None,
+        let data = MatrixSession {
+            meta: SessionMeta { user_id, device_id },
+            tokens: SessionTokens {
+                access_token,
+                refresh_token: None,
+            },
         };
 
         (homeserver, path, passphrase, data)
@@ -426,7 +429,7 @@ impl StoredSession {
                 debug!("Logging out session");
                 match matrix::client_with_stored_session(self.clone()).await {
                     Ok(client) => {
-                        if let Err(error) = client.logout().await {
+                        if let Err(error) = client.matrix_auth().logout().await {
                             error!("Failed to log out session: {error}");
                         }
                     }

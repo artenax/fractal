@@ -1,5 +1,5 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
-use matrix_sdk::room::timeline::TimelineItem as SdkTimelineItem;
+use matrix_sdk_ui::timeline::{TimelineItem as SdkTimelineItem, TimelineItemKind};
 
 use super::VirtualItem;
 use crate::session::model::{Event, Member, Room};
@@ -120,9 +120,9 @@ impl TimelineItem {
     ///
     /// Constructs the proper child type.
     pub fn new(item: &SdkTimelineItem, room: &Room) -> Self {
-        match item {
-            SdkTimelineItem::Event(event) => Event::new(event.clone(), room).upcast(),
-            SdkTimelineItem::Virtual(item) => VirtualItem::new(item).upcast(),
+        match item.kind() {
+            TimelineItemKind::Event(event) => Event::new(event.clone(), room).upcast(),
+            TimelineItemKind::Virtual(item) => VirtualItem::new(item).upcast(),
         }
     }
 
@@ -130,13 +130,13 @@ impl TimelineItem {
     ///
     /// Returns `true` if the update succeeded.
     pub fn try_update_with(&self, item: &SdkTimelineItem) -> bool {
-        match item {
-            SdkTimelineItem::Event(new_event) => {
+        match item.kind() {
+            TimelineItemKind::Event(new_event) => {
                 if let Some(event) = self.downcast_ref::<Event>() {
                     return event.try_update_with(new_event);
                 }
             }
-            SdkTimelineItem::Virtual(_item) => {
+            TimelineItemKind::Virtual(_item) => {
                 // Always invalidate. It shouldn't happen often and updating
                 // those should be unexpensive.
             }

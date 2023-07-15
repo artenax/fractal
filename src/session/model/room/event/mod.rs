@@ -1,17 +1,15 @@
 use std::fmt;
 
 use gtk::{glib, prelude::*, subclass::prelude::*};
-use matrix_sdk::{
-    room::timeline::{
-        AnyOtherFullStateEventContent, EventTimelineItem, RepliedToEvent, TimelineDetails,
-        TimelineItemContent,
-    },
-    ruma::{
-        events::room::message::MessageType, MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedUserId,
-    },
-    Error as MatrixError,
+use matrix_sdk_ui::timeline::{
+    AnyOtherFullStateEventContent, Error as TimelineError, EventTimelineItem, RepliedToEvent,
+    TimelineDetails, TimelineItemContent,
 };
-use ruma::{events::AnySyncTimelineEvent, serde::Raw, OwnedTransactionId};
+use ruma::{
+    events::{room::message::MessageType, AnySyncTimelineEvent},
+    serde::Raw,
+    MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedTransactionId, OwnedUserId,
+};
 
 mod reaction_group;
 mod reaction_list;
@@ -465,7 +463,7 @@ impl Event {
     /// Fetch missing details for this event.
     ///
     /// This is a no-op if called for a local event.
-    pub async fn fetch_missing_details(&self) -> Result<(), MatrixError> {
+    pub async fn fetch_missing_details(&self) -> Result<(), TimelineError> {
         let Some(event_id) = self.event_id() else {
             return Ok(());
         };

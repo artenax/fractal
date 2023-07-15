@@ -258,7 +258,7 @@ impl LoginHomeserverPage {
             return;
         };
 
-        let handle = spawn_tokio!(async move { client.get_login_types().await });
+        let handle = spawn_tokio!(async move { client.matrix_auth().get_login_types().await });
 
         match handle.await.unwrap() {
             Ok(res) => {

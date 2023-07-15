@@ -15,25 +15,23 @@ use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{debug, error, warn};
 use matrix_sdk::{
     attachment::{generate_image_thumbnail, AttachmentConfig, AttachmentInfo, Thumbnail},
-    deserialized_responses::{MemberEvent, SyncTimelineEvent},
+    deserialized_responses::{MemberEvent, SyncOrStrippedState, SyncTimelineEvent},
     room::Room as MatrixRoom,
-    ruma::{
-        events::{
-            reaction::ReactionEventContent,
-            receipt::{ReceiptEventContent, ReceiptType},
-            relation::Annotation,
-            tag::{TagInfo, TagName},
-            AnyRoomAccountDataEvent, AnySyncStateEvent, AnySyncTimelineEvent, StateEventType,
-            SyncStateEvent,
-        },
-        OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
-    },
     sync::{JoinedRoom, LeftRoom},
     DisplayName, Result as MatrixResult, RoomMemberships, RoomState,
 };
-use ruma::events::{
-    receipt::ReceiptThread, room::power_levels::PowerLevelAction, typing::TypingEventContent,
-    AnyMessageLikeEventContent, SyncEphemeralRoomEvent,
+use ruma::{
+    events::{
+        reaction::ReactionEventContent,
+        receipt::{ReceiptEventContent, ReceiptThread, ReceiptType},
+        relation::Annotation,
+        room::power_levels::{PowerLevelAction, RoomPowerLevelsEventContent},
+        tag::{TagInfo, TagName},
+        typing::TypingEventContent,
+        AnyMessageLikeEventContent, AnyRoomAccountDataEvent, AnySyncStateEvent,
+        AnySyncTimelineEvent, SyncEphemeralRoomEvent, SyncStateEvent,
+    },
+    OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
 };
 
 pub use self::{
@@ -1215,7 +1213,7 @@ impl Room {
         let matrix_room = self.matrix_room();
         let handle = spawn_tokio!(async move {
             let state_event = match matrix_room
-                .get_state_event(StateEventType::RoomPowerLevels, "")
+                .get_state_event_static::<RoomPowerLevelsEventContent>()
                 .await
             {
                 Ok(state_event) => state_event,
@@ -1226,13 +1224,10 @@ impl Room {
             };
 
             state_event
-                .and_then(|e| e.deserialize().ok())
-                .and_then(|e| {
-                    if let AnySyncStateEvent::RoomPowerLevels(SyncStateEvent::Original(e)) = e {
-                        Some(e)
-                    } else {
-                        None
-                    }
+                .and_then(|r| r.deserialize().ok())
+                .and_then(|ev| match ev {
+                    SyncOrStrippedState::Sync(SyncStateEvent::Original(e)) => Some(e),
+                    _ => None,
                 })
         });
 

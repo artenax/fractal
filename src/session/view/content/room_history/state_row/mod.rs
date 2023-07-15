@@ -5,14 +5,14 @@ use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{glib, CompositeTemplate};
 use log::warn;
-use matrix_sdk::{
-    room::timeline::{
-        AnyOtherFullStateEventContent, MemberProfileChange, MembershipChange, OtherState,
-        RoomMembershipChange, TimelineItemContent,
-    },
-    ruma::events::room::member::MembershipState,
+use matrix_sdk_ui::timeline::{
+    AnyOtherFullStateEventContent, MemberProfileChange, MembershipChange, OtherState,
+    RoomMembershipChange, TimelineItemContent,
 };
-use ruma::{events::FullStateEventContent, UserId};
+use ruma::{
+    events::{room::member::MembershipState, FullStateEventContent},
+    UserId,
+};
 
 use self::{creation::StateCreation, tombstone::StateTombstone};
 use super::ReadReceiptsList;

@@ -10,12 +10,12 @@ use eyeball_im::VectorDiff;
 use futures::StreamExt;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{error, warn};
-use matrix_sdk::{
-    room::timeline::{PaginationOptions, Timeline as SdkTimeline, TimelineItem as SdkTimelineItem},
-    ruma::OwnedEventId,
-    Error as MatrixError,
+use matrix_sdk::Error as MatrixError;
+use matrix_sdk_ui::timeline::{
+    BackPaginationStatus, PaginationOptions, RoomExt, Timeline as SdkTimeline,
+    TimelineItem as SdkTimelineItem,
 };
-use ruma::events::AnySyncTimelineEvent;
+use ruma::{events::AnySyncTimelineEvent, OwnedEventId};
 
 pub use self::{
     timeline_item::{TimelineItem, TimelineItemExt, TimelineItemImpl},
@@ -34,6 +34,13 @@ pub enum TimelineState {
     Ready,
     Error,
     Complete,
+}
+
+impl TimelineState {
+    /// Whether this state is represented by a virtual item.
+    pub fn has_virtual_item(&self) -> bool {
+        matches!(*self, Self::Loading | Self::Complete)
+    }
 }
 
 const MAX_BATCH_SIZE: u16 = 20;
@@ -109,7 +116,12 @@ mod imp {
         }
 
         fn n_items(&self) -> u32 {
-            let mut len = self.obj().n_items_in_list();
+            let obj = self.obj();
+            let mut len = obj.n_items_in_list();
+
+            if obj.state().has_virtual_item() {
+                len += 1;
+            }
 
             if self.has_typing.get() {
                 len += 1;
@@ -141,8 +153,8 @@ impl Timeline {
 
     /// The number of visible items in the list.
     ///
-    /// This is like `n_items` without items not in the list (e.g. the typing
-    /// indicator).
+    /// This is like `n_items` without items not in the list (e.g. the spinner
+    /// or the typing indicator).
     fn n_items_in_list(&self) -> u32 {
         self.imp()
             .list
@@ -152,8 +164,34 @@ impl Timeline {
             .count() as u32
     }
 
-    fn item(&self, position: u32) -> Option<TimelineItem> {
+    /// Adjust the position of an item in the list, to reflect its true position
+    /// in the `GListModel`.
+    ///
+    /// It can change according to items that are not in the list (e.g. the
+    /// spinner or the timeline start).
+    fn adjust_item_position(&self, pos: &mut u32) {
+        if self.state().has_virtual_item() {
+            *pos += 1;
+        }
+    }
+
+    fn item(&self, mut position: u32) -> Option<TimelineItem> {
         let imp = self.imp();
+
+        let state = self.state();
+        if state.has_virtual_item() {
+            if position == 0 {
+                let item = match state {
+                    TimelineState::Loading => VirtualItem::spinner(),
+                    TimelineState::Complete => VirtualItem::timeline_start(),
+                    _ => unreachable!(),
+                };
+
+                return Some(item.upcast());
+            }
+
+            position -= 1;
+        }
 
         if imp.has_typing.get() && position == self.n_items_in_list() {
             return Some(VirtualItem::typing().upcast());
@@ -184,7 +222,9 @@ impl Timeline {
 
         match diff {
             VectorDiff::Append { values } => {
-                let pos = self.n_items_in_list();
+                let mut pos = self.n_items_in_list();
+                self.adjust_item_position(&mut pos);
+
                 let new_list = values
                     .into_iter()
                     .map(|item| self.create_item(&item))
@@ -216,7 +256,10 @@ impl Timeline {
                 list.borrow_mut().push_front(item);
 
                 if visible {
-                    self.items_changed(0, 0, 1);
+                    let mut pos = 0;
+                    self.adjust_item_position(&mut pos);
+
+                    self.items_changed(pos, 0, 1);
                 }
             }
             VectorDiff::PushBack { value } => {
@@ -231,7 +274,10 @@ impl Timeline {
                 list.borrow_mut().push_back(item);
 
                 if visible {
-                    self.items_changed(self.n_items_in_list() - 1, 0, 1);
+                    let mut pos = self.n_items_in_list() - 1;
+                    self.adjust_item_position(&mut pos);
+
+                    self.items_changed(pos, 0, 1);
                 }
             }
             VectorDiff::PopFront => {
@@ -240,7 +286,10 @@ impl Timeline {
                 let visible = item.is_visible();
 
                 if visible {
-                    self.items_changed(0, 1, 0);
+                    let mut pos = 0;
+                    self.adjust_item_position(&mut pos);
+
+                    self.items_changed(pos, 1, 0);
                 }
             }
             VectorDiff::PopBack => {
@@ -249,7 +298,10 @@ impl Timeline {
                 let visible = item.is_visible();
 
                 if visible {
-                    self.items_changed(self.n_items_in_list(), 1, 0);
+                    let mut pos = self.n_items_in_list();
+                    self.adjust_item_position(&mut pos);
+
+                    self.items_changed(pos, 1, 0);
                 }
             }
             VectorDiff::Insert { index, value } => {
@@ -330,7 +382,10 @@ impl Timeline {
 
                 *list.borrow_mut() = new_list;
 
-                self.items_changed(0, removed, added as u32);
+                let mut pos = 0;
+                self.adjust_item_position(&mut pos);
+
+                self.items_changed(pos, removed, added as u32);
             }
         }
     }
@@ -375,10 +430,6 @@ impl Timeline {
                 .event_map
                 .borrow_mut()
                 .insert(event.key(), event.clone());
-        } else if let Some(virtual_item) = item.downcast_ref::<VirtualItem>() {
-            if virtual_item.kind() == VirtualItemKind::TimelineStart {
-                self.set_state(TimelineState::Complete);
-            }
         }
 
         item
@@ -388,12 +439,6 @@ impl Timeline {
     fn remove_item(&self, item: &TimelineItem) {
         if let Some(event) = item.downcast_ref::<Event>() {
             self.imp().event_map.borrow_mut().remove(&event.key());
-        } else if item
-            .downcast_ref::<VirtualItem>()
-            .map_or(false, |item| item.kind() == VirtualItemKind::Spinner)
-            && self.state() == TimelineState::Loading
-        {
-            self.set_state(TimelineState::Ready)
         }
     }
 
@@ -451,18 +496,24 @@ impl Timeline {
 
     /// Get the position of the given item in this `Timeline`.
     pub fn find_item_position(&self, item: &TimelineItem) -> Option<u32> {
-        self.imp()
+        let mut pos = self
+            .imp()
             .list
             .borrow()
             .iter()
             .filter(|item| item.is_visible())
             .enumerate()
-            .find_map(|(pos, list_item)| (item == list_item).then_some(pos as u32))
+            .find_map(|(pos, list_item)| (item == list_item).then_some(pos as u32))?;
+
+        self.adjust_item_position(&mut pos);
+
+        Some(pos)
     }
 
     /// Get the position of the event with the given key in this `Timeline`.
     pub fn find_event_position(&self, key: &EventKey) -> Option<usize> {
-        self.imp()
+        let mut pos = self
+            .imp()
             .list
             .borrow()
             .iter()
@@ -472,7 +523,13 @@ impl Timeline {
                 item.downcast_ref::<Event>()
                     .filter(|event| event.key() == *key)
                     .map(|_| pos)
-            })
+            })?;
+
+        if self.state().has_virtual_item() {
+            pos += 1;
+        }
+
+        Some(pos)
     }
 
     /// Fetch the event with the given id.
@@ -555,8 +612,41 @@ impl Timeline {
 
         self.set_state(TimelineState::Ready);
 
+        spawn!(clone!(@weak self as obj => async move {
+            obj.setup_back_pagination_status().await;
+        }));
+
         while let Some(diff) = receiver.next().await {
             self.update(diff);
+        }
+    }
+
+    /// Setup the back-pagination status.
+    async fn setup_back_pagination_status(&self) {
+        let room_id = self.room().room_id().to_owned();
+        let matrix_timeline = self.matrix_timeline();
+
+        let (mut sender, mut receiver) = futures::channel::mpsc::channel(8);
+        let stream = matrix_timeline.back_pagination_status();
+
+        let fut = stream.for_each(move |status| {
+            if let Err(error) = sender.try_send(status) {
+                error!("Error sending back-pagination status for room {room_id}: {error}");
+                panic!();
+            }
+
+            async {}
+        });
+        spawn_tokio!(fut);
+
+        while let Some(status) = receiver.next().await {
+            match status {
+                BackPaginationStatus::Idle => self.set_state(TimelineState::Ready),
+                BackPaginationStatus::Paginating => self.set_state(TimelineState::Loading),
+                BackPaginationStatus::TimelineStartReached => {
+                    self.set_state(TimelineState::Complete)
+                }
+            }
         }
     }
 
@@ -572,14 +662,22 @@ impl Timeline {
 
     fn set_state(&self, state: TimelineState) {
         let imp = self.imp();
+        let prev_state = self.state();
 
-        if state == self.state() {
+        if state == prev_state {
             return;
         }
 
         imp.state.set(state);
 
         self.notify("state");
+
+        let removed = if prev_state.has_virtual_item() { 1 } else { 0 };
+        let added = if state.has_virtual_item() { 1 } else { 0 };
+
+        if removed > 0 || added > 0 {
+            self.items_changed(0, removed, added);
+        }
     }
 
     /// The state of the timeline.

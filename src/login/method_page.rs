@@ -238,6 +238,7 @@ impl LoginMethodPage {
         let client = login.client().await.unwrap();
         let handle = spawn_tokio!(async move {
             client
+                .matrix_auth()
                 .login_username(&username, &password)
                 .initial_device_display_name("Fractal")
                 .send()

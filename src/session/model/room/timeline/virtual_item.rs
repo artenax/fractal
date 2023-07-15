@@ -1,5 +1,5 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
-use matrix_sdk::room::timeline::VirtualTimelineItem;
+use matrix_sdk_ui::timeline::VirtualTimelineItem;
 use ruma::MilliSecondsSinceUnixEpoch;
 
 use super::{TimelineItem, TimelineItemImpl};
@@ -98,8 +98,6 @@ impl VirtualItem {
         match item {
             VirtualTimelineItem::DayDivider(ts) => Self::day_divider_with_timestamp(*ts),
             VirtualTimelineItem::ReadMarker => Self::new_messages(),
-            VirtualTimelineItem::LoadingIndicator => Self::spinner(),
-            VirtualTimelineItem::TimelineStart => Self::timeline_start(),
         }
     }
 

@@ -41,7 +41,7 @@ gst_video = { version = "0.20", package = "gstreamer-video" }
 html-escape = "0.2"
 html2pango = "0.5"
 image = "0.24"
-indexmap = "1"
+indexmap = "2"
 log = "0.4"
 mime = "0.3"
 mime_guess = "2"
@@ -78,20 +78,25 @@ features = ["v4_10"]
 
 [dependencies.matrix-sdk]
 git = "https://github.com/matrix-org/matrix-rust-sdk.git"
-rev = "d6100915dfb233c90dab8d64512c0e6063be70e3"
+rev = "1dea482e4399aaca5e96611e732ed06c3de2d4a6"
 features = [
     "socks",
     "sso-login",
     "markdown",
     "qrcode",
-    "experimental-timeline",
     "image-rayon",
 ]
+
+[dependencies.matrix-sdk-ui]
+git = "https://github.com/matrix-org/matrix-rust-sdk.git"
+rev = "1dea482e4399aaca5e96611e732ed06c3de2d4a6"
+default-features = false
+features = ["e2e-encryption", "native-tls"]
 
 [dependencies.ruma]
 # version = "0.8.2"
 git = "https://github.com/ruma/ruma.git"
-rev = "54a4223caa1c1052464ecdba0f1e08f126e07bcd"
+rev = "a641adb4287267ba9c4778ac1ee83b4ecab11e26"
 features = [
     "unstable-unspecified",
     "client-api-c",
