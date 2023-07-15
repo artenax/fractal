@@ -15,7 +15,13 @@ use matrix_sdk_ui::timeline::{
     BackPaginationStatus, PaginationOptions, RoomExt, Timeline as SdkTimeline,
     TimelineItem as SdkTimelineItem,
 };
-use ruma::{events::AnySyncTimelineEvent, OwnedEventId};
+use ruma::{
+    events::{
+        room::message::MessageType, AnySyncMessageLikeEvent, AnySyncStateEvent,
+        AnySyncTimelineEvent, SyncMessageLikeEvent,
+    },
+    OwnedEventId,
+};
 
 pub use self::{
     timeline_item::{TimelineItem, TimelineItemExt, TimelineItemImpl},
@@ -156,12 +162,7 @@ impl Timeline {
     /// This is like `n_items` without items not in the list (e.g. the spinner
     /// or the typing indicator).
     fn n_items_in_list(&self) -> u32 {
-        self.imp()
-            .list
-            .borrow()
-            .iter()
-            .filter(|item| item.is_visible())
-            .count() as u32
+        self.imp().list.borrow().len() as u32
     }
 
     /// Adjust the position of an item in the list, to reflect its true position
@@ -197,12 +198,7 @@ impl Timeline {
             return Some(VirtualItem::typing().upcast());
         }
 
-        imp.list
-            .borrow()
-            .iter()
-            .filter(|item| item.is_visible())
-            .nth(position as usize)
-            .cloned()
+        imp.list.borrow().get(position as usize).cloned()
     }
 
     fn items_changed(&self, position: u32, removed: u32, added: u32) {
@@ -235,7 +231,7 @@ impl Timeline {
                     new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
                 );
 
-                let added = new_list.iter().filter(|item| item.is_visible()).count();
+                let added = new_list.len();
 
                 list.borrow_mut().extend(new_list);
 
@@ -252,15 +248,12 @@ impl Timeline {
                     room.update_latest_unread([event]);
                 }
 
-                let visible = item.is_visible();
                 list.borrow_mut().push_front(item);
 
-                if visible {
-                    let mut pos = 0;
-                    self.adjust_item_position(&mut pos);
+                let mut pos = 0;
+                self.adjust_item_position(&mut pos);
 
-                    self.items_changed(pos, 0, 1);
-                }
+                self.items_changed(pos, 0, 1);
             }
             VectorDiff::PushBack { value } => {
                 let item = self.create_item(&value);
@@ -270,39 +263,30 @@ impl Timeline {
                     room.update_latest_unread([event]);
                 }
 
-                let visible = item.is_visible();
                 list.borrow_mut().push_back(item);
 
-                if visible {
-                    let mut pos = self.n_items_in_list() - 1;
-                    self.adjust_item_position(&mut pos);
+                let mut pos = self.n_items_in_list() - 1;
+                self.adjust_item_position(&mut pos);
 
-                    self.items_changed(pos, 0, 1);
-                }
+                self.items_changed(pos, 0, 1);
             }
             VectorDiff::PopFront => {
                 let item = list.borrow_mut().pop_front().unwrap();
                 self.remove_item(&item);
-                let visible = item.is_visible();
 
-                if visible {
-                    let mut pos = 0;
-                    self.adjust_item_position(&mut pos);
+                let mut pos = 0;
+                self.adjust_item_position(&mut pos);
 
-                    self.items_changed(pos, 1, 0);
-                }
+                self.items_changed(pos, 1, 0);
             }
             VectorDiff::PopBack => {
                 let item = list.borrow_mut().pop_back().unwrap();
                 self.remove_item(&item);
-                let visible = item.is_visible();
 
-                if visible {
-                    let mut pos = self.n_items_in_list();
-                    self.adjust_item_position(&mut pos);
+                let mut pos = self.n_items_in_list();
+                self.adjust_item_position(&mut pos);
 
-                    self.items_changed(pos, 1, 0);
-                }
+                self.items_changed(pos, 1, 0);
             }
             VectorDiff::Insert { index, value } => {
                 let item = self.create_item(&value);
@@ -340,17 +324,13 @@ impl Timeline {
                 }
 
                 if let Some(pos) = pos {
-                    if !new_item.is_visible() {
-                        // The item was visible but is not anymore, remove it.
-                        self.items_changed(pos, 1, 0);
-                    } else if changed {
-                        // The item is still visible but has changed.
+                    if changed {
                         self.items_changed(pos, 1, 1);
                     } else if prev_can_hide_header != new_item.can_hide_header() {
                         // The item's header visibility might have changed.
                         self.update_items_headers(pos, 1);
                     }
-                } else if new_item.is_visible() {
+                } else {
                     // The item is now visible.
                     let pos = self.find_item_position(&new_item).unwrap();
                     self.items_changed(pos, 0, 1);
@@ -378,7 +358,7 @@ impl Timeline {
                     new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
                 );
 
-                let added = new_list.iter().filter(|item| item.is_visible()).count();
+                let added = new_list.len();
 
                 *list.borrow_mut() = new_list;
 
@@ -501,7 +481,6 @@ impl Timeline {
             .list
             .borrow()
             .iter()
-            .filter(|item| item.is_visible())
             .enumerate()
             .find_map(|(pos, list_item)| (item == list_item).then_some(pos as u32))?;
 
@@ -517,7 +496,6 @@ impl Timeline {
             .list
             .borrow()
             .iter()
-            .filter(|item| item.is_visible())
             .enumerate()
             .find_map(|(pos, item)| {
                 item.downcast_ref::<Event>()
@@ -587,9 +565,51 @@ impl Timeline {
         let room_id = room.room_id().to_owned();
         let matrix_room = room.matrix_room();
 
-        let matrix_timeline = spawn_tokio!(async move { Arc::new(matrix_room.timeline().await) })
-            .await
-            .unwrap();
+        let matrix_timeline = spawn_tokio!(async move {
+            Arc::new(
+                matrix_room
+                    .timeline_builder()
+                    .event_filter(|any| match any {
+                        AnySyncTimelineEvent::MessageLike(msg) => match msg {
+                            AnySyncMessageLikeEvent::RoomMessage(
+                                SyncMessageLikeEvent::Original(ev),
+                            ) => {
+                                matches!(
+                                    ev.content.msgtype,
+                                    MessageType::Audio(_)
+                                        | MessageType::Emote(_)
+                                        | MessageType::File(_)
+                                        | MessageType::Image(_)
+                                        | MessageType::Location(_)
+                                        | MessageType::Notice(_)
+                                        | MessageType::ServerNotice(_)
+                                        | MessageType::Text(_)
+                                        | MessageType::Video(_)
+                                        | MessageType::VerificationRequest(_)
+                                )
+                            }
+                            AnySyncMessageLikeEvent::Sticker(SyncMessageLikeEvent::Original(_))
+                            | AnySyncMessageLikeEvent::RoomEncrypted(
+                                SyncMessageLikeEvent::Original(_),
+                            ) => true,
+                            _ => false,
+                        },
+                        AnySyncTimelineEvent::State(state) => matches!(
+                            state,
+                            AnySyncStateEvent::RoomMember(_)
+                                | AnySyncStateEvent::RoomCreate(_)
+                                | AnySyncStateEvent::RoomEncryption(_)
+                                | AnySyncStateEvent::RoomThirdPartyInvite(_)
+                                | AnySyncStateEvent::RoomTombstone(_)
+                        ),
+                    })
+                    .add_failed_to_parse(false)
+                    .build()
+                    .await,
+            )
+        })
+        .await
+        .unwrap();
 
         self.imp().timeline.set(matrix_timeline.clone()).unwrap();
 

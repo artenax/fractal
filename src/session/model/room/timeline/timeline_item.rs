@@ -15,7 +15,6 @@ mod imp {
     pub struct TimelineItemClass {
         pub parent_class: glib::object::ObjectClass,
         pub id: fn(&super::TimelineItem) -> String,
-        pub is_visible: fn(&super::TimelineItem) -> bool,
         pub selectable: fn(&super::TimelineItem) -> bool,
         pub can_hide_header: fn(&super::TimelineItem) -> bool,
         pub event_sender: fn(&super::TimelineItem) -> Option<Member>,
@@ -28,11 +27,6 @@ mod imp {
     pub(super) fn timeline_item_id(this: &super::TimelineItem) -> String {
         let klass = this.class();
         (klass.as_ref().id)(this)
-    }
-
-    pub(super) fn timeline_item_is_visible(this: &super::TimelineItem) -> bool {
-        let klass = this.class();
-        (klass.as_ref().is_visible)(this)
     }
 
     pub(super) fn timeline_item_selectable(this: &super::TimelineItem) -> bool {
@@ -67,9 +61,6 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoolean::builder("is-visible")
-                        .read_only()
-                        .build(),
                     glib::ParamSpecBoolean::builder("selectable")
                         .read_only()
                         .build(),
@@ -99,7 +90,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "is-visible" => obj.is_visible().to_value(),
                 "selectable" => obj.selectable().to_value(),
                 "show-header" => obj.show_header().to_value(),
                 "can-hide-header" => obj.can_hide_header().to_value(),
@@ -157,11 +147,6 @@ pub trait TimelineItemExt: 'static {
     /// For debugging purposes.
     fn id(&self) -> String;
 
-    /// Whether this `TimelineItem` is visible.
-    ///
-    /// Defaults to `true`.
-    fn is_visible(&self) -> bool;
-
     /// Whether this `TimelineItem` is selectable.
     ///
     /// Defaults to `false`.
@@ -189,10 +174,6 @@ pub trait TimelineItemExt: 'static {
 impl<O: IsA<TimelineItem>> TimelineItemExt for O {
     fn id(&self) -> String {
         imp::timeline_item_id(self.upcast_ref())
-    }
-
-    fn is_visible(&self) -> bool {
-        imp::timeline_item_is_visible(self.upcast_ref())
     }
 
     fn selectable(&self) -> bool {
@@ -231,10 +212,6 @@ impl<O: IsA<TimelineItem>> TimelineItemExt for O {
 pub trait TimelineItemImpl: ObjectImpl {
     fn id(&self) -> String;
 
-    fn is_visible(&self) -> bool {
-        true
-    }
-
     fn selectable(&self) -> bool {
         false
     }
@@ -260,7 +237,6 @@ where
         let klass = class.as_mut();
 
         klass.id = id_trampoline::<T>;
-        klass.is_visible = is_visible_trampoline::<T>;
         klass.selectable = selectable_trampoline::<T>;
         klass.can_hide_header = can_hide_header_trampoline::<T>;
         klass.event_sender = event_sender_trampoline::<T>;
@@ -275,15 +251,6 @@ where
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
     this.imp().id()
-}
-
-fn is_visible_trampoline<T>(this: &TimelineItem) -> bool
-where
-    T: ObjectSubclass + TimelineItemImpl,
-    T::Type: IsA<TimelineItem>,
-{
-    let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().is_visible()
 }
 
 fn selectable_trampoline<T>(this: &TimelineItem) -> bool

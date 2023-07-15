@@ -139,36 +139,6 @@ mod imp {
             format!("Event::{}", self.obj().key())
         }
 
-        fn is_visible(&self) -> bool {
-            match self.obj().content() {
-                TimelineItemContent::Message(message) => matches!(
-                    message.msgtype(),
-                    MessageType::Audio(_)
-                        | MessageType::Emote(_)
-                        | MessageType::File(_)
-                        | MessageType::Image(_)
-                        | MessageType::Location(_)
-                        | MessageType::Notice(_)
-                        | MessageType::ServerNotice(_)
-                        | MessageType::Text(_)
-                        | MessageType::Video(_)
-                        | MessageType::VerificationRequest(_)
-                ),
-                TimelineItemContent::Sticker(_) => true,
-                TimelineItemContent::UnableToDecrypt(_) => true,
-                TimelineItemContent::MembershipChange(_) => true,
-                TimelineItemContent::ProfileChange(_) => true,
-                TimelineItemContent::OtherState(state) => matches!(
-                    state.content(),
-                    AnyOtherFullStateEventContent::RoomCreate(_)
-                        | AnyOtherFullStateEventContent::RoomEncryption(_)
-                        | AnyOtherFullStateEventContent::RoomThirdPartyInvite(_)
-                        | AnyOtherFullStateEventContent::RoomTombstone(_)
-                ),
-                _ => false,
-            }
-        }
-
         fn can_hide_header(&self) -> bool {
             match self.obj().content() {
                 TimelineItemContent::Message(message) => {
