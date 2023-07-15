@@ -811,11 +811,11 @@ impl Room {
     fn update_latest_read(&self) {
         let read_receipt = self.read_receipt();
         let user_id = self.session().user().unwrap().user_id();
-        let timeline = self.timeline();
+        let timeline_items = self.timeline().items();
 
         let latest_read = read_receipt.and_then(|read_receipt| {
-            (0..timeline.n_items()).rev().find_map(|i| {
-                timeline
+            (0..timeline_items.n_items()).rev().find_map(|i| {
+                timeline_items
                     .item(i)
                     .as_ref()
                     .and_then(|obj| obj.downcast_ref::<Event>())
@@ -929,10 +929,10 @@ impl Room {
     fn has_unread_messages(&self) -> bool {
         self.latest_read()
             .filter(|latest_read| {
-                let timeline = self.timeline();
+                let timeline_items = self.timeline().items();
 
-                for i in (0..timeline.n_items()).rev() {
-                    if let Some(event) = timeline
+                for i in (0..timeline_items.n_items()).rev() {
+                    if let Some(event) = timeline_items
                         .item(i)
                         .as_ref()
                         .and_then(|obj| obj.downcast_ref::<Event>())

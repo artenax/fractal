@@ -615,7 +615,7 @@ impl RoomHistory {
             self.scroll_down();
         }
 
-        let model = room.as_ref().map(|room| room.timeline());
+        let model = room.as_ref().map(|room| room.timeline().items());
         self.selection_model().set_model(model);
 
         imp.is_loading.set(false);
@@ -920,10 +920,10 @@ impl RoomHistory {
         let Some(room) = self.room() else {
             return false;
         };
-        let timeline = room.timeline();
+        let timeline_items = room.timeline().items();
         let adj = self.imp().listview.vadjustment().unwrap();
 
-        if adj.value() <= 0.0 && timeline.n_items() > 0 {
+        if adj.value() <= 0.0 && timeline_items.n_items() > 0 {
             // The room history is loading the timeline items, so wait until they are done.
             return false;
         }

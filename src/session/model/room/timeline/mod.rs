@@ -1,10 +1,7 @@
 mod timeline_item;
 mod virtual_item;
 
-use std::{
-    collections::{HashMap, VecDeque},
-    sync::Arc,
-};
+use std::{collections::HashMap, sync::Arc};
 
 use eyeball_im::VectorDiff;
 use futures::StreamExt;
@@ -42,13 +39,6 @@ pub enum TimelineState {
     Complete,
 }
 
-impl TimelineState {
-    /// Whether this state is represented by a virtual item.
-    pub fn has_virtual_item(&self) -> bool {
-        matches!(*self, Self::Loading | Self::Complete)
-    }
-}
-
 const MAX_BATCH_SIZE: u16 = 20;
 
 mod imp {
@@ -59,13 +49,19 @@ mod imp {
 
     use super::*;
 
-    #[derive(Debug, Default)]
+    #[derive(Debug)]
     pub struct Timeline {
         pub room: WeakRef<Room>,
         /// The underlying SDK timeline.
         pub timeline: OnceCell<Arc<SdkTimeline>>,
-        /// All events shown in the room history
-        pub list: RefCell<VecDeque<TimelineItem>>,
+        /// Items added at the start of the timeline.
+        pub start_items: gio::ListStore,
+        /// Items provided by the SDK timeline.
+        pub sdk_items: gio::ListStore,
+        /// Items added at the end of the timeline.
+        pub end_items: gio::ListStore,
+        /// The `GListModel` containing all the timeline items.
+        pub items: gtk::FlattenListModel,
         /// A Hashmap linking `EventKey` to corresponding `Event`
         pub event_map: RefCell<HashMap<EventKey, Event>>,
         pub state: Cell<TimelineState>,
@@ -73,11 +69,35 @@ mod imp {
         pub has_typing: Cell<bool>,
     }
 
+    impl Default for Timeline {
+        fn default() -> Self {
+            let start_items = gio::ListStore::new(TimelineItem::static_type());
+            let sdk_items = gio::ListStore::new(TimelineItem::static_type());
+            let end_items = gio::ListStore::new(TimelineItem::static_type());
+
+            let model_list = gio::ListStore::new(gio::ListModel::static_type());
+            model_list.append(&start_items);
+            model_list.append(&sdk_items);
+            model_list.append(&end_items);
+
+            Self {
+                room: Default::default(),
+                timeline: Default::default(),
+                start_items,
+                sdk_items,
+                end_items,
+                items: gtk::FlattenListModel::new(Some(model_list)),
+                event_map: Default::default(),
+                state: Default::default(),
+                has_typing: Default::default(),
+            }
+        }
+    }
+
     #[glib::object_subclass]
     impl ObjectSubclass for Timeline {
         const NAME: &'static str = "Timeline";
         type Type = super::Timeline;
-        type Interfaces = (gio::ListModel,);
     }
 
     impl ObjectImpl for Timeline {
@@ -86,6 +106,9 @@ mod imp {
                 vec![
                     glib::ParamSpecObject::builder::<Room>("room")
                         .construct_only()
+                        .build(),
+                    glib::ParamSpecObject::builder::<gio::ListModel>("items")
+                        .read_only()
                         .build(),
                     glib::ParamSpecBoolean::builder("empty").read_only().build(),
                     glib::ParamSpecEnum::builder::<TimelineState>("state")
@@ -109,47 +132,22 @@ mod imp {
 
             match pspec.name() {
                 "room" => obj.room().to_value(),
+                "items" => obj.items().to_value(),
                 "empty" => obj.is_empty().to_value(),
                 "state" => obj.state().to_value(),
                 _ => unimplemented!(),
             }
         }
     }
-
-    impl ListModelImpl for Timeline {
-        fn item_type(&self) -> glib::Type {
-            TimelineItem::static_type()
-        }
-
-        fn n_items(&self) -> u32 {
-            let obj = self.obj();
-            let mut len = obj.n_items_in_list();
-
-            if obj.state().has_virtual_item() {
-                len += 1;
-            }
-
-            if self.has_typing.get() {
-                len += 1;
-            }
-
-            len
-        }
-
-        fn item(&self, position: u32) -> Option<glib::Object> {
-            self.obj().item(position).map(|i| i.upcast())
-        }
-    }
 }
 
 glib::wrapper! {
-    /// List of all loaded items in a room. Implements ListModel.
+    /// All loaded items in a room.
     ///
     /// There is no strict message ordering enforced by the Timeline; items
     /// will be appended/prepended to existing items in the order they are
     /// received by the server.
-    pub struct Timeline(ObjectSubclass<imp::Timeline>)
-        @implements gio::ListModel;
+    pub struct Timeline(ObjectSubclass<imp::Timeline>);
 }
 
 impl Timeline {
@@ -157,85 +155,35 @@ impl Timeline {
         glib::Object::builder().property("room", room).build()
     }
 
-    /// The number of visible items in the list.
-    ///
-    /// This is like `n_items` without items not in the list (e.g. the spinner
-    /// or the typing indicator).
-    fn n_items_in_list(&self) -> u32 {
-        self.imp().list.borrow().len() as u32
-    }
-
-    /// Adjust the position of an item in the list, to reflect its true position
-    /// in the `GListModel`.
-    ///
-    /// It can change according to items that are not in the list (e.g. the
-    /// spinner or the timeline start).
-    fn adjust_item_position(&self, pos: &mut u32) {
-        if self.state().has_virtual_item() {
-            *pos += 1;
-        }
-    }
-
-    fn item(&self, mut position: u32) -> Option<TimelineItem> {
-        let imp = self.imp();
-
-        let state = self.state();
-        if state.has_virtual_item() {
-            if position == 0 {
-                let item = match state {
-                    TimelineState::Loading => VirtualItem::spinner(),
-                    TimelineState::Complete => VirtualItem::timeline_start(),
-                    _ => unreachable!(),
-                };
-
-                return Some(item.upcast());
-            }
-
-            position -= 1;
-        }
-
-        if imp.has_typing.get() && position == self.n_items_in_list() {
-            return Some(VirtualItem::typing().upcast());
-        }
-
-        imp.list.borrow().get(position as usize).cloned()
-    }
-
-    fn items_changed(&self, position: u32, removed: u32, added: u32) {
-        self.update_items_headers(position, added.max(1));
-
-        self.notify("empty");
-
-        self.upcast_ref::<gio::ListModel>()
-            .items_changed(position, removed, added);
+    /// The `GListModel` containing the timeline items.
+    pub fn items(&self) -> &gio::ListModel {
+        self.imp().items.upcast_ref()
     }
 
     /// Update this `Timeline` with the given diff.
     fn update(&self, diff: VectorDiff<Arc<SdkTimelineItem>>) {
         let imp = self.imp();
-        let list = &imp.list;
+        let sdk_items = &imp.sdk_items;
         let room = self.room();
+        let was_empty = self.is_empty();
 
         match diff {
             VectorDiff::Append { values } => {
-                let mut pos = self.n_items_in_list();
-                self.adjust_item_position(&mut pos);
-
                 let new_list = values
                     .into_iter()
                     .map(|item| self.create_item(&item))
-                    .collect::<VecDeque<_>>();
+                    .collect::<Vec<_>>();
 
                 // Try to update the latest unread message.
                 room.update_latest_unread(
                     new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
                 );
 
-                let added = new_list.len();
+                let pos = sdk_items.n_items();
+                let added = new_list.len() as u32;
 
-                list.borrow_mut().extend(new_list);
-
-                self.items_changed(pos, 0, added as u32);
+                sdk_items.extend_from_slice(&new_list);
+                self.update_items_headers(pos, added.max(1));
             }
             VectorDiff::Clear => {
                 self.clear();
@@ -248,12 +196,8 @@ impl Timeline {
                     room.update_latest_unread([event]);
                 }
 
-                list.borrow_mut().push_front(item);
-
-                let mut pos = 0;
-                self.adjust_item_position(&mut pos);
-
-                self.items_changed(pos, 0, 1);
+                sdk_items.insert(0, &item);
+                self.update_items_headers(0, 1);
             }
             VectorDiff::PushBack { value } => {
                 let item = self.create_item(&value);
@@ -263,32 +207,26 @@ impl Timeline {
                     room.update_latest_unread([event]);
                 }
 
-                list.borrow_mut().push_back(item);
-
-                let mut pos = self.n_items_in_list() - 1;
-                self.adjust_item_position(&mut pos);
-
-                self.items_changed(pos, 0, 1);
+                let pos = sdk_items.n_items();
+                sdk_items.append(&item);
+                self.update_items_headers(pos, 1);
             }
             VectorDiff::PopFront => {
-                let item = list.borrow_mut().pop_front().unwrap();
+                let item = sdk_items.item(0).and_downcast().unwrap();
                 self.remove_item(&item);
 
-                let mut pos = 0;
-                self.adjust_item_position(&mut pos);
-
-                self.items_changed(pos, 1, 0);
+                sdk_items.remove(0);
+                self.update_items_headers(0, 1);
             }
             VectorDiff::PopBack => {
-                let item = list.borrow_mut().pop_back().unwrap();
+                let pos = sdk_items.n_items() - 1;
+                let item = sdk_items.item(pos).and_downcast().unwrap();
                 self.remove_item(&item);
 
-                let mut pos = self.n_items_in_list();
-                self.adjust_item_position(&mut pos);
-
-                self.items_changed(pos, 1, 0);
+                sdk_items.remove(pos);
             }
             VectorDiff::Insert { index, value } => {
+                let pos = index as u32;
                 let item = self.create_item(&value);
 
                 // Try to update the latest unread message.
@@ -296,84 +234,72 @@ impl Timeline {
                     room.update_latest_unread([event]);
                 }
 
-                list.borrow_mut().insert(index, item.clone());
-
-                if let Some(pos) = self.find_item_position(&item) {
-                    self.items_changed(pos, 0, 1);
-                }
+                sdk_items.insert(pos, &item);
+                self.update_items_headers(pos, 1);
             }
             VectorDiff::Set { index, value } => {
-                let prev_item = list.borrow()[index].clone();
-                let prev_can_hide_header = prev_item.can_hide_header();
-                let pos = self.find_item_position(&prev_item);
+                let pos = index as u32;
+                let prev_item = sdk_items.item(pos).and_downcast::<TimelineItem>().unwrap();
 
-                let changed = if !prev_item.try_update_with(&value) {
+                let item = if !prev_item.try_update_with(&value) {
                     self.remove_item(&prev_item);
-                    list.borrow_mut()[index] = self.create_item(&value);
+                    let item = self.create_item(&value);
 
-                    true
+                    sdk_items.splice(pos, 1, &[item.clone()]);
+
+                    item
                 } else {
-                    false
+                    prev_item
                 };
 
-                let new_item = list.borrow()[index].clone();
-
                 // Try to update the latest unread message.
-                if let Some(event) = new_item.downcast_ref::<Event>() {
+                if let Some(event) = item.downcast_ref::<Event>() {
                     room.update_latest_unread([event]);
                 }
 
-                if let Some(pos) = pos {
-                    if changed {
-                        self.items_changed(pos, 1, 1);
-                    } else if prev_can_hide_header != new_item.can_hide_header() {
-                        // The item's header visibility might have changed.
-                        self.update_items_headers(pos, 1);
-                    }
-                } else {
-                    // The item is now visible.
-                    let pos = self.find_item_position(&new_item).unwrap();
-                    self.items_changed(pos, 0, 1);
-                }
+                // The item's header visibility might have changed.
+                self.update_items_headers(pos, 1);
             }
             VectorDiff::Remove { index } => {
-                let item = list.borrow().get(index).unwrap().clone();
-                let pos = self.find_item_position(&item);
-                let item = list.borrow_mut().remove(index).unwrap();
+                let pos = index as u32;
+                let item = sdk_items.item(pos).and_downcast().unwrap();
                 self.remove_item(&item);
 
-                if let Some(pos) = pos {
-                    self.items_changed(pos, 1, 0);
-                }
+                sdk_items.remove(pos);
+                self.update_items_headers(pos, 1);
             }
             VectorDiff::Reset { values } => {
-                let removed = self.n_items_in_list();
                 let new_list = values
                     .into_iter()
                     .map(|item| self.create_item(&item))
-                    .collect::<VecDeque<_>>();
+                    .collect::<Vec<_>>();
 
                 // Try to update the latest unread message.
                 room.update_latest_unread(
                     new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
                 );
 
-                let added = new_list.len();
+                let removed = sdk_items.n_items();
+                let added = new_list.len() as u32;
 
-                *list.borrow_mut() = new_list;
-
-                let mut pos = 0;
-                self.adjust_item_position(&mut pos);
-
-                self.items_changed(pos, removed, added as u32);
+                sdk_items.splice(0, removed, &new_list);
+                self.update_items_headers(0, added.max(1));
             }
+        }
+
+        if self.is_empty() != was_empty {
+            self.notify("empty");
         }
     }
 
     /// Update `nb` items' headers starting at `pos`.
     fn update_items_headers(&self, pos: u32, nb: u32) {
+        let sdk_items = &self.imp().sdk_items;
+
         let mut previous_sender = if pos > 0 {
-            self.item(pos - 1)
+            sdk_items
+                .item(pos - 1)
+                .and_downcast::<TimelineItem>()
                 .filter(|item| item.can_hide_header())
                 .and_then(|item| item.event_sender())
         } else {
@@ -382,7 +308,7 @@ impl Timeline {
 
         // Update the headers of changed events plus the first event after them.
         for current_pos in pos..pos + nb + 1 {
-            let Some(current) = self.item(current_pos) else {
+            let Some(current) = sdk_items.item(current_pos).and_downcast::<TimelineItem>() else {
                 break;
             };
 
@@ -456,14 +382,9 @@ impl Timeline {
     fn clear(&self) {
         let imp = self.imp();
 
-        let count = self.n_items_in_list();
-        imp.list.take();
+        imp.sdk_items.remove_all();
         imp.event_map.take();
         self.set_state(TimelineState::Initial);
-
-        self.notify("empty");
-        self.upcast_ref::<gio::ListModel>()
-            .items_changed(0, count, 0);
     }
 
     /// Get the event with the given key from this `Timeline`.
@@ -474,40 +395,21 @@ impl Timeline {
         self.imp().event_map.borrow().get(key).cloned()
     }
 
-    /// Get the position of the given item in this `Timeline`.
-    pub fn find_item_position(&self, item: &TimelineItem) -> Option<u32> {
-        let mut pos = self
-            .imp()
-            .list
-            .borrow()
-            .iter()
-            .enumerate()
-            .find_map(|(pos, list_item)| (item == list_item).then_some(pos as u32))?;
-
-        self.adjust_item_position(&mut pos);
-
-        Some(pos)
-    }
-
     /// Get the position of the event with the given key in this `Timeline`.
     pub fn find_event_position(&self, key: &EventKey) -> Option<usize> {
-        let mut pos = self
-            .imp()
-            .list
-            .borrow()
-            .iter()
-            .enumerate()
-            .find_map(|(pos, item)| {
-                item.downcast_ref::<Event>()
-                    .filter(|event| event.key() == *key)
-                    .map(|_| pos)
-            })?;
+        for (pos, item) in self.items().iter::<TimelineItem>().enumerate() {
+            let Ok(item) = item else {
+                break;
+            };
 
-        if self.state().has_virtual_item() {
-            pos += 1;
+            if let Some(event) = item.downcast_ref::<Event>() {
+                if event.key() == *key {
+                    return Some(pos);
+                }
+            }
         }
 
-        Some(pos)
+        None
     }
 
     /// Fetch the event with the given id.
@@ -690,14 +592,18 @@ impl Timeline {
 
         imp.state.set(state);
 
-        self.notify("state");
+        let end_items = &imp.end_items;
+        let removed = end_items.n_items();
 
-        let removed = if prev_state.has_virtual_item() { 1 } else { 0 };
-        let added = if state.has_virtual_item() { 1 } else { 0 };
-
-        if removed > 0 || added > 0 {
-            self.items_changed(0, removed, added);
+        match state {
+            TimelineState::Loading => end_items.splice(0, removed, &[VirtualItem::spinner()]),
+            TimelineState::Complete => {
+                end_items.splice(0, removed, &[VirtualItem::timeline_start()])
+            }
+            _ => end_items.remove_all(),
         }
+
+        self.notify("state");
     }
 
     /// The state of the timeline.
@@ -707,11 +613,11 @@ impl Timeline {
 
     /// Whether the timeline is empty.
     pub fn is_empty(&self) -> bool {
-        self.n_items() == 0
+        self.imp().sdk_items.n_items() == 0
     }
 
     fn has_typing_row(&self) -> bool {
-        self.imp().has_typing.get()
+        self.imp().end_items.n_items() > 0
     }
 
     fn add_typing_row(&self) {
@@ -719,9 +625,7 @@ impl Timeline {
             return;
         }
 
-        let pos = self.n_items();
-        self.imp().has_typing.set(true);
-        self.upcast_ref::<gio::ListModel>().items_changed(pos, 0, 1);
+        self.imp().end_items.append(&VirtualItem::typing());
     }
 
     pub fn remove_empty_typing_row(&self) {
@@ -729,8 +633,6 @@ impl Timeline {
             return;
         }
 
-        let pos = self.n_items() - 1;
-        self.imp().has_typing.set(false);
-        self.upcast_ref::<gio::ListModel>().items_changed(pos, 1, 0);
+        self.imp().end_items.remove_all();
     }
 }
