@@ -9,14 +9,14 @@ use gtk::{
     CompositeTemplate,
 };
 use log::error;
-use matrix_sdk::{
-    ruma::api::client::{
+use matrix_sdk::Error;
+use ruma::{
+    api::client::{
         error::StandardErrorBody,
-        uiaa::{AuthData, AuthType, FallbackAcknowledgement, Password, UserIdentifier},
+        uiaa::{AuthData, AuthType, Dummy, FallbackAcknowledgement, Password, UserIdentifier},
     },
-    Error,
+    assign,
 };
-use ruma::{api::client::uiaa::Dummy, assign};
 
 use crate::{prelude::*, session::model::Session, spawn, spawn_tokio};
 
