@@ -247,11 +247,8 @@ impl Login {
     pub fn drop_client(&self) {
         if let Some(client) = self.imp().client.take() {
             // The `Client` needs to access a tokio runtime when it is dropped.
-            let guard = RUNTIME.enter();
-            RUNTIME.block_on(async move {
-                drop(client);
-                drop(guard);
-            });
+            let _guard = RUNTIME.enter();
+            drop(client);
         }
     }
 
