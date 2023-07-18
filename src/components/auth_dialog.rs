@@ -160,7 +160,9 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// Dialog to guide the user through an authentication flow.
+    /// Dialog to guide the user through the [User-Interactive Authentication API] (UIAA).
+    ///
+    /// [User-Interaction Authentication API]: https://spec.matrix.org/v1.7/client-server-api/#user-interactive-authentication-api
     pub struct AuthDialog(ObjectSubclass<imp::AuthDialog>)
         @extends gtk::Widget, adw::Window, gtk::Window, @implements gtk::Accessible;
 }
