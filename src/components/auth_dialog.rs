@@ -14,16 +14,16 @@ use matrix_sdk::{
         error::StandardErrorBody,
         uiaa::{AuthData, AuthType, FallbackAcknowledgement, Password, UserIdentifier},
     },
-    Error, RumaApiError,
+    Error,
 };
-use ruma::assign;
+use ruma::{api::client::uiaa::Dummy, assign};
 
 use crate::{prelude::*, session::model::Session, spawn, spawn_tokio};
 
 #[derive(Debug)]
 pub enum AuthError {
     ServerResponse(Box<Error>),
-    MalformedResponse,
+    MissingSessionId,
     StageFailed,
     NoStageToChoose,
     UserCancelled,
@@ -189,11 +189,7 @@ impl AuthDialog {
             let uiaa_info = match response {
                 Ok(result) => return Ok(result),
                 Err(error) => {
-                    if let Some(uiaa_info) = error.as_ruma_api_error().and_then(|error| match error
-                    {
-                        RumaApiError::Uiaa(uiaa_info) => Some(uiaa_info),
-                        _ => None,
-                    }) {
+                    if let Some(uiaa_info) = error.as_uiaa_response() {
                         uiaa_info.clone()
                     } else {
                         return Err(AuthError::ServerResponse(Box::new(error)));
@@ -231,8 +227,7 @@ impl AuthDialog {
                 return auth_result;
             }
         }
-        let session = session.clone().ok_or(AuthError::MalformedResponse)?;
-        self.perform_fallback(session, a_stage).await
+        self.perform_fallback(session.clone(), a_stage).await
     }
 
     /// Tries to perform the given stage.
@@ -245,6 +240,7 @@ impl AuthDialog {
     ) -> Option<Result<AuthData, AuthError>> {
         match stage {
             AuthType::Password => Some(self.perform_password_stage(session.clone()).await),
+            AuthType::Sso => Some(self.perform_fallback(session.clone(), stage).await),
             // TODO implement other authentication types
             // See: https://gitlab.gnome.org/GNOME/fractal/-/issues/835
             _ => None,
@@ -271,9 +267,11 @@ impl AuthDialog {
     /// Performs a web-based fallback for the given stage.
     async fn perform_fallback(
         &self,
-        session: String,
+        session: Option<String>,
         stage: &AuthType,
     ) -> Result<AuthData, AuthError> {
+        let session = session.ok_or(AuthError::MissingSessionId)?;
+
         let client = self.session().client();
         let homeserver = spawn_tokio!(async move { client.homeserver().await })
             .await
