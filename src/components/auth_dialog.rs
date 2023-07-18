@@ -241,6 +241,7 @@ impl AuthDialog {
         match stage {
             AuthType::Password => Some(self.perform_password_stage(session.clone()).await),
             AuthType::Sso => Some(self.perform_fallback(session.clone(), stage).await),
+            AuthType::Dummy => Some(self.perform_dummy_stage(session.clone())),
             // TODO implement other authentication types
             // See: https://gitlab.gnome.org/GNOME/fractal/-/issues/835
             _ => None,
@@ -262,6 +263,11 @@ impl AuthDialog {
         );
 
         Ok(AuthData::Password(data))
+    }
+
+    /// Performs the dummy stage.
+    fn perform_dummy_stage(&self, session: Option<String>) -> Result<AuthData, AuthError> {
+        Ok(AuthData::Dummy(assign!(Dummy::new(), { session })))
     }
 
     /// Performs a web-based fallback for the given stage.
