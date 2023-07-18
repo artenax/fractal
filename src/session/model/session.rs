@@ -37,6 +37,7 @@ use crate::{
     utils::{
         check_if_reachable,
         matrix::{self, ClientSetupError},
+        TokioDrop,
     },
 };
 
@@ -65,7 +66,7 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct Session {
-        pub client: OnceCell<Client>,
+        pub client: TokioDrop<Client>,
         pub sidebar_list_model: OnceCell<SidebarListModel>,
         pub user: OnceCell<User>,
         pub state: Cell<SessionState>,

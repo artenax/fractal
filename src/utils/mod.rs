@@ -22,10 +22,11 @@ use gtk::{
     glib::{self, closure, Object},
 };
 use matrix_sdk::ruma::UInt;
-use once_cell::sync::Lazy;
+use once_cell::sync::{Lazy, OnceCell};
 use regex::Regex;
 
 pub use self::expression_list_model::ExpressionListModel;
+use crate::RUNTIME;
 
 /// Returns an expression that is the and’ed result of the given boolean
 /// expressions.
@@ -331,6 +332,49 @@ impl<T> AsyncAction<T> {
         match self {
             Self::Set(value) => Some(value),
             _ => None,
+        }
+    }
+}
+
+/// A type that requires the tokio runtime to be running when dropped.
+///
+/// This is basically usable as a [`OnceCell`].
+#[derive(Debug, Clone)]
+pub struct TokioDrop<T>(OnceCell<T>);
+
+impl<T> TokioDrop<T> {
+    /// Create a new empty `TokioDrop`;
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Gets a reference to the underlying value.
+    ///
+    /// Returns `None` if the cell is empty.
+    pub fn get(&self) -> Option<&T> {
+        self.0.get()
+    }
+
+    /// Sets the contents of this cell to `value`.
+    ///
+    /// Returns `Ok(())` if the cell was empty and `Err(value)` if it was full.
+    pub fn set(&self, value: T) -> Result<(), T> {
+        self.0.set(value)
+    }
+}
+
+impl<T> Default for TokioDrop<T> {
+    fn default() -> Self {
+        Self(Default::default())
+    }
+}
+
+impl<T> Drop for TokioDrop<T> {
+    fn drop(&mut self) {
+        let _guard = RUNTIME.enter();
+
+        if let Some(inner) = self.0.take() {
+            drop(inner)
         }
     }
 }
