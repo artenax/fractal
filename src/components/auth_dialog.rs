@@ -17,15 +17,28 @@ use ruma::{
     },
     assign,
 };
+use thiserror::Error;
 
 use crate::{prelude::*, session::model::Session, spawn, spawn_tokio};
 
-#[derive(Debug)]
+/// An error during UIAA interaction.
+#[derive(Debug, Error)]
 pub enum AuthError {
-    ServerResponse(Box<Error>),
+    /// The server returned a non-UIAA error.
+    #[error(transparent)]
+    ServerResponse(#[from] Error),
+
+    /// The ID of the session is missing for a stage that requires it.
+    #[error("The ID of the session is missing")]
     MissingSessionId,
-    StageFailed,
+
+    /// The available flows are empty or done but the endpoint still requires
+    /// UIAA.
+    #[error("There is no stage to choose from")]
     NoStageToChoose,
+
+    /// The user cancelled the authentication.
+    #[error("The user cancelled the authentication")]
     UserCancelled,
 }
 
@@ -192,7 +205,7 @@ impl AuthDialog {
                     if let Some(uiaa_info) = error.as_uiaa_response() {
                         uiaa_info.clone()
                     } else {
-                        return Err(AuthError::ServerResponse(Box::new(error)));
+                        return Err(error.into());
                     }
                 }
             };
