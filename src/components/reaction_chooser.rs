@@ -140,7 +140,7 @@ impl ReactionChooser {
                     if let Some(button) = imp
                         .reaction_grid
                         .child_at(reaction_item.column, reaction_item.row)
-                        .and_then(|widget| widget.downcast::<gtk::ToggleButton>().ok())
+                        .and_downcast::<gtk::ToggleButton>()
                     {
                         button.set_active(false);
                     }
@@ -186,7 +186,7 @@ impl ReactionChooser {
                 if let Some(button) = imp
                     .reaction_grid
                     .child_at(reaction_item.column, reaction_item.row)
-                    .and_then(|widget| widget.downcast::<gtk::ToggleButton>().ok())
+                    .and_downcast::<gtk::ToggleButton>()
                 {
                     button.set_active(false);
                 }

@@ -160,8 +160,7 @@ mod imp {
 
             if let Some(sidebar) = obj
                 .parent()
-                .as_ref()
-                .and_then(|obj| obj.downcast_ref::<Row>())
+                .and_downcast_ref::<Row>()
                 .map(|row| row.sidebar())
             {
                 let popover = sidebar.room_row_popover();
@@ -358,14 +357,14 @@ impl RoomRow {
     }
 
     fn drag_begin(&self) {
-        let row = self.parent().unwrap().downcast::<Row>().unwrap();
+        let row = self.parent().and_downcast::<Row>().unwrap();
         row.add_css_class("drag");
         row.sidebar()
             .set_drop_source_type(Some(self.room().unwrap().category()));
     }
 
     fn drag_end(&self) {
-        let row = self.parent().unwrap().downcast::<Row>().unwrap();
+        let row = self.parent().and_downcast::<Row>().unwrap();
         row.sidebar().set_drop_source_type(None);
         row.remove_css_class("drag");
     }

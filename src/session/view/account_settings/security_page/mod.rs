@@ -112,8 +112,7 @@ impl SecurityPage {
         let subpage = &*self.imp().import_export_keys_subpage;
         subpage.set_mode(KeysSubpageMode::Export);
         self.root()
-            .as_ref()
-            .and_then(|root| root.downcast_ref::<adw::PreferencesWindow>())
+            .and_downcast_ref::<adw::PreferencesWindow>()
             .unwrap()
             .present_subpage(subpage);
     }
@@ -123,8 +122,7 @@ impl SecurityPage {
         let subpage = &*self.imp().import_export_keys_subpage;
         subpage.set_mode(KeysSubpageMode::Import);
         self.root()
-            .as_ref()
-            .and_then(|root| root.downcast_ref::<adw::PreferencesWindow>())
+            .and_downcast_ref::<adw::PreferencesWindow>()
             .unwrap()
             .present_subpage(subpage);
     }

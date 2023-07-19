@@ -168,7 +168,7 @@ impl ExploreServersPopover {
         self.imp()
             .listbox
             .selected_row()
-            .and_then(|row| row.downcast::<ExploreServerRow>().ok())
+            .and_downcast::<ExploreServerRow>()
             .and_then(|row| row.server().cloned())
     }
 

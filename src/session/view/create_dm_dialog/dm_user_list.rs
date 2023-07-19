@@ -99,8 +99,8 @@ mod imp {
             self.list
                 .borrow()
                 .get(position as usize)
-                .map(glib::object::Cast::upcast_ref::<glib::Object>)
                 .cloned()
+                .and_upcast()
         }
     }
 }

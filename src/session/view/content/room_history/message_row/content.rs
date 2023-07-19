@@ -189,9 +189,7 @@ fn build_content(
         TimelineItemContent::Message(message) => {
             match message.msgtype() {
                 MessageType::Audio(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageAudio>())
-                    {
+                    let child = if let Some(child) = parent.child().and_downcast::<MessageAudio>() {
                         child
                     } else {
                         let child = MessageAudio::new();
@@ -201,9 +199,7 @@ fn build_content(
                     child.audio(message.clone(), &room.session(), format);
                 }
                 MessageType::Emote(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
+                    let child = if let Some(child) = parent.child().and_downcast::<MessageText>() {
                         child
                     } else {
                         let child = MessageText::new();
@@ -230,9 +226,7 @@ fn build_content(
                             filename_for_mime(info.and_then(|info| info.mimetype.as_deref()), None)
                         });
 
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageFile>())
-                    {
+                    let child = if let Some(child) = parent.child().and_downcast::<MessageFile>() {
                         child
                     } else {
                         let child = MessageFile::new();
@@ -243,9 +237,7 @@ fn build_content(
                     child.set_format(format);
                 }
                 MessageType::Image(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageMedia>())
-                    {
+                    let child = if let Some(child) = parent.child().and_downcast::<MessageMedia>() {
                         child
                     } else {
                         let child = MessageMedia::new();
@@ -255,21 +247,18 @@ fn build_content(
                     child.image(message.clone(), &room.session(), format);
                 }
                 MessageType::Location(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageLocation>())
-                    {
-                        child
-                    } else {
-                        let child = MessageLocation::new();
-                        parent.set_child(Some(&child));
-                        child
-                    };
+                    let child =
+                        if let Some(child) = parent.child().and_downcast::<MessageLocation>() {
+                            child
+                        } else {
+                            let child = MessageLocation::new();
+                            parent.set_child(Some(&child));
+                            child
+                        };
                     child.set_geo_uri(&message.geo_uri, format);
                 }
                 MessageType::Notice(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
+                    let child = if let Some(child) = parent.child().and_downcast::<MessageText>() {
                         child
                     } else {
                         let child = MessageText::new();
@@ -284,9 +273,7 @@ fn build_content(
                     );
                 }
                 MessageType::ServerNotice(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
+                    let child = if let Some(child) = parent.child().and_downcast::<MessageText>() {
                         child
                     } else {
                         let child = MessageText::new();
@@ -296,9 +283,7 @@ fn build_content(
                     child.with_text(message.body.clone(), format);
                 }
                 MessageType::Text(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
+                    let child = if let Some(child) = parent.child().and_downcast::<MessageText>() {
                         child
                     } else {
                         let child = MessageText::new();
@@ -313,9 +298,7 @@ fn build_content(
                     );
                 }
                 MessageType::Video(message) => {
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageMedia>())
-                    {
+                    let child = if let Some(child) = parent.child().and_downcast::<MessageMedia>() {
                         child
                     } else {
                         let child = MessageMedia::new();
@@ -326,9 +309,7 @@ fn build_content(
                 }
                 MessageType::VerificationRequest(_) => {
                     // TODO: show more information about the verification
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
+                    let child = if let Some(child) = parent.child().and_downcast::<MessageText>() {
                         child
                     } else {
                         let child = MessageText::new();
@@ -339,9 +320,7 @@ fn build_content(
                 }
                 msgtype => {
                     warn!("Event not supported: {msgtype:?}");
-                    let child = if let Some(Ok(child)) =
-                        parent.child().map(|w| w.downcast::<MessageText>())
-                    {
+                    let child = if let Some(child) = parent.child().and_downcast::<MessageText>() {
                         child
                     } else {
                         let child = MessageText::new();
@@ -353,19 +332,17 @@ fn build_content(
             }
         }
         TimelineItemContent::Sticker(sticker) => {
-            let child =
-                if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageMedia>()) {
-                    child
-                } else {
-                    let child = MessageMedia::new();
-                    parent.set_child(Some(&child));
-                    child
-                };
+            let child = if let Some(child) = parent.child().and_downcast::<MessageMedia>() {
+                child
+            } else {
+                let child = MessageMedia::new();
+                parent.set_child(Some(&child));
+                child
+            };
             child.sticker(sticker.content().clone(), &room.session(), format);
         }
         TimelineItemContent::UnableToDecrypt(_) => {
-            let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
-            {
+            let child = if let Some(child) = parent.child().and_downcast::<MessageText>() {
                 child
             } else {
                 let child = MessageText::new();
@@ -376,8 +353,7 @@ fn build_content(
         }
         content => {
             warn!("Unsupported event content: {content:?}");
-            let child = if let Some(Ok(child)) = parent.child().map(|w| w.downcast::<MessageText>())
-            {
+            let child = if let Some(child) = parent.child().and_downcast::<MessageText>() {
                 child
             } else {
                 let child = MessageText::new();

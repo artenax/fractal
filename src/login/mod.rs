@@ -208,7 +208,7 @@ impl Login {
 
     fn parent_window(&self) -> Window {
         self.root()
-            .and_then(|root| root.downcast().ok())
+            .and_downcast()
             .expect("Login needs to have a parent window")
     }
 

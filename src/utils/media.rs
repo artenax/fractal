@@ -195,11 +195,7 @@ pub async fn save_to_file(obj: &impl IsA<gtk::Widget>, data: Vec<u8>, filename: 
         .build();
 
     match dialog
-        .save_future(
-            obj.root()
-                .as_ref()
-                .and_then(|r| r.downcast_ref::<gtk::Window>()),
-        )
+        .save_future(obj.root().and_downcast_ref::<gtk::Window>())
         .await
     {
         Ok(file) => {

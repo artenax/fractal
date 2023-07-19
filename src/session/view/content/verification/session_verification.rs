@@ -224,7 +224,7 @@ impl SessionVerification {
 
     /// Returns the parent GtkWindow containing this widget.
     fn parent_window(&self) -> Option<Window> {
-        self.root()?.downcast().ok()
+        self.root().and_downcast()
     }
 
     fn reset(&self) {

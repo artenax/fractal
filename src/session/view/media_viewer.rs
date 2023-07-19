@@ -204,7 +204,7 @@ mod imp {
 
             // Bind `fullscreened` to the window property of the same name.
             obj.connect_notify_local(Some("root"), |obj, _| {
-                if let Some(window) = obj.root().and_then(|root| root.downcast::<Window>().ok()) {
+                if let Some(window) = obj.root().and_downcast::<Window>() {
                     window
                         .bind_property("fullscreened", obj, "fullscreened")
                         .flags(glib::BindingFlags::SYNC_CREATE)

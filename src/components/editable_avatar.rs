@@ -402,11 +402,7 @@ impl EditableAvatar {
             .build();
 
         let file = match dialog
-            .open_future(
-                self.root()
-                    .as_ref()
-                    .and_then(|r| r.downcast_ref::<gtk::Window>()),
-            )
+            .open_future(self.root().and_downcast_ref::<gtk::Window>())
             .await
         {
             Ok(file) => file,

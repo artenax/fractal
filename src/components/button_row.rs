@@ -71,11 +71,7 @@ mod imp {
             self.parent_constructed();
 
             self.obj().connect_parent_notify(|obj| {
-                if let Some(listbox) = obj
-                    .parent()
-                    .as_ref()
-                    .and_then(|parent| parent.downcast_ref::<gtk::ListBox>())
-                {
+                if let Some(listbox) = obj.parent().and_downcast_ref::<gtk::ListBox>() {
                     listbox.connect_row_activated(clone!(@weak obj => move |_, row| {
                         if row == obj.upcast_ref::<gtk::ListBoxRow>() {
                             obj.emit_by_name::<()>("activated", &[]);

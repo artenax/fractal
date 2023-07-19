@@ -205,7 +205,7 @@ impl DeviceRow {
         };
 
         spawn!(clone!(@weak self as obj => async move {
-            let window: Option<gtk::Window> = obj.root().and_then(|root| root.downcast().ok());
+            let window: Option<gtk::Window> = obj.root().and_downcast();
             match device.delete(window.as_ref()).await {
                 Ok(_) => obj.set_visible(false),
                 Err(AuthError::UserCancelled) => {},

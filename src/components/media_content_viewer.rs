@@ -125,7 +125,7 @@ impl MediaContentViewer {
             .imp()
             .viewer
             .child()
-            .and_then(|c| c.downcast::<gtk::Video>().ok())
+            .and_downcast::<gtk::Video>()
             .and_then(|v| v.media_stream())
         {
             if stream.is_playing() {
@@ -186,11 +186,7 @@ impl MediaContentViewer {
 
         let imp = self.imp();
 
-        let picture = if let Some(picture) = imp
-            .viewer
-            .child()
-            .and_then(|widget| widget.downcast::<gtk::Picture>().ok())
-        {
+        let picture = if let Some(picture) = imp.viewer.child().and_downcast::<gtk::Picture>() {
             picture
         } else {
             let picture = gtk::Picture::new();
@@ -241,11 +237,7 @@ impl MediaContentViewer {
                 }
             },
             ContentType::Audio => {
-                let audio = if let Some(audio) = imp
-                    .viewer
-                    .child()
-                    .and_then(|widget| widget.downcast::<AudioPlayer>().ok())
-                {
+                let audio = if let Some(audio) = imp.viewer.child().and_downcast::<AudioPlayer>() {
                     audio
                 } else {
                     let audio = AudioPlayer::new();
@@ -261,11 +253,7 @@ impl MediaContentViewer {
                 return;
             }
             ContentType::Video => {
-                let video = if let Some(video) = imp
-                    .viewer
-                    .child()
-                    .and_then(|widget| widget.downcast::<gtk::Video>().ok())
-                {
+                let video = if let Some(video) = imp.viewer.child().and_downcast::<gtk::Video>() {
                     video
                 } else {
                     let video = gtk::Video::new();
@@ -290,11 +278,7 @@ impl MediaContentViewer {
 
         let imp = self.imp();
 
-        let location = if let Some(location) = imp
-            .viewer
-            .child()
-            .and_then(|widget| widget.downcast::<LocationViewer>().ok())
-        {
+        let location = if let Some(location) = imp.viewer.child().and_downcast::<LocationViewer>() {
             location
         } else {
             let location = LocationViewer::new();
@@ -311,9 +295,9 @@ impl MediaContentViewer {
         self.imp()
             .viewer
             .child()
-            .and_then(|w| w.downcast::<gtk::Picture>().ok())
+            .and_downcast::<gtk::Picture>()
             .and_then(|p| p.paintable())
-            .and_then(|p| p.downcast::<ImagePaintable>().ok())
+            .and_downcast::<ImagePaintable>()
             .and_then(|p| p.current_frame())
     }
 }

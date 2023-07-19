@@ -258,7 +258,7 @@ mod imp {
                     if let Some(event) = widget
                         .room()
                         .and_then(|room| room.timeline().event_by_key(&EventKey::EventId(event_id)))
-                        .and_then(|event| event.downcast().ok())
+                        .and_downcast()
                     {
                         widget.set_reply_to(event);
                     }
@@ -970,7 +970,7 @@ impl RoomHistory {
 
     /// Returns the parent GtkWindow containing this widget.
     fn parent_window(&self) -> Option<gtk::Window> {
-        self.root()?.downcast().ok()
+        self.root().and_downcast()
     }
 
     /// Whether the room history should stick to the newest message in the
@@ -1051,7 +1051,7 @@ impl RoomHistory {
             .build()
             .expect("Got invalid coordinates from ashpd");
 
-        let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
+        let window = self.root().and_downcast::<gtk::Window>().unwrap();
         let dialog = AttachmentDialog::for_location(&window, &gettext("Your Location"), &geo_uri);
         if dialog.run_future().await != gtk::ResponseType::Ok {
             return Ok(());
@@ -1084,7 +1084,7 @@ impl RoomHistory {
     }
 
     async fn send_image(&self, image: gdk::Texture) {
-        let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
+        let window = self.root().and_downcast::<gtk::Window>().unwrap();
         let filename = filename_for_mime(Some(mime::IMAGE_PNG.as_ref()), None);
         let dialog = AttachmentDialog::for_image(&window, &filename, &image);
 
@@ -1115,11 +1115,7 @@ impl RoomHistory {
             .build();
 
         match dialog
-            .open_future(
-                self.root()
-                    .as_ref()
-                    .and_then(|r| r.downcast_ref::<gtk::Window>()),
-            )
+            .open_future(self.root().and_downcast_ref::<gtk::Window>())
             .await
         {
             Ok(file) => {
@@ -1139,7 +1135,7 @@ impl RoomHistory {
     async fn send_file(&self, file: gio::File) {
         match load_file(&file).await {
             Ok((bytes, file_info)) => {
-                let window = self.root().unwrap().downcast::<gtk::Window>().unwrap();
+                let window = self.root().and_downcast::<gtk::Window>().unwrap();
                 let dialog = AttachmentDialog::for_file(&window, &file_info.filename, &file);
 
                 if dialog.run_future().await != gtk::ResponseType::Ok {
@@ -1413,9 +1409,9 @@ impl RoomHistory {
             if top_in_view || bottom_in_view || content_in_view {
                 if let Some(event_id) = item
                     .first_child()
-                    .and_then(|child| child.downcast::<ItemRow>().ok())
+                    .and_downcast::<ItemRow>()
                     .and_then(|row| row.item())
-                    .and_then(|item| item.downcast::<Event>().ok())
+                    .and_downcast::<Event>()
                     .and_then(|event| event.event_id())
                 {
                     return Some(event_id);

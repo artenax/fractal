@@ -429,8 +429,7 @@ impl UserPage {
     #[template_callback]
     fn show_change_password(&self) {
         self.root()
-            .as_ref()
-            .and_then(|root| root.downcast_ref::<adw::PreferencesWindow>())
+            .and_downcast_ref::<adw::PreferencesWindow>()
             .unwrap()
             .present_subpage(&*self.imp().change_password_subpage);
     }
@@ -438,8 +437,7 @@ impl UserPage {
     #[template_callback]
     fn show_deactivate_account(&self) {
         self.root()
-            .as_ref()
-            .and_then(|root| root.downcast_ref::<adw::PreferencesWindow>())
+            .and_downcast_ref::<adw::PreferencesWindow>()
             .unwrap()
             .present_subpage(&*self.imp().deactivate_account_subpage);
     }
@@ -447,8 +445,7 @@ impl UserPage {
     #[template_callback]
     pub fn show_log_out_page(&self) {
         self.root()
-            .as_ref()
-            .and_then(|root| root.downcast_ref::<adw::PreferencesWindow>())
+            .and_downcast_ref::<adw::PreferencesWindow>()
             .unwrap()
             .present_subpage(&*self.imp().log_out_subpage);
     }

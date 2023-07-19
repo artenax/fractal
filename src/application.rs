@@ -57,15 +57,13 @@ mod imp {
             let monitor = gio::NetworkMonitor::default();
             monitor.connect_network_changed(clone!(@weak app => move |monitor, _| {
                 app.lookup_action("show-login")
-                    .unwrap()
-                    .downcast::<gio::SimpleAction>()
+                    .and_downcast::<gio::SimpleAction>()
                     .unwrap()
                     .set_enabled(monitor.is_network_available());
             }));
 
             app.lookup_action("show-login")
-                .unwrap()
-                .downcast::<gio::SimpleAction>()
+                .and_downcast::<gio::SimpleAction>()
                 .unwrap()
                 .set_enabled(monitor.is_network_available());
 
@@ -211,8 +209,7 @@ impl Application {
 impl Default for Application {
     fn default() -> Self {
         gio::Application::default()
-            .unwrap()
-            .downcast::<Application>()
+            .and_downcast::<Application>()
             .unwrap()
     }
 }

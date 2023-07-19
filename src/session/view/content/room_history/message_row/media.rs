@@ -411,8 +411,8 @@ impl MessageMedia {
                                 match ImagePaintable::from_bytes(&glib::Bytes::from(&data), None)
                                     {
                                         Ok(texture) => {
-                                            let child = if let Some(Ok(child)) =
-                                                imp.media.child().map(|w| w.downcast::<gtk::Picture>())
+                                            let child = if let Some(child) =
+                                                imp.media.child().and_downcast::<gtk::Picture>()
                                             {
                                                 child
                                             } else {
@@ -452,8 +452,8 @@ impl MessageMedia {
                                 )
                                 .unwrap();
 
-                                let child = if let Some(Ok(child)) =
-                                    imp.media.child().map(|w| w.downcast::<VideoPlayer>())
+                                let child = if let Some(child) =
+                                    imp.media.child().and_downcast::<VideoPlayer>()
                                 {
                                     child
                                 } else {
@@ -488,9 +488,9 @@ impl MessageMedia {
         self.imp()
             .media
             .child()
-            .and_then(|w| w.downcast::<gtk::Picture>().ok())
+            .and_downcast::<gtk::Picture>()
             .and_then(|p| p.paintable())
-            .and_then(|p| p.downcast::<ImagePaintable>().ok())
+            .and_downcast::<ImagePaintable>()
             .and_then(|p| p.current_frame())
     }
 }

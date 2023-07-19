@@ -280,7 +280,7 @@ impl MemberPage {
                 .set_transition_type(gtk::StackTransitionType::SlideLeft)
         }
 
-        if let Some(window) = self.root().and_then(|w| w.downcast::<adw::Window>().ok()) {
+        if let Some(window) = self.root().and_downcast::<adw::Window>() {
             match state {
                 Membership::Invite => window.set_title(Some(&gettext("Invited Room Members"))),
                 Membership::Ban => window.set_title(Some(&gettext("Banned Room Members"))),

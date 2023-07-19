@@ -123,8 +123,7 @@ mod imp {
                             .downcast_ref::<Pill>()
                             .unwrap()
                             .user()
-                            .unwrap()
-                            .downcast::<Invitee>()
+                            .and_downcast::<Invitee>()
                             .unwrap();
                         user.take_anchor();
                         user.set_invited(false);
@@ -171,8 +170,7 @@ mod imp {
                     .model()
                     .unwrap()
                     .item(index)
-                    .unwrap()
-                    .downcast::<Invitee>()
+                    .and_downcast::<Invitee>()
                     .unwrap();
 
                 invitee.set_invited(!invitee.is_invited());
@@ -292,13 +290,10 @@ impl InviteSubpage {
     fn invitee_list(&self) -> Option<InviteeList> {
         self.imp()
             .list_view
-            .model()?
-            .downcast::<gtk::NoSelection>()
-            .unwrap()
             .model()
-            .unwrap()
-            .downcast::<InviteeList>()
-            .ok()
+            .and_downcast::<gtk::NoSelection>()?
+            .model()
+            .and_downcast::<InviteeList>()
     }
 
     /// Invite the selected users to the room.

@@ -154,9 +154,7 @@ impl Row {
 
     /// The sidebar item of this row.
     pub fn item(&self) -> Option<SidebarItem> {
-        self.list_row()
-            .and_then(|r| r.item())
-            .and_then(|obj| obj.downcast().ok())
+        self.list_row().and_then(|r| r.item()).and_downcast()
     }
 
     /// The list row to track for expander state.
@@ -186,14 +184,13 @@ impl Row {
         let mut bindings = vec![];
         if let Some(item) = self.item() {
             if let Some(category) = item.downcast_ref::<Category>() {
-                let child =
-                    if let Some(Ok(child)) = self.child().map(|w| w.downcast::<CategoryRow>()) {
-                        child
-                    } else {
-                        let child = CategoryRow::new();
-                        self.set_child(Some(&child));
-                        child
-                    };
+                let child = if let Some(child) = self.child().and_downcast::<CategoryRow>() {
+                    child
+                } else {
+                    let child = CategoryRow::new();
+                    self.set_child(Some(&child));
+                    child
+                };
                 child.set_category(Some(category.clone()));
 
                 bindings.push(
@@ -202,7 +199,7 @@ impl Row {
                         .build(),
                 );
             } else if let Some(room) = item.downcast_ref::<Room>() {
-                let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<RoomRow>()) {
+                let child = if let Some(child) = self.child().and_downcast::<RoomRow>() {
                     child
                 } else {
                     let child = RoomRow::new();
@@ -212,8 +209,7 @@ impl Row {
 
                 child.set_room(Some(room.clone()));
             } else if let Some(entry) = item.downcast_ref::<Entry>() {
-                let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<EntryRow>())
-                {
+                let child = if let Some(child) = self.child().and_downcast::<EntryRow>() {
                     child
                 } else {
                     let child = EntryRow::new();
@@ -227,9 +223,7 @@ impl Row {
 
                 child.set_entry(Some(entry.clone()));
             } else if let Some(verification) = item.downcast_ref::<IdentityVerification>() {
-                let child = if let Some(Ok(child)) =
-                    self.child().map(|w| w.downcast::<VerificationRow>())
-                {
+                let child = if let Some(child) = self.child().and_downcast::<VerificationRow>() {
                     child
                 } else {
                     let child = VerificationRow::new();
@@ -269,8 +263,9 @@ impl Row {
     ///
     /// If this is not a `Entry`, returns `None`.
     pub fn entry_type(&self) -> Option<EntryType> {
-        let item = self.item()?;
-        item.downcast_ref::<Entry>().map(|entry| entry.type_())
+        self.item()
+            .and_downcast_ref::<Entry>()
+            .map(|entry| entry.type_())
     }
 
     /// Handle the drag-n-drop hovering this row.
@@ -371,7 +366,7 @@ impl Row {
 
                 if self
                     .item()
-                    .and_then(|object| object.downcast::<Category>().ok())
+                    .and_downcast::<Category>()
                     .map_or(false, |category| category.is_empty())
                 {
                     self.add_css_class("drop-empty");
@@ -396,10 +391,7 @@ impl Row {
             self.remove_css_class("drop-active");
         };
 
-        if let Some(category_row) = self
-            .child()
-            .and_then(|child| child.downcast::<CategoryRow>().ok())
-        {
+        if let Some(category_row) = self.child().and_downcast::<CategoryRow>() {
             category_row.set_show_label_for_category(
                 source_type.map(CategoryType::from).unwrap_or_default(),
             );

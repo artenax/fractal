@@ -106,11 +106,7 @@ impl ErrorPage {
         match item.delete().await {
             Ok(_) => {
                 self.action_set_enabled("error-page.remove-secret-error-session", false);
-                if let Some(window) = self
-                    .root()
-                    .as_ref()
-                    .and_then(|root| root.downcast_ref::<Window>())
-                {
+                if let Some(window) = self.root().and_downcast_ref::<Window>() {
                     toast!(self, gettext("Session removed successfully."));
                     window.restore_sessions().await;
                 }

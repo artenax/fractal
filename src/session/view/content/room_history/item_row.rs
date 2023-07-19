@@ -84,12 +84,7 @@ mod imp {
         }
 
         fn dispose(&self) {
-            if let Some(event) = self
-                .item
-                .borrow()
-                .as_ref()
-                .and_then(|item| item.downcast_ref::<Event>())
-            {
+            if let Some(event) = self.item.borrow().and_downcast_ref::<Event>() {
                 let handlers = self.notify_handlers.take();
 
                 for handler in handlers {
@@ -114,7 +109,7 @@ mod imp {
         fn menu_opened(&self) {
             let obj = self.obj();
 
-            let Some(event) = obj.item().and_then(|item| item.downcast::<Event>().ok()) else {
+            let Some(event) = obj.item().and_downcast::<Event>() else {
                 obj.set_popover(None);
                 return;
             };
@@ -235,12 +230,7 @@ impl ItemRow {
         // Reinitialize the header.
         self.remove_css_class("has-header");
 
-        if let Some(event) = imp
-            .item
-            .borrow()
-            .as_ref()
-            .and_then(|item| item.downcast_ref::<Event>())
-        {
+        if let Some(event) = imp.item.borrow().and_downcast_ref::<Event>() {
             let handlers = imp.notify_handlers.take();
 
             for handler in handlers {
@@ -283,9 +273,7 @@ impl ItemRow {
                         }
                     }
                     VirtualItemKind::Typing => {
-                        let child = if let Some(child) =
-                            self.child().and_then(|w| w.downcast::<TypingRow>().ok())
-                        {
+                        let child = if let Some(child) = self.child().and_downcast::<TypingRow>() {
                             child
                         } else {
                             let child = TypingRow::new();
@@ -303,7 +291,7 @@ impl ItemRow {
                     VirtualItemKind::TimelineStart => {
                         let label = gettext("This is the start of the visible history");
 
-                        if let Some(Ok(child)) = self.child().map(|w| w.downcast::<DividerRow>()) {
+                        if let Some(child) = self.child().and_downcast::<DividerRow>() {
                             child.set_label(&label);
                         } else {
                             let child = DividerRow::with_label(label);
@@ -311,9 +299,7 @@ impl ItemRow {
                         };
                     }
                     VirtualItemKind::DayDivider(date) => {
-                        let child = if let Some(child) =
-                            self.child().and_then(|w| w.downcast::<DividerRow>().ok())
-                        {
+                        let child = if let Some(child) = self.child().and_downcast::<DividerRow>() {
                             child
                         } else {
                             let child = DividerRow::new();
@@ -335,7 +321,7 @@ impl ItemRow {
                     VirtualItemKind::NewMessages => {
                         let label = gettext("New Messages");
 
-                        if let Some(Ok(child)) = self.child().map(|w| w.downcast::<DividerRow>()) {
+                        if let Some(child) = self.child().and_downcast::<DividerRow>() {
                             child.set_label(&label);
                         } else {
                             let child = DividerRow::with_label(label);
@@ -355,8 +341,7 @@ impl ItemRow {
             TimelineItemContent::MembershipChange(_)
             | TimelineItemContent::ProfileChange(_)
             | TimelineItemContent::OtherState(_) => {
-                let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<StateRow>())
-                {
+                let child = if let Some(child) = self.child().and_downcast::<StateRow>() {
                     child
                 } else {
                     let child = StateRow::new();
@@ -366,14 +351,13 @@ impl ItemRow {
                 child.set_event(event);
             }
             _ => {
-                let child =
-                    if let Some(Ok(child)) = self.child().map(|w| w.downcast::<MessageRow>()) {
-                        child
-                    } else {
-                        let child = MessageRow::new();
-                        self.set_child(Some(&child));
-                        child
-                    };
+                let child = if let Some(child) = self.child().and_downcast::<MessageRow>() {
+                    child
+                } else {
+                    let child = MessageRow::new();
+                    self.set_child(Some(&child));
+                    child
+                };
                 child.set_event(event.clone());
             }
         }
@@ -382,7 +366,7 @@ impl ItemRow {
     /// Update the highlight state of this row.
     fn update_highlight(&self) {
         let item_ref = self.imp().item.borrow();
-        if let Some(event) = item_ref.as_ref().and_then(|i| i.downcast_ref::<Event>()) {
+        if let Some(event) = item_ref.and_downcast_ref::<Event>() {
             if event.is_highlighted() {
                 self.add_css_class("highlight");
                 return;
@@ -413,7 +397,7 @@ impl ItemRow {
     /// Update this row for the currently related event.
     fn update_for_related_event(&self) {
         let related_event = self.room_history().related_event();
-        let event = self.item().and_then(|item| item.downcast::<Event>().ok());
+        let event = self.item().and_downcast::<Event>();
 
         if event.is_some() && event == related_event {
             self.add_css_class("selected");
@@ -426,7 +410,7 @@ impl ItemRow {
 impl EventActions for ItemRow {
     fn texture(&self) -> Option<gdk::Texture> {
         self.child()
-            .and_then(|w| w.downcast::<MessageRow>().ok())
+            .and_downcast::<MessageRow>()
             .and_then(|r| r.texture())
     }
 

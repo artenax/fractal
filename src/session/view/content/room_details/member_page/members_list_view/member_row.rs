@@ -123,9 +123,8 @@ impl MemberRow {
 
     fn member_menu(&self) -> Option<MemberMenu> {
         let member_page = self
-            .ancestor(MemberPage::static_type())?
-            .downcast::<MemberPage>()
-            .unwrap();
+            .ancestor(MemberPage::static_type())
+            .and_downcast::<MemberPage>()?;
         Some(member_page.member_menu().clone())
     }
 }

@@ -256,7 +256,7 @@ impl ImportExportKeysSubpage {
             dialog.set_initial_name(Some(&format!("{}.txt", gettext("fractal-encryption-keys"))));
         }
 
-        let parent_window = self.root().and_then(|r| r.downcast::<gtk::Window>().ok());
+        let parent_window = self.root().and_downcast::<gtk::Window>();
         let res = if is_export {
             dialog.set_title(&gettext("Save Encryption Keys To…"));
             dialog.save_future(parent_window.as_ref()).await

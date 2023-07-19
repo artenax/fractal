@@ -289,9 +289,7 @@ impl CompletionPopover {
 
     /// The parent `GtkTextView` to autocomplete.
     pub fn view(&self) -> gtk::TextView {
-        self.parent()
-            .and_then(|parent| parent.downcast::<gtk::TextView>().ok())
-            .unwrap()
+        self.parent().and_downcast::<gtk::TextView>().unwrap()
     }
 
     /// The ID of the logged-in user.
@@ -315,16 +313,16 @@ impl CompletionPopover {
         self.imp()
             .filtered_members
             .model()
-            .and_then(|model| model.downcast::<gtk::SortListModel>().ok())
+            .and_downcast::<gtk::SortListModel>()
             .and_then(|second_model| second_model.model())
-            .and_then(|model| model.downcast::<gtk::FilterListModel>().ok())
+            .and_downcast()
     }
 
     /// The room members used for completion.
     pub fn members(&self) -> Option<MemberList> {
         self.first_model()
             .and_then(|first_model| first_model.model())
-            .and_then(|model| model.downcast::<MemberList>().ok())
+            .and_downcast()
     }
 
     /// Set the room members used for completion.
@@ -392,10 +390,7 @@ impl CompletionPopover {
             pos + added
         };
         for idx in pos..upper_bound {
-            if let Some(member) = members
-                .item(idx)
-                .and_then(|obj| obj.downcast::<Member>().ok())
-            {
+            if let Some(member) = members.item(idx).and_downcast::<Member>() {
                 let watch = members_watch.entry(member.user_id()).or_default();
 
                 // Update the position of all members after pos.
@@ -701,7 +696,7 @@ impl CompletionPopover {
         let filtered_members = self.filtered_members();
         let filter = filtered_members
             .filter()
-            .and_then(|filter| filter.downcast::<gtk::StringFilter>().ok())
+            .and_downcast::<gtk::StringFilter>()
             .unwrap();
         let term = self
             .current_word()
@@ -714,10 +709,7 @@ impl CompletionPopover {
             self.select_row_at_index(None);
         } else {
             for (idx, row) in imp.rows.iter().enumerate() {
-                if let Some(member) = filtered_members
-                    .item(idx as u32)
-                    .and_then(|obj| obj.downcast::<Member>().ok())
-                {
+                if let Some(member) = filtered_members.item(idx as u32).and_downcast::<Member>() {
                     row.set_member(Some(member));
                     row.set_visible(true);
                 } else if row.get_visible() {

@@ -817,8 +817,7 @@ impl Room {
             (0..timeline_items.n_items()).rev().find_map(|i| {
                 timeline_items
                     .item(i)
-                    .as_ref()
-                    .and_then(|obj| obj.downcast_ref::<Event>())
+                    .and_downcast_ref::<Event>()
                     .and_then(|event| {
                         // The user sent the event so it's the latest read event.
                         // Necessary because we don't get read receipts for the user's own events.
@@ -932,11 +931,7 @@ impl Room {
                 let timeline_items = self.timeline().items();
 
                 for i in (0..timeline_items.n_items()).rev() {
-                    if let Some(event) = timeline_items
-                        .item(i)
-                        .as_ref()
-                        .and_then(|obj| obj.downcast_ref::<Event>())
-                    {
+                    if let Some(event) = timeline_items.item(i).and_downcast_ref::<Event>() {
                         // This is the event corresponding to the read receipt so there's no unread
                         // messages.
                         if event == latest_read {

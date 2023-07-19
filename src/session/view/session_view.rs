@@ -240,10 +240,7 @@ impl SessionView {
 
     /// The currently selected room, if any.
     pub fn selected_room(&self) -> Option<Room> {
-        self.imp()
-            .content
-            .item()
-            .and_then(|item| item.downcast().ok())
+        self.imp().content.item().and_downcast()
     }
 
     pub fn select_room(&self, room: Option<Room>) {
@@ -276,7 +273,7 @@ impl SessionView {
 
     /// Returns the parent GtkWindow containing this widget.
     fn parent_window(&self) -> Option<Window> {
-        self.root()?.downcast().ok()
+        self.root().and_downcast()
     }
 
     fn show_room_creation_dialog(&self) {

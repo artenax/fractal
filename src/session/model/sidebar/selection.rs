@@ -197,7 +197,7 @@ impl Selection {
         let selected_item = self
             .model()
             .and_then(|m| m.item(position))
-            .and_then(|o| o.downcast::<gtk::TreeListRow>().ok())
+            .and_downcast::<gtk::TreeListRow>()
             .and_then(|r| r.item());
 
         let selected = if selected_item.is_none() {
@@ -245,7 +245,7 @@ impl Selection {
                 for i in 0..model.n_items() {
                     let current_item = model
                         .item(i)
-                        .and_then(|o| o.downcast::<gtk::TreeListRow>().ok())
+                        .and_downcast::<gtk::TreeListRow>()
                         .and_then(|r| r.item());
                     if current_item == item {
                         selected = i;
@@ -297,7 +297,7 @@ impl Selection {
                 } else {
                     let item = model
                         .item(position + i)
-                        .and_then(|o| o.downcast::<gtk::TreeListRow>().ok())
+                        .and_downcast::<gtk::TreeListRow>()
                         .and_then(|r| r.item());
                     if item == selected_item {
                         // the item moved

@@ -86,7 +86,7 @@ where
                 // View Event Source
                 gio::ActionEntry::builder("view-source")
                     .activate(clone!(@weak self as widget, @weak event => move |_, _, _| {
-                        let window = widget.root().unwrap().downcast().unwrap();
+                        let window = widget.root().and_downcast().unwrap();
                         let dialog = EventSourceDialog::new(&window, &event);
                         dialog.present();
                     }))
@@ -94,10 +94,7 @@ where
             ]);
         }
 
-        if let Some(event) = event
-            .downcast_ref::<Event>()
-            .filter(|event| event.event_id().is_some())
-        {
+        if event.event_id().is_some() {
             action_group.add_action_entries([
                 // Create a permalink
                 gio::ActionEntry::builder("permalink")

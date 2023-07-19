@@ -251,12 +251,7 @@ impl ChangePasswordSubpage {
         imp.confirm_password.set_sensitive(false);
 
         let session = self.session().unwrap();
-        let dialog = AuthDialog::new(
-            self.root()
-                .as_ref()
-                .and_then(|root| root.downcast_ref::<gtk::Window>()),
-            &session,
-        );
+        let dialog = AuthDialog::new(self.root().and_downcast_ref::<gtk::Window>(), &session);
 
         let result = dialog
             .authenticate(move |client, auth| {

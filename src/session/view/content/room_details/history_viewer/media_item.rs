@@ -232,8 +232,7 @@ impl MediaItem {
     fn handle_release(&self) {
         let media_history_viewer = self
             .ancestor(MediaHistoryViewer::static_type())
-            .unwrap()
-            .downcast::<MediaHistoryViewer>()
+            .and_downcast::<MediaHistoryViewer>()
             .unwrap();
         media_history_viewer.show_media(self);
     }

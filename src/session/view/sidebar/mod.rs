@@ -158,11 +158,9 @@ mod imp {
             self.listview.set_factory(Some(&factory));
 
             self.listview.connect_activate(move |listview, pos| {
-                let model: Option<Selection> = listview.model().and_then(|o| o.downcast().ok());
-                let row: Option<gtk::TreeListRow> = model
-                    .as_ref()
-                    .and_then(|m| m.item(pos))
-                    .and_then(|o| o.downcast().ok());
+                let model: Option<Selection> = listview.model().and_downcast();
+                let row: Option<gtk::TreeListRow> =
+                    model.as_ref().and_then(|m| m.item(pos)).and_downcast();
 
                 let (model, row) = match (model, row) {
                     (Some(model), Some(row)) => (model, row),
@@ -182,7 +180,7 @@ mod imp {
                 if let Some(window) = obj.parent_window() {
                     let account_switcher = window.account_switcher();
                     // We need to remove the popover from the previous MenuButton, if any
-                    if let Some(prev_parent) = account_switcher.parent().and_then(|btn| btn.downcast::<gtk::MenuButton>().ok()) {
+                    if let Some(prev_parent) = account_switcher.parent().and_downcast::<gtk::MenuButton>() {
                         if &prev_parent == btn {
                             return;
                         } else {
@@ -375,6 +373,6 @@ impl Sidebar {
 
     /// Returns the parent `Window` containing the `Sidebar`
     fn parent_window(&self) -> Option<Window> {
-        self.root()?.downcast().ok()
+        self.root().and_downcast()
     }
 }

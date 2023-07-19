@@ -248,12 +248,7 @@ impl Content {
                 imp.stack.set_visible_child(&*imp.empty_page);
             }
             Some(o) if o.is::<Room>() => {
-                if let Some(room) = imp
-                    .item
-                    .borrow()
-                    .as_ref()
-                    .and_then(|item| item.downcast_ref::<Room>())
-                {
+                if let Some(room) = imp.item.borrow().and_downcast_ref::<Room>() {
                     if room.category() == RoomType::Invited {
                         imp.invite.set_room(Some(room.clone()));
                         imp.stack.set_visible_child(&*imp.invite);
@@ -271,12 +266,7 @@ impl Content {
                 imp.stack.set_visible_child(&*imp.explore);
             }
             Some(o) if o.is::<IdentityVerification>() => {
-                if let Some(item) = imp
-                    .item
-                    .borrow()
-                    .as_ref()
-                    .and_then(|item| item.downcast_ref::<IdentityVerification>())
-                {
+                if let Some(item) = imp.item.borrow().and_downcast_ref::<IdentityVerification>() {
                     if item.mode() != VerificationMode::CurrentSession {
                         imp.identity_verification_widget
                             .set_request(Some(item.clone()));

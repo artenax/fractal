@@ -89,7 +89,7 @@ impl Badge {
     }
 
     fn update_badge(&self, power_level: PowerLevel) {
-        let label: gtk::Label = self.child().unwrap().downcast().unwrap();
+        let label: gtk::Label = self.child().and_downcast().unwrap();
         let role = MemberRole::from(power_level);
 
         let visible = match role {

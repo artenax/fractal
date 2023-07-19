@@ -127,7 +127,7 @@ impl StateRow {
         let content = self.content();
         match widget {
             WidgetType::Text(message) => {
-                if let Some(Ok(child)) = content.child().map(|w| w.downcast::<gtk::Label>()) {
+                if let Some(child) = content.child().and_downcast::<gtk::Label>() {
                     child.set_text(&message);
                 } else {
                     content.set_child(Some(&text(message)));
@@ -283,7 +283,7 @@ impl StateRow {
         };
 
         let content = self.content();
-        if let Some(Ok(child)) = content.child().map(|w| w.downcast::<gtk::Label>()) {
+        if let Some(child) = content.child().and_downcast::<gtk::Label>() {
             child.set_text(&message);
         } else {
             content.set_child(Some(&text(message)));
@@ -353,7 +353,7 @@ impl StateRow {
         };
 
         let content = self.content();
-        if let Some(Ok(child)) = content.child().map(|w| w.downcast::<gtk::Label>()) {
+        if let Some(child) = content.child().and_downcast::<gtk::Label>() {
             child.set_text(&message);
         } else {
             content.set_child(Some(&text(message)));

@@ -79,8 +79,7 @@ impl ItemRow {
 
         if let Some(item) = item.as_ref() {
             if let Some(member) = item.downcast_ref::<Member>() {
-                let child = if let Some(Ok(child)) = self.child().map(|w| w.downcast::<MemberRow>())
-                {
+                let child = if let Some(child) = self.child().and_downcast::<MemberRow>() {
                     child
                 } else {
                     let child = MemberRow::new();
@@ -89,8 +88,7 @@ impl ItemRow {
                 };
                 child.set_member(Some(member.clone()));
             } else if let Some(item) = item.downcast_ref::<MembershipSubpageItem>() {
-                let child = if let Some(Ok(child)) =
-                    self.child().map(|w| w.downcast::<MembershipSubpageRow>())
+                let child = if let Some(child) = self.child().and_downcast::<MembershipSubpageRow>()
                 {
                     child
                 } else {
