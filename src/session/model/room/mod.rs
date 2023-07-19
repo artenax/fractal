@@ -1431,7 +1431,7 @@ impl Room {
     pub fn load_tombstone(&self) {
         let imp = self.imp();
 
-        if !self.is_tombstoned() {
+        if !self.is_tombstoned() || self.successor_id().is_some() {
             return;
         }
 
