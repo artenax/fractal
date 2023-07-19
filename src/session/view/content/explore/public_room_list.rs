@@ -8,6 +8,7 @@ use matrix_sdk::ruma::{
     directory::{Filter, RoomNetwork},
     uint, ServerName,
 };
+use ruma::directory::RoomTypeFilter;
 
 use super::{PublicRoom, Server};
 use crate::{session::model::Session, spawn, spawn_tokio};
@@ -266,11 +267,14 @@ impl PublicRoomList {
             let server = server.and_then(|server| ServerName::parse(server).ok());
 
             let request = assign!(PublicRoomsRequest::new(), {
-              limit: Some(uint!(20)),
-              since: next_batch,
-              room_network,
-              server,
-              filter: assign!(Filter::new(), { generic_search_term: search_term }),
+                limit: Some(uint!(20)),
+                since: next_batch,
+                room_network,
+                server,
+                filter: assign!(
+                    Filter::new(),
+                    { generic_search_term: search_term, room_types: vec![RoomTypeFilter::Default] }
+                ),
             });
             client.public_rooms_filtered(request).await
         });
