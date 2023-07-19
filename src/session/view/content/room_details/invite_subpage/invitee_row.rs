@@ -101,7 +101,8 @@ impl InviteeRow {
             // We can't use `gtk::Expression` because we need a bidirectional binding
             let binding = user
                 .bind_property("invited", &*imp.check_button, "active")
-                .flags(glib::BindingFlags::BIDIRECTIONAL | glib::BindingFlags::SYNC_CREATE)
+                .sync_create()
+                .bidirectional()
                 .build();
 
             imp.binding.replace(Some(binding));

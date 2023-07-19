@@ -116,7 +116,7 @@ mod imp {
             self.avatar_data.set(avatar_data).unwrap();
 
             obj.bind_property("display-name", obj.avatar_data(), "display-name")
-                .flags(glib::BindingFlags::SYNC_CREATE)
+                .sync_create()
                 .build();
 
             obj.init_is_verified();

@@ -249,7 +249,7 @@ mod imp {
             }));
 
             obj.bind_property("display-name", obj.avatar_data(), "display-name")
-                .flags(glib::BindingFlags::SYNC_CREATE)
+                .sync_create()
                 .build();
 
             if !matches!(obj.category(), RoomType::Left | RoomType::Outdated) {

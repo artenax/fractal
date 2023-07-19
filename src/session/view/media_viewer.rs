@@ -207,7 +207,7 @@ mod imp {
                 if let Some(window) = obj.root().and_downcast::<Window>() {
                     window
                         .bind_property("fullscreened", obj, "fullscreened")
-                        .flags(glib::BindingFlags::SYNC_CREATE)
+                        .sync_create()
                         .build();
                 }
             });

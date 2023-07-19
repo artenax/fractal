@@ -132,7 +132,7 @@ impl CreateDmDialog {
 
             imp.search_entry
                 .bind_property("text", &user_list, "search-term")
-                .flags(glib::BindingFlags::SYNC_CREATE)
+                .sync_create()
                 .build();
 
             imp.list_box.bind_model(Some(&user_list), |user| {

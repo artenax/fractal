@@ -419,7 +419,8 @@ impl Login {
     async fn open_advanced_dialog(&self) {
         let dialog = LoginAdvancedDialog::new(self.parent_window().upcast_ref());
         self.bind_property("autodiscovery", &dialog, "autodiscovery")
-            .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::BIDIRECTIONAL)
+            .sync_create()
+            .bidirectional()
             .build();
         dialog.run_future().await;
     }

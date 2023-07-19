@@ -195,7 +195,7 @@ impl Row {
 
                 bindings.push(
                     row.bind_property("expanded", &child, "expanded")
-                        .flags(glib::BindingFlags::SYNC_CREATE)
+                        .sync_create()
                         .build(),
                 );
             } else if let Some(room) = item.downcast_ref::<Room>() {

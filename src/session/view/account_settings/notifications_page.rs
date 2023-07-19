@@ -136,7 +136,8 @@ impl NotificationsPage {
             let binding = session
                 .settings()
                 .bind_property("notifications-enabled", self, "session-enabled")
-                .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::BIDIRECTIONAL)
+                .sync_create()
+                .bidirectional()
                 .build();
             imp.settings_binding.replace(Some(binding));
         }

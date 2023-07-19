@@ -225,12 +225,12 @@ impl InviteSubpage {
 
             imp.text_buffer
                 .bind_property("text", &user_list, "search-term")
-                .flags(glib::BindingFlags::SYNC_CREATE)
+                .sync_create()
                 .build();
 
             user_list
                 .bind_property("has-selected", &*imp.invite_button, "sensitive")
-                .flags(glib::BindingFlags::SYNC_CREATE)
+                .sync_create()
                 .build();
 
             imp.list_view

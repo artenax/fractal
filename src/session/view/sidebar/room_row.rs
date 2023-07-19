@@ -210,7 +210,7 @@ impl RoomRow {
                     &imp.notification_count.get(),
                     "visible",
                 )
-                .flags(glib::BindingFlags::SYNC_CREATE)
+                .sync_create()
                 .transform_from(|_, count: u64| Some(count > 0))
                 .build(),
             ));

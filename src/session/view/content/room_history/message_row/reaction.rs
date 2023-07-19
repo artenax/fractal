@@ -105,11 +105,11 @@ impl MessageReaction {
         imp.button.set_action_target_value(Some(&key.to_variant()));
         group
             .bind_property("has-user", &*imp.button, "active")
-            .flags(glib::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .build();
         group
             .bind_property("count", &*imp.reaction_count, "label")
-            .flags(glib::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .build();
 
         imp.group.set(group).unwrap();

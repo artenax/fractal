@@ -458,7 +458,7 @@ mod imp {
             let md_lang = sourceview::LanguageManager::default().language("markdown");
             buffer.set_language(md_lang.as_ref());
             obj.bind_property("markdown-enabled", &buffer, "highlight-syntax")
-                .flags(glib::BindingFlags::SYNC_CREATE)
+                .sync_create()
                 .build();
 
             let settings = Application::default().settings();

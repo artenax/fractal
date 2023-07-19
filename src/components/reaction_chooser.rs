@@ -178,7 +178,7 @@ impl ReactionChooser {
                         .unwrap();
                     let binding = reaction
                         .bind_property("has-user", &button, "active")
-                        .flags(glib::BindingFlags::SYNC_CREATE)
+                        .sync_create()
                         .build();
                     reaction_bindings.insert(reaction_item.key.to_string(), binding);
                 }

@@ -119,7 +119,7 @@ impl Pill {
         if let Some(ref user) = user {
             let display_name_binding = user
                 .bind_property("display-name", &*imp.display_name, "label")
-                .flags(glib::BindingFlags::SYNC_CREATE)
+                .sync_create()
                 .build();
 
             imp.bindings.borrow_mut().push(display_name_binding);
@@ -155,7 +155,7 @@ impl Pill {
         if let Some(ref room) = room {
             let display_name_binding = room
                 .bind_property("display-name", &*imp.display_name, "label")
-                .flags(glib::BindingFlags::SYNC_CREATE)
+                .sync_create()
                 .build();
 
             imp.bindings.borrow_mut().push(display_name_binding);

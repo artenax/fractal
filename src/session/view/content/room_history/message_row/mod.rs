@@ -187,17 +187,17 @@ impl MessageRow {
         let display_name_binding = event
             .sender()
             .bind_property("display-name", &imp.display_name.get(), "label")
-            .flags(glib::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .build();
 
         let show_header_binding = event
             .bind_property("show-header", self, "show-header")
-            .flags(glib::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .build();
 
         let timestamp_binding = event
             .bind_property("time", &*imp.timestamp, "label")
-            .flags(glib::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .build();
 
         imp.bindings.borrow_mut().append(&mut vec![

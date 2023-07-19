@@ -342,7 +342,7 @@ impl MemberPage {
         self.imp()
             .members_search_entry
             .bind_property("text", &search_filter, "search")
-            .flags(glib::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .build();
 
         let filter = gtk::EveryFilter::new();
