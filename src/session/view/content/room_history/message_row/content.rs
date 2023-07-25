@@ -1,9 +1,9 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{gdk, glib, glib::clone};
-use log::{error, warn};
 use matrix_sdk_ui::timeline::{TimelineDetails, TimelineItemContent};
 use ruma::events::room::message::MessageType;
+use tracing::{error, warn};
 
 use super::{
     audio::MessageAudio, file::MessageFile, location::MessageLocation, media::MessageMedia,

@@ -4,8 +4,8 @@ use gtk::{
     glib::{clone, signal::SignalHandlerId},
     CompositeTemplate,
 };
-use log::{error, warn};
 use ruma::RoomId;
+use tracing::{error, warn};
 
 use super::{Content, CreateDmDialog, JoinRoomDialog, MediaViewer, RoomCreation, Sidebar};
 use crate::{

@@ -1,6 +1,6 @@
 use adw::subclass::prelude::*;
 use gtk::{gdk, glib, glib::clone, prelude::*, CompositeTemplate};
-use log::debug;
+use tracing::debug;
 
 mod imp {
     use std::cell::RefCell;

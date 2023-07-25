@@ -2,7 +2,7 @@ use adw::subclass::prelude::*;
 use gst::ClockTime;
 use gst_play::{Play as GstPlay, PlayMessage};
 use gtk::{gio, glib, glib::clone, prelude::*, CompositeTemplate};
-use log::{error, warn};
+use tracing::{error, warn};
 
 use super::VideoPlayerRenderer;
 

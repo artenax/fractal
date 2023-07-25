@@ -1359,7 +1359,6 @@ dependencies = [
  "indexmap 2.0.0",
  "libadwaita",
  "libshumate",
- "log",
  "matrix-sdk",
  "matrix-sdk-ui",
  "mime",
@@ -1380,6 +1379,7 @@ dependencies = [
  "strum",
  "thiserror",
  "tokio",
+ "tracing",
  "tracing-subscriber",
  "url",
 ]

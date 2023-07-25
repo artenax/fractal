@@ -1,6 +1,6 @@
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::error;
 use ruma::api::client::thirdparty::get_protocols;
+use tracing::error;
 
 use super::Server;
 use crate::{prelude::*, session::model::Session, spawn, spawn_tokio};

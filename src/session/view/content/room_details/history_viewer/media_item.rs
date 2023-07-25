@@ -1,5 +1,4 @@
 use gtk::{gdk, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
-use log::warn;
 use matrix_sdk::{
     media::{MediaEventContent, MediaThumbnailSize},
     ruma::{
@@ -11,6 +10,7 @@ use matrix_sdk::{
         uint,
     },
 };
+use tracing::warn;
 
 use super::{HistoryViewerEvent, MediaHistoryViewer};
 use crate::{session::model::Session, spawn, spawn_tokio};

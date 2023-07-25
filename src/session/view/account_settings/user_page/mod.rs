@@ -5,8 +5,8 @@ use gtk::{
     glib::{self, clone},
     CompositeTemplate,
 };
-use log::error;
 use matrix_sdk::ruma::{api::client::discovery::get_capabilities, OwnedMxcUri};
+use tracing::error;
 
 mod change_password_subpage;
 mod deactivate_account_subpage;

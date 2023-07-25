@@ -2,7 +2,6 @@ use std::{collections::HashMap, ffi::OsStr, fmt, fs, path::PathBuf, string::From
 
 use gettextrs::gettext;
 use gtk::glib;
-use log::{debug, error, warn};
 use matrix_sdk::{
     matrix_auth::{Session as MatrixSession, SessionTokens},
     SessionMeta,
@@ -14,6 +13,7 @@ use ruma::{DeviceId, OwnedDeviceId, OwnedUserId, UserId};
 use serde::{Deserialize, Serialize};
 use serde_json::error::Error as JsonError;
 use thiserror::Error;
+use tracing::{debug, error, warn};
 use url::Url;
 
 use crate::{gettext_f, prelude::*, spawn_tokio, utils::matrix, APP_ID, PROFILE};

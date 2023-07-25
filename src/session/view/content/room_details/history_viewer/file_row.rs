@@ -1,8 +1,8 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{gio, glib, CompositeTemplate};
-use log::error;
 use matrix_sdk::ruma::events::{room::message::MessageType, AnyMessageLikeEventContent};
+use tracing::error;
 
 use super::HistoryViewerEvent;
 use crate::{prelude::*, toast};
@@ -135,7 +135,7 @@ impl FileRow {
             if let Err(e) =
                 gio::AppInfo::launch_default_for_uri(&file.uri(), gio::AppLaunchContext::NONE)
             {
-                log::error!("Error: {e}");
+                error!("Error: {e}");
             }
         }
     }

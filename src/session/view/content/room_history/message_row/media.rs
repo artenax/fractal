@@ -5,7 +5,6 @@ use gtk::{
     glib::{self, clone},
     CompositeTemplate,
 };
-use log::warn;
 use matrix_sdk::{
     media::{MediaEventContent, MediaThumbnailSize},
     ruma::{
@@ -16,6 +15,7 @@ use matrix_sdk::{
         },
     },
 };
+use tracing::warn;
 
 use super::ContentFormat;
 use crate::{

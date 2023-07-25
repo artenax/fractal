@@ -1,7 +1,7 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use indexmap::IndexMap;
-use log::error;
 use serde::{Deserialize, Serialize};
+use tracing::error;
 
 use crate::Application;
 

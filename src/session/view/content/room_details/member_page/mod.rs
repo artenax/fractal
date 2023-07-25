@@ -8,7 +8,7 @@ use gtk::{
     glib::{self, clone, closure},
     CompositeTemplate,
 };
-use log::warn;
+use tracing::warn;
 
 mod member_menu;
 mod members_list_view;

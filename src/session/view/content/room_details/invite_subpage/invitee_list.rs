@@ -1,6 +1,5 @@
 use gettextrs::gettext;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::error;
 use matrix_sdk::{
     ruma::{
         api::client::{profile::get_profile, user_directory::search_users},
@@ -8,6 +7,7 @@ use matrix_sdk::{
     },
     HttpError,
 };
+use tracing::error;
 
 use super::Invitee;
 use crate::{

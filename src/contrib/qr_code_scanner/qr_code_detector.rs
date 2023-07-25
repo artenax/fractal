@@ -3,9 +3,9 @@ use std::convert::AsRef;
 use glib::Sender;
 use gst_video::{video_frame::VideoFrameRef, VideoInfo};
 use image::{GenericImage, GenericImageView, Luma};
-use log::debug;
 use matrix_sdk::encryption::verification::{DecodingError, QrVerificationData};
 use thiserror::Error;
+use tracing::debug;
 
 use super::*;
 use crate::contrib::qr_code_scanner::camera_paintable::Action;

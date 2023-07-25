@@ -9,7 +9,7 @@ use image::{
     flat::SampleLayout,
     AnimationDecoder, DynamicImage, ImageFormat,
 };
-use log::error;
+use tracing::error;
 
 /// A single frame of an animation.
 pub struct Frame {

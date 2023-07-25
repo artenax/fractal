@@ -4,8 +4,8 @@ use adw::subclass::prelude::AdwApplicationWindowImpl;
 use gettextrs::gettext;
 use glib::signal::Inhibit;
 use gtk::{self, gdk, gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
-use log::{error, info, warn};
 use ruma::RoomId;
+use tracing::{error, info, warn};
 
 use crate::{
     account_switcher::AccountSwitcher,

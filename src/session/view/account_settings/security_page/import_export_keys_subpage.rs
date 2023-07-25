@@ -5,8 +5,8 @@ use gtk::{
     glib::{self, clone},
     CompositeTemplate,
 };
-use log::{debug, error};
 use matrix_sdk::encryption::{KeyExportError, RoomKeyImportError};
+use tracing::{debug, error};
 
 use crate::{
     components::SpinnerButton, ngettext_f, session::model::Session, spawn, spawn_tokio, toast,

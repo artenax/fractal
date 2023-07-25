@@ -1,13 +1,13 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{glib, glib::clone, CompositeTemplate};
-use log::{error, warn};
 use matrix_sdk::event_handler::EventHandlerDropGuard;
 use ruma::{
     api::client::push::{set_pushrule_enabled, RuleKind, RuleScope},
     events::push_rules::{PushRulesEvent, PushRulesEventContent},
     push::{PredefinedOverrideRuleId, Ruleset},
 };
+use tracing::{error, warn};
 
 use crate::{prelude::*, session::model::Session, spawn, spawn_tokio, toast};
 

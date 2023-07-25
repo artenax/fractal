@@ -5,11 +5,11 @@ use std::{
 
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use indexmap::map::IndexMap;
-use log::error;
 use matrix_sdk::{
     ruma::{OwnedRoomId, OwnedRoomOrAliasId, OwnedServerName, RoomAliasId, RoomId, RoomOrAliasId},
     sync::Rooms as ResponseRooms,
 };
+use tracing::error;
 
 use crate::{
     gettext_f,

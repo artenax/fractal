@@ -1,8 +1,8 @@
 use adw::{prelude::*, subclass::prelude::BinImpl};
 use gettextrs::gettext;
 use gtk::{self, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
-use log::warn;
 use ruma::api::client::session::get_login_types::v3::LoginType;
+use tracing::warn;
 
 use super::{idp_button::IdpButton, Login};
 use crate::{

@@ -1,7 +1,6 @@
 use std::time::Duration;
 
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::{debug, error, warn};
 use matrix_sdk::{
     encryption::{
         identities::RequestVerificationError,
@@ -16,6 +15,7 @@ use matrix_sdk::{
 use qrcode::QrCode;
 use ruma::events::key::verification::{REQUEST_RECEIVED_TIMEOUT, REQUEST_TIMESTAMP_TIMEOUT};
 use tokio::sync::mpsc;
+use tracing::{debug, error, warn};
 
 use crate::{
     contrib::Camera,

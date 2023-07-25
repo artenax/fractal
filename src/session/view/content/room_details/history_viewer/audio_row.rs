@@ -2,11 +2,11 @@ use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use glib::clone;
 use gtk::{gio, glib, CompositeTemplate};
-use log::warn;
 use matrix_sdk::ruma::events::{
     room::message::{AudioMessageEventContent, MessageType},
     AnyMessageLikeEventContent,
 };
+use tracing::warn;
 
 use super::HistoryViewerEvent;
 use crate::{session::model::Session, spawn, spawn_tokio};

@@ -1,5 +1,5 @@
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::error;
+use tracing::error;
 
 use crate::utils::BoundObject;
 

@@ -1,11 +1,11 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
-use log::{debug, error};
 use matrix_sdk::ruma::{
     api::client::room::create_room,
     assign,
     events::{room::encryption::RoomEncryptionEventContent, InitialStateEvent},
     MxcUri, UserId,
 };
+use tracing::{debug, error};
 
 use crate::{
     prelude::*,

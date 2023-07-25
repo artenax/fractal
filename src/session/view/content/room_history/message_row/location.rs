@@ -2,7 +2,7 @@ use adw::{prelude::*, subclass::prelude::*};
 use geo_uri::GeoUri;
 use gettextrs::gettext;
 use gtk::{glib, CompositeTemplate};
-use log::warn;
+use tracing::warn;
 
 use super::ContentFormat;
 use crate::components::LocationViewer;

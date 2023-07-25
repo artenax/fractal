@@ -4,11 +4,11 @@ use gtk::{
     glib::{self, clone},
     CompositeTemplate,
 };
-use log::error;
 use matrix_sdk::ruma::{
     api::client::{account::change_password, error::ErrorKind},
     assign,
 };
+use tracing::error;
 
 use crate::{
     components::{AuthDialog, AuthError, SpinnerButton},

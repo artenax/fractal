@@ -2,7 +2,7 @@ use adw::{prelude::*, subclass::prelude::*};
 use geo_uri::GeoUri;
 use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, CompositeTemplate};
-use log::warn;
+use tracing::warn;
 
 use super::{AudioPlayer, ImagePaintable, LocationViewer, Spinner};
 use crate::spawn;

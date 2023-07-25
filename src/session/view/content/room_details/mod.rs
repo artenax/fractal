@@ -8,7 +8,7 @@ use std::convert::From;
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{glib, CompositeTemplate};
-use log::warn;
+use tracing::warn;
 
 pub use self::{
     general_page::GeneralPage,

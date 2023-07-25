@@ -4,9 +4,9 @@ use std::{cell::Cell, str::FromStr, sync::Mutex};
 
 use gettextrs::gettext;
 use gtk::{gio, glib, prelude::*};
-use log::{debug, error};
 use matrix_sdk::attachment::{BaseAudioInfo, BaseImageInfo, BaseVideoInfo};
 use mime::Mime;
+use tracing::{debug, error};
 
 use crate::toast;
 

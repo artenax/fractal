@@ -24,6 +24,7 @@ use gtk::{
 use matrix_sdk::ruma::UInt;
 use once_cell::sync::{Lazy, OnceCell};
 use regex::Regex;
+use tracing::error;
 
 pub use self::expression_list_model::ExpressionListModel;
 use crate::RUNTIME;
@@ -117,7 +118,7 @@ pub async fn check_if_reachable(hostname: &impl AsRef<str>) -> bool {
     match monitor.can_reach_future(&address).await {
         Ok(()) => true,
         Err(error) => {
-            log::error!("Homeserver {} isn't reachable: {error}", hostname.as_ref());
+            error!("Homeserver {} isn't reachable: {error}", hostname.as_ref());
             false
         }
     }

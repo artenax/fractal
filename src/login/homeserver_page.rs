@@ -1,11 +1,11 @@
 use adw::{prelude::*, subclass::prelude::BinImpl};
 use gettextrs::gettext;
 use gtk::{self, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
-use log::warn;
 use matrix_sdk::{
     config::RequestConfig, sanitize_server_name, Client, ClientBuildError, ClientBuilder,
 };
 use ruma::{api::client::discovery::get_supported_versions, OwnedServerName};
+use tracing::warn;
 use url::{ParseError, Url};
 
 use super::Login;

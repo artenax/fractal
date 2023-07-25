@@ -4,8 +4,8 @@ use gettextrs::gettext;
 use gio::{ApplicationFlags, Settings};
 use glib::{clone, WeakRef};
 use gtk::{gio, glib, prelude::*, subclass::prelude::*};
-use log::{debug, info};
 use ruma::{OwnedRoomId, RoomId};
+use tracing::{debug, info};
 
 use crate::{config, Window};
 

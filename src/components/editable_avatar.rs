@@ -8,7 +8,7 @@ use gtk::{
     prelude::*,
     CompositeTemplate,
 };
-use log::{debug, error};
+use tracing::{debug, error};
 
 use super::{ActionButton, ActionState, ImagePaintable};
 use crate::{

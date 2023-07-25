@@ -1,5 +1,4 @@
 use gtk::{gio, glib, prelude::*, subclass::prelude::*};
-use log::error;
 use matrix_sdk::{
     room::MessagesOptions,
     ruma::{
@@ -9,6 +8,7 @@ use matrix_sdk::{
         uint,
     },
 };
+use tracing::error;
 
 use super::HistoryViewerEvent;
 use crate::{

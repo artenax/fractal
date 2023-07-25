@@ -1,9 +1,9 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, graphene, CompositeTemplate};
-use log::{error, warn};
 use matrix_sdk::ruma::events::room::message::MessageType;
 use ruma::OwnedEventId;
+use tracing::{error, warn};
 
 use crate::{
     components::{ContentType, ImagePaintable, MediaContentViewer, ScaleRevealer},

@@ -10,6 +10,7 @@ use matrix_sdk::{
         OwnedMxcUri, UserId,
     },
 };
+use tracing::error;
 
 use super::{
     power_levels::{PowerLevel, POWER_LEVEL_MAX, POWER_LEVEL_MIN},
@@ -205,7 +206,7 @@ impl Member {
     /// Update the user based on the room member.
     pub fn update_from_room_member(&self, member: &RoomMember) {
         if member.user_id() != &*self.user_id() {
-            log::error!("Tried Member update from RoomMember with wrong user ID.");
+            error!("Tried Member update from RoomMember with wrong user ID.");
             return;
         };
 
@@ -220,7 +221,7 @@ impl Member {
     /// Update the user based on the room member state event
     pub fn update_from_member_event(&self, event: &impl MemberEvent) {
         if event.state_key() != &*self.user_id() {
-            log::error!("Tried Member update from MemberEvent with wrong user ID.");
+            error!("Tried Member update from MemberEvent with wrong user ID.");
             return;
         };
 

@@ -1,13 +1,13 @@
 use adw::{prelude::*, subclass::prelude::BinImpl};
 use gettextrs::gettext;
 use gtk::{self, gio, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
-use log::{error, warn};
 use matrix_sdk::Client;
 use ruma::{
     api::client::session::{get_login_types::v3::LoginType, login},
     OwnedServerName,
 };
 use strum::{AsRefStr, EnumString};
+use tracing::{error, warn};
 use url::Url;
 
 mod advanced_dialog;

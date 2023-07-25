@@ -1,5 +1,4 @@
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::{debug, warn};
 use matrix_sdk::ruma::{
     events::{
         room::message::MessageType, AnySyncMessageLikeEvent, AnySyncTimelineEvent,
@@ -9,6 +8,7 @@ use matrix_sdk::ruma::{
     MilliSecondsSinceUnixEpoch, OwnedUserId, UserId,
 };
 use ruma::events::key::verification::REQUEST_TIMESTAMP_TIMEOUT;
+use tracing::{debug, warn};
 
 use crate::{
     prelude::*,

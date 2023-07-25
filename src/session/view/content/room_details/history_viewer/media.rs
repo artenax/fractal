@@ -1,7 +1,7 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{glib, glib::clone, CompositeTemplate};
-use log::error;
 use ruma::events::AnyMessageLikeEventContent;
+use tracing::error;
 
 use super::{MediaItem, Timeline, TimelineFilter};
 use crate::{

@@ -1,5 +1,4 @@
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::error;
 use matrix_sdk::ruma::{
     api::client::directory::get_public_rooms_filtered::v3::{
         Request as PublicRoomsRequest, Response as PublicRoomsResponse,
@@ -9,6 +8,7 @@ use matrix_sdk::ruma::{
     uint, ServerName,
 };
 use ruma::directory::RoomTypeFilter;
+use tracing::error;
 
 use super::{PublicRoom, Server};
 use crate::{session::model::Session, spawn, spawn_tokio};

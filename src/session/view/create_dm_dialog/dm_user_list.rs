@@ -1,6 +1,6 @@
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::{debug, error};
 use matrix_sdk::ruma::{api::client::user_directory::search_users, OwnedUserId, UserId};
+use tracing::{debug, error};
 
 use super::DmUser;
 use crate::{

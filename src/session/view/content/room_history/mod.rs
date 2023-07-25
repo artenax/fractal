@@ -25,7 +25,6 @@ use gtk::{
     prelude::*,
     CompositeTemplate,
 };
-use log::{debug, error, warn};
 use matrix_sdk::{
     attachment::{AttachmentInfo, BaseFileInfo, BaseImageInfo},
     ruma::{
@@ -49,6 +48,7 @@ use ruma::{
     OwnedEventId,
 };
 use sourceview::prelude::*;
+use tracing::{debug, error, warn};
 
 use self::{
     attachment_dialog::AttachmentDialog,

@@ -1,9 +1,9 @@
 use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::clone, prelude::*};
-use log::error;
 use matrix_sdk_ui::timeline::TimelineItemContent;
 use once_cell::sync::Lazy;
 use ruma::events::room::{message::MessageType, power_levels::PowerLevelAction};
+use tracing::error;
 
 use crate::{
     prelude::*,

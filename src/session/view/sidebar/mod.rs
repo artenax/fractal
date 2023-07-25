@@ -6,7 +6,7 @@ mod verification_row;
 
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{gio, glib, glib::clone, CompositeTemplate};
-use log::error;
+use tracing::error;
 
 use self::{
     category_row::CategoryRow, entry_row::EntryRow, room_row::RoomRow, row::Row,

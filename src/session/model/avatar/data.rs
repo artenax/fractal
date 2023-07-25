@@ -1,4 +1,5 @@
 use gtk::{gdk, glib, prelude::*, subclass::prelude::*};
+use tracing::warn;
 
 use super::AvatarImage;
 use crate::{
@@ -124,7 +125,7 @@ impl AvatarData {
         match icon {
             Ok(icon) => Some(icon),
             Err(error) => {
-                log::warn!("Failed to generate icon for notification: {error}");
+                warn!("Failed to generate icon for notification: {error}");
                 None
             }
         }

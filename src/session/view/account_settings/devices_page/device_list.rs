@@ -1,10 +1,10 @@
 use gettextrs::gettext;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::error;
 use matrix_sdk::{
     encryption::identities::UserDevices as CryptoDevices,
     ruma::api::client::device::Device as MatrixDevice, Error,
 };
+use tracing::error;
 
 use super::{Device, DeviceItem};
 use crate::{session::model::Session, spawn, spawn_tokio};

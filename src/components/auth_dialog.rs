@@ -8,7 +8,6 @@ use gtk::{
     prelude::*,
     CompositeTemplate,
 };
-use log::error;
 use matrix_sdk::Error;
 use ruma::{
     api::client::{
@@ -18,6 +17,7 @@ use ruma::{
     assign,
 };
 use thiserror::Error;
+use tracing::error;
 
 use crate::{prelude::*, session::model::Session, spawn, spawn_tokio};
 

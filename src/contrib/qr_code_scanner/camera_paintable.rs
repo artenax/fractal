@@ -25,6 +25,7 @@ use gtk::{
     subclass::prelude::*,
 };
 use matrix_sdk::encryption::verification::QrVerificationData;
+use tracing::error;
 
 use crate::contrib::qr_code_scanner::{qr_code_detector::QrCodeDetector, QrVerificationDataBoxed};
 
@@ -192,7 +193,7 @@ impl CameraPaintable {
         bus.add_watch_local(
             clone!(@weak self as paintable => @default-return glib::Continue(false), move |_, msg| {
                 if let gst::MessageView::Error(err) = msg.view() {
-                    log::error!(
+                    error!(
                         "Error from {:?}: {} ({:?})",
                         err.src().map(|s| s.path_string()),
                         err.error(),

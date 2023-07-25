@@ -1,9 +1,9 @@
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::error;
 use matrix_sdk::{
     encryption::identities::UserIdentity,
     ruma::{OwnedMxcUri, OwnedUserId, UserId},
 };
+use tracing::error;
 
 use crate::{
     components::Pill,

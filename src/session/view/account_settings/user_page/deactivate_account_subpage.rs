@@ -4,8 +4,8 @@ use gtk::{
     glib::{self, clone},
     CompositeTemplate,
 };
-use log::error;
 use matrix_sdk::ruma::{api::client::account::deactivate, assign};
+use tracing::error;
 
 use crate::{
     components::{AuthDialog, SpinnerButton},

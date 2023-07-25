@@ -7,7 +7,6 @@ use gtk::{
     glib::{self, clone},
     CompositeTemplate,
 };
-use log::error;
 use matrix_sdk::RoomState;
 use ruma::{
     assign,
@@ -17,6 +16,7 @@ use ruma::{
     },
     OwnedMxcUri,
 };
+use tracing::error;
 
 use crate::{
     components::{CustomEntry, EditableAvatar, SpinnerButton},

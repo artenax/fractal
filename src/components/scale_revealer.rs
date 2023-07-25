@@ -1,5 +1,6 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gtk::{gdk, glib, graphene};
+use tracing::warn;
 
 const ANIMATION_DURATION: u32 = 250;
 
@@ -115,7 +116,7 @@ mod imp {
                     .upgrade()
                     .and_then(|s| s.compute_bounds(&*obj))
                     .unwrap_or_else(|| {
-                        log::warn!(
+                        warn!(
                             "The source widget bounds could not be calculated, using default bounds as fallback"
                         );
                         graphene::Rect::new(0.0, 0.0, 100.0, 100.0)
@@ -159,7 +160,7 @@ mod imp {
                     );
                 }
             } else {
-                log::warn!("The source widget texture is None, using child snapshot as fallback");
+                warn!("The source widget texture is None, using child snapshot as fallback");
                 obj.snapshot_child(&child, snapshot);
             }
         }

@@ -1,7 +1,7 @@
 use adw::{self, prelude::*};
 use gettextrs::gettext;
 use gtk::{glib, glib::clone, subclass::prelude::*, CompositeTemplate};
-use log::error;
+use tracing::error;
 
 use super::Device;
 use crate::{

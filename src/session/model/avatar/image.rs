@@ -1,5 +1,4 @@
 use gtk::{gdk, glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::error;
 use matrix_sdk::{
     media::{MediaFormat, MediaRequest, MediaThumbnailSize},
     ruma::{
@@ -7,6 +6,7 @@ use matrix_sdk::{
         OwnedMxcUri,
     },
 };
+use tracing::error;
 
 use crate::{components::ImagePaintable, session::model::Session, spawn, spawn_tokio};
 

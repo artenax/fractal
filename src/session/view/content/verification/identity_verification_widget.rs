@@ -3,9 +3,9 @@ use std::collections::HashMap;
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
 use gtk::{gio, glib, glib::clone, prelude::*, CompositeTemplate};
-use log::{error, warn};
 use matrix_sdk::encryption::verification::QrVerificationData;
 use ruma::events::key::verification::cancel::CancelCode;
+use tracing::{error, warn};
 
 use super::Emoji;
 use crate::{

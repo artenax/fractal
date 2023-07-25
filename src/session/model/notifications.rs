@@ -1,9 +1,9 @@
 use gtk::{gio, glib, prelude::*, subclass::prelude::*};
-use log::{debug, warn};
 use ruma::{
     api::client::push::get_notifications::v3::Notification, EventId, OwnedEventId, OwnedRoomId,
     RoomId,
 };
+use tracing::{debug, warn};
 
 use super::{Room, Session};
 use crate::{

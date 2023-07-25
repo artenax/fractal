@@ -1,7 +1,7 @@
 use adw::subclass::prelude::BinImpl;
 use gettextrs::gettext;
 use gtk::{self, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
-use log::error;
+use tracing::error;
 
 use crate::{spawn, toast, Window};
 

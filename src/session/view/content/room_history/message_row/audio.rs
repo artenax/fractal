@@ -5,8 +5,8 @@ use gtk::{
     glib::{self, clone},
     CompositeTemplate,
 };
-use log::warn;
 use matrix_sdk::ruma::events::room::message::AudioMessageEventContent;
+use tracing::warn;
 
 use super::{media::MediaState, ContentFormat};
 use crate::{

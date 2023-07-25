@@ -7,7 +7,6 @@ use gtk::{
     self, gio, glib,
     glib::{clone, signal::SignalHandlerId},
 };
-use log::{debug, error};
 use matrix_sdk::{
     config::SyncSettings, matrix_auth::Session as MatrixSession, room::Room as MatrixRoom,
     sync::SyncResponse, Client,
@@ -25,6 +24,7 @@ use ruma::{
     },
 };
 use tokio::task::JoinHandle;
+use tracing::{debug, error};
 use url::Url;
 
 use super::{

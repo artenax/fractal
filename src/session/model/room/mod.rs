@@ -12,7 +12,6 @@ use std::{cell::RefCell, io::Cursor};
 
 use gettextrs::gettext;
 use gtk::{glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::{debug, error, warn};
 use matrix_sdk::{
     attachment::{generate_image_thumbnail, AttachmentConfig, AttachmentInfo, Thumbnail},
     deserialized_responses::{MemberEvent, SyncOrStrippedState, SyncTimelineEvent},
@@ -33,6 +32,7 @@ use ruma::{
     },
     OwnedEventId, OwnedRoomId, OwnedUserId, RoomId,
 };
+use tracing::{debug, error, warn};
 
 pub use self::{
     event::*,

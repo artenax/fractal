@@ -6,7 +6,6 @@ use std::{collections::HashMap, sync::Arc};
 use eyeball_im::VectorDiff;
 use futures_util::StreamExt;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use log::{error, warn};
 use matrix_sdk::Error as MatrixError;
 use matrix_sdk_ui::timeline::{
     BackPaginationStatus, PaginationOptions, RoomExt, Timeline as SdkTimeline,
@@ -19,6 +18,7 @@ use ruma::{
     },
     OwnedEventId,
 };
+use tracing::{error, warn};
 
 pub use self::{
     timeline_item::{TimelineItem, TimelineItemExt, TimelineItemImpl},

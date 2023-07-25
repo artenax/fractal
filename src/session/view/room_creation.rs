@@ -1,7 +1,6 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{gdk, glib, glib::clone, CompositeTemplate};
-use log::error;
 use matrix_sdk::{
     ruma::{
         api::client::{
@@ -13,6 +12,7 @@ use matrix_sdk::{
     Error,
 };
 use ruma::events::{room::encryption::RoomEncryptionEventContent, InitialStateEvent};
+use tracing::error;
 
 use crate::{
     components::SpinnerButton, prelude::*, session::model::Session, spawn, spawn_tokio, Window,
