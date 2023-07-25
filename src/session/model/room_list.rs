@@ -205,7 +205,7 @@ impl RoomList {
             let imp = self.imp();
             let list = imp.list.borrow();
 
-            let position = list.len() - added;
+            let position = list.len().saturating_sub(added);
 
             for (_room_id, room) in list.iter().skip(position) {
                 room.connect_room_forgotten(clone!(@weak self as obj => move |room| {
@@ -244,10 +244,7 @@ impl RoomList {
     pub fn load(&self) {
         let session = self.session();
         let client = session.client();
-        let mut matrix_rooms = client.rooms();
-        // FIXME: This is an issue in the SDK, Client::rooms doesn't return invited
-        // rooms as documented.
-        matrix_rooms.extend(client.invited_rooms().into_iter().map(|r| r.into()));
+        let matrix_rooms = client.rooms();
         let added = matrix_rooms.len();
 
         if added > 0 {
