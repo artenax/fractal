@@ -2,8 +2,8 @@ use adw::{prelude::*, subclass::prelude::BinImpl};
 use gettextrs::gettext;
 use gtk::{self, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::warn;
-use matrix_sdk::{config::RequestConfig, Client};
-use ruma::{IdParseError, OwnedServerName, ServerName};
+use matrix_sdk::{config::RequestConfig, sanitize_server_name, Client};
+use ruma::OwnedServerName;
 use url::{ParseError, Url};
 
 use super::Login;
@@ -158,7 +158,7 @@ impl LoginHomeserverPage {
 
     /// The server name entered by the user, if any.
     pub fn server_name(&self) -> Option<OwnedServerName> {
-        build_server_name(self.imp().homeserver_entry.text().as_str()).ok()
+        sanitize_server_name(self.imp().homeserver_entry.text().as_str()).ok()
     }
 
     /// The homeserver URL entered by the user, if any.
@@ -174,7 +174,7 @@ impl LoginHomeserverPage {
         let homeserver = self.imp().homeserver_entry.text();
 
         if login.autodiscovery() {
-            build_server_name(homeserver.as_str()).is_ok()
+            sanitize_server_name(homeserver.as_str()).is_ok()
         } else {
             build_homeserver_url(homeserver.as_str()).is_ok()
         }
@@ -274,14 +274,6 @@ impl LoginHomeserverPage {
             }
         };
     }
-}
-
-fn build_server_name(server: &str) -> Result<OwnedServerName, IdParseError> {
-    let server = server
-        .strip_prefix("http://")
-        .or_else(|| server.strip_prefix("https://"))
-        .unwrap_or(server);
-    ServerName::parse(server)
 }
 
 fn build_homeserver_url(server: &str) -> Result<Url, ParseError> {
