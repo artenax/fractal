@@ -592,15 +592,15 @@ impl Timeline {
 
         imp.state.set(state);
 
-        let end_items = &imp.end_items;
-        let removed = end_items.n_items();
+        let start_items = &imp.start_items;
+        let removed = start_items.n_items();
 
         match state {
-            TimelineState::Loading => end_items.splice(0, removed, &[VirtualItem::spinner()]),
+            TimelineState::Loading => start_items.splice(0, removed, &[VirtualItem::spinner()]),
             TimelineState::Complete => {
-                end_items.splice(0, removed, &[VirtualItem::timeline_start()])
+                start_items.splice(0, removed, &[VirtualItem::timeline_start()])
             }
-            _ => end_items.remove_all(),
+            _ => start_items.remove_all(),
         }
 
         self.notify("state");
