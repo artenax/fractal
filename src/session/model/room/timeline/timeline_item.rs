@@ -61,6 +61,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
+                    glib::ParamSpecString::builder("id").read_only().build(),
                     glib::ParamSpecBoolean::builder("selectable")
                         .read_only()
                         .build(),
@@ -90,6 +91,7 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
+                "id" => obj.id().to_value(),
                 "selectable" => obj.selectable().to_value(),
                 "show-header" => obj.show_header().to_value(),
                 "can-hide-header" => obj.can_hide_header().to_value(),
