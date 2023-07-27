@@ -1,4 +1,5 @@
 use adw::{prelude::*, subclass::prelude::BinImpl};
+use gettextrs::gettext;
 use gtk::{self, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::warn;
 use ruma::api::client::session::get_login_types::v3::LoginType;
@@ -141,19 +142,21 @@ impl LoginMethodPage {
         let Some(login) = self.login() else {
             return;
         };
-        let Some(domain) = login.domain() else {
-            return;
-        };
 
-        self.imp().title.set_markup(&gettext_f(
-            // Translators: Do NOT translate the content between '{' and '}', this is a variable
-            // name.
-            "Log in to {domain_name}",
-            &[(
-                "domain_name",
-                &format!("<span segment=\"word\">{domain}</span>"),
-            )],
-        ))
+        let title = &self.imp().title;
+        if let Some(domain) = login.domain() {
+            title.set_markup(&gettext_f(
+                // Translators: Do NOT translate the content between '{' and '}', this is a
+                // variable name.
+                "Log in to {domain_name}",
+                &[(
+                    "domain_name",
+                    &format!("<span segment=\"word\">{domain}</span>"),
+                )],
+            ))
+        } else {
+            title.set_markup(&gettext("Log in"));
+        }
     }
 
     /// Update the SSO group.

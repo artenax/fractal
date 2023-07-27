@@ -2,8 +2,10 @@ use adw::{prelude::*, subclass::prelude::BinImpl};
 use gettextrs::gettext;
 use gtk::{self, glib, glib::clone, subclass::prelude::*, CompositeTemplate};
 use log::warn;
-use matrix_sdk::{config::RequestConfig, sanitize_server_name, Client};
-use ruma::OwnedServerName;
+use matrix_sdk::{
+    config::RequestConfig, sanitize_server_name, Client, ClientBuildError, ClientBuilder,
+};
+use ruma::{api::client::discovery::get_supported_versions, OwnedServerName};
 use url::{ParseError, Url};
 
 use super::Login;
@@ -175,6 +177,7 @@ impl LoginHomeserverPage {
 
         if login.autodiscovery() {
             sanitize_server_name(homeserver.as_str()).is_ok()
+                || build_homeserver_url(homeserver.as_str()).is_ok()
         } else {
             build_homeserver_url(homeserver.as_str()).is_ok()
         }
@@ -209,47 +212,104 @@ impl LoginHomeserverPage {
         login.freeze();
 
         let autodiscovery = login.autodiscovery();
-        let server_name = self.server_name();
-        let homeserver_url = self.homeserver_url();
 
-        let handle = spawn_tokio!(async move {
-            let mut builder = Client::builder()
-                .request_config(RequestConfig::new().retry_limit(2))
-                .respect_login_well_known(autodiscovery);
+        let res = if autodiscovery {
+            self.discover_homeserver().await
+        } else {
+            self.detect_homeserver(self.homeserver_url().unwrap(), false)
+                .await
+                .map(|c| (c, None))
+        };
 
-            builder = if autodiscovery {
-                builder.server_name(server_name.as_deref().unwrap())
-            } else {
-                builder.homeserver_url(homeserver_url.unwrap())
-            };
-
-            builder.build().await
-        });
-
-        match handle.await.unwrap() {
-            Ok(client) => {
-                if autodiscovery {
-                    login.set_domain(self.server_name())
-                } else {
-                    login.set_domain(None);
-                }
-
+        match res {
+            Ok((client, server_name)) => {
+                login.set_domain(server_name);
                 login.set_client(Some(client.clone())).await;
 
                 self.homeserver_login_types(client).await;
             }
             Err(error) => {
-                if autodiscovery {
-                    warn!("Failed to discover homeserver: {error}");
-                } else {
-                    warn!("Failed to check homeserver: {error}");
-                }
                 toast!(self, error.to_user_facing());
             }
         };
 
         imp.next_button.set_loading(false);
         login.unfreeze();
+    }
+
+    async fn discover_homeserver(
+        &self,
+    ) -> Result<(Client, Option<OwnedServerName>), ClientBuildError> {
+        let mut discovery_error = None;
+        let mut server_error = None;
+
+        // Try to discover the server.
+        if let Some(server_name) = self.server_name() {
+            let server_name_clone = server_name.clone();
+            let handle = spawn_tokio!(async move {
+                client_builder()
+                    .respect_login_well_known(true)
+                    .server_name(&server_name_clone)
+                    .build()
+                    .await
+            });
+
+            match handle.await.unwrap() {
+                Ok(client) => return Ok((client, Some(server_name))),
+                Err(error) => {
+                    discovery_error = Some(error);
+                }
+            }
+        }
+
+        // Check if it is a valid homeserver URL.
+        if let Some(homeserver_url) = self.homeserver_url() {
+            match self.detect_homeserver(homeserver_url, true).await {
+                Ok(client) => return Ok((client, None)),
+                Err(error) => {
+                    server_error = Some(error);
+                }
+            }
+        }
+
+        match (discovery_error, server_error) {
+            (Some(discovery_error), Some(server_error)) => {
+                warn!("Failed to discover homeserver. Auto-discovery error: {discovery_error}. Homeserver detection error: {server_error}");
+                Err(discovery_error)
+            }
+            (Some(discovery_error), None) => {
+                warn!("Failed to discover homeserver. Auto-discovery error: {discovery_error}");
+                Err(discovery_error)
+            }
+            (None, Some(server_error)) => {
+                warn!("Failed to discover homeserver. Homeserver detection error: {server_error}");
+                Err(server_error)
+            }
+            // We should have at least one error at this step.
+            _ => unreachable!(),
+        }
+    }
+
+    async fn detect_homeserver(
+        &self,
+        url: Url,
+        autodiscovery: bool,
+    ) -> Result<Client, ClientBuildError> {
+        spawn_tokio!(async move {
+            let client = client_builder()
+                .respect_login_well_known(autodiscovery)
+                .homeserver_url(url)
+                .build()
+                .await?;
+
+            client
+                .send(get_supported_versions::Request::new(), None)
+                .await?;
+
+            Ok(client)
+        })
+        .await
+        .unwrap()
     }
 
     /// Fetch the login types supported by the homeserver.
@@ -282,4 +342,8 @@ fn build_homeserver_url(server: &str) -> Result<Url, ParseError> {
     } else {
         Url::parse(&format!("https://{server}"))
     }
+}
+
+fn client_builder() -> ClientBuilder {
+    Client::builder().request_config(RequestConfig::new().retry_limit(2))
 }
