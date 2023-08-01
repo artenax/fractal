@@ -91,6 +91,7 @@ doc_deps = [
   '--package=matrix-sdk-qrcode',
   '--package=matrix-sdk-sqlite',
   '--package=matrix-sdk-store-encryption',
+  '--package=matrix-sdk-ui',
   '--package=fractal',
 ]
 
