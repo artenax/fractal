@@ -170,6 +170,7 @@ impl Content {
                 .selection_model()
                 .bind_property("selected-item", self, "item")
                 .sync_create()
+                .bidirectional()
                 .build();
 
             imp.item_binding.replace(Some(item_binding));
