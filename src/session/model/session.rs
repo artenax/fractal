@@ -1,7 +1,7 @@
 use std::{collections::HashSet, time::Duration};
 
 use adw::{prelude::*, subclass::prelude::*};
-use futures::StreamExt;
+use futures_util::StreamExt;
 use gettextrs::gettext;
 use gtk::{
     self, gio, glib,

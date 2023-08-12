@@ -31,7 +31,7 @@ mod imp {
         sync::Arc,
     };
 
-    use futures::lock::Mutex;
+    use futures_util::lock::Mutex;
     use once_cell::{sync::Lazy, unsync::OnceCell};
 
     use super::*;

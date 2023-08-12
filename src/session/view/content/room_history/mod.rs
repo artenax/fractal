@@ -16,7 +16,7 @@ use ashpd::{
     desktop::location::{Accuracy, LocationProxy},
     WindowIdentifier,
 };
-use futures::TryFutureExt;
+use futures_util::TryFutureExt;
 use geo_uri::GeoUri;
 use gettextrs::gettext;
 use gtk::{
@@ -1036,7 +1036,7 @@ impl RoomHistory {
             // We want to be listening for new locations whenever the session is up
             // otherwise we might lose the first response and will have to wait for a future
             // update by geoclue
-            let (_, location) = futures::try_join!(
+            let (_, location) = futures_util::try_join!(
                 proxy.start(&session, &identifier).into_future(),
                 proxy.receive_location_updated().into_future()
             )?;

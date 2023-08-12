@@ -140,7 +140,7 @@ impl MessageContent {
                         reply.set_related_content_sender(sender.upcast_ref());
                         build_content(
                             reply.related_content(),
-                            TimelineItemContent::Message(related_content.message().clone()),
+                            related_content.content().clone(),
                             ContentFormat::Compact,
                             sender,
                             &room,

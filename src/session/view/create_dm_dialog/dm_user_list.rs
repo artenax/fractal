@@ -27,7 +27,7 @@ mod imp {
         collections::HashMap,
     };
 
-    use futures::future::AbortHandle;
+    use futures_util::future::AbortHandle;
     use once_cell::sync::Lazy;
 
     use super::*;
@@ -187,7 +187,7 @@ impl DmUserList {
         let search_term_clone = search_term.clone();
         let handle = spawn_tokio!(async move { client.search_users(&search_term_clone, 20).await });
 
-        let (future, handle) = futures::future::abortable(handle);
+        let (future, handle) = futures_util::future::abortable(handle);
 
         if let Some(abort_handle) = self.imp().abort_handle.replace(Some(handle)) {
             abort_handle.abort();

@@ -13,7 +13,7 @@ use std::{
     rc::{Rc, Weak},
 };
 
-use futures::{
+use futures_util::{
     future::{self, Either, Future},
     pin_mut,
 };

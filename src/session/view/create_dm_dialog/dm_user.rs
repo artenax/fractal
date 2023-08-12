@@ -150,7 +150,7 @@ impl DmUser {
 async fn create_dm(
     client: matrix_sdk::Client,
     other_user: ruma::OwnedUserId,
-) -> Result<matrix_sdk::room::Joined, matrix_sdk::Error> {
+) -> Result<matrix_sdk::Room, matrix_sdk::Error> {
     let request = assign!(create_room::v3::Request::new(),
     {
         is_direct: true,

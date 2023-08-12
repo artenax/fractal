@@ -97,7 +97,7 @@ impl AttachmentDialog {
     /// Returns `gtk::ResponseType::Ok` if the user clicked on send, otherwise
     /// returns `gtk::ResponseType::Cancel`.
     pub async fn run_future(&self) -> gtk::ResponseType {
-        let (sender, receiver) = futures::channel::oneshot::channel();
+        let (sender, receiver) = futures_channel::oneshot::channel();
         let sender = Cell::new(Some(sender));
 
         let handler_id = self.connect_close_request(

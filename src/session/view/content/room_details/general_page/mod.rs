@@ -8,7 +8,7 @@ use gtk::{
     CompositeTemplate,
 };
 use log::error;
-use matrix_sdk::room::Room as MatrixRoom;
+use matrix_sdk::RoomState;
 use ruma::{
     assign,
     events::{
@@ -238,10 +238,11 @@ impl GeneralPage {
 
     async fn change_avatar(&self, file: gio::File) {
         let room = self.room();
-        let MatrixRoom::Joined(matrix_room) = room.matrix_room() else {
+        let matrix_room = room.matrix_room();
+        if matrix_room.state() != RoomState::Joined {
             error!("Cannot change avatar of room not joined");
             return;
-        };
+        }
 
         let imp = self.imp();
         let avatar = &imp.avatar;
@@ -300,10 +301,11 @@ impl GeneralPage {
 
     async fn remove_avatar(&self) {
         let room = self.room();
-        let MatrixRoom::Joined(matrix_room) = room.matrix_room() else {
+        let matrix_room = room.matrix_room();
+        if matrix_room.state() != RoomState::Joined {
             error!("Cannot remove avatar of room not joined");
             return;
-        };
+        }
 
         let imp = self.imp();
         let avatar = &*imp.avatar;
@@ -488,10 +490,11 @@ impl GeneralPage {
             return;
         }
 
-        let MatrixRoom::Joined(matrix_room) = room.matrix_room() else {
+        let matrix_room = room.matrix_room();
+        if matrix_room.state() != RoomState::Joined {
             error!("Cannot change name or topic of room not joined");
             return;
-        };
+        }
 
         if name_changed {
             let matrix_room = matrix_room.clone();

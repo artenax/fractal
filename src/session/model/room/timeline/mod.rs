@@ -4,7 +4,7 @@ mod virtual_item;
 use std::{collections::HashMap, sync::Arc};
 
 use eyeball_im::VectorDiff;
-use futures::StreamExt;
+use futures_util::StreamExt;
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
 use log::{error, warn};
 use matrix_sdk::Error as MatrixError;
@@ -515,7 +515,7 @@ impl Timeline {
 
         self.imp().timeline.set(matrix_timeline.clone()).unwrap();
 
-        let (mut sender, mut receiver) = futures::channel::mpsc::channel(100);
+        let (mut sender, mut receiver) = futures_channel::mpsc::channel(100);
         let (values, timeline_stream) = matrix_timeline.subscribe().await;
 
         if !values.is_empty() {
@@ -548,7 +548,7 @@ impl Timeline {
         let room_id = self.room().room_id().to_owned();
         let matrix_timeline = self.matrix_timeline();
 
-        let (mut sender, mut receiver) = futures::channel::mpsc::channel(8);
+        let (mut sender, mut receiver) = futures_channel::mpsc::channel(8);
         let stream = matrix_timeline.back_pagination_status();
 
         let fut = stream.for_each(move |status| {

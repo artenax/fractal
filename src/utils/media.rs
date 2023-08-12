@@ -125,7 +125,7 @@ async fn get_gstreamer_media_info(file: &gio::File) -> Option<gst_pbutils::Disco
     let timeout = gst::ClockTime::from_seconds(15);
     let discoverer = gst_pbutils::Discoverer::new(timeout).ok()?;
 
-    let (sender, receiver) = futures::channel::oneshot::channel();
+    let (sender, receiver) = futures_channel::oneshot::channel();
     let sender = Mutex::new(Cell::new(Some(sender)));
     discoverer.connect_discovered(move |_, info, _| {
         if let Some(sender) = sender.lock().unwrap().take() {

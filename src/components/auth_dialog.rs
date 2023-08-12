@@ -308,7 +308,7 @@ impl AuthDialog {
 
     /// Lets the user complete the current stage.
     async fn show_and_wait_for_response(&self) -> Result<(), AuthError> {
-        let (sender, receiver) = futures::channel::oneshot::channel();
+        let (sender, receiver) = futures_channel::oneshot::channel();
         let sender = Cell::new(Some(sender));
 
         let handler_id = self.connect_response(move |_, response| {

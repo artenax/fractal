@@ -34,7 +34,7 @@ mod imp {
         collections::HashMap,
     };
 
-    use futures::future::AbortHandle;
+    use futures_util::future::AbortHandle;
     use glib::subclass::Signal;
     use once_cell::{sync::Lazy, unsync::OnceCell};
 
@@ -330,7 +330,7 @@ impl InviteeList {
             client.send(request, None).await
         });
 
-        let (future, handle) = futures::future::abortable(handle);
+        let (future, handle) = futures_util::future::abortable(handle);
 
         if let Some(abort_handle) = self.imp().abort_handle.replace(Some(handle)) {
             abort_handle.abort();

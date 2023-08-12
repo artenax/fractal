@@ -96,7 +96,7 @@ impl LoginAdvancedDialog {
     }
 
     pub async fn run_future(&self) {
-        let (sender, receiver) = futures::channel::oneshot::channel();
+        let (sender, receiver) = futures_channel::oneshot::channel();
         let sender = Cell::new(Some(sender));
 
         self.connect_close_request(move |_| {

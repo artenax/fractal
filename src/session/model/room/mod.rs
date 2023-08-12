@@ -368,12 +368,7 @@ impl Room {
 
         let matrix_room = self.matrix_room();
 
-        let handle = spawn_tokio!(async move {
-            match matrix_room {
-                MatrixRoom::Left(room) => room.forget().await,
-                _ => unimplemented!(),
-            }
-        });
+        let handle = spawn_tokio!(async move { matrix_room.forget().await });
 
         match handle.await.unwrap() {
             Ok(_) => {
@@ -453,170 +448,182 @@ impl Room {
         self.set_category_internal(category);
 
         let handle = spawn_tokio!(async move {
-            match matrix_room {
-                MatrixRoom::Invited(room) => match category {
+            match matrix_room.state() {
+                RoomState::Invited => match category {
                     RoomType::Invited => {}
                     RoomType::Favorite => {
-                        if let Some(tags) = room.tags().await? {
+                        if let Some(tags) = matrix_room.tags().await? {
                             if !tags.contains_key(&TagName::Favorite) {
-                                room.set_tag(TagName::Favorite, TagInfo::new()).await?;
+                                matrix_room
+                                    .set_tag(TagName::Favorite, TagInfo::new())
+                                    .await?;
                             }
                             if tags.contains_key(&TagName::LowPriority) {
-                                room.remove_tag(TagName::LowPriority).await?;
+                                matrix_room.remove_tag(TagName::LowPriority).await?;
                             }
                         }
-                        room.accept_invitation().await?;
+                        matrix_room.join().await?;
                     }
                     RoomType::Normal => {
-                        if let Some(tags) = room.tags().await? {
+                        if let Some(tags) = matrix_room.tags().await? {
                             if tags.contains_key(&TagName::Favorite) {
-                                room.remove_tag(TagName::Favorite).await?;
+                                matrix_room.remove_tag(TagName::Favorite).await?;
                             }
                             if tags.contains_key(&TagName::LowPriority) {
-                                room.remove_tag(TagName::LowPriority).await?;
+                                matrix_room.remove_tag(TagName::LowPriority).await?;
                             }
                         }
 
-                        if room.is_direct().await.unwrap_or_default() {
-                            room.set_is_direct(false).await?;
+                        if matrix_room.is_direct().await.unwrap_or_default() {
+                            matrix_room.set_is_direct(false).await?;
                         }
 
-                        room.accept_invitation().await?;
+                        matrix_room.join().await?;
                     }
                     RoomType::LowPriority => {
-                        if let Some(tags) = room.tags().await? {
+                        if let Some(tags) = matrix_room.tags().await? {
                             if tags.contains_key(&TagName::Favorite) {
-                                room.remove_tag(TagName::Favorite).await?;
+                                matrix_room.remove_tag(TagName::Favorite).await?;
                             }
                             if !tags.contains_key(&TagName::LowPriority) {
-                                room.set_tag(TagName::LowPriority, TagInfo::new()).await?;
+                                matrix_room
+                                    .set_tag(TagName::LowPriority, TagInfo::new())
+                                    .await?;
                             }
                         }
-                        room.accept_invitation().await?;
+                        matrix_room.join().await?;
                     }
                     RoomType::Left => {
-                        room.reject_invitation().await?;
+                        matrix_room.leave().await?;
                     }
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
                     RoomType::Direct => {
-                        if !room.is_direct().await.unwrap_or_default() {
-                            room.set_is_direct(true).await?;
+                        if !matrix_room.is_direct().await.unwrap_or_default() {
+                            matrix_room.set_is_direct(true).await?;
                         }
 
-                        if let Some(tags) = room.tags().await? {
+                        if let Some(tags) = matrix_room.tags().await? {
                             if tags.contains_key(&TagName::Favorite) {
-                                room.remove_tag(TagName::Favorite).await?;
+                                matrix_room.remove_tag(TagName::Favorite).await?;
                             }
                             if tags.contains_key(&TagName::LowPriority) {
-                                room.remove_tag(TagName::LowPriority).await?;
+                                matrix_room.remove_tag(TagName::LowPriority).await?;
                             }
                         }
 
-                        room.accept_invitation().await?;
+                        matrix_room.join().await?;
                     }
                 },
-                MatrixRoom::Joined(room) => match category {
+                RoomState::Joined => match category {
                     RoomType::Invited => {}
                     RoomType::Favorite => {
-                        room.set_tag(TagName::Favorite, TagInfo::new()).await?;
+                        matrix_room
+                            .set_tag(TagName::Favorite, TagInfo::new())
+                            .await?;
                         if previous_category == RoomType::LowPriority {
-                            room.remove_tag(TagName::LowPriority).await?;
+                            matrix_room.remove_tag(TagName::LowPriority).await?;
                         }
                     }
                     RoomType::Normal => {
-                        if room.is_direct().await.unwrap_or_default() {
-                            room.set_is_direct(false).await?;
+                        if matrix_room.is_direct().await.unwrap_or_default() {
+                            matrix_room.set_is_direct(false).await?;
                         }
                         match previous_category {
                             RoomType::Favorite => {
-                                room.remove_tag(TagName::Favorite).await?;
+                                matrix_room.remove_tag(TagName::Favorite).await?;
                             }
                             RoomType::LowPriority => {
-                                room.remove_tag(TagName::LowPriority).await?;
+                                matrix_room.remove_tag(TagName::LowPriority).await?;
                             }
                             _ => {}
                         }
                     }
                     RoomType::LowPriority => {
-                        room.set_tag(TagName::LowPriority, TagInfo::new()).await?;
+                        matrix_room
+                            .set_tag(TagName::LowPriority, TagInfo::new())
+                            .await?;
                         if previous_category == RoomType::Favorite {
-                            room.remove_tag(TagName::Favorite).await?;
+                            matrix_room.remove_tag(TagName::Favorite).await?;
                         }
                     }
                     RoomType::Left => {
-                        room.leave().await?;
+                        matrix_room.leave().await?;
                     }
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
                     RoomType::Direct => {
-                        if !room.is_direct().await.unwrap_or_default() {
-                            room.set_is_direct(true).await?;
+                        if !matrix_room.is_direct().await.unwrap_or_default() {
+                            matrix_room.set_is_direct(true).await?;
                         }
 
-                        if let Some(tags) = room.tags().await? {
+                        if let Some(tags) = matrix_room.tags().await? {
                             if tags.contains_key(&TagName::LowPriority) {
-                                room.remove_tag(TagName::LowPriority).await?;
+                                matrix_room.remove_tag(TagName::LowPriority).await?;
                             }
                             if tags.contains_key(&TagName::Favorite) {
-                                room.remove_tag(TagName::Favorite).await?;
+                                matrix_room.remove_tag(TagName::Favorite).await?;
                             }
                         }
                     }
                 },
-                MatrixRoom::Left(room) => match category {
+                RoomState::Left => match category {
                     RoomType::Invited => {}
                     RoomType::Favorite => {
-                        if let Some(tags) = room.tags().await? {
+                        if let Some(tags) = matrix_room.tags().await? {
                             if !tags.contains_key(&TagName::Favorite) {
-                                room.set_tag(TagName::Favorite, TagInfo::new()).await?;
+                                matrix_room
+                                    .set_tag(TagName::Favorite, TagInfo::new())
+                                    .await?;
                             }
                             if tags.contains_key(&TagName::LowPriority) {
-                                room.remove_tag(TagName::LowPriority).await?;
+                                matrix_room.remove_tag(TagName::LowPriority).await?;
                             }
                         }
-                        room.join().await?;
+                        matrix_room.join().await?;
                     }
                     RoomType::Normal => {
-                        if let Some(tags) = room.tags().await? {
+                        if let Some(tags) = matrix_room.tags().await? {
                             if tags.contains_key(&TagName::Favorite) {
-                                room.remove_tag(TagName::Favorite).await?;
+                                matrix_room.remove_tag(TagName::Favorite).await?;
                             }
                             if tags.contains_key(&TagName::LowPriority) {
-                                room.remove_tag(TagName::LowPriority).await?;
+                                matrix_room.remove_tag(TagName::LowPriority).await?;
                             }
                         }
-                        room.join().await?;
+                        matrix_room.join().await?;
                     }
                     RoomType::LowPriority => {
-                        if let Some(tags) = room.tags().await? {
+                        if let Some(tags) = matrix_room.tags().await? {
                             if tags.contains_key(&TagName::Favorite) {
-                                room.remove_tag(TagName::Favorite).await?;
+                                matrix_room.remove_tag(TagName::Favorite).await?;
                             }
                             if !tags.contains_key(&TagName::LowPriority) {
-                                room.set_tag(TagName::LowPriority, TagInfo::new()).await?;
+                                matrix_room
+                                    .set_tag(TagName::LowPriority, TagInfo::new())
+                                    .await?;
                             }
                         }
-                        room.join().await?;
+                        matrix_room.join().await?;
                     }
                     RoomType::Left => {}
                     RoomType::Outdated => unimplemented!(),
                     RoomType::Space => unimplemented!(),
                     RoomType::Direct => {
-                        if !room.is_direct().await.unwrap_or_default() {
-                            room.set_is_direct(true).await?;
+                        if !matrix_room.is_direct().await.unwrap_or_default() {
+                            matrix_room.set_is_direct(true).await?;
                         }
 
-                        if let Some(tags) = room.tags().await? {
+                        if let Some(tags) = matrix_room.tags().await? {
                             if tags.contains_key(&TagName::LowPriority) {
-                                room.remove_tag(TagName::LowPriority).await?;
+                                matrix_room.remove_tag(TagName::LowPriority).await?;
                             }
                             if tags.contains_key(&TagName::Favorite) {
-                                room.remove_tag(TagName::Favorite).await?;
+                                matrix_room.remove_tag(TagName::Favorite).await?;
                             }
                         }
 
-                        room.join().await?;
+                        matrix_room.join().await?;
                     }
                 },
             }
@@ -645,8 +652,8 @@ impl Room {
 
         let matrix_room = self.matrix_room();
 
-        match matrix_room {
-            MatrixRoom::Joined(_) => {
+        match matrix_room.state() {
+            RoomState::Joined => {
                 if matrix_room.is_space() {
                     self.set_category_internal(RoomType::Space);
                 } else {
@@ -678,8 +685,8 @@ impl Room {
                     );
                 }
             }
-            MatrixRoom::Invited(_) => self.set_category_internal(RoomType::Invited),
-            MatrixRoom::Left(_) => self.set_category_internal(RoomType::Left),
+            RoomState::Invited => self.set_category_internal(RoomType::Invited),
+            RoomState::Left => self.set_category_internal(RoomType::Left),
         };
     }
 
@@ -688,7 +695,8 @@ impl Room {
     }
 
     fn setup_typing(&self) {
-        let MatrixRoom::Joined(matrix_room) = self.matrix_room() else {
+        let matrix_room = self.matrix_room();
+        if matrix_room.state() != RoomState::Joined {
             return;
         };
 
@@ -1258,7 +1266,8 @@ impl Room {
 
     /// Redact `redacted_event_id` in this room because of `reason`.
     pub fn redact(&self, redacted_event_id: OwnedEventId, reason: Option<String>) {
-        let MatrixRoom::Joined(matrix_room) = self.matrix_room() else {
+        let matrix_room = self.matrix_room();
+        if matrix_room.state() != RoomState::Joined {
             return;
         };
 
@@ -1281,7 +1290,8 @@ impl Room {
     }
 
     pub fn send_typing_notification(&self, is_typing: bool) {
-        let MatrixRoom::Joined(matrix_room) = self.matrix_room() else {
+        let matrix_room = self.matrix_room();
+        if matrix_room.state() != RoomState::Joined {
             return;
         };
 
@@ -1313,12 +1323,12 @@ impl Room {
     pub async fn accept_invite(&self) -> MatrixResult<()> {
         let matrix_room = self.matrix_room();
 
-        let MatrixRoom::Invited(matrix_room) = matrix_room else {
+        if matrix_room.state() != RoomState::Invited {
             error!("Can’t accept invite, because this room isn’t an invited room");
             return Ok(());
-        };
+        }
 
-        let handle = spawn_tokio!(async move { matrix_room.accept_invitation().await });
+        let handle = spawn_tokio!(async move { matrix_room.join().await });
         match handle.await.unwrap() {
             Ok(_) => Ok(()),
             Err(error) => {
@@ -1331,12 +1341,12 @@ impl Room {
     pub async fn reject_invite(&self) -> MatrixResult<()> {
         let matrix_room = self.matrix_room();
 
-        let MatrixRoom::Invited(matrix_room) = matrix_room else {
+        if matrix_room.state() != RoomState::Invited {
             error!("Can’t reject invite, because this room isn’t an invited room");
             return Ok(());
-        };
+        }
 
-        let handle = spawn_tokio!(async move { matrix_room.reject_invitation().await });
+        let handle = spawn_tokio!(async move { matrix_room.leave().await });
         match handle.await.unwrap() {
             Ok(_) => Ok(()),
             Err(error) => {
@@ -1500,7 +1510,8 @@ impl Room {
         body: &str,
         info: AttachmentInfo,
     ) {
-        let MatrixRoom::Joined(matrix_room) = self.matrix_room() else {
+        let matrix_room = self.matrix_room();
+        if matrix_room.state() != RoomState::Joined {
             return;
         };
 
@@ -1544,17 +1555,18 @@ impl Room {
     /// Returns `Ok(())` if all the invites are sent successfully, otherwise
     /// returns the list of users who could not be invited.
     pub async fn invite<'a>(&self, users: &'a [User]) -> Result<(), Vec<&'a User>> {
-        let MatrixRoom::Joined(matrix_room) = self.matrix_room() else {
+        let matrix_room = self.matrix_room();
+        if matrix_room.state() != RoomState::Joined {
             error!("Can’t invite users, because this room isn’t a joined room");
             return Ok(());
-        };
+        }
         let user_ids: Vec<OwnedUserId> = users.iter().map(|user| user.user_id()).collect();
 
         let handle = spawn_tokio!(async move {
             let invitations = user_ids
                 .iter()
                 .map(|user_id| matrix_room.invite_user_by_id(user_id));
-            futures::future::join_all(invitations).await
+            futures_util::future::join_all(invitations).await
         });
 
         let mut failed_invites = Vec::new();

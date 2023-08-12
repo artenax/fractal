@@ -161,7 +161,7 @@ impl RoomList {
         if let Some(room) = self.get(room_id) {
             Some(room)
         } else {
-            let (sender, receiver) = futures::channel::oneshot::channel();
+            let (sender, receiver) = futures_channel::oneshot::channel();
 
             let room_id = room_id.to_owned();
             let sender = Cell::new(Some(sender));

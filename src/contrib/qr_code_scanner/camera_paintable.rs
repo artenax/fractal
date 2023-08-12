@@ -207,7 +207,7 @@ impl CameraPaintable {
         let paintable = sink.property::<gdk::Paintable>("paintable");
 
         // Workaround: we wait for the first frame so that we don't show a black frame
-        let (sender, receiver) = futures::channel::oneshot::channel();
+        let (sender, receiver) = futures_channel::oneshot::channel();
         let sender = Cell::new(Some(sender));
 
         paintable.connect_invalidate_contents(move |_| {
