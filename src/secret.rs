@@ -548,6 +548,8 @@ impl Secret {
 pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
     let keyring = Keyring::new().await?;
 
+    keyring.unlock().await?;
+
     let items = keyring
         .search_items(HashMap::from([(SCHEMA_ATTRIBUTE, APP_ID)]))
         .await?;
@@ -555,6 +557,8 @@ pub async fn restore_sessions() -> Result<Vec<StoredSession>, SecretError> {
     let mut sessions = Vec::with_capacity(items.len());
 
     for item in items {
+        item.unlock().await?;
+
         match StoredSession::try_from_secret_item(item).await {
             Ok(session) => sessions.push(session),
             Err(SecretError::WrongProfile) => {}
