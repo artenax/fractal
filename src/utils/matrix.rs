@@ -1,11 +1,26 @@
 //! Collection of methods related to the Matrix specification.
 
+use std::fmt::Write;
+
+use gtk::prelude::*;
+use html5gum::{HtmlString, Token, Tokenizer};
 use matrix_sdk::{config::RequestConfig, Client, ClientBuildError};
-use ruma::events::{room::message::MessageType, AnyMessageLikeEventContent, AnySyncTimelineEvent};
+use ruma::{
+    events::{room::message::MessageType, AnyMessageLikeEventContent, AnySyncTimelineEvent},
+    matrix_uri::MatrixId,
+    MatrixToUri, MatrixUri,
+};
 use thiserror::Error;
 
 use super::media::filename_for_mime;
-use crate::{gettext_f, prelude::*, secret::StoredSession, spawn_tokio};
+use crate::{
+    components::{Pill, DEFAULT_PLACEHOLDER},
+    gettext_f,
+    prelude::*,
+    secret::StoredSession,
+    session::model::{Room, Session},
+    spawn_tokio,
+};
 
 /// The result of a password validation.
 #[derive(Debug, Default, Clone, Copy)]
@@ -265,5 +280,96 @@ pub async fn get_media_content(
         _ => {
             panic!("Trying to get the media content of a message of incompatible type");
         }
+    }
+}
+
+/// Extract mentions from the given string.
+///
+/// Returns a new string with placeholders and the corresponding widgets and the
+/// string they are replacing.
+pub fn extract_mentions(s: &str, room: &Room) -> (String, Vec<(Pill, String)>) {
+    let session = room.session();
+    let mut mentions = Vec::new();
+    let mut mention = None;
+    let mut new_string = String::new();
+
+    for token in Tokenizer::new(s).infallible() {
+        match token {
+            Token::StartTag(tag) => {
+                if tag.name == HtmlString(b"a".to_vec()) && !tag.self_closing {
+                    if let Some(pill) = tag
+                        .attributes
+                        .get(&HtmlString(b"href".to_vec()))
+                        .map(|href| String::from_utf8_lossy(href))
+                        .and_then(|s| parse_pill(&s, room, &session))
+                    {
+                        mention = Some((pill, String::new()));
+                        new_string.push_str(DEFAULT_PLACEHOLDER);
+                        continue;
+                    }
+                }
+
+                mention = None;
+                write!(new_string, "<{}>", String::from_utf8_lossy(&tag.name)).unwrap();
+            }
+            Token::String(s) => {
+                if let Some((_, string)) = &mut mention {
+                    write!(string, "{}", String::from_utf8_lossy(&s)).unwrap();
+                    continue;
+                }
+
+                write!(new_string, "{}", String::from_utf8_lossy(&s)).unwrap();
+            }
+            Token::EndTag(tag) => {
+                if let Some(mention) = mention.take() {
+                    mentions.push(mention);
+                    continue;
+                }
+
+                write!(new_string, "</{}>", String::from_utf8_lossy(&tag.name)).unwrap();
+            }
+            _ => {}
+        }
+    }
+
+    (new_string, mentions)
+}
+
+/// Try to parse the given string to a Matrix URI and generate a pill for it.
+fn parse_pill(s: &str, room: &Room, session: &Session) -> Option<Pill> {
+    let uri = html_escape::decode_html_entities(s);
+
+    let id = if let Ok(mx_uri) = MatrixUri::parse(&uri) {
+        mx_uri.id().to_owned()
+    } else if let Ok(mx_to_uri) = MatrixToUri::parse(&uri) {
+        mx_to_uri.id().to_owned()
+    } else {
+        return None;
+    };
+
+    match id {
+        MatrixId::Room(room_id) => session
+            .room_list()
+            .get(&room_id)
+            .map(|room| Pill::for_room(&room)),
+        MatrixId::RoomAlias(room_alias) => {
+            // TODO: Handle non-canonical aliases.
+            session
+                .client()
+                .rooms()
+                .iter()
+                .find_map(|matrix_room| {
+                    matrix_room
+                        .canonical_alias()
+                        .filter(|alias| alias == &room_alias)
+                        .and_then(|_| session.room_list().get(matrix_room.room_id()))
+                })
+                .map(|room| Pill::for_room(&room))
+        }
+        MatrixId::User(user_id) => {
+            let user = room.members().get_or_create(user_id).upcast();
+            Some(Pill::for_user(&user))
+        }
+        _ => None,
     }
 }

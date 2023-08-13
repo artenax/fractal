@@ -40,6 +40,7 @@ gst_play = { version = "0.20", package = "gstreamer-play" }
 gst_video = { version = "0.20", package = "gstreamer-video" }
 html-escape = "0.2"
 html2pango = "0.5"
+html5gum = "0.5"
 image = "0.24"
 indexmap = "2"
 mime = "0.3"

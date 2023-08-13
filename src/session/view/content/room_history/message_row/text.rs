@@ -6,19 +6,15 @@ use html2pango::{
     block::{markup_html, HtmlBlock},
     html_escape, markup_links,
 };
-use matrix_sdk::ruma::{
-    events::room::message::{FormattedBody, MessageFormat},
-    matrix_uri::MatrixId,
-    MatrixToUri, MatrixUri,
-};
+use matrix_sdk::ruma::events::room::message::{FormattedBody, MessageFormat};
 use sourceview::prelude::*;
 
 use super::ContentFormat;
 use crate::{
-    components::{LabelWithWidgets, Pill, DEFAULT_PLACEHOLDER},
+    components::LabelWithWidgets,
     prelude::*,
     session::model::{Member, Room},
-    utils::EMOJI_REGEX,
+    utils::{matrix::extract_mentions, EMOJI_REGEX},
 };
 
 enum WithMentions<'a> {
@@ -217,6 +213,7 @@ impl MessageText {
             child.set_use_markup(linkified);
             child.set_label(label);
         } else {
+            let widgets = widgets.into_iter().map(|(w, _)| w).collect();
             let child = if let Some(child) = self.child().and_downcast::<LabelWithWidgets>() {
                 child
             } else {
@@ -436,86 +433,6 @@ fn create_widget_for_html_block(
     }
 }
 
-/// Extract mentions from the given string.
-///
-/// Returns a new string with placeholders and the corresponding widgets.
-fn extract_mentions(s: &str, room: &Room) -> (String, Vec<Pill>) {
-    let session = room.session();
-    let mut label = s.to_owned();
-    let mut widgets: Vec<(usize, usize, Pill)> = vec![];
-
-    // The markup has been normalized by html2pango so we are sure of the format of
-    // links.
-    for (start, _) in s.rmatch_indices("<a href=") {
-        let uri_start = start + 9;
-        let link = &label[uri_start..];
-
-        let uri_end = if let Some(end) = link.find('"') {
-            end
-        } else {
-            continue;
-        };
-
-        let uri = &link[..uri_end];
-        let uri = html_escape::decode_html_entities(uri);
-
-        let id = if let Ok(mx_uri) = MatrixUri::parse(&uri) {
-            mx_uri.id().to_owned()
-        } else if let Ok(mx_to_uri) = MatrixToUri::parse(&uri) {
-            mx_to_uri.id().to_owned()
-        } else {
-            continue;
-        };
-
-        let pill = match id {
-            MatrixId::Room(room_id) => {
-                if let Some(room) = session.room_list().get(&room_id) {
-                    Pill::for_room(&room)
-                } else {
-                    continue;
-                }
-            }
-            MatrixId::RoomAlias(room_alias) => {
-                // TODO: Handle non-canonical aliases.
-                if let Some(room) = session.client().rooms().iter().find_map(|matrix_room| {
-                    matrix_room
-                        .canonical_alias()
-                        .filter(|alias| alias == &room_alias)
-                        .and_then(|_| session.room_list().get(matrix_room.room_id()))
-                }) {
-                    Pill::for_room(&room)
-                } else {
-                    continue;
-                }
-            }
-            MatrixId::User(user_id) => {
-                let user = room.members().get_or_create(user_id).upcast();
-                Pill::for_user(&user)
-            }
-            _ => continue,
-        };
-
-        let end = if let Some(end) = link.find("</a>") {
-            uri_start + end + 4
-        } else {
-            continue;
-        };
-
-        // Remove nested Pills. Only occurs with nested links in invalid HTML.
-        widgets = widgets
-            .into_iter()
-            .filter(|(w_start, ..)| end < *w_start)
-            .collect();
-
-        widgets.insert(0, (start, end, pill));
-        label.replace_range(start..end, DEFAULT_PLACEHOLDER);
-    }
-
-    let widgets = widgets.into_iter().map(|(_, _, widget)| widget).collect();
-
-    (label, widgets)
-}
-
 fn new_label() -> gtk::Label {
     gtk::Label::builder()
         .wrap(true)
@@ -546,6 +463,7 @@ fn create_label_for_html(label: &str, room: &Room, ellipsize: bool, cut_text: bo
         });
         w.upcast()
     } else {
+        let widgets = widgets.into_iter().map(|(w, _)| w).collect();
         let w = LabelWithWidgets::with_label_and_widgets(&label, widgets);
         w.set_use_markup(true);
         w.set_ellipsize(ellipsize);
