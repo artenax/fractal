@@ -25,6 +25,7 @@ mod window;
 use gettextrs::*;
 use gtk::{gdk::Display, gio, IconTheme};
 use once_cell::sync::Lazy;
+use tracing_subscriber::{fmt, prelude::*, EnvFilter};
 
 use self::{application::*, config::*, i18n::*, window::Window};
 
@@ -33,8 +34,10 @@ pub static RUNTIME: Lazy<tokio::runtime::Runtime> =
     Lazy::new(|| tokio::runtime::Runtime::new().unwrap());
 
 fn main() {
-    // Initialize logger, debug is carried out via debug!, info!, and warn!.
-    tracing_subscriber::fmt::init();
+    // Initialize logger, debug is carried out via debug!, info!, warn! and error!.
+    tracing_subscriber::registry()
+        .with(fmt::layer().with_filter(EnvFilter::from_default_env()))
+        .init();
 
     // Prepare i18n
     setlocale(LocaleCategory::LcAll, "");
