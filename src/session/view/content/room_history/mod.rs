@@ -18,7 +18,7 @@ use ashpd::{
 };
 use futures_util::TryFutureExt;
 use geo_uri::GeoUri;
-use gettextrs::gettext;
+use gettextrs::{gettext, pgettext};
 use gtk::{
     gdk, gio, glib,
     glib::{clone, signal::Inhibit, FromVariant},
@@ -40,7 +40,10 @@ use ruma::{
     events::{
         receipt::ReceiptThread,
         room::{
-            message::{ForwardThread, LocationMessageEventContent, RoomMessageEventContent},
+            message::{
+                ForwardThread, LocationMessageEventContent, MessageFormat,
+                OriginalSyncRoomMessageEvent, RoomMessageEventContent,
+            },
             power_levels::PowerLevelAction,
         },
         AnyMessageLikeEventContent,
@@ -72,6 +75,7 @@ use crate::{
     session::model::{Event, EventKey, Room, RoomType, Timeline, TimelineState},
     spawn, spawn_tokio, toast,
     utils::{
+        matrix::extract_mentions,
         media::{filename_for_mime, get_audio_info, get_image_info, get_video_info, load_file},
         template_callbacks::TemplateCallbacks,
     },
@@ -90,6 +94,7 @@ pub enum RelatedEventType {
     #[default]
     None = 0,
     Reply = 1,
+    Edit = 2,
 }
 
 mod imp {
@@ -261,6 +266,21 @@ mod imp {
                         .and_downcast()
                     {
                         widget.set_reply_to(event);
+                    }
+                }
+            });
+
+            klass.install_action("room-history.edit", Some("s"), move |widget, _, v| {
+                if let Some(event_id) = v
+                    .and_then(String::from_variant)
+                    .and_then(|s| EventId::parse(s).ok())
+                {
+                    if let Some(event) = widget
+                        .room()
+                        .and_then(|room| room.timeline().event_by_key(&EventKey::EventId(event_id)))
+                        .and_downcast()
+                    {
+                        widget.set_edit(event);
                     }
                 }
             });
@@ -694,6 +714,11 @@ impl RoomHistory {
     }
 
     pub fn clear_related_event(&self) {
+        if self.related_event_type() == RelatedEventType::Edit {
+            // Clean up the entry.
+            self.imp().message_entry.buffer().set_text("");
+        };
+
         self.set_related_event(None);
         self.set_related_event_type(RelatedEventType::default());
     }
@@ -714,9 +739,90 @@ impl RoomHistory {
             .set_label(Some(gettext_f("Reply to {user}", &[("user", "<widget>")])));
 
         imp.related_event_content.update_for_event(&event);
+        imp.related_event_content.set_visible(true);
 
         self.set_related_event_type(RelatedEventType::Reply);
         self.set_related_event(Some(event));
+        imp.message_entry.grab_focus();
+    }
+
+    /// Set the event to edit.
+    pub fn set_edit(&self, event: Event) {
+        // We don't support editing non-text messages.
+        let Some((text, formatted)) = event.message().and_then(|msg| match msg {
+            MessageType::Emote(emote) => Some((format!("/me {}", emote.body), emote.formatted)),
+            MessageType::Text(text) => Some((text.body, text.formatted)),
+            _ => None,
+        }) else {
+            return;
+        };
+
+        let mentions = if let Some(html) =
+            formatted.and_then(|f| (f.format == MessageFormat::Html).then_some(f.body))
+        {
+            let (_, mentions) = extract_mentions(&html, &event.room());
+            let mut pos = 0;
+            // This is looking for the mention link's inner text in the Markdown
+            // so it is not super reliable: if there is other text that matches
+            // a user's display name in the string it might be replaced instead
+            // of the actual mention.
+            // Short of an HTML to Markdown converter, it won't be a simple task
+            // to locate mentions in Markdown.
+            mentions
+                .into_iter()
+                .filter_map(|(pill, s)| {
+                    text[pos..].find(&s).map(|index| {
+                        let start = pos + index;
+                        let end = start + s.len();
+                        pos = end;
+                        (pill, (start, end))
+                    })
+                })
+                .collect::<Vec<_>>()
+        } else {
+            Vec::new()
+        };
+
+        let imp = self.imp();
+        imp.related_event_header.set_widgets::<gtk::Widget>(vec![]);
+        imp.related_event_header
+            // Translators: In this string, 'Edit' is a noun.
+            .set_label(Some(pgettext("room-history", "Edit")));
+
+        imp.related_event_content.set_visible(false);
+
+        self.set_related_event_type(RelatedEventType::Edit);
+        self.set_related_event(Some(event));
+
+        let view = &*imp.message_entry;
+        let buffer = view.buffer();
+
+        if mentions.is_empty() {
+            buffer.set_text(&text);
+        } else {
+            // Place the pills instead of the text at the appropriate places in
+            // the TextView.
+            buffer.set_text("");
+
+            let mut pos = 0;
+            let mut iter = buffer.iter_at_offset(0);
+
+            for (pill, (start, end)) in mentions {
+                if pos != start {
+                    buffer.insert(&mut iter, &text[pos..start]);
+                }
+
+                let anchor = buffer.create_child_anchor(&mut iter);
+                view.add_child_at_anchor(&pill, &anchor);
+
+                pos = end;
+            }
+
+            if pos != text.len() {
+                buffer.insert(&mut iter, &text[pos..])
+            }
+        }
+
         imp.message_entry.grab_focus();
     }
 
@@ -771,7 +877,7 @@ impl RoomHistory {
             None
         };
 
-        let content = if is_emote {
+        let mut content = if is_emote {
             MessageType::Emote(if let Some(html_body) = html_body {
                 EmoteMessageEventContent::html(plain_body, html_body)
             } else {
@@ -806,7 +912,30 @@ impl RoomHistory {
             content
         };
 
-        self.room().unwrap().send_room_message_event(content);
+        let room = self.room().unwrap();
+
+        // Handle edit.
+        if self.related_event_type() == RelatedEventType::Edit {
+            let related_event = self.related_event().unwrap();
+            let related_message = related_event
+                .raw()
+                .unwrap()
+                .deserialize_as::<OriginalSyncRoomMessageEvent>()
+                .unwrap();
+
+            // Try to get the replied to message of the original event if it's available
+            // locally.
+            let replied_to_message = related_event
+                .reply_to_id()
+                .and_then(|id| room.timeline().event_by_key(&EventKey::EventId(id)))
+                .and_then(|e| e.raw())
+                .and_then(|r| r.deserialize_as::<OriginalSyncRoomMessageEvent>().ok())
+                .map(|e| e.into_full_event(room.room_id().to_owned()));
+
+            content = content.make_replacement(&related_message, replied_to_message.as_ref());
+        }
+
+        room.send_room_message_event(content);
         buffer.set_text("");
         self.clear_related_event();
     }

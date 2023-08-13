@@ -122,13 +122,14 @@ where
             ]);
 
             if let TimelineItemContent::Message(message) = event.content() {
-                let user_id = event
+                let own_user_id = event
                     .room()
                     .session()
                     .user()
                     .map(|user| user.user_id())
                     .unwrap();
-                let user = event.room().members().get_or_create(user_id);
+                let own_user = event.room().members().get_or_create(own_user_id);
+                let is_from_own_user = event.sender() == own_user;
 
                 // Remove message
                 fn update_remove_action(
@@ -149,7 +150,7 @@ where
                     }
                 }
 
-                if event.sender() == user {
+                if is_from_own_user {
                     update_remove_action(&action_group, event, true);
                 } else {
                     let remove_watch = event
@@ -217,6 +218,22 @@ where
                                 toast!(widget, gettext("Message copied to clipboard"));
                             }))
                             .build()]);
+
+                        // Edit
+                        if is_from_own_user {
+                            action_group.add_action_entries([gio::ActionEntry::builder("edit")
+                                .activate(
+                                    clone!(@weak event, @weak self as widget => move |_, _, _| {
+                                        if let Some(event_id) = event.event_id() {
+                                            let _ = widget.activate_action(
+                                                "room-history.edit",
+                                                Some(&event_id.as_str().to_variant())
+                                            );
+                                        }
+                                    }),
+                                )
+                                .build()]);
+                        }
                     }
                     MessageType::File(_) => {
                         // Save message's file.
@@ -238,6 +255,22 @@ where
                                 toast!(widget, gettext("Message copied to clipboard"));
                             }))
                             .build()]);
+
+                        // Edit
+                        if is_from_own_user {
+                            action_group.add_action_entries([gio::ActionEntry::builder("edit")
+                                .activate(
+                                    clone!(@weak event, @weak self as widget => move |_, _, _| {
+                                        if let Some(event_id) = event.event_id() {
+                                            let _ = widget.activate_action(
+                                                "room-history.edit",
+                                                Some(&event_id.as_str().to_variant())
+                                            );
+                                        }
+                                    }),
+                                )
+                                .build()]);
+                        }
                     }
                     MessageType::Notice(message) => {
                         // Copy text message.

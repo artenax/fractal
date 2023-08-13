@@ -257,6 +257,7 @@
                         <property name="valign">start</property>
                         <property name="icon-name">window-close-symbolic</property>
                         <property name="action-name">room-history.clear-related-event</property>
+                        <property name="tooltip-text" translatable="yes">Cancel</property>
                       </object>
                     </child>
                   </object>
