@@ -310,7 +310,22 @@ pub fn extract_mentions(s: &str, room: &Room) -> (String, Vec<(Pill, String)>) {
                 }
 
                 mention = None;
-                write!(new_string, "<{}>", String::from_utf8_lossy(&tag.name)).unwrap();
+
+                // Restore HTML.
+                write!(new_string, "<{}", String::from_utf8_lossy(&tag.name)).unwrap();
+                for (attr_name, attr_value) in &tag.attributes {
+                    write!(
+                        new_string,
+                        r#" {}="{}""#,
+                        String::from_utf8_lossy(attr_name),
+                        String::from_utf8_lossy(attr_value),
+                    )
+                    .unwrap();
+                }
+                if tag.self_closing {
+                    write!(new_string, " /").unwrap();
+                }
+                write!(new_string, ">").unwrap();
             }
             Token::String(s) => {
                 if let Some((_, string)) = &mut mention {
