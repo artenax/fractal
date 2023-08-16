@@ -159,8 +159,6 @@ mod imp {
         pub related_event: RefCell<Option<Event>>,
         pub scroll_timeout: RefCell<Option<glib::SourceId>>,
         pub read_timeout: RefCell<Option<glib::SourceId>>,
-        /// Whether we should load more history when the timeline is ready.
-        pub load_when_timeline_ready: Cell<bool>,
         /// The GtkSelectionModel used in the listview.
         // TODO: use gtk::MultiSelection to allow selection
         pub selection_model: OnceCell<gtk::NoSelection>,
@@ -549,8 +547,6 @@ impl RoomHistory {
                 expr_watch.unwatch();
             }
 
-            imp.load_when_timeline_ready.set(false);
-
             self.clear_related_event();
         }
 
@@ -611,9 +607,8 @@ impl RoomHistory {
                 clone!(@weak self as obj => move |timeline, _| {
                     obj.update_view();
 
-                    let load_when_timeline_ready = &obj.imp().load_when_timeline_ready;
-                    if load_when_timeline_ready.get() && timeline.state() == TimelineState::Ready {
-                        load_when_timeline_ready.set(false);
+                    // Always test if we need to load more when timeline is ready.
+                    if timeline.state() == TimelineState::Ready {
                         obj.start_loading();
                     }
                 }),
@@ -1075,9 +1070,12 @@ impl RoomHistory {
         };
         let timeline = room.timeline();
 
-        if timeline.state() == TimelineState::Initial {
-            // Retry when the timeline is ready.
-            imp.load_when_timeline_ready.set(true);
+        if matches!(
+            timeline.state(),
+            TimelineState::Initial | TimelineState::Loading
+        ) {
+            // We will retry when the timeline is ready.
+            return;
         }
 
         if !self.need_messages() && !room.timeline().is_empty() {
