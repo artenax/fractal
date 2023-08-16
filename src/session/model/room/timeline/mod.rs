@@ -384,7 +384,6 @@ impl Timeline {
 
         imp.sdk_items.remove_all();
         imp.event_map.take();
-        self.set_state(TimelineState::Initial);
     }
 
     /// Get the event with the given key from this `Timeline`.
