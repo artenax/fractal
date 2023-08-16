@@ -3,6 +3,7 @@
 use std::fmt::Write;
 
 use gtk::prelude::*;
+use html2pango::html_escape;
 use html5gum::{HtmlString, Token, Tokenizer};
 use matrix_sdk::{config::RequestConfig, Client, ClientBuildError};
 use ruma::{
@@ -333,7 +334,7 @@ pub fn extract_mentions(s: &str, room: &Room) -> (String, Vec<(Pill, String)>) {
                     continue;
                 }
 
-                write!(new_string, "{}", String::from_utf8_lossy(&s)).unwrap();
+                write!(new_string, "{}", html_escape(&String::from_utf8_lossy(&s))).unwrap();
             }
             Token::EndTag(tag) => {
                 if let Some(mention) = mention.take() {
