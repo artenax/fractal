@@ -39,6 +39,16 @@ pub enum TimelineState {
     Complete,
 }
 
+impl From<BackPaginationStatus> for TimelineState {
+    fn from(value: BackPaginationStatus) -> Self {
+        match value {
+            BackPaginationStatus::Idle => Self::Ready,
+            BackPaginationStatus::Paginating => Self::Loading,
+            BackPaginationStatus::TimelineStartReached => Self::Complete,
+        }
+    }
+}
+
 const MAX_BATCH_SIZE: u16 = 20;
 
 mod imp {
@@ -531,8 +541,6 @@ impl Timeline {
         });
         spawn_tokio!(fut);
 
-        self.set_state(TimelineState::Ready);
-
         spawn!(clone!(@weak self as obj => async move {
             obj.setup_back_pagination_status().await;
         }));
@@ -548,9 +556,11 @@ impl Timeline {
         let matrix_timeline = self.matrix_timeline();
 
         let (mut sender, mut receiver) = futures_channel::mpsc::channel(8);
-        let stream = matrix_timeline.back_pagination_status();
+        let mut subscriber = matrix_timeline.back_pagination_status();
 
-        let fut = stream.for_each(move |status| {
+        self.set_state(subscriber.next_now().into());
+
+        let fut = subscriber.for_each(move |status| {
             if let Err(error) = sender.try_send(status) {
                 error!("Error sending back-pagination status for room {room_id}: {error}");
                 panic!();
@@ -561,13 +571,7 @@ impl Timeline {
         spawn_tokio!(fut);
 
         while let Some(status) = receiver.next().await {
-            match status {
-                BackPaginationStatus::Idle => self.set_state(TimelineState::Ready),
-                BackPaginationStatus::Paginating => self.set_state(TimelineState::Loading),
-                BackPaginationStatus::TimelineStartReached => {
-                    self.set_state(TimelineState::Complete)
-                }
-            }
+            self.set_state(status.into());
         }
     }
 
