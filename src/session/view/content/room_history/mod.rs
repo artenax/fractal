@@ -1070,10 +1070,7 @@ impl RoomHistory {
         };
         let timeline = room.timeline();
 
-        if matches!(
-            timeline.state(),
-            TimelineState::Initial | TimelineState::Loading
-        ) {
+        if !timeline.can_load() {
             // We will retry when the timeline is ready.
             return;
         }

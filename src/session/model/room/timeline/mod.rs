@@ -358,16 +358,21 @@ impl Timeline {
         }
     }
 
+    /// Whether it's possible to load more events with the current state of the
+    /// timeline.
+    pub fn can_load(&self) -> bool {
+        // We don't want to load twice at the same time, and it's useless to try to load
+        // more history before the timeline is ready or when we reached the
+        // start.
+        !matches!(
+            self.state(),
+            TimelineState::Initial | TimelineState::Loading | TimelineState::Complete
+        )
+    }
+
     /// Load events at the start of the timeline.
     pub async fn load(&self) {
-        let state = self.state();
-        if matches!(
-            state,
-            TimelineState::Initial | TimelineState::Loading | TimelineState::Complete
-        ) {
-            // We don't want to load twice at the same time, and it's useless to try to load
-            // more history before the timeline is ready or when we reached the
-            // start.
+        if !self.can_load() {
             return;
         }
 
