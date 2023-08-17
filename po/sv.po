@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-05-16 13:12+0000\n"
-"PO-Revision-Date: 2023-05-20 11:47+0200\n"
+"POT-Creation-Date: 2023-08-17 08:27+0000\n"
+"PO-Revision-Date: 2023-08-17 11:42+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: data/org.gnome.Fractal.desktop.in.in:3
 #: data/org.gnome.Fractal.metainfo.xml.in.in:7
@@ -87,1026 +87,19 @@ msgstr ""
 "gränssnitt är optimerat för samarbete i stora grupper, såsom projekt inom "
 "fri programvara."
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:170
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:169
 msgid "The Fractal Team"
 msgstr "Fractal-gruppen"
 
-#: data/resources/ui/account-settings-change-password-subpage.ui:12
-#: data/resources/ui/account-settings-user-page.ui:51
-msgid "Change Password"
-msgstr "Byt lösenord"
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:60
-msgid "Changing your password will log you out of your other sessions."
-msgstr "Att ändra ditt lösenord kommer logga ut dig från dina andra sessioner."
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:71
-msgid ""
-"Fractal’s support for encryption is unstable so you might lose access to "
-"your encrypted message history. It is recommended to backup your encryption "
-"keys before proceeding."
-msgstr ""
-"Fractals stöd för kryptering är instabilt, så du kan förlora åtkomst till "
-"din krypterade meddelandehistorik. Du rekommenderas att säkerhetskopiera "
-"dina krypteringsnycklar innan du fortsätter."
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:94
-msgid "New Password"
-msgstr "Nytt lösenord"
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:134
-msgid "Confirm New Password"
-msgstr "Bekräfta nytt lösenord"
-
-#: data/resources/ui/account-settings-change-password-subpage.ui:164
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:92
-#: data/resources/ui/account-settings-log-out-subpage.ui:94
-#: src/session/content/room_history/verification_info_bar.rs:175
-msgid "Continue"
-msgstr "Fortsätt"
-
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:12
-#: data/resources/ui/account-settings-user-page.ui:126
-msgid "Deactivate Account"
-msgstr "Inaktivera konto"
-
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:60
-msgid ""
-"Deactivating your account means you will lose access to all your messages, "
-"contacts, files, and more, forever."
-msgstr ""
-"Att inaktivera ditt konto betyder att du aldrig mera kan komma åt dina "
-"meddelanden, kontakter, filer med mera."
-
-#: data/resources/ui/account-settings-deactivate-account-subpage.ui:71
-msgid ""
-"To confirm that you really want to deactivate this account, type in your "
-"Matrix user ID:"
-msgstr ""
-"Skriv in ditt användar-ID för Matrix för att bekräfta att du verkligen vill "
-"inaktivera detta konto:"
-
-#: data/resources/ui/account-settings-device-row.ui:63
-#: src/session/content/verification/identity_verification_widget.rs:507
-#: src/session/content/verification/identity_verification_widget.rs:512
-#: src/session/content/verification/identity_verification_widget.rs:515
-#: src/session/content/verification/identity_verification_widget.rs:531
-#: src/session/content/verification/identity_verification_widget.rs:535
-#: src/session/content/verification/identity_verification_widget.rs:539
-msgid "Verify Session"
-msgstr "Verifiera session"
-
-#: data/resources/ui/account-settings-devices-page.ui:5
-msgid "Sessions"
-msgstr "Sessioner"
-
-#: data/resources/ui/account-settings-devices-page.ui:9
-#: data/resources/ui/account-settings-devices-page.ui:13
-msgid "Current Session"
-msgstr "Aktuell session"
-
-#: data/resources/ui/account-settings-devices-page.ui:24
-#: data/resources/ui/account-settings-devices-page.ui:28
-msgid "Other Active Sessions"
-msgstr "Andra aktiva sessioner"
-
-#: data/resources/ui/account-settings-log-out-subpage.ui:12
-msgid "Log Out of this Session"
-msgstr "Logga ut från denna session"
-
-#: data/resources/ui/account-settings-log-out-subpage.ui:60
-msgid ""
-"Fractal doesn’t support online backup of room encryption keys so you might "
-"lose access to your encrypted message history."
-msgstr ""
-"Fractal stöder inte säkerhetskopiering över nätet för "
-"rumskrypteringsnycklar, så du kan förlora åtkomst till din krypterade "
-"meddelandehistorik."
-
-#: data/resources/ui/account-settings-log-out-subpage.ui:71
-msgid "It is recommended to backup your encryption keys before proceeding."
-msgstr ""
-"Du rekommenderas att säkerhetskopiera dina krypteringsnycklar innan du "
-"fortsätter."
-
-#: data/resources/ui/account-settings-log-out-subpage.ui:85
-msgid "Backup Encryption Keys"
-msgstr "Säkerhetskopiera krypteringsnycklar"
-
-#: data/resources/ui/account-settings-import-export-keys-subpage.ui:80
-#: data/resources/ui/session-verification.ui:269
-msgid "Passphrase"
-msgstr "Lösenfras"
-
-#: data/resources/ui/account-settings-import-export-keys-subpage.ui:97
-msgid "Confirm Passphrase"
-msgstr "Bekräfta lösenfras"
-
-#: data/resources/ui/account-settings-import-export-keys-subpage.ui:128
-#: data/resources/ui/content-room-details-general-page.ui:161
-#: src/session/content/room_details/mod.rs:284
-msgid "File"
-msgstr "Fil"
-
-#: data/resources/ui/account-settings-import-export-keys-subpage.ui:132
-msgid "Choose…"
-msgstr "Välj…"
-
-#: data/resources/ui/account-settings-notifications-page.ui:5
-msgid "Notifications"
-msgstr "Aviseringar"
-
-#: data/resources/ui/account-settings-notifications-page.ui:11
-msgid "Enable for this account"
-msgstr "Aktivera för detta konto"
-
-#: data/resources/ui/account-settings-notifications-page.ui:34
-msgid "Enable for this session"
-msgstr "Aktivera för denna session"
-
-#: data/resources/ui/account-settings-user-page.ui:5
-msgid "General"
-msgstr "Allmänt"
-
-#: data/resources/ui/account-settings-user-page.ui:27
-#: data/resources/ui/room-creation.ui:66
-msgid "Name"
-msgstr "Namn"
-
-#: data/resources/ui/account-settings-user-page.ui:60
-msgid "Advanced Information"
-msgstr "Avancerad information"
-
-#: data/resources/ui/account-settings-user-page.ui:63
-#: data/resources/ui/login-homeserver-page.ui:22
-msgid "Homeserver"
-msgstr "Hemserver"
-
-#: data/resources/ui/account-settings-user-page.ui:77
-msgid "Matrix User ID"
-msgstr "Användar-ID för Matrix"
-
-#: data/resources/ui/account-settings-user-page.ui:91
-msgid "Session ID"
-msgstr "Sessions-ID"
-
-#: data/resources/ui/account-settings-user-page.ui:112
-#: src/session/account_settings/devices_page/device_row.rs:103
-msgid "Log Out"
-msgstr "Logga ut"
-
-#: data/resources/ui/account-settings-security-page.ui:5
-msgid "Security"
-msgstr "Säkerhet"
-
-#: data/resources/ui/account-settings-security-page.ui:9
-msgid "Room Encryption Keys"
-msgstr "Rumskrypteringsnycklar"
-
-#: data/resources/ui/account-settings-security-page.ui:12
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:210
-msgid "Export Room Encryption Keys"
-msgstr "Exportera rumskrypteringsnycklar"
-
-#: data/resources/ui/account-settings-security-page.ui:19
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:220
-msgid "Import Room Encryption Keys"
-msgstr "Importera rumskrypteringsnycklar"
-
-#: data/resources/ui/account-settings-security-page.ui:28
-msgid "Cross-Signing"
-msgstr "Korssignering"
-
-#: data/resources/ui/account-settings-security-page.ui:31
-msgid "Master key"
-msgstr "Huvudnyckel"
-
-#: data/resources/ui/account-settings-security-page.ui:41
-msgid "Self-signing key"
-msgstr "Nyckel för självsignatur"
-
-#: data/resources/ui/account-settings-security-page.ui:51
-msgid "User-signing key"
-msgstr "Nyckel för användarsignatur"
-
-#: data/resources/ui/account-settings.ui:4
-msgid "Account Settings"
-msgstr "Kontoinställningar"
-
-#: data/resources/ui/attachment-dialog.ui:14
-#: data/resources/ui/content-invite-subpage.ui:12
-#: data/resources/ui/join-room-dialog.ui:9
-msgid "_Cancel"
-msgstr "_Avbryt"
-
-#: data/resources/ui/attachment-dialog.ui:21
-msgid "_Send"
-msgstr "_Skicka"
-
-#: data/resources/ui/components-auth-dialog.ui:20
-msgid "Authentication"
-msgstr "Autentisering"
-
-#: data/resources/ui/components-auth-dialog.ui:43
-msgid "Please authenticate the operation with your password"
-msgstr "Autentisera åtgärden med ditt lösenord"
-
-#: data/resources/ui/components-auth-dialog.ui:70
-msgid ""
-"Please authenticate the operation via the browser and once completed press "
-"confirm."
-msgstr ""
-"Autentisera åtgärden via webbläsaren och tryck på bekräfta då det är klart."
-
-#: data/resources/ui/components-auth-dialog.ui:80
-msgid "Authenticate via Browser"
-msgstr "Autentisera via webbläsare"
-
-#: data/resources/ui/components-auth-dialog.ui:113
-#: data/resources/ui/identity-verification-widget.ui:442
-#: src/session/content/room_history/verification_info_bar.rs:176
-msgid "Cancel"
-msgstr "Avbryt"
-
-#: data/resources/ui/components-auth-dialog.ui:118
-#: data/resources/ui/identity-verification-widget.ui:432
-msgid "Confirm"
-msgstr "Bekräfta"
-
-#: data/resources/ui/components-loading-listbox-row.ui:31
-msgid "Try again"
-msgstr "Försök igen"
-
-#. Translators: As in 'Audio file'.
-#: data/resources/ui/content-audio-history-viewer.ui:12
-#: data/resources/ui/content-room-details-general-page.ui:177
-#: src/session/content/room_details/mod.rs:301
-msgid "Audio"
-msgstr "Ljud"
-
-#: data/resources/ui/content-explore-servers-popover.ui:35
-msgid "Add server…"
-msgstr "Lägg till server…"
-
-#: data/resources/ui/content-explore.ui:70
-msgid "No rooms matching the search were found"
-msgstr "Inga rum som matchade sökningen hittades"
-
-#: data/resources/ui/content-explore.ui:96
-msgid "Room List"
-msgstr "Rumslista"
-
-#: data/resources/ui/content-file-history-viewer.ui:11
-msgid "Files"
-msgstr "Filer"
-
-#: data/resources/ui/content-invite-subpage.ui:18
-msgid "I_nvite"
-msgstr "Bjud _in"
-
-#: data/resources/ui/content-invite-subpage.ui:85
-#: data/resources/ui/create-dm-dialog.ui:64
-msgid "Search"
-msgstr "Sök"
-
-#: data/resources/ui/content-invite-subpage.ui:86
-msgid "Search for users to invite them to this room."
-msgstr "Sök efter användare för att bjuda in dem till detta rum."
-
-#: data/resources/ui/content-invite-subpage.ui:115
-#: data/resources/ui/create-dm-dialog.ui:100
-msgid "No Users Found"
-msgstr "Inga användare hittades"
-
-#: data/resources/ui/content-invite-subpage.ui:116
-msgid "No users matching the search were found."
-msgstr "Inga användare som matchade sökningen hittades."
-
-#: data/resources/ui/content-invite-subpage.ui:122
-#: data/resources/ui/create-dm-dialog.ui:112 data/resources/ui/error-page.ui:11
-msgid "Error"
-msgstr "Fel"
-
-#: data/resources/ui/content-invite-subpage.ui:123
-msgid "An error occurred while searching for matches."
-msgstr "Ett fel inträffade under sökning efter matchningar."
-
-#: data/resources/ui/content-invite.ui:26
-#: data/resources/ui/content-invite.ui:51
-#: data/resources/ui/content-member-page.ui:69
-msgid "Invite"
-msgstr "Bjud in"
-
-#: data/resources/ui/content-invite.ui:110 data/resources/ui/sidebar.ui:37
-msgid "_Reject"
-msgstr "A_vvisa"
-
-#: data/resources/ui/content-invite.ui:120 data/resources/ui/sidebar.ui:32
-msgid "_Accept"
-msgstr "_Acceptera"
-
-#: data/resources/ui/content-media-history-viewer.ui:21
-#: data/resources/ui/content-room-details-general-page.ui:146
-#: src/session/content/room_details/mod.rs:268
-msgid "Media"
-msgstr "Media"
-
-#: data/resources/ui/content-member-page.ui:19
-msgid "Search for Room Members"
-msgstr "Sök efter rumsmedlemmar"
-
-#: data/resources/ui/content-member-page.ui:35
-#: data/resources/ui/content-member-page.ui:39
-msgid "Search for room members"
-msgstr "Sök efter rumsmedlemmar"
-
-#: data/resources/ui/content-message-file.ui:25
-#: src/session/content/room_details/history_viewer/file_row.rs:110
-#: src/utils/media.rs:193
-msgid "Save"
-msgstr "Spara"
-
-#: data/resources/ui/content-message-row.ui:61
-msgid "Edited"
-msgstr "Redigerat"
-
-#: data/resources/ui/content-room-details.ui:4
-#: src/session/content/room_details/mod.rs:220
-msgid "Room Details"
-msgstr "Rumsdetaljer"
-
-#: data/resources/ui/content-room-details-general-page.ui:60
-msgid "Description"
-msgstr "Beskrivning"
-
-#: data/resources/ui/content-room-details-general-page.ui:100
-msgid "Edit Details"
-msgstr "Redigera detaljer"
-
-#: data/resources/ui/content-room-details-general-page.ui:108
-msgid "Save Details"
-msgstr "Spara detaljer"
-
-#: data/resources/ui/content-room-details-general-page.ui:120
-msgid "Members"
-msgstr "Medlemmar"
-
-#: data/resources/ui/content-room-history.ui:6
-msgid "Room _Details"
-msgstr "Rums_detaljer"
-
-#: data/resources/ui/content-room-history.ui:11
-msgid "_Invite New Member"
-msgstr "Bjud _in ny medlem"
-
-#: data/resources/ui/content-room-history.ui:16
-msgid "Room _Permalink"
-msgstr "_Permanent länk för rum"
-
-#: data/resources/ui/content-room-history.ui:22 data/resources/ui/sidebar.ui:66
-msgid "_Leave Room"
-msgstr "_Lämna rum"
-
-#: data/resources/ui/content-room-history.ui:31
-msgid "_Location"
-msgstr "_Plats"
-
-#: data/resources/ui/content-room-history.ui:36
-msgid "_Markdown"
-msgstr "_Markdown"
-
-#: data/resources/ui/content-room-history.ui:59
-msgid "Back"
-msgstr "Bakåt"
-
-#: data/resources/ui/content-room-history.ui:84
-msgid "Room Settings"
-msgstr "Rumsinställningar"
-
-#: data/resources/ui/content-room-history.ui:92
-#: data/resources/ui/content-state-tombstone.ui:14
-msgid "There is a newer version of this room"
-msgstr "Det finns en nyare version av detta rum"
-
-#: data/resources/ui/content-room-history.ui:93
-#: src/session/content/explore/public_room_row.rs:211
-#: src/session/content/room_history/state_row/tombstone.rs:123
-msgid "Join"
-msgstr "Gå in"
-
-#: data/resources/ui/content-room-history.ui:125
-msgid "Unable to load room"
-msgstr "Kunde inte läsa in rum"
-
-#: data/resources/ui/content-room-history.ui:126
-msgid "Check your network connection."
-msgstr "Kontrollera din nätverksanslutning."
-
-#: data/resources/ui/content-room-history.ui:129
-msgid "Try Again"
-msgstr "Försök igen"
-
-#: data/resources/ui/content-room-history.ui:154
-msgid "Scroll to bottom"
-msgstr "Rulla längst ner"
-
-#: data/resources/ui/content-room-history.ui:166
-msgid "Drop Here to Send"
-msgstr "Släpp här för att skicka"
-
-#: data/resources/ui/content-room-history.ui:186
-msgid "Room History"
-msgstr "Rumshistorik"
-
-#: data/resources/ui/content-room-history.ui:277
-msgid "Browse Attachment"
-msgstr "Undersök bilaga"
-
-#: data/resources/ui/content-room-history.ui:287
-msgid "Open Emoji Picker"
-msgstr "Öppna emoji-väljare"
-
-#: data/resources/ui/content-room-history.ui:308
-msgid "Message Entry"
-msgstr "Meddelandefält"
-
-#: data/resources/ui/content-room-history.ui:323
-msgid "Open Message Menu"
-msgstr "Öppna meddelandemeny"
-
-#: data/resources/ui/content-room-history.ui:338
-msgid "Send Message"
-msgstr "Skicka meddelande"
-
-#: data/resources/ui/content-state-creation.ui:19
-msgid "Previous room"
-msgstr "Föregående rum"
-
-#: data/resources/ui/content.ui:36
-msgid "No Room Selected"
-msgstr "Inget rum valt"
-
-#: data/resources/ui/content.ui:37
-msgid "Join a room to start chatting."
-msgstr "Gå in i ett rum för att börja chatta."
-
-#: data/resources/ui/create-dm-dialog.ui:4
-msgid "Direct Chat"
-msgstr "Direktchatt"
-
-#: data/resources/ui/create-dm-dialog.ui:41
-msgid "New Direct Chat"
-msgstr "Ny direktchatt"
-
-#: data/resources/ui/create-dm-dialog.ui:65
-msgid "Search for people to start a new chat with"
-msgstr "Sök efter personer att starta en ny chatt med"
-
-#: data/resources/ui/create-dm-dialog.ui:101
-msgid "No users matching the search pattern were found"
-msgstr "Inga användare som matchade sökmönstret hittades"
-
-#: data/resources/ui/create-dm-dialog.ui:113
-msgid "An error occurred while searching for matches"
-msgstr "Ett fel inträffade under sökning efter matchningar"
-
-#: data/resources/ui/error-page.ui:18
-msgid "Secret Service Error"
-msgstr "Secret Service-fel"
-
-#: data/resources/ui/error-page.ui:40
-msgid ""
-"It seems like one of the Fractal sessions stored in the Secret Service is "
-"corrupted. If you know how to fix it you should do so."
-msgstr ""
-"Det verkar som att en av Fractal-sessionerna som lagrats i Secret Service är "
-"trasig. Om du vet hur du kan fixa det bör du göra det."
-
-#: data/resources/ui/error-page.ui:51
-msgid ""
-"Alternatively, we could disconnect this session for you. This means you will "
-"have to login again and you will lose access to your encrypted messages, "
-"unless you have a session open in another client or you have already backed "
-"up your encryption keys."
-msgstr ""
-"Alternativt skulle vi kunna koppla från denna session åt dig. Detta betyder "
-"att du kommer behöva logga in igen och du kommer förlora åtkomst till dina "
-"krypterade meddelanden, om du inte har en session öppen i en annan klient "
-"eller redan har säkerhetskopierat dina krypteringsnycklar."
-
-#: data/resources/ui/error-page.ui:74
-msgid "Clicking this button might disconnect more than one session!"
-msgstr "Att klicka på denna knapp kan koppla från mer än en session!"
-
-#: data/resources/ui/error-page.ui:86
-msgid "Disconnect the corrupted session"
-msgstr "Koppla från den trasiga sessionen"
-
-#: data/resources/ui/error-page.ui:109
-msgid ""
-"Fractal relies on a Secret Service Provider to manage your sensitive session "
-"information and an error occurred while we were trying to store or get your "
-"session."
-msgstr ""
-"Fractal förlitar sig på en Secret Service-leverantör för att hantera din "
-"känsliga sessionsinformation och ett fel inträffade när vi försökte lagra "
-"eller erhålla din session."
-
-#: data/resources/ui/error-page.ui:124
-msgid ""
-"Here are a few things that might help you fix issues with the Secret Service:"
-msgstr "Här är några saker som kan hjälpa dig fixa problem med Secret Service:"
-
-#: data/resources/ui/error-page.ui:147
-msgid ""
-"Make sure you have a Secret Service Provider installed, like gnome-keyring."
-msgstr ""
-"Säkerställ att du har en Secret Service-leverantör installerad, som gnome-"
-"keyring."
-
-#: data/resources/ui/error-page.ui:172
-msgid "Check that you have a default keyring and that it is unlocked."
-msgstr "Kontrollera att du har en standardnyckelring och att den är upplåst."
-
-#: data/resources/ui/error-page.ui:187
-msgid ""
-"Check the application logs and your distribution’s documentation for more "
-"details."
-msgstr ""
-"Kontrollera programloggarna och din distributions dokumentation för mer "
-"detaljer."
-
-#. Translators: In this string, 'Reply' is a verb.
-#: data/resources/ui/event-menu.ui:12
-msgid "_Reply"
-msgstr "Sva_ra"
-
-#. Translators: In this string, 'Edit' is a verb.
-#: data/resources/ui/event-menu.ui:18
-msgid "_Edit"
-msgstr "R_edigera"
-
-#. Translators: In this string, 'Forward' is a verb.
-#: data/resources/ui/event-menu.ui:24 data/resources/ui/event-menu.ui:86
-msgid "_Forward"
-msgstr "Vidare_befordra"
-
-#: data/resources/ui/event-menu.ui:31 data/resources/ui/event-menu.ui:93
-msgid "_Select"
-msgstr "Vä_lj"
-
-#: data/resources/ui/event-menu.ui:38 data/resources/ui/event-menu.ui:100
-msgid "_Copy Text"
-msgstr "_Kopiera text"
-
-#: data/resources/ui/event-menu.ui:44
-msgid "_Copy Thumbnail"
-msgstr "_Kopiera miniatyrbild"
-
-#: data/resources/ui/event-menu.ui:49 data/resources/ui/media-viewer.ui:11
-msgid "S_ave Image"
-msgstr "_Spara bild"
-
-#: data/resources/ui/event-menu.ui:54 data/resources/ui/media-viewer.ui:16
-msgid "S_ave Video"
-msgstr "_Spara video"
-
-#: data/resources/ui/event-menu.ui:59 data/resources/ui/media-viewer.ui:21
-msgid "S_ave Audio"
-msgstr "_Spara ljud"
-
-#: data/resources/ui/event-menu.ui:64 data/resources/ui/event-menu.ui:106
-#: data/resources/ui/media-viewer.ui:26
-msgid "_Permalink"
-msgstr "_Permanent länk"
-
-#: data/resources/ui/event-menu.ui:69 data/resources/ui/event-menu.ui:111
-msgid "_View Source"
-msgstr "_Visa källa"
-
-#: data/resources/ui/event-menu.ui:76 data/resources/ui/event-menu.ui:118
-msgid "Re_move"
-msgstr "_Ta bort"
-
-#: data/resources/ui/event-source-dialog.ui:5
-msgid "Event Source"
-msgstr "Händelsekälla"
-
-#: data/resources/ui/greeter.ui:25 data/resources/ui/greeter.ui:33
-msgid "About Fractal"
-msgstr "Om Fractal"
-
-#. Fractal is the application name and shouldn't be translated
-#: data/resources/ui/greeter.ui:83
-msgid "Welcome to Fractal"
-msgstr "Välkommen till Fractal"
-
-#: data/resources/ui/greeter.ui:108
-msgid "_Log in"
-msgstr "_Logga in"
-
-#: data/resources/ui/greeter.ui:118
-msgid "_Create Account"
-msgstr "_Skapa konto"
-
-#: data/resources/ui/identity-verification-widget.ui:46
-#: src/session/content/room_history/verification_info_bar.rs:171
-msgid "Decline"
-msgstr "Neka"
-
-#: data/resources/ui/identity-verification-widget.ui:56
-#: src/session/content/room_history/verification_info_bar.rs:170
-msgid "Verify"
-msgstr "Verifiera"
-
-#: data/resources/ui/identity-verification-widget.ui:109
-#: data/resources/ui/identity-verification-widget.ui:213
-msgid "Can’t scan QR code?"
-msgstr "Kan du inte läsa av QR-koden?"
-
-#: data/resources/ui/identity-verification-widget.ui:117
-#: data/resources/ui/identity-verification-widget.ui:230
-msgid "Compare Emoji"
-msgstr "Jämför emoji"
-
-#: data/resources/ui/identity-verification-widget.ui:144
-msgid "Scan Complete"
-msgstr "Avläsning slutförd"
-
-#: data/resources/ui/identity-verification-widget.ui:222
-msgid "Scan QR code with this session"
-msgstr "Läs av QR-kod med denna session"
-
-#: data/resources/ui/identity-verification-widget.ui:290
-msgid "Do Not Match"
-msgstr "Matchar inte"
-
-#: data/resources/ui/identity-verification-widget.ui:300
-msgid "Match"
-msgstr "Matchar"
-
-#: data/resources/ui/identity-verification-widget.ui:409
-msgid "Confirm Scan"
-msgstr "Bekräfta avläsning"
-
-#: data/resources/ui/join-room-dialog.ui:4
-msgid "Join a Room"
-msgstr "Gå in i ett rum"
-
-#: data/resources/ui/join-room-dialog.ui:5
-msgid "Enter a room ID, room alias, or permalink."
-msgstr "Ange ett rums-ID, rumsalias eller en permanent länk."
-
-#: data/resources/ui/join-room-dialog.ui:10 src/session/join_room_dialog.rs:145
-msgid "_Join"
-msgstr "_Gå in"
-
-#: data/resources/ui/login-advanced-dialog.ui:5
-msgid "Homeserver Discovery"
-msgstr "Identifiering av hemserver"
-
-#: data/resources/ui/login-advanced-dialog.ui:14
-msgid ""
-"Auto-discovery, also known as “well-known lookup”, allows to discover the "
-"URL of a Matrix homeserver from a domain name. This should only be disabled "
-"if your homeserver doesn’t support auto-discovery or if you want to provide "
-"the URL yourself."
-msgstr ""
-"Automatisk identifiering, även känt som ”uppslagning av välkända”, låter dig "
-"upptäcka URL:en för en Matrix-hemserver från ett domännamn. Detta bör endast "
-"inaktiveras om din hemserver inte stöder automatisk identifiering eller om "
-"du vill tillhandahålla URL:en själv."
-
-#: data/resources/ui/login-advanced-dialog.ui:17
-msgid "_Auto-discovery"
-msgstr "_Automatisk identifiering"
-
-#: data/resources/ui/login-homeserver-page.ui:66
-#: data/resources/ui/login-method-page.ui:123
-#: data/resources/ui/session-verification.ui:274
-#: data/resources/ui/session-verification.ui:339
-msgid "Next"
-msgstr "Nästa"
-
-#. Translators: As in 'Advanced Settings'.
-#: data/resources/ui/login-homeserver-page.ui:80
-msgid "Advanced…"
-msgstr "Avancerat…"
-
-#: data/resources/ui/login-method-page.ui:43 src/login/homeserver_page.rs:133
-msgid "Homeserver URL"
-msgstr "URL för hemserver"
-
-#: data/resources/ui/login-method-page.ui:71
-msgid "Matrix Username"
-msgstr "Matrix-användarnamn"
-
-#: data/resources/ui/login-method-page.ui:85
-msgid "Password"
-msgstr "Lösenord"
-
-#: data/resources/ui/login-method-page.ui:93
-msgid "_Forgot Password?"
-msgstr "_Glömt lösenordet?"
-
-#: data/resources/ui/login-method-page.ui:116
-msgid "More SSO Providers"
-msgstr "Fler SSO-leverantörer"
-
-#: data/resources/ui/login-sso-page.ui:25
-msgid "Single Sign-On"
-msgstr "Enkel inloggning (SSO)"
-
-#: data/resources/ui/login-sso-page.ui:36
-msgid "Please follow the steps in the browser."
-msgstr "Följ stegen i webbläsaren."
-
-#: data/resources/ui/login.ui:91
-msgid "Login Complete"
-msgstr "Inloggning slutförd"
-
-#: data/resources/ui/login.ui:107
-#: src/session/content/verification/identity_verification_widget.rs:521
-msgid "This session is ready to send and receive secure messages."
-msgstr "Denna session är redo att skicka och ta emot säkra meddelanden."
-
-#: data/resources/ui/login.ui:112
-msgid "Start Chatting"
-msgstr "Börja chatta"
-
-#: data/resources/ui/media-viewer.ui:6
-msgid "_Copy Image"
-msgstr "_Kopiera bild"
-
-#: data/resources/ui/member-menu.ui:6
-msgid "_Verify"
-msgstr "_Verifiera"
-
-#: data/resources/ui/member-menu.ui:14
-msgid "Make _Mod"
-msgstr "Gör till _moderator"
-
-#: data/resources/ui/member-menu.ui:20
-msgid "Make _Admin"
-msgstr "Gör till _admin"
-
-#: data/resources/ui/member-menu.ui:26
-msgid "_Kick"
-msgstr "Spar_ka ut"
-
-#: data/resources/ui/room-creation.ui:49
-msgid "New Room"
-msgstr "Nytt rum"
-
-#: data/resources/ui/room-creation.ui:73
-msgid "Topic (Optional)"
-msgstr "Ämne (valfritt)"
-
-#: data/resources/ui/room-creation.ui:81
-msgid "Room Visibility"
-msgstr "Synlighet för rum"
-
-#: data/resources/ui/room-creation.ui:84
-msgid "Private"
-msgstr "Privat"
-
-#: data/resources/ui/room-creation.ui:85
-msgid "Only invited people can join this room"
-msgstr "Endast inbjudna personer kan gå in i detta rum"
-
-#: data/resources/ui/room-creation.ui:98
-msgid "Public"
-msgstr "Öppet"
-
-#: data/resources/ui/room-creation.ui:99
-msgid "Anyone can find and join this room"
-msgstr "Alla kan hitta och gå in i detta rum"
-
-#: data/resources/ui/room-creation.ui:117
-msgid "End-to-End Encryption"
-msgstr "Totalsträckskryptering"
-
-#: data/resources/ui/room-creation.ui:118
-msgid "Cannot be disabled later"
-msgstr "Kan inte inaktiveras senare"
-
-#: data/resources/ui/room-creation.ui:136
-msgid ""
-"Fractal does not support online backup for encryption keys yet, so you will "
-"need to back them up manually or your message history will be lost if you "
-"lose access to all your sessions."
-msgstr ""
-"Fractal stöder inte säkerhetskopiering över nätet för krypteringsnycklar "
-"ännu, så du kommer behöva säkerhetskopiera dem manuellt, annars försvinner "
-"din meddelandehistorik om du förlorar du åtkomst till alla dina sessioner."
-
-#: data/resources/ui/room-creation.ui:150
-msgid "Room Address"
-msgstr "Rumsadress"
-
-#: data/resources/ui/room-creation.ui:200
-msgid "_Create Room"
-msgstr "S_kapa rum"
-
-#: data/resources/ui/session-verification.ui:28
-#: src/session/content/verification/identity_verification_widget.rs:548
-msgid "Get Another Device"
-msgstr "Erhåll en annan enhet"
-
-#: data/resources/ui/session-verification.ui:39
-#: src/session/content/verification/identity_verification_widget.rs:550
-msgid "Accept the verification request from another session or device."
-msgstr "Acceptera verifieringsförfrågan från en annan session eller enhet."
-
-#: data/resources/ui/session-verification.ui:52
-msgid "No other devices logged into this account?"
-msgstr "Inga andra enheter inloggade på detta konto?"
-
-#: data/resources/ui/session-verification.ui:60
-#: data/resources/ui/session-verification.ui:165
-msgid "Recovery"
-msgstr "Återställning"
-
-#: data/resources/ui/session-verification.ui:70
-#: src/session/content/verification/session_verification.rs:280
-#: src/session/content/verification/session_verification.rs:288
-msgid "Reset"
-msgstr "Nollställ"
-
-#: data/resources/ui/session-verification.ui:109
-msgid "Set Up Encryption Identity"
-msgstr "Konfigurera krypteringsidentitet"
-
-#: data/resources/ui/session-verification.ui:136
-msgid "Restart verification"
-msgstr "Starta om verifiering"
-
-#: data/resources/ui/session-verification.ui:176
-msgid ""
-"Without another device you need a recovery passphrase or key to access your "
-"messages"
-msgstr ""
-"Utan en annan enhet behöver du en lösenfras eller nyckel för återställning "
-"för att komma åt dina meddelanden"
-
-#: data/resources/ui/session-verification.ui:184
-#: data/resources/ui/session-verification.ui:239
-msgid "Recovery Passphrase"
-msgstr "Lösenfras för återställning"
-
-#: data/resources/ui/session-verification.ui:193
-#: data/resources/ui/session-verification.ui:303
-msgid "Recovery Key"
-msgstr "Nyckel för återställning"
-
-#: data/resources/ui/session-verification.ui:202
-msgid ""
-"If you don’t have any of these you can reset your identity, but be aware "
-"this makes your old messages inaccessible forever."
-msgstr ""
-"Om du inte har någon av dessa kan du nollställa din identitet, men var "
-"medveten om att detta gör dina gamla meddelanden för alltid oåtkomliga."
-
-#: data/resources/ui/session-verification.ui:211
-msgid "Reset Identity"
-msgstr "Nollställ identitet"
-
-#: data/resources/ui/session-verification.ui:250
-msgid ""
-"Your Recovery Passphrase was set up when you first created this account."
-msgstr ""
-"Din lösenfras för återställning konfigurerades när du först skapade detta "
-"konto."
-
-#: data/resources/ui/session-verification.ui:258
-msgid "If you opted for a Recovery Key instead go back and choose that option."
-msgstr ""
-"Om du valde en nyckel för återställning i stället får du gå tillbaka och "
-"välja det alternativet."
-
-#: data/resources/ui/session-verification.ui:314
-msgid "Your Recovery Key was set up when you first created this account."
-msgstr ""
-"Din nyckel för återställning konfigurerades när du först skapade detta konto."
-
-#: data/resources/ui/session-verification.ui:322
-msgid ""
-"If you opted for a Recovery Passphrase instead go back and choose that "
-"option."
-msgstr ""
-"Om du valde en lösenfras för återställning i stället får du gå tillbaka och "
-"välja det alternativet."
-
-#: data/resources/ui/shortcuts.ui:11
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Allmänt"
-
-#: data/resources/ui/shortcuts.ui:14
-msgctxt "shortcut window"
-msgid "Show Shortcuts"
-msgstr "Visa kortkommandon"
-
-#: data/resources/ui/shortcuts.ui:20
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "Avsluta"
-
-#: data/resources/ui/shortcuts.ui:26
-msgctxt "shortcut window"
-msgid "Search Room List"
-msgstr "Sök rumslista"
-
-#: data/resources/ui/shortcuts.ui:32
-msgctxt "shortcut window"
-msgid "Close Room"
-msgstr "Stäng rum"
-
-#: data/resources/ui/sidebar.ui:6
-msgid "New _Direct Chat"
-msgstr "Ny _direktchatt"
-
-#: data/resources/ui/sidebar.ui:10
-msgid "_New Room"
-msgstr "_Nytt rum"
-
-#: data/resources/ui/sidebar.ui:14
-msgid "_Join Room"
-msgstr "_Gå in i rum"
-
-#: data/resources/ui/sidebar.ui:20
-msgid "_Keyboard Shortcuts"
-msgstr "_Tangentbordsgenvägar"
-
-#: data/resources/ui/sidebar.ui:24
-msgid "_About Fractal"
-msgstr "_Om Fractal"
-
-#: data/resources/ui/sidebar.ui:44
-msgid "Move to _Favorites"
-msgstr "Flytta till _favoriter"
-
-#: data/resources/ui/sidebar.ui:49
-msgid "Move to _Rooms"
-msgstr "Flytta till _rum"
-
-#: data/resources/ui/sidebar.ui:54
-msgid "Move to _People"
-msgstr "Flytta till _personer"
-
-#: data/resources/ui/sidebar.ui:59
-msgid "Move to Low _Priority"
-msgstr "Flytta till låg _prioritet"
-
-#: data/resources/ui/sidebar.ui:71
-msgid "Re_join Room"
-msgstr "Gå _in i rum igen"
-
-#: data/resources/ui/sidebar.ui:76
-msgid "_Forget Room"
-msgstr "_Glöm rum"
-
-#: data/resources/ui/sidebar.ui:95
-msgid "Switch Accounts"
-msgstr "Växla konton"
-
-#: data/resources/ui/sidebar.ui:117
-msgid "App Settings Menu"
-msgstr "Programinställningsmeny"
-
-#: data/resources/ui/sidebar.ui:127
-msgid "Toggle Room Search"
-msgstr "Växla rumssökning"
-
-#: data/resources/ui/sidebar.ui:139
-msgid "Room Search"
-msgstr "Rumssökning"
-
-#: data/resources/ui/sidebar.ui:140
-msgid "Search for a room"
-msgstr "Sök efter ett rum"
-
-#: data/resources/ui/sidebar.ui:146
-msgid "Offline"
-msgstr "Frånkopplad"
-
-#: data/resources/ui/sidebar.ui:161
-msgid "Sidebar"
-msgstr "Sidopanel"
-
-#: data/resources/ui/sidebar.ui:162
-msgid "Allows to navigate between rooms"
-msgstr "Tillåter navigering mellan rum"
-
-#: data/resources/ui/qr-code-scanner.ui:21
-msgid "Unable to connect to Camera"
-msgstr "Kunde inte ansluta till kamera"
-
-#: src/application.rs:178
+#: src/account_switcher/mod.ui:36
+msgid "_Add Account"
+msgstr "_Lägg till konto"
+
+#: src/application.rs:177
 msgid "© 2017-2023 The Fractal Team"
 msgstr "© 2017-2023 Fractal-gruppen"
 
-#: src/application.rs:192
+#: src/application.rs:191
 msgid "translator-credits"
 msgstr ""
 "Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
@@ -1116,9 +109,40 @@ msgstr ""
 "<tp-sv@listor.tp-sv.se>."
 
 #. This can't be added via the builder
-#: src/application.rs:196
+#: src/application.rs:195
 msgid "Name by"
 msgstr "Namn av"
+
+#: src/components/auth_dialog.ui:20
+msgid "Authentication"
+msgstr "Autentisering"
+
+#: src/components/auth_dialog.ui:43
+msgid "Please authenticate the operation with your password"
+msgstr "Autentisera åtgärden med ditt lösenord"
+
+#: src/components/auth_dialog.ui:70
+msgid ""
+"Please authenticate the operation via the browser and once completed press "
+"confirm."
+msgstr ""
+"Autentisera åtgärden via webbläsaren och tryck på bekräfta då det är klart."
+
+#: src/components/auth_dialog.ui:80
+msgid "Authenticate via Browser"
+msgstr "Autentisera via webbläsare"
+
+#: src/components/auth_dialog.ui:113
+#: src/session/view/content/room_history/mod.ui:260
+#: src/session/view/content/room_history/verification_info_bar.rs:181
+#: src/session/view/content/verification/identity_verification_widget.ui:442
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: src/components/auth_dialog.ui:118
+#: src/session/view/content/verification/identity_verification_widget.ui:432
+msgid "Confirm"
+msgstr "Bekräfta"
 
 #: src/components/editable_avatar.rs:393
 msgid "Images"
@@ -1129,21 +153,25 @@ msgid "Choose Avatar"
 msgstr "Välj profilbild"
 
 #: src/components/editable_avatar.rs:400
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:246
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:248
 msgid "Choose"
 msgstr "Välj"
 
-#: src/components/editable_avatar.rs:418
+#: src/components/editable_avatar.rs:414
 msgid "Could not open avatar file"
 msgstr "Kunde inte öppna profilbildsfil"
 
-#: src/components/editable_avatar.rs:439
+#: src/components/editable_avatar.rs:435
 msgid "The chosen file is not an image"
 msgstr "Den valda filen är inte en bild"
 
-#: src/components/editable_avatar.rs:445
+#: src/components/editable_avatar.rs:441
 msgid "Could not determine the type of the chosen file"
 msgstr "Kunde inte avgöra den valda filens typ"
+
+#: src/components/loading_listbox_row.ui:31
+msgid "Try again"
+msgstr "Försök igen"
 
 #: src/components/location_viewer.rs:137
 msgid "Location at latitude {latitude} and longitude {longitude}"
@@ -1165,76 +193,250 @@ msgstr "Videon kan inte spelas upp"
 msgid "File not Viewable"
 msgstr "Filen kan inte visas"
 
-#: src/error_page.rs:114
+#: src/contrib/qr_code_scanner/mod.ui:21
+msgid "Unable to connect to Camera"
+msgstr "Kunde inte ansluta till kamera"
+
+#: src/error_page.rs:110
 msgid "Session removed successfully."
 msgstr "Sessionen togs bort."
 
-#: src/error_page.rs:122
+#: src/error_page.rs:118
 msgid "Could not remove session from secret storage"
 msgstr "Kunde inte ta bort sessionen från hemlighetslagring"
 
-#: src/greeter.rs:77 src/login/mod.rs:634 src/window.rs:426
+#: src/error_page.ui:11
+#: src/session/view/content/room_details/invite_subpage/mod.ui:137
+#: src/session/view/create_dm_dialog/mod.ui:112
+msgid "Error"
+msgstr "Fel"
+
+#: src/error_page.ui:18
+msgid "Secret Service Error"
+msgstr "Secret Service-fel"
+
+#: src/error_page.ui:40
+msgid ""
+"It seems like one of the Fractal sessions stored in the Secret Service is "
+"corrupted. If you know how to fix it you should do so."
+msgstr ""
+"Det verkar som att en av Fractal-sessionerna som lagrats i Secret Service är "
+"trasig. Om du vet hur du kan fixa det bör du göra det."
+
+#: src/error_page.ui:51
+msgid ""
+"Alternatively, we could disconnect this session for you. This means you will "
+"have to login again and you will lose access to your encrypted messages, "
+"unless you have a session open in another client or you have already backed "
+"up your encryption keys."
+msgstr ""
+"Alternativt skulle vi kunna koppla från denna session åt dig. Detta betyder "
+"att du kommer behöva logga in igen och du kommer förlora åtkomst till dina "
+"krypterade meddelanden, om du inte har en session öppen i en annan klient "
+"eller redan har säkerhetskopierat dina krypteringsnycklar."
+
+#: src/error_page.ui:74
+msgid "Clicking this button might disconnect more than one session!"
+msgstr "Att klicka på denna knapp kan koppla från mer än en session!"
+
+#: src/error_page.ui:86
+msgid "Disconnect the corrupted session"
+msgstr "Koppla från den trasiga sessionen"
+
+#: src/error_page.ui:109
+msgid ""
+"Fractal relies on a Secret Service Provider to manage your sensitive session "
+"information and an error occurred while we were trying to store or get your "
+"session."
+msgstr ""
+"Fractal förlitar sig på en Secret Service-leverantör för att hantera din "
+"känsliga sessionsinformation och ett fel inträffade när vi försökte lagra "
+"eller erhålla din session."
+
+#: src/error_page.ui:124
+msgid ""
+"Here are a few things that might help you fix issues with the Secret Service:"
+msgstr "Här är några saker som kan hjälpa dig fixa problem med Secret Service:"
+
+#: src/error_page.ui:147
+msgid ""
+"Make sure you have a Secret Service Provider installed, like gnome-keyring."
+msgstr ""
+"Säkerställ att du har en Secret Service-leverantör installerad, som gnome-"
+"keyring."
+
+#: src/error_page.ui:172
+msgid "Check that you have a default keyring and that it is unlocked."
+msgstr "Kontrollera att du har en standardnyckelring och att den är upplåst."
+
+#: src/error_page.ui:187
+msgid ""
+"Check the application logs and your distribution’s documentation for more "
+"details."
+msgstr ""
+"Kontrollera programloggarna och din distributions dokumentation för mer "
+"detaljer."
+
+#: src/greeter.rs:77 src/login/mod.rs:636 src/window.rs:463
 msgid "No network connection"
 msgstr "Ingen nätverksanslutning"
 
-#: src/greeter.rs:81 src/login/mod.rs:639 src/window.rs:430
+#: src/greeter.rs:81 src/login/mod.rs:641 src/window.rs:467
 msgid "No Internet connection"
 msgstr "Ingen internetanslutning"
 
-#: src/login/homeserver_page.rs:128
+#: src/greeter.ui:25 src/greeter.ui:33
+msgid "About Fractal"
+msgstr "Om Fractal"
+
+#. Fractal is the application name and shouldn't be translated
+#: src/greeter.ui:83
+msgid "Welcome to Fractal"
+msgstr "Välkommen till Fractal"
+
+#: src/greeter.ui:108
+msgid "_Log in"
+msgstr "_Logga in"
+
+#: src/greeter.ui:118
+msgid "_Create Account"
+msgstr "_Skapa konto"
+
+#: src/login/advanced_dialog.ui:5
+msgid "Homeserver Discovery"
+msgstr "Identifiering av hemserver"
+
+#: src/login/advanced_dialog.ui:14
+msgid ""
+"Auto-discovery, also known as “well-known lookup”, allows to discover the "
+"URL of a Matrix homeserver from a domain name. This should only be disabled "
+"if your homeserver doesn’t support auto-discovery or if you want to provide "
+"the URL yourself."
+msgstr ""
+"Automatisk identifiering, även känt som ”uppslagning av välkända”, låter dig "
+"upptäcka URL:en för en Matrix-hemserver från ett domännamn. Detta bör endast "
+"inaktiveras om din hemserver inte stöder automatisk identifiering eller om "
+"du vill tillhandahålla URL:en själv."
+
+#: src/login/advanced_dialog.ui:17
+msgid "_Auto-discovery"
+msgstr "_Automatisk identifiering"
+
+#: src/login/homeserver_page.rs:130
 msgid "Domain Name"
 msgstr "Domännamn"
 
-#: src/login/homeserver_page.rs:130
+#: src/login/homeserver_page.rs:132
 msgid "The domain of your Matrix homeserver, for example gnome.org"
 msgstr "Domänen för din Matrix-hemserver, exempelvis gnome.org"
 
+#: src/login/homeserver_page.rs:135 src/login/method_page.ui:43
+msgid "Homeserver URL"
+msgstr "URL för hemserver"
+
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/login/homeserver_page.rs:137
+#: src/login/homeserver_page.rs:139
 msgid "The URL of your Matrix homeserver, for example {address}"
 msgstr "Domänen för din Matrix-hemserver, exempelvis {address}"
 
-#. Translators: Do NOT translate the content between '{' and '}', this is a variable
-#. name.
+#: src/login/homeserver_page.ui:22
+#: src/session/view/account_settings/user_page/mod.ui:63
+msgid "Homeserver"
+msgstr "Hemserver"
+
+#: src/login/homeserver_page.ui:66 src/login/method_page.ui:123
+#: src/session/view/content/verification/session_verification.ui:274
+#: src/session/view/content/verification/session_verification.ui:339
+msgid "Next"
+msgstr "Nästa"
+
+#. Translators: As in 'Advanced Settings'.
+#: src/login/homeserver_page.ui:80
+msgid "Advanced…"
+msgstr "Avancerat…"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
 #: src/login/method_page.rs:151
 msgid "Log in to {domain_name}"
 msgstr "Logga in till {domain_name}"
 
-#: src/login/mod.rs:522
+#: src/login/method_page.rs:158
+msgid "Log in"
+msgstr "Logga in"
+
+#: src/login/method_page.ui:71
+msgid "Matrix Username"
+msgstr "Matrix-användarnamn"
+
+#: src/login/method_page.ui:85
+msgid "Password"
+msgstr "Lösenord"
+
+#: src/login/method_page.ui:93
+msgid "_Forgot Password?"
+msgstr "_Glömt lösenordet?"
+
+#: src/login/method_page.ui:116
+msgid "More SSO Providers"
+msgstr "Fler SSO-leverantörer"
+
+#: src/login/mod.rs:524
 msgid "Unable to store session"
 msgstr "Kunde inte lagra session"
 
+#: src/login/mod.ui:91
+msgid "Login Complete"
+msgstr "Inloggning slutförd"
+
+#: src/login/mod.ui:107
+#: src/session/view/content/verification/identity_verification_widget.rs:520
+msgid "This session is ready to send and receive secure messages."
+msgstr "Denna session är redo att skicka och ta emot säkra meddelanden."
+
+#: src/login/mod.ui:112
+msgid "Start Chatting"
+msgstr "Börja chatta"
+
+#: src/login/sso_page.ui:25
+msgid "Single Sign-On"
+msgstr "Enkel inloggning (SSO)"
+
+#: src/login/sso_page.ui:36
+msgid "Please follow the steps in the browser."
+msgstr "Följ stegen i webbläsaren."
+
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:58
+#: src/secret.rs:62
 msgid "Found stored session with unsupported version {version_nb}"
 msgstr "Hittade lagrad session med version {version_nb} som inte stöds"
 
-#: src/secret.rs:89
+#: src/secret.rs:93
 msgid "The secret storage file is corrupted."
 msgstr "Hemlighetslagringsfilen är skadad."
 
-#: src/secret.rs:93
+#: src/secret.rs:97
 msgid "Could not access the secret storage file location."
 msgstr "Kunde inte komma åt platsen för hemlighetslagringsfilen."
 
-#: src/secret.rs:96
+#: src/secret.rs:100
 msgid "An unknown error occurred when accessing the secret storage file."
 msgstr "Ett okänt fel inträffade vid åtkomst till hemlighetslagringsfilen."
 
-#: src/secret.rs:99
+#: src/secret.rs:103
 msgid "The secret storage file has been changed by another process."
 msgstr "Hemlighetslagringsfilen har ändrats av en annan process."
 
-#: src/secret.rs:102
+#: src/secret.rs:106
 msgid ""
 "An unknown error occurred when interacting with the D-Bus Secret Portal "
 "backend."
 msgstr ""
 "Ett okänt fel inträffade vid interaktion med D-Bus-hemlighetsportalbakänden."
 
-#: src/secret.rs:105
+#: src/secret.rs:109
 msgid ""
 "The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1242,7 +444,7 @@ msgstr ""
 "Förfrågan till Flatpak-hemlighetsportalen avbröts. Se till att acceptera all "
 "inmatning som ber att få komma åt den."
 
-#: src/secret.rs:108
+#: src/secret.rs:112
 msgid ""
 "The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
 "installed, and it is at least at version 1.5.0."
@@ -1250,17 +452,17 @@ msgstr ""
 "Flatpak-hemlighetsportalen är inte tillgänglig. Se till att xdg-desktop-"
 "portal är installerat och är åtminstone version 1.5.0."
 
-#: src/secret.rs:111
+#: src/secret.rs:115
 msgid "The Flatpak Secret Portal provided a key that is too weak to be secure."
 msgstr ""
 "Flatpak-hemlighetsportalen tillhandahöll en nyckel som är för svag för att "
 "vara säker."
 
-#: src/secret.rs:123
+#: src/secret.rs:127
 msgid "The item was deleted."
 msgstr "Objektet togs bort."
 
-#: src/secret.rs:126
+#: src/secret.rs:130
 msgid ""
 "The request to the D-Bus Secret Service was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -1268,7 +470,7 @@ msgstr ""
 "Förfrågan till D-Bus-hemlighetstjänsten avbröts. Se till att acceptera all "
 "inmatning som ber att få komma åt den."
 
-#: src/secret.rs:129
+#: src/secret.rs:133
 msgid ""
 "Could not access the default collection. Make sure a keyring was created and "
 "set as default."
@@ -1276,108 +478,218 @@ msgstr ""
 "Kunde inte komma åt standardsamlingen. Säkerställ att en nyckelring skapades "
 "och ställdes in som standard."
 
-#: src/secret.rs:133
+#: src/secret.rs:137
 msgid ""
 "An unknown error occurred when interacting with the D-Bus Secret Service."
 msgstr "Ett okänt fel inträffade vid interaktion med D-Bus-hemlighetstjänsten."
 
-#: src/secret.rs:172
+#: src/secret.rs:176
 msgid "Malformed version in stored session"
 msgstr "Felaktig version i lagrad session"
 
-#: src/secret.rs:196
+#: src/secret.rs:200
 msgid "Could not find profile in stored session"
 msgstr "Kunde inte hitta profil i lagrad session"
 
-#: src/secret.rs:210
+#: src/secret.rs:214
 msgid "Malformed homeserver in stored session"
 msgstr "Felaktig hemserver i lagrad session"
 
-#: src/secret.rs:217
+#: src/secret.rs:221
 msgid "Could not find homeserver in stored session"
 msgstr "Kunde inte hitta hemserver i lagrad session"
 
-#: src/secret.rs:228
+#: src/secret.rs:232
 msgid "Malformed user ID in stored session"
 msgstr "Felaktigt användar-ID i lagrad session"
 
-#: src/secret.rs:235
+#: src/secret.rs:239
 msgid "Could not find user ID in stored session"
 msgstr "Kunde inte hitta användar-ID i lagrad session"
 
-#: src/secret.rs:244
+#: src/secret.rs:248
 msgid "Could not find device ID in stored session"
 msgstr "Kunde inte hitta enhets-ID i lagrad session"
 
-#: src/secret.rs:253
+#: src/secret.rs:257
 msgid "Could not find database path in stored session"
 msgstr "Kunde inte hitta sökväg för databas i lagrad session"
 
-#: src/secret.rs:266 src/secret.rs:277
+#: src/secret.rs:270 src/secret.rs:281
 msgid "Malformed secret in stored session"
 msgstr "Felaktig hemlighet i lagrad session"
 
-#: src/secret.rs:287
+#: src/secret.rs:291
 msgid "Could not get secret in stored session"
 msgstr "Kunde inte erhålla hemlighet i lagrad session"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:529
+#: src/secret.rs:406
 msgid "Fractal: Matrix credentials for {user_id}"
 msgstr "Fractal: Matrix-autentiseringsuppgifter för {user_id}"
 
-#: src/session/account_settings/devices_page/device_list.rs:134
+#: src/session/model/session.rs:487
+msgid "Failed to logout the session."
+msgstr "Misslyckades med att logga ut sessionen."
+
+#: src/session/model/room/member.rs:38
+msgid "Left"
+msgstr "Lämnade"
+
+#: src/session/model/room/member.rs:39
+msgid "Joined"
+msgstr "Anslöt"
+
+#: src/session/model/room/member.rs:40
+#: src/session/model/sidebar/category/category_type.rs:30
+#: src/session/view/content/room_details/invite_subpage/invitee_list.rs:291
+msgid "Invited"
+msgstr "Inbjuden"
+
+#: src/session/model/room/member.rs:41
+#: src/session/view/content/room_details/invite_subpage/invitee_list.rs:289
+msgid "Banned"
+msgstr "Bannlyst"
+
+#: src/session/model/room/member.rs:42
+msgid "Knocked"
+msgstr "Knackade på"
+
+#: src/session/model/room/member.rs:43
+msgid "Custom"
+msgstr "Anpassad"
+
+#: src/session/model/room/member_role.rs:50
+msgid "Admin"
+msgstr "Admin"
+
+#: src/session/model/room/member_role.rs:51
+msgid "Moderator"
+msgstr "Moderator"
+
+#: src/session/model/room/member_role.rs:52
+msgid "Normal user"
+msgstr "Vanlig användare"
+
+#: src/session/model/room/mod.rs:941
+msgid "Unknown"
+msgstr "Okänt"
+
+#. Translators: This is the name of a room that is empty but had another user before.
+#. Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/model/room/mod.rs:969
+msgid "Empty Room (was {user})"
+msgstr "Tomt rum (var {user})"
+
+#. Translators: This is the name of a room without other users.
+#: src/session/model/room/mod.rs:971
+msgid "Empty Room"
+msgstr "Tomt rum"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
+#: src/session/model/room_list.rs:347
+msgid "Failed to join room {room_name}. Try again later."
+msgstr "Misslyckades med att gå in i rummet {room_name}. Försök igen senare."
+
+#: src/session/model/sidebar/category/category_type.rs:29
+msgid "Verifications"
+msgstr "Verifieringar"
+
+#: src/session/model/sidebar/category/category_type.rs:31
+msgid "Favorites"
+msgstr "Favoriter"
+
+#: src/session/model/sidebar/category/category_type.rs:32
+msgid "Rooms"
+msgstr "Rum"
+
+#: src/session/model/sidebar/category/category_type.rs:33
+msgid "Low Priority"
+msgstr "Låg prioritet"
+
+#: src/session/model/sidebar/category/category_type.rs:34
+msgid "Historical"
+msgstr "Historiskt"
+
+#. Translators: This shouldn't ever be visible to the user,
+#: src/session/model/sidebar/category/category_type.rs:36
+msgid "Outdated"
+msgstr "Föråldrat"
+
+#: src/session/model/sidebar/category/category_type.rs:37
+msgid "Spaces"
+msgstr "Utrymmen"
+
+#: src/session/model/sidebar/category/category_type.rs:38
+msgid "People"
+msgstr "Personer"
+
+#: src/session/model/sidebar/entry/entry_type.rs:18
+msgid "Explore"
+msgstr "Utforska"
+
+#: src/session/model/sidebar/entry/entry_type.rs:19
+msgid "Forget Room"
+msgstr "Glöm rum"
+
+#: src/session/view/account_settings/devices_page/device_list.rs:134
 msgid "Failed to load connected device."
 msgstr "Misslyckades med att läsa in ansluten enhet."
 
-#: src/session/account_settings/devices_page/device_list.rs:180
+#: src/session/view/account_settings/devices_page/device_list.rs:180
 msgid "Failed to load the list of connected devices."
 msgstr "Misslyckades med att läsa in listan över anslutna enheter."
 
-#: src/session/account_settings/devices_page/device_row.rs:101
+#: src/session/view/account_settings/devices_page/device_row.rs:103
 msgid "Disconnect Session"
 msgstr "Koppla från session"
 
+#: src/session/view/account_settings/devices_page/device_row.rs:105
+#: src/session/view/account_settings/user_page/mod.ui:112
+msgid "Log Out"
+msgstr "Logga ut"
+
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/account_settings/devices_page/device_row.rs:214
+#: src/session/view/account_settings/devices_page/device_row.rs:216
 msgid "Failed to disconnect device “{device_name}”"
 msgstr "Misslyckades med att koppla från enheten ”{device_name}”"
 
 #. Translators: Time in 24h format
-#: src/session/account_settings/devices_page/device_row.rs:255
+#: src/session/view/account_settings/devices_page/device_row.rs:257
 msgid "Last seen at %H:%M"
 msgstr "Senast sedd %H:%M"
 
 #. Translators: Time in 12h format
-#: src/session/account_settings/devices_page/device_row.rs:258
+#: src/session/view/account_settings/devices_page/device_row.rs:260
 msgid "Last seen at %l:%M %p"
 msgstr "Senast sedd %l:%M %p"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 24h format. i.e. "Last seen Yesterday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:267
+#: src/session/view/account_settings/devices_page/device_row.rs:269
 #, no-c-format
 msgid "Last seen Yesterday at %H:%M"
 msgstr "Senast sedd i går %H:%M"
 
 #. Translators: this is the word Yesterday followed by
 #. a time in 12h format. i.e. "Last seen Yesterday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:272
+#: src/session/view/account_settings/devices_page/device_row.rs:274
 #, no-c-format
 msgid "Last seen Yesterday at %l:%M %p"
 msgstr "Senast sedd i går %l:%M %p"
 
 #. Translators: this is the name of the week day followed by
 #. a time in 24h format. i.e. "Last seen Monday at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:281
+#: src/session/view/account_settings/devices_page/device_row.rs:283
 #, no-c-format
 msgid "Last seen %A at %H:%M"
 msgstr "Senast sedd %A %H:%M"
 
 #. Translators: this is the week day name followed by
 #. a time in 12h format. i.e. "Last seen Monday at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:286
+#: src/session/view/account_settings/devices_page/device_row.rs:288
 #, no-c-format
 msgid "Last seen %A at %l:%M %p"
 msgstr "Senast sedd %A %l:%M %p"
@@ -1385,7 +697,7 @@ msgstr "Senast sedd %A %l:%M %p"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 24h format i.e. "Last seen February 3 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:294
+#: src/session/view/account_settings/devices_page/device_row.rs:296
 #, no-c-format
 msgid "Last seen %B %-e at %H:%M"
 msgstr "Senast sedd %-e %B %H:%M"
@@ -1393,7 +705,7 @@ msgstr "Senast sedd %-e %B %H:%M"
 #. Translators: this is the day of the month followed
 #. by the abbreviated month name followed by a time in
 #. 12h format i.e. "Last seen February 3 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:300
+#: src/session/view/account_settings/devices_page/device_row.rs:302
 #, no-c-format
 msgid "Last seen %B %-e at %l:%M %p"
 msgstr "Senast sedd %-e %B %l:%M %p"
@@ -1401,7 +713,7 @@ msgstr "Senast sedd %-e %B %l:%M %p"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 24h format i.e. "Last seen February 3 2015 at 23:04"
-#: src/session/account_settings/devices_page/device_row.rs:307
+#: src/session/view/account_settings/devices_page/device_row.rs:309
 #, no-c-format
 msgid "Last seen %B %-e %Y at %H:%M"
 msgstr "Senast sedd %-e %B %Y %H:%M"
@@ -1409,25 +721,70 @@ msgstr "Senast sedd %-e %B %Y %H:%M"
 #. Translators: this is the day number followed
 #. by the abbreviated month name followed by the year followed
 #. by a time in 12h format i.e. "Last seen February 3 2015 at 9:04 PM"
-#: src/session/account_settings/devices_page/device_row.rs:313
+#: src/session/view/account_settings/devices_page/device_row.rs:315
 #, no-c-format
 msgid "Last seen %B %-e %Y at %l:%M %p"
 msgstr "Senast sedd %-e %B %Y %l:%M %p"
 
-#: src/session/account_settings/notifications_page.rs:174
-#: src/session/account_settings/notifications_page.rs:187
+#: src/session/view/account_settings/devices_page/device_row.ui:63
+#: src/session/view/content/verification/identity_verification_widget.rs:506
+#: src/session/view/content/verification/identity_verification_widget.rs:511
+#: src/session/view/content/verification/identity_verification_widget.rs:514
+#: src/session/view/content/verification/identity_verification_widget.rs:530
+#: src/session/view/content/verification/identity_verification_widget.rs:534
+#: src/session/view/content/verification/identity_verification_widget.rs:538
+msgid "Verify Session"
+msgstr "Verifiera session"
+
+#: src/session/view/account_settings/devices_page/mod.ui:5
+msgid "Sessions"
+msgstr "Sessioner"
+
+#: src/session/view/account_settings/devices_page/mod.ui:9
+#: src/session/view/account_settings/devices_page/mod.ui:13
+msgid "Current Session"
+msgstr "Aktuell session"
+
+#: src/session/view/account_settings/devices_page/mod.ui:24
+#: src/session/view/account_settings/devices_page/mod.ui:28
+msgid "Other Active Sessions"
+msgstr "Andra aktiva sessioner"
+
+#: src/session/view/account_settings/mod.ui:4
+msgid "Account Settings"
+msgstr "Kontoinställningar"
+
+#: src/session/view/account_settings/notifications_page.rs:177
+#: src/session/view/account_settings/notifications_page.rs:190
 msgid "Could not load notifications settings. Try again later"
 msgstr "Kunde inte läsa in aviseringsinställningar. Försök igen senare"
 
-#: src/session/account_settings/notifications_page.rs:288
+#: src/session/view/account_settings/notifications_page.rs:291
 msgid "Could not enable account notifications"
 msgstr "Kunde inte aktivera kontoaviseringar"
 
-#: src/session/account_settings/notifications_page.rs:290
+#: src/session/view/account_settings/notifications_page.rs:293
 msgid "Could not disable account notifications"
 msgstr "Kunde inte inaktivera kontoaviseringar"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:212
+#: src/session/view/account_settings/notifications_page.ui:5
+msgid "Notifications"
+msgstr "Aviseringar"
+
+#: src/session/view/account_settings/notifications_page.ui:11
+msgid "Enable for this account"
+msgstr "Aktivera för detta konto"
+
+#: src/session/view/account_settings/notifications_page.ui:34
+msgid "Enable for this session"
+msgstr "Aktivera för denna session"
+
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:212
+#: src/session/view/account_settings/security_page/mod.ui:12
+msgid "Export Room Encryption Keys"
+msgstr "Exportera rumskrypteringsnycklar"
+
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:214
 msgid ""
 "Exporting your room encryption keys allows you to make a backup to be able "
 "to decrypt your messages in end-to-end encrypted rooms on another device or "
@@ -1437,7 +794,7 @@ msgstr ""
 "så du kan dekryptera dina meddelanden i totalsträckskrypterade rum på en "
 "annan enhet eller med en annan Matrix-klient."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:215
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:217
 msgid ""
 "The backup must be stored in a safe place and must be protected with a "
 "strong passphrase that will be used to encrypt the data."
@@ -1445,11 +802,16 @@ msgstr ""
 "Säkerhetskopian måste lagras på en säker plats och skyddas med en stark "
 "lösenfras som kommer användas för att kryptera data."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:218
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:220
 msgid "Export Keys"
 msgstr "Exportera nycklar"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:222
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:222
+#: src/session/view/account_settings/security_page/mod.ui:19
+msgid "Import Room Encryption Keys"
+msgstr "Importera rumskrypteringsnycklar"
+
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:224
 msgid ""
 "Importing your room encryption keys allows you to decrypt your messages in "
 "end-to-end encrypted rooms with a previous backup from a Matrix client."
@@ -1458,259 +820,642 @@ msgstr ""
 "meddelanden i totalsträckskrypterade rum med en tidigare säkerhetskopia från "
 "en Matrix-klient."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:225
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:227
 msgid "Enter the passphrase provided when the backup file was created."
 msgstr "Ange lösenfrasen som tillhandahölls när säkerhetskopian skapades."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:228
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:230
 msgid "Import Keys"
 msgstr "Importera nycklar"
 
 #. Translators: Do no translate "fractal" as it is the application
 #. name.
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:254
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:256
 msgid "fractal-encryption-keys"
 msgstr "fractal-krypteringsnycklar"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:259
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:261
 msgid "Save Encryption Keys To…"
 msgstr "Spara krypteringsnycklar till…"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:262
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:264
 msgid "Import Encryption Keys From…"
 msgstr "Importera krypteringsnycklar från…"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:275
-#: src/utils/media.rs:222
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:277
+#: src/utils/media.rs:218
 msgid "Could not access file"
 msgstr "Kunde inte komma åt fil"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:301
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:303
 msgid "Passphrases do not match"
 msgstr "Lösenfraserna stämmer inte överens"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:375
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:377
 msgid "Room encryption keys exported successfully"
 msgstr "Exporterade rumskrypteringsnycklar"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:380
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:382
 msgid "Imported 1 room encryption key"
 msgid_plural "Imported {n} room encryption keys"
 msgstr[0] "Importerade 1 rumskrypteringsnyckel"
 msgstr[1] "Importerade {n} rumskrypteringsnycklar"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:393
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:395
 msgid "Could not export the keys"
 msgstr "Kunde inte exportera nycklarna"
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:403
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:405
 msgid "The passphrase doesn't match the one used to export the keys."
 msgstr ""
 "Lösenfrasen stämmer inte överens med den som användes för att exportera "
 "nycklarna."
 
-#: src/session/account_settings/security_page/import_export_keys_subpage.rs:407
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:409
 msgid "Could not import the keys"
 msgstr "Kunde inte importera nycklarna"
 
-#: src/session/account_settings/security_page/mod.rs:170
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.ui:80
+#: src/session/view/content/verification/session_verification.ui:269
+msgid "Passphrase"
+msgstr "Lösenfras"
+
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.ui:97
+msgid "Confirm Passphrase"
+msgstr "Bekräfta lösenfras"
+
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.ui:128
+#: src/session/view/content/room_details/general_page/mod.ui:168
+#: src/session/view/content/room_details/mod.rs:280
+msgid "File"
+msgstr "Fil"
+
+#: src/session/view/account_settings/security_page/import_export_keys_subpage.ui:132
+msgid "Choose…"
+msgstr "Välj…"
+
+#: src/session/view/account_settings/security_page/mod.rs:170
 msgid "Available"
 msgstr "Tillgänglig"
 
-#: src/session/account_settings/security_page/mod.rs:174
+#: src/session/view/account_settings/security_page/mod.rs:174
 msgid "Not available"
 msgstr "Inte tillgänglig"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:172
+#: src/session/view/account_settings/security_page/mod.ui:5
+msgid "Security"
+msgstr "Säkerhet"
+
+#: src/session/view/account_settings/security_page/mod.ui:9
+msgid "Room Encryption Keys"
+msgstr "Rumskrypteringsnycklar"
+
+#: src/session/view/account_settings/security_page/mod.ui:28
+msgid "Cross-Signing"
+msgstr "Korssignering"
+
+#: src/session/view/account_settings/security_page/mod.ui:31
+msgid "Master key"
+msgstr "Huvudnyckel"
+
+#: src/session/view/account_settings/security_page/mod.ui:41
+msgid "Self-signing key"
+msgstr "Nyckel för självsignatur"
+
+#: src/session/view/account_settings/security_page/mod.ui:51
+msgid "User-signing key"
+msgstr "Nyckel för användarsignatur"
+
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:174
 msgid "Password must be at least 8 characters long"
 msgstr "Lösenordet måste vara minst 8 tecken långt"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:175
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:177
 msgid "Password must have at least one lower-case letter"
 msgstr "Lösenordet måste innehålla minst en gemen"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:179
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:181
 msgid "Password must have at least one upper-case letter"
 msgstr "Lösenordet måste innehålla minst en versal"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:182
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:184
 msgid "Password must have at least one digit"
 msgstr "Lösenordet måste innehålla minst en siffra"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:184
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:186
 msgid "Password must have at least one symbol"
 msgstr "Lösenordet måste innehålla minst en symbol"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:214
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:216
 msgid "Passwords do not match"
 msgstr "Lösenorden stämmer inte överens"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:272
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:269
 msgid "Password changed successfully"
 msgstr "Lösenordet ändrades"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:283
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:280
 msgid "Password rejected for being too weak"
 msgstr "Lösenordet förkastades för att det är för svagt"
 
-#: src/session/account_settings/user_page/change_password_subpage.rs:287
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:284
 msgid "Could not change password"
 msgstr "Kunde inte ändra lösenordet"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:172
+#: src/session/view/account_settings/user_page/change_password_subpage.ui:12
+#: src/session/view/account_settings/user_page/mod.ui:51
+msgid "Change Password"
+msgstr "Byt lösenord"
+
+#: src/session/view/account_settings/user_page/change_password_subpage.ui:60
+msgid "Changing your password will log you out of your other sessions."
+msgstr "Att ändra ditt lösenord kommer logga ut dig från dina andra sessioner."
+
+#: src/session/view/account_settings/user_page/change_password_subpage.ui:71
+msgid ""
+"Fractal’s support for encryption is unstable so you might lose access to "
+"your encrypted message history. It is recommended to backup your encryption "
+"keys before proceeding."
+msgstr ""
+"Fractals stöd för kryptering är instabilt, så du kan förlora åtkomst till "
+"din krypterade meddelandehistorik. Du rekommenderas att säkerhetskopiera "
+"dina krypteringsnycklar innan du fortsätter."
+
+#: src/session/view/account_settings/user_page/change_password_subpage.ui:94
+msgid "New Password"
+msgstr "Nytt lösenord"
+
+#: src/session/view/account_settings/user_page/change_password_subpage.ui:134
+msgid "Confirm New Password"
+msgstr "Bekräfta nytt lösenord"
+
+#: src/session/view/account_settings/user_page/change_password_subpage.ui:164
+#: src/session/view/account_settings/user_page/deactivate_account_subpage.ui:92
+#: src/session/view/account_settings/user_page/log_out_subpage.ui:94
+#: src/session/view/content/room_history/verification_info_bar.rs:180
+msgid "Continue"
+msgstr "Fortsätt"
+
+#: src/session/view/account_settings/user_page/deactivate_account_subpage.rs:175
 msgid "Account successfully deactivated"
 msgstr "Kontot inaktiverades"
 
-#: src/session/account_settings/user_page/deactivate_account_subpage.rs:180
+#: src/session/view/account_settings/user_page/deactivate_account_subpage.rs:184
 msgid "Could not deactivate account"
 msgstr "Kunde inte inaktivera kontot"
 
-#: src/session/account_settings/user_page/mod.rs:219
-#: src/session/content/room_details/general_page/mod.rs:231
+#: src/session/view/account_settings/user_page/deactivate_account_subpage.ui:12
+#: src/session/view/account_settings/user_page/mod.ui:126
+msgid "Deactivate Account"
+msgstr "Inaktivera konto"
+
+#: src/session/view/account_settings/user_page/deactivate_account_subpage.ui:60
+msgid ""
+"Deactivating your account means you will lose access to all your messages, "
+"contacts, files, and more, forever."
+msgstr ""
+"Att inaktivera ditt konto betyder att du aldrig mera kan komma åt dina "
+"meddelanden, kontakter, filer med mera."
+
+#: src/session/view/account_settings/user_page/deactivate_account_subpage.ui:71
+msgid ""
+"To confirm that you really want to deactivate this account, type in your "
+"Matrix user ID:"
+msgstr ""
+"Skriv in ditt användar-ID för Matrix för att bekräfta att du verkligen vill "
+"inaktivera detta konto:"
+
+#: src/session/view/account_settings/user_page/log_out_subpage.ui:12
+msgid "Log Out of this Session"
+msgstr "Logga ut från denna session"
+
+#: src/session/view/account_settings/user_page/log_out_subpage.ui:60
+msgid ""
+"Fractal doesn’t support online backup of room encryption keys so you might "
+"lose access to your encrypted message history."
+msgstr ""
+"Fractal stöder inte säkerhetskopiering över nätet för "
+"rumskrypteringsnycklar, så du kan förlora åtkomst till din krypterade "
+"meddelandehistorik."
+
+#: src/session/view/account_settings/user_page/log_out_subpage.ui:71
+msgid "It is recommended to backup your encryption keys before proceeding."
+msgstr ""
+"Du rekommenderas att säkerhetskopiera dina krypteringsnycklar innan du "
+"fortsätter."
+
+#: src/session/view/account_settings/user_page/log_out_subpage.ui:85
+msgid "Backup Encryption Keys"
+msgstr "Säkerhetskopiera krypteringsnycklar"
+
+#: src/session/view/account_settings/user_page/mod.rs:220
+#: src/session/view/content/room_details/general_page/mod.rs:233
 msgid "Avatar removed successfully"
 msgstr "Profilbilden togs bort"
 
-#: src/session/account_settings/user_page/mod.rs:221
-#: src/session/content/room_details/general_page/mod.rs:233
+#: src/session/view/account_settings/user_page/mod.rs:222
+#: src/session/view/content/room_details/general_page/mod.rs:235
 msgid "Avatar changed successfully"
 msgstr "Profilbilden ändrades"
 
-#: src/session/account_settings/user_page/mod.rs:234
-#: src/session/content/room_details/general_page/mod.rs:252
+#: src/session/view/account_settings/user_page/mod.rs:235
+#: src/session/view/content/room_details/general_page/mod.rs:255
 msgid "Could not load file"
 msgstr "Kunde inte läsa in fil"
 
-#: src/session/account_settings/user_page/mod.rs:249
-#: src/session/content/room_details/general_page/mod.rs:273
+#: src/session/view/account_settings/user_page/mod.rs:250
+#: src/session/view/content/room_details/general_page/mod.rs:276
 msgid "Could not upload avatar"
 msgstr "Kunde inte skicka profilbilden"
 
-#: src/session/account_settings/user_page/mod.rs:278
-#: src/session/content/room_details/general_page/mod.rs:293
+#: src/session/view/account_settings/user_page/mod.rs:279
+#: src/session/view/content/room_details/general_page/mod.rs:296
 msgid "Could not change avatar"
 msgstr "Kunde inte ändra profilbilden"
 
-#: src/session/account_settings/user_page/mod.rs:312
-#: src/session/content/room_details/general_page/mod.rs:323
+#: src/session/view/account_settings/user_page/mod.rs:313
+#: src/session/view/content/room_details/general_page/mod.rs:327
 msgid "Could not remove avatar"
 msgstr "Kunde inte ta bort profilbilden"
 
-#: src/session/account_settings/user_page/mod.rs:351
+#: src/session/view/account_settings/user_page/mod.rs:352
 msgid "Name changed successfully"
 msgstr "Namnet ändrades"
 
-#: src/session/account_settings/user_page/mod.rs:392
+#: src/session/view/account_settings/user_page/mod.rs:393
 msgid "Could not change display name"
 msgstr "Kunde inte ändra visningsnamnet"
 
-#: src/session/content/explore/public_room_row.rs:209
-#: src/session/content/room_history/state_row/tombstone.rs:121
+#: src/session/view/account_settings/user_page/mod.ui:5
+msgid "General"
+msgstr "Allmänt"
+
+#: src/session/view/account_settings/user_page/mod.ui:27
+#: src/session/view/room_creation.ui:66
+msgid "Name"
+msgstr "Namn"
+
+#: src/session/view/account_settings/user_page/mod.ui:60
+msgid "Advanced Information"
+msgstr "Avancerad information"
+
+#: src/session/view/account_settings/user_page/mod.ui:77
+msgid "Matrix User ID"
+msgstr "Användar-ID för Matrix"
+
+#: src/session/view/account_settings/user_page/mod.ui:91
+msgid "Session ID"
+msgstr "Sessions-ID"
+
+#: src/session/view/content/explore/mod.ui:70
+msgid "No rooms matching the search were found"
+msgstr "Inga rum som matchade sökningen hittades"
+
+#: src/session/view/content/explore/mod.ui:111
+msgid "Room List"
+msgstr "Rumslista"
+
+#. Translators: This is a verb, as in 'View Room'.
+#: src/session/view/content/explore/public_room_row.rs:208
+#: src/session/view/content/room_history/mod.rs:1586
+#: src/session/view/content/room_history/state_row/tombstone.rs:123
 msgid "View"
 msgstr "Visa"
 
-#: src/session/content/invite.rs:115
+#: src/session/view/content/explore/public_room_row.rs:210
+#: src/session/view/content/room_history/mod.rs:1589
+#: src/session/view/content/room_history/state_row/tombstone.rs:125
+msgid "Join"
+msgstr "Gå in"
+
+#: src/session/view/content/explore/servers_popover.ui:35
+msgid "Add server…"
+msgstr "Lägg till server…"
+
+#: src/session/view/content/invite.rs:116
 msgid "{user} invited you"
 msgstr "{user} har bjudit in dig"
 
-#: src/session/content/room_details/general_page/mod.rs:416
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/view/content/invite.rs:244
+msgid "Failed to accept invitation for {room}. Try again later."
+msgstr ""
+"Misslyckades med att acceptera inbjudan för {room}. Försök igen senare."
+
+#. Translators: Do NOT translate the content between '{' and '}', this
+#. is a variable name.
+#: src/session/view/content/invite.rs:275
+msgid "Failed to decline invitation for {room}. Try again later."
+msgstr "Misslyckades med att neka inbjudan för {room}. Försök igen senare."
+
+#: src/session/view/content/invite.ui:26 src/session/view/content/invite.ui:51
+#: src/session/view/content/room_details/member_page/mod.ui:69
+msgid "Invite"
+msgstr "Bjud in"
+
+#: src/session/view/content/invite.ui:111
+msgid "_Decline"
+msgstr "_Neka"
+
+#: src/session/view/content/invite.ui:121 src/session/view/sidebar/mod.ui:32
+msgid "_Accept"
+msgstr "_Acceptera"
+
+#: src/session/view/content/mod.ui:36
+msgid "No Room Selected"
+msgstr "Inget rum valt"
+
+#: src/session/view/content/mod.ui:37
+msgid "Join a room to start chatting."
+msgstr "Gå in i ett rum för att börja chatta."
+
+#: src/session/view/content/room_details/general_page/mod.rs:420
 msgid "Room name saved successfully"
 msgstr "Rumsnamnet sparades"
 
-#: src/session/content/room_details/general_page/mod.rs:441
+#: src/session/view/content/room_details/general_page/mod.rs:445
 msgid "Room topic saved successfully"
 msgstr "Rummets ämne sparades"
 
-#: src/session/content/room_details/general_page/mod.rs:514
+#: src/session/view/content/room_details/general_page/mod.rs:519
 msgid "Could not change room name"
 msgstr "Kunde inte ändra rumsnamnet"
 
-#: src/session/content/room_details/general_page/mod.rs:538
+#: src/session/view/content/room_details/general_page/mod.rs:543
 msgid "Could not change room topic"
 msgstr "Kunde inte ändra rummets ämne"
 
-#: src/session/content/room_details/history_viewer/audio_row.rs:121
+#: src/session/view/content/room_details/general_page/mod.ui:67
+msgid "Description"
+msgstr "Beskrivning"
+
+#: src/session/view/content/room_details/general_page/mod.ui:107
+msgid "Edit Details"
+msgstr "Redigera detaljer"
+
+#: src/session/view/content/room_details/general_page/mod.ui:115
+msgid "Save Details"
+msgstr "Spara detaljer"
+
+#: src/session/view/content/room_details/general_page/mod.ui:127
+msgid "Members"
+msgstr "Medlemmar"
+
+#: src/session/view/content/room_details/general_page/mod.ui:153
+#: src/session/view/content/room_details/history_viewer/media.ui:21
+#: src/session/view/content/room_details/mod.rs:264
+msgid "Media"
+msgstr "Media"
+
+#. Translators: As in 'Audio file'.
+#: src/session/view/content/room_details/general_page/mod.ui:184
+#: src/session/view/content/room_details/history_viewer/audio.ui:12
+#: src/session/view/content/room_details/mod.rs:297
+msgid "Audio"
+msgstr "Ljud"
+
+#: src/session/view/content/room_details/history_viewer/audio_row.rs:121
 msgid "Unknown duration"
 msgstr "Okänd längd"
 
-#: src/session/content/room_details/history_viewer/file_row.rs:109
+#: src/session/view/content/room_details/history_viewer/file_row.rs:110
 #: src/utils/media.rs:191
 msgid "Save File"
 msgstr "Spara fil"
 
-#: src/session/content/room_details/history_viewer/file_row.rs:159
+#: src/session/view/content/room_details/history_viewer/file_row.rs:111
+#: src/session/view/content/room_history/message_row/file.ui:25
+#: src/utils/media.rs:193
+msgid "Save"
+msgstr "Spara"
+
+#: src/session/view/content/room_details/history_viewer/file_row.rs:160
 msgid "Unknown size"
 msgstr "Okänd storlek"
 
-#: src/session/content/room_details/invite_subpage/invitee_list.rs:287
+#: src/session/view/content/room_details/history_viewer/file.ui:11
+msgid "Files"
+msgstr "Filer"
+
+#: src/session/view/content/room_details/invite_subpage/invitee_list.rs:288
 msgid "Member"
 msgstr "Medlem"
 
-#: src/session/content/room_details/invite_subpage/invitee_list.rs:288
-#: src/session/room/member.rs:45
-msgid "Banned"
-msgstr "Bannlyst"
+#. Translators: Do NOT translate the content between '{' and '}', these
+#. are variable names.
+#: src/session/view/content/room_details/invite_subpage/mod.rs:341
+msgid "Failed to invite {user} to {room}. Try again later."
+msgid_plural "Failed to invite {n} users to {room}. Try again later."
+msgstr[0] ""
+"Misslyckades med att bjuda in {user} till {room}. Försök igen senare."
+msgstr[1] ""
+"Misslyckades med att bjuda in {n} användare till {room}. Försök igen senare."
 
-#: src/session/content/room_details/invite_subpage/invitee_list.rs:290
-#: src/session/room/member.rs:44
-#: src/session/sidebar/category/category_type.rs:30
-msgid "Invited"
-msgstr "Inbjuden"
+#: src/session/view/content/room_details/invite_subpage/mod.ui:12
+#: src/session/view/content/room_history/attachment_dialog.ui:14
+#: src/session/view/join_room_dialog.ui:9
+msgid "_Cancel"
+msgstr "_Avbryt"
 
-#: src/session/content/room_details/member_page/mod.rs:287
+#: src/session/view/content/room_details/invite_subpage/mod.ui:18
+msgid "I_nvite"
+msgstr "Bjud _in"
+
+#: src/session/view/content/room_details/invite_subpage/mod.ui:85
+#: src/session/view/create_dm_dialog/mod.ui:64
+msgid "Search"
+msgstr "Sök"
+
+#: src/session/view/content/room_details/invite_subpage/mod.ui:86
+msgid "Search for users to invite them to this room."
+msgstr "Sök efter användare för att bjuda in dem till detta rum."
+
+#: src/session/view/content/room_details/invite_subpage/mod.ui:130
+#: src/session/view/create_dm_dialog/mod.ui:100
+msgid "No Users Found"
+msgstr "Inga användare hittades"
+
+#: src/session/view/content/room_details/invite_subpage/mod.ui:131
+msgid "No users matching the search were found."
+msgstr "Inga användare som matchade sökningen hittades."
+
+#: src/session/view/content/room_details/invite_subpage/mod.ui:138
+msgid "An error occurred while searching for matches."
+msgstr "Ett fel inträffade under sökning efter matchningar."
+
+#: src/session/view/content/room_details/member_page/member_menu.ui:6
+msgid "_Verify"
+msgstr "_Verifiera"
+
+#: src/session/view/content/room_details/member_page/member_menu.ui:14
+msgid "Make _Mod"
+msgstr "Gör till _moderator"
+
+#: src/session/view/content/room_details/member_page/member_menu.ui:20
+msgid "Make _Admin"
+msgstr "Gör till _admin"
+
+#: src/session/view/content/room_details/member_page/member_menu.ui:26
+msgid "_Kick"
+msgstr "Spar_ka ut"
+
+#: src/session/view/content/room_details/member_page/mod.rs:285
 msgid "Invited Room Members"
 msgstr "Bjöd in rumsmedlemmar"
 
-#: src/session/content/room_details/member_page/mod.rs:288
+#: src/session/view/content/room_details/member_page/mod.rs:286
 msgid "Banned Room Members"
 msgstr "Bannlyste rumsmedlemmar"
 
-#: src/session/content/room_details/member_page/mod.rs:289
-#: src/session/content/room_details/mod.rs:236
+#: src/session/view/content/room_details/member_page/mod.rs:287
+#: src/session/view/content/room_details/mod.rs:232
 msgid "Room Members"
 msgstr "Rumsmedlemmar"
 
-#: src/session/content/room_details/mod.rs:252
+#: src/session/view/content/room_details/member_page/mod.ui:19
+msgid "Search for Room Members"
+msgstr "Sök efter rumsmedlemmar"
+
+#: src/session/view/content/room_details/member_page/mod.ui:35
+#: src/session/view/content/room_details/member_page/mod.ui:39
+msgid "Search for room members"
+msgstr "Sök efter rumsmedlemmar"
+
+#: src/session/view/content/room_details/mod.rs:216
+#: src/session/view/content/room_details/mod.ui:4
+msgid "Room Details"
+msgstr "Rumsdetaljer"
+
+#: src/session/view/content/room_details/mod.rs:248
 msgid "Invite new Members"
 msgstr "Bjud in nya medlemmar"
 
-#: src/session/content/room_history/item_row.rs:308
+#: src/session/view/content/room_history/attachment_dialog.ui:21
+msgid "_Send"
+msgstr "_Skicka"
+
+#: src/session/view/content/room_history/event_actions.rs:111
+#: src/session/view/content/room_history/mod.rs:966
+#: src/session/view/media_viewer.rs:570
+msgid "Permalink copied to clipboard"
+msgstr "Permanent länk kopierad till urklipp"
+
+#: src/session/view/content/room_history/event_actions.rs:115
+#: src/session/view/content/room_history/mod.rs:970
+#: src/session/view/media_viewer.rs:574
+msgid "Failed to copy the permalink"
+msgstr "Misslyckades med att kopiera den permanenta länken"
+
+#: src/session/view/content/room_history/event_actions.rs:218
+#: src/session/view/content/room_history/event_actions.rs:255
+#: src/session/view/content/room_history/event_actions.rs:282
+msgid "Message copied to clipboard"
+msgstr "Meddelande kopierat till urklipp"
+
+#: src/session/view/content/room_history/event_actions.rs:294
+msgid "Thumbnail copied to clipboard"
+msgstr "Miniatyrbild kopierad till urklipp"
+
+#. Translators: In this string, 'Reply' is a verb.
+#: src/session/view/content/room_history/event_actions.ui:12
+msgid "_Reply"
+msgstr "Sva_ra"
+
+#. Translators: In this string, 'Edit' is a verb.
+#: src/session/view/content/room_history/event_actions.ui:18
+msgid "_Edit"
+msgstr "R_edigera"
+
+#. Translators: In this string, 'Forward' is a verb.
+#: src/session/view/content/room_history/event_actions.ui:24
+#: src/session/view/content/room_history/event_actions.ui:86
+msgid "_Forward"
+msgstr "Vidare_befordra"
+
+#: src/session/view/content/room_history/event_actions.ui:31
+#: src/session/view/content/room_history/event_actions.ui:93
+msgid "_Select"
+msgstr "Vä_lj"
+
+#: src/session/view/content/room_history/event_actions.ui:38
+#: src/session/view/content/room_history/event_actions.ui:100
+msgid "_Copy Text"
+msgstr "_Kopiera text"
+
+#: src/session/view/content/room_history/event_actions.ui:44
+msgid "_Copy Thumbnail"
+msgstr "_Kopiera miniatyrbild"
+
+#: src/session/view/content/room_history/event_actions.ui:49
+#: src/session/view/media_viewer.ui:11
+msgid "S_ave Image"
+msgstr "_Spara bild"
+
+#: src/session/view/content/room_history/event_actions.ui:54
+#: src/session/view/media_viewer.ui:16
+msgid "S_ave Video"
+msgstr "_Spara video"
+
+#: src/session/view/content/room_history/event_actions.ui:59
+#: src/session/view/media_viewer.ui:21
+msgid "S_ave Audio"
+msgstr "_Spara ljud"
+
+#: src/session/view/content/room_history/event_actions.ui:64
+#: src/session/view/content/room_history/event_actions.ui:106
+#: src/session/view/media_viewer.ui:26
+msgid "_Permalink"
+msgstr "_Permanent länk"
+
+#: src/session/view/content/room_history/event_actions.ui:69
+#: src/session/view/content/room_history/event_actions.ui:111
+msgid "_View Source"
+msgstr "_Visa källa"
+
+#: src/session/view/content/room_history/event_actions.ui:76
+#: src/session/view/content/room_history/event_actions.ui:118
+msgid "Re_move"
+msgstr "_Ta bort"
+
+#: src/session/view/content/room_history/item_row.rs:292
 msgid "This is the start of the visible history"
 msgstr "Detta är början på den synliga historiken"
 
 #. Translators: This is a date format in the day divider without the
 #. year
-#: src/session/content/room_history/item_row.rs:331
+#: src/session/view/content/room_history/item_row.rs:313
 msgid "%A, %B %e"
 msgstr "%A, %-e %B"
 
 #. Translators: This is a date format in the day divider with the year
-#: src/session/content/room_history/item_row.rs:334
+#: src/session/view/content/room_history/item_row.rs:316
 msgid "%A, %B %e, %Y"
 msgstr "%A, %-e %B, %Y"
 
-#: src/session/content/room_history/item_row.rs:340
+#: src/session/view/content/room_history/item_row.rs:322
 msgid "New Messages"
 msgstr "Nya meddelanden"
 
-#: src/session/content/room_history/message_row/audio.rs:222
-#: src/session/content/room_history/message_row/audio.rs:226
+#: src/session/view/content/room_history/message_row/audio.rs:224
+#: src/session/view/content/room_history/message_row/audio.rs:228
 msgid "Could not retrieve audio file"
 msgstr "Kunde inte erhålla ljudfil"
 
-#: src/session/content/room_history/message_row/audio.rs:239
+#: src/session/view/content/room_history/message_row/audio.rs:241
 msgid "Error reading audio file"
 msgstr "Fel vid läsning av ljudfil"
 
-#: src/session/content/room_history/message_row/content.rs:343
+#: src/session/view/content/room_history/message_row/content.rs:319
 msgid "Identity verification was started"
 msgstr "Identitetsverifiering startades"
 
-#: src/session/content/room_history/message_row/content.rs:356
-#: src/session/content/room_history/message_row/content.rs:392
+#: src/session/view/content/room_history/message_row/content.rs:330
+#: src/session/view/content/room_history/message_row/content.rs:363
 msgid "Unsupported event"
 msgstr "Händelsen stöds inte"
 
-#: src/session/content/room_history/message_row/content.rs:380
+#: src/session/view/content/room_history/message_row/content.rs:352
 msgid ""
 "Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
@@ -1718,90 +1463,190 @@ msgstr ""
 "Kunde inte dekryptera detta meddelande, försöker dekryptera igen när "
 "nycklarna är tillgängliga."
 
-#: src/session/content/room_history/message_row/location.rs:98
+#: src/session/view/content/room_history/message_row/location.rs:100
 msgid "Location is invalid and cannot be displayed"
 msgstr "Platsen är ogiltig och kan inte visas"
 
-#: src/session/content/room_history/message_row/media.rs:434
+#: src/session/view/content/room_history/message_row/media.rs:436
 msgid "Image file not supported"
 msgstr "Bildfilen stöds inte"
 
-#: src/session/content/room_history/message_row/media.rs:471
-#: src/session/content/room_history/message_row/media.rs:476
+#: src/session/view/content/room_history/message_row/media.rs:473
+#: src/session/view/content/room_history/message_row/media.rs:478
 msgid "Could not retrieve media"
 msgstr "Kunde inte erhålla media"
 
-#: src/session/content/room_history/mod.rs:222
+#: src/session/view/content/room_history/message_row/mod.ui:61
+msgid "Edited"
+msgstr "Redigerat"
+
+#: src/session/view/content/room_history/mod.rs:233
 msgid "The location request has been cancelled."
 msgstr "Platsförfrågan har avbrutits."
 
-#: src/session/content/room_history/mod.rs:226
+#: src/session/view/content/room_history/mod.rs:237
 msgid "Failed to retrieve current location."
 msgstr "Misslyckades med att erhålla aktuell plats."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/content/room_history/mod.rs:682
+#: src/session/view/content/room_history/mod.rs:734
 msgid "Reply to {user}"
 msgstr "Svara till {user}"
 
-#: src/session/content/room_history/mod.rs:795 src/session/media_viewer.rs:573
-#: src/session/room/event/event_actions.rs:111
-msgid "Permalink copied to clipboard"
-msgstr "Permanent länk kopierad till urklipp"
+#. Translators: In this string, 'Edit' is a noun.
+#: src/session/view/content/room_history/mod.rs:785
+msgctxt "room-history"
+msgid "Edit"
+msgstr "Redigering"
 
-#: src/session/content/room_history/mod.rs:799 src/session/media_viewer.rs:577
-#: src/session/room/event/event_actions.rs:115
-msgid "Failed to copy the permalink"
-msgstr "Misslyckades med att kopiera den permanenta länken"
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/view/content/room_history/mod.rs:950
+#: src/session/view/sidebar/room_row.rs:389
+#: src/session/view/sidebar/room_row.rs:410 src/session/view/sidebar/row.rs:335
+msgid "Failed to move {room} from {previous_category} to {new_category}."
+msgstr ""
+"Misslyckades med att flytta {room} från {previous_category} till "
+"{new_category}."
 
-#: src/session/content/room_history/mod.rs:1008
+#: src/session/view/content/room_history/mod.rs:1179
 msgid "Your Location"
 msgstr "Din plats"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/session/content/room_history/mod.rs:1020
+#: src/session/view/content/room_history/mod.rs:1191
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Användarplats {geo_uri}, tid {iso8601_datetime}"
 
-#: src/session/content/room_history/mod.rs:1065
+#: src/session/view/content/room_history/mod.rs:1236
 msgid "Select File"
 msgstr "Välj fil"
 
-#: src/session/content/room_history/mod.rs:1067
+#: src/session/view/content/room_history/mod.rs:1238
 msgid "Select"
 msgstr "Välj"
 
-#: src/session/content/room_history/mod.rs:1086
+#: src/session/view/content/room_history/mod.rs:1253
 msgid "Could not open file"
 msgstr "Kunde inte öppna fil"
 
-#: src/session/content/room_history/mod.rs:1131
+#: src/session/view/content/room_history/mod.rs:1298
 msgid "Error reading file"
 msgstr "Fel vid läsning av fil"
 
-#: src/session/content/room_history/mod.rs:1157
+#: src/session/view/content/room_history/mod.rs:1324
 msgid "Error getting file from drop"
 msgstr "Fel då släppt fil skulle erhållas"
 
-#: src/session/content/room_history/mod.rs:1189
+#: src/session/view/content/room_history/mod.rs:1356
 msgid "Error getting image from clipboard"
 msgstr "Fel då bilden skulle erhållas från urklipp"
 
-#: src/session/content/room_history/mod.rs:1206
+#: src/session/view/content/room_history/mod.rs:1373
 msgid "Error getting file from clipboard"
 msgstr "Fel då filen skulle erhållas från urklipp"
 
-#: src/session/content/room_history/state_row/creation.rs:66
+#: src/session/view/content/room_history/mod.rs:1584
+#: src/session/view/content/room_history/mod.rs:1588
+#: src/session/view/content/room_history/state_row/tombstone.ui:14
+msgid "There is a newer version of this room"
+msgstr "Det finns en nyare version av detta rum"
+
+#: src/session/view/content/room_history/mod.rs:1591
+msgid "This room was closed"
+msgstr "Det här rummet stängdes"
+
+#: src/session/view/content/room_history/mod.ui:6
+msgid "Room _Details"
+msgstr "Rums_detaljer"
+
+#: src/session/view/content/room_history/mod.ui:11
+msgid "_Invite New Member"
+msgstr "Bjud _in ny medlem"
+
+#: src/session/view/content/room_history/mod.ui:16
+msgid "Room _Permalink"
+msgstr "_Permanent länk för rum"
+
+#: src/session/view/content/room_history/mod.ui:22
+#: src/session/view/sidebar/mod.ui:66
+msgid "_Leave Room"
+msgstr "_Lämna rum"
+
+#: src/session/view/content/room_history/mod.ui:31
+msgid "_Location"
+msgstr "_Plats"
+
+#: src/session/view/content/room_history/mod.ui:36
+msgid "_Markdown"
+msgstr "_Markdown"
+
+#: src/session/view/content/room_history/mod.ui:59
+msgid "Back"
+msgstr "Bakåt"
+
+#: src/session/view/content/room_history/mod.ui:84
+msgid "Room Settings"
+msgstr "Rumsinställningar"
+
+#: src/session/view/content/room_history/mod.ui:123
+msgid "Unable to load room"
+msgstr "Kunde inte läsa in rum"
+
+#: src/session/view/content/room_history/mod.ui:124
+msgid "Check your network connection."
+msgstr "Kontrollera din nätverksanslutning."
+
+#: src/session/view/content/room_history/mod.ui:127
+msgid "Try Again"
+msgstr "Försök igen"
+
+#: src/session/view/content/room_history/mod.ui:152
+msgid "Scroll to bottom"
+msgstr "Rulla längst ner"
+
+#: src/session/view/content/room_history/mod.ui:164
+msgid "Drop Here to Send"
+msgstr "Släpp här för att skicka"
+
+#: src/session/view/content/room_history/mod.ui:184
+msgid "Room History"
+msgstr "Rumshistorik"
+
+#: src/session/view/content/room_history/mod.ui:276
+msgid "Browse Attachment"
+msgstr "Undersök bilaga"
+
+#: src/session/view/content/room_history/mod.ui:286
+msgid "Open Emoji Picker"
+msgstr "Öppna emoji-väljare"
+
+#: src/session/view/content/room_history/mod.ui:307
+msgid "Message Entry"
+msgstr "Meddelandefält"
+
+#: src/session/view/content/room_history/mod.ui:322
+msgid "Open Message Menu"
+msgstr "Öppna meddelandemeny"
+
+#: src/session/view/content/room_history/mod.ui:337
+msgid "Send Message"
+msgstr "Skicka meddelande"
+
+#: src/session/view/content/room_history/state_row/creation.rs:68
 msgid "This is the continuation of an upgraded room."
 msgstr "Detta är fortsättningen på ett uppgraderat rum."
 
-#: src/session/content/room_history/state_row/creation.rs:71
+#: src/session/view/content/room_history/state_row/creation.rs:73
 msgid "This is the beginning of this room."
 msgstr "Detta är början på detta rum."
 
-#: src/session/content/room_history/state_row/mod.rs:94
+#: src/session/view/content/room_history/state_row/creation.ui:19
+msgid "Previous room"
+msgstr "Föregående rum"
+
+#: src/session/view/content/room_history/state_row/mod.rs:96
 msgid "This room is encrypted from this point on."
 msgstr "Detta rum är från och med nu krypterat."
 
@@ -1809,12 +1654,12 @@ msgstr "Detta rum är från och med nu krypterat."
 #. variable name.
 #. Translators: Do NOT translate the content between '{' and '}', this is
 #. a variable name.
-#: src/session/content/room_history/state_row/mod.rs:109
-#: src/session/content/room_history/state_row/mod.rs:225
+#: src/session/view/content/room_history/state_row/mod.rs:111
+#: src/session/view/content/room_history/state_row/mod.rs:227
 msgid "{user} was invited to this room."
 msgstr "{user} har bjudits in till detta rum."
 
-#: src/session/content/room_history/state_row/mod.rs:121
+#: src/session/view/content/room_history/state_row/mod.rs:123
 msgid "An unsupported state event was received."
 msgstr "En tillståndshändelse som inte stöds mottogs."
 
@@ -1823,134 +1668,134 @@ msgstr "En tillståndshändelse som inte stöds mottogs."
 #. We don't know what changed so fall back to the membership.
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:197
-#: src/session/content/room_history/state_row/mod.rs:350
+#: src/session/view/content/room_history/state_row/mod.rs:199
+#: src/session/view/content/room_history/state_row/mod.rs:352
 msgid "{user} joined this room."
 msgstr "{user} har gått in i detta rum."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:202
+#: src/session/view/content/room_history/state_row/mod.rs:204
 msgid "{user} left the room."
 msgstr "{user} har lämnat rummet."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:207
+#: src/session/view/content/room_history/state_row/mod.rs:209
 msgid "{user} was banned."
 msgstr "{user} har bannlysts."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:213
+#: src/session/view/content/room_history/state_row/mod.rs:215
 msgid "{user} was unbanned."
 msgstr "{user} är inte längre bannlyst."
 
 #. Translators: Do NOT translate the content between '{' and
 #. '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:219
+#: src/session/view/content/room_history/state_row/mod.rs:221
 msgid "{user} was kicked out of the room."
 msgstr "{user} har sparkats ut från rummet."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is
 #. a variable name.
-#: src/session/content/room_history/state_row/mod.rs:231
+#: src/session/view/content/room_history/state_row/mod.rs:233
 msgid "{user} was kicked out of the room and banned."
 msgstr "{user} har sparkats ut från rummet och bannlysts."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:237
+#: src/session/view/content/room_history/state_row/mod.rs:239
 msgid "{user} accepted the invite."
 msgstr "{user} accepterade inbjudan."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:243
+#: src/session/view/content/room_history/state_row/mod.rs:245
 msgid "{user} rejected the invite."
 msgstr "{user} har avvisat inbjudan."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:249
+#: src/session/view/content/room_history/state_row/mod.rs:251
 msgid "The invitation for {user} has been revoked."
 msgstr "Inbjudan för {user} har återkallats."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:258
+#: src/session/view/content/room_history/state_row/mod.rs:260
 msgid "{user} requested to be invited to this room."
 msgstr "{user} har bett om att bli inbjuden till detta rum."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:265
+#: src/session/view/content/room_history/state_row/mod.rs:267
 msgid "{user} retracted their request to be invited to this room."
 msgstr ""
 "{user} har dragit tillbaka sin förfrågan om att bli inbjuden till detta rum."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:271
+#: src/session/view/content/room_history/state_row/mod.rs:273
 msgid "{user}’s request to be invited to this room was denied."
 msgstr "Förfrågan från {user} om att bli inbjuden till detta rum nekades."
 
-#: src/session/content/room_history/state_row/mod.rs:279
+#: src/session/view/content/room_history/state_row/mod.rs:281
 msgid "An unsupported room member event was received."
 msgstr "En rumsmedlemshändelse som inte stöds mottogs."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:298
+#: src/session/view/content/room_history/state_row/mod.rs:300
 msgid "{previous_user_name} removed their display name."
 msgstr "{previous_user_name} har tagit bort sitt visningsnamn."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:305
+#: src/session/view/content/room_history/state_row/mod.rs:307
 msgid "{previous_user_name} changed their display name to {new_user_name}."
 msgstr ""
 "{previous_user_name} har ändrat sitt visningsnamn till {new_user_name}."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:316
+#: src/session/view/content/room_history/state_row/mod.rs:318
 msgid "{user_id} set their display name to {new_user_name}."
 msgstr "{user_id} ställde in sitt visningsnamn till {new_user_name}."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:328
+#: src/session/view/content/room_history/state_row/mod.rs:330
 msgid "{user} set their avatar."
 msgstr "{user} har ställt in sin profilbild."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:335
+#: src/session/view/content/room_history/state_row/mod.rs:337
 msgid "{user} removed their avatar."
 msgstr "{user} har tagit bort sin profilbild."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/content/room_history/state_row/mod.rs:342
+#: src/session/view/content/room_history/state_row/mod.rs:344
 msgid "{user} changed their avatar."
 msgstr "{user} har ändrat sin profilbild."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/room_history/typing_row.rs:173
+#: src/session/view/content/room_history/typing_row.rs:173
 msgid "<b>{user}</b> is typing…"
 msgstr "<b>{user}</b> skriver…"
 
 #. Translators: Do NOT translate the content between '{' and '}', these are
 #. variable names.
-#: src/session/content/room_history/typing_row.rs:183
+#: src/session/view/content/room_history/typing_row.rs:183
 msgid "<b>{user1}</b> and <b>{user2}</b> are typing…"
 msgstr "<b>{user1}</b> och <b>{user2}</b> skriver…"
 
 #. Translators: Do NOT translate the content between '{' and '}', these are
 #. variable names.
-#: src/session/content/room_history/typing_row.rs:190
+#: src/session/view/content/room_history/typing_row.rs:190
 msgid "<b>{user1}</b>, <b>{user2}</b> and 1 other are typing…"
 msgid_plural "<b>{user1}</b>, <b>{user2}</b> and {n} others are typing…"
 msgstr[0] "<b>{user1}</b>, <b>{user2}</b> och 1 till skriver…"
@@ -1958,25 +1803,35 @@ msgstr[1] "<b>{user1}</b>, <b>{user2}</b> och {n} till skriver…"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/room_history/verification_info_bar.rs:164
+#: src/session/view/content/room_history/verification_info_bar.rs:169
 msgid "{user_name} wants to be verified"
 msgstr "{user_name} vill verifieras"
 
-#: src/session/content/room_history/verification_info_bar.rs:174
+#: src/session/view/content/room_history/verification_info_bar.rs:175
+#: src/session/view/content/verification/identity_verification_widget.ui:56
+msgid "Verify"
+msgstr "Verifiera"
+
+#: src/session/view/content/room_history/verification_info_bar.rs:176
+#: src/session/view/content/verification/identity_verification_widget.ui:46
+msgid "Decline"
+msgstr "Neka"
+
+#: src/session/view/content/room_history/verification_info_bar.rs:179
 msgid "Verification in progress"
 msgstr "Verifiering pågår"
 
-#: src/session/content/verification/identity_verification_widget.rs:506
-#: src/session/content/verification/identity_verification_widget.rs:530
+#: src/session/view/content/verification/identity_verification_widget.rs:505
+#: src/session/view/content/verification/identity_verification_widget.rs:529
 msgid "Verify the new session from the current session."
 msgstr "Verifiera den nya sessionen från aktuell session."
 
-#: src/session/content/verification/identity_verification_widget.rs:509
+#: src/session/view/content/verification/identity_verification_widget.rs:508
 msgid "Scan the QR code from another session logged into this account."
 msgstr "Läs av QR-koden från en annan session som är inloggad på detta konto."
 
-#: src/session/content/verification/identity_verification_widget.rs:511
-#: src/session/content/verification/identity_verification_widget.rs:534
+#: src/session/view/content/verification/identity_verification_widget.rs:510
+#: src/session/view/content/verification/identity_verification_widget.rs:533
 msgid ""
 "You scanned the QR code successfully. You may need to confirm the "
 "verification from the other session."
@@ -1984,52 +1839,62 @@ msgstr ""
 "Du lyckades läsa av QR-koden. Du kan behöva bekräfta verifieringen från den "
 "andra sessionen."
 
-#: src/session/content/verification/identity_verification_widget.rs:514
+#: src/session/view/content/verification/identity_verification_widget.rs:513
 msgid "Scan this QR code from the other session."
 msgstr "Läs av denna QR-kod från den andra sessionen."
 
-#: src/session/content/verification/identity_verification_widget.rs:517
-#: src/session/content/verification/identity_verification_widget.rs:541
+#: src/session/view/content/verification/identity_verification_widget.rs:516
+#: src/session/view/content/verification/identity_verification_widget.rs:540
 msgid "Check if the same emoji appear in the same order on the other device."
 msgstr ""
 "Kontrollera om samma emojier dyker upp i samma ordning på den andra enheten."
 
-#: src/session/content/verification/identity_verification_widget.rs:519
-#: src/session/content/verification/identity_verification_widget.rs:543
+#: src/session/view/content/verification/identity_verification_widget.rs:518
+#: src/session/view/content/verification/identity_verification_widget.rs:542
 msgid "Request Complete"
 msgstr "Förfrågan slutförd"
 
-#: src/session/content/verification/identity_verification_widget.rs:524
-#: src/session/content/verification/identity_verification_widget.rs:553
+#: src/session/view/content/verification/identity_verification_widget.rs:523
+#: src/session/view/content/verification/identity_verification_widget.rs:552
 msgid "Does the other session show a confirmation?"
 msgstr "Visar den andra sessionen en bekräftelse?"
 
-#: src/session/content/verification/identity_verification_widget.rs:528
+#: src/session/view/content/verification/identity_verification_widget.rs:527
 msgid "Login Request From Another Session"
 msgstr "Inloggningsförfrågan från en annan session"
 
-#: src/session/content/verification/identity_verification_widget.rs:533
+#: src/session/view/content/verification/identity_verification_widget.rs:532
 msgid "Scan the QR code displayed by the other session."
 msgstr "Läs av den QR-kod som visas av den andra sessionen."
 
-#: src/session/content/verification/identity_verification_widget.rs:537
+#: src/session/view/content/verification/identity_verification_widget.rs:536
 msgid "Scan this QR code from the newly logged in session."
 msgstr "Läs av denna QR-kod från den nyss inloggade sessionen."
 
-#: src/session/content/verification/identity_verification_widget.rs:545
+#: src/session/view/content/verification/identity_verification_widget.rs:544
 msgid "The new session is now ready to send and receive secure messages."
 msgstr "Den nya sessionen är nu redo att skicka och ta emot säkra meddelanden."
 
-#: src/session/content/verification/identity_verification_widget.rs:558
-#: src/session/content/verification/identity_verification_widget.rs:565
-#: src/session/content/verification/identity_verification_widget.rs:576
-#: src/session/content/verification/identity_verification_widget.rs:583
+#: src/session/view/content/verification/identity_verification_widget.rs:547
+#: src/session/view/content/verification/session_verification.ui:28
+msgid "Get Another Device"
+msgstr "Erhåll en annan enhet"
+
+#: src/session/view/content/verification/identity_verification_widget.rs:549
+#: src/session/view/content/verification/session_verification.ui:39
+msgid "Accept the verification request from another session or device."
+msgstr "Acceptera verifieringsförfrågan från en annan session eller enhet."
+
+#: src/session/view/content/verification/identity_verification_widget.rs:557
+#: src/session/view/content/verification/identity_verification_widget.rs:564
+#: src/session/view/content/verification/identity_verification_widget.rs:575
+#: src/session/view/content/verification/identity_verification_widget.rs:582
 msgid "Verification Request"
 msgstr "Verifieringsförfrågan"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:563
+#: src/session/view/content/verification/identity_verification_widget.rs:562
 msgid ""
 "{user} asked to be verified. Verifying a user increases the security of the "
 "conversation."
@@ -2039,13 +1904,13 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:569
+#: src/session/view/content/verification/identity_verification_widget.rs:568
 msgid "Scan the QR code shown on the device of {user}."
 msgstr "Läs av QR-koden som visas på enheten för {user}."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:574
+#: src/session/view/content/verification/identity_verification_widget.rs:573
 msgid ""
 "You scanned the QR code successfully. {user} may need to confirm the "
 "verification."
@@ -2054,26 +1919,26 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:580
+#: src/session/view/content/verification/identity_verification_widget.rs:579
 msgid "Ask {user} to scan this QR code from their session."
 msgstr "Be {user} att läsa av denna QR-kod från sin session."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:587
+#: src/session/view/content/verification/identity_verification_widget.rs:586
 msgid ""
 "Ask {user} if they see the following emoji appear in the same order on their "
 "screen."
 msgstr ""
 "Fråga om {user} ser samma emojier dyka upp i samma ordning på sin skärm."
 
-#: src/session/content/verification/identity_verification_widget.rs:591
+#: src/session/view/content/verification/identity_verification_widget.rs:590
 msgid "Verification Complete"
 msgstr "Verifiering slutförd"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:594
+#: src/session/view/content/verification/identity_verification_widget.rs:593
 msgid ""
 "{user} is verified and you can now be sure that your communication will be "
 "private."
@@ -2083,23 +1948,73 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:598
+#: src/session/view/content/verification/identity_verification_widget.rs:597
 msgid "Waiting for {user}"
 msgstr "Väntar på {user}"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:604
+#: src/session/view/content/verification/identity_verification_widget.rs:603
 msgid "Ask {user} to accept the verification request."
 msgstr "Be {user} att acceptera verifieringsförfrågan."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/content/verification/identity_verification_widget.rs:610
+#: src/session/view/content/verification/identity_verification_widget.rs:609
 msgid "Does {user} see a confirmation on their session?"
 msgstr "Ser {user} en bekräftelse i sin session?"
 
-#: src/session/content/verification/session_verification.rs:269
+#: src/session/view/content/verification/identity_verification_widget.rs:650
+msgid "You cancelled the verification process."
+msgstr "Du avbröt verifieringsprocessen."
+
+#: src/session/view/content/verification/identity_verification_widget.rs:652
+msgid "The verification process failed because it reached a timeout."
+msgstr "Verifieringsprocessen misslyckades för att den nådde en tidsgräns."
+
+#: src/session/view/content/verification/identity_verification_widget.rs:655
+msgid "You accepted the request from an other session."
+msgstr "Du accepterade förfrågan från en annan session."
+
+#: src/session/view/content/verification/identity_verification_widget.rs:658
+msgid "The emoji did not match."
+msgstr "Emojierna stämde inte överens."
+
+#: src/session/view/content/verification/identity_verification_widget.rs:667
+msgid "An unknown error occurred during the verification process."
+msgstr "Ett okänt fel inträffade under verifieringsprocessen."
+
+#: src/session/view/content/verification/identity_verification_widget.ui:109
+#: src/session/view/content/verification/identity_verification_widget.ui:213
+msgid "Can’t scan QR code?"
+msgstr "Kan du inte läsa av QR-koden?"
+
+#: src/session/view/content/verification/identity_verification_widget.ui:117
+#: src/session/view/content/verification/identity_verification_widget.ui:230
+msgid "Compare Emoji"
+msgstr "Jämför emoji"
+
+#: src/session/view/content/verification/identity_verification_widget.ui:144
+msgid "Scan Complete"
+msgstr "Avläsning slutförd"
+
+#: src/session/view/content/verification/identity_verification_widget.ui:222
+msgid "Scan QR code with this session"
+msgstr "Läs av QR-kod med denna session"
+
+#: src/session/view/content/verification/identity_verification_widget.ui:290
+msgid "Do Not Match"
+msgstr "Matchar inte"
+
+#: src/session/view/content/verification/identity_verification_widget.ui:300
+msgid "Match"
+msgstr "Matchar"
+
+#: src/session/view/content/verification/identity_verification_widget.ui:409
+msgid "Confirm Scan"
+msgstr "Bekräfta avläsning"
+
+#: src/session/view/content/verification/session_verification.rs:271
 msgid ""
 "You need to set up an encryption identity, since this is the first time you "
 "logged into your account."
@@ -2107,11 +2022,11 @@ msgstr ""
 "Du behöver konfigurera en krypteringsidentitet då detta är första gången du "
 "loggat in på ditt konto."
 
-#: src/session/content/verification/session_verification.rs:272
+#: src/session/view/content/verification/session_verification.rs:274
 msgid "Set Up"
 msgstr "Konfigurera"
 
-#: src/session/content/verification/session_verification.rs:277
+#: src/session/view/content/verification/session_verification.rs:279
 msgid ""
 "No other devices are available to verify this session. You can either "
 "restore cross-signing from another device and restart this process or reset "
@@ -2121,7 +2036,13 @@ msgstr ""
 "antingen återställa korssignering från en annan enhet och starta om denna "
 "process eller återställa krypteringsidentiteten."
 
-#: src/session/content/verification/session_verification.rs:285
+#: src/session/view/content/verification/session_verification.rs:282
+#: src/session/view/content/verification/session_verification.rs:290
+#: src/session/view/content/verification/session_verification.ui:70
+msgid "Reset"
+msgstr "Nollställ"
+
+#: src/session/view/content/verification/session_verification.rs:287
 msgid ""
 "If you lost access to all other sessions, you can create a new encryption "
 "identity. Be careful because this will cancel the verifications of all users "
@@ -2131,283 +2052,394 @@ msgstr ""
 "krypteringsidentitet. Var försiktig då detta kommer avbryta verifieringarna "
 "av alla användare och sessioner."
 
-#: src/session/content/verification/session_verification.rs:433
+#: src/session/view/content/verification/session_verification.rs:435
 msgid ""
 "You cancelled the authentication needed to create the encryption identity."
 msgstr ""
 "Du avbröt autentiseringen som krävs för att skapa krypteringsidentiteten."
 
-#: src/session/content/verification/session_verification.rs:439
+#: src/session/view/content/verification/session_verification.rs:441
 msgid "An error occurred during the creation of the encryption identity."
 msgstr "Ett fel inträffade under skapandet av krypteringsidentiteten."
 
-#: src/session/create_dm_dialog/mod.rs:165
+#: src/session/view/content/verification/session_verification.ui:52
+msgid "No other devices logged into this account?"
+msgstr "Inga andra enheter inloggade på detta konto?"
+
+#: src/session/view/content/verification/session_verification.ui:60
+#: src/session/view/content/verification/session_verification.ui:165
+msgid "Recovery"
+msgstr "Återställning"
+
+#: src/session/view/content/verification/session_verification.ui:109
+msgid "Set Up Encryption Identity"
+msgstr "Konfigurera krypteringsidentitet"
+
+#: src/session/view/content/verification/session_verification.ui:136
+msgid "Restart verification"
+msgstr "Starta om verifiering"
+
+#: src/session/view/content/verification/session_verification.ui:176
+msgid ""
+"Without another device you need a recovery passphrase or key to access your "
+"messages"
+msgstr ""
+"Utan en annan enhet behöver du en lösenfras eller nyckel för återställning "
+"för att komma åt dina meddelanden"
+
+#: src/session/view/content/verification/session_verification.ui:184
+#: src/session/view/content/verification/session_verification.ui:239
+msgid "Recovery Passphrase"
+msgstr "Lösenfras för återställning"
+
+#: src/session/view/content/verification/session_verification.ui:193
+#: src/session/view/content/verification/session_verification.ui:303
+msgid "Recovery Key"
+msgstr "Nyckel för återställning"
+
+#: src/session/view/content/verification/session_verification.ui:202
+msgid ""
+"If you don’t have any of these you can reset your identity, but be aware "
+"this makes your old messages inaccessible forever."
+msgstr ""
+"Om du inte har någon av dessa kan du nollställa din identitet, men var "
+"medveten om att detta gör dina gamla meddelanden för alltid oåtkomliga."
+
+#: src/session/view/content/verification/session_verification.ui:211
+msgid "Reset Identity"
+msgstr "Nollställ identitet"
+
+#: src/session/view/content/verification/session_verification.ui:250
+msgid ""
+"Your Recovery Passphrase was set up when you first created this account."
+msgstr ""
+"Din lösenfras för återställning konfigurerades när du först skapade detta "
+"konto."
+
+#: src/session/view/content/verification/session_verification.ui:258
+msgid "If you opted for a Recovery Key instead go back and choose that option."
+msgstr ""
+"Om du valde en nyckel för återställning i stället får du gå tillbaka och "
+"välja det alternativet."
+
+#: src/session/view/content/verification/session_verification.ui:314
+msgid "Your Recovery Key was set up when you first created this account."
+msgstr ""
+"Din nyckel för återställning konfigurerades när du först skapade detta konto."
+
+#: src/session/view/content/verification/session_verification.ui:322
+msgid ""
+"If you opted for a Recovery Passphrase instead go back and choose that "
+"option."
+msgstr ""
+"Om du valde en lösenfras för återställning i stället får du gå tillbaka och "
+"välja det alternativet."
+
+#: src/session/view/create_dm_dialog/mod.rs:162
 msgid "An error occurred while searching for users"
 msgstr "Ett fel inträffade under sökning efter användare"
 
-#: src/session/create_dm_dialog/mod.rs:194
+#: src/session/view/create_dm_dialog/mod.rs:204
 msgid "Failed to create a new Direct Chat"
 msgstr "Misslyckades med att skapa en ny direktchatt"
 
-#: src/session/join_room_dialog.rs:143
+#: src/session/view/create_dm_dialog/mod.ui:4
+msgid "Direct Chat"
+msgstr "Direktchatt"
+
+#: src/session/view/create_dm_dialog/mod.ui:41
+msgid "New Direct Chat"
+msgstr "Ny direktchatt"
+
+#: src/session/view/create_dm_dialog/mod.ui:65
+msgid "Search for people to start a new chat with"
+msgstr "Sök efter personer att starta en ny chatt med"
+
+#: src/session/view/create_dm_dialog/mod.ui:101
+msgid "No users matching the search pattern were found"
+msgstr "Inga användare som matchade sökmönstret hittades"
+
+#: src/session/view/create_dm_dialog/mod.ui:113
+msgid "An error occurred while searching for matches"
+msgstr "Ett fel inträffade under sökning efter matchningar"
+
+#: src/session/view/event_source_dialog.ui:5
+msgid "Event Source"
+msgstr "Händelsekälla"
+
+#: src/session/view/join_room_dialog.rs:143
 msgid "_View"
 msgstr "_Visa"
 
-#: src/session/media_viewer.rs:531
+#: src/session/view/join_room_dialog.rs:145
+#: src/session/view/join_room_dialog.ui:10
+msgid "_Join"
+msgstr "_Gå in"
+
+#: src/session/view/join_room_dialog.ui:4
+msgid "Join a Room"
+msgstr "Gå in i ett rum"
+
+#: src/session/view/join_room_dialog.ui:5
+msgid "Enter a room ID, room alias, or permalink."
+msgstr "Ange ett rums-ID, rumsalias eller en permanent länk."
+
+#: src/session/view/media_viewer.rs:528
 msgid "Image copied to clipboard"
 msgstr "Bild kopierad till urklipp"
 
-#: src/session/mod.rs:720
-msgid "Failed to logout the session."
-msgstr "Misslyckades med att logga ut sessionen."
+#: src/session/view/media_viewer.ui:6
+msgid "_Copy Image"
+msgstr "_Kopiera bild"
 
-#: src/session/room/event/event_actions.rs:217
-#: src/session/room/event/event_actions.rs:238
-#: src/session/room/event/event_actions.rs:249
-msgid "Message copied to clipboard"
-msgstr "Meddelande kopierat till urklipp"
-
-#: src/session/room/event/event_actions.rs:261
-msgid "Thumbnail copied to clipboard"
-msgstr "Miniatyrbild kopierad till urklipp"
-
-#: src/session/room/member.rs:42
-msgid "Left"
-msgstr "Lämnade"
-
-#: src/session/room/member.rs:43
-msgid "Joined"
-msgstr "Anslöt"
-
-#: src/session/room/member.rs:46
-msgid "Knocked"
-msgstr "Knackade på"
-
-#: src/session/room/member.rs:47
-msgid "Custom"
-msgstr "Anpassad"
-
-#: src/session/room/member_role.rs:48
-msgid "Admin"
-msgstr "Admin"
-
-#: src/session/room/member_role.rs:49
-msgid "Moderator"
-msgstr "Moderator"
-
-#: src/session/room/member_role.rs:50
-msgid "Normal user"
-msgstr "Vanlig användare"
-
-#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:377
-msgid "Failed to forget {room}."
-msgstr "Misslyckades med att glömma {room}."
-
-#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:630
-msgid "Failed to move {room} from {previous_category} to {new_category}."
-msgstr ""
-"Misslyckades med att flytta {room} från {previous_category} till "
-"{new_category}."
-
-#: src/session/room/mod.rs:976
-msgid "Unknown"
-msgstr "Okänt"
-
-#. Translators: This is the name of a room that is empty but had another user before.
-#. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room/mod.rs:1004
-msgid "Empty Room (was {user})"
-msgstr "Tomt rum (var {user})"
-
-#. Translators: This is the name of a room without other users.
-#: src/session/room/mod.rs:1006
-msgid "Empty Room"
-msgstr "Tomt rum"
-
-#. Translators: Do NOT translate the content between '{' and '}', this
-#. is a variable name.
-#: src/session/room/mod.rs:1312
-msgid "Failed to accept invitation for {room}. Try again later."
-msgstr ""
-"Misslyckades med att acceptera inbjudan för {room}. Försök igen senare."
-
-#. Translators: Do NOT translate the content between '{' and '}', this
-#. is a variable name.
-#: src/session/room/mod.rs:1341
-msgid "Failed to reject invitation for {room}. Try again later."
-msgstr "Misslyckades med att avvisa inbjudan för {room}. Försök igen senare."
-
-#. Translators: Do NOT translate the content between '{' and '}', this
-#. is a variable name.
-#: src/session/room/mod.rs:1567
-msgid "Failed to invite {user} to {room}. Try again later."
-msgstr "Misslyckades med att bjuda in {user} till {room}. Försök igen senare."
-
-#. Translators: Do NOT translate the content between '{' and '}', this
-#. is a variable name.
-#: src/session/room/mod.rs:1579
-msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
-msgid_plural ""
-"Failed to invite {user} and {n} other users to {room}. Try again later."
-msgstr[0] ""
-"Misslyckades med att bjuda in {user} och en annan användare till {room}. "
-"Försök igen senare."
-msgstr[1] ""
-"Misslyckades med att bjuda in {user} och {n} andra användare till {room}. "
-"Försök igen senare."
-
-#: src/session/room_creation/mod.rs:231
+#: src/session/view/room_creation.rs:232
 msgid "The address is already taken."
 msgstr "Adressen används redan."
 
-#: src/session/room_creation/mod.rs:264
+#: src/session/view/room_creation.rs:265
 msgid "Can’t contain “:”"
 msgstr "Får inte innehålla ”:”"
 
-#: src/session/room_creation/mod.rs:269
+#: src/session/view/room_creation.rs:270
 msgid "Can’t contain “#”"
 msgstr "Får inte innehålla ”#”"
 
-#: src/session/room_creation/mod.rs:274
+#: src/session/view/room_creation.rs:275
 msgid "Too long. Use a shorter address."
 msgstr "För lång. Använd en kortare adress."
 
-#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/room_list.rs:340
-msgid "Failed to join room {room_name}. Try again later."
-msgstr "Misslyckades med att gå in i rummet {room_name}. Försök igen senare."
+#: src/session/view/room_creation.ui:49
+msgid "New Room"
+msgstr "Nytt rum"
 
-#: src/session/sidebar/category/category_row.rs:154
+#: src/session/view/room_creation.ui:73
+msgid "Topic (Optional)"
+msgstr "Ämne (valfritt)"
+
+#: src/session/view/room_creation.ui:81
+msgid "Room Visibility"
+msgstr "Synlighet för rum"
+
+#: src/session/view/room_creation.ui:84
+msgid "Private"
+msgstr "Privat"
+
+#: src/session/view/room_creation.ui:85
+msgid "Only invited people can join this room"
+msgstr "Endast inbjudna personer kan gå in i detta rum"
+
+#: src/session/view/room_creation.ui:98
+msgid "Public"
+msgstr "Öppet"
+
+#: src/session/view/room_creation.ui:99
+msgid "Anyone can find and join this room"
+msgstr "Alla kan hitta och gå in i detta rum"
+
+#: src/session/view/room_creation.ui:117
+msgid "End-to-End Encryption"
+msgstr "Totalsträckskryptering"
+
+#: src/session/view/room_creation.ui:118
+msgid "Cannot be disabled later"
+msgstr "Kan inte inaktiveras senare"
+
+#: src/session/view/room_creation.ui:136
+msgid ""
+"Fractal does not support online backup for encryption keys yet, so you will "
+"need to back them up manually or your message history will be lost if you "
+"lose access to all your sessions."
+msgstr ""
+"Fractal stöder inte säkerhetskopiering över nätet för krypteringsnycklar "
+"ännu, så du kommer behöva säkerhetskopiera dem manuellt, annars försvinner "
+"din meddelandehistorik om du förlorar du åtkomst till alla dina sessioner."
+
+#: src/session/view/room_creation.ui:150
+msgid "Room Address"
+msgstr "Rumsadress"
+
+#: src/session/view/room_creation.ui:200
+msgid "_Create Room"
+msgstr "S_kapa rum"
+
+#: src/session/view/sidebar/category_row.rs:154
 msgid "Join Room as Favorite"
 msgstr "Gå in i rum som favorit"
 
-#: src/session/sidebar/category/category_row.rs:155
+#: src/session/view/sidebar/category_row.rs:155
 msgid "Join Room"
 msgstr "Gå in i rum"
 
-#: src/session/sidebar/category/category_row.rs:156
+#: src/session/view/sidebar/category_row.rs:156
 msgid "Join Room as Low Priority"
 msgstr "Gå in i rum som låg prioritet"
 
-#: src/session/sidebar/category/category_row.rs:157
+#: src/session/view/sidebar/category_row.rs:157
 msgid "Reject Invite"
 msgstr "Avvisa inbjudan"
 
 # Som direktmeddelande
-#: src/session/sidebar/category/category_row.rs:158
+#: src/session/view/sidebar/category_row.rs:158
 msgid "Join Room as People"
 msgstr "Gå in i rum som person"
 
-#: src/session/sidebar/category/category_row.rs:162
-#: src/session/sidebar/category/category_row.rs:177
-#: src/session/sidebar/category/category_row.rs:191
+#: src/session/view/sidebar/category_row.rs:162
+#: src/session/view/sidebar/category_row.rs:177
+#: src/session/view/sidebar/category_row.rs:191
 msgid "Move to Rooms"
 msgstr "Flytta till rum"
 
-#: src/session/sidebar/category/category_row.rs:163
-#: src/session/sidebar/category/category_row.rs:170
-#: src/session/sidebar/category/category_row.rs:192
+#: src/session/view/sidebar/category_row.rs:163
+#: src/session/view/sidebar/category_row.rs:170
+#: src/session/view/sidebar/category_row.rs:192
 msgid "Move to Low Priority"
 msgstr "Flytta till låg prioritet"
 
-#: src/session/sidebar/category/category_row.rs:164
-#: src/session/sidebar/category/category_row.rs:171
-#: src/session/sidebar/category/category_row.rs:178
-#: src/session/sidebar/category/category_row.rs:193
+#: src/session/view/sidebar/category_row.rs:164
+#: src/session/view/sidebar/category_row.rs:171
+#: src/session/view/sidebar/category_row.rs:178
+#: src/session/view/sidebar/category_row.rs:193
 msgid "Leave Room"
 msgstr "Lämna rum"
 
-#: src/session/sidebar/category/category_row.rs:165
-#: src/session/sidebar/category/category_row.rs:172
-#: src/session/sidebar/category/category_row.rs:179
+#: src/session/view/sidebar/category_row.rs:165
+#: src/session/view/sidebar/category_row.rs:172
+#: src/session/view/sidebar/category_row.rs:179
 msgid "Move to People"
 msgstr "Flytta till personer"
 
-#: src/session/sidebar/category/category_row.rs:169
-#: src/session/sidebar/category/category_row.rs:176
-#: src/session/sidebar/category/category_row.rs:190
+#: src/session/view/sidebar/category_row.rs:169
+#: src/session/view/sidebar/category_row.rs:176
+#: src/session/view/sidebar/category_row.rs:190
 msgid "Move to Favorites"
 msgstr "Flytta till favoriter"
 
-#: src/session/sidebar/category/category_row.rs:183
+#: src/session/view/sidebar/category_row.rs:183
 msgid "Rejoin Room as Favorites"
 msgstr "Gå in i rum igen som favorit"
 
-#: src/session/sidebar/category/category_row.rs:184
+#: src/session/view/sidebar/category_row.rs:184
 msgid "Rejoin Room"
 msgstr "Gå in i rum igen"
 
-#: src/session/sidebar/category/category_row.rs:185
+#: src/session/view/sidebar/category_row.rs:185
 msgid "Rejoin Room as Low Priority"
 msgstr "Gå in i rum igen som låg prioritet"
 
 # Som direktmeddelande
-#: src/session/sidebar/category/category_row.rs:186
+#: src/session/view/sidebar/category_row.rs:186
 msgid "Rejoin Room as People"
 msgstr "Gå in i rum igen som person"
 
-#: src/session/sidebar/category/category_type.rs:29
-msgid "Verifications"
-msgstr "Verifieringar"
+#: src/session/view/sidebar/mod.ui:6
+msgid "New _Direct Chat"
+msgstr "Ny _direktchatt"
 
-#: src/session/sidebar/category/category_type.rs:31
-msgid "Favorites"
-msgstr "Favoriter"
+#: src/session/view/sidebar/mod.ui:10
+msgid "_New Room"
+msgstr "_Nytt rum"
 
-#: src/session/sidebar/category/category_type.rs:32
-msgid "Rooms"
-msgstr "Rum"
+#: src/session/view/sidebar/mod.ui:14
+msgid "_Join Room"
+msgstr "_Gå in i rum"
 
-#: src/session/sidebar/category/category_type.rs:33
-msgid "Low Priority"
-msgstr "Låg prioritet"
+#: src/session/view/sidebar/mod.ui:20
+msgid "_Keyboard Shortcuts"
+msgstr "_Tangentbordsgenvägar"
 
-#: src/session/sidebar/category/category_type.rs:34
-msgid "Historical"
-msgstr "Historiskt"
+#: src/session/view/sidebar/mod.ui:24
+msgid "_About Fractal"
+msgstr "_Om Fractal"
 
-#. Translators: This shouldn't ever be visible to the user,
-#: src/session/sidebar/category/category_type.rs:36
-msgid "Outdated"
-msgstr "Föråldrat"
+#: src/session/view/sidebar/mod.ui:37
+msgid "_Reject"
+msgstr "A_vvisa"
 
-#: src/session/sidebar/category/category_type.rs:37
-msgid "Spaces"
-msgstr "Utrymmen"
+#: src/session/view/sidebar/mod.ui:44
+msgid "Move to _Favorites"
+msgstr "Flytta till _favoriter"
 
-#: src/session/sidebar/category/category_type.rs:38
-msgid "People"
-msgstr "Personer"
+#: src/session/view/sidebar/mod.ui:49
+msgid "Move to _Rooms"
+msgstr "Flytta till _rum"
 
-#: src/session/sidebar/entry_type.rs:18
-msgid "Explore"
-msgstr "Utforska"
+#: src/session/view/sidebar/mod.ui:54
+msgid "Move to _People"
+msgstr "Flytta till _personer"
 
-#: src/session/sidebar/entry_type.rs:19
-msgid "Forget Room"
-msgstr "Glöm rum"
+#: src/session/view/sidebar/mod.ui:59
+msgid "Move to Low _Priority"
+msgstr "Flytta till låg _prioritet"
 
-#: src/session/verification/identity_verification.rs:637
-msgid "You cancelled the verification process."
-msgstr "Du avbröt verifieringsprocessen."
+#: src/session/view/sidebar/mod.ui:71
+msgid "Re_join Room"
+msgstr "Gå _in i rum igen"
 
-#: src/session/verification/identity_verification.rs:639
-msgid "The verification process failed because it reached a timeout."
-msgstr "Verifieringsprocessen misslyckades för att den nådde en tidsgräns."
+#: src/session/view/sidebar/mod.ui:76
+msgid "_Forget Room"
+msgstr "_Glöm rum"
 
-#: src/session/verification/identity_verification.rs:642
-msgid "You accepted the request from an other session."
-msgstr "Du accepterade förfrågan från en annan session."
+#: src/session/view/sidebar/mod.ui:95
+msgid "Switch Accounts"
+msgstr "Växla konton"
 
-#: src/session/verification/identity_verification.rs:645
-msgid "The emoji did not match."
-msgstr "Emojierna stämde inte överens."
+#: src/session/view/sidebar/mod.ui:117
+msgid "App Settings Menu"
+msgstr "Programinställningsmeny"
 
-#: src/session/verification/identity_verification.rs:654
-msgid "An unknown error occurred during the verification process."
-msgstr "Ett okänt fel inträffade under verifieringsprocessen."
+#: src/session/view/sidebar/mod.ui:127
+msgid "Toggle Room Search"
+msgstr "Växla rumssökning"
+
+#: src/session/view/sidebar/mod.ui:139
+msgid "Room Search"
+msgstr "Rumssökning"
+
+#: src/session/view/sidebar/mod.ui:140
+msgid "Search for a room"
+msgstr "Sök efter ett rum"
+
+#: src/session/view/sidebar/mod.ui:146
+msgid "Offline"
+msgstr "Frånkopplad"
+
+#: src/session/view/sidebar/mod.ui:161
+msgid "Sidebar"
+msgstr "Sidopanel"
+
+#: src/session/view/sidebar/mod.ui:162
+msgid "Allows to navigate between rooms"
+msgstr "Tillåter navigering mellan rum"
+
+#. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
+#: src/session/view/sidebar/room_row.rs:429 src/session/view/sidebar/row.rs:350
+msgid "Failed to forget {room}."
+msgstr "Misslyckades med att glömma {room}."
+
+#: src/shortcuts.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Allmänt"
+
+#: src/shortcuts.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Visa kortkommandon"
+
+#: src/shortcuts.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Avsluta"
+
+#: src/shortcuts.ui:26
+msgctxt "shortcut window"
+msgid "Search Room List"
+msgstr "Sök rumslista"
+
+#: src/shortcuts.ui:32
+msgctxt "shortcut window"
+msgid "Close Room"
+msgstr "Stäng rum"
 
 #: src/user_facing_error.rs:25
 msgid "The connection timed out. Try again later."
@@ -2484,46 +2516,60 @@ msgstr "ljud"
 msgid "file"
 msgstr "fil"
 
-#: src/utils/media.rs:214
+#: src/utils/media.rs:210
 msgid "Could not save file"
 msgstr "Kunde inte spara fil"
 
-#: src/utils/matrix.rs:93
+#: src/utils/matrix.rs:109
 msgid "{user} sent an audio file."
 msgstr "{user} skickade en ljudfil."
 
-#: src/utils/matrix.rs:96 src/utils/matrix.rs:107 src/utils/matrix.rs:111
-#: src/utils/matrix.rs:115
+#: src/utils/matrix.rs:112 src/utils/matrix.rs:123 src/utils/matrix.rs:127
+#: src/utils/matrix.rs:131
 msgid "{user}: {message}"
 msgstr "{user}: {message}"
 
-#: src/utils/matrix.rs:99
+#: src/utils/matrix.rs:115
 msgid "{user} sent a file."
 msgstr "{user} skickade en fil."
 
-#: src/utils/matrix.rs:101
+#: src/utils/matrix.rs:117
 msgid "{user} sent an image."
 msgstr "{user} skickade en bild."
 
-#: src/utils/matrix.rs:104
+#: src/utils/matrix.rs:120
 msgid "{user} sent their location."
 msgstr "{user} skickade sin plats."
 
-#: src/utils/matrix.rs:119
+#: src/utils/matrix.rs:135
 msgid "{user} sent a video."
 msgstr "{user} skickade en video."
 
-#: src/utils/matrix.rs:122
+#: src/utils/matrix.rs:138
 msgid "{user} sent a verification request."
 msgstr "{user} skickade en verifieringsförfrågan."
 
-#: src/utils/matrix.rs:130
+#: src/utils/matrix.rs:146
 msgid "{user} sent a sticker."
 msgstr "{user} skickade ett klistermärke."
 
-#: src/window.rs:294
+#: src/window.rs:326
 msgid "Failed to restore previous sessions"
 msgstr "Misslyckades med att återställa tidigare sessioner"
+
+#~ msgid "Failed to reject invitation for {room}. Try again later."
+#~ msgstr ""
+#~ "Misslyckades med att avvisa inbjudan för {room}. Försök igen senare."
+
+#~ msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
+#~ msgid_plural ""
+#~ "Failed to invite {user} and {n} other users to {room}. Try again later."
+#~ msgstr[0] ""
+#~ "Misslyckades med att bjuda in {user} och en annan användare till {room}. "
+#~ "Försök igen senare."
+#~ msgstr[1] ""
+#~ "Misslyckades med att bjuda in {user} och {n} andra användare till {room}. "
+#~ "Försök igen senare."
 
 #~ msgid "Done"
 #~ msgstr "Färdig"
@@ -2612,9 +2658,6 @@ msgstr "Misslyckades med att återställa tidigare sessioner"
 
 #~ msgid "Enable Markdown Formatting"
 #~ msgstr "Aktivera markdown-formatering"
-
-#~ msgid "This message was removed."
-#~ msgstr "Det här meddelandet togs bort."
 
 #~ msgid "No secret in stored session"
 #~ msgstr "Ingen hemlighet i lagrad session"
