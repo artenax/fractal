@@ -309,37 +309,6 @@ impl Room {
     fn set_matrix_room(&self, matrix_room: MatrixRoom) {
         let imp = self.imp();
 
-        let new_state = matrix_room.state();
-
-        // Check if the previous type was different
-        if let Some(old_matrix_room) = imp.matrix_room.borrow().as_ref() {
-            let old_state = old_matrix_room.state();
-
-            if new_state == old_state {
-                return;
-            }
-
-            debug!("The matrix room struct for `Room` changed");
-
-            if old_state == RoomState::Invited && new_state == RoomState::Left {
-                // We rejected the invite or the invite was retracted, we should close the room
-                // if it is opened.
-                let session = self.session();
-                let selection = session.sidebar_list_model().selection_model();
-                if let Some(selected_room) = selection.selected_item().and_downcast::<Room>() {
-                    if selected_room == *self {
-                        selection.set_selected_item(None);
-                    }
-                }
-            }
-        }
-
-        if new_state == RoomState::Joined {
-            // If we where invited or left before, the list was likely not completed or
-            // might have changed.
-            imp.members_loaded.set(false);
-        }
-
         imp.matrix_room.replace(Some(matrix_room));
 
         self.load_display_name();
@@ -1357,9 +1326,29 @@ impl Room {
         }
     }
 
-    /// Reload the room from the SDK when it might have changed.
-    pub fn update_matrix_room(&self) {
-        self.set_matrix_room(self.session().client().get_room(self.room_id()).unwrap());
+    /// Reload the room from the SDK when its state might have changed.
+    pub fn update_room(&self) {
+        let state = self.matrix_room().state();
+        let category = self.category();
+
+        // Check if the previous state was different.
+        if category.is_state(state) {
+            // Nothing needs to be reloaded.
+            return;
+        }
+
+        debug!(room_id = %self.room_id(), ?state, "The state of `Room` changed");
+
+        if state == RoomState::Joined {
+            // If we where invited or left before, the list was likely not completed or
+            // might have changed.
+            self.imp().members_loaded.set(false);
+        }
+
+        self.load_category();
+        spawn!(clone!(@weak self as obj => async move {
+            obj.load_inviter().await;
+        }));
     }
 
     pub fn handle_left_response(&self, response_room: LeftRoom) {

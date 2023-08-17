@@ -277,7 +277,7 @@ impl RoomList {
             };
 
             self.pending_rooms_remove((*room_id).into());
-            room.update_matrix_room();
+            room.update_room();
             room.handle_left_response(left_room);
         }
 
@@ -291,7 +291,7 @@ impl RoomList {
             };
 
             self.pending_rooms_remove((*room_id).into());
-            room.update_matrix_room();
+            room.update_room();
             room.handle_joined_response(joined_room);
         }
 
@@ -305,7 +305,7 @@ impl RoomList {
             };
 
             self.pending_rooms_remove((*room_id).into());
-            room.update_matrix_room();
+            room.update_room();
         }
 
         if !new_rooms.is_empty() {

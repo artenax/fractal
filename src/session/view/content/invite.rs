@@ -175,15 +175,29 @@ impl Invite {
             let handler_id = room.connect_notify_local(
                 Some("category"),
                 clone!(@weak self as obj => move |room, _| {
-                        if room.category() != RoomType::Invited {
-                                let imp = obj.imp();
-                                imp.reject_requests.borrow_mut().remove(room);
-                                imp.accept_requests.borrow_mut().remove(room);
-                                obj.reset();
-                                if let Some(category_handler) = imp.category_handler.take() {
-                                    room.disconnect(category_handler);
-                                }
+                    let category = room.category();
+
+                    if category == RoomType::Left {
+                        // We rejected the invite or the invite was retracted, we should close the room
+                        // if it is opened.
+                        let session = room.session();
+                        let selection = session.sidebar_list_model().selection_model();
+                        if let Some(selected_room) = selection.selected_item().and_downcast::<Room>() {
+                            if selected_room == *room {
+                                selection.set_selected_item(None);
+                            }
                         }
+                    }
+
+                    if category != RoomType::Invited {
+                        let imp = obj.imp();
+                        imp.reject_requests.borrow_mut().remove(room);
+                        imp.accept_requests.borrow_mut().remove(room);
+                        obj.reset();
+                        if let Some(category_handler) = imp.category_handler.take() {
+                            room.disconnect(category_handler);
+                        }
+                    }
                 }),
             );
             imp.category_handler.replace(Some(handler_id));

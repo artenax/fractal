@@ -1,6 +1,7 @@
 use std::fmt;
 
 use gtk::glib;
+use matrix_sdk::RoomState;
 
 use crate::session::model::CategoryType;
 
@@ -63,6 +64,20 @@ impl RoomType {
                     Self::Favorite | Self::Normal | Self::LowPriority | Self::Left
                 )
             }
+        }
+    }
+
+    /// Whether this `RoomType` corresponds to the given state.
+    pub fn is_state(&self, state: RoomState) -> bool {
+        match self {
+            RoomType::Invited => state == RoomState::Invited,
+            RoomType::Favorite
+            | RoomType::Normal
+            | RoomType::LowPriority
+            | RoomType::Outdated
+            | RoomType::Space
+            | RoomType::Direct => state == RoomState::Joined,
+            RoomType::Left => state == RoomState::Left,
         }
     }
 }
