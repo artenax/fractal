@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-08-14 08:23+0000\n"
-"PO-Revision-Date: 2023-08-15 15:32+0800\n"
+"POT-Creation-Date: 2023-08-17 08:27+0000\n"
+"PO-Revision-Date: 2023-08-17 19:21+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -546,18 +546,18 @@ msgstr "仲裁员"
 msgid "Normal user"
 msgstr "普通用户"
 
-#: src/session/model/room/mod.rs:972
+#: src/session/model/room/mod.rs:941
 msgid "Unknown"
 msgstr "未知"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/model/room/mod.rs:1000
+#: src/session/model/room/mod.rs:969
 msgid "Empty Room (was {user})"
 msgstr "空聊天室（曾有成员 {user}）"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/model/room/mod.rs:1002
+#: src/session/model/room/mod.rs:971
 msgid "Empty Room"
 msgstr "空聊天室"
 
@@ -1076,13 +1076,13 @@ msgstr "聊天室列表"
 
 #. Translators: This is a verb, as in 'View Room'.
 #: src/session/view/content/explore/public_room_row.rs:208
-#: src/session/view/content/room_history/mod.rs:1591
+#: src/session/view/content/room_history/mod.rs:1586
 #: src/session/view/content/room_history/state_row/tombstone.rs:123
 msgid "View"
 msgstr "查看"
 
 #: src/session/view/content/explore/public_room_row.rs:210
-#: src/session/view/content/room_history/mod.rs:1594
+#: src/session/view/content/room_history/mod.rs:1589
 #: src/session/view/content/room_history/state_row/tombstone.rs:125
 msgid "Join"
 msgstr "加入"
@@ -1097,14 +1097,14 @@ msgstr "{user} 邀请了您"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/view/content/invite.rs:230
+#: src/session/view/content/invite.rs:244
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "接受 {room} 的邀请失败。请稍后重试。"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/view/content/invite.rs:261
-msgid "Failed to reject invitation for {room}. Try again later."
+#: src/session/view/content/invite.rs:275
+msgid "Failed to decline invitation for {room}. Try again later."
 msgstr "拒绝 {room} 的邀请失败。请稍后重试。"
 
 #: src/session/view/content/invite.ui:26 src/session/view/content/invite.ui:51
@@ -1112,11 +1112,11 @@ msgstr "拒绝 {room} 的邀请失败。请稍后重试。"
 msgid "Invite"
 msgstr "邀请"
 
-#: src/session/view/content/invite.ui:110 src/session/view/sidebar/mod.ui:37
-msgid "_Reject"
-msgstr "拒绝(_R)"
+#: src/session/view/content/invite.ui:111
+msgid "_Decline"
+msgstr "拒绝(_D)"
 
-#: src/session/view/content/invite.ui:120 src/session/view/sidebar/mod.ui:32
+#: src/session/view/content/invite.ui:121 src/session/view/sidebar/mod.ui:32
 msgid "_Accept"
 msgstr "接受(_A)"
 
@@ -1291,13 +1291,13 @@ msgid "_Send"
 msgstr "发送(_S)"
 
 #: src/session/view/content/room_history/event_actions.rs:111
-#: src/session/view/content/room_history/mod.rs:971
+#: src/session/view/content/room_history/mod.rs:966
 #: src/session/view/media_viewer.rs:570
 msgid "Permalink copied to clipboard"
 msgstr "永久链接已复制到剪贴板"
 
 #: src/session/view/content/room_history/event_actions.rs:115
-#: src/session/view/content/room_history/mod.rs:975
+#: src/session/view/content/room_history/mod.rs:970
 #: src/session/view/media_viewer.rs:574
 msgid "Failed to copy the permalink"
 msgstr "复制该永久链接失败"
@@ -1433,78 +1433,78 @@ msgstr "无法找回媒体文件"
 msgid "Edited"
 msgstr "已编辑"
 
-#: src/session/view/content/room_history/mod.rs:235
+#: src/session/view/content/room_history/mod.rs:233
 msgid "The location request has been cancelled."
 msgstr "定位请求已取消。"
 
-#: src/session/view/content/room_history/mod.rs:239
+#: src/session/view/content/room_history/mod.rs:237
 msgid "Failed to retrieve current location."
 msgstr "找回当前位置失败。"
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/view/content/room_history/mod.rs:739
+#: src/session/view/content/room_history/mod.rs:734
 msgid "Reply to {user}"
 msgstr "对 {user} 的回复"
 
 #. Translators: In this string, 'Edit' is a noun.
-#: src/session/view/content/room_history/mod.rs:790
+#: src/session/view/content/room_history/mod.rs:785
 msgctxt "room-history"
 msgid "Edit"
 msgstr "编辑"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/mod.rs:955
+#: src/session/view/content/room_history/mod.rs:950
 #: src/session/view/sidebar/room_row.rs:389
 #: src/session/view/sidebar/room_row.rs:410 src/session/view/sidebar/row.rs:335
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "将 {room} 从 {previous_category} 移至 {new_category} 失败。"
 
-#: src/session/view/content/room_history/mod.rs:1184
+#: src/session/view/content/room_history/mod.rs:1179
 msgid "Your Location"
 msgstr "您的位置"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/session/view/content/room_history/mod.rs:1196
+#: src/session/view/content/room_history/mod.rs:1191
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "用户定位 {geo_uri} 于 {iso8601_datetime}"
 
-#: src/session/view/content/room_history/mod.rs:1241
+#: src/session/view/content/room_history/mod.rs:1236
 msgid "Select File"
 msgstr "选择文件"
 
-#: src/session/view/content/room_history/mod.rs:1243
+#: src/session/view/content/room_history/mod.rs:1238
 msgid "Select"
 msgstr "选择"
 
-#: src/session/view/content/room_history/mod.rs:1258
+#: src/session/view/content/room_history/mod.rs:1253
 msgid "Could not open file"
 msgstr "无法打开文件"
 
-#: src/session/view/content/room_history/mod.rs:1303
+#: src/session/view/content/room_history/mod.rs:1298
 msgid "Error reading file"
 msgstr "读取文件时出错"
 
-#: src/session/view/content/room_history/mod.rs:1329
+#: src/session/view/content/room_history/mod.rs:1324
 msgid "Error getting file from drop"
 msgstr "从拖放获取文件时出错"
 
-#: src/session/view/content/room_history/mod.rs:1361
+#: src/session/view/content/room_history/mod.rs:1356
 msgid "Error getting image from clipboard"
 msgstr "从剪贴板获取图像时出错"
 
-#: src/session/view/content/room_history/mod.rs:1378
+#: src/session/view/content/room_history/mod.rs:1373
 msgid "Error getting file from clipboard"
 msgstr "从剪贴板获取文件时出错"
 
-#: src/session/view/content/room_history/mod.rs:1589
-#: src/session/view/content/room_history/mod.rs:1593
+#: src/session/view/content/room_history/mod.rs:1584
+#: src/session/view/content/room_history/mod.rs:1588
 #: src/session/view/content/room_history/state_row/tombstone.ui:14
 msgid "There is a newer version of this room"
 msgstr "该聊天室有新版本"
 
-#: src/session/view/content/room_history/mod.rs:1596
+#: src/session/view/content/room_history/mod.rs:1591
 msgid "This room was closed"
 msgstr "该聊天室已关闭"
 
@@ -2273,6 +2273,10 @@ msgstr "快捷键(_K)"
 msgid "_About Fractal"
 msgstr "关于 Fractal(_A)"
 
+#: src/session/view/sidebar/mod.ui:37
+msgid "_Reject"
+msgstr "拒绝(_R)"
+
 #: src/session/view/sidebar/mod.ui:44
 msgid "Move to _Favorites"
 msgstr "移至最爱(_F)"
@@ -2434,42 +2438,45 @@ msgstr "文件"
 msgid "Could not save file"
 msgstr "无法保存文件"
 
-#: src/utils/matrix.rs:108
+#: src/utils/matrix.rs:109
 msgid "{user} sent an audio file."
 msgstr "{user} 发送了一个音频文件。"
 
-#: src/utils/matrix.rs:111 src/utils/matrix.rs:122 src/utils/matrix.rs:126
-#: src/utils/matrix.rs:130
+#: src/utils/matrix.rs:112 src/utils/matrix.rs:123 src/utils/matrix.rs:127
+#: src/utils/matrix.rs:131
 msgid "{user}: {message}"
 msgstr "{user}：{message}"
 
-#: src/utils/matrix.rs:114
+#: src/utils/matrix.rs:115
 msgid "{user} sent a file."
 msgstr "{user} 发送了一个文件。"
 
-#: src/utils/matrix.rs:116
+#: src/utils/matrix.rs:117
 msgid "{user} sent an image."
 msgstr "{user} 发送了一张图片。"
 
-#: src/utils/matrix.rs:119
+#: src/utils/matrix.rs:120
 msgid "{user} sent their location."
 msgstr "{user} 发送了他们的位置。"
 
-#: src/utils/matrix.rs:134
+#: src/utils/matrix.rs:135
 msgid "{user} sent a video."
 msgstr "{user} 发送了一段视频。"
 
-#: src/utils/matrix.rs:137
+#: src/utils/matrix.rs:138
 msgid "{user} sent a verification request."
 msgstr "{user} 发送了一个验证请求。"
 
-#: src/utils/matrix.rs:145
+#: src/utils/matrix.rs:146
 msgid "{user} sent a sticker."
 msgstr "{user} 发送了一张贴纸。"
 
 #: src/window.rs:326
 msgid "Failed to restore previous sessions"
 msgstr "恢复上次会话失败"
+
+#~ msgid "Failed to reject invitation for {room}. Try again later."
+#~ msgstr "拒绝 {room} 的邀请失败。请稍后重试。"
 
 #~ msgid "> quote"
 #~ msgstr "> 引用"
