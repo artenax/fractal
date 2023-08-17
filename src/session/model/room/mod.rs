@@ -1307,11 +1307,11 @@ impl Room {
         }
     }
 
-    pub async fn reject_invite(&self) -> MatrixResult<()> {
+    pub async fn decline_invite(&self) -> MatrixResult<()> {
         let matrix_room = self.matrix_room();
 
         if matrix_room.state() != RoomState::Invited {
-            error!("Can’t reject invite, because this room isn’t an invited room");
+            error!("Cannot decline invite, because this room is not an invited room");
             return Ok(());
         }
 
@@ -1319,7 +1319,7 @@ impl Room {
         match handle.await.unwrap() {
             Ok(_) => Ok(()),
             Err(error) => {
-                error!("Rejecting invitation failed: {error}");
+                error!("Declining invitation failed: {error}");
 
                 Err(error)
             }

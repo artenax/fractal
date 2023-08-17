@@ -107,9 +107,9 @@
                         <property name="spacing">24</property>
                         <property name="margin-top">24</property>
                         <child>
-                          <object class="SpinnerButton" id="reject_button">
-                            <property name="label" translatable="yes">_Reject</property>
-                            <property name="action-name">invite.reject</property>
+                          <object class="SpinnerButton" id="decline_button">
+                            <property name="label" translatable="yes">_Decline</property>
+                            <property name="action-name">invite.decline</property>
                             <style>
                               <class name="pill"/>
                               <class name="large"/>

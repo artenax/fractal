@@ -25,7 +25,7 @@ mod imp {
         pub compact: Cell<bool>,
         pub room: RefCell<Option<Room>>,
         pub accept_requests: RefCell<HashSet<Room>>,
-        pub reject_requests: RefCell<HashSet<Room>>,
+        pub decline_requests: RefCell<HashSet<Room>>,
         pub category_handler: RefCell<Option<SignalHandlerId>>,
         #[template_child]
         pub headerbar: TemplateChild<adw::HeaderBar>,
@@ -36,7 +36,7 @@ mod imp {
         #[template_child]
         pub accept_button: TemplateChild<SpinnerButton>,
         #[template_child]
-        pub reject_button: TemplateChild<SpinnerButton>,
+        pub decline_button: TemplateChild<SpinnerButton>,
     }
 
     #[glib::object_subclass]
@@ -51,8 +51,8 @@ mod imp {
             Self::bind_template(klass);
             klass.set_accessible_role(gtk::AccessibleRole::Group);
 
-            klass.install_action("invite.reject", None, move |widget, _, _| {
-                widget.reject();
+            klass.install_action("invite.decline", None, move |widget, _, _| {
+                widget.decline();
             });
             klass.install_action("invite.accept", None, move |widget, _, _| {
                 widget.accept();
@@ -154,13 +154,13 @@ impl Invite {
         match room {
             Some(ref room) if imp.accept_requests.borrow().contains(room) => {
                 self.action_set_enabled("invite.accept", false);
-                self.action_set_enabled("invite.reject", false);
+                self.action_set_enabled("invite.decline", false);
                 imp.accept_button.set_loading(true);
             }
-            Some(ref room) if imp.reject_requests.borrow().contains(room) => {
+            Some(ref room) if imp.decline_requests.borrow().contains(room) => {
                 self.action_set_enabled("invite.accept", false);
-                self.action_set_enabled("invite.reject", false);
-                imp.reject_button.set_loading(true);
+                self.action_set_enabled("invite.decline", false);
+                imp.decline_button.set_loading(true);
             }
             _ => self.reset(),
         }
@@ -178,7 +178,7 @@ impl Invite {
                     let category = room.category();
 
                     if category == RoomType::Left {
-                        // We rejected the invite or the invite was retracted, we should close the room
+                        // We declined the invite or the invite was retracted, we should close the room
                         // if it is opened.
                         let session = room.session();
                         let selection = session.sidebar_list_model().selection_model();
@@ -191,7 +191,7 @@ impl Invite {
 
                     if category != RoomType::Invited {
                         let imp = obj.imp();
-                        imp.reject_requests.borrow_mut().remove(room);
+                        imp.decline_requests.borrow_mut().remove(room);
                         imp.accept_requests.borrow_mut().remove(room);
                         obj.reset();
                         if let Some(category_handler) = imp.category_handler.take() {
@@ -216,9 +216,9 @@ impl Invite {
     fn reset(&self) {
         let imp = self.imp();
         imp.accept_button.set_loading(false);
-        imp.reject_button.set_loading(false);
+        imp.decline_button.set_loading(false);
         self.action_set_enabled("invite.accept", true);
-        self.action_set_enabled("invite.reject", true);
+        self.action_set_enabled("invite.decline", true);
     }
 
     /// Accept the invite.
@@ -229,7 +229,7 @@ impl Invite {
         let imp = self.imp();
 
         self.action_set_enabled("invite.accept", false);
-        self.action_set_enabled("invite.reject", false);
+        self.action_set_enabled("invite.decline", false);
         imp.accept_button.set_loading(true);
         imp.accept_requests.borrow_mut().insert(room.clone());
 
@@ -252,32 +252,32 @@ impl Invite {
         }));
     }
 
-    /// Reject the invite.
-    fn reject(&self) {
+    /// Decline the invite.
+    fn decline(&self) {
         let Some(room) = self.room() else {
             return;
         };
         let imp = self.imp();
 
         self.action_set_enabled("invite.accept", false);
-        self.action_set_enabled("invite.reject", false);
-        imp.reject_button.set_loading(true);
-        imp.reject_requests.borrow_mut().insert(room.clone());
+        self.action_set_enabled("invite.decline", false);
+        imp.decline_button.set_loading(true);
+        imp.decline_requests.borrow_mut().insert(room.clone());
 
         spawn!(clone!(@weak self as obj, @strong room => async move {
-            let result = room.reject_invite().await;
+            let result = room.decline_invite().await;
             if result.is_err() {
                 toast!(
                     obj,
                     gettext(
                         // Translators: Do NOT translate the content between '{' and '}', this
                         // is a variable name.
-                        "Failed to reject invitation for {room}. Try again later.",
+                        "Failed to decline invitation for {room}. Try again later.",
                     ),
                     @room,
                 );
 
-                obj.imp().reject_requests.borrow_mut().remove(&room);
+                obj.imp().decline_requests.borrow_mut().remove(&room);
                 obj.reset();
             }
         }));
