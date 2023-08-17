@@ -51,6 +51,35 @@
   </content_rating>
 
   <releases>@development-release@
+    <release version="5~beta2" type="development" date="2023-08-17">
+      <description>
+        <p>Fractal 5.beta2 is the second beta release 🎉 since the rewrite of
+          Fractal to take advantage of GTK 4 and the Matrix Rust SDK, an effort
+          that started in March 2021.</p>
+        
+        <p>The most visible changes since Fractal 5.beta1 are:</p>
+        <ul>
+          <li>Editing text messages ✏️</li>
+          <li>Logging in with homeservers that don’t support auto-discovery 🧐
+            </li>
+          <li>A refactor of the login flow should avoid crashes when going back
+            at any step 🔙</li>
+          <li>Sometimes two day dividers 📅 would appear next to each other
+            without messages between them, this is now fixed</li>
+        </ul>
+
+        <p>Of course, there are a also a lot of less visible changes, notably a
+          lot of refactoring, 🐛 fixes and translations thanks to all our
+          contributors, and our upstream projects.</p>
+        
+        <p>As the version implies, this is still considered beta stage and might
+          trigger crashes or other bugs 😔 but overall should be pretty stable
+          👍.</p>
+        
+        <p>A list of blocking issues for the release of version 5 can be found
+          in the Fractal v5 milestone on GitLab.</p>
+      </description>
+    </release>
     <release version="5~beta1" type="development" date="2023-05-16">
       <description>
         <p>Fractal 5.beta1 is the first beta release since the rewrite of

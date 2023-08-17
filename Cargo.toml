@@ -1,9 +1,10 @@
 [package]
 name = "fractal"
-version = "5.0.0-beta1"
+version = "5.0.0-beta2"
 authors = ["Julian Sparber <julian@sparber.net>"]
 edition = "2021"
 rust-version = "1.70"
+publish = false
 
 [profile.release]
 debug = true
