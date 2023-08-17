@@ -89,6 +89,7 @@
                     </child>
                     <child>
                       <object class="LabelWithWidgets" id="inviter">
+                        <property name="halign">center</property>
                         <child>
                           <object class="Pill">
                             <binding name="user">
