@@ -1,14 +1,14 @@
 # Indonesian translation for fractal.
 # Copyright (C) 2018 fractal's COPYRIGHT HOLDER
 # This file is distributed under the same license as the fractal package.
-# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2018-2022.
+# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2018-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-05-23 16:09+0000\n"
-"PO-Revision-Date: 2023-06-05 10:25+0700\n"
+"POT-Creation-Date: 2023-08-17 08:27+0000\n"
+"PO-Revision-Date: 2023-08-18 21:35+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #: data/org.gnome.Fractal.desktop.in.in:3
 #: data/org.gnome.Fractal.metainfo.xml.in.in:7
@@ -86,7 +86,7 @@ msgstr ""
 "Rust. Antarmukanya dioptimalkan untuk kolaborasi dalam grup besar, seperti "
 "proyek perangkat lunak bebas."
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:171
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:169
 msgid "The Fractal Team"
 msgstr "Tim Fractal"
 
@@ -94,18 +94,18 @@ msgstr "Tim Fractal"
 msgid "_Add Account"
 msgstr "Tambah _Akun"
 
-#: src/application.rs:179
+#: src/application.rs:177
 msgid "© 2017-2023 The Fractal Team"
 msgstr "© 2017-2023 The Fractal Team"
 
-#: src/application.rs:193
+#: src/application.rs:191
 msgid "translator-credits"
 msgstr ""
 "Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2018-2023.\n"
 "Andika Triwidada <andika@gmail.com>, 2020."
 
 #. This can't be added via the builder
-#: src/application.rs:197
+#: src/application.rs:195
 msgid "Name by"
 msgstr "Nama oleh"
 
@@ -130,6 +130,7 @@ msgid "Authenticate via Browser"
 msgstr "Autentikasi melalui Peramban"
 
 #: src/components/auth_dialog.ui:113
+#: src/session/view/content/room_history/mod.ui:260
 #: src/session/view/content/room_history/verification_info_bar.rs:181
 #: src/session/view/content/verification/identity_verification_widget.ui:442
 msgid "Cancel"
@@ -153,15 +154,15 @@ msgstr "Pilih Avatar"
 msgid "Choose"
 msgstr "Pilih"
 
-#: src/components/editable_avatar.rs:418
+#: src/components/editable_avatar.rs:414
 msgid "Could not open avatar file"
 msgstr "Tidak dapat membuka berkas avatar"
 
-#: src/components/editable_avatar.rs:439
+#: src/components/editable_avatar.rs:435
 msgid "The chosen file is not an image"
 msgstr "Berkas yang dipilih bukanlah gambar"
 
-#: src/components/editable_avatar.rs:445
+#: src/components/editable_avatar.rs:441
 msgid "Could not determine the type of the chosen file"
 msgstr "Tidak dapat menentukan jenis berkas yang dipilih"
 
@@ -193,11 +194,11 @@ msgstr "Berkas tidak dapat dilihat"
 msgid "Unable to connect to Camera"
 msgstr "Tidak dapat terhubung ke Kamera"
 
-#: src/error_page.rs:114
+#: src/error_page.rs:110
 msgid "Session removed successfully."
 msgstr "Sesi berhasil dihapus."
 
-#: src/error_page.rs:122
+#: src/error_page.rs:118
 msgid "Could not remove session from secret storage"
 msgstr "Tidak dapat menghapus sesi dari penyimpanan rahasia"
 
@@ -274,11 +275,11 @@ msgstr ""
 "Periksa log aplikasi dan dokumentasi distribusi Anda untuk detail "
 "selengkapnya."
 
-#: src/greeter.rs:77 src/login/mod.rs:637 src/window.rs:461
+#: src/greeter.rs:77 src/login/mod.rs:636 src/window.rs:463
 msgid "No network connection"
 msgstr "Tidak ada koneksi jaringan"
 
-#: src/greeter.rs:81 src/login/mod.rs:642 src/window.rs:465
+#: src/greeter.rs:81 src/login/mod.rs:641 src/window.rs:467
 msgid "No Internet connection"
 msgstr "Tidak ada koneksi internet"
 
@@ -319,21 +320,21 @@ msgstr ""
 msgid "_Auto-discovery"
 msgstr "Penemuan Otom_atis"
 
-#: src/login/homeserver_page.rs:128
+#: src/login/homeserver_page.rs:130
 msgid "Domain Name"
 msgstr "Nama Domain"
 
-#: src/login/homeserver_page.rs:130
+#: src/login/homeserver_page.rs:132
 msgid "The domain of your Matrix homeserver, for example gnome.org"
 msgstr "Domain peladen rumah Matrix Anda, misalnya gnome.org"
 
-#: src/login/homeserver_page.rs:133 src/login/method_page.ui:43
+#: src/login/homeserver_page.rs:135 src/login/method_page.ui:43
 msgid "Homeserver URL"
 msgstr "URL peladen rumah"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/login/homeserver_page.rs:137
+#: src/login/homeserver_page.rs:139
 msgid "The URL of your Matrix homeserver, for example {address}"
 msgstr "URL peladen rumah Matrix Anda, misalnya {address}"
 
@@ -353,11 +354,15 @@ msgstr "Selanjutnya"
 msgid "Advanced…"
 msgstr "Tingkat Lanjut…"
 
-#. Translators: Do NOT translate the content between '{' and '}', this is a variable
-#. name.
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
 #: src/login/method_page.rs:151
 msgid "Log in to {domain_name}"
 msgstr "Masuk ke {domain_name}"
+
+#: src/login/method_page.rs:158
+msgid "Log in"
+msgstr "_Log Masuk"
 
 #: src/login/method_page.ui:71
 msgid "Matrix Username"
@@ -375,7 +380,7 @@ msgstr "Lupa Kata Sa_ndi?"
 msgid "More SSO Providers"
 msgstr "Penyedia SSO Lainnya"
 
-#: src/login/mod.rs:525
+#: src/login/mod.rs:524
 msgid "Unable to store session"
 msgstr "Tidak dapat menyimpan sesi"
 
@@ -402,28 +407,28 @@ msgstr "Silakan ikuti langkah-langkah di browser."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:58
+#: src/secret.rs:62
 msgid "Found stored session with unsupported version {version_nb}"
 msgstr "Menemukan sesi tersimpan dengan versi {version_nb} yang tidak didukung"
 
-#: src/secret.rs:89
+#: src/secret.rs:93
 msgid "The secret storage file is corrupted."
 msgstr "Berkas penyimpanan rahasia rusak."
 
-#: src/secret.rs:93
+#: src/secret.rs:97
 msgid "Could not access the secret storage file location."
 msgstr "Tidak dapat mengakses lokasi berkas penyimpanan rahasia."
 
-#: src/secret.rs:96
+#: src/secret.rs:100
 msgid "An unknown error occurred when accessing the secret storage file."
 msgstr ""
 "Terjadi galat yang tidak diketahui saat mengakses berkas penyimpanan rahasia."
 
-#: src/secret.rs:99
+#: src/secret.rs:103
 msgid "The secret storage file has been changed by another process."
 msgstr "BErkas penyimpanan rahasia telah diubah oleh proses lain."
 
-#: src/secret.rs:102
+#: src/secret.rs:106
 msgid ""
 "An unknown error occurred when interacting with the D-Bus Secret Portal "
 "backend."
@@ -431,7 +436,7 @@ msgstr ""
 "Galat yang tidak diketahui terjadi saat berinteraksi dengan backend D-Bus "
 "Secret Portal."
 
-#: src/secret.rs:105
+#: src/secret.rs:109
 msgid ""
 "The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -439,7 +444,7 @@ msgstr ""
 "Permintaan ke Portal Rahasia Flatpak dibatalkan. Pastikan untuk menerima "
 "permintaan apa pun yang meminta untuk mengaksesnya."
 
-#: src/secret.rs:108
+#: src/secret.rs:112
 msgid ""
 "The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
 "installed, and it is at least at version 1.5.0."
@@ -447,16 +452,16 @@ msgstr ""
 "Portal Rahasia Flatpak tidak tersedia. Pastikan xdg-desktop-portal dipasang, "
 "dan setidaknya pada versi 1.5.0."
 
-#: src/secret.rs:111
+#: src/secret.rs:115
 msgid "The Flatpak Secret Portal provided a key that is too weak to be secure."
 msgstr ""
 "Portal Rahasia Flatpak menyediakan kunci yang terlalu lemah untuk diamankan."
 
-#: src/secret.rs:123
+#: src/secret.rs:127
 msgid "The item was deleted."
 msgstr "Butir telah dihapus."
 
-#: src/secret.rs:126
+#: src/secret.rs:130
 msgid ""
 "The request to the D-Bus Secret Service was cancelled. Make sure to accept "
 "any prompt asking to access it."
@@ -464,7 +469,7 @@ msgstr ""
 "Permintaan ke Layanan Rahasia D-Bus dibatalkan. Pastikan untuk menerima "
 "permintaan apa pun yang meminta untuk mengaksesnya."
 
-#: src/secret.rs:129
+#: src/secret.rs:133
 msgid ""
 "Could not access the default collection. Make sure a keyring was created and "
 "set as default."
@@ -472,120 +477,120 @@ msgstr ""
 "Tidak dapat mengakses koleksi bawaan. Pastikan ring kunci dibuat dan "
 "ditetapkan sebagai bawaan."
 
-#: src/secret.rs:133
+#: src/secret.rs:137
 msgid ""
 "An unknown error occurred when interacting with the D-Bus Secret Service."
 msgstr ""
 "Terjadi galat yang tidak diketahui saat berinteraksi dengan Layanan Rahasia "
 "D-Bus."
 
-#: src/secret.rs:172
+#: src/secret.rs:176
 msgid "Malformed version in stored session"
 msgstr "Versi cacat dalam sesi tersimpan"
 
-#: src/secret.rs:196
+#: src/secret.rs:200
 msgid "Could not find profile in stored session"
 msgstr "Tidak dapat menemukan profil dalam sesi tersimpan"
 
-#: src/secret.rs:210
+#: src/secret.rs:214
 msgid "Malformed homeserver in stored session"
 msgstr "Peladen rumah yang salah bentuk dalam sesi tersimpan"
 
-#: src/secret.rs:217
+#: src/secret.rs:221
 msgid "Could not find homeserver in stored session"
 msgstr "Tidak dapat menemukan peladen rumah dalam sesi tersimpan"
 
-#: src/secret.rs:228
+#: src/secret.rs:232
 msgid "Malformed user ID in stored session"
 msgstr "ID pengguna yang salah bentuk dalam sesi tersimpan"
 
-#: src/secret.rs:235
+#: src/secret.rs:239
 msgid "Could not find user ID in stored session"
 msgstr "Tidak dapat menemukan ID pengguna dalam sesi yang disimpan"
 
-#: src/secret.rs:244
+#: src/secret.rs:248
 msgid "Could not find device ID in stored session"
 msgstr "Tidak dapat menemukan ID perangkat dalam sesi yang disimpan"
 
-#: src/secret.rs:253
+#: src/secret.rs:257
 msgid "Could not find database path in stored session"
 msgstr "Tidak dapat menemukan path basis data dalam sesi tersimpan"
 
-#: src/secret.rs:266 src/secret.rs:277
+#: src/secret.rs:270 src/secret.rs:281
 msgid "Malformed secret in stored session"
 msgstr "Rahasia yang salah bentuk dalam sesi tersimpan"
 
-#: src/secret.rs:287
+#: src/secret.rs:291
 msgid "Could not get secret in stored session"
 msgstr "Tidak bisa mendapatkan rahasia dalam sesi yang disimpan"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:403
+#: src/secret.rs:406
 msgid "Fractal: Matrix credentials for {user_id}"
 msgstr "Fractal: Kredensial matrix untuk {user_id}"
 
-#: src/session/model/session.rs:486
+#: src/session/model/session.rs:487
 msgid "Failed to logout the session."
 msgstr "Gagal keluar dari sesi."
 
-#: src/session/model/room/member.rs:37
+#: src/session/model/room/member.rs:38
 msgid "Left"
 msgstr "Kiri"
 
-#: src/session/model/room/member.rs:38
+#: src/session/model/room/member.rs:39
 msgid "Joined"
 msgstr "Bergabung"
 
-#: src/session/model/room/member.rs:39
+#: src/session/model/room/member.rs:40
 #: src/session/model/sidebar/category/category_type.rs:30
 #: src/session/view/content/room_details/invite_subpage/invitee_list.rs:291
 msgid "Invited"
 msgstr "Diundang"
 
-#: src/session/model/room/member.rs:40
+#: src/session/model/room/member.rs:41
 #: src/session/view/content/room_details/invite_subpage/invitee_list.rs:289
 msgid "Banned"
 msgstr "Banned"
 
-#: src/session/model/room/member.rs:41
+#: src/session/model/room/member.rs:42
 msgid "Knocked"
 msgstr "Mengetuk"
 
-#: src/session/model/room/member.rs:42
+#: src/session/model/room/member.rs:43
 msgid "Custom"
 msgstr "Bebas"
 
-#: src/session/model/room/member_role.rs:48
+#: src/session/model/room/member_role.rs:50
 msgid "Admin"
 msgstr "Admin"
 
-#: src/session/model/room/member_role.rs:49
+#: src/session/model/room/member_role.rs:51
 msgid "Moderator"
 msgstr "Moderator"
 
-#: src/session/model/room/member_role.rs:50
+#: src/session/model/room/member_role.rs:52
 msgid "Normal user"
 msgstr "Pengguna biasa"
 
-#: src/session/model/room/mod.rs:947
+#: src/session/model/room/mod.rs:941
 msgid "Unknown"
 msgstr "Tidak Dikenal"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/model/room/mod.rs:975
+#: src/session/model/room/mod.rs:969
 msgid "Empty Room (was {user})"
 msgstr "Ruangan Kosong ({user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/model/room/mod.rs:977
+#: src/session/model/room/mod.rs:971
 msgid "Empty Room"
 msgstr "Ruangan Kosong"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/model/room_list.rs:345
+#: src/session/model/room_list.rs:347
 msgid "Failed to join room {room_name}. Try again later."
 msgstr "Gagal bergabung dengan ruangan {room_name}. Coba lagi nanti."
 
@@ -750,16 +755,16 @@ msgstr "Sesi Aktif Lainnya"
 msgid "Account Settings"
 msgstr "Pengaturan Akun"
 
-#: src/session/view/account_settings/notifications_page.rs:176
-#: src/session/view/account_settings/notifications_page.rs:189
+#: src/session/view/account_settings/notifications_page.rs:177
+#: src/session/view/account_settings/notifications_page.rs:190
 msgid "Could not load notifications settings. Try again later"
 msgstr "Tidak dapat memuat pengaturan notifikasi. Coba lagi nanti"
 
-#: src/session/view/account_settings/notifications_page.rs:290
+#: src/session/view/account_settings/notifications_page.rs:291
 msgid "Could not enable account notifications"
 msgstr "Tidak dapat mengaktifkan pemberitahuan akun"
 
-#: src/session/view/account_settings/notifications_page.rs:292
+#: src/session/view/account_settings/notifications_page.rs:293
 msgid "Could not disable account notifications"
 msgstr "Tidak dapat menonaktifkan pemberitahuan akun"
 
@@ -838,7 +843,7 @@ msgid "Import Encryption Keys From…"
 msgstr "Impor Kunci Enkripsi Dari…"
 
 #: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:277
-#: src/utils/media.rs:222
+#: src/utils/media.rs:218
 msgid "Could not access file"
 msgstr "Tidak dapat mengakses berkas"
 
@@ -877,7 +882,7 @@ msgid "Confirm Passphrase"
 msgstr "Konfirmasi Frasa Sandi"
 
 #: src/session/view/account_settings/security_page/import_export_keys_subpage.ui:128
-#: src/session/view/content/room_details/general_page/mod.ui:161
+#: src/session/view/content/room_details/general_page/mod.ui:168
 #: src/session/view/content/room_details/mod.rs:280
 msgid "File"
 msgstr "Berkas"
@@ -886,11 +891,11 @@ msgstr "Berkas"
 msgid "Choose…"
 msgstr "Pilih…"
 
-#: src/session/view/account_settings/security_page/mod.rs:172
+#: src/session/view/account_settings/security_page/mod.rs:170
 msgid "Available"
 msgstr "Tersedia"
 
-#: src/session/view/account_settings/security_page/mod.rs:176
+#: src/session/view/account_settings/security_page/mod.rs:174
 msgid "Not available"
 msgstr "Tidak tersedia"
 
@@ -942,15 +947,15 @@ msgstr "Kata sandi harus memiliki setidaknya satu simbol"
 msgid "Passwords do not match"
 msgstr "Kata sandi tidak cocok"
 
-#: src/session/view/account_settings/user_page/change_password_subpage.rs:274
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:269
 msgid "Password changed successfully"
 msgstr "Kata sandi berhasil dirubah"
 
-#: src/session/view/account_settings/user_page/change_password_subpage.rs:285
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:280
 msgid "Password rejected for being too weak"
 msgstr "Kata sandi ditolak karena terlalu lemah"
 
-#: src/session/view/account_settings/user_page/change_password_subpage.rs:289
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:284
 msgid "Could not change password"
 msgstr "Tidak dapat mengubah kata sandi"
 
@@ -989,11 +994,11 @@ msgstr "Konfirmasi Kata Sandi"
 msgid "Continue"
 msgstr "Lanjutkan"
 
-#: src/session/view/account_settings/user_page/deactivate_account_subpage.rs:180
+#: src/session/view/account_settings/user_page/deactivate_account_subpage.rs:175
 msgid "Account successfully deactivated"
 msgstr "Akun berhasil dinonaktifkan"
 
-#: src/session/view/account_settings/user_page/deactivate_account_subpage.rs:189
+#: src/session/view/account_settings/user_page/deactivate_account_subpage.rs:184
 msgid "Could not deactivate account"
 msgstr "Tidak dapat menonaktifkan akun"
 
@@ -1049,22 +1054,22 @@ msgid "Avatar changed successfully"
 msgstr "Avatar berhasil diubah"
 
 #: src/session/view/account_settings/user_page/mod.rs:235
-#: src/session/view/content/room_details/general_page/mod.rs:254
+#: src/session/view/content/room_details/general_page/mod.rs:255
 msgid "Could not load file"
 msgstr "Tidak dapat memuat berkas"
 
 #: src/session/view/account_settings/user_page/mod.rs:250
-#: src/session/view/content/room_details/general_page/mod.rs:275
+#: src/session/view/content/room_details/general_page/mod.rs:276
 msgid "Could not upload avatar"
 msgstr "Tidak dapat mengunggah avatar"
 
 #: src/session/view/account_settings/user_page/mod.rs:279
-#: src/session/view/content/room_details/general_page/mod.rs:295
+#: src/session/view/content/room_details/general_page/mod.rs:296
 msgid "Could not change avatar"
 msgstr "Tidak dapat mengubah avatar"
 
 #: src/session/view/account_settings/user_page/mod.rs:313
-#: src/session/view/content/room_details/general_page/mod.rs:325
+#: src/session/view/content/room_details/general_page/mod.rs:327
 msgid "Could not remove avatar"
 msgstr "Tidak dapat menghapus avatar"
 
@@ -1107,13 +1112,13 @@ msgstr "Daftar Ruangan"
 
 #. Translators: This is a verb, as in 'View Room'.
 #: src/session/view/content/explore/public_room_row.rs:208
-#: src/session/view/content/room_history/mod.rs:1466
+#: src/session/view/content/room_history/mod.rs:1586
 #: src/session/view/content/room_history/state_row/tombstone.rs:123
 msgid "View"
 msgstr "Tilik"
 
 #: src/session/view/content/explore/public_room_row.rs:210
-#: src/session/view/content/room_history/mod.rs:1469
+#: src/session/view/content/room_history/mod.rs:1589
 #: src/session/view/content/room_history/state_row/tombstone.rs:125
 msgid "Join"
 msgstr "Gabung"
@@ -1128,14 +1133,14 @@ msgstr "{user} mengundang Anda"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/view/content/invite.rs:226
+#: src/session/view/content/invite.rs:244
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "Gagal menerima undangan untuk {room}. Coba lagi nanti."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/view/content/invite.rs:258
-msgid "Failed to reject invitation for {room}. Try again later."
+#: src/session/view/content/invite.rs:275
+msgid "Failed to decline invitation for {room}. Try again later."
 msgstr "Gagal menolak undangan untuk {room}. Coba lagi nanti."
 
 #: src/session/view/content/invite.ui:26 src/session/view/content/invite.ui:51
@@ -1143,11 +1148,11 @@ msgstr "Gagal menolak undangan untuk {room}. Coba lagi nanti."
 msgid "Invite"
 msgstr "Undang"
 
-#: src/session/view/content/invite.ui:110 src/session/view/sidebar/mod.ui:37
-msgid "_Reject"
-msgstr "_Tolak"
+#: src/session/view/content/invite.ui:111
+msgid "_Decline"
+msgstr "_Ditolak"
 
-#: src/session/view/content/invite.ui:120 src/session/view/sidebar/mod.ui:32
+#: src/session/view/content/invite.ui:121 src/session/view/sidebar/mod.ui:32
 msgid "_Accept"
 msgstr "Terim_a"
 
@@ -1159,46 +1164,46 @@ msgstr "Tidak Ada Ruang yang Dipilih"
 msgid "Join a room to start chatting."
 msgstr "Bergabung dengan ruangan untuk memulai obrolan."
 
-#: src/session/view/content/room_details/general_page/mod.rs:418
+#: src/session/view/content/room_details/general_page/mod.rs:420
 msgid "Room name saved successfully"
 msgstr "Nama ruangan berhasil disimpan"
 
-#: src/session/view/content/room_details/general_page/mod.rs:443
+#: src/session/view/content/room_details/general_page/mod.rs:445
 msgid "Room topic saved successfully"
 msgstr "Topik ruangan berhasil disimpan"
 
-#: src/session/view/content/room_details/general_page/mod.rs:516
+#: src/session/view/content/room_details/general_page/mod.rs:519
 msgid "Could not change room name"
 msgstr "Tidak dapat mengubah nama ruangan"
 
-#: src/session/view/content/room_details/general_page/mod.rs:540
+#: src/session/view/content/room_details/general_page/mod.rs:543
 msgid "Could not change room topic"
 msgstr "Tidak dapat mengubah topik ruangan"
 
-#: src/session/view/content/room_details/general_page/mod.ui:60
+#: src/session/view/content/room_details/general_page/mod.ui:67
 msgid "Description"
 msgstr "Deskripsi"
 
-#: src/session/view/content/room_details/general_page/mod.ui:100
+#: src/session/view/content/room_details/general_page/mod.ui:107
 msgid "Edit Details"
 msgstr "Sunting Detail"
 
-#: src/session/view/content/room_details/general_page/mod.ui:108
+#: src/session/view/content/room_details/general_page/mod.ui:115
 msgid "Save Details"
 msgstr "Simpan Rincian"
 
-#: src/session/view/content/room_details/general_page/mod.ui:120
+#: src/session/view/content/room_details/general_page/mod.ui:127
 msgid "Members"
 msgstr "Anggota"
 
-#: src/session/view/content/room_details/general_page/mod.ui:146
+#: src/session/view/content/room_details/general_page/mod.ui:153
 #: src/session/view/content/room_details/history_viewer/media.ui:21
 #: src/session/view/content/room_details/mod.rs:264
 msgid "Media"
 msgstr "Media"
 
 #. Translators: As in 'Audio file'.
-#: src/session/view/content/room_details/general_page/mod.ui:177
+#: src/session/view/content/room_details/general_page/mod.ui:184
 #: src/session/view/content/room_details/history_viewer/audio.ui:12
 #: src/session/view/content/room_details/mod.rs:297
 msgid "Audio"
@@ -1233,7 +1238,7 @@ msgstr "Anggota"
 
 #. Translators: Do NOT translate the content between '{' and '}', these
 #. are variable names.
-#: src/session/view/content/room_details/invite_subpage/mod.rs:346
+#: src/session/view/content/room_details/invite_subpage/mod.rs:341
 msgid "Failed to invite {user} to {room}. Try again later."
 msgid_plural "Failed to invite {n} users to {room}. Try again later."
 msgstr[0] "Gagal mengundang {user} ke {room}. Coba lagi nanti."
@@ -1321,25 +1326,25 @@ msgstr "Undang Anggota baru"
 msgid "_Send"
 msgstr "_Kirim"
 
-#: src/session/view/content/room_history/event_actions.rs:114
-#: src/session/view/content/room_history/mod.rs:842
-#: src/session/view/media_viewer.rs:573
+#: src/session/view/content/room_history/event_actions.rs:111
+#: src/session/view/content/room_history/mod.rs:966
+#: src/session/view/media_viewer.rs:570
 msgid "Permalink copied to clipboard"
 msgstr "Permalink disalin ke papan klip"
 
-#: src/session/view/content/room_history/event_actions.rs:118
-#: src/session/view/content/room_history/mod.rs:846
-#: src/session/view/media_viewer.rs:577
+#: src/session/view/content/room_history/event_actions.rs:115
+#: src/session/view/content/room_history/mod.rs:970
+#: src/session/view/media_viewer.rs:574
 msgid "Failed to copy the permalink"
 msgstr "Gagal menyalin permalink"
 
-#: src/session/view/content/room_history/event_actions.rs:220
-#: src/session/view/content/room_history/event_actions.rs:241
-#: src/session/view/content/room_history/event_actions.rs:252
+#: src/session/view/content/room_history/event_actions.rs:218
+#: src/session/view/content/room_history/event_actions.rs:255
+#: src/session/view/content/room_history/event_actions.rs:282
 msgid "Message copied to clipboard"
 msgstr "Pesan disalin ke papan klip"
 
-#: src/session/view/content/room_history/event_actions.rs:264
+#: src/session/view/content/room_history/event_actions.rs:294
 msgid "Thumbnail copied to clipboard"
 msgstr "Gambar mini disalin ke papan klip"
 
@@ -1404,22 +1409,22 @@ msgstr "Lihat Su_mber"
 msgid "Re_move"
 msgstr "Ha_pus"
 
-#: src/session/view/content/room_history/item_row.rs:304
+#: src/session/view/content/room_history/item_row.rs:292
 msgid "This is the start of the visible history"
 msgstr "Ini adalah awal dari riwayat yang terlihat"
 
 #. Translators: This is a date format in the day divider without the
 #. year
-#: src/session/view/content/room_history/item_row.rs:327
+#: src/session/view/content/room_history/item_row.rs:313
 msgid "%A, %B %e"
 msgstr "%A, %B %e"
 
 #. Translators: This is a date format in the day divider with the year
-#: src/session/view/content/room_history/item_row.rs:330
+#: src/session/view/content/room_history/item_row.rs:316
 msgid "%A, %B %e, %Y"
 msgstr "%A, %B %e, %Y"
 
-#: src/session/view/content/room_history/item_row.rs:336
+#: src/session/view/content/room_history/item_row.rs:322
 msgid "New Messages"
 msgstr "Pesan Baru"
 
@@ -1432,16 +1437,16 @@ msgstr "Tidak dapat mengambil berkas audio"
 msgid "Error reading audio file"
 msgstr "Galat membaca berkas audio"
 
-#: src/session/view/content/room_history/message_row/content.rs:340
+#: src/session/view/content/room_history/message_row/content.rs:319
 msgid "Identity verification was started"
 msgstr "Verifikasi identitas dimulai"
 
-#: src/session/view/content/room_history/message_row/content.rs:353
-#: src/session/view/content/room_history/message_row/content.rs:389
+#: src/session/view/content/room_history/message_row/content.rs:330
+#: src/session/view/content/room_history/message_row/content.rs:363
 msgid "Unsupported event"
 msgstr "Acara yang tidak didukung"
 
-#: src/session/view/content/room_history/message_row/content.rs:377
+#: src/session/view/content/room_history/message_row/content.rs:352
 msgid ""
 "Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
@@ -1466,72 +1471,78 @@ msgstr "Tidak dapat mengambil media"
 msgid "Edited"
 msgstr "Disunting"
 
-#: src/session/view/content/room_history/mod.rs:230
+#: src/session/view/content/room_history/mod.rs:233
 msgid "The location request has been cancelled."
 msgstr "Permintaan lokasi telah dibatalkan."
 
-#: src/session/view/content/room_history/mod.rs:234
+#: src/session/view/content/room_history/mod.rs:237
 msgid "Failed to retrieve current location."
 msgstr "Gagal mengambil lokasi saat ini."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/view/content/room_history/mod.rs:714
+#: src/session/view/content/room_history/mod.rs:734
 msgid "Reply to {user}"
 msgstr "Balas ke {user}"
 
+#. Translators: In this string, 'Edit' is a noun.
+#: src/session/view/content/room_history/mod.rs:785
+msgctxt "room-history"
+msgid "Edit"
+msgstr "Sunting"
+
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/mod.rs:826
-#: src/session/view/sidebar/room_row.rs:390
-#: src/session/view/sidebar/room_row.rs:411 src/session/view/sidebar/row.rs:340
+#: src/session/view/content/room_history/mod.rs:950
+#: src/session/view/sidebar/room_row.rs:389
+#: src/session/view/sidebar/room_row.rs:410 src/session/view/sidebar/row.rs:335
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "Gagal berpindah {room} dari {previous_category} ke {new_category}."
 
-#: src/session/view/content/room_history/mod.rs:1055
+#: src/session/view/content/room_history/mod.rs:1179
 msgid "Your Location"
 msgstr "Lokasi Anda"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/session/view/content/room_history/mod.rs:1067
+#: src/session/view/content/room_history/mod.rs:1191
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Lokasi Pengguna {geo_uri} di {iso8601_datetime}"
 
-#: src/session/view/content/room_history/mod.rs:1112
+#: src/session/view/content/room_history/mod.rs:1236
 msgid "Select File"
 msgstr "Pilih Berkas"
 
-#: src/session/view/content/room_history/mod.rs:1114
+#: src/session/view/content/room_history/mod.rs:1238
 msgid "Select"
 msgstr "Pilih"
 
-#: src/session/view/content/room_history/mod.rs:1133
+#: src/session/view/content/room_history/mod.rs:1253
 msgid "Could not open file"
 msgstr "Tidak dapat membuka berkas"
 
-#: src/session/view/content/room_history/mod.rs:1178
+#: src/session/view/content/room_history/mod.rs:1298
 msgid "Error reading file"
 msgstr "Galat saat membaca berkas"
 
-#: src/session/view/content/room_history/mod.rs:1204
+#: src/session/view/content/room_history/mod.rs:1324
 msgid "Error getting file from drop"
 msgstr "Galat mendapatkan berkas dari seret"
 
-#: src/session/view/content/room_history/mod.rs:1236
+#: src/session/view/content/room_history/mod.rs:1356
 msgid "Error getting image from clipboard"
 msgstr "Galat mendapatkan gambar dari papan klip"
 
-#: src/session/view/content/room_history/mod.rs:1253
+#: src/session/view/content/room_history/mod.rs:1373
 msgid "Error getting file from clipboard"
 msgstr "Galat mendapatkan berkas dari papan klip"
 
-#: src/session/view/content/room_history/mod.rs:1464
-#: src/session/view/content/room_history/mod.rs:1468
+#: src/session/view/content/room_history/mod.rs:1584
+#: src/session/view/content/room_history/mod.rs:1588
 #: src/session/view/content/room_history/state_row/tombstone.ui:14
 msgid "There is a newer version of this room"
 msgstr "Ada versi yang lebih baru dari ruangan ini"
 
-#: src/session/view/content/room_history/mod.rs:1471
+#: src/session/view/content/room_history/mod.rs:1591
 msgid "This room was closed"
 msgstr "Ruangan ditutup"
 
@@ -1592,23 +1603,23 @@ msgstr "Jatuhkan Di Sini untuk Mengirim"
 msgid "Room History"
 msgstr "Riwayat Ruangan"
 
-#: src/session/view/content/room_history/mod.ui:275
+#: src/session/view/content/room_history/mod.ui:276
 msgid "Browse Attachment"
 msgstr "Telusuri Lampiran"
 
-#: src/session/view/content/room_history/mod.ui:285
+#: src/session/view/content/room_history/mod.ui:286
 msgid "Open Emoji Picker"
 msgstr "Buka Pemilih Emoji"
 
-#: src/session/view/content/room_history/mod.ui:306
+#: src/session/view/content/room_history/mod.ui:307
 msgid "Message Entry"
 msgstr "Entri Pesan"
 
-#: src/session/view/content/room_history/mod.ui:321
+#: src/session/view/content/room_history/mod.ui:322
 msgid "Open Message Menu"
 msgstr "Buka Menu Pesan"
 
-#: src/session/view/content/room_history/mod.ui:336
+#: src/session/view/content/room_history/mod.ui:337
 msgid "Send Message"
 msgstr "Kirim Pesan"
 
@@ -2162,7 +2173,7 @@ msgstr "Gabung ke Ruangan"
 msgid "Enter a room ID, room alias, or permalink."
 msgstr "Masukkan ID ruangan, alias ruangan, atau permalink."
 
-#: src/session/view/media_viewer.rs:531
+#: src/session/view/media_viewer.rs:528
 msgid "Image copied to clipboard"
 msgstr "Gambar disalin ke papan klip"
 
@@ -2327,6 +2338,10 @@ msgstr "_Pintasan Papan Tik"
 msgid "_About Fractal"
 msgstr "Tent_ang Fractal"
 
+#: src/session/view/sidebar/mod.ui:37
+msgid "_Reject"
+msgstr "_Tolak"
+
 #: src/session/view/sidebar/mod.ui:44
 msgid "Move to _Favorites"
 msgstr "Pindah ke _Favorit"
@@ -2384,7 +2399,7 @@ msgid "Allows to navigate between rooms"
 msgstr "Memungkinkan untuk menavigasi antar ruangan"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/view/sidebar/room_row.rs:430 src/session/view/sidebar/row.rs:355
+#: src/session/view/sidebar/room_row.rs:429 src/session/view/sidebar/row.rs:350
 msgid "Failed to forget {room}."
 msgstr "Gagal melupakan {room}."
 
@@ -2486,46 +2501,49 @@ msgstr "audio"
 msgid "file"
 msgstr "berkas"
 
-#: src/utils/media.rs:214
+#: src/utils/media.rs:210
 msgid "Could not save file"
 msgstr "Tidak dapat menyimpan berkas"
 
-#: src/utils/matrix.rs:93
+#: src/utils/matrix.rs:109
 msgid "{user} sent an audio file."
 msgstr "{user} mengirim berkas audio."
 
-#: src/utils/matrix.rs:96 src/utils/matrix.rs:107 src/utils/matrix.rs:111
-#: src/utils/matrix.rs:115
+#: src/utils/matrix.rs:112 src/utils/matrix.rs:123 src/utils/matrix.rs:127
+#: src/utils/matrix.rs:131
 msgid "{user}: {message}"
 msgstr "{user}: {message}"
 
-#: src/utils/matrix.rs:99
+#: src/utils/matrix.rs:115
 msgid "{user} sent a file."
 msgstr "{user} mengirim berkas."
 
-#: src/utils/matrix.rs:101
+#: src/utils/matrix.rs:117
 msgid "{user} sent an image."
 msgstr "{user} mengirim gambar."
 
-#: src/utils/matrix.rs:104
+#: src/utils/matrix.rs:120
 msgid "{user} sent their location."
 msgstr "{user} mengirim lokasi mereka."
 
-#: src/utils/matrix.rs:119
+#: src/utils/matrix.rs:135
 msgid "{user} sent a video."
 msgstr "{user} mengirim video."
 
-#: src/utils/matrix.rs:122
+#: src/utils/matrix.rs:138
 msgid "{user} sent a verification request."
 msgstr "{user} mengirim permintaan verifikasi."
 
-#: src/utils/matrix.rs:130
+#: src/utils/matrix.rs:146
 msgid "{user} sent a sticker."
 msgstr "{user} mengirim stiker."
 
-#: src/window.rs:324
+#: src/window.rs:326
 msgid "Failed to restore previous sessions"
 msgstr "Gagal memulihkan sesi sebelumnya"
+
+#~ msgid "Failed to reject invitation for {room}. Try again later."
+#~ msgstr "Gagal menolak undangan untuk {room}. Coba lagi nanti."
 
 #~ msgid "Failed to invite {user} and 1 other user to {room}. Try again later."
 #~ msgid_plural ""
