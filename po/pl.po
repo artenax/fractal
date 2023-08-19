@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-07-27 13:25+0000\n"
-"PO-Revision-Date: 2023-08-06 15:11+0200\n"
+"POT-Creation-Date: 2023-08-17 08:27+0000\n"
+"PO-Revision-Date: 2023-08-19 19:50+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -135,6 +135,7 @@ msgid "Authenticate via Browser"
 msgstr "Uwierzytelnij przez przeglądarkę"
 
 #: src/components/auth_dialog.ui:113
+#: src/session/view/content/room_history/mod.ui:260
 #: src/session/view/content/room_history/verification_info_bar.rs:181
 #: src/session/view/content/verification/identity_verification_widget.ui:442
 msgid "Cancel"
@@ -541,30 +542,30 @@ msgstr "Fractal: dane uwierzytelniania Matrix dla użytkownika {user_id}"
 msgid "Failed to logout the session."
 msgstr "Wylogowanie sesji się nie powiodło."
 
-#: src/session/model/room/member.rs:37
+#: src/session/model/room/member.rs:38
 msgid "Left"
 msgstr "Użytkownik opuścił"
 
-#: src/session/model/room/member.rs:38
+#: src/session/model/room/member.rs:39
 msgid "Joined"
 msgstr "Użytkownik dołączył"
 
-#: src/session/model/room/member.rs:39
+#: src/session/model/room/member.rs:40
 #: src/session/model/sidebar/category/category_type.rs:30
 #: src/session/view/content/room_details/invite_subpage/invitee_list.rs:291
 msgid "Invited"
 msgstr "Zaproszono"
 
-#: src/session/model/room/member.rs:40
+#: src/session/model/room/member.rs:41
 #: src/session/view/content/room_details/invite_subpage/invitee_list.rs:289
 msgid "Banned"
 msgstr "Wykluczono"
 
-#: src/session/model/room/member.rs:41
+#: src/session/model/room/member.rs:42
 msgid "Knocked"
 msgstr "Użytkownik zapukał"
 
-#: src/session/model/room/member.rs:42
+#: src/session/model/room/member.rs:43
 msgid "Custom"
 msgstr "Inne"
 
@@ -580,18 +581,18 @@ msgstr "Moderator"
 msgid "Normal user"
 msgstr "Zwykły użytkownik"
 
-#: src/session/model/room/mod.rs:964
+#: src/session/model/room/mod.rs:941
 msgid "Unknown"
 msgstr "Nieznane"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/model/room/mod.rs:992
+#: src/session/model/room/mod.rs:969
 msgid "Empty Room (was {user})"
 msgstr "Pusty pokój (wcześniej: {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/model/room/mod.rs:994
+#: src/session/model/room/mod.rs:971
 msgid "Empty Room"
 msgstr "Pusty pokój"
 
@@ -1069,22 +1070,22 @@ msgid "Avatar changed successfully"
 msgstr "Pomyślnie zmieniono awatar"
 
 #: src/session/view/account_settings/user_page/mod.rs:235
-#: src/session/view/content/room_details/general_page/mod.rs:254
+#: src/session/view/content/room_details/general_page/mod.rs:255
 msgid "Could not load file"
 msgstr "Nie można wczytać pliku"
 
 #: src/session/view/account_settings/user_page/mod.rs:250
-#: src/session/view/content/room_details/general_page/mod.rs:275
+#: src/session/view/content/room_details/general_page/mod.rs:276
 msgid "Could not upload avatar"
 msgstr "Nie można przesłać awatara"
 
 #: src/session/view/account_settings/user_page/mod.rs:279
-#: src/session/view/content/room_details/general_page/mod.rs:295
+#: src/session/view/content/room_details/general_page/mod.rs:296
 msgid "Could not change avatar"
 msgstr "Nie można zmienić awatara"
 
 #: src/session/view/account_settings/user_page/mod.rs:313
-#: src/session/view/content/room_details/general_page/mod.rs:325
+#: src/session/view/content/room_details/general_page/mod.rs:327
 msgid "Could not remove avatar"
 msgstr "Nie można usunąć awatara"
 
@@ -1127,13 +1128,13 @@ msgstr "Lista pokoi"
 
 #. Translators: This is a verb, as in 'View Room'.
 #: src/session/view/content/explore/public_room_row.rs:208
-#: src/session/view/content/room_history/mod.rs:1462
+#: src/session/view/content/room_history/mod.rs:1586
 #: src/session/view/content/room_history/state_row/tombstone.rs:123
 msgid "View"
 msgstr "Wyświetl"
 
 #: src/session/view/content/explore/public_room_row.rs:210
-#: src/session/view/content/room_history/mod.rs:1465
+#: src/session/view/content/room_history/mod.rs:1589
 #: src/session/view/content/room_history/state_row/tombstone.rs:125
 msgid "Join"
 msgstr "Dołącz"
@@ -1148,7 +1149,7 @@ msgstr "{user} zaprasza"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/view/content/invite.rs:230
+#: src/session/view/content/invite.rs:244
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr ""
 "Przyjęcie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
@@ -1156,10 +1157,10 @@ msgstr ""
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/view/content/invite.rs:261
-msgid "Failed to reject invitation for {room}. Try again later."
+#: src/session/view/content/invite.rs:275
+msgid "Failed to decline invitation for {room}. Try again later."
 msgstr ""
-"Odrzucenie zaproszenia do pokoju {room} się nie powiodło. Proszę spróbować "
+"Odmowa zaproszenia do pokoju {room} się nie powiodła. Proszę spróbować "
 "ponownie później."
 
 #: src/session/view/content/invite.ui:26 src/session/view/content/invite.ui:51
@@ -1167,11 +1168,11 @@ msgstr ""
 msgid "Invite"
 msgstr "Zaproś"
 
-#: src/session/view/content/invite.ui:110 src/session/view/sidebar/mod.ui:37
-msgid "_Reject"
-msgstr "_Odrzuć"
+#: src/session/view/content/invite.ui:111
+msgid "_Decline"
+msgstr "_Odmów"
 
-#: src/session/view/content/invite.ui:120 src/session/view/sidebar/mod.ui:32
+#: src/session/view/content/invite.ui:121 src/session/view/sidebar/mod.ui:32
 msgid "_Accept"
 msgstr "_Przyjmij"
 
@@ -1183,19 +1184,19 @@ msgstr "Nie wybrano pokoju"
 msgid "Join a room to start chatting."
 msgstr "Dołączenie do pokoju umożliwi rozpoczęcie rozmowy."
 
-#: src/session/view/content/room_details/general_page/mod.rs:418
+#: src/session/view/content/room_details/general_page/mod.rs:420
 msgid "Room name saved successfully"
 msgstr "Pomyślnie zapisano nazwę pokoju"
 
-#: src/session/view/content/room_details/general_page/mod.rs:443
+#: src/session/view/content/room_details/general_page/mod.rs:445
 msgid "Room topic saved successfully"
 msgstr "Pomyślnie zapisano temat pokoju"
 
-#: src/session/view/content/room_details/general_page/mod.rs:516
+#: src/session/view/content/room_details/general_page/mod.rs:519
 msgid "Could not change room name"
 msgstr "Nie można zmienić nazwy pokoju"
 
-#: src/session/view/content/room_details/general_page/mod.rs:540
+#: src/session/view/content/room_details/general_page/mod.rs:543
 msgid "Could not change room topic"
 msgstr "Nie można zmienić tematu pokoju"
 
@@ -1354,24 +1355,24 @@ msgid "_Send"
 msgstr "_Wyślij"
 
 #: src/session/view/content/room_history/event_actions.rs:111
-#: src/session/view/content/room_history/mod.rs:842
+#: src/session/view/content/room_history/mod.rs:966
 #: src/session/view/media_viewer.rs:570
 msgid "Permalink copied to clipboard"
 msgstr "Skopiowano trwały odnośnik do schowka"
 
 #: src/session/view/content/room_history/event_actions.rs:115
-#: src/session/view/content/room_history/mod.rs:846
+#: src/session/view/content/room_history/mod.rs:970
 #: src/session/view/media_viewer.rs:574
 msgid "Failed to copy the permalink"
 msgstr "Skopiowanie trwałego odnośnika się nie powiodło"
 
-#: src/session/view/content/room_history/event_actions.rs:217
-#: src/session/view/content/room_history/event_actions.rs:238
-#: src/session/view/content/room_history/event_actions.rs:249
+#: src/session/view/content/room_history/event_actions.rs:218
+#: src/session/view/content/room_history/event_actions.rs:255
+#: src/session/view/content/room_history/event_actions.rs:282
 msgid "Message copied to clipboard"
 msgstr "Skopiowano wiadomość do schowka"
 
-#: src/session/view/content/room_history/event_actions.rs:261
+#: src/session/view/content/room_history/event_actions.rs:294
 msgid "Thumbnail copied to clipboard"
 msgstr "Skopiowano miniaturę do schowka"
 
@@ -1498,22 +1499,28 @@ msgstr "Nie można odebrać multimediów"
 msgid "Edited"
 msgstr "Zmodyfikowana"
 
-#: src/session/view/content/room_history/mod.rs:230
+#: src/session/view/content/room_history/mod.rs:233
 msgid "The location request has been cancelled."
 msgstr "Prośba o udostępnienie położenia została anulowana."
 
-#: src/session/view/content/room_history/mod.rs:234
+#: src/session/view/content/room_history/mod.rs:237
 msgid "Failed to retrieve current location."
 msgstr "Ustalenie obecnego położenia się nie powiodło."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/view/content/room_history/mod.rs:714
+#: src/session/view/content/room_history/mod.rs:734
 msgid "Reply to {user}"
 msgstr "Odpowiedź do użytkownika {user}"
 
+#. Translators: In this string, 'Edit' is a noun.
+#: src/session/view/content/room_history/mod.rs:785
+msgctxt "room-history"
+msgid "Edit"
+msgstr "Modyfikacja"
+
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/mod.rs:826
+#: src/session/view/content/room_history/mod.rs:950
 #: src/session/view/sidebar/room_row.rs:389
 #: src/session/view/sidebar/room_row.rs:410 src/session/view/sidebar/row.rs:335
 msgid "Failed to move {room} from {previous_category} to {new_category}."
@@ -1521,51 +1528,51 @@ msgstr ""
 "Przeniesienie pokoju {room} z kategorii {previous_category} do "
 "{new_category} się nie powiodło."
 
-#: src/session/view/content/room_history/mod.rs:1055
+#: src/session/view/content/room_history/mod.rs:1179
 msgid "Your Location"
 msgstr "Położenie użytkownika"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/session/view/content/room_history/mod.rs:1067
+#: src/session/view/content/room_history/mod.rs:1191
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Położenie użytkownika {geo_uri} w dniu {iso8601_datetime}"
 
-#: src/session/view/content/room_history/mod.rs:1112
+#: src/session/view/content/room_history/mod.rs:1236
 msgid "Select File"
 msgstr "Wybór pliku"
 
-#: src/session/view/content/room_history/mod.rs:1114
+#: src/session/view/content/room_history/mod.rs:1238
 msgid "Select"
 msgstr "Wybierz"
 
-#: src/session/view/content/room_history/mod.rs:1129
+#: src/session/view/content/room_history/mod.rs:1253
 msgid "Could not open file"
 msgstr "Nie można otworzyć pliku"
 
-#: src/session/view/content/room_history/mod.rs:1174
+#: src/session/view/content/room_history/mod.rs:1298
 msgid "Error reading file"
 msgstr "Błąd podczas odczytywania pliku"
 
-#: src/session/view/content/room_history/mod.rs:1200
+#: src/session/view/content/room_history/mod.rs:1324
 msgid "Error getting file from drop"
 msgstr "Błąd podczas uzyskiwania pliku z przeciągnięcia"
 
-#: src/session/view/content/room_history/mod.rs:1232
+#: src/session/view/content/room_history/mod.rs:1356
 msgid "Error getting image from clipboard"
 msgstr "Błąd podczas uzyskiwania obrazu ze schowka"
 
-#: src/session/view/content/room_history/mod.rs:1249
+#: src/session/view/content/room_history/mod.rs:1373
 msgid "Error getting file from clipboard"
 msgstr "Błąd podczas uzyskiwania pliku ze schowka"
 
-#: src/session/view/content/room_history/mod.rs:1460
-#: src/session/view/content/room_history/mod.rs:1464
+#: src/session/view/content/room_history/mod.rs:1584
+#: src/session/view/content/room_history/mod.rs:1588
 #: src/session/view/content/room_history/state_row/tombstone.ui:14
 msgid "There is a newer version of this room"
 msgstr "Dostępna jest nowsza wersja tego pokoju"
 
-#: src/session/view/content/room_history/mod.rs:1467
+#: src/session/view/content/room_history/mod.rs:1591
 msgid "This room was closed"
 msgstr "Ten pokój został zamknięty"
 
@@ -1626,23 +1633,23 @@ msgstr "Przeciągnięcie tutaj wyśle"
 msgid "Room History"
 msgstr "Historia pokoju"
 
-#: src/session/view/content/room_history/mod.ui:275
+#: src/session/view/content/room_history/mod.ui:276
 msgid "Browse Attachment"
 msgstr "Przeglądaj załącznik"
 
-#: src/session/view/content/room_history/mod.ui:285
+#: src/session/view/content/room_history/mod.ui:286
 msgid "Open Emoji Picker"
 msgstr "Otwórz wybór emoji"
 
-#: src/session/view/content/room_history/mod.ui:306
+#: src/session/view/content/room_history/mod.ui:307
 msgid "Message Entry"
 msgstr "Pole wpisywania wiadomości"
 
-#: src/session/view/content/room_history/mod.ui:321
+#: src/session/view/content/room_history/mod.ui:322
 msgid "Open Message Menu"
 msgstr "Otwórz menu wiadomości"
 
-#: src/session/view/content/room_history/mod.ui:336
+#: src/session/view/content/room_history/mod.ui:337
 msgid "Send Message"
 msgstr "Wyślij wiadomość"
 
@@ -2371,6 +2378,10 @@ msgstr "_Skróty klawiszowe"
 msgid "_About Fractal"
 msgstr "_O programie"
 
+#: src/session/view/sidebar/mod.ui:37
+msgid "_Reject"
+msgstr "_Odrzuć"
+
 #: src/session/view/sidebar/mod.ui:44
 msgid "Move to _Favorites"
 msgstr "Przenieś do _ulubionych"
@@ -2545,36 +2556,36 @@ msgstr "plik"
 msgid "Could not save file"
 msgstr "Nie można zapisać pliku"
 
-#: src/utils/matrix.rs:93
+#: src/utils/matrix.rs:109
 msgid "{user} sent an audio file."
 msgstr "Użytkownik {user} wysłał plik dźwiękowy."
 
-#: src/utils/matrix.rs:96 src/utils/matrix.rs:107 src/utils/matrix.rs:111
-#: src/utils/matrix.rs:115
+#: src/utils/matrix.rs:112 src/utils/matrix.rs:123 src/utils/matrix.rs:127
+#: src/utils/matrix.rs:131
 msgid "{user}: {message}"
 msgstr "{user}: {message}"
 
-#: src/utils/matrix.rs:99
+#: src/utils/matrix.rs:115
 msgid "{user} sent a file."
 msgstr "Użytkownik {user} wysłał plik."
 
-#: src/utils/matrix.rs:101
+#: src/utils/matrix.rs:117
 msgid "{user} sent an image."
 msgstr "Użytkownik {user} wysłał obraz."
 
-#: src/utils/matrix.rs:104
+#: src/utils/matrix.rs:120
 msgid "{user} sent their location."
 msgstr "Użytkownik {user} wysłał swoje położenie."
 
-#: src/utils/matrix.rs:119
+#: src/utils/matrix.rs:135
 msgid "{user} sent a video."
 msgstr "Użytkownik {user} wysłał film."
 
-#: src/utils/matrix.rs:122
+#: src/utils/matrix.rs:138
 msgid "{user} sent a verification request."
 msgstr "Użytkownik {user} wysłał prośbę o weryfikację."
 
-#: src/utils/matrix.rs:130
+#: src/utils/matrix.rs:146
 msgid "{user} sent a sticker."
 msgstr "Użytkownik {user} wysłał naklejkę."
 
