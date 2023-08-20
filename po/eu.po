@@ -6,8 +6,8 @@
 msgid ""
 msgstr "Project-Id-Version: fractal gnome-3-30\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-05-23 16:09+0000\n"
-"PO-Revision-Date: 2023-07-25 10:00+0100\n"
+"POT-Creation-Date: 2023-08-17 08:27+0000\n"
+"PO-Revision-Date: 2023-08-20 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -79,7 +79,7 @@ msgid ""
 "projects."
 msgstr "Fractal Matrix sistemetarako mezularitza-aplikazio bat da, GNOMErako idatzia Rust lengoaian. Bere interfazea talde handietan, adibidez software-proiektuetan, lankidetzan aritzeko optimizatu da."
 
-#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:171
+#: data/org.gnome.Fractal.metainfo.xml.in.in:17 src/application.rs:169
 msgid "The Fractal Team"
 msgstr "Fractal taldea"
 
@@ -87,16 +87,16 @@ msgstr "Fractal taldea"
 msgid "_Add Account"
 msgstr "_Gehitu kontua"
 
-#: src/application.rs:179
+#: src/application.rs:177
 msgid "© 2017-2023 The Fractal Team"
 msgstr "© 2017-2023 Fractal taldea"
 
-#: src/application.rs:193
+#: src/application.rs:191
 msgid "translator-credits"
 msgstr "translator-credits"
 
 #. This can't be added via the builder
-#: src/application.rs:197
+#: src/application.rs:195
 msgid "Name by"
 msgstr "Izena"
 
@@ -119,6 +119,7 @@ msgid "Authenticate via Browser"
 msgstr "Autentifikatu nabigatzailearen bidez"
 
 #: src/components/auth_dialog.ui:113
+#: src/session/view/content/room_history/mod.ui:260
 #: src/session/view/content/room_history/verification_info_bar.rs:181
 #: src/session/view/content/verification/identity_verification_widget.ui:442
 msgid "Cancel"
@@ -142,15 +143,15 @@ msgstr "Aukeratu avatarra"
 msgid "Choose"
 msgstr "Aukeratu"
 
-#: src/components/editable_avatar.rs:418
+#: src/components/editable_avatar.rs:414
 msgid "Could not open avatar file"
 msgstr "Ezin da avatarraren fitxategia ireki"
 
-#: src/components/editable_avatar.rs:439
+#: src/components/editable_avatar.rs:435
 msgid "The chosen file is not an image"
 msgstr "Aukeratutako irudia ez da irudi bat"
 
-#: src/components/editable_avatar.rs:445
+#: src/components/editable_avatar.rs:441
 msgid "Could not determine the type of the chosen file"
 msgstr "Ezin da zehaztu aukeratutako fitxategiaren mota"
 
@@ -182,11 +183,11 @@ msgstr "Fitxategia ezin da ikusi"
 msgid "Unable to connect to Camera"
 msgstr "Ezin da kamerarekin konektatu"
 
-#: src/error_page.rs:114
+#: src/error_page.rs:110
 msgid "Session removed successfully."
 msgstr "Saioa ongi kendu da."
 
-#: src/error_page.rs:122
+#: src/error_page.rs:118
 msgid "Could not remove session from secret storage"
 msgstr "Ezin da saioa kendu biltegi sekretutik"
 
@@ -249,11 +250,11 @@ msgid ""
 "details."
 msgstr "Begiratu aplikazioaren erregistroak eta zure banaketaren dokumentazioa xehetasun gehiagorako."
 
-#: src/greeter.rs:77 src/login/mod.rs:637 src/window.rs:461
+#: src/greeter.rs:77 src/login/mod.rs:636 src/window.rs:463
 msgid "No network connection"
 msgstr "Ez dago sareko konexiorik"
 
-#: src/greeter.rs:81 src/login/mod.rs:642 src/window.rs:465
+#: src/greeter.rs:81 src/login/mod.rs:641 src/window.rs:467
 msgid "No Internet connection"
 msgstr "Ez dago interneteko konexiorik"
 
@@ -290,21 +291,21 @@ msgstr "Aurkitze automatikoa edo \"kontsulta oso ezaguna\" zera da, Matrix zerbi
 msgid "_Auto-discovery"
 msgstr "_Aurkikuntza automatikoa"
 
-#: src/login/homeserver_page.rs:128
+#: src/login/homeserver_page.rs:130
 msgid "Domain Name"
 msgstr "Domeinu-izena"
 
-#: src/login/homeserver_page.rs:130
+#: src/login/homeserver_page.rs:132
 msgid "The domain of your Matrix homeserver, for example gnome.org"
 msgstr "Zure Matrix zerbitzariaren domeinua, adibidez gnome.org"
 
-#: src/login/homeserver_page.rs:133 src/login/method_page.ui:43
+#: src/login/homeserver_page.rs:135 src/login/method_page.ui:43
 msgid "Homeserver URL"
 msgstr "Zerbitzariaren URLa"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/login/homeserver_page.rs:137
+#: src/login/homeserver_page.rs:139
 msgid "The URL of your Matrix homeserver, for example {address}"
 msgstr "Zure Matrix zerbitzariaren URLa, adibidea {address}"
 
@@ -324,11 +325,15 @@ msgstr "Hurrengoa"
 msgid "Advanced…"
 msgstr "Aurreratu…"
 
-#. Translators: Do NOT translate the content between '{' and '}', this is a variable
-#. name.
+#. Translators: Do NOT translate the content between '{' and '}', this is a
+#. variable name.
 #: src/login/method_page.rs:151
 msgid "Log in to {domain_name}"
 msgstr "Hasi saioa {domain_name} domeinuan"
+
+#: src/login/method_page.rs:158
+msgid "Log in"
+msgstr "Hasi saioa"
 
 #: src/login/method_page.ui:71
 msgid "Matrix Username"
@@ -346,7 +351,7 @@ msgstr "Pasahitza _ahaztu duzu?"
 msgid "More SSO Providers"
 msgstr "SSO hornitzaile gehiago"
 
-#: src/login/mod.rs:525
+#: src/login/mod.rs:524
 msgid "Unable to store session"
 msgstr "Ezin da saioa biltegiratu"
 
@@ -373,176 +378,176 @@ msgstr "Jarraitu nabigatzaileko urratsak."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:58
+#: src/secret.rs:62
 msgid "Found stored session with unsupported version {version_nb}"
 msgstr "Onartzen ez den {version_nb} bertsioa duen saioa aurkitu da biltegian"
 
-#: src/secret.rs:89
+#: src/secret.rs:93
 msgid "The secret storage file is corrupted."
 msgstr "Ezkutuko biltegiratze-fitxategia hondatuta dago."
 
-#: src/secret.rs:93
+#: src/secret.rs:97
 msgid "Could not access the secret storage file location."
 msgstr "Ezin da ezkutuko biltegiratze-fitxategiaren kokalekua atzitu."
 
-#: src/secret.rs:96
+#: src/secret.rs:100
 msgid "An unknown error occurred when accessing the secret storage file."
 msgstr "Errore ezezaguna gertatu da ezkutuko biltegiratze-fitxategia atzitzean."
 
-#: src/secret.rs:99
+#: src/secret.rs:103
 msgid "The secret storage file has been changed by another process."
 msgstr "Beste prozesu batek ezkutuko biltegiratze-fitxategia aldatu du."
 
-#: src/secret.rs:102
+#: src/secret.rs:106
 msgid ""
 "An unknown error occurred when interacting with the D-Bus Secret Portal "
 "backend."
 msgstr "Errore ezezaguna gertatu da D-Bus ezkutuko atariaren motorrarekin aritzean."
 
-#: src/secret.rs:105
+#: src/secret.rs:109
 msgid ""
 "The request to the Flatpak Secret Portal was cancelled. Make sure to accept "
 "any prompt asking to access it."
-msgstr "Flatbak ezkutuko atariaren eskaria bertan behera geratu da. Ziurtatu hura atzitzeko edozein gonbit onartzen duzula."
+msgstr "Flatpak ezkutuko atariari egindako eskaria bertan behera geratu da. Ziurtatu hura atzitzeko edozein gonbit onartzen duzula."
 
-#: src/secret.rs:108
+#: src/secret.rs:112
 msgid ""
 "The Flatpak Secret Portal is not available. Make sure xdg-desktop-portal is "
 "installed, and it is at least at version 1.5.0."
 msgstr "Flatpak ezkutuko ataria ez dago erabilgarri. Ziurtatu xdg-desktop-portal instalatuta dagoela eta gutxienez 1.5.0 bertsiokoa dela."
 
-#: src/secret.rs:111
+#: src/secret.rs:115
 msgid "The Flatpak Secret Portal provided a key that is too weak to be secure."
 msgstr "Flatpak ezkutuko atariak ahulegia den gako bat eman du."
 
-#: src/secret.rs:123
+#: src/secret.rs:127
 msgid "The item was deleted."
 msgstr "Elementua ezabatu da."
 
-#: src/secret.rs:126
+#: src/secret.rs:130
 msgid ""
 "The request to the D-Bus Secret Service was cancelled. Make sure to accept "
 "any prompt asking to access it."
 msgstr "D-Bus ezkutuko zerbitzuari egindako eskaria bertan behera geratu da. Ziurtatu hura atzitzeko edozein gonbit onartzen duzula."
 
-#: src/secret.rs:129
+#: src/secret.rs:133
 msgid ""
 "Could not access the default collection. Make sure a keyring was created and "
 "set as default."
 msgstr "Ezin da bilduma lehenetsia atzitu. Ziurtatu gako sorta bat sortu dela eta lehenetsi gisa ezarri dela."
 
-#: src/secret.rs:133
+#: src/secret.rs:137
 msgid ""
 "An unknown error occurred when interacting with the D-Bus Secret Service."
 msgstr "Errore ezezaguna gertatu da D-Bus ezkutuko zerbitzuarekin aritzean."
 
-#: src/secret.rs:172
+#: src/secret.rs:176
 msgid "Malformed version in stored session"
 msgstr "Gaizki osatutako bertsioa biltegiratutako saioan"
 
-#: src/secret.rs:196
+#: src/secret.rs:200
 msgid "Could not find profile in stored session"
 msgstr "Ezin da profila aurkitu biltegiratutako saioan"
 
-#: src/secret.rs:210
+#: src/secret.rs:214
 msgid "Malformed homeserver in stored session"
 msgstr "Gaizki osatutako zerbitzaria biltegiratutako saioan"
 
-#: src/secret.rs:217
+#: src/secret.rs:221
 msgid "Could not find homeserver in stored session"
 msgstr "Ezin da zerbitzaria aurkitu biltegiratutako saioan"
 
-#: src/secret.rs:228
+#: src/secret.rs:232
 msgid "Malformed user ID in stored session"
 msgstr "Gaizki osatutako erabiltzaile-IDa biltegiratutako saioan"
 
-#: src/secret.rs:235
+#: src/secret.rs:239
 msgid "Could not find user ID in stored session"
 msgstr "Ezin da erabiltzaile-IDa aurkitu biltegiratutako saioan"
 
-#: src/secret.rs:244
+#: src/secret.rs:248
 msgid "Could not find device ID in stored session"
 msgstr "Ezin da gailuaren IDa aurkitu biltegiratutako saioan"
 
-#: src/secret.rs:253
+#: src/secret.rs:257
 msgid "Could not find database path in stored session"
 msgstr "Ezin da datu-basearen bide-izena aurkitu biltegiratutako saioan"
 
-#: src/secret.rs:266 src/secret.rs:277
+#: src/secret.rs:270 src/secret.rs:281
 msgid "Malformed secret in stored session"
 msgstr "Gaizki osatutako sekretua biltegiratutako saioan"
 
-#: src/secret.rs:287
+#: src/secret.rs:291
 msgid "Could not get secret in stored session"
 msgstr "Ezin da biltegiratutako saioaren sekretua eskuratu"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/secret.rs:403
+#: src/secret.rs:406
 msgid "Fractal: Matrix credentials for {user_id}"
 msgstr "Fractal: Matrix kredentzialak {user_id} erabiltzailearentzako"
 
-#: src/session/model/session.rs:486
+#: src/session/model/session.rs:487
 msgid "Failed to logout the session."
 msgstr "Huts egin du saioa amaitzeak."
 
-#: src/session/model/room/member.rs:37
+#: src/session/model/room/member.rs:38
 msgid "Left"
 msgstr "Utzia"
 
-#: src/session/model/room/member.rs:38
+#: src/session/model/room/member.rs:39
 msgid "Joined"
 msgstr "Elkartua"
 
-#: src/session/model/room/member.rs:39
+#: src/session/model/room/member.rs:40
 #: src/session/model/sidebar/category/category_type.rs:30
 #: src/session/view/content/room_details/invite_subpage/invitee_list.rs:291
 msgid "Invited"
 msgstr "Gonbidatua"
 
-#: src/session/model/room/member.rs:40
+#: src/session/model/room/member.rs:41
 #: src/session/view/content/room_details/invite_subpage/invitee_list.rs:289
 msgid "Banned"
 msgstr "Debekatua"
 
-#: src/session/model/room/member.rs:41
+#: src/session/model/room/member.rs:42
 msgid "Knocked"
 msgstr "Kolpekatua"
 
-#: src/session/model/room/member.rs:42
+#: src/session/model/room/member.rs:43
 msgid "Custom"
 msgstr "Pertsonalizatua"
 
-#: src/session/model/room/member_role.rs:48
+#: src/session/model/room/member_role.rs:50
 msgid "Admin"
 msgstr "Administratzailea"
 
-#: src/session/model/room/member_role.rs:49
+#: src/session/model/room/member_role.rs:51
 msgid "Moderator"
 msgstr "Moderatzailea"
 
-#: src/session/model/room/member_role.rs:50
+#: src/session/model/room/member_role.rs:52
 msgid "Normal user"
 msgstr "Erabiltzaile normala"
 
-#: src/session/model/room/mod.rs:947
+#: src/session/model/room/mod.rs:941
 msgid "Unknown"
 msgstr "Ezezaguna"
 
 #. Translators: This is the name of a room that is empty but had another user before.
 #. Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/model/room/mod.rs:975
+#: src/session/model/room/mod.rs:969
 msgid "Empty Room (was {user})"
 msgstr "Gela hutsa (was {user})"
 
 #. Translators: This is the name of a room without other users.
-#: src/session/model/room/mod.rs:977
+#: src/session/model/room/mod.rs:971
 msgid "Empty Room"
 msgstr "Gela hutsa"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
-#: src/session/model/room_list.rs:345
+#: src/session/model/room_list.rs:347
 msgid "Failed to join room {room_name}. Try again later."
 msgstr "Huts egin du {room_name} gelarekin elkartzeak. Saiatu berriro geroago."
 
@@ -707,16 +712,16 @@ msgstr "Beste saio aktibo batzuk"
 msgid "Account Settings"
 msgstr "Kontuaren ezarpenak"
 
-#: src/session/view/account_settings/notifications_page.rs:176
-#: src/session/view/account_settings/notifications_page.rs:189
+#: src/session/view/account_settings/notifications_page.rs:177
+#: src/session/view/account_settings/notifications_page.rs:190
 msgid "Could not load notifications settings. Try again later"
 msgstr "Ezin dira jakinarazpenen ezarpenak kargatu. Saiatu geroago"
 
-#: src/session/view/account_settings/notifications_page.rs:290
+#: src/session/view/account_settings/notifications_page.rs:291
 msgid "Could not enable account notifications"
 msgstr "Ezin dira kontuen jakinarazpenak gaitu"
 
-#: src/session/view/account_settings/notifications_page.rs:292
+#: src/session/view/account_settings/notifications_page.rs:293
 msgid "Could not disable account notifications"
 msgstr "Ezin dira kontuen jakinarazpenak desgaitu"
 
@@ -788,7 +793,7 @@ msgid "Import Encryption Keys From…"
 msgstr "Inportaru zifratze-gakoak hemendik…"
 
 #: src/session/view/account_settings/security_page/import_export_keys_subpage.rs:277
-#: src/utils/media.rs:222
+#: src/utils/media.rs:218
 msgid "Could not access file"
 msgstr "Ezin izan da fitxategia atzitu"
 
@@ -828,7 +833,7 @@ msgid "Confirm Passphrase"
 msgstr "Berretsi pasaesaldia"
 
 #: src/session/view/account_settings/security_page/import_export_keys_subpage.ui:128
-#: src/session/view/content/room_details/general_page/mod.ui:161
+#: src/session/view/content/room_details/general_page/mod.ui:168
 #: src/session/view/content/room_details/mod.rs:280
 msgid "File"
 msgstr "Fitxategia"
@@ -837,11 +842,11 @@ msgstr "Fitxategia"
 msgid "Choose…"
 msgstr "Aukeratu…"
 
-#: src/session/view/account_settings/security_page/mod.rs:172
+#: src/session/view/account_settings/security_page/mod.rs:170
 msgid "Available"
 msgstr "Erabilgarri"
 
-#: src/session/view/account_settings/security_page/mod.rs:176
+#: src/session/view/account_settings/security_page/mod.rs:174
 msgid "Not available"
 msgstr "Ez dago erabilgarri"
 
@@ -893,15 +898,15 @@ msgstr "Pasahitzak gutxienez ikur bat iza behar du"
 msgid "Passwords do not match"
 msgstr "Pasahitzak ez datoz bat"
 
-#: src/session/view/account_settings/user_page/change_password_subpage.rs:274
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:269
 msgid "Password changed successfully"
 msgstr "Pasahitza ongi aldatu da"
 
-#: src/session/view/account_settings/user_page/change_password_subpage.rs:285
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:280
 msgid "Password rejected for being too weak"
 msgstr "Pasahitza ezetsi da ahulegia delako"
 
-#: src/session/view/account_settings/user_page/change_password_subpage.rs:289
+#: src/session/view/account_settings/user_page/change_password_subpage.rs:284
 msgid "Could not change password"
 msgstr "Ezin da pasahitza aldatu"
 
@@ -936,11 +941,11 @@ msgstr "Baieztatu pasahitz berria"
 msgid "Continue"
 msgstr "Jarraitu"
 
-#: src/session/view/account_settings/user_page/deactivate_account_subpage.rs:180
+#: src/session/view/account_settings/user_page/deactivate_account_subpage.rs:175
 msgid "Account successfully deactivated"
 msgstr "Kontua ongi desaktibatu da"
 
-#: src/session/view/account_settings/user_page/deactivate_account_subpage.rs:189
+#: src/session/view/account_settings/user_page/deactivate_account_subpage.rs:184
 msgid "Could not deactivate account"
 msgstr "Ezin da kontua desaktibatu"
 
@@ -990,22 +995,22 @@ msgid "Avatar changed successfully"
 msgstr "Avatarra ongi aldatu da"
 
 #: src/session/view/account_settings/user_page/mod.rs:235
-#: src/session/view/content/room_details/general_page/mod.rs:254
+#: src/session/view/content/room_details/general_page/mod.rs:255
 msgid "Could not load file"
 msgstr "Ezin da fitxategia kargatu"
 
 #: src/session/view/account_settings/user_page/mod.rs:250
-#: src/session/view/content/room_details/general_page/mod.rs:275
+#: src/session/view/content/room_details/general_page/mod.rs:276
 msgid "Could not upload avatar"
 msgstr "Ezin da avatarra kargatu"
 
 #: src/session/view/account_settings/user_page/mod.rs:279
-#: src/session/view/content/room_details/general_page/mod.rs:295
+#: src/session/view/content/room_details/general_page/mod.rs:296
 msgid "Could not change avatar"
 msgstr "Ezin da avatarra aldatu"
 
 #: src/session/view/account_settings/user_page/mod.rs:313
-#: src/session/view/content/room_details/general_page/mod.rs:325
+#: src/session/view/content/room_details/general_page/mod.rs:327
 msgid "Could not remove avatar"
 msgstr "Ezin da avatarra kendu"
 
@@ -1048,13 +1053,13 @@ msgstr "Gelen zerrenda"
 
 #. Translators: This is a verb, as in 'View Room'.
 #: src/session/view/content/explore/public_room_row.rs:208
-#: src/session/view/content/room_history/mod.rs:1466
+#: src/session/view/content/room_history/mod.rs:1586
 #: src/session/view/content/room_history/state_row/tombstone.rs:123
 msgid "View"
 msgstr "Ikusi"
 
 #: src/session/view/content/explore/public_room_row.rs:210
-#: src/session/view/content/room_history/mod.rs:1469
+#: src/session/view/content/room_history/mod.rs:1589
 #: src/session/view/content/room_history/state_row/tombstone.rs:125
 msgid "Join"
 msgstr "Elkartu"
@@ -1069,26 +1074,26 @@ msgstr "{user} erabiltzaileak gonbidatu zaitu"
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/view/content/invite.rs:226
+#: src/session/view/content/invite.rs:244
 msgid "Failed to accept invitation for {room}. Try again later."
 msgstr "Huts egin du {room} gelaren gonbidapena onartzeak. Saiatu berriro geroago."
 
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
-#: src/session/view/content/invite.rs:258
-msgid "Failed to reject invitation for {room}. Try again later."
-msgstr "Huts egin du {room} gelaren gonbidapena ezesteak. Saiatu berriro geroago."
+#: src/session/view/content/invite.rs:275
+msgid "Failed to decline invitation for {room}. Try again later."
+msgstr "Huts egin du {room} gelaren gonbidapena ukatzeak. Saiatu berriro geroago."
 
 #: src/session/view/content/invite.ui:26 src/session/view/content/invite.ui:51
 #: src/session/view/content/room_details/member_page/mod.ui:69
 msgid "Invite"
 msgstr "Gonbidatu"
 
-#: src/session/view/content/invite.ui:110 src/session/view/sidebar/mod.ui:37
-msgid "_Reject"
-msgstr "_Ezetsi"
+#: src/session/view/content/invite.ui:111
+msgid "_Decline"
+msgstr "_Ukatu"
 
-#: src/session/view/content/invite.ui:120 src/session/view/sidebar/mod.ui:32
+#: src/session/view/content/invite.ui:121 src/session/view/sidebar/mod.ui:32
 msgid "_Accept"
 msgstr "_Onartu"
 
@@ -1100,46 +1105,46 @@ msgstr "Ez da gelarik hautatu"
 msgid "Join a room to start chatting."
 msgstr "Elkartu gela batekin edo hasi berriketan"
 
-#: src/session/view/content/room_details/general_page/mod.rs:418
+#: src/session/view/content/room_details/general_page/mod.rs:420
 msgid "Room name saved successfully"
 msgstr "Gelaren izena ongi gorde da"
 
-#: src/session/view/content/room_details/general_page/mod.rs:443
+#: src/session/view/content/room_details/general_page/mod.rs:445
 msgid "Room topic saved successfully"
 msgstr "Gelaren gaia ongi gorde da"
 
-#: src/session/view/content/room_details/general_page/mod.rs:516
+#: src/session/view/content/room_details/general_page/mod.rs:519
 msgid "Could not change room name"
 msgstr "Ezin da gelaren izena aldatu"
 
-#: src/session/view/content/room_details/general_page/mod.rs:540
+#: src/session/view/content/room_details/general_page/mod.rs:543
 msgid "Could not change room topic"
 msgstr "Ezin da gelaren gaia aldatu"
 
-#: src/session/view/content/room_details/general_page/mod.ui:60
+#: src/session/view/content/room_details/general_page/mod.ui:67
 msgid "Description"
 msgstr "Deskribapena"
 
-#: src/session/view/content/room_details/general_page/mod.ui:100
+#: src/session/view/content/room_details/general_page/mod.ui:107
 msgid "Edit Details"
 msgstr "Editatu xehetasunak"
 
-#: src/session/view/content/room_details/general_page/mod.ui:108
+#: src/session/view/content/room_details/general_page/mod.ui:115
 msgid "Save Details"
 msgstr "Gorde xehetasunak"
 
-#: src/session/view/content/room_details/general_page/mod.ui:120
+#: src/session/view/content/room_details/general_page/mod.ui:127
 msgid "Members"
 msgstr "Kideak"
 
-#: src/session/view/content/room_details/general_page/mod.ui:146
+#: src/session/view/content/room_details/general_page/mod.ui:153
 #: src/session/view/content/room_details/history_viewer/media.ui:21
 #: src/session/view/content/room_details/mod.rs:264
 msgid "Media"
 msgstr "Multimedia"
 
 #. Translators: As in 'Audio file'.
-#: src/session/view/content/room_details/general_page/mod.ui:177
+#: src/session/view/content/room_details/general_page/mod.ui:184
 #: src/session/view/content/room_details/history_viewer/audio.ui:12
 #: src/session/view/content/room_details/mod.rs:297
 msgid "Audio"
@@ -1174,7 +1179,7 @@ msgstr "Kidea"
 
 #. Translators: Do NOT translate the content between '{' and '}', these
 #. are variable names.
-#: src/session/view/content/room_details/invite_subpage/mod.rs:346
+#: src/session/view/content/room_details/invite_subpage/mod.rs:341
 msgid "Failed to invite {user} to {room}. Try again later."
 msgid_plural "Failed to invite {n} users to {room}. Try again later."
 msgstr[0] "Huts egin du {user} erabiltzailea {room} gelara gonbidatzeak. Saiatu berriro geroago."
@@ -1263,25 +1268,25 @@ msgstr "Gonbidatu kide berriak"
 msgid "_Send"
 msgstr "_Bidali"
 
-#: src/session/view/content/room_history/event_actions.rs:114
-#: src/session/view/content/room_history/mod.rs:842
-#: src/session/view/media_viewer.rs:573
+#: src/session/view/content/room_history/event_actions.rs:111
+#: src/session/view/content/room_history/mod.rs:966
+#: src/session/view/media_viewer.rs:570
 msgid "Permalink copied to clipboard"
 msgstr "Esteka iraunkorra arbelean kopiatu da"
 
-#: src/session/view/content/room_history/event_actions.rs:118
-#: src/session/view/content/room_history/mod.rs:846
-#: src/session/view/media_viewer.rs:577
+#: src/session/view/content/room_history/event_actions.rs:115
+#: src/session/view/content/room_history/mod.rs:970
+#: src/session/view/media_viewer.rs:574
 msgid "Failed to copy the permalink"
 msgstr "Huts egin du esteka iraunkorra kopiatzeak"
 
-#: src/session/view/content/room_history/event_actions.rs:220
-#: src/session/view/content/room_history/event_actions.rs:241
-#: src/session/view/content/room_history/event_actions.rs:252
+#: src/session/view/content/room_history/event_actions.rs:218
+#: src/session/view/content/room_history/event_actions.rs:255
+#: src/session/view/content/room_history/event_actions.rs:282
 msgid "Message copied to clipboard"
 msgstr "Mezua arbelean kopiatu da"
 
-#: src/session/view/content/room_history/event_actions.rs:264
+#: src/session/view/content/room_history/event_actions.rs:294
 msgid "Thumbnail copied to clipboard"
 msgstr "Miniatura arbelean kopiatu da"
 
@@ -1346,22 +1351,22 @@ msgstr "Ikusi i_turburua"
 msgid "Re_move"
 msgstr "_Kendu"
 
-#: src/session/view/content/room_history/item_row.rs:304
+#: src/session/view/content/room_history/item_row.rs:292
 msgid "This is the start of the visible history"
 msgstr "Hau historia ikusgaiaren hasiera da"
 
 #. Translators: This is a date format in the day divider without the
 #. year
-#: src/session/view/content/room_history/item_row.rs:327
+#: src/session/view/content/room_history/item_row.rs:313
 msgid "%A, %B %e"
 msgstr "%A, %B %e"
 
 #. Translators: This is a date format in the day divider with the year
-#: src/session/view/content/room_history/item_row.rs:330
+#: src/session/view/content/room_history/item_row.rs:316
 msgid "%A, %B %e, %Y"
 msgstr "%A, %B %e, %Y"
 
-#: src/session/view/content/room_history/item_row.rs:336
+#: src/session/view/content/room_history/item_row.rs:322
 msgid "New Messages"
 msgstr "Mezu berriak"
 
@@ -1374,16 +1379,16 @@ msgstr "Ezin da audio-fitxategia eskuratu"
 msgid "Error reading audio file"
 msgstr "Errorea audio-fitxategia irakurtzean"
 
-#: src/session/view/content/room_history/message_row/content.rs:340
+#: src/session/view/content/room_history/message_row/content.rs:319
 msgid "Identity verification was started"
 msgstr "Nortasunaren egiaztatzea hasi da"
 
-#: src/session/view/content/room_history/message_row/content.rs:353
-#: src/session/view/content/room_history/message_row/content.rs:389
+#: src/session/view/content/room_history/message_row/content.rs:330
+#: src/session/view/content/room_history/message_row/content.rs:363
 msgid "Unsupported event"
 msgstr "Onartzen ez den gertaera"
 
-#: src/session/view/content/room_history/message_row/content.rs:377
+#: src/session/view/content/room_history/message_row/content.rs:352
 msgid ""
 "Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
@@ -1406,72 +1411,78 @@ msgstr "Ezin dira multimedia-elementuak eskuratu"
 msgid "Edited"
 msgstr "Editatua"
 
-#: src/session/view/content/room_history/mod.rs:230
+#: src/session/view/content/room_history/mod.rs:233
 msgid "The location request has been cancelled."
 msgstr "Kokaleku-eskaera bertan behera utzi da."
 
-#: src/session/view/content/room_history/mod.rs:234
+#: src/session/view/content/room_history/mod.rs:237
 msgid "Failed to retrieve current location."
 msgstr "Uneko kokalekua eskuratzeak huts egin du."
 
 #. Translators: Do NOT translate the content between '{' and '}',
 #. this is a variable name. In this string, 'Reply' is a noun.
-#: src/session/view/content/room_history/mod.rs:714
+#: src/session/view/content/room_history/mod.rs:734
 msgid "Reply to {user}"
 msgstr "Erantzun {user} erabiltzaileari"
 
+#. Translators: In this string, 'Edit' is a noun.
+#: src/session/view/content/room_history/mod.rs:785
+msgctxt "room-history"
+msgid "Edit"
+msgstr "Editatu"
+
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/mod.rs:826
-#: src/session/view/sidebar/room_row.rs:390
-#: src/session/view/sidebar/room_row.rs:411 src/session/view/sidebar/row.rs:340
+#: src/session/view/content/room_history/mod.rs:950
+#: src/session/view/sidebar/room_row.rs:389
+#: src/session/view/sidebar/room_row.rs:410 src/session/view/sidebar/row.rs:335
 msgid "Failed to move {room} from {previous_category} to {new_category}."
 msgstr "Huts egin du {room} gela {previous_category} kategoriatik {new_category} kategoriara eramateak."
 
-#: src/session/view/content/room_history/mod.rs:1055
+#: src/session/view/content/room_history/mod.rs:1179
 msgid "Your Location"
 msgstr "Zure kokalekua"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable
 #. name.
-#: src/session/view/content/room_history/mod.rs:1067
+#: src/session/view/content/room_history/mod.rs:1191
 msgid "User Location {geo_uri} at {iso8601_datetime}"
 msgstr "Erabiltzailearen kokalekua: {geo_uri} / {iso8601_datetime}"
 
-#: src/session/view/content/room_history/mod.rs:1112
+#: src/session/view/content/room_history/mod.rs:1236
 msgid "Select File"
 msgstr "Hautatu fitxategia"
 
-#: src/session/view/content/room_history/mod.rs:1114
+#: src/session/view/content/room_history/mod.rs:1238
 msgid "Select"
 msgstr "Hautatu"
 
-#: src/session/view/content/room_history/mod.rs:1133
+#: src/session/view/content/room_history/mod.rs:1253
 msgid "Could not open file"
 msgstr "Ezin da fitxategia ireki"
 
-#: src/session/view/content/room_history/mod.rs:1178
+#: src/session/view/content/room_history/mod.rs:1298
 msgid "Error reading file"
 msgstr "Errorea fitxategia irakurtzean"
 
-#: src/session/view/content/room_history/mod.rs:1204
+#: src/session/view/content/room_history/mod.rs:1324
 msgid "Error getting file from drop"
 msgstr "Errorea fitxategia jaregitetik eskuratzean"
 
-#: src/session/view/content/room_history/mod.rs:1236
+#: src/session/view/content/room_history/mod.rs:1356
 msgid "Error getting image from clipboard"
 msgstr "Errorea irudia arbeletik eskuratzean"
 
-#: src/session/view/content/room_history/mod.rs:1253
+#: src/session/view/content/room_history/mod.rs:1373
 msgid "Error getting file from clipboard"
 msgstr "Errorea fitxategia arbeletik eskuratzean"
 
-#: src/session/view/content/room_history/mod.rs:1464
-#: src/session/view/content/room_history/mod.rs:1468
+#: src/session/view/content/room_history/mod.rs:1584
+#: src/session/view/content/room_history/mod.rs:1588
 #: src/session/view/content/room_history/state_row/tombstone.ui:14
 msgid "There is a newer version of this room"
 msgstr "Gela honen bertsio berriagoa dago"
 
-#: src/session/view/content/room_history/mod.rs:1471
+#: src/session/view/content/room_history/mod.rs:1591
 msgid "This room was closed"
 msgstr "Gela itxita dago"
 
@@ -1532,23 +1543,23 @@ msgstr "Jaregin hemen bidaltzeko"
 msgid "Room History"
 msgstr "Gelaren historia"
 
-#: src/session/view/content/room_history/mod.ui:275
+#: src/session/view/content/room_history/mod.ui:276
 msgid "Browse Attachment"
 msgstr "Arakatu eranskina"
 
-#: src/session/view/content/room_history/mod.ui:285
+#: src/session/view/content/room_history/mod.ui:286
 msgid "Open Emoji Picker"
 msgstr "Ireki emoji-hautatzailea"
 
-#: src/session/view/content/room_history/mod.ui:306
+#: src/session/view/content/room_history/mod.ui:307
 msgid "Message Entry"
 msgstr "Mezu-sarrera"
 
-#: src/session/view/content/room_history/mod.ui:321
+#: src/session/view/content/room_history/mod.ui:322
 msgid "Open Message Menu"
 msgstr "Ireki mezu-menua"
 
-#: src/session/view/content/room_history/mod.ui:336
+#: src/session/view/content/room_history/mod.ui:337
 msgid "Send Message"
 msgstr "Bidali mezua"
 
@@ -1751,7 +1762,7 @@ msgstr "Eskaneatu kontu honek saioa hasita duen beste toki bateko QR kodea."
 msgid ""
 "You scanned the QR code successfully. You may need to confirm the "
 "verification from the other session."
-msgstr "QR kodea ongi eskaneatu da. Beste saioan egiaztatzea baieztatu beharko duzu."
+msgstr "QR kodea ongi eskaneatu da. Egiaztatzea beste saioan baieztatu beharko duzu."
 
 #: src/session/view/content/verification/identity_verification_widget.rs:513
 msgid "Scan this QR code from the other session."
@@ -1825,7 +1836,7 @@ msgstr "Eskaneatu {user} erabiltzailearen gailuan erakusten den QR kodea."
 msgid ""
 "You scanned the QR code successfully. {user} may need to confirm the "
 "verification."
-msgstr "QR kodea ongi eskaneatu da. {user} erabitlzaileak egiaztatzea baieztatu beharko du."
+msgstr "QR kodea ongi eskaneatu da. {user} erabiltzaileak egiaztatzea baieztatu beharko du."
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a
 #. variable name.
@@ -1936,7 +1947,7 @@ msgid ""
 "No other devices are available to verify this session. You can either "
 "restore cross-signing from another device and restart this process or reset "
 "the encryption identity."
-msgstr "Ez dago beste gailurik saio hau egiaztatzeko. Sinatze gurutzatua beste gailu batetik berrezarri eta prozesu hau berrabiarazi dezakezu edo zifratze-nortasuna berrezarri dezakezu."
+msgstr "Ez dago beste gailurik erabilgarri saio hau egiaztatzeko. Sinatze gurutzatua beste gailu batetik berrezarri eta prozesu hau berrabiarazi daiteke, edo zifratze-nortasuna berrezarri daiteke."
 
 #: src/session/view/content/verification/session_verification.rs:282
 #: src/session/view/content/verification/session_verification.rs:290
@@ -1949,7 +1960,7 @@ msgid ""
 "If you lost access to all other sessions, you can create a new encryption "
 "identity. Be careful because this will cancel the verifications of all users "
 "and sessions."
-msgstr "Beste saio guztietara sartzeko aukera galtzen baduzu, zifratze-nortasun berria sortu dezakezu. Kontuz ibili, horrek erabiltzaile eta saio guztien egiaztapena bertan behera utziko baitu."
+msgstr "Beste saio guztietara sartzeko aukera galtzen baduzu, zifratze-nortasun berria sortu dezakezu. Kontuz ibili, horrek erabiltzaile eta saio guztien egiaztatzea bertan behera utzi baitezake."
 
 #: src/session/view/content/verification/session_verification.rs:435
 msgid ""
@@ -2071,7 +2082,7 @@ msgstr "Elkartu gelarekin"
 msgid "Enter a room ID, room alias, or permalink."
 msgstr "Sartu gelaren IDa, aliasa edo esteka iraunkorra"
 
-#: src/session/view/media_viewer.rs:531
+#: src/session/view/media_viewer.rs:528
 msgid "Image copied to clipboard"
 msgstr "Irudia arbelean kopiatu da"
 
@@ -2233,6 +2244,10 @@ msgstr "Las_ter-teklak"
 msgid "_About Fractal"
 msgstr "Fractal aplikazioari _buruz"
 
+#: src/session/view/sidebar/mod.ui:37
+msgid "_Reject"
+msgstr "_Ezetsi"
+
 #: src/session/view/sidebar/mod.ui:44
 msgid "Move to _Favorites"
 msgstr "Eraman _gogokoen multzora"
@@ -2290,7 +2305,7 @@ msgid "Allows to navigate between rooms"
 msgstr "Gelen artean nabigatzea ahalbidetzen du"
 
 #. Translators: Do NOT translate the content between '{' and '}', this is a variable name.
-#: src/session/view/sidebar/room_row.rs:430 src/session/view/sidebar/row.rs:355
+#: src/session/view/sidebar/room_row.rs:429 src/session/view/sidebar/row.rs:350
 msgid "Failed to forget {room}."
 msgstr "Huts egin du {room} gela ahazteak."
 
@@ -2391,46 +2406,50 @@ msgstr "audioa"
 msgid "file"
 msgstr "fitxategia"
 
-#: src/utils/media.rs:214
+#: src/utils/media.rs:210
 msgid "Could not save file"
 msgstr "Ezin da fitxategia gorde"
 
-#: src/utils/matrix.rs:93
+#: src/utils/matrix.rs:109
 msgid "{user} sent an audio file."
 msgstr "{user} erabiltzaileak audio-fitxategi bat bidali du."
 
-#: src/utils/matrix.rs:96 src/utils/matrix.rs:107 src/utils/matrix.rs:111
-#: src/utils/matrix.rs:115
+#: src/utils/matrix.rs:112 src/utils/matrix.rs:123 src/utils/matrix.rs:127
+#: src/utils/matrix.rs:131
 msgid "{user}: {message}"
 msgstr "{user}: {message}"
 
-#: src/utils/matrix.rs:99
+#: src/utils/matrix.rs:115
 msgid "{user} sent a file."
 msgstr "{user} erabiltzaileak fitxategi bat bidali du."
 
-#: src/utils/matrix.rs:101
+#: src/utils/matrix.rs:117
 msgid "{user} sent an image."
 msgstr "{user} erabiltzaileak irudi bat bidali du."
 
-#: src/utils/matrix.rs:104
+#: src/utils/matrix.rs:120
 msgid "{user} sent their location."
 msgstr "{user} erabiltzaileak bere kokalekua bidali du."
 
-#: src/utils/matrix.rs:119
+#: src/utils/matrix.rs:135
 msgid "{user} sent a video."
 msgstr "{user} erabiltzaileak bideo bat bidali du."
 
-#: src/utils/matrix.rs:122
+#: src/utils/matrix.rs:138
 msgid "{user} sent a verification request."
 msgstr "{user} erabiltzaileak egiaztatze-eskari bat bidali du."
 
-#: src/utils/matrix.rs:130
+#: src/utils/matrix.rs:146
 msgid "{user} sent a sticker."
 msgstr "{user} erabiltzaileak eranskailu bat bidali du."
 
-#: src/window.rs:324
+#: src/window.rs:326
 msgid "Failed to restore previous sessions"
 msgstr "Huts egin du aurreko saioak leheneratzeak"
+
+#~ msgid "Failed to reject invitation for {room}. Try again later."
+#~ msgstr ""
+#~ "Huts egin du {room} gelaren gonbidapena ezesteak. Saiatu berriro geroago."
 
 #~ msgid "Go there"
 #~ msgstr "Joan hara"
