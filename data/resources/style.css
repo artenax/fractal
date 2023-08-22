@@ -575,6 +575,37 @@ typing-bar avatar {
   border-radius: 999px;
 }
 
+.h1 {
+  font-weight: 800;
+  font-size: 15pt;
+}
+
+.h2 {
+  font-weight: 800;
+  font-size: 14pt;
+}
+
+.h3 {
+  font-weight: 700;
+  font-size: 14pt;
+}
+
+.h4 {
+  font-weight: 700;
+  font-size: 13pt;
+}
+
+.h5 {
+  font-weight: 700;
+  font-size: 12pt;
+}
+
+.h6 {
+  font-weight: 700;
+  font-size: 11pt;
+}
+
+
 
 /* Event Source Dialog */
 
