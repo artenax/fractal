@@ -1044,17 +1044,22 @@ impl RoomHistory {
         let Some(room) = self.room() else {
             return false;
         };
-        let timeline_items = room.timeline().items();
-        let adj = self.imp().listview.vadjustment().unwrap();
+        let timeline = room.timeline();
 
-        if adj.value() <= 0.0 && timeline_items.n_items() > 0 {
-            // The room history is loading the timeline items, so wait until they are done.
+        if !timeline.can_load() {
+            // We will retry when timeline is ready.
             return false;
         }
 
-        // Load more messages when the user gets close to the end of the known room
+        if timeline.is_empty() {
+            // We definitely want messages if the timeline is ready but empty.
+            return true;
+        };
+
+        // Load more messages when the user gets close to the top of the known room
         // history. Use the page size twice to detect if the user gets close to
-        // the end.
+        // the top.
+        let adj = self.imp().listview.vadjustment().unwrap();
         adj.value() < adj.page_size() * 2.0 || adj.upper() <= adj.page_size() / 2.0
     }
 
@@ -1065,19 +1070,13 @@ impl RoomHistory {
             return;
         }
 
+        if !self.need_messages() {
+            return;
+        }
+
         let Some(room) = self.room() else {
             return;
         };
-        let timeline = room.timeline();
-
-        if !timeline.can_load() {
-            // We will retry when the timeline is ready.
-            return;
-        }
-
-        if !self.need_messages() && !room.timeline().is_empty() {
-            return;
-        }
 
         imp.is_loading.set(true);
 
