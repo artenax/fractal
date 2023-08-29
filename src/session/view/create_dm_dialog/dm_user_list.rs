@@ -237,7 +237,7 @@ impl DmUserList {
 
                             // Make sure we have all members loaded, in most cases members should
                             // already be loaded
-                            room.load_members().await;
+                            room.members().load().await;
 
                             if members.n_items() >= 1 {
                                 let mut found_others = false;

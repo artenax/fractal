@@ -72,7 +72,6 @@ mod imp {
         /// The user who sent the invite to this room. This is only set when
         /// this room is an invitation.
         pub inviter: RefCell<Option<Member>>,
-        pub members_loaded: Cell<bool>,
         pub power_levels: RefCell<PowerLevels>,
         /// The timestamp of the latest possibly unread event in this room.
         pub latest_unread: Cell<u64>,
@@ -1131,56 +1130,6 @@ impl Room {
         self.update_latest_read();
     }
 
-    /// Load the room members in the list.
-    pub async fn load_members(&self) {
-        let imp = self.imp();
-        if imp.members_loaded.get() {
-            return;
-        }
-
-        imp.members_loaded.set(true);
-
-        let matrix_room = self.matrix_room();
-        let handle = spawn_tokio!(async move {
-            let mut memberships = RoomMemberships::all();
-            memberships.remove(RoomMemberships::LEAVE);
-
-            matrix_room.members(memberships).await
-        });
-
-        // FIXME: We should retry to load the room members if the request failed
-        match handle.await.unwrap() {
-            Ok(members) => {
-                // Add all members needed to display room events.
-                self.members().update_from_room_members(&members);
-                return;
-            }
-            Err(error) => {
-                self.imp().members_loaded.set(false);
-                error!("Failed to load room members from server: {error}");
-            }
-        }
-
-        // Use the members already received by the SDK as a fallback.
-        let matrix_room = self.matrix_room();
-        let handle = spawn_tokio!(async move {
-            let mut memberships = RoomMemberships::all();
-            memberships.remove(RoomMemberships::LEAVE);
-
-            matrix_room.members_no_sync(memberships).await
-        });
-
-        match handle.await.unwrap() {
-            Ok(members) => {
-                // Add all members needed to display room events.
-                self.members().update_from_room_members(&members);
-            }
-            Err(error) => {
-                error!("Failed to load room members from store: {error}");
-            }
-        }
-    }
-
     fn load_power_levels(&self) {
         let matrix_room = self.matrix_room();
         let handle = spawn_tokio!(async move {
@@ -1342,7 +1291,7 @@ impl Room {
         if state == RoomState::Joined {
             // If we where invited or left before, the list was likely not completed or
             // might have changed.
-            self.imp().members_loaded.set(false);
+            self.members().set_is_loaded(false);
         }
 
         self.load_category();
@@ -1690,7 +1639,7 @@ impl Room {
         // We don't have the active member count for invited rooms so process them too.
         if avatar_url.is_none() && members_count > 0 && members_count <= 2 {
             // First, make sure the members are loaded.
-            self.load_members().await;
+            self.members().load().await;
 
             let own_user_id = self.session().user().unwrap().user_id();
             let members = self.members();

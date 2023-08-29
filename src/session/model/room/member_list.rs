@@ -1,14 +1,19 @@
 use gtk::{gio, glib, prelude::*, subclass::prelude::*};
 use indexmap::{map::Entry, IndexMap};
-use matrix_sdk::ruma::{
-    events::{room::member::RoomMemberEventContent, OriginalSyncStateEvent},
-    OwnedUserId, UserId,
+use matrix_sdk::{
+    ruma::{
+        events::{room::member::RoomMemberEventContent, OriginalSyncStateEvent},
+        OwnedUserId, UserId,
+    },
+    RoomMemberships,
 };
+use tracing::error;
 
 use super::{Member, Membership, Room};
+use crate::spawn_tokio;
 
 mod imp {
-    use std::cell::RefCell;
+    use std::cell::{Cell, RefCell};
 
     use glib::object::WeakRef;
     use once_cell::sync::Lazy;
@@ -17,8 +22,12 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct MemberList {
+        /// The list of known members.
         pub members: RefCell<IndexMap<OwnedUserId, Member>>,
+        /// The room these members belong to.
         pub room: WeakRef<Room>,
+        /// Whether all the members are loaded.
+        pub is_loaded: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -31,9 +40,14 @@ mod imp {
     impl ObjectImpl for MemberList {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::builder::<Room>("room")
-                    .construct_only()
-                    .build()]
+                vec![
+                    glib::ParamSpecObject::builder::<Room>("room")
+                        .construct_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("is-loaded")
+                        .read_only()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -47,8 +61,11 @@ mod imp {
         }
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
-                "room" => self.obj().room().to_value(),
+                "room" => obj.room().to_value(),
+                "is-loaded" => obj.is_loaded().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -87,6 +104,71 @@ impl MemberList {
     /// The room containing these members.
     pub fn room(&self) -> Room {
         self.imp().room.upgrade().unwrap()
+    }
+
+    /// Whether this list is fully loaded.
+    pub fn is_loaded(&self) -> bool {
+        self.imp().is_loaded.get()
+    }
+
+    /// Set whether this list is fully loaded.
+    pub(super) fn set_is_loaded(&self, is_loaded: bool) {
+        if self.is_loaded() == is_loaded {
+            return;
+        }
+
+        self.imp().is_loaded.set(is_loaded);
+        self.notify("is-loaded");
+    }
+
+    /// Load this list.
+    pub async fn load(&self) {
+        if self.is_loaded() {
+            return;
+        }
+
+        self.set_is_loaded(true);
+
+        let room = self.room();
+        let matrix_room = room.matrix_room();
+        let handle = spawn_tokio!(async move {
+            let mut memberships = RoomMemberships::all();
+            memberships.remove(RoomMemberships::LEAVE);
+
+            matrix_room.members(memberships).await
+        });
+
+        // FIXME: We should retry to load the room members if the request failed
+        match handle.await.unwrap() {
+            Ok(members) => {
+                // Add all members needed to display room events.
+                self.update_from_room_members(&members);
+                return;
+            }
+            Err(error) => {
+                self.set_is_loaded(false);
+                error!(%error, "Failed to load room members from server");
+            }
+        }
+
+        // Use the members already received by the SDK as a fallback.
+        let matrix_room = room.matrix_room();
+        let handle = spawn_tokio!(async move {
+            let mut memberships = RoomMemberships::all();
+            memberships.remove(RoomMemberships::LEAVE);
+
+            matrix_room.members_no_sync(memberships).await
+        });
+
+        match handle.await.unwrap() {
+            Ok(members) => {
+                // Add all members needed to display room events.
+                self.update_from_room_members(&members);
+            }
+            Err(error) => {
+                error!(%error, "Failed to load room members from store");
+            }
+        }
     }
 
     /// Updates members with the given RoomMember values.

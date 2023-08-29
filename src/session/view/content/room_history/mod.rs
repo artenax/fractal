@@ -623,7 +623,7 @@ impl RoomHistory {
             spawn!(
                 glib::Priority::LOW,
                 clone!(@weak room => async move {
-                    room.load_members().await;
+                    room.members().load().await;
                 })
             );
             self.init_invite_action(room);
