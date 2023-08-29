@@ -70,7 +70,7 @@ mod imp {
         pub timeline: OnceCell<Timeline>,
         pub members: OnceCell<MemberList>,
         /// The user who sent the invite to this room. This is only set when
-        /// this room is an invitiation.
+        /// this room is an invitation.
         pub inviter: RefCell<Option<Member>>,
         pub members_loaded: Cell<bool>,
         pub power_levels: RefCell<PowerLevels>,
