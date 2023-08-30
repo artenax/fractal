@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-08-17 08:27+0000\n"
-"PO-Revision-Date: 2023-08-18 21:35+0700\n"
+"POT-Creation-Date: 2023-08-18 14:36+0000\n"
+"PO-Revision-Date: 2023-08-30 11:45+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -949,7 +949,7 @@ msgstr "Kata sandi tidak cocok"
 
 #: src/session/view/account_settings/user_page/change_password_subpage.rs:269
 msgid "Password changed successfully"
-msgstr "Kata sandi berhasil dirubah"
+msgstr "Kata sandi berhasil diubah"
 
 #: src/session/view/account_settings/user_page/change_password_subpage.rs:280
 msgid "Password rejected for being too weak"
