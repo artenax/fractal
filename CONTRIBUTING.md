@@ -37,10 +37,10 @@ flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.or
 flatpak install --user gnome-nightly org.gnome.Sdk//master org.gnome.Platform//master
 
 # Install the required rust-stable extension from Flathub
-flatpak install --user flathub org.freedesktop.Sdk.Extension.rust-stable//23.08beta
+flatpak install --user flathub org.freedesktop.Sdk.Extension.rust-stable//23.08
 
 # Install the required llvm extension from Flathub
-flatpak install --user flathub org.freedesktop.Sdk.Extension.llvm16//23.08beta
+flatpak install --user flathub org.freedesktop.Sdk.Extension.llvm16//23.08
 ```
 
 If you are building the flatpak manually you will also need flatpak-builder on your system, or the
