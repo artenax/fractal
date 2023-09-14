@@ -117,7 +117,7 @@ impl MessageContent {
                 match related_content {
                     TimelineDetails::Unavailable => {
                         spawn!(
-                            glib::PRIORITY_HIGH,
+                            glib::Priority::HIGH,
                             clone!(@weak event => async move {
                                 if let Err(error) = event.fetch_missing_details().await {
                                     error!("Failed to fetch event details: {error}");

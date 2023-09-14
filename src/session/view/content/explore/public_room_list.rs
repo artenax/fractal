@@ -280,7 +280,7 @@ impl PublicRoomList {
         });
 
         spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
+            glib::Priority::DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 // If the search term changed we ignore the response
                 if obj.is_valid_response(current_search_term, current_server, current_network) {

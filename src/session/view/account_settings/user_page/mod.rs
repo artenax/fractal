@@ -156,7 +156,7 @@ impl UserPage {
         );
 
         spawn!(
-            glib::PRIORITY_LOW,
+            glib::Priority::LOW,
             clone!(@weak self as obj => async move {
                 let imp = obj.imp();
                 let client = obj.session().unwrap().client();
@@ -401,7 +401,7 @@ impl UserPage {
 
     fn init_change_password(&self) {
         spawn!(
-            glib::PRIORITY_LOW,
+            glib::Priority::LOW,
             clone!(@weak self as obj => async move {
                 let client = obj.session().unwrap().client();
 

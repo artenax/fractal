@@ -163,7 +163,7 @@ impl AvatarImage {
             spawn_tokio!(async move { client.media().get_media_content(&request, true).await });
 
         spawn!(
-            glib::PRIORITY_LOW,
+            glib::Priority::LOW,
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
                     Ok(data) => obj.set_image_data(Some(data)),

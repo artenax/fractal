@@ -81,11 +81,11 @@ mod imp {
 
     impl Default for Timeline {
         fn default() -> Self {
-            let start_items = gio::ListStore::new(TimelineItem::static_type());
-            let sdk_items = gio::ListStore::new(TimelineItem::static_type());
-            let end_items = gio::ListStore::new(TimelineItem::static_type());
+            let start_items = gio::ListStore::new::<TimelineItem>();
+            let sdk_items = gio::ListStore::new::<TimelineItem>();
+            let end_items = gio::ListStore::new::<TimelineItem>();
 
-            let model_list = gio::ListStore::new(gio::ListModel::static_type());
+            let model_list = gio::ListStore::new::<gio::ListModel>();
             model_list.append(&start_items);
             model_list.append(&sdk_items);
             model_list.append(&end_items);

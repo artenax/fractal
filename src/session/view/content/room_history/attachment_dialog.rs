@@ -101,7 +101,7 @@ impl AttachmentDialog {
         let sender = Cell::new(Some(sender));
 
         let handler_id = self.connect_close_request(
-            clone!(@weak self as obj => @default-return gtk::Inhibit(false), move |_| {
+            clone!(@weak self as obj => @default-return glib::Propagation::Proceed, move |_| {
                 if let Some(sender) = sender.take() {
                     let response = if obj.imp().send.get() {
                         gtk::ResponseType::Ok
@@ -111,7 +111,7 @@ impl AttachmentDialog {
 
                     sender.send(response).unwrap();
                 }
-                gtk::Inhibit(false)
+                glib::Propagation::Proceed
             }),
         );
 

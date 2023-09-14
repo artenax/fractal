@@ -67,7 +67,7 @@ pub async fn load_file(file: &gio::File) -> Result<(Vec<u8>, FileInfo), glib::Er
         .query_info_future(
             &attributes.join(","),
             gio::FileQueryInfoFlags::NONE,
-            glib::PRIORITY_DEFAULT,
+            glib::Priority::DEFAULT,
         )
         .await?;
 

@@ -146,7 +146,7 @@ impl NotificationsPage {
         self.notify("session");
 
         spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
+            glib::Priority::DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 obj.init_page().await;
             })

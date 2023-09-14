@@ -1,5 +1,5 @@
 use adw::subclass::prelude::*;
-use gst::ClockTime;
+use gst::{bus::BusWatchGuard, ClockTime};
 use gst_play::{Play as GstPlay, PlayMessage};
 use gtk::{gio, glib, glib::clone, prelude::*, CompositeTemplate};
 use tracing::{error, warn};
@@ -7,7 +7,7 @@ use tracing::{error, warn};
 use super::VideoPlayerRenderer;
 
 mod imp {
-    use std::cell::{Cell, RefCell};
+    use std::cell::{Cell, OnceCell, RefCell};
 
     use glib::subclass::InitializingObject;
     use once_cell::sync::Lazy;
@@ -26,6 +26,7 @@ mod imp {
         pub timestamp: TemplateChild<gtk::Label>,
         #[template_child]
         pub player: TemplateChild<GstPlay>,
+        pub bus_guard: OnceCell<BusWatchGuard>,
         /// The file that is currently played.
         pub file: RefCell<Option<gio::File>>,
     }
@@ -83,10 +84,10 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            self.player
+            let bus_guard = self.player
                 .message_bus()
                 .add_watch_local(
-                    clone!(@weak obj =>  @default-return glib::Continue(false), move |_, message| {
+                    clone!(@weak obj =>  @default-return glib::ControlFlow::Break, move |_, message| {
                         match PlayMessage::parse(message) {
                             Ok(PlayMessage::DurationChanged { duration }) => obj.duration_changed(duration),
                             Ok(PlayMessage::Warning { error, .. }) => {
@@ -98,10 +99,11 @@ mod imp {
                             _ => {}
                         }
 
-                        glib::Continue(true)
+                        glib::ControlFlow::Continue
                     }),
                 )
                 .unwrap();
+            self.bus_guard.set(bus_guard).unwrap();
         }
     }
 

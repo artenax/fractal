@@ -214,7 +214,7 @@ impl MediaContentViewer {
             .query_info_future(
                 gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                 gio::FileQueryInfoFlags::NONE,
-                glib::PRIORITY_DEFAULT,
+                glib::Priority::DEFAULT,
             )
             .await
             .ok();

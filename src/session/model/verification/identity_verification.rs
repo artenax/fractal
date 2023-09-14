@@ -259,7 +259,7 @@ mod imp {
 
             main_receiver.attach(
                 None,
-                clone!(@weak obj => @default-return glib::Continue(false), move |message| {
+                clone!(@weak obj => @default-return glib::ControlFlow::Break, move |message| {
                     let imp = obj.imp();
                     match message {
                         MainMessage::QrCode(data) => { let _ = imp.qr_code.set(data); },
@@ -269,7 +269,7 @@ mod imp {
                         MainMessage::State(state) => obj.set_state(state),
                     }
 
-                    glib::Continue(true)
+                    glib::ControlFlow::Continue
                 }),
             );
 
@@ -499,10 +499,10 @@ impl IdentityVerification {
 
         glib::source::timeout_add_local(
             remaining,
-            clone!(@weak self as obj => @default-return glib::Continue(false), move || {
+            clone!(@weak self as obj => @default-return glib::ControlFlow::Break, move || {
                 obj.cancel(false);
 
-                glib::Continue(false)
+                glib::ControlFlow::Break
             }),
         );
     }

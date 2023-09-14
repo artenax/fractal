@@ -201,7 +201,7 @@ impl MessageAudio {
         let handle = spawn_tokio!(async move { client.media().get_file(audio, true).await });
 
         spawn!(
-            glib::PRIORITY_LOW,
+            glib::Priority::LOW,
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
                     Ok(Some(data)) => {

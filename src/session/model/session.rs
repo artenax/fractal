@@ -367,7 +367,7 @@ impl Session {
 
         let handle = spawn_tokio!(async move { client.account().get_profile().await });
 
-        spawn!(glib::PRIORITY_LOW, async move {
+        spawn!(glib::Priority::LOW, async move {
             match handle.await.unwrap() {
                 Ok(res) => {
                     user.set_display_name(res.displayname);
@@ -497,7 +497,7 @@ impl Session {
         // TODO: Show error screen. See: https://gitlab.gnome.org/GNOME/fractal/-/issues/901
 
         spawn!(
-            glib::PRIORITY_LOW,
+            glib::Priority::LOW,
             clone!(@strong self as obj => async move {
                 obj.cleanup_session().await;
             })

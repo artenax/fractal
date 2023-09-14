@@ -103,7 +103,7 @@ impl LoginAdvancedDialog {
             if let Some(sender) = sender.take() {
                 sender.send(()).unwrap();
             }
-            gtk::Inhibit(false)
+            glib::Propagation::Proceed
         });
 
         self.present();

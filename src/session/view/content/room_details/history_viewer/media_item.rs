@@ -202,7 +202,7 @@ impl MediaItem {
         });
 
         spawn!(
-            glib::PRIORITY_LOW,
+            glib::Priority::LOW,
             clone!(@weak self as obj => async move {
                 let imp = obj.imp();
 

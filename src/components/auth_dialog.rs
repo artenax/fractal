@@ -137,9 +137,9 @@ mod imp {
                 }));
 
             obj.connect_close_request(
-                clone!(@weak obj => @default-return gtk::Inhibit(false), move |_| {
+                clone!(@weak obj => @default-return glib::Propagation::Proceed, move |_| {
                     obj.emit_by_name::<()>("response", &[&false]);
-                    gtk::Inhibit(false)
+                    glib::Propagation::Proceed
                 }),
             );
         }

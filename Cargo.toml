@@ -21,7 +21,7 @@ codegen-units = 16
 
 # Please keep dependencies sorted.
 [dependencies]
-ashpd = { version = "0.4", default-features = false, features = [
+ashpd = { version = "0.6", default-features = false, features = [
     "gtk4",
     "pipewire",
     "tracing",
@@ -33,12 +33,12 @@ futures-channel = "0.3"
 futures-util = "0.3"
 geo-uri = "0.2"
 gettext-rs = { version = "0.7", features = ["gettext-system"] }
-gst = { version = "0.20", package = "gstreamer" }
-gst_base = { version = "0.20", package = "gstreamer-base" }
-gst_gtk = { version = "0.10", package = "gst-plugin-gtk4" }
-gst_pbutils = { version = "0.20", package = "gstreamer-pbutils" }
-gst_play = { version = "0.20", package = "gstreamer-play" }
-gst_video = { version = "0.20", package = "gstreamer-video" }
+gst = { version = "0.21", package = "gstreamer" }
+gst_base = { version = "0.21", package = "gstreamer-base" }
+gst_gtk = { version = "0.11", package = "gst-plugin-gtk4" }
+gst_pbutils = { version = "0.21", package = "gstreamer-pbutils" }
+gst_play = { version = "0.21", package = "gstreamer-play" }
+gst_video = { version = "0.21", package = "gstreamer-video" }
 html-escape = "0.2"
 html2pango = "0.5"
 html5gum = "0.5"
@@ -70,12 +70,12 @@ url = "2"
 
 [dependencies.adw]
 package = "libadwaita"
-version = "0.3"
+version = "0.5"
 features = ["v1_3"]
 
 [dependencies.gtk]
 package = "gtk4"
-version = "0.6"
+version = "0.7"
 features = ["v4_10"]
 
 [dependencies.matrix-sdk]
@@ -114,8 +114,8 @@ features = [
 
 [dependencies.shumate]
 package = "libshumate"
-version = "0.3"
+version = "0.4"
 
 [dependencies.sourceview]
 package = "sourceview5"
-version = "0.6"
+version = "0.7"

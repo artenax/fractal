@@ -16,12 +16,12 @@ use ashpd::{
     desktop::location::{Accuracy, LocationProxy},
     WindowIdentifier,
 };
-use futures_util::TryFutureExt;
+use futures_util::{FutureExt, StreamExt, TryFutureExt};
 use geo_uri::GeoUri;
 use gettextrs::{gettext, pgettext};
 use gtk::{
-    gdk, gio, glib,
-    glib::{clone, signal::Inhibit, FromVariant},
+    gdk, gio,
+    glib::{self, clone, FromVariant},
     prelude::*,
     CompositeTemplate,
 };
@@ -443,15 +443,15 @@ mod imp {
                 }));
 
             key_events
-                .connect_key_pressed(clone!(@weak obj => @default-return Inhibit(false), move |_, key, _, modifier| {
+                .connect_key_pressed(clone!(@weak obj => @default-return glib::Propagation::Proceed, move |_, key, _, modifier| {
                 if modifier.is_empty() && (key == gdk::Key::Return || key == gdk::Key::KP_Enter) {
                     obj.activate_action("room-history.send-text-message", None).unwrap();
-                    Inhibit(true)
+                    glib::Propagation::Stop
                 } else if modifier.is_empty() && key == gdk::Key::Escape && obj.related_event_type() != RelatedEventType::None {
                     obj.clear_related_event();
-                    Inhibit(true)
+                    glib::Propagation::Stop
                 } else {
-                    Inhibit(false)
+                    glib::Propagation::Proceed
                 }
             }));
             self.message_entry.add_controller(key_events);
@@ -621,7 +621,7 @@ impl RoomHistory {
             self.trigger_read_receipts_update();
 
             spawn!(
-                glib::PRIORITY_LOW,
+                glib::Priority::LOW,
                 clone!(@weak room => async move {
                     room.load_members().await;
                 })
@@ -1081,7 +1081,7 @@ impl RoomHistory {
         imp.is_loading.set(true);
 
         let obj_weak = self.downgrade();
-        spawn!(glib::PRIORITY_DEFAULT_IDLE, async move {
+        spawn!(glib::Priority::DEFAULT_IDLE, async move {
             room.timeline().load().await;
 
             // Remove the task
@@ -1159,9 +1159,12 @@ impl RoomHistory {
             // We want to be listening for new locations whenever the session is up
             // otherwise we might lose the first response and will have to wait for a future
             // update by geoclue
+            // FIXME: We should update the location on the map according to updates received
+            // by the proxy.
+            let mut stream = proxy.receive_location_updated().await?;
             let (_, location) = futures_util::try_join!(
                 proxy.start(&session, &identifier).into_future(),
-                proxy.receive_location_updated().into_future()
+                stream.next().map(|l| l.ok_or(ashpd::Error::NoResponse))
             )?;
 
             ashpd::Result::Ok(location)
@@ -1339,7 +1342,7 @@ impl RoomHistory {
         if formats.contains_type(gdk::Texture::static_type()) {
             // There is an image in the clipboard.
             match clipboard
-                .read_value_future(gdk::Texture::static_type(), glib::PRIORITY_DEFAULT)
+                .read_value_future(gdk::Texture::static_type(), glib::Priority::DEFAULT)
                 .await
             {
                 Ok(value) => match value.get::<gdk::Texture>() {
@@ -1356,7 +1359,7 @@ impl RoomHistory {
         } else if formats.contains_type(gio::File::static_type()) {
             // There is a file in the clipboard.
             match clipboard
-                .read_value_future(gio::File::static_type(), glib::PRIORITY_DEFAULT)
+                .read_value_future(gio::File::static_type(), glib::Priority::DEFAULT)
                 .await
             {
                 Ok(value) => match value.get::<gio::File>() {

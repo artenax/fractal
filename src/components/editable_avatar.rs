@@ -387,7 +387,7 @@ impl EditableAvatar {
     }
 
     async fn choose_avatar(&self) {
-        let filters = gio::ListStore::new(gtk::FileFilter::static_type());
+        let filters = gio::ListStore::new::<gtk::FileFilter>();
 
         let image_filter = gtk::FileFilter::new();
         image_filter.set_name(Some(&gettext("Images")));
@@ -421,7 +421,7 @@ impl EditableAvatar {
             .query_info_future(
                 gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                 gio::FileQueryInfoFlags::NONE,
-                glib::PRIORITY_LOW,
+                glib::Priority::LOW,
             )
             .await
             .ok()

@@ -16,7 +16,7 @@ use std::{
 };
 
 use ashpd::desktop::camera;
-use gst::prelude::*;
+use gst::{bus::BusWatchGuard, prelude::*};
 use gtk::{
     gdk, glib,
     glib::{clone, subclass::prelude::*},
@@ -43,7 +43,7 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct CameraPaintable {
-        pub pipeline: RefCell<Option<gst::Pipeline>>,
+        pub pipeline: RefCell<Option<(gst::Pipeline, BusWatchGuard)>>,
         pub sink_paintable: RefCell<Option<gdk::Paintable>>,
     }
 
@@ -145,7 +145,7 @@ impl CameraPaintable {
         }
         let pipewire_src = src_builder.build().unwrap();
 
-        let pipeline = gst::Pipeline::new(None);
+        let pipeline = gst::Pipeline::new();
         let detector = QrCodeDetector::new(self.create_sender()).upcast();
 
         let tee = gst::ElementFactory::make("tee").build().unwrap();
@@ -172,7 +172,7 @@ impl CameraPaintable {
             .unwrap();
 
         pipeline
-            .add_many(&[
+            .add_many([
                 &pipewire_src,
                 &tee,
                 &queue,
@@ -184,14 +184,14 @@ impl CameraPaintable {
             ])
             .unwrap();
 
-        gst::Element::link_many(&[&pipewire_src, &tee, &queue, &videoconvert1, &detector]).unwrap();
+        gst::Element::link_many([&pipewire_src, &tee, &queue, &videoconvert1, &detector]).unwrap();
 
         tee.link_pads(None, &queue2, None).unwrap();
-        gst::Element::link_many(&[&queue2, &videoconvert2, &sink]).unwrap();
+        gst::Element::link_many([&queue2, &videoconvert2, &sink]).unwrap();
 
         let bus = pipeline.bus().unwrap();
-        bus.add_watch_local(
-            clone!(@weak self as paintable => @default-return glib::Continue(false), move |_, msg| {
+        let bus_guard = bus.add_watch_local(
+            clone!(@weak self as paintable => @default-return glib::ControlFlow::Break, move |_, msg| {
                 if let gst::MessageView::Error(err) = msg.view() {
                     error!(
                         "Error from {:?}: {} ({:?})",
@@ -200,7 +200,7 @@ impl CameraPaintable {
                         err.debug()
                     );
                 }
-                glib::Continue(true)
+                glib::ControlFlow::Continue
             }),
         )
         .expect("Failed to add bus watch");
@@ -219,7 +219,7 @@ impl CameraPaintable {
 
         self.set_sink_paintable(paintable);
         pipeline.set_state(gst::State::Playing).unwrap();
-        self.set_pipeline(Some(pipeline));
+        self.set_pipeline(Some((pipeline, bus_guard)));
         receiver.await.unwrap();
     }
 
@@ -240,10 +240,10 @@ impl CameraPaintable {
         self.invalidate_size();
     }
 
-    fn set_pipeline(&self, pipeline: Option<gst::Pipeline>) {
+    fn set_pipeline(&self, pipeline: Option<(gst::Pipeline, BusWatchGuard)>) {
         let imp = self.imp();
 
-        if let Some(pipeline) = imp.pipeline.take() {
+        if let Some((pipeline, _)) = imp.pipeline.take() {
             pipeline.set_state(gst::State::Null).unwrap();
         }
 
@@ -255,17 +255,17 @@ impl CameraPaintable {
     }
 
     fn create_sender(&self) -> glib::Sender<Action> {
-        let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (sender, receiver) = glib::MainContext::channel(glib::Priority::DEFAULT);
 
         receiver.attach(
             None,
-            glib::clone!(@weak self as obj => @default-return glib::Continue(false), move |action| {
+            glib::clone!(@weak self as obj => @default-return glib::ControlFlow::Break, move |action| {
                 match action {
                     Action::QrCodeDetected(code) => {
                         obj.emit_by_name::<()>("code-detected", &[&QrVerificationDataBoxed(code)]);
                     }
                 }
-                glib::Continue(true)
+                glib::ControlFlow::Continue
             }),
         );
 

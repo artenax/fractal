@@ -2,7 +2,6 @@ use std::cell::Cell;
 
 use adw::subclass::prelude::AdwApplicationWindowImpl;
 use gettextrs::gettext;
-use glib::signal::Inhibit;
 use gtk::{self, gdk, gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
 use ruma::RoomId;
 use tracing::{error, info, warn};
@@ -178,14 +177,14 @@ mod imp {
 
     impl WindowImpl for Window {
         // save window state on delete event
-        fn close_request(&self) -> Inhibit {
+        fn close_request(&self) -> glib::Propagation {
             if let Err(err) = self.obj().save_window_size() {
                 warn!("Failed to save window state, {}", &err);
             }
             if let Err(err) = self.obj().save_current_visible_session() {
                 warn!("Failed to save current session: {err}");
             }
-            Inhibit(false)
+            glib::Propagation::Proceed
         }
     }
 
@@ -294,7 +293,7 @@ impl Window {
                         }
 
                         spawn!(
-                            glib::PRIORITY_DEFAULT_IDLE,
+                            glib::Priority::DEFAULT_IDLE,
                             clone!(@weak self as obj => async move {
                                 obj.restore_stored_session(stored_session).await;
                             })

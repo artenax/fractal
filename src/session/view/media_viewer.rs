@@ -421,7 +421,7 @@ impl MediaViewer {
                 self.set_body(Some(image.body));
 
                 spawn!(
-                    glib::PRIORITY_LOW,
+                    glib::Priority::LOW,
                     clone!(@weak self as obj => async move {
                         let imp = obj.imp();
 
@@ -446,7 +446,7 @@ impl MediaViewer {
                 self.set_body(Some(video.body.clone()));
 
                 spawn!(
-                    glib::PRIORITY_LOW,
+                    glib::Priority::LOW,
                     clone!(@weak self as obj => async move {
                         let imp = obj.imp();
 

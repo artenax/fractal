@@ -255,7 +255,7 @@ mod imp {
             if !matches!(obj.category(), RoomType::Left | RoomType::Outdated) {
                 // Load the room history when idle
                 spawn!(
-                    glib::source::PRIORITY_LOW,
+                    glib::source::Priority::LOW,
                     clone!(@weak obj => async move {
                         obj.timeline().load().await;
                     })
@@ -633,7 +633,7 @@ impl Room {
                     let tags = spawn_tokio!(async move { matrix_room.tags().await });
 
                     spawn!(
-                        glib::PRIORITY_DEFAULT_IDLE,
+                        glib::Priority::DEFAULT_IDLE,
                         clone!(@weak self as obj => async move {
                             let mut category = if is_direct.await.unwrap() {
                                 RoomType::Direct
@@ -687,7 +687,7 @@ impl Room {
 
     fn setup_receipts(&self) {
         spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
+            glib::Priority::DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 let user_id = obj.session().user().unwrap().user_id();
                 let matrix_room = obj.matrix_room();
@@ -956,7 +956,7 @@ impl Room {
         let handle = spawn_tokio!(async move { matrix_room.display_name().await });
 
         spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
+            glib::Priority::DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 // FIXME: We should retry to if the request failed
                 match handle.await.unwrap() {
@@ -1204,7 +1204,7 @@ impl Room {
         });
 
         spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
+            glib::Priority::DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 if let Some(event) = handle.await.unwrap() {
                     obj.power_levels().update_from_event(event);
@@ -1221,7 +1221,7 @@ impl Room {
         let handle = spawn_tokio!(async move { timeline.send(content, None).await });
 
         spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
+            glib::Priority::DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 handle.await.unwrap();
             })
@@ -1247,7 +1247,7 @@ impl Room {
         });
 
         spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
+            glib::Priority::DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 // FIXME: We should retry the request if it fails
                 match handle.await.unwrap() {
@@ -1267,7 +1267,7 @@ impl Room {
         let handle = spawn_tokio!(async move { matrix_room.typing_notice(is_typing).await });
 
         spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
+            glib::Priority::DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
                     Ok(_) => {},

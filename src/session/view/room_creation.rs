@@ -195,7 +195,7 @@ impl RoomCreation {
         let handle = spawn_tokio!(async move { client.create_room(request).await });
 
         spawn!(
-            glib::PRIORITY_DEFAULT_IDLE,
+            glib::Priority::DEFAULT_IDLE,
             clone!(@weak self as obj => async move {
                 match handle.await.unwrap() {
                     Ok(matrix_room) => {

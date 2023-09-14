@@ -211,21 +211,21 @@ mod imp {
                     imp.buffer_handler.replace(Some((buffer, handler_id)));
 
                     let key_events = gtk::EventControllerKey::new();
-                    key_events.connect_key_pressed(clone!(@weak obj => @default-return glib::signal::Inhibit(false), move |_, key, _, modifier| {
+                    key_events.connect_key_pressed(clone!(@weak obj => @default-return glib::Propagation::Proceed, move |_, key, _, modifier| {
                         if modifier.is_empty() {
                             if obj.is_visible() {
                                 let imp = obj.imp();
                                 if matches!(key, gdk::Key::Return | gdk::Key::KP_Enter | gdk::Key::Tab) {
                                     // Activate completion.
                                     obj.activate_selected_row();
-                                    return glib::signal::Inhibit(true);
+                                    return glib::Propagation::Stop;
                                 } else if matches!(key, gdk::Key::Up | gdk::Key::KP_Up) {
                                     // Move up, if possible.
                                     let idx = obj.selected_row_index().unwrap_or_default();
                                     if idx > 0 {
                                         obj.select_row_at_index(Some(idx - 1));
                                     }
-                                    return glib::signal::Inhibit(true);
+                                    return glib::Propagation::Stop;
                                 } else if matches!(key, gdk::Key::Down | gdk::Key::KP_Down) {
                                     // Move down, if possible.
                                     let new_idx = if let Some(idx) = obj.selected_row_index() {
@@ -238,18 +238,18 @@ mod imp {
                                     if new_idx < max {
                                         obj.select_row_at_index(Some(new_idx));
                                     }
-                                    return glib::signal::Inhibit(true);
+                                    return glib::Propagation::Stop;
                                 } else if matches!(key, gdk::Key::Escape) {
                                     // Close.
                                     obj.inhibit();
-                                    return glib::signal::Inhibit(true);
+                                    return glib::Propagation::Stop;
                                 }
                             } else if matches!(key, gdk::Key::Tab) {
                                 obj.update_completion(true);
-                                return glib::signal::Inhibit(true);
+                                return glib::Propagation::Stop;
                             }
                         }
-                        glib::signal::Inhibit(false)
+                        glib::Propagation::Proceed
                     }));
 
                     view.add_controller(key_events);
