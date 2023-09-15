@@ -1,13 +1,18 @@
-use gtk::{gio, glib, prelude::*, subclass::prelude::*};
+use gtk::{
+    gio,
+    glib::{self, clone},
+    prelude::*,
+    subclass::prelude::*,
+};
 use ruma::{
     api::client::push::get_notifications::v3::Notification, EventId, OwnedEventId, OwnedRoomId,
     RoomId,
 };
-use tracing::{debug, warn};
+use tracing::{debug, error, warn};
 
 use super::{Room, Session};
 use crate::{
-    application::AppShowRoomPayload, prelude::*, utils::matrix::get_event_body, Application,
+    application::AppShowRoomPayload, spawn, spawn_tokio, utils::matrix::get_event_body, Application,
 };
 
 mod imp {
@@ -91,6 +96,12 @@ impl Notifications {
     /// The notification won't be shown if the application is active and this
     /// session is displayed.
     pub fn show(&self, matrix_notification: Notification) {
+        spawn!(clone!(@weak self as obj => async move {
+            obj.show_inner(matrix_notification).await;
+        }));
+    }
+
+    async fn show_inner(&self, matrix_notification: Notification) {
         let Some(session) = self.session() else {
             return;
         };
@@ -128,12 +139,26 @@ impl Notifications {
             }
         };
 
-        let sender_name = room
-            .members()
-            .get_or_create(event.sender().to_owned())
-            .display_name();
+        let matrix_room = room.matrix_room();
+        let sender_id = event.sender();
+        let owned_sender_id = sender_id.to_owned();
+        let handle =
+            spawn_tokio!(async move { matrix_room.get_member_no_sync(&owned_sender_id).await });
 
-        let body = match get_event_body(&event, &sender_name) {
+        let sender = match handle.await.unwrap() {
+            Ok(member) => member,
+            Err(error) => {
+                error!("Failed to get member for notification: {error}");
+                None
+            }
+        };
+
+        let sender_name = sender
+            .as_ref()
+            .and_then(|m| m.display_name())
+            .unwrap_or_else(|| sender_id.localpart());
+
+        let body = match get_event_body(&event, sender_name) {
             Some(body) => body,
             None => {
                 debug!("Received notification for event of unexpected type {event:?}",);
