@@ -797,7 +797,7 @@ impl Room {
                     .and_then(|event| {
                         // The user sent the event so it's the latest read event.
                         // Necessary because we don't get read receipts for the user's own events.
-                        if event.sender().user_id() == user_id {
+                        if event.sender_id() == user_id {
                             return Some(event.to_owned());
                         }
 
@@ -1615,8 +1615,7 @@ impl Room {
     /// Load the avatar for the room.
     async fn load_avatar(&self) {
         let matrix_room = self.matrix_room();
-        let avatar_url = matrix_room.avatar_url();
-        let avatar_data = self.avatar_data();
+        let mut avatar_url = matrix_room.avatar_url();
 
         let members_count = if matrix_room.state() == RoomState::Invited {
             // We don't have the members count for invited rooms, use the SDK's
@@ -1638,26 +1637,26 @@ impl Room {
         // Check if this is a 1-to-1 room to see if we can use a fallback.
         // We don't have the active member count for invited rooms so process them too.
         if avatar_url.is_none() && members_count > 0 && members_count <= 2 {
-            // First, make sure the members are loaded.
-            self.members().load().await;
+            let handle =
+                spawn_tokio!(async move { matrix_room.members(RoomMemberships::ACTIVE).await });
+            let members = match handle.await.unwrap() {
+                Ok(m) => m,
+                Err(e) => {
+                    error!("Failed to load room members: {e}");
+                    vec![]
+                }
+            };
 
             let own_user_id = self.session().user().unwrap().user_id();
-            let members = self.members();
             let mut has_own_member = false;
             let mut other_member = None;
 
             // Get the other member from the list.
-            for member in members.iter::<Member>() {
-                let Ok(member) = member else {
-                    break;
-                };
-
-                if matches!(member.membership(), Membership::Join | Membership::Invite) {
-                    if member.user_id() == own_user_id {
-                        has_own_member = true;
-                    } else {
-                        other_member = Some(member);
-                    }
+            for member in members {
+                if member.user_id() == own_user_id {
+                    has_own_member = true;
+                } else {
+                    other_member = Some(member);
                 }
 
                 if has_own_member && other_member.is_some() {
@@ -1668,24 +1667,11 @@ impl Room {
             // Fallback to other user's avatar if this is a 1-to-1 room.
             if members_count == 1 || (members_count == 2 && has_own_member) {
                 if let Some(other_member) = other_member {
-                    avatar_data.set_image(other_member.avatar_data().image());
-                    return;
+                    avatar_url = other_member.avatar_url().map(ToOwned::to_owned)
                 }
             }
         }
 
-        let avatar_image = avatar_data.image();
-        if avatar_image.uri_source() == AvatarUriSource::Room {
-            // We can just change the image URI.
-            avatar_image.set_uri(avatar_url);
-        } else {
-            // We need to create an AvatarImage since this one belongs to a user.
-            let avatar_image = AvatarImage::new(
-                &self.session(),
-                avatar_url.as_deref(),
-                AvatarUriSource::Room,
-            );
-            avatar_data.set_image(avatar_image);
-        }
+        self.avatar_data().image().set_uri(avatar_url);
     }
 }
