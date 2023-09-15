@@ -128,8 +128,7 @@ where
                     .user()
                     .map(|user| user.user_id())
                     .unwrap();
-                let own_user = event.room().members().get_or_create(own_user_id);
-                let is_from_own_user = event.sender() == own_user;
+                let is_from_own_user = event.sender_id() == own_user_id;
 
                 // Remove message
                 fn update_remove_action(
