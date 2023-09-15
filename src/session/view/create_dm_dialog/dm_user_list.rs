@@ -1,11 +1,14 @@
 use gtk::{gio, glib, glib::clone, prelude::*, subclass::prelude::*};
-use matrix_sdk::ruma::{api::client::user_directory::search_users, OwnedUserId, UserId};
-use tracing::{debug, error};
+use matrix_sdk::{
+    ruma::{api::client::user_directory::search_users, OwnedUserId, UserId},
+    RoomMemberships,
+};
+use tracing::error;
 
 use super::DmUser;
 use crate::{
     prelude::*,
-    session::model::{Member, Room, Session},
+    session::model::{Room, Session},
     spawn, spawn_tokio,
 };
 
@@ -229,35 +232,34 @@ impl DmUserList {
                             let Some(room) = room.upgrade() else {
                                 continue;
                             };
-                            let members = room.members();
+                            let matrix_room = room.matrix_room();
 
-                            if !room.is_joined() || room.matrix_room().active_members_count() > 2 {
+                            if !room.is_joined() || matrix_room.active_members_count() > 2 {
                                 continue;
                             }
 
-                            // Make sure we have all members loaded, in most cases members should
-                            // already be loaded
-                            room.members().load().await;
+                            let handle = spawn_tokio!(async move {
+                                matrix_room.members(RoomMemberships::ACTIVE).await
+                            });
 
-                            if members.n_items() >= 1 {
+                            let members = match handle.await.unwrap() {
+                                Ok(members) => members,
+                                Err(error) => {
+                                    error!("Failed to load members: {error}");
+                                    vec![]
+                                }
+                            };
+
+                            if !members.is_empty() {
                                 let mut found_others = false;
-                                for member in members.iter::<Member>() {
-                                    match member {
-                                        Ok(member) => {
-                                            if member.user_id() != own_user_id
-                                                && &member.user_id() != other_user_id
-                                            {
-                                                // We found other members in this room, let's ignore
-                                                // the
-                                                // room
-                                                found_others = true;
-                                                break;
-                                            }
-                                        }
-                                        Err(error) => {
-                                            debug!("Error iterating through room members: {error}");
-                                            break;
-                                        }
+                                for member in &members {
+                                    if member.user_id() != own_user_id
+                                        && member.user_id() != other_user_id
+                                    {
+                                        // We found other members in this room, let's ignore
+                                        // the room.
+                                        found_others = true;
+                                        break;
                                     }
                                 }
 
