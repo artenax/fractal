@@ -1,8 +1,9 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use matrix_sdk_ui::timeline::{TimelineItem as SdkTimelineItem, TimelineItemKind};
+use ruma::OwnedUserId;
 
 use super::VirtualItem;
-use crate::session::model::{Event, Member, Room};
+use crate::session::model::{Event, Room};
 
 mod imp {
     use std::cell::Cell;
@@ -17,7 +18,7 @@ mod imp {
         pub id: fn(&super::TimelineItem) -> String,
         pub selectable: fn(&super::TimelineItem) -> bool,
         pub can_hide_header: fn(&super::TimelineItem) -> bool,
-        pub event_sender: fn(&super::TimelineItem) -> Option<Member>,
+        pub event_sender_id: fn(&super::TimelineItem) -> Option<OwnedUserId>,
     }
 
     unsafe impl ClassStruct for TimelineItemClass {
@@ -39,9 +40,9 @@ mod imp {
         (klass.as_ref().can_hide_header)(this)
     }
 
-    pub(super) fn timeline_item_event_sender(this: &super::TimelineItem) -> Option<Member> {
+    pub(super) fn timeline_item_event_sender_id(this: &super::TimelineItem) -> Option<OwnedUserId> {
         let klass = this.class();
-        (klass.as_ref().event_sender)(this)
+        (klass.as_ref().event_sender_id)(this)
     }
 
     #[derive(Debug, Default)]
@@ -71,7 +72,7 @@ mod imp {
                     glib::ParamSpecBoolean::builder("can-hide-header")
                         .read_only()
                         .build(),
-                    glib::ParamSpecObject::builder::<Member>("event-sender")
+                    glib::ParamSpecString::builder("event-sender-id")
                         .read_only()
                         .build(),
                 ]
@@ -95,7 +96,11 @@ mod imp {
                 "selectable" => obj.selectable().to_value(),
                 "show-header" => obj.show_header().to_value(),
                 "can-hide-header" => obj.can_hide_header().to_value(),
-                "event-sender" => obj.event_sender().to_value(),
+                "event-sender-id" => obj
+                    .event_sender_id()
+                    .as_ref()
+                    .map(|u| u.as_str())
+                    .to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -170,7 +175,7 @@ pub trait TimelineItemExt: 'static {
     /// If this is a Matrix event, the sender of the event.
     ///
     /// Defaults to `None`.
-    fn event_sender(&self) -> Option<Member>;
+    fn event_sender_id(&self) -> Option<OwnedUserId>;
 }
 
 impl<O: IsA<TimelineItem>> TimelineItemExt for O {
@@ -201,8 +206,8 @@ impl<O: IsA<TimelineItem>> TimelineItemExt for O {
         imp::timeline_item_can_hide_header(self.upcast_ref())
     }
 
-    fn event_sender(&self) -> Option<Member> {
-        imp::timeline_item_event_sender(self.upcast_ref())
+    fn event_sender_id(&self) -> Option<OwnedUserId> {
+        imp::timeline_item_event_sender_id(self.upcast_ref())
     }
 }
 
@@ -222,7 +227,7 @@ pub trait TimelineItemImpl: ObjectImpl {
         false
     }
 
-    fn event_sender(&self) -> Option<Member> {
+    fn event_sender_id(&self) -> Option<OwnedUserId> {
         None
     }
 }
@@ -241,7 +246,7 @@ where
         klass.id = id_trampoline::<T>;
         klass.selectable = selectable_trampoline::<T>;
         klass.can_hide_header = can_hide_header_trampoline::<T>;
-        klass.event_sender = event_sender_trampoline::<T>;
+        klass.event_sender_id = event_sender_id_trampoline::<T>;
     }
 }
 
@@ -273,11 +278,11 @@ where
     this.imp().can_hide_header()
 }
 
-fn event_sender_trampoline<T>(this: &TimelineItem) -> Option<Member>
+fn event_sender_id_trampoline<T>(this: &TimelineItem) -> Option<OwnedUserId>
 where
     T: ObjectSubclass + TimelineItemImpl,
     T::Type: IsA<TimelineItem>,
 {
     let this = this.downcast_ref::<T::Type>().unwrap();
-    this.imp().event_sender()
+    this.imp().event_sender_id()
 }

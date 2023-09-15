@@ -311,7 +311,7 @@ impl Timeline {
                 .item(pos - 1)
                 .and_downcast::<TimelineItem>()
                 .filter(|item| item.can_hide_header())
-                .and_then(|item| item.event_sender())
+                .and_then(|item| item.event_sender_id())
         } else {
             None
         };
@@ -322,7 +322,7 @@ impl Timeline {
                 break;
             };
 
-            let current_sender = current.event_sender();
+            let current_sender = current.event_sender_id();
 
             if !current.can_hide_header() {
                 current.set_show_header(false);

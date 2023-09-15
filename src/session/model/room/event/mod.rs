@@ -160,8 +160,8 @@ mod imp {
             }
         }
 
-        fn event_sender(&self) -> Option<Member> {
-            Some(self.obj().sender())
+        fn event_sender_id(&self) -> Option<OwnedUserId> {
+            Some(self.obj().sender_id())
         }
 
         fn selectable(&self) -> bool {
