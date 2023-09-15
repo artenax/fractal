@@ -1107,7 +1107,7 @@ impl Room {
         }
         self.session()
             .verification_list()
-            .handle_response_room(self, events.iter());
+            .handle_response_room(self.clone(), events);
     }
 
     /// The timestamp of the room's latest possibly unread event.

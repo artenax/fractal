@@ -8,11 +8,12 @@ use matrix_sdk::ruma::{
     MilliSecondsSinceUnixEpoch, OwnedUserId, UserId,
 };
 use ruma::events::key::verification::REQUEST_TIMESTAMP_TIMEOUT;
-use tracing::{debug, warn};
+use tracing::{debug, error, warn};
 
 use crate::{
     prelude::*,
-    session::model::{IdentityVerification, Room, Session},
+    session::model::{IdentityVerification, Member, Room, Session},
+    spawn, spawn_tokio,
 };
 
 #[derive(Hash, PartialEq, Eq, Debug)]
@@ -199,12 +200,14 @@ impl VerificationList {
         }
     }
 
-    pub fn handle_response_room<'a>(
-        &self,
-        room: &Room,
-        events: impl Iterator<Item = &'a AnySyncTimelineEvent>,
-    ) {
-        for message_event in events.filter_map(|event| {
+    pub fn handle_response_room(&self, room: Room, events: Vec<AnySyncTimelineEvent>) {
+        spawn!(clone!(@weak self as obj => async move {
+            obj.handle_response_room_inner(room, events).await;
+        }));
+    }
+
+    async fn handle_response_room_inner(&self, room: Room, events: Vec<AnySyncTimelineEvent>) {
+        for message_event in events.iter().filter_map(|event| {
             if let AnySyncTimelineEvent::MessageLike(message_event) = event {
                 Some(message_event)
             } else {
@@ -225,18 +228,40 @@ impl VerificationList {
                         };
 
                         let session = self.session();
-                        let user = session.user().unwrap();
+                        let own_user_id = session.user().unwrap().user_id();
 
-                        let user_to_verify = if *request.to == *user.user_id() {
+                        let user_id_to_verify = if request.to == own_user_id {
                             // The request was sent by another user to verify us
-                            room.members().get_or_create(message.sender.clone())
-                        } else if *message.sender == *user.user_id() {
+                            &message.sender
+                        } else if message.sender == own_user_id {
                             // The request was sent by us to verify another user
-                            room.members().get_or_create(request.to.clone())
+                            &request.to
                         } else {
                             // Ignore the request when it doesn't verify us or wasn't set by us
                             continue;
                         };
+
+                        let matrix_room = room.matrix_room();
+                        let owned_user_id_to_verify = user_id_to_verify.clone();
+                        let handle = spawn_tokio!(async move {
+                            matrix_room
+                                .get_member_no_sync(&owned_user_id_to_verify)
+                                .await
+                        });
+
+                        let member = match handle.await.unwrap() {
+                            Ok(member) => member,
+                            Err(error) => {
+                                error!("Failed to get member for verification: {error}");
+                                None
+                            }
+                        };
+
+                        let user_to_verify = Member::new(&room, user_id_to_verify);
+
+                        if let Some(member) = member {
+                            user_to_verify.update_from_room_member(&member);
+                        }
 
                         // Ignore the request when we have a newer one
                         let previous_verification = room.verification();
@@ -247,7 +272,7 @@ impl VerificationList {
                         }
 
                         let request = if let Some(request) =
-                            self.get_by_id(&user_to_verify.user_id(), &message.event_id)
+                            self.get_by_id(user_id_to_verify, &message.event_id)
                         {
                             request
                         } else {
