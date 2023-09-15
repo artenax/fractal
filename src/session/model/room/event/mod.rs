@@ -1,23 +1,21 @@
 use std::fmt;
 
 use gtk::{glib, prelude::*, subclass::prelude::*};
+use indexmap::IndexMap;
 use matrix_sdk_ui::timeline::{
     AnyOtherFullStateEventContent, Error as TimelineError, EventTimelineItem, RepliedToEvent,
     TimelineDetails, TimelineItemContent,
 };
 use ruma::{
-    events::{room::message::MessageType, AnySyncTimelineEvent},
+    events::{receipt::Receipt, room::message::MessageType, AnySyncTimelineEvent},
     serde::Raw,
     MilliSecondsSinceUnixEpoch, OwnedEventId, OwnedTransactionId, OwnedUserId,
 };
 
 mod reaction_group;
 mod reaction_list;
-mod read_receipts;
 
-pub use self::{
-    reaction_group::ReactionGroup, reaction_list::ReactionList, read_receipts::ReadReceipts,
-};
+pub use self::{reaction_group::ReactionGroup, reaction_list::ReactionList};
 use super::{
     timeline::{TimelineItem, TimelineItemImpl},
     Member, Room,
@@ -67,7 +65,7 @@ mod imp {
         pub reactions: ReactionList,
 
         /// The read receipts on this event.
-        pub read_receipts: ReadReceipts,
+        pub read_receipts: gtk::StringList,
     }
 
     #[glib::object_subclass]
@@ -96,6 +94,9 @@ mod imp {
                         .read_only()
                         .build(),
                     glib::ParamSpecBoolean::builder("is-highlighted")
+                        .read_only()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("has-read-receipts")
                         .read_only()
                         .build(),
                 ]
@@ -129,6 +130,7 @@ mod imp {
                 "reactions" => obj.reactions().to_value(),
                 "is-edited" => obj.is_edited().to_value(),
                 "is-highlighted" => obj.is_highlighted().to_value(),
+                "has-read-receipts" => obj.has_read_receipts().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -217,7 +219,6 @@ impl Event {
         imp.room.set(Some(&room));
         imp.reactions
             .set_user(room.session().user().unwrap().clone());
-        imp.read_receipts.set_room(&room);
     }
 
     /// The underlying SDK timeline item of this `Event`.
@@ -232,7 +233,7 @@ impl Event {
         let imp = self.imp();
 
         imp.reactions.update(item.reactions().clone());
-        imp.read_receipts.update(item.read_receipts().clone());
+        self.update_read_receipts(item.read_receipts());
         imp.item.replace(Some(item));
 
         self.notify("source");
@@ -401,8 +402,54 @@ impl Event {
     }
 
     /// The read receipts on this event.
-    pub fn read_receipts(&self) -> &ReadReceipts {
+    pub fn read_receipts(&self) -> &gtk::StringList {
         &self.imp().read_receipts
+    }
+
+    /// Whether this event has any read receipt.
+    pub fn has_read_receipts(&self) -> bool {
+        self.imp().read_receipts.n_items() > 0
+    }
+
+    /// Update the read receipts list with the given receipts.
+    fn update_read_receipts(&self, new_read_receipts: &IndexMap<OwnedUserId, Receipt>) {
+        let read_receipts = &self.imp().read_receipts;
+        let old_count = read_receipts.n_items();
+        let new_count = new_read_receipts.len() as u32;
+
+        let new_user_ids = new_read_receipts
+            .keys()
+            .map(|u| u.as_str())
+            .collect::<Vec<_>>();
+
+        if old_count == new_count {
+            let mut is_all_same = true;
+            for i in 0..old_count {
+                let Some(old_user_id) = read_receipts.string(i) else {
+                    is_all_same = false;
+                    break;
+                };
+                let new_user_id = new_user_ids[i as usize];
+
+                if old_user_id != new_user_id {
+                    is_all_same = false;
+                    break;
+                }
+            }
+
+            if is_all_same {
+                return;
+            }
+        }
+
+        read_receipts.splice(0, old_count, &new_user_ids);
+
+        let had_read_receipts = old_count > 0;
+        let has_read_receipts = new_count > 0;
+
+        if had_read_receipts != has_read_receipts {
+            self.notify("has-read-receipts");
+        }
     }
 
     /// Get the ID of the event this `Event` replies to, if any.

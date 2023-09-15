@@ -28,7 +28,6 @@ mod imp {
     use once_cell::sync::Lazy;
 
     use super::*;
-    use crate::utils::template_callbacks::TemplateCallbacks;
 
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(
@@ -62,7 +61,6 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
-            TemplateCallbacks::bind_template_callbacks(klass);
 
             klass.install_action("message-row.show-media", None, move |obj, _, _| {
                 obj.show_media();
@@ -216,7 +214,8 @@ impl MessageRow {
         self.update_content(&event);
 
         imp.reactions.set_reaction_list(event.reactions());
-        imp.read_receipts.set_list(event.read_receipts());
+        imp.read_receipts
+            .set_list(&event.room(), event.read_receipts());
         imp.event.replace(Some(event));
         self.notify("event");
     }

@@ -244,7 +244,7 @@ impl ItemRow {
             if let Some(event) = item.downcast_ref::<Event>() {
                 let source_notify_handler =
                     event.connect_source_notify(clone!(@weak self as obj => move |event| {
-                        obj.set_event_widget(event);
+                        obj.set_event_widget(event.clone());
                         obj.set_action_group(obj.set_event_actions(Some(event.upcast_ref())));
                     }));
                 let is_highlighted_notify_handler = event.connect_notify_local(
@@ -256,7 +256,7 @@ impl ItemRow {
                 imp.notify_handlers
                     .replace(vec![source_notify_handler, is_highlighted_notify_handler]);
 
-                self.set_event_widget(event);
+                self.set_event_widget(event.clone());
                 self.set_action_group(self.set_event_actions(Some(event.upcast_ref())));
             } else if let Some(item) = item.downcast_ref::<VirtualItem>() {
                 self.set_popover(None);
@@ -336,7 +336,7 @@ impl ItemRow {
         self.update_highlight();
     }
 
-    fn set_event_widget(&self, event: &Event) {
+    fn set_event_widget(&self, event: Event) {
         match event.content() {
             TimelineItemContent::MembershipChange(_)
             | TimelineItemContent::ProfileChange(_)
@@ -358,7 +358,7 @@ impl ItemRow {
                     self.set_child(Some(&child));
                     child
                 };
-                child.set_event(event.clone());
+                child.set_event(event);
             }
         }
     }

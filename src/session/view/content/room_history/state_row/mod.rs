@@ -19,7 +19,10 @@ use super::ReadReceiptsList;
 use crate::{gettext_f, prelude::*, session::model::Event};
 
 mod imp {
+    use std::cell::RefCell;
+
     use glib::subclass::InitializingObject;
+    use once_cell::sync::Lazy;
 
     use super::*;
     use crate::utils::template_callbacks::TemplateCallbacks;
@@ -33,6 +36,8 @@ mod imp {
         pub content: TemplateChild<adw::Bin>,
         #[template_child]
         pub read_receipts: TemplateChild<ReadReceiptsList>,
+        /// The state event displayed by this widget.
+        pub event: RefCell<Option<Event>>,
     }
 
     #[glib::object_subclass]
@@ -51,7 +56,34 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for StateRow {}
+    impl ObjectImpl for StateRow {
+        fn properties() -> &'static [glib::ParamSpec] {
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecObject::builder::<Event>("event")
+                    .explicit_notify()
+                    .build()]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+            match pspec.name() {
+                "event" => obj.set_event(value.get().unwrap()),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+            match pspec.name() {
+                "event" => obj.event().to_value(),
+                _ => unimplemented!(),
+            }
+        }
+    }
+
     impl WidgetImpl for StateRow {}
     impl BinImpl for StateRow {}
 }
@@ -70,7 +102,11 @@ impl StateRow {
         &self.imp().content
     }
 
-    pub fn set_event(&self, event: &Event) {
+    pub fn event(&self) -> Option<Event> {
+        self.imp().event.borrow().clone()
+    }
+
+    pub fn set_event(&self, event: Event) {
         match event.content() {
             TimelineItemContent::MembershipChange(membership_change) => {
                 self.update_with_membership_change(&membership_change, &event.sender_id())
@@ -79,12 +115,16 @@ impl StateRow {
                 self.update_with_profile_change(&profile_change, &event.sender().display_name())
             }
             TimelineItemContent::OtherState(other_state) => {
-                self.update_with_other_state(event, &other_state)
+                self.update_with_other_state(&event, &other_state)
             }
             _ => unreachable!(),
         }
 
-        self.imp().read_receipts.set_list(event.read_receipts());
+        let imp = self.imp();
+        imp.read_receipts
+            .set_list(&event.room(), event.read_receipts());
+        imp.event.replace(Some(event));
+        self.notify("event");
     }
 
     fn update_with_other_state(&self, event: &Event, other_state: &OtherState) {

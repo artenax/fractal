@@ -1,10 +1,11 @@
 use adw::subclass::prelude::*;
 use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
+use ruma::UserId;
 
 use crate::{
     components::{Avatar, OverlappingBox},
     prelude::*,
-    session::model::{Member, ReadReceipts},
+    session::model::Room,
     utils::BoundObjectWeakRef,
 };
 
@@ -29,7 +30,7 @@ mod imp {
         pub overlapping_box: TemplateChild<OverlappingBox>,
 
         /// The read receipts that are bound, if any.
-        pub bound_receipts: BoundObjectWeakRef<ReadReceipts>,
+        pub bound_receipts: BoundObjectWeakRef<gtk::StringList>,
     }
 
     #[glib::object_subclass]
@@ -50,7 +51,7 @@ mod imp {
     impl ObjectImpl for ReadReceiptsList {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::builder::<ReadReceipts>("list")
+                vec![glib::ParamSpecObject::builder::<gtk::StringList>("list")
                     .read_only()
                     .build()]
             });
@@ -88,20 +89,31 @@ impl ReadReceiptsList {
         glib::Object::new()
     }
 
-    pub fn list(&self) -> Option<ReadReceipts> {
+    pub fn list(&self) -> Option<gtk::StringList> {
         self.imp().bound_receipts.obj()
     }
 
-    pub fn set_list(&self, read_receipts: &ReadReceipts) {
+    pub fn set_list(&self, room: &Room, read_receipts: &gtk::StringList) {
         let imp = self.imp();
 
-        imp.overlapping_box.bind_model(Some(read_receipts), |obj| {
-            let avatar_data = obj.downcast_ref::<Member>().unwrap().avatar_data();
-            let avatar = Avatar::new();
-            avatar.set_size(20);
-            avatar.set_data(Some(avatar_data.clone()));
-            avatar.upcast()
-        });
+        imp.overlapping_box.bind_model(
+            Some(read_receipts),
+            clone!(@weak room => @default-return { Avatar::new().upcast() }, move |item| {
+                let user_id = UserId::parse(
+                    item.downcast_ref::<gtk::StringObject>()
+                        .unwrap()
+                        .string()
+                    )
+                    .expect("Strings in read receipts list are valid UserIds");
+                let member = room.members().get_or_create(user_id);
+
+                let avatar_data = member.avatar_data();
+                let avatar = Avatar::new();
+                avatar.set_size(20);
+                avatar.set_data(Some(avatar_data.clone()));
+                avatar.upcast()
+            }),
+        );
 
         let items_changed_handler_id = read_receipts.connect_items_changed(
             clone!(@weak self as obj => move |read_receipts, _, _, _| {
@@ -115,7 +127,7 @@ impl ReadReceiptsList {
         self.notify("list");
     }
 
-    fn update_label(&self, read_receipts: &ReadReceipts) {
+    fn update_label(&self, read_receipts: &gtk::StringList) {
         let label = &self.imp().label;
         let n_items = read_receipts.n_items();
         if n_items > MAX_RECEIPTS_SHOWN {

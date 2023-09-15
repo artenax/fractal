@@ -11,11 +11,9 @@
         <child>
           <object class="ContentReadReceiptsList" id="read_receipts">
             <binding name="visible">
-              <closure type="gboolean" function="invert_boolean">
-                <lookup name="is-empty" type="ReadReceipts">
-                  <lookup name="list">read_receipts</lookup>
-                </lookup>
-              </closure>
+              <lookup name="has-read-receipts" type="RoomEvent">
+                <lookup name="event">ContentStateRow</lookup>
+              </lookup>
             </binding>
           </object>
         </child>

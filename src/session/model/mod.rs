@@ -13,9 +13,8 @@ pub use self::{
     notifications::Notifications,
     room::{
         Event, EventKey, HighlightFlags, Member, MemberList, MemberRole, Membership, PowerLevel,
-        ReactionGroup, ReactionList, ReadReceipts, Room, RoomType, Timeline, TimelineItem,
-        TimelineItemExt, TimelineState, TypingList, VirtualItem, VirtualItemKind, POWER_LEVEL_MAX,
-        POWER_LEVEL_MIN,
+        ReactionGroup, ReactionList, Room, RoomType, Timeline, TimelineItem, TimelineItemExt,
+        TimelineState, TypingList, VirtualItem, VirtualItemKind, POWER_LEVEL_MAX, POWER_LEVEL_MIN,
     },
     room_list::RoomList,
     session::{Session, SessionState},
