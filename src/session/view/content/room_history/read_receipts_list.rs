@@ -105,7 +105,8 @@ impl ReadReceiptsList {
                         .string()
                     )
                     .expect("Strings in read receipts list are valid UserIds");
-                let member = room.members().get_or_create(user_id);
+                // We should have a strong reference to the list in the RoomHistory so we can use `get_or_create_members()`.
+                let member = room.get_or_create_members().get_or_create(user_id);
 
                 let avatar_data = member.avatar_data();
                 let avatar = Avatar::new();

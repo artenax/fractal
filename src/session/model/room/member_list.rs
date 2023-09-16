@@ -1,4 +1,9 @@
-use gtk::{gio, glib, prelude::*, subclass::prelude::*};
+use gtk::{
+    gio,
+    glib::{self, clone},
+    prelude::*,
+    subclass::prelude::*,
+};
 use indexmap::{map::Entry, IndexMap};
 use matrix_sdk::{
     ruma::{
@@ -10,7 +15,7 @@ use matrix_sdk::{
 use tracing::error;
 
 use super::{Member, Membership, Room};
-use crate::spawn_tokio;
+use crate::{spawn, spawn_tokio};
 
 mod imp {
     use std::cell::{Cell, RefCell};
@@ -55,7 +60,7 @@ mod imp {
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
-                "room" => self.room.set(value.get().ok().as_ref()),
+                "room" => self.obj().set_room(&value.get().ok().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -106,13 +111,25 @@ impl MemberList {
         self.imp().room.upgrade().unwrap()
     }
 
+    fn set_room(&self, room: &Room) {
+        self.imp().room.set(Some(room));
+        self.notify("room");
+
+        spawn!(
+            glib::Priority::LOW,
+            clone!(@weak self as obj => async move {
+                obj.load().await;
+            })
+        );
+    }
+
     /// Whether this list is fully loaded.
     pub fn is_loaded(&self) -> bool {
         self.imp().is_loaded.get()
     }
 
     /// Set whether this list is fully loaded.
-    pub(super) fn set_is_loaded(&self, is_loaded: bool) {
+    fn set_is_loaded(&self, is_loaded: bool) {
         if self.is_loaded() == is_loaded {
             return;
         }
@@ -121,8 +138,16 @@ impl MemberList {
         self.notify("is-loaded");
     }
 
+    pub fn reload(&self) {
+        self.set_is_loaded(false);
+
+        spawn!(clone!(@weak self as obj => async move {
+            obj.load().await;
+        }));
+    }
+
     /// Load this list.
-    pub async fn load(&self) {
+    async fn load(&self) {
         if self.is_loaded() {
             return;
         }
@@ -175,7 +200,7 @@ impl MemberList {
     ///
     /// If some of the values do not correspond to existing members, new members
     /// are created.
-    pub fn update_from_room_members(&self, new_members: &[matrix_sdk::room::RoomMember]) {
+    fn update_from_room_members(&self, new_members: &[matrix_sdk::room::RoomMember]) {
         let imp = self.imp();
         let mut members = imp.members.borrow_mut();
         let prev_len = members.len();
@@ -236,7 +261,7 @@ impl MemberList {
     ///
     /// Creates a new member first if there is no member matching the given
     /// event.
-    pub fn update_member_for_member_event(
+    pub(super) fn update_member_for_member_event(
         &self,
         event: &OriginalSyncStateEvent<RoomMemberEventContent>,
     ) {

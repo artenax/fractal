@@ -5,7 +5,7 @@ use gtk::{glib, glib::clone, prelude::*, CompositeTemplate};
 use crate::{
     components::{Avatar, LabelWithWidgets, Pill, SpinnerButton},
     gettext_f,
-    session::model::{Room, RoomType},
+    session::model::{MemberList, Room, RoomType},
     spawn, toast,
 };
 
@@ -24,6 +24,7 @@ mod imp {
     pub struct Invite {
         pub compact: Cell<bool>,
         pub room: RefCell<Option<Room>>,
+        pub room_members: RefCell<Option<MemberList>>,
         pub accept_requests: RefCell<HashSet<Room>>,
         pub decline_requests: RefCell<HashSet<Room>>,
         pub category_handler: RefCell<Option<SignalHandlerId>>,
@@ -203,6 +204,9 @@ impl Invite {
             imp.category_handler.replace(Some(handler_id));
         }
 
+        // Keep a strong reference to the members list.
+        imp.room_members
+            .replace(room.as_ref().map(|r| r.get_or_create_members()));
         imp.room.replace(room);
 
         self.notify("room");

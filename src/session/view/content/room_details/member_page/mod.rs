@@ -199,7 +199,9 @@ impl MemberPage {
             "display-name",
         ))));
 
-        let members = gtk::SortListModel::new(Some(room.members().clone()), Some(sorter));
+        // We should have a strong reference to the list in the main page so we can use
+        // `get_or_create_members()`.
+        let members = gtk::SortListModel::new(Some(room.get_or_create_members()), Some(sorter));
 
         let joined_members = self.build_filtered_list(members.clone(), Membership::Join);
         let invited_members = self.build_filtered_list(members.clone(), Membership::Invite);

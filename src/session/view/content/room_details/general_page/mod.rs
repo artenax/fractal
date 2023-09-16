@@ -20,7 +20,7 @@ use tracing::error;
 
 use crate::{
     components::{CustomEntry, EditableAvatar, SpinnerButton},
-    session::model::{AvatarData, AvatarImage, Room},
+    session::model::{AvatarData, AvatarImage, MemberList, Room},
     spawn, spawn_tokio, toast,
     utils::{
         and_expr,
@@ -45,6 +45,7 @@ mod imp {
     )]
     pub struct GeneralPage {
         pub room: OnceCell<Room>,
+        pub room_members: OnceCell<MemberList>,
         #[template_child]
         pub avatar: TemplateChild<EditableAvatar>,
         #[template_child]
@@ -129,7 +130,7 @@ mod imp {
             obj.init_avatar();
             obj.init_edit_mode();
 
-            let members = obj.room().members();
+            let members = obj.room_members();
             members.connect_items_changed(clone!(@weak obj => move |members, _, _, _| {
                 obj.member_count_changed(members.n_items());
             }));
@@ -184,7 +185,20 @@ impl GeneralPage {
             }),
         );
 
-        self.imp().room.set(room).expect("Room already initialized");
+        let imp = self.imp();
+        // Keep a strong reference to the members list.
+        imp.room_members
+            .set(room.get_or_create_members())
+            .expect("Room members already initialized");
+        imp.room.set(room).expect("Room already initialized");
+    }
+
+    /// The members of the room.
+    pub fn room_members(&self) -> &MemberList {
+        self.imp()
+            .room_members
+            .get()
+            .expect("Room members are CONSTRUCT")
     }
 
     fn init_avatar(&self) {

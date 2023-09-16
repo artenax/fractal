@@ -383,7 +383,9 @@ fn parse_pill(s: &str, room: &Room, session: &Session) -> Option<Pill> {
                 .map(|room| Pill::for_room(&room))
         }
         MatrixId::User(user_id) => {
-            let user = room.members().get_or_create(user_id).upcast();
+            // We should have a strong reference to the list wherever we show a user pill so
+            // we can use `get_or_create_members()`.
+            let user = room.get_or_create_members().get_or_create(user_id).upcast();
             Some(Pill::for_user(&user))
         }
         _ => None,

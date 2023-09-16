@@ -314,8 +314,13 @@ impl Event {
     }
 
     /// The sender of this `Event`.
+    ///
+    /// This should only be called when the event's room members list is
+    /// available, otherwise it will be created on every call.
     pub fn sender(&self) -> Member {
-        self.room().members().get_or_create(self.sender_id())
+        self.room()
+            .get_or_create_members()
+            .get_or_create(self.sender_id())
     }
 
     /// The timestamp of this `Event` as the number of milliseconds

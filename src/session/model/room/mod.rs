@@ -68,7 +68,7 @@ mod imp {
         pub avatar_data: OnceCell<AvatarData>,
         pub category: Cell<RoomType>,
         pub timeline: OnceCell<Timeline>,
-        pub members: OnceCell<MemberList>,
+        pub members: WeakRef<MemberList>,
         /// The user who sent the invite to this room. This is only set when
         /// this room is an invitation.
         pub inviter: RefCell<Option<Member>>,
@@ -227,7 +227,6 @@ mod imp {
 
             obj.set_matrix_room(obj.session().client().get_room(obj.room_id()).unwrap());
             self.timeline.set(Timeline::new(&obj)).unwrap();
-            self.members.set(MemberList::new(&obj)).unwrap();
 
             // Initialize the avatar first since loading is async.
             self.avatar_data
@@ -838,17 +837,24 @@ impl Room {
     }
 
     async fn handle_typing_event(&self, content: TypingEventContent) {
+        let typing_list = &self.imp().typing_list;
+
+        let Some(members) = self.members() else {
+            // If we don't have a members list, the room is not shown so we don't need to
+            // update the typing list.
+            typing_list.update(vec![]);
+            return;
+        };
+
         let own_user_id = self.session().user().unwrap().user_id();
 
         let members = content
             .user_ids
             .into_iter()
-            .filter_map(|user_id| {
-                (user_id != own_user_id).then(|| self.members().get_or_create(user_id))
-            })
+            .filter_map(|user_id| (user_id != own_user_id).then(|| members.get_or_create(user_id)))
             .collect();
 
-        self.imp().typing_list.update(members);
+        typing_list.update(members);
     }
 
     /// The timeline of this room.
@@ -857,8 +863,22 @@ impl Room {
     }
 
     /// The members of this room.
-    pub fn members(&self) -> &MemberList {
-        self.imp().members.get().unwrap()
+    ///
+    /// This creates the [`MemberList`] if no strong reference to it exists.
+    pub fn get_or_create_members(&self) -> MemberList {
+        let members = &self.imp().members;
+        if let Some(list) = members.upgrade() {
+            list
+        } else {
+            let list = MemberList::new(self);
+            members.set(Some(&list));
+            list
+        }
+    }
+
+    /// The members of this room, if a strong reference to the list exists.
+    pub fn members(&self) -> Option<MemberList> {
+        self.imp().members.upgrade()
     }
 
     fn notify_notification_count(&self) {
@@ -1075,7 +1095,10 @@ impl Room {
             if let AnySyncTimelineEvent::State(state_event) = event {
                 match state_event {
                     AnySyncStateEvent::RoomMember(SyncStateEvent::Original(event)) => {
-                        self.members().update_member_for_member_event(event);
+                        if let Some(members) = self.members() {
+                            members.update_member_for_member_event(event);
+                        }
+
                         // If we show the other user's avatar, a member joining or leaving changes
                         // the avatar.
                         spawn!(clone!(@weak self as obj => async move {
@@ -1289,9 +1312,11 @@ impl Room {
         debug!(room_id = %self.room_id(), ?state, "The state of `Room` changed");
 
         if state == RoomState::Joined {
-            // If we where invited or left before, the list was likely not completed or
-            // might have changed.
-            self.members().set_is_loaded(false);
+            if let Some(members) = self.members() {
+                // If we where invited or left before, the list was likely not completed or
+                // might have changed.
+                members.reload();
+            }
         }
 
         self.load_category();

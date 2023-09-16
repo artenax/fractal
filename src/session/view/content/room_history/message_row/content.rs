@@ -133,8 +133,10 @@ impl MessageContent {
                     }
                     TimelineDetails::Ready(related_content) => {
                         let room = event.room();
+                        // We should have a strong reference to the list in the RoomHistory so we
+                        // can use `get_or_create_members()`.
                         let sender = room
-                            .members()
+                            .get_or_create_members()
                             .get_or_create(related_content.sender().to_owned());
                         let reply = MessageReply::new();
                         reply.set_related_content_sender(sender.upcast_ref());

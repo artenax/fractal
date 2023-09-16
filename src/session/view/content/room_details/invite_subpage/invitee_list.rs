@@ -205,7 +205,9 @@ impl InviteeList {
         response: Result<search_users::v3::Response, HttpError>,
     ) {
         let session = self.room().session();
-        let member_list = self.room().members();
+        // We should have a strong reference to the list in the main page so we can use
+        // `get_or_create_members()`.
+        let member_list = self.room().get_or_create_members();
 
         if Some(&search_term) != self.search_term().as_ref() {
             return;

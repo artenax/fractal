@@ -72,7 +72,7 @@ use crate::{
     },
     gettext_f,
     prelude::*,
-    session::model::{Event, EventKey, Room, RoomType, Timeline, TimelineState},
+    session::model::{Event, EventKey, MemberList, Room, RoomType, Timeline, TimelineState},
     spawn, spawn_tokio, toast,
     utils::{
         matrix::extract_mentions,
@@ -114,6 +114,7 @@ mod imp {
     pub struct RoomHistory {
         pub compact: Cell<bool>,
         pub room: RefCell<Option<Room>>,
+        pub room_members: RefCell<Option<MemberList>>,
         pub room_handlers: RefCell<Vec<SignalHandlerId>>,
         pub timeline_handlers: RefCell<Vec<SignalHandlerId>>,
         pub md_enabled: Cell<bool>,
@@ -620,15 +621,14 @@ impl RoomHistory {
             timeline.remove_empty_typing_row();
             self.trigger_read_receipts_update();
 
-            spawn!(
-                glib::Priority::LOW,
-                clone!(@weak room => async move {
-                    room.members().load().await;
-                })
-            );
             self.init_invite_action(room);
             self.scroll_down();
         }
+
+        // Keep a strong reference to the members list before changing the model, so all
+        // events use the same list.
+        imp.room_members
+            .replace(room.as_ref().map(|r| r.get_or_create_members()));
 
         let model = room.as_ref().map(|room| room.timeline().items());
         self.selection_model().set_model(model);
@@ -648,6 +648,11 @@ impl RoomHistory {
     /// The room currently displayed.
     pub fn room(&self) -> Option<Room> {
         self.imp().room.borrow().clone()
+    }
+
+    /// The members of the room currently displayed.
+    pub fn room_members(&self) -> Option<MemberList> {
+        self.imp().room_members.borrow().clone()
     }
 
     /// Whether this `RoomHistory` is empty, aka no room is currently displayed.
@@ -1394,11 +1399,18 @@ impl RoomHistory {
 
     // Update the completion for the current room.
     fn update_completion(&self) {
-        if let Some(room) = self.room() {
-            let completion = &self.imp().completion;
-            completion.set_user_id(Some(room.session().user().unwrap().user_id().to_string()));
-            completion.set_members(Some(room.members()))
-        }
+        let Some(room) = self.room() else {
+            return;
+        };
+        let Some(room_members) = self.room_members() else {
+            return;
+        };
+
+        let completion = &self.imp().completion;
+        completion.set_user_id(Some(room.session().user().unwrap().user_id().to_string()));
+        // We should have a strong reference to the list so we can use
+        // `get_or_create_members()`.
+        completion.set_members(Some(&room_members))
     }
 
     // Copy the selection in the message entry to the clipboard while replacing
