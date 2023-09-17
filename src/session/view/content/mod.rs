@@ -16,7 +16,7 @@ use crate::session::model::{
 };
 
 mod imp {
-    use std::cell::{Cell, RefCell};
+    use std::cell::RefCell;
 
     use glib::{object::WeakRef, signal::SignalHandlerId, subclass::InitializingObject};
     use once_cell::sync::Lazy;
@@ -26,7 +26,6 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/ui/session/view/content/mod.ui")]
     pub struct Content {
-        pub compact: Cell<bool>,
         pub session: WeakRef<Session>,
         pub item_binding: RefCell<Option<glib::Binding>>,
         pub item: RefCell<Option<glib::Object>>,
@@ -40,9 +39,9 @@ mod imp {
         #[template_child]
         pub explore: TemplateChild<Explore>,
         #[template_child]
-        pub empty_page: TemplateChild<gtk::Box>,
+        pub empty_page: TemplateChild<adw::ToolbarView>,
         #[template_child]
-        pub verification_page: TemplateChild<gtk::Box>,
+        pub verification_page: TemplateChild<adw::ToolbarView>,
         #[template_child]
         pub identity_verification_widget: TemplateChild<IdentityVerificationWidget>,
     }
@@ -51,15 +50,11 @@ mod imp {
     impl ObjectSubclass for Content {
         const NAME: &'static str = "Content";
         type Type = super::Content;
-        type ParentType = adw::Bin;
+        type ParentType = adw::NavigationPage;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
             klass.set_accessible_role(gtk::AccessibleRole::Group);
-
-            klass.install_action("content.go-back", None, move |widget, _, _| {
-                widget.set_item(None);
-            });
         }
 
         fn instance_init(obj: &InitializingObject<Self>) {
@@ -72,7 +67,6 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecObject::builder::<Session>("session").build(),
-                    glib::ParamSpecBoolean::builder("compact").build(),
                     glib::ParamSpecObject::builder::<glib::Object>("item")
                         .explicit_notify()
                         .build(),
@@ -86,7 +80,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => obj.set_compact(value.get().unwrap()),
                 "session" => obj.set_session(value.get().unwrap()),
                 "item" => obj.set_item(value.get().unwrap()),
                 _ => unimplemented!(),
@@ -97,7 +90,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => obj.compact().to_value(),
                 "session" => obj.session().to_value(),
                 "item" => obj.item().to_value(),
                 _ => unimplemented!(),
@@ -121,12 +113,17 @@ mod imp {
     }
 
     impl WidgetImpl for Content {}
-    impl BinImpl for Content {}
+
+    impl NavigationPageImpl for Content {
+        fn hidden(&self) {
+            self.obj().set_item(None);
+        }
+    }
 }
 
 glib::wrapper! {
     pub struct Content(ObjectSubclass<imp::Content>)
-        @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
+        @extends gtk::Widget, adw::NavigationPage, @implements gtk::Accessible;
 }
 
 impl Content {
@@ -178,16 +175,6 @@ impl Content {
 
         imp.session.set(session.as_ref());
         self.notify("session");
-    }
-
-    /// Whether a compact view is used.
-    pub fn compact(&self) -> bool {
-        self.imp().compact.get()
-    }
-
-    /// Set whether a compact view is used.
-    pub fn set_compact(&self, compact: bool) {
-        self.imp().compact.set(compact)
     }
 
     /// Set the item currently displayed.

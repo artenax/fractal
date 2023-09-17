@@ -33,9 +33,6 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/ui/session/view/sidebar/mod.ui")]
     pub struct Sidebar {
-        pub compact: Cell<bool>,
-        #[template_child]
-        pub headerbar: TemplateChild<adw::HeaderBar>,
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         #[template_child]
@@ -66,7 +63,7 @@ mod imp {
     impl ObjectSubclass for Sidebar {
         const NAME: &'static str = "Sidebar";
         type Type = super::Sidebar;
-        type ParentType = adw::Bin;
+        type ParentType = adw::NavigationPage;
 
         fn class_init(klass: &mut Self::Class) {
             RoomRow::static_type();
@@ -88,9 +85,6 @@ mod imp {
                     glib::ParamSpecObject::builder::<User>("user")
                         .explicit_notify()
                         .build(),
-                    glib::ParamSpecBoolean::builder("compact")
-                        .explicit_notify()
-                        .build(),
                     glib::ParamSpecObject::builder::<SidebarListModel>("list-model")
                         .explicit_notify()
                         .build(),
@@ -110,7 +104,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => obj.set_compact(value.get().unwrap()),
                 "user" => obj.set_user(value.get().unwrap()),
                 "list-model" => obj.set_list_model(value.get().unwrap()),
                 _ => unimplemented!(),
@@ -121,7 +114,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => obj.compact().to_value(),
                 "user" => obj.user().to_value(),
                 "list-model" => obj.list_model().to_value(),
                 "drop-source-type" => obj
@@ -221,27 +213,18 @@ mod imp {
             }
         }
     }
-    impl BinImpl for Sidebar {}
+
+    impl NavigationPageImpl for Sidebar {}
 }
 
 glib::wrapper! {
     pub struct Sidebar(ObjectSubclass<imp::Sidebar>)
-        @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
+        @extends gtk::Widget, adw::NavigationPage, @implements gtk::Accessible;
 }
 
 impl Sidebar {
     pub fn new() -> Self {
         glib::Object::new()
-    }
-
-    /// Whether a compact view is used.
-    pub fn compact(&self) -> bool {
-        self.imp().compact.get()
-    }
-
-    /// Set whether a compact view is used.
-    pub fn set_compact(&self, compact: bool) {
-        self.imp().compact.set(compact)
     }
 
     pub fn room_search_bar(&self) -> gtk::SearchBar {

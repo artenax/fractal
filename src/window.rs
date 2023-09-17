@@ -31,6 +31,8 @@ mod imp {
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/org/gnome/Fractal/ui/window.ui")]
     pub struct Window {
+        /// Whether the window should be in compact view.
+        pub compact: Cell<bool>,
         #[template_child]
         pub main_stack: TemplateChild<gtk::Stack>,
         #[template_child]
@@ -104,6 +106,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
+                    glib::ParamSpecBoolean::builder("compact")
+                        .explicit_notify()
+                        .build(),
                     glib::ParamSpecObject::builder::<SessionList>("session-list")
                         .read_only()
                         .build(),
@@ -117,9 +122,21 @@ mod imp {
         }
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
-                "session-list" => self.obj().session_list().to_value(),
-                "session-selection" => self.obj().session_selection().to_value(),
+                "compact" => obj.compact().to_value(),
+                "session-list" => obj.session_list().to_value(),
+                "session-selection" => obj.session_selection().to_value(),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
+            match pspec.name() {
+                "compact" => obj.set_compact(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -204,6 +221,24 @@ impl Window {
             .property("application", Some(app))
             .property("icon-name", Some(APP_ID))
             .build()
+    }
+
+    /// Whether the window should be in compact view.
+    ///
+    /// It means the horizontal size is not large enough to hold all the
+    /// content.
+    pub fn compact(&self) -> bool {
+        self.imp().compact.get()
+    }
+
+    /// Set whether the window should be in compact view.
+    pub fn set_compact(&self, compact: bool) {
+        if compact == self.compact() {
+            return;
+        }
+
+        self.imp().compact.set(compact);
+        self.notify("compact");
     }
 
     /// The list of logged-in sessions with a selection.

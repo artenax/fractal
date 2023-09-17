@@ -112,7 +112,6 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/ui/session/view/content/room_history/mod.ui")]
     pub struct RoomHistory {
-        pub compact: Cell<bool>,
         pub room: RefCell<Option<Room>>,
         pub room_members: RefCell<Option<MemberList>>,
         pub room_handlers: RefCell<Vec<SignalHandlerId>>,
@@ -123,8 +122,6 @@ mod imp {
         pub item_context_menu: OnceCell<gtk::PopoverMenu>,
         pub item_reaction_chooser: ReactionChooser,
         pub completion: CompletionPopover,
-        #[template_child]
-        pub headerbar: TemplateChild<adw::HeaderBar>,
         #[template_child]
         pub room_title: TemplateChild<RoomTitle>,
         #[template_child]
@@ -295,9 +292,6 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoolean::builder("compact")
-                        .explicit_notify()
-                        .build(),
                     glib::ParamSpecObject::builder::<Room>("room")
                         .explicit_notify()
                         .build(),
@@ -326,7 +320,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => obj.set_compact(value.get().unwrap()),
                 "room" => obj.set_room(value.get().unwrap()),
                 "markdown-enabled" => obj.set_markdown_enabled(value.get().unwrap()),
                 "sticky" => obj.set_sticky(value.get().unwrap()),
@@ -338,7 +331,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => obj.compact().to_value(),
                 "room" => obj.room().to_value(),
                 "empty" => obj.is_empty().to_value(),
                 "markdown-enabled" => obj.markdown_enabled().to_value(),
@@ -514,17 +506,6 @@ glib::wrapper! {
 impl RoomHistory {
     pub fn new() -> Self {
         glib::Object::new()
-    }
-
-    /// Whether a compact view is used.
-    pub fn compact(&self) -> bool {
-        self.imp().compact.get()
-    }
-
-    /// Set whether a compact view is used.
-    pub fn set_compact(&self, compact: bool) {
-        self.imp().compact.set(compact);
-        self.notify("compact");
     }
 
     /// Set the room currently displayed.

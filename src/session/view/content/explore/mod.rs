@@ -17,7 +17,7 @@ use self::{server::Server, server_list::ServerList, server_row::ExploreServerRow
 use crate::{components::Spinner, session::model::Session};
 
 mod imp {
-    use std::cell::{Cell, RefCell};
+    use std::cell::RefCell;
 
     use glib::{object::WeakRef, subclass::InitializingObject};
     use once_cell::sync::Lazy;
@@ -27,7 +27,6 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/ui/session/view/content/explore/mod.ui")]
     pub struct Explore {
-        pub compact: Cell<bool>,
         pub session: WeakRef<Session>,
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
@@ -70,12 +69,9 @@ mod imp {
     impl ObjectImpl for Explore {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecBoolean::builder("compact").build(),
-                    glib::ParamSpecObject::builder::<Session>("session")
-                        .explicit_notify()
-                        .build(),
-                ]
+                vec![glib::ParamSpecObject::builder::<Session>("session")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -85,7 +81,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => obj.set_compact(value.get().unwrap()),
                 "session" => obj.set_session(value.get().unwrap()),
                 _ => unimplemented!(),
             }
@@ -95,7 +90,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => obj.compact().to_value(),
                 "session" => obj.session().to_value(),
                 _ => unimplemented!(),
             }
@@ -147,16 +141,6 @@ impl Explore {
     /// The current session.
     pub fn session(&self) -> Option<Session> {
         self.imp().session.upgrade()
-    }
-
-    /// Whether a compact view is used.
-    pub fn compact(&self) -> bool {
-        self.imp().compact.get()
-    }
-
-    /// Set whether a compact view is used.
-    pub fn set_compact(&self, compact: bool) {
-        self.imp().compact.set(compact)
     }
 
     pub fn init(&self) {

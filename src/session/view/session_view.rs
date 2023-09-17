@@ -29,7 +29,7 @@ mod imp {
         #[template_child]
         pub overlay: TemplateChild<gtk::Overlay>,
         #[template_child]
-        pub leaflet: TemplateChild<adw::Leaflet>,
+        pub split_view: TemplateChild<adw::NavigationSplitView>,
         #[template_child]
         pub sidebar: TemplateChild<Sidebar>,
         #[template_child]
@@ -150,11 +150,8 @@ mod imp {
 
             self.sidebar.property_expression("list-model").chain_property::<SidebarListModel>("selection-model").chain_property::<Selection>("selected-item").watch(glib::Object::NONE,
                 clone!(@weak self as imp => move || {
-                    if imp.sidebar.list_model().and_then(|m| m.selection_model().selected_item()).is_none() {
-                        imp.leaflet.navigate(adw::NavigationDirection::Back);
-                    } else {
-                        imp.leaflet.navigate(adw::NavigationDirection::Forward);
-                    }
+                    let show_content = imp.sidebar.list_model().is_some_and(|m| m.selection_model().selected_item().is_some());
+                    imp.split_view.set_show_content(show_content);
                 }),
             );
 

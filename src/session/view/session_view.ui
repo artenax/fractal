@@ -13,11 +13,14 @@
               </object>
             </child>
             <child>
-              <object class="AdwLeaflet" id="leaflet">
-                <property name="fold-threshold-policy">minimum</property>
-                <child>
+              <object class="AdwNavigationSplitView" id="split_view">
+                <binding name="collapsed">
+                  <lookup type="Window" name="compact">
+                    <lookup name="root">SessionView</lookup>
+                  </lookup>
+                </binding>
+                <property name="sidebar">
                   <object class="Sidebar" id="sidebar">
-                    <property name="compact" bind-source="leaflet" bind-property="folded" bind-flags="sync-create"/>
                     <binding name="user">
                       <lookup name="user">
                         <lookup name="session">SessionView</lookup>
@@ -29,21 +32,12 @@
                       </lookup>
                     </binding>
                   </object>
-                </child>
-                <child>
-                  <object class="AdwLeafletPage">
-                    <property name="navigatable">False</property>
-                    <property name="child">
-                      <object class="GtkSeparator"/>
-                    </property>
-                  </object>
-                </child>
-                <child>
+                </property>
+                <property name="content">
                   <object class="Content" id="content">
-                    <property name="compact" bind-source="leaflet" bind-property="folded" bind-flags="sync-create"/>
                     <property name="session" bind-source="SessionView" bind-property="session" bind-flags="sync-create"/>
                   </object>
-                </child>
+                </property>
               </object>
             </child>
           </object>

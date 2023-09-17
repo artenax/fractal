@@ -79,16 +79,13 @@
       </item>
     </section>
   </menu>
-  <template class="Sidebar" parent="AdwBin">
+  <template class="Sidebar" parent="AdwNavigationPage">
+    <property name="title">Sidebar</property><!-- This is not displayed so no need to make it translatable -->
     <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="AdwHeaderBar" id="headerbar">
-            <property name="title-widget">
-              <object class="AdwWindowTitle"/>
-            </property>
-            <property name="show-end-title-buttons" bind-source="Sidebar" bind-property="compact" bind-flags="sync-create"/>
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar">
+            <property name="show-title">False</property>
             <child type="start">
               <object class="GtkMenuButton" id="account_switcher_button">
                 <accessibility>
@@ -130,8 +127,9 @@
             </child>
           </object>
         </child>
-        <child>
+        <child type="top">
           <object class="GtkSearchBar" id="room_search">
+            <property name="hexpand">True</property>
             <property name="child">
               <object class="GtkSearchEntry" id="room_search_entry"/>
             </property>
@@ -141,32 +139,36 @@
             </accessibility>
           </object>
         </child>
-        <child>
-          <object class="AdwBanner" id="offline_banner">
-            <property name="title" translatable="yes">Offline</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow" id="scrolled_window">
-            <property name="vexpand">True</property>
-            <property name="hscrollbar-policy">never</property>
-            <property name="child">
-              <object class="GtkListView" id="listview">
-                <style>
-                  <class name="navigation-sidebar"/>
-                  <class name="sidebar-list"/>
-                </style>
-                <property name="single-click-activate">true</property>
-                <accessibility>
-                  <property name="label" translatable="yes">Sidebar</property>
-                  <property name="description" translatable="yes">Allows to navigate between rooms</property>
-                </accessibility>
+        <property name="content">
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="AdwBanner" id="offline_banner">
+                <property name="title" translatable="yes">Offline</property>
               </object>
-            </property>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolled_window">
+                <property name="vexpand">True</property>
+                <property name="hscrollbar-policy">never</property>
+                <property name="child">
+                  <object class="GtkListView" id="listview">
+                    <style>
+                      <class name="navigation-sidebar"/>
+                      <class name="sidebar-list"/>
+                    </style>
+                    <property name="single-click-activate">true</property>
+                    <accessibility>
+                      <property name="label" translatable="yes">Sidebar</property>
+                      <property name="description" translatable="yes">Allows to navigate between rooms</property>
+                    </accessibility>
+                  </object>
+                </property>
+              </object>
+            </child>
           </object>
-        </child>
+        </property>
       </object>
     </child>
   </template>
 </interface>
-

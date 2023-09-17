@@ -10,10 +10,7 @@ use crate::{
 };
 
 mod imp {
-    use std::{
-        cell::{Cell, RefCell},
-        collections::HashSet,
-    };
+    use std::{cell::RefCell, collections::HashSet};
 
     use glib::{signal::SignalHandlerId, subclass::InitializingObject};
 
@@ -22,14 +19,11 @@ mod imp {
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(resource = "/org/gnome/Fractal/ui/session/view/content/invite.ui")]
     pub struct Invite {
-        pub compact: Cell<bool>,
         pub room: RefCell<Option<Room>>,
         pub room_members: RefCell<Option<MemberList>>,
         pub accept_requests: RefCell<HashSet<Room>>,
         pub decline_requests: RefCell<HashSet<Room>>,
         pub category_handler: RefCell<Option<SignalHandlerId>>,
-        #[template_child]
-        pub headerbar: TemplateChild<adw::HeaderBar>,
         #[template_child]
         pub room_topic: TemplateChild<gtk::Label>,
         #[template_child]
@@ -69,12 +63,9 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecBoolean::builder("compact").build(),
-                    glib::ParamSpecObject::builder::<Room>("room")
-                        .explicit_notify()
-                        .build(),
-                ]
+                vec![glib::ParamSpecObject::builder::<Room>("room")
+                    .explicit_notify()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -84,7 +75,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => obj.set_compact(value.get().unwrap()),
                 "room" => obj.set_room(value.get().unwrap()),
                 _ => unimplemented!(),
             }
@@ -94,7 +84,6 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "compact" => obj.compact().to_value(),
                 "room" => obj.room().to_value(),
                 _ => unimplemented!(),
             }
@@ -132,16 +121,6 @@ glib::wrapper! {
 impl Invite {
     pub fn new() -> Self {
         glib::Object::new()
-    }
-
-    /// Whether a compact view is used.
-    pub fn compact(&self) -> bool {
-        self.imp().compact.get()
-    }
-
-    /// Set whether a compact view is used.
-    pub fn set_compact(&self, compact: bool) {
-        self.imp().compact.set(compact)
     }
 
     /// Set the room currently displayed.

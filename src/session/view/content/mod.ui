@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="Content" parent="AdwBin">
+  <template class="Content" parent="AdwNavigationPage">
+    <property name="title">Content</property><!-- This is not displayed so no need to make it translatable -->
     <property name="vexpand">True</property>
     <property name="hexpand">True</property>
     <property name="child">
       <object class="GtkStack" id="stack">
         <property name="transition-type">crossfade</property>
         <child>
-          <object class="GtkBox" id="empty_page">
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="AdwHeaderBar" id="headerbar">
-                <property name="show-start-title-buttons" bind-source="Content" bind-property="compact" bind-flags="sync-create"/>
-                <child type="start">
-                  <object class="GtkRevealer">
-                    <property name="transition-type">crossfade</property>
-                    <property name="reveal-child" bind-source="Content" bind-property="compact" bind-flags="sync-create"/>
-                    <property name="child">
-                      <object class="GtkButton" id="back">
-                        <property name="icon-name">go-previous-symbolic</property>
-                        <property name="action-name">content.go-back</property>
-                      </object>
-                    </property>
-                  </object>
-                </child>
+          <object class="AdwToolbarView" id="empty_page">
+            <child type="top">
+              <object class="AdwHeaderBar">
+                <property name="show-title">False</property>
               </object>
             </child>
-            <child>
+            <property name="content">
               <object class="AdwStatusPage">
                 <property name="visible">True</property>
                 <property name="hexpand">True</property>
@@ -36,52 +24,34 @@
                 <property name="title" translatable="yes">No Room Selected</property>
                 <property name="description" translatable="yes">Join a room to start chatting.</property>
               </object>
-            </child>
+            </property>
           </object>
         </child>
         <child>
-          <object class="ContentRoomHistory" id="room_history">
-            <property name="compact" bind-source="Content" bind-property="compact" bind-flags="sync-create"/>
-          </object>
+          <object class="ContentRoomHistory" id="room_history"/>
         </child>
         <child>
-          <object class="ContentInvite" id="invite">
-            <property name="compact" bind-source="Content" bind-property="compact" bind-flags="sync-create"/>
-          </object>
+          <object class="ContentInvite" id="invite"/>
         </child>
         <child>
           <object class="ContentExplore" id="explore">
-            <property name="compact" bind-source="Content" bind-property="compact" bind-flags="sync-create"/>
             <property name="session" bind-source="Content" bind-property="session" bind-flags="sync-create"/>
           </object>
         </child>
         <child>
-          <object class="GtkBox" id="verification_page">
-            <property name="orientation">vertical</property>
-            <child>
+          <object class="AdwToolbarView" id="verification_page">
+            <child type="top">
               <object class="AdwHeaderBar">
-                <property name="show-start-title-buttons" bind-source="Content" bind-property="compact" bind-flags="sync-create"/>
-                <child type="start">
-                  <object class="GtkRevealer">
-                    <property name="transition-type">crossfade</property>
-                    <property name="reveal-child" bind-source="Content" bind-property="compact" bind-flags="sync-create"/>
-                    <property name="child">
-                      <object class="GtkButton">
-                        <property name="icon-name">go-previous-symbolic</property>
-                        <property name="action-name">content.go-back</property>
-                      </object>
-                    </property>
-                  </object>
-                </child>
+                <property name="show-title">False</property>
               </object>
             </child>
-            <child>
+            <property name="content">
               <object class="GtkScrolledWindow">
                 <child>
                   <object class="IdentityVerificationWidget" id="identity_verification_widget"/>
                 </child>
               </object>
-            </child>
+            </property>
           </object>
         </child>
       </object>
