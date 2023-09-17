@@ -26,7 +26,7 @@ mod imp {
     impl ObjectSubclass for AudioHistoryViewer {
         const NAME: &'static str = "ContentAudioHistoryViewer";
         type Type = super::AudioHistoryViewer;
-        type ParentType = adw::Bin;
+        type ParentType = adw::NavigationPage;
 
         fn class_init(klass: &mut Self::Class) {
             AudioRow::static_type();
@@ -67,12 +67,12 @@ mod imp {
     }
 
     impl WidgetImpl for AudioHistoryViewer {}
-    impl BinImpl for AudioHistoryViewer {}
+    impl NavigationPageImpl for AudioHistoryViewer {}
 }
 
 glib::wrapper! {
     pub struct AudioHistoryViewer(ObjectSubclass<imp::AudioHistoryViewer>)
-        @extends gtk::Widget, adw::Bin;
+        @extends gtk::Widget, adw::NavigationPage;
 }
 
 impl AudioHistoryViewer {

@@ -1,6 +1,6 @@
-use adw::subclass::prelude::*;
+use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::ngettext;
-use gtk::{gdk, glib, glib::clone, prelude::*, CompositeTemplate};
+use gtk::{gdk, glib, glib::clone, CompositeTemplate};
 
 mod invitee;
 use self::invitee::Invitee;
@@ -18,8 +18,6 @@ use crate::{
 };
 
 mod imp {
-    use std::cell::RefCell;
-
     use glib::subclass::InitializingObject;
 
     use super::*;
@@ -29,7 +27,7 @@ mod imp {
         resource = "/org/gnome/Fractal/ui/session/view/content/room_details/invite_subpage/mod.ui"
     )]
     pub struct InviteSubpage {
-        pub room: RefCell<Option<Room>>,
+        pub room: glib::WeakRef<Room>,
         #[template_child]
         pub list_view: TemplateChild<gtk::ListView>,
         #[template_child]
@@ -58,7 +56,7 @@ mod imp {
     impl ObjectSubclass for InviteSubpage {
         const NAME: &'static str = "ContentInviteSubpage";
         type Type = super::InviteSubpage;
-        type ParentType = adw::Bin;
+        type ParentType = adw::NavigationPage;
 
         fn class_init(klass: &mut Self::Class) {
             InviteeRow::static_type();
@@ -85,7 +83,7 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![glib::ParamSpecObject::builder::<Room>("room")
-                    .explicit_notify()
+                    .construct_only()
                     .build()]
             });
 
@@ -179,13 +177,13 @@ mod imp {
     }
 
     impl WidgetImpl for InviteSubpage {}
-    impl BinImpl for InviteSubpage {}
+    impl NavigationPageImpl for InviteSubpage {}
 }
 
 glib::wrapper! {
     /// Preference Window to display and update room details.
     pub struct InviteSubpage(ObjectSubclass<imp::InviteSubpage>)
-        @extends gtk::Widget, gtk::Window, adw::Window, adw::Bin, @implements gtk::Accessible;
+        @extends gtk::Widget, gtk::Window, adw::NavigationPage, @implements gtk::Accessible;
 }
 
 impl InviteSubpage {
@@ -195,56 +193,56 @@ impl InviteSubpage {
 
     /// The room users will be invited to.
     pub fn room(&self) -> Option<Room> {
-        self.imp().room.borrow().clone()
+        self.imp().room.upgrade()
     }
 
     /// Set the room users will be invited to.
-    fn set_room(&self, room: Option<Room>) {
+    fn set_room(&self, room: &Room) {
         let imp = self.imp();
 
-        if self.room() == room {
-            return;
-        }
+        let user_list = InviteeList::new(room);
+        user_list.connect_invitee_added(clone!(@weak self as obj => move |_, invitee| {
+            obj.add_user_pill(invitee);
+        }));
 
-        if let Some(ref room) = room {
-            let user_list = InviteeList::new(room);
-            user_list.connect_invitee_added(clone!(@weak self as obj => move |_, invitee| {
-                obj.add_user_pill(invitee);
-            }));
+        user_list.connect_invitee_removed(clone!(@weak self as obj => move |_, invitee| {
+            obj.remove_user_pill(invitee);
+        }));
 
-            user_list.connect_invitee_removed(clone!(@weak self as obj => move |_, invitee| {
-                obj.remove_user_pill(invitee);
-            }));
+        user_list.connect_notify_local(
+            Some("state"),
+            clone!(@weak self as obj => move |_, _| {
+                obj.update_view();
+            }),
+        );
 
-            user_list.connect_notify_local(
-                Some("state"),
-                clone!(@weak self as obj => move |_, _| {
-                    obj.update_view();
-                }),
-            );
+        imp.text_buffer
+            .bind_property("text", &user_list, "search-term")
+            .sync_create()
+            .build();
 
-            imp.text_buffer
-                .bind_property("text", &user_list, "search-term")
-                .sync_create()
-                .build();
+        user_list
+            .bind_property("has-selected", &*imp.invite_button, "sensitive")
+            .sync_create()
+            .build();
 
-            user_list
-                .bind_property("has-selected", &*imp.invite_button, "sensitive")
-                .sync_create()
-                .build();
+        imp.list_view
+            .set_model(Some(&gtk::NoSelection::new(Some(user_list))));
 
-            imp.list_view
-                .set_model(Some(&gtk::NoSelection::new(Some(user_list))));
-        } else {
-            imp.list_view.set_model(gtk::SelectionModel::NONE);
-        }
-
-        imp.room.replace(room);
+        imp.room.set(Some(room));
         self.notify("room");
     }
 
     fn close(&self) {
-        self.activate_action("details.previous-page", None).unwrap();
+        let window = self
+            .root()
+            .and_downcast::<adw::PreferencesWindow>()
+            .unwrap();
+        if self.can_pop() {
+            window.pop_subpage();
+        } else {
+            window.close();
+        }
     }
 
     fn add_user_pill(&self, user: &Invitee) {

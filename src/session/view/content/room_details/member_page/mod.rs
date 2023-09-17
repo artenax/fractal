@@ -1,7 +1,4 @@
-use adw::{
-    prelude::*,
-    subclass::{bin::BinImpl, prelude::*},
-};
+use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::{
     gio,
@@ -39,7 +36,7 @@ mod imp {
         resource = "/org/gnome/Fractal/ui/session/view/content/room_details/member_page/mod.ui"
     )]
     pub struct MemberPage {
-        pub room: RefCell<Option<Room>>,
+        pub room: glib::WeakRef<Room>,
         #[template_child]
         pub members_search_entry: TemplateChild<gtk::SearchEntry>,
         #[template_child]
@@ -56,7 +53,7 @@ mod imp {
     impl ObjectSubclass for MemberPage {
         const NAME: &'static str = "ContentMemberPage";
         type Type = super::MemberPage;
-        type ParentType = adw::Bin;
+        type ParentType = adw::NavigationPage;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -98,7 +95,7 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecObject::builder::<Room>("room")
-                        .explicit_notify()
+                        .construct_only()
                         .build(),
                     glib::ParamSpecObject::builder::<MemberMenu>("member-menu")
                         .read_only()
@@ -142,12 +139,12 @@ mod imp {
     }
 
     impl WidgetImpl for MemberPage {}
-    impl BinImpl for MemberPage {}
+    impl NavigationPageImpl for MemberPage {}
 }
 
 glib::wrapper! {
     pub struct MemberPage(ObjectSubclass<imp::MemberPage>)
-        @extends gtk::Widget, adw::Bin;
+        @extends gtk::Widget, adw::NavigationPage;
 }
 
 impl MemberPage {
@@ -157,29 +154,22 @@ impl MemberPage {
 
     /// The room backing all the details of the member page.
     pub fn room(&self) -> Option<Room> {
-        self.imp().room.borrow().as_ref().cloned()
+        self.imp().room.upgrade()
     }
 
     /// Set the room backing all the details of the member page.
-    pub fn set_room(&self, room: Option<Room>) {
+    fn set_room(&self, room: &Room) {
         let imp = self.imp();
-        let prev_room = self.room();
-
-        if prev_room == room {
-            return;
-        }
 
         if let Some(invite_action) = imp.invite_action_watch.take() {
             invite_action.unwatch();
         }
 
-        if let Some(room) = room.as_ref() {
-            self.init_members_list(room);
-            self.init_invite_button(room);
-            self.set_state(Membership::Join);
-        }
+        self.init_members_list(room);
+        self.init_invite_button(room);
+        self.set_state(Membership::Join);
 
-        imp.room.replace(room);
+        imp.room.set(Some(room));
         self.notify("room");
     }
 

@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="ContentMemberPage" parent="AdwBin">
+  <template class="ContentMemberPage" parent="AdwNavigationPage">
+    <property name="title">Room Members</property>
     <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkHeaderBar">
-            <child type="start">
-              <object class="GtkButton">
-                <property name="icon-name">go-previous-symbolic</property>
-                <property name="action_name">members.previous</property>
-              </object>
-            </child>
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar">
             <child type="end">
               <object class="GtkToggleButton" id="search_button">
                 <property name="icon-name">system-search-symbolic</property>
@@ -22,7 +16,7 @@
             </child>
           </object>
         </child>
-        <child>
+        <child type="top">
           <object class="GtkSearchBar">
             <property name="search-mode-enabled" bind-source="search_button" bind-property="active"/>
             <property name="child">
@@ -42,7 +36,7 @@
             </property>
           </object>
         </child>
-        <child>
+        <property name="content">
           <object class="GtkOverlay">
             <child>
               <object class="GtkStack" id="list_stack">
@@ -54,8 +48,8 @@
                 <property name="valign">end</property>
                 <property name="halign">center</property>
                 <property name="margin-bottom">24</property>
-                <property name="action-name">details.next-page</property>
-                <property name="action-target">&apos;invite&apos;</property>
+                <property name="action-name">details.show-subpage</property>
+                <property name="action-target">'invite'</property>
                 <property name="child">
                   <object class="GtkBox">
                     <property name="spacing">6</property>
@@ -78,9 +72,8 @@
               </object>
             </child>
           </object>
-        </child>
+        </property>
       </object>
     </child>
   </template>
 </interface>
-

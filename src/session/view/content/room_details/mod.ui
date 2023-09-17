@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="RoomDetails" parent="ToastableWindow">
+  <template class="RoomDetails" parent="AdwPreferencesWindow">
     <property name="title" translatable="yes">Room Details</property>
     <property name="modal">True</property>
     <property name="destroy_with_parent">True</property>
     <property name="default-width">640</property>
     <property name="default-height">576</property>
-    <property name="child-content">
-      <object class="GtkStack" id="main_stack" />
-    </property>
+    <child>
+      <object class="ContentRoomDetailsGeneralPage">
+        <property name="room" bind-source="RoomDetails" bind-property="room" bind-flags="sync-create"/>
+      </object>
+    </child>
     <style>
       <class name="room-details"/>
     </style>

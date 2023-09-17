@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="ContentFileHistoryViewer" parent="AdwBin">
+  <template class="ContentFileHistoryViewer" parent="AdwNavigationPage">
+    <property name="title" translatable="yes">File</property>
     <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkHeaderBar">
-            <property name="title-widget">
-              <object class="AdwWindowTitle">
-                <property name="title" translatable="yes">Files</property>
-              </object>
-            </property>
-            <child type="start">
-              <object class="GtkButton">
-                <property name="action-name">details.previous-page</property>
-                <property name="icon-name">go-previous-symbolic</property>
-              </object>
-            </child>
-          </object>
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar"/>
         </child>
-        <child>
+        <property name="content">
           <object class="GtkScrolledWindow">
             <property name="hscrollbar-policy">never</property>
             <property name="vexpand">True</property>
@@ -59,7 +47,7 @@
               </object>
             </child>
           </object>
-        </child>
+        </property>
       </object>
     </child>
   </template>

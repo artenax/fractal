@@ -8,7 +8,7 @@
         <attribute name="hidden-when">action-disabled</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_Invite New Member</attribute>
+        <attribute name="label" translatable="yes">_Invite New Members</attribute>
         <attribute name="action">room-history.invite-members</attribute>
         <attribute name="hidden-when">action-disabled</attribute>
       </item>

@@ -1,208 +1,179 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="ContentRoomDetailsGeneralPage" parent="AdwBin">
-    <property name="child">
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkHeaderBar"/>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow">
-            <property name="hscrollbar-policy">never</property>
-            <property name="propagate-natural-height">True</property>
-            <child>
-              <object class="AdwClamp">
-                <property name="maximum-size">424</property>
-                <property name="tightening-threshold">424</property>
-                <property name="child">
-                  <object class="GtkBox">
-                    <property name="orientation">vertical</property>
-                    <property name="spacing">24</property>
-                    <property name="margin-top">24</property>
-                    <property name="margin-bottom">24</property>
-                    <property name="margin-start">12</property>
-                    <property name="margin-end">12</property>
-                    <child>
-                      <object class="AdwPreferencesGroup">
-                        <style>
-                          <class name="room-details-group"/>
-                        </style>
-                        <child>
-                          <object class="ComponentsEditableAvatar" id="avatar">
-                            <binding name="data">
-                              <lookup name="avatar-data">
+  <template class="ContentRoomDetailsGeneralPage" parent="AdwPreferencesPage">
+    <property name="title" translatable="yes">Room Details</property>
+      <child>
+        <object class="AdwPreferencesGroup">
+          <style>
+            <class name="room-details-group"/>
+          </style>
+          <child>
+            <object class="ComponentsEditableAvatar" id="avatar">
+              <binding name="data">
+                <lookup name="avatar-data">
+                  <lookup name="room">ContentRoomDetailsGeneralPage</lookup>
+                </lookup>
+              </binding>
+            </object>
+          </child>
+          <child>
+            <object class="GtkBox">
+              <property name="spacing">6</property>
+              <property name="orientation">vertical</property>
+              <child>
+                <object class="GtkEntry" id="room_name_entry">
+                  <property name="sensitive">false</property>
+                  <property name="activates-default">True</property>
+                  <property name="xalign">0.5</property>
+                  <property name="buffer">
+                    <object class="GtkEntryBuffer" id="room_name_buffer">
+                      <binding name="text">
+                        <lookup name="display-name">
+                          <lookup name="room">ContentRoomDetailsGeneralPage</lookup>
+                        </lookup>
+                      </binding>
+                    </object>
+                  </property>
+                  <style>
+                    <class name="room-details-name"/>
+                  </style>
+                </object>
+              </child>
+              <child>
+                <object class="GtkLabel" id="room_topic_label">
+                  <property name="visible">false</property>
+                  <property name="margin-top">12</property>
+                  <property name="label" translatable="yes">Description</property>
+                  <property name="halign">start</property>
+                  <style>
+                    <class name="dim-label"/>
+                    <class name="caption-heading"/>
+                  </style>
+                </object>
+              </child>
+              <child>
+                <object class="CustomEntry" id="room_topic_entry">
+                  <property name="sensitive">false</property>
+                  <property name="margin-bottom">18</property>
+                  <child>
+                    <object class="GtkTextView" id="room_topic_text_view">
+                      <property name="justification">center</property>
+                      <property name="wrap-mode">word-char</property>
+                      <property name="accepts-tab">False</property>
+                      <property name="top-margin">7</property>
+                      <property name="bottom-margin">7</property>
+                      <property name="buffer">
+                        <object class="GtkTextBuffer" id="room_topic_buffer">
+                          <binding name="text">
+                            <closure type="gchararray" function="unwrap_string_or_empty">
+                              <lookup name="topic">
                                 <lookup name="room">ContentRoomDetailsGeneralPage</lookup>
                               </lookup>
-                            </binding>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkBox">
-                            <property name="spacing">6</property>
-                            <property name="orientation">vertical</property>
-                            <child>
-                              <object class="GtkEntry" id="room_name_entry">
-                                <property name="sensitive">false</property>
-                                <property name="activates-default">True</property>
-                                <property name="xalign">0.5</property>
-                                <property name="buffer">
-                                  <object class="GtkEntryBuffer" id="room_name_buffer">
-                                    <binding name="text">
-                                      <lookup name="display-name">
-                                        <lookup name="room">ContentRoomDetailsGeneralPage</lookup>
-                                      </lookup>
-                                    </binding>
-                                  </object>
-                                </property>
-                                <style>
-                                  <class name="room-details-name"/>
-                                </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="room_topic_label">
-                                <property name="visible">false</property>
-                                <property name="margin-top">12</property>
-                                <property name="label" translatable="yes">Description</property>
-                                <property name="halign">start</property>
-                                <style>
-                                  <class name="dim-label"/>
-                                  <class name="caption-heading"/>
-                                </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="CustomEntry" id="room_topic_entry">
-                                <property name="sensitive">false</property>
-                                <property name="margin-bottom">18</property>
-                                <child>
-                                  <object class="GtkTextView" id="room_topic_text_view">
-                                    <property name="justification">center</property>
-                                    <property name="wrap-mode">word-char</property>
-                                    <property name="accepts-tab">False</property>
-                                    <property name="top-margin">7</property>
-                                    <property name="bottom-margin">7</property>
-                                    <property name="buffer">
-                                      <object class="GtkTextBuffer" id="room_topic_buffer">
-                                        <binding name="text">
-                                          <closure type="gchararray" function="unwrap_string_or_empty">
-                                            <lookup name="topic">
-                                              <lookup name="room">ContentRoomDetailsGeneralPage</lookup>
-                                            </lookup>
-                                          </closure>
-                                        </binding>
-                                      </object>
-                                    </property>
-                                  </object>
-                                </child>
-                                <style>
-                                  <class name="room-details-topic"/>
-                                </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="edit_details_btn">
-                                <property name="halign">center</property>
-                                <property name="label" translatable="yes">Edit Details</property>
-                                <signal name="clicked" handler="edit_details_clicked" swapped="yes"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="SpinnerButton" id="save_details_btn">
-                                <property name="visible" bind-source="ContentRoomDetailsGeneralPage" bind-property="edit-mode-enabled" bind-flags="sync-create"/>
-                                <property name="halign">center</property>
-                                <property name="label" translatable="yes">Save Details</property>
-                                <signal name="clicked" handler="save_details_clicked" swapped="yes"/>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="AdwPreferencesGroup">
-                        <child>
-                          <object class="AdwActionRow">
-                            <property name="title" translatable="yes">Members</property>
-                            <property name="icon-name">system-users-symbolic</property>
-                            <property name="action-name">details.next-page</property>
-                            <property name="action-target">'members'</property>
-                            <property name="activatable">True</property>
-                            <child type="suffix">
-                              <object class="GtkLabel" id="members_count">
-                                <property name="valign">center</property>
-                                <property name="halign">center</property>
-                              </object>
-                            </child>
-                            <child type="suffix">
-                              <object class="GtkImage">
-                                <property name="valign">center</property>
-                                <property name="halign">center</property>
-                                <property name="icon-name">go-next-symbolic</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="AdwPreferencesGroup">
-                        <child>
-                          <object class="AdwActionRow">
-                            <property name="title" translatable="yes">Media</property>
-                            <property name="action-name">details.next-page</property>
-                            <property name="action-target">'media-history'</property>
-                            <property name="activatable">True</property>
-                            <child type="suffix">
-                              <object class="GtkImage">
-                                <property name="valign">center</property>
-                                <property name="halign">center</property>
-                                <property name="icon-name">go-next-symbolic</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="AdwActionRow">
-                            <property name="title" translatable="yes">File</property>
-                            <property name="action-name">details.next-page</property>
-                            <property name="action-target">'file-history'</property>
-                            <property name="activatable">True</property>
-                            <child type="suffix">
-                              <object class="GtkImage">
-                                <property name="valign">center</property>
-                                <property name="halign">center</property>
-                                <property name="icon-name">go-next-symbolic</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="AdwActionRow">
-                            <!-- Translators: As in 'Audio file'. -->
-                            <property name="title" translatable="yes">Audio</property>
-                            <property name="action-name">details.next-page</property>
-                            <property name="action-target">'audio-history'</property>
-                            <property name="activatable">True</property>
-                            <child type="suffix">
-                              <object class="GtkImage">
-                                <property name="valign">center</property>
-                                <property name="halign">center</property>
-                                <property name="icon-name">go-next-symbolic</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </property>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </property>
+                            </closure>
+                          </binding>
+                        </object>
+                      </property>
+                    </object>
+                  </child>
+                  <style>
+                    <class name="room-details-topic"/>
+                  </style>
+                </object>
+              </child>
+              <child>
+                <object class="GtkButton" id="edit_details_btn">
+                  <property name="halign">center</property>
+                  <property name="label" translatable="yes">Edit Details</property>
+                  <signal name="clicked" handler="edit_details_clicked" swapped="yes"/>
+                </object>
+              </child>
+              <child>
+                <object class="SpinnerButton" id="save_details_btn">
+                  <property name="visible" bind-source="ContentRoomDetailsGeneralPage" bind-property="edit-mode-enabled" bind-flags="sync-create"/>
+                  <property name="halign">center</property>
+                  <property name="label" translatable="yes">Save Details</property>
+                  <signal name="clicked" handler="save_details_clicked" swapped="yes"/>
+                </object>
+              </child>
+            </object>
+          </child>
+        </object>
+      </child>
+      <child>
+        <object class="AdwPreferencesGroup">
+          <child>
+            <object class="AdwActionRow">
+              <property name="title" translatable="yes">Members</property>
+              <property name="icon-name">system-users-symbolic</property>
+              <property name="action-name">details.show-subpage</property>
+              <property name="action-target">'members'</property>
+              <property name="activatable">True</property>
+              <child type="suffix">
+                <object class="GtkLabel" id="members_count">
+                  <property name="valign">center</property>
+                  <property name="halign">center</property>
+                </object>
+              </child>
+              <child type="suffix">
+                <object class="GtkImage">
+                  <property name="valign">center</property>
+                  <property name="halign">center</property>
+                  <property name="icon-name">go-next-symbolic</property>
+                </object>
+              </child>
+            </object>
+          </child>
+        </object>
+      </child>
+      <child>
+        <object class="AdwPreferencesGroup">
+          <child>
+            <object class="AdwActionRow">
+              <property name="title" translatable="yes">Media</property>
+              <property name="action-name">details.show-subpage</property>
+              <property name="action-target">'media-history'</property>
+              <property name="activatable">True</property>
+              <child type="suffix">
+                <object class="GtkImage">
+                  <property name="valign">center</property>
+                  <property name="halign">center</property>
+                  <property name="icon-name">go-next-symbolic</property>
+                </object>
+              </child>
+            </object>
+          </child>
+          <child>
+            <object class="AdwActionRow">
+              <property name="title" translatable="yes">File</property>
+              <property name="action-name">details.show-subpage</property>
+              <property name="action-target">'file-history'</property>
+              <property name="activatable">True</property>
+              <child type="suffix">
+                <object class="GtkImage">
+                  <property name="valign">center</property>
+                  <property name="halign">center</property>
+                  <property name="icon-name">go-next-symbolic</property>
+                </object>
+              </child>
+            </object>
+          </child>
+          <child>
+            <object class="AdwActionRow">
+              <!-- Translators: As in 'Audio file'. -->
+              <property name="title" translatable="yes">Audio</property>
+              <property name="action-name">details.show-subpage</property>
+              <property name="action-target">'audio-history'</property>
+              <property name="activatable">True</property>
+              <child type="suffix">
+                <object class="GtkImage">
+                  <property name="valign">center</property>
+                  <property name="halign">center</property>
+                  <property name="icon-name">go-next-symbolic</property>
+                </object>
+              </child>
+            </object>
+          </child>
+        </object>
+      </child>
   </template>
 </interface>

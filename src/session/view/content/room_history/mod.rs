@@ -202,10 +202,10 @@ mod imp {
             });
 
             klass.install_action("room-history.details", None, move |widget, _, _| {
-                widget.open_room_details(room_details::PageName::General);
+                widget.open_room_details(None);
             });
             klass.install_action("room-history.invite-members", None, move |widget, _, _| {
-                widget.open_room_details(room_details::PageName::Invite);
+                widget.open_room_details(Some(room_details::SubpageName::Invite));
             });
 
             klass.install_action("room-history.scroll-down", None, move |widget, _, _| {
@@ -985,11 +985,16 @@ impl RoomHistory {
         };
     }
 
-    /// Opens the room details on the page with the given name.
-    pub fn open_room_details(&self, page_name: room_details::PageName) {
+    /// Opens the room details.
+    ///
+    /// If `subpage_name` is set, the room details will be opened on the given
+    /// subpage.
+    pub fn open_room_details(&self, subpage_name: Option<room_details::SubpageName>) {
         if let Some(room) = self.room() {
             let window = RoomDetails::new(&self.parent_window(), &room);
-            window.set_visible_page(page_name);
+            if let Some(subpage_name) = subpage_name {
+                window.show_initial_subpage(subpage_name);
+            }
             window.present();
         }
     }

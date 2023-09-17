@@ -35,7 +35,6 @@ mod imp {
     use std::cell::{Cell, RefCell};
 
     use glib::subclass::InitializingObject;
-    use once_cell::unsync::OnceCell;
 
     use super::*;
 
@@ -44,8 +43,8 @@ mod imp {
         resource = "/org/gnome/Fractal/ui/session/view/content/room_details/general_page/mod.ui"
     )]
     pub struct GeneralPage {
-        pub room: OnceCell<Room>,
-        pub room_members: OnceCell<MemberList>,
+        pub room: glib::WeakRef<Room>,
+        pub room_members: RefCell<Option<MemberList>>,
         #[template_child]
         pub avatar: TemplateChild<EditableAvatar>,
         #[template_child]
@@ -73,7 +72,7 @@ mod imp {
     impl ObjectSubclass for GeneralPage {
         const NAME: &'static str = "ContentRoomDetailsGeneralPage";
         type Type = super::GeneralPage;
-        type ParentType = adw::Bin;
+        type ParentType = adw::PreferencesPage;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -92,7 +91,7 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecObject::builder::<Room>("room")
-                        .construct_only()
+                        .explicit_notify()
                         .build(),
                     glib::ParamSpecBoolean::builder("edit-mode-enabled")
                         .explicit_notify()
@@ -117,36 +116,21 @@ mod imp {
             let obj = self.obj();
 
             match pspec.name() {
-                "room" => self.room.get().to_value(),
+                "room" => obj.room().to_value(),
                 "edit-mode-enabled" => obj.edit_mode_enabled().to_value(),
                 _ => unimplemented!(),
             }
         }
-
-        fn constructed(&self) {
-            self.parent_constructed();
-            let obj = self.obj();
-
-            obj.init_avatar();
-            obj.init_edit_mode();
-
-            let members = obj.room_members();
-            members.connect_items_changed(clone!(@weak obj => move |members, _, _, _| {
-                obj.member_count_changed(members.n_items());
-            }));
-
-            obj.member_count_changed(members.n_items());
-        }
     }
 
     impl WidgetImpl for GeneralPage {}
-    impl BinImpl for GeneralPage {}
+    impl PreferencesPageImpl for GeneralPage {}
 }
 
 glib::wrapper! {
     /// Preference Window to display and update room details.
     pub struct GeneralPage(ObjectSubclass<imp::GeneralPage>)
-        @extends gtk::Widget, adw::Bin, @implements gtk::Accessible;
+        @extends gtk::Widget, adw::PreferencesPage, @implements gtk::Accessible;
 }
 
 #[gtk::template_callbacks]
@@ -156,13 +140,18 @@ impl GeneralPage {
     }
 
     /// The room backing all the details of the preference window.
-    pub fn room(&self) -> &Room {
-        // Use unwrap because room property is CONSTRUCT_ONLY.
-        self.imp().room.get().unwrap()
+    pub fn room(&self) -> Option<Room> {
+        self.imp().room.upgrade()
     }
 
     /// Set the room backing all the details of the preference window.
-    fn set_room(&self, room: Room) {
+    fn set_room(&self, room: Option<&Room>) {
+        let Some(room) = room else {
+            // Just ignore when room is missing.
+            return;
+        };
+        let imp = self.imp();
+
         let avatar_data = room.avatar_data();
         AvatarData::this_expression("image")
             .chain_property::<AvatarImage>("uri")
@@ -185,23 +174,28 @@ impl GeneralPage {
             }),
         );
 
-        let imp = self.imp();
-        // Keep a strong reference to the members list.
-        imp.room_members
-            .set(room.get_or_create_members())
-            .expect("Room members already initialized");
-        imp.room.set(room).expect("Room already initialized");
+        self.init_avatar(room);
+        self.init_edit_mode(room);
+
+        let members = room.get_or_create_members();
+        members.connect_items_changed(clone!(@weak self as obj => move |members, _, _, _| {
+            obj.member_count_changed(members.n_items());
+        }));
+
+        self.member_count_changed(members.n_items());
+        // Keep strong reference to members list.
+        imp.room_members.replace(Some(members));
+
+        imp.room.set(Some(room));
+        self.notify("room");
     }
 
     /// The members of the room.
-    pub fn room_members(&self) -> &MemberList {
-        self.imp()
-            .room_members
-            .get()
-            .expect("Room members are CONSTRUCT")
+    pub fn room_members(&self) -> MemberList {
+        self.imp().room_members.borrow().clone().unwrap()
     }
 
-    fn init_avatar(&self) {
+    fn init_avatar(&self, room: &Room) {
         let avatar = &*self.imp().avatar;
         avatar.connect_edit_avatar(clone!(@weak self as obj => move |_, file| {
             spawn!(
@@ -219,7 +213,6 @@ impl GeneralPage {
         }));
 
         // Hide avatar controls when the user is not eligible to perform the actions.
-        let room = self.room();
         let room_avatar_changeable = room
             .own_user_is_allowed_to_expr(PowerLevelAction::SendState(StateEventType::RoomAvatar));
 
@@ -251,7 +244,10 @@ impl GeneralPage {
     }
 
     async fn change_avatar(&self, file: gio::File) {
-        let room = self.room();
+        let Some(room) = self.room() else {
+            error!("Cannot change avatar with missing room");
+            return;
+        };
         let matrix_room = room.matrix_room();
         if matrix_room.state() != RoomState::Joined {
             error!("Cannot change avatar of room not joined");
@@ -314,7 +310,10 @@ impl GeneralPage {
     }
 
     async fn remove_avatar(&self) {
-        let room = self.room();
+        let Some(room) = self.room() else {
+            error!("Cannot remove avatar with missing room");
+            return;
+        };
         let matrix_room = room.matrix_room();
         if matrix_room.state() != RoomState::Joined {
             error!("Cannot remove avatar of room not joined");
@@ -383,13 +382,12 @@ impl GeneralPage {
         }
     }
 
-    fn init_edit_mode(&self) {
+    fn init_edit_mode(&self, room: &Room) {
         let imp = self.imp();
 
         self.enable_details(false);
 
         // Hide edit controls when the user is not eligible to perform the actions.
-        let room = self.room();
         let room_name_changeable =
             room.own_user_is_allowed_to_expr(PowerLevelAction::SendState(StateEventType::RoomName));
         let room_topic_changeable = room
@@ -480,8 +478,11 @@ impl GeneralPage {
     }
 
     async fn save_details(&self) {
+        let Some(room) = self.room() else {
+            error!("Cannot save details with missing room");
+            return;
+        };
         let imp = self.imp();
-        let room = self.room();
 
         let raw_name = imp.room_name_entry.text().to_string();
         let trimmed_name = raw_name.trim();

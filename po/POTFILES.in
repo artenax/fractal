@@ -69,7 +69,6 @@ src/session/view/content/room_details/invite_subpage/mod.ui
 src/session/view/content/room_details/member_page/member_menu.ui
 src/session/view/content/room_details/member_page/mod.rs
 src/session/view/content/room_details/member_page/mod.ui
-src/session/view/content/room_details/mod.rs
 src/session/view/content/room_details/mod.ui
 src/session/view/content/room_history/attachment_dialog.ui
 src/session/view/content/room_history/event_actions.rs

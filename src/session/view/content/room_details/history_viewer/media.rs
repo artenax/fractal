@@ -33,7 +33,7 @@ mod imp {
     impl ObjectSubclass for MediaHistoryViewer {
         const NAME: &'static str = "ContentMediaHistoryViewer";
         type Type = super::MediaHistoryViewer;
-        type ParentType = adw::Bin;
+        type ParentType = adw::NavigationPage;
 
         fn class_init(klass: &mut Self::Class) {
             MediaItem::static_type();
@@ -74,12 +74,12 @@ mod imp {
     }
 
     impl WidgetImpl for MediaHistoryViewer {}
-    impl BinImpl for MediaHistoryViewer {}
+    impl NavigationPageImpl for MediaHistoryViewer {}
 }
 
 glib::wrapper! {
     pub struct MediaHistoryViewer(ObjectSubclass<imp::MediaHistoryViewer>)
-        @extends gtk::Widget, adw::Bin;
+        @extends gtk::Widget, adw::NavigationPage;
 }
 
 impl MediaHistoryViewer {

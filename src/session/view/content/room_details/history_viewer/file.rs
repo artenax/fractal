@@ -26,7 +26,7 @@ mod imp {
     impl ObjectSubclass for FileHistoryViewer {
         const NAME: &'static str = "ContentFileHistoryViewer";
         type Type = super::FileHistoryViewer;
-        type ParentType = adw::Bin;
+        type ParentType = adw::NavigationPage;
 
         fn class_init(klass: &mut Self::Class) {
             FileRow::static_type();
@@ -67,12 +67,12 @@ mod imp {
     }
 
     impl WidgetImpl for FileHistoryViewer {}
-    impl BinImpl for FileHistoryViewer {}
+    impl NavigationPageImpl for FileHistoryViewer {}
 }
 
 glib::wrapper! {
     pub struct FileHistoryViewer(ObjectSubclass<imp::FileHistoryViewer>)
-        @extends gtk::Widget, adw::Bin;
+        @extends gtk::Widget, adw::NavigationPage;
 }
 
 impl FileHistoryViewer {
