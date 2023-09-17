@@ -35,7 +35,7 @@ mod imp {
     impl ObjectSubclass for DeactivateAccountSubpage {
         const NAME: &'static str = "DeactivateAccountSubpage";
         type Type = super::DeactivateAccountSubpage;
-        type ParentType = gtk::Box;
+        type ParentType = adw::NavigationPage;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -97,13 +97,13 @@ mod imp {
     }
 
     impl WidgetImpl for DeactivateAccountSubpage {}
-    impl BoxImpl for DeactivateAccountSubpage {}
+    impl NavigationPageImpl for DeactivateAccountSubpage {}
 }
 
 glib::wrapper! {
     /// Account settings page about the user and the session.
     pub struct DeactivateAccountSubpage(ObjectSubclass<imp::DeactivateAccountSubpage>)
-        @extends gtk::Widget, gtk::Box, @implements gtk::Accessible;
+        @extends gtk::Widget, adw::NavigationPage, @implements gtk::Accessible;
 }
 
 impl DeactivateAccountSubpage {

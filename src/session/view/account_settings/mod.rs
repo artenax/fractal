@@ -67,7 +67,7 @@ mod imp {
             });
 
             klass.install_action("win.close-subpage", None, |obj, _, _| {
-                obj.close_subpage();
+                obj.pop_subpage();
             });
         }
 

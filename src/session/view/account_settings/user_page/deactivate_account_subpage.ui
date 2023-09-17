@@ -1,103 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="DeactivateAccountSubpage" parent="GtkBox">
+  <template class="DeactivateAccountSubpage" parent="AdwNavigationPage">
     <style>
       <class name="form-page"/>
     </style>
-    <property name="orientation">vertical</property>
-    <child>
-      <object class="GtkHeaderBar">
-        <property name="title-widget">
-          <object class="GtkLabel">
-            <property name="label" translatable="yes">Deactivate Account</property>
-            <property name="single-line-mode">True</property>
-            <property name="ellipsize">end</property>
-            <property name="width-chars">5</property>
-            <style>
-              <class name="title"/>
-            </style>
-          </object>
-        </property>
-        <child type="start">
-          <object class="GtkButton" id="back">
-            <property name="icon-name">go-previous-symbolic</property>
-            <property name="action-name">win.close-subpage</property>
-          </object>
+    <property name="title" translatable="yes">Deactivate Account</property>
+    <property name="child">
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar"/>
         </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkScrolledWindow" id="scrolled_window">
-        <property name="hscrollbar-policy">never</property>
-        <property name="propagate-natural-height">True</property>
-        <property name="vexpand">True</property>
-        <property name="child">
-          <object class="AdwClamp">
-            <property name="maximum-size">444</property>
+        <property name="content">
+          <object class="GtkScrolledWindow" id="scrolled_window">
+            <property name="hscrollbar-policy">never</property>
+            <property name="propagate-natural-height">True</property>
+            <property name="vexpand">True</property>
             <property name="child">
-              <object class="GtkBox" id="box">
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkImage">
-                    <style>
-                      <class name="extra-large-icon"/>
-                      <class name="error"/>
-                    </style>
-                    <property name="icon-name">dialog-warning-symbolic</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkBox">
-                    <style>
-                      <class name="paragraphs"/>
-                    </style>
+              <object class="AdwClamp">
+                <property name="maximum-size">444</property>
+                <property name="child">
+                  <object class="GtkBox" id="box">
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkImage">
                         <style>
-                          <class name="large-line-height"/>
+                          <class name="extra-large-icon"/>
+                          <class name="error"/>
                         </style>
-                        <property name="label" translatable="yes">Deactivating your account means you will lose access to all your messages, contacts, files, and more, forever.</property>
-                        <property name="wrap">True</property>
-                        <property name="wrap-mode">word-char</property>
-                        <property name="xalign">0.0</property>
+                        <property name="icon-name">dialog-warning-symbolic</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkBox">
                         <style>
-                          <class name="large-line-height"/>
+                          <class name="paragraphs"/>
                         </style>
-                        <property name="label" translatable="yes">To confirm that you really want to deactivate this account, type in your Matrix user ID:</property>
-                        <property name="wrap">True</property>
-                        <property name="wrap-mode">word-char</property>
-                        <property name="xalign">0.0</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <style>
+                              <class name="large-line-height"/>
+                            </style>
+                            <property name="label" translatable="yes">Deactivating your account means you will lose access to all your messages, contacts, files, and more, forever.</property>
+                            <property name="wrap">True</property>
+                            <property name="wrap-mode">word-char</property>
+                            <property name="xalign">0.0</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <style>
+                              <class name="large-line-height"/>
+                            </style>
+                            <property name="label" translatable="yes">To confirm that you really want to deactivate this account, type in your Matrix user ID:</property>
+                            <property name="wrap">True</property>
+                            <property name="wrap-mode">word-char</property>
+                            <property name="xalign">0.0</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwEntryRow" id="confirmation">
+                        <style>
+                          <class name="card"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="SpinnerButton" id="button">
+                        <style>
+                          <class name="row"/>
+                          <class name="destructive-action"/>
+                        </style>
+                        <property name="label" translatable="yes">Continue</property>
+                        <property name="sensitive">false</property>
                       </object>
                     </child>
                   </object>
-                </child>
-                <child>
-                  <object class="AdwEntryRow" id="confirmation">
-                    <style>
-                      <class name="card"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="SpinnerButton" id="button">
-                    <style>
-                      <class name="row"/>
-                      <class name="destructive-action"/>
-                    </style>
-                    <property name="label" translatable="yes">Continue</property>
-                    <property name="sensitive">false</property>
-                  </object>
-                </child>
+                </property>
               </object>
             </property>
           </object>
         </property>
       </object>
-    </child>
+    </property>
   </template>
 </interface>

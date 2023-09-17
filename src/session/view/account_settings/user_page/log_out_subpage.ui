@@ -1,105 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="LogOutSubpage" parent="GtkBox">
+  <template class="LogOutSubpage" parent="AdwNavigationPage">
     <style>
       <class name="form-page"/>
     </style>
-    <property name="orientation">vertical</property>
-    <child>
-      <object class="GtkHeaderBar">
-        <property name="title-widget">
-          <object class="GtkLabel">
-            <property name="label" translatable="yes">Log Out of this Session</property>
-            <property name="single-line-mode">True</property>
-            <property name="ellipsize">end</property>
-            <property name="width-chars">5</property>
-            <style>
-              <class name="title"/>
-            </style>
-          </object>
-        </property>
-        <child type="start">
-          <object class="GtkButton" id="back">
-            <property name="icon-name">go-previous-symbolic</property>
-            <property name="action-name">win.close-subpage</property>
-          </object>
+    <property name="title" translatable="yes">Log Out of this Session</property>
+    <property name="child">
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar"/>
         </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkScrolledWindow" id="scrolled_window">
-        <property name="hscrollbar-policy">never</property>
-        <property name="propagate-natural-height">True</property>
-        <property name="vexpand">True</property>
-        <property name="child">
-          <object class="AdwClamp">
-            <property name="maximum-size">444</property>
+        <property name="content">
+          <object class="GtkScrolledWindow" id="scrolled_window">
+            <property name="hscrollbar-policy">never</property>
+            <property name="propagate-natural-height">True</property>
+            <property name="vexpand">True</property>
             <property name="child">
-              <object class="GtkBox" id="box">
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkImage">
-                    <style>
-                      <class name="extra-large-icon"/>
-                      <class name="error"/>
-                    </style>
-                    <property name="icon-name">dialog-warning-symbolic</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkBox">
-                    <style>
-                      <class name="paragraphs"/>
-                    </style>
+              <object class="AdwClamp">
+                <property name="maximum-size">444</property>
+                <property name="child">
+                  <object class="GtkBox" id="box">
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkImage">
                         <style>
-                          <class name="large-line-height"/>
+                          <class name="extra-large-icon"/>
+                          <class name="error"/>
                         </style>
-                        <property name="label" translatable="yes">Fractal doesn’t support online backup of room encryption keys so you might lose access to your encrypted message history.</property>
-                        <property name="wrap">True</property>
-                        <property name="wrap-mode">word-char</property>
-                        <property name="xalign">0.0</property>
+                        <property name="icon-name">dialog-warning-symbolic</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkBox">
                         <style>
-                          <class name="large-line-height"/>
+                          <class name="paragraphs"/>
                         </style>
-                        <property name="label" translatable="yes">It is recommended to backup your encryption keys before proceeding.</property>
-                        <property name="wrap">True</property>
-                        <property name="wrap-mode">word-char</property>
-                        <property name="xalign">0.0</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <style>
+                              <class name="large-line-height"/>
+                            </style>
+                            <property name="label" translatable="yes">Fractal doesn’t support online backup of room encryption keys so you might lose access to your encrypted message history.</property>
+                            <property name="wrap">True</property>
+                            <property name="wrap-mode">word-char</property>
+                            <property name="xalign">0.0</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <style>
+                              <class name="large-line-height"/>
+                            </style>
+                            <property name="label" translatable="yes">It is recommended to backup your encryption keys before proceeding.</property>
+                            <property name="wrap">True</property>
+                            <property name="wrap-mode">word-char</property>
+                            <property name="xalign">0.0</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="make_backup_button">
+                        <style>
+                          <class name="row"/>
+                        </style>
+                        <property name="action-name">account-settings.export_keys</property>
+                        <property name="label" translatable="yes">Backup Encryption Keys</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="SpinnerButton" id="logout_button">
+                        <style>
+                          <class name="row"/>
+                          <class name="destructive-action"/>
+                        </style>
+                        <property name="label" translatable="yes">Continue</property>
+                        <signal name="clicked" handler="logout_button_clicked_cb" swapped="yes"/>
                       </object>
                     </child>
                   </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="make_backup_button">
-                    <style>
-                      <class name="row"/>
-                    </style>
-                    <property name="action-name">account-settings.export_keys</property>
-                    <property name="label" translatable="yes">Backup Encryption Keys</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="SpinnerButton" id="logout_button">
-                    <style>
-                      <class name="row"/>
-                      <class name="destructive-action"/>
-                    </style>
-                    <property name="label" translatable="yes">Continue</property>
-                    <signal name="clicked" handler="logout_button_clicked_cb" swapped="yes"/>
-                  </object>
-                </child>
+                </property>
               </object>
             </property>
           </object>
         </property>
       </object>
-    </child>
+    </property>
   </template>
 </interface>

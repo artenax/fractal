@@ -27,7 +27,7 @@ mod imp {
     impl ObjectSubclass for LogOutSubpage {
         const NAME: &'static str = "LogOutSubpage";
         type Type = super::LogOutSubpage;
-        type ParentType = gtk::Box;
+        type ParentType = adw::NavigationPage;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -64,13 +64,13 @@ mod imp {
     }
 
     impl WidgetImpl for LogOutSubpage {}
-    impl BoxImpl for LogOutSubpage {}
+    impl NavigationPageImpl for LogOutSubpage {}
 }
 
 glib::wrapper! {
     /// Account settings page about the user and the session.
     pub struct LogOutSubpage(ObjectSubclass<imp::LogOutSubpage>)
-        @extends gtk::Widget, gtk::Box, @implements gtk::Accessible;
+        @extends gtk::Widget, adw::NavigationPage, @implements gtk::Accessible;
 }
 
 #[gtk::template_callbacks]

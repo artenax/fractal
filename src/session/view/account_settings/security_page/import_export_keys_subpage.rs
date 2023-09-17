@@ -35,8 +35,6 @@ mod imp {
     pub struct ImportExportKeysSubpage {
         pub session: WeakRef<Session>,
         #[template_child]
-        pub title: TemplateChild<gtk::Label>,
-        #[template_child]
         pub description: TemplateChild<gtk::Label>,
         #[template_child]
         pub instructions: TemplateChild<gtk::Label>,
@@ -64,7 +62,7 @@ mod imp {
     impl ObjectSubclass for ImportExportKeysSubpage {
         const NAME: &'static str = "ImportExportKeysSubpage";
         type Type = super::ImportExportKeysSubpage;
-        type ParentType = gtk::Box;
+        type ParentType = adw::NavigationPage;
 
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
@@ -138,13 +136,13 @@ mod imp {
     }
 
     impl WidgetImpl for ImportExportKeysSubpage {}
-    impl BoxImpl for ImportExportKeysSubpage {}
+    impl NavigationPageImpl for ImportExportKeysSubpage {}
 }
 
 glib::wrapper! {
     /// Subpage to export room encryption keys for backup.
     pub struct ImportExportKeysSubpage(ObjectSubclass<imp::ImportExportKeysSubpage>)
-        @extends gtk::Widget, gtk::Box, @implements gtk::Accessible;
+        @extends gtk::Widget, adw::NavigationPage, @implements gtk::Accessible;
 }
 
 #[gtk::template_callbacks]
@@ -209,7 +207,7 @@ impl ImportExportKeysSubpage {
         let imp = self.imp();
 
         if self.mode() == KeysSubpageMode::Export {
-            imp.title.set_label(&gettext("Export Room Encryption Keys"));
+            self.set_title(&gettext("Export Room Encryption Keys"));
             imp.description.set_label(&gettext(
                 "Exporting your room encryption keys allows you to make a backup to be able to decrypt your messages in end-to-end encrypted rooms on another device or with another Matrix client.",
             ));
@@ -219,7 +217,7 @@ impl ImportExportKeysSubpage {
             imp.confirm_passphrase_box.set_visible(true);
             imp.proceed_button.set_label(&gettext("Export Keys"));
         } else {
-            imp.title.set_label(&gettext("Import Room Encryption Keys"));
+            self.set_title(&gettext("Import Room Encryption Keys"));
             imp.description.set_label(&gettext(
                 "Importing your room encryption keys allows you to decrypt your messages in end-to-end encrypted rooms with a previous backup from a Matrix client.",
             ));

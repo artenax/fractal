@@ -431,7 +431,7 @@ impl UserPage {
         self.root()
             .and_downcast_ref::<adw::PreferencesWindow>()
             .unwrap()
-            .present_subpage(&*self.imp().change_password_subpage);
+            .push_subpage(&*self.imp().change_password_subpage);
     }
 
     #[template_callback]
@@ -439,7 +439,7 @@ impl UserPage {
         self.root()
             .and_downcast_ref::<adw::PreferencesWindow>()
             .unwrap()
-            .present_subpage(&*self.imp().deactivate_account_subpage);
+            .push_subpage(&*self.imp().deactivate_account_subpage);
     }
 
     #[template_callback]
@@ -447,6 +447,6 @@ impl UserPage {
         self.root()
             .and_downcast_ref::<adw::PreferencesWindow>()
             .unwrap()
-            .present_subpage(&*self.imp().log_out_subpage);
+            .push_subpage(&*self.imp().log_out_subpage);
     }
 }

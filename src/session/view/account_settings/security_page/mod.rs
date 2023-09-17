@@ -114,7 +114,7 @@ impl SecurityPage {
         self.root()
             .and_downcast_ref::<adw::PreferencesWindow>()
             .unwrap()
-            .present_subpage(subpage);
+            .push_subpage(subpage);
     }
 
     #[template_callback]
@@ -124,7 +124,7 @@ impl SecurityPage {
         self.root()
             .and_downcast_ref::<adw::PreferencesWindow>()
             .unwrap()
-            .present_subpage(subpage);
+            .push_subpage(subpage);
     }
 
     async fn load_cross_signing_status(&self) {

@@ -50,7 +50,7 @@ mod imp {
     impl ObjectSubclass for ChangePasswordSubpage {
         const NAME: &'static str = "ChangePasswordSubpage";
         type Type = super::ChangePasswordSubpage;
-        type ParentType = gtk::Box;
+        type ParentType = adw::NavigationPage;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -112,13 +112,13 @@ mod imp {
     }
 
     impl WidgetImpl for ChangePasswordSubpage {}
-    impl BoxImpl for ChangePasswordSubpage {}
+    impl NavigationPageImpl for ChangePasswordSubpage {}
 }
 
 glib::wrapper! {
     /// Account settings page about the user and the session.
     pub struct ChangePasswordSubpage(ObjectSubclass<imp::ChangePasswordSubpage>)
-        @extends gtk::Widget, gtk::Box, @implements gtk::Accessible;
+        @extends gtk::Widget, adw::NavigationPage, @implements gtk::Accessible;
 }
 
 #[gtk::template_callbacks]
