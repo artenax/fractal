@@ -43,7 +43,7 @@ mod imp {
         pub swipe_tracker: OnceCell<adw::SwipeTracker>,
         pub swipe_progress: Cell<f64>,
         #[template_child]
-        pub flap: TemplateChild<adw::Flap>,
+        pub toolbar_view: TemplateChild<adw::ToolbarView>,
         #[template_child]
         pub header_bar: TemplateChild<gtk::HeaderBar>,
         #[template_child]
@@ -223,7 +223,7 @@ mod imp {
         }
 
         fn dispose(&self) {
-            self.flap.unparent();
+            self.toolbar_view.unparent();
 
             for expr_watch in self.actions_expression_watches.take().values() {
                 expr_watch.unwatch();
@@ -235,7 +235,7 @@ mod imp {
         fn size_allocate(&self, width: i32, height: i32, baseline: i32) {
             let swipe_y_offset = -height as f64 * self.swipe_progress.get();
             let allocation = gtk::Allocation::new(0, swipe_y_offset as i32, width, height);
-            self.flap.size_allocate(&allocation, baseline);
+            self.toolbar_view.size_allocate(&allocation, baseline);
         }
 
         fn snapshot(&self, snapshot: &gtk::Snapshot) {
@@ -252,7 +252,7 @@ mod imp {
                 snapshot.append_color(&background_color, &bounds);
             }
 
-            obj.snapshot_child(&*self.flap, snapshot);
+            obj.snapshot_child(&*self.toolbar_view, snapshot);
         }
     }
 
@@ -368,10 +368,13 @@ impl MediaViewer {
         if fullscreened {
             // Upscale the media on fullscreen
             imp.media.set_halign(gtk::Align::Fill);
-            imp.flap.set_fold_policy(adw::FlapFoldPolicy::Always);
+            imp.toolbar_view
+                .set_top_bar_style(adw::ToolbarStyle::Raised);
+            imp.header_bar.add_css_class("osd");
         } else {
             imp.media.set_halign(gtk::Align::Center);
-            imp.flap.set_fold_policy(adw::FlapFoldPolicy::Never);
+            imp.toolbar_view.set_top_bar_style(adw::ToolbarStyle::Flat);
+            imp.header_bar.remove_css_class("osd");
         }
 
         self.notify("fullscreened");
@@ -496,8 +499,13 @@ impl MediaViewer {
 
     fn reveal_headerbar(&self, reveal: bool) {
         if self.fullscreened() {
-            self.imp().flap.set_reveal_flap(reveal);
+            self.imp().toolbar_view.set_reveal_top_bars(reveal);
         }
+    }
+
+    fn toggle_headerbar(&self) {
+        let revealed = self.imp().toolbar_view.reveals_top_bars();
+        self.reveal_headerbar(!revealed);
     }
 
     #[template_callback]
@@ -508,13 +516,10 @@ impl MediaViewer {
     }
 
     #[template_callback]
-    fn handle_touch(&self) {
-        self.reveal_headerbar(true);
-    }
-
-    #[template_callback]
     fn handle_click(&self, n_pressed: i32) {
-        if n_pressed == 2 {
+        if self.fullscreened() && n_pressed == 1 {
+            self.toggle_headerbar();
+        } else if n_pressed == 2 {
             self.activate_action("win.toggle-fullscreen", None).unwrap();
         }
     }

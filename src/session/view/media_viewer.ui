@@ -31,16 +31,12 @@
   </menu>
   <template class="MediaViewer" parent="GtkWidget">
     <child>
-      <object class="AdwFlap" id="flap">
-        <property name="orientation">vertical</property>
-        <property name="locked" bind-source="MediaViewer" bind-property="fullscreened" bind-flags="sync-create|invert-boolean"/>
-        <property name="reveal-flap" bind-source="MediaViewer" bind-property="fullscreened" bind-flags="sync-create|invert-boolean"/>
+      <object class="AdwToolbarView" id="toolbar_view">
+        <property name="extend-content-to-top-edge" bind-source="MediaViewer" bind-property="fullscreened" bind-flags="sync-create"/>
+        <property name="reveal-top-bars" bind-source="MediaViewer" bind-property="fullscreened" bind-flags="sync-create|invert-boolean"/>
         <property name="overflow">visible</property>
-        <child type="flap">
+        <child type="top">
           <object class="GtkHeaderBar" id="header_bar">
-            <style>
-              <class name="osd"/>
-            </style>
             <property name="title-widget">
               <object class="GtkLabel">
                 <binding name="label">
@@ -81,7 +77,7 @@
             </child>
           </object>
         </child>
-        <child>
+        <property name="content">
           <object class="ComponentsScaleRevealer" id="revealer">
             <property name="halign">center</property>
             <property name="valign">center</property>
@@ -92,7 +88,7 @@
               </object>
             </property>
           </object>
-        </child>
+        </property>
       </object>
     </child>
     <child>
@@ -102,13 +98,7 @@
     </child>
     <child>
       <object class="GtkGestureClick">
-        <property name="touch-only">true</property>
-        <signal name="pressed" handler="handle_touch" swapped="yes"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkGestureClick">
-        <signal name="pressed" handler="handle_click" swapped="yes"/>
+        <signal name="released" handler="handle_click" swapped="yes"/>
       </object>
     </child>
   </template>
