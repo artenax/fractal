@@ -364,10 +364,6 @@ sidebar-row.drop-active.drop-empty .dim-label {
 
 /* Room History */
 
-.room-history {
-  background: @view_bg_color;
-}
-
 .room-history listview {
   padding-bottom: 0;
 }
@@ -614,10 +610,6 @@ typing-bar avatar {
 
 
 /* Explore */
-
-.explore listview {
-	background: transparent;
-}
 
 .explore .padded-button {
   min-width: 64px;

@@ -41,9 +41,11 @@
   <template class="ContentRoomHistory" parent="AdwBin">
     <property name="vexpand">True</property>
     <property name="hexpand">True</property>
+    <style>
+      <class name="view"/>
+    </style>
     <child>
       <object class="AdwToolbarView">
-        <property name="bottom-bar-style">raised</property>
         <child type="top">
           <object class="AdwHeaderBar">
             <child type="title">
