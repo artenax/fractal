@@ -16,7 +16,7 @@ dependency('glib-2.0', version: '>= 2.72') # update when changing gtk version
 dependency('gio-2.0', version: '>= 2.72') # always same version as glib
 dependency('gtk4', version: '>= 4.10.0')
 dependency(
-  'libadwaita-1', version: '>= 1.3.0',
+  'libadwaita-1', version: '>= 1.4.0',
   fallback: ['libadwaita', 'libadwaita_dep'],
   default_options: ['tests=false', 'examples=false', 'vapi=false']
 )
