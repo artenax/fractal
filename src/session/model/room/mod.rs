@@ -1099,8 +1099,9 @@ impl Room {
                             members.update_member_for_member_event(event);
                         }
 
-                        // If we show the other user's avatar, a member joining or leaving changes
-                        // the avatar.
+                        // If we show the other user's avatar or name, a member event might change
+                        // one of them.
+                        self.load_display_name();
                         spawn!(clone!(@weak self as obj => async move {
                             obj.load_avatar().await;
                         }));
@@ -1112,8 +1113,7 @@ impl Room {
                     }
                     AnySyncStateEvent::RoomName(_) => {
                         self.notify("name");
-                        // FIXME: this doesn't take into account changes in the calculated name
-                        self.load_display_name()
+                        self.load_display_name();
                     }
                     AnySyncStateEvent::RoomTopic(_) => {
                         self.notify("topic");
