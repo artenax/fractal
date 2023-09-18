@@ -103,15 +103,9 @@
                                 <property name="visible" bind-source="visibility_private" bind-property="active" bind-flags="sync-create"/>
                                 <property name="margin-top">12</property>
                                 <child>
-                                  <object class="AdwActionRow">
+                                  <object class="AdwSwitchRow" id="encryption">
                                     <property name="title" translatable="yes">End-to-End Encryption</property>
                                     <property name="subtitle" translatable="yes">Cannot be disabled later</property>
-                                    <property name="activatable_widget">encryption</property>
-                                    <child>
-                                      <object class="GtkSwitch" id="encryption">
-                                        <property name="valign">center</property>
-                                      </object>
-                                    </child>
                                   </object>
                                 </child>
                                 <child>

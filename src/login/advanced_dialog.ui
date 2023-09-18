@@ -13,15 +13,10 @@
           <object class="AdwPreferencesGroup">
             <property name="description" translatable="yes">Auto-discovery, also known as “well-known lookup”, allows to discover the URL of a Matrix homeserver from a domain name. This should only be disabled if your homeserver doesn’t support auto-discovery or if you want to provide the URL yourself.</property>
             <child>
-              <object class="AdwActionRow">
+              <object class="AdwSwitchRow">
                 <property name="title" translatable="yes">_Auto-discovery</property>
                 <property name="use-underline">true</property>
-                <child>
-                  <object class="GtkSwitch">
-                    <property name="valign">center</property>
-                    <property name="active" bind-source="LoginAdvancedDialog" bind-property="autodiscovery" bind-flags="sync-create|bidirectional"/>
-                  </object>
-                </child>
+                <property name="active" bind-source="LoginAdvancedDialog" bind-property="autodiscovery" bind-flags="sync-create|bidirectional"/>
               </object>
             </child>
           </object>

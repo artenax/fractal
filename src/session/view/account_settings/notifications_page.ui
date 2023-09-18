@@ -30,15 +30,10 @@
           </object>
         </child>
         <child>
-          <object class="AdwActionRow">
+          <object class="AdwSwitchRow">
             <property name="title" translatable="yes">Enable for this session</property>
             <property name="sensitive" bind-source="NotificationsPage" bind-property="account-enabled" bind-flags="sync-create"/>
-            <child type="suffix">
-              <object class="GtkSwitch">
-                <property name="valign">center</property>
-                <property name="active" bind-source="NotificationsPage" bind-property="session-enabled" bind-flags="sync-create | bidirectional"/>
-              </object>
-            </child>
+            <property name="active" bind-source="NotificationsPage" bind-property="session-enabled" bind-flags="sync-create | bidirectional"/>
           </object>
         </child>
       </object>

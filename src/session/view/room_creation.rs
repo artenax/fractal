@@ -43,7 +43,7 @@ mod imp {
         #[template_child]
         pub visibility_private: TemplateChild<gtk::CheckButton>,
         #[template_child]
-        pub encryption: TemplateChild<gtk::Switch>,
+        pub encryption: TemplateChild<adw::SwitchRow>,
         #[template_child]
         pub room_address: TemplateChild<gtk::Entry>,
         #[template_child]
