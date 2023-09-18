@@ -14,7 +14,7 @@ use matrix_sdk::{
 };
 use tracing::error;
 
-use super::{Member, Membership, Room};
+use super::{Event, Member, Membership, Room};
 use crate::{spawn, spawn_tokio};
 
 mod imp {
@@ -221,6 +221,24 @@ impl MemberList {
             for room_member in new_members {
                 if let Some(member) = members.get(room_member.user_id()) {
                     member.update_from_room_member(room_member);
+                }
+            }
+
+            // Restore the members activity according to the known timeline events.
+            for item in self.room().timeline().items().iter::<glib::Object>().rev() {
+                let Ok(item) = item else {
+                    // The iterator is broken, stop.
+                    break;
+                };
+                let Ok(event) = item.downcast::<Event>() else {
+                    continue;
+                };
+                if !event.counts_as_unread() {
+                    continue;
+                }
+
+                if let Some(member) = members.get(&event.sender_id()) {
+                    member.set_latest_activity(event.origin_server_ts_u64());
                 }
             }
         }

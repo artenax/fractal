@@ -346,6 +346,14 @@ impl Timeline {
                 .event_map
                 .borrow_mut()
                 .insert(event.key(), event.clone());
+
+            // Keep track of the activity of the sender.
+            if event.counts_as_unread() {
+                if let Some(members) = self.room().members() {
+                    let member = members.get_or_create(event.sender_id());
+                    member.set_latest_activity(event.origin_server_ts_u64());
+                }
+            }
         }
 
         item
