@@ -7,188 +7,91 @@
     <property name="default-height">620</property>
     <property name="content">
       <object class="AdwToastOverlay" id="toast_overlay">
-        <child>
-          <object class="GtkWindowHandle">
-            <property name="child">      
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkHeaderBar">
-                    <style>
-                      <class name="flat"/>
-                    </style>
-                    <property name="title-widget">
-                      <object class="GtkBox">
-                        <property name="visible">False</property>
-                      </object>
-                    </property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkScrolledWindow" id="scrolled_window">
-                    <property name="hscrollbar-policy">never</property>
-                    <property name="propagate-natural-height">True</property>
-                    <property name="vexpand">True</property>
+        <child>    
+          <object class="AdwToolbarView">
+            <child type="top">
+              <object class="AdwHeaderBar">
+                <property name="show-title">False</property>
+              </object>
+            </child>
+            <property name="content">
+              <object class="GtkScrolledWindow" id="scrolled_window">
+                <property name="hscrollbar-policy">never</property>
+                <property name="propagate-natural-height">True</property>
+                <property name="vexpand">True</property>
+                <property name="child">
+                  <object class="AdwClamp">
+                    <property name="maximum-size">444</property>
                     <property name="child">
-                      <object class="AdwClamp">
-                        <property name="maximum-size">444</property>
-                        <property name="child">
-                          <object class="GtkBox">
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">24</property>
+                        <property name="margin-bottom">24</property>
+                        <property name="margin-start">24</property>
+                        <property name="margin-end">24</property>
+                        <child type="top">
+                          <object class="GtkLabel" id="heading">
+                            <property name="wrap">True</property>
+                            <property name="wrap-mode">word-char</property>
+                            <property name="max-width-chars">20</property>
+                            <property name="justify">center</property>
+                            <property name="xalign">0.5</property>
+                            <property name="label" translatable="yes">New Room</property>
+                            <style>
+                              <class name="title-2"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="content">
                             <property name="orientation">vertical</property>
-                            <property name="spacing">24</property>
-                            <property name="margin-bottom">24</property>
-                            <property name="margin-start">24</property>
-                            <property name="margin-end">24</property>
+                            <property name="spacing">18</property>
                             <child>
-                              <object class="GtkLabel" id="heading">
-                                <property name="wrap">True</property>
-                                <property name="wrap-mode">word-char</property>
-                                <property name="max-width-chars">20</property>
-                                <property name="justify">center</property>
-                                <property name="xalign">0.5</property>
-                                <property name="label" translatable="yes">New Room</property>
+                              <object class="AdwPreferencesGroup">
                                 <style>
-                                  <class name="title-2"/>
+                                  <class name="boxed-list"/>
                                 </style>
+                                <child>
+                                  <object class="AdwEntryRow" id="room_name">
+                                    <property name="title" translatable="yes">Name</property>
+                                    <signal name="changed" handler="validate_form" swapped="yes"/>
+                                    <signal name="entry-activated" handler="create_room" swapped="yes"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwEntryRow" id="room_topic">
+                                    <property name="title" translatable="yes">Topic (Optional)</property>
+                                    <signal name="entry-activated" handler="create_room" swapped="yes"/>
+                                  </object>
+                                </child>
                               </object>
                             </child>
                             <child>
-                              <object class="GtkBox" id="content">
-                                <property name="orientation">vertical</property>
-                                <property name="spacing">18</property>
+                              <object class="AdwPreferencesGroup">
+                                <property name="title" translatable="yes">Room Visibility</property>
                                 <child>
-                                  <object class="AdwPreferencesGroup">
-                                    <style>
-                                      <class name="boxed-list"/>
-                                    </style>
-                                    <child>
-                                      <object class="AdwEntryRow" id="room_name">
-                                        <property name="title" translatable="yes">Name</property>
-                                        <signal name="changed" handler="validate_form" swapped="yes"/>
-                                        <signal name="entry-activated" handler="create_room" swapped="yes"/>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="AdwEntryRow" id="room_topic">
-                                        <property name="title" translatable="yes">Topic (Optional)</property>
-                                        <signal name="entry-activated" handler="create_room" swapped="yes"/>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="AdwPreferencesGroup">
-                                    <property name="title" translatable="yes">Room Visibility</property>
-                                    <child>
-                                      <object class="AdwActionRow">
-                                        <property name="title" translatable="yes">Private</property>
-                                        <property name="subtitle" translatable="yes">Only invited people can join this room</property>
-                                        <property name="activatable_widget">visibility_private</property>
-                                        <child type="prefix">
-                                          <object class="GtkCheckButton" id="visibility_private">
-                                            <property name="valign">center</property>
-                                            <property name="active">True</property>
-                                            <signal name="toggled" handler="validate_form" swapped="yes"/>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="AdwActionRow">
-                                        <property name="title" translatable="yes">Public</property>
-                                        <property name="subtitle" translatable="yes">Anyone can find and join this room</property>
-                                        <property name="activatable_widget">visibility_public</property>
-                                        <child type="prefix">
-                                          <object class="GtkCheckButton" id="visibility_public">
-                                            <property name="valign">center</property>
-                                            <property name="group">visibility_private</property>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="AdwPreferencesGroup">
-                                    <property name="visible" bind-source="visibility_private" bind-property="active" bind-flags="sync-create"/>
-                                    <property name="margin-top">12</property>
-                                    <child>
-                                      <object class="AdwActionRow">
-                                        <property name="title" translatable="yes">End-to-End Encryption</property>
-                                        <property name="subtitle" translatable="yes">Cannot be disabled later</property>
-                                        <property name="activatable_widget">encryption</property>
-                                        <child>
-                                          <object class="GtkSwitch" id="encryption">
-                                            <property name="valign">center</property>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkRevealer">
-                                        <property name="reveal-child" bind-source="encryption" bind-property="active" bind-flags="sync-create"/>
-                                        <property name="child">
-                                          <object class="GtkLabel">
-                                            <property name="wrap">True</property>
-                                            <property name="wrap-mode">word-char</property>
-                                            <property name="xalign">0.0</property>
-                                            <property name="margin-top">6</property>
-                                            <property name="label" translatable="yes">Fractal does not support online backup for encryption keys yet, so you will need to back them up manually or your message history will be lost if you lose access to all your sessions.</property>
-                                            <style>
-                                              <class name="warning"/>
-                                              <class name="caption"/>
-                                            </style>
-                                          </object>
-                                        </property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="AdwPreferencesGroup">
-                                    <property name="visible" bind-source="visibility_public" bind-property="active" bind-flags="sync-create"/>
-                                    <property name="title" translatable="yes">Room Address</property>
-                                    <child>
-                                      <object class="GtkBox">
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Private</property>
+                                    <property name="subtitle" translatable="yes">Only invited people can join this room</property>
+                                    <property name="activatable_widget">visibility_private</property>
+                                    <child type="prefix">
+                                      <object class="GtkCheckButton" id="visibility_private">
                                         <property name="valign">center</property>
-                                        <property name="spacing">6</property>
-                                        <child>
-                                          <object class="GtkLabel">
-                                            <property name="label">#</property>
-                                            <style>
-                                              <class name="dim-label"/>
-                                            </style>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkEntry" id="room_address">
-                                            <property name="valign">center</property>
-                                            <property name="max-width-chars">20</property>
-                                            <signal name="changed" handler="validate_form" swapped="yes"/>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel" id="server_name">
-                                            <style>
-                                              <class name="dim-label"/>
-                                            </style>
-                                          </object>
-                                        </child>
+                                        <property name="active">True</property>
+                                        <signal name="toggled" handler="validate_form" swapped="yes"/>
                                       </object>
                                     </child>
-                                    <child>
-                                      <object class="GtkRevealer" id="room_address_error_revealer">
-                                        <property name="child">
-                                          <object class="GtkLabel" id="room_address_error">
-                                            <style>
-                                              <class name="error"/>
-                                              <class name="caption"/>
-                                            </style>
-                                            <property name="wrap">True</property>
-                                            <property name="wrap-mode">word-char</property>
-                                            <property name="xalign">0.0</property>
-                                          </object>
-                                        </property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Public</property>
+                                    <property name="subtitle" translatable="yes">Anyone can find and join this room</property>
+                                    <property name="activatable_widget">visibility_public</property>
+                                    <child type="prefix">
+                                      <object class="GtkCheckButton" id="visibility_public">
+                                        <property name="valign">center</property>
+                                        <property name="group">visibility_private</property>
                                       </object>
                                     </child>
                                   </object>
@@ -196,27 +99,112 @@
                               </object>
                             </child>
                             <child>
-                              <object class="SpinnerButton" id="create_button">
-                                <property name="label" translatable="yes">_Create Room</property>
-                                <property name="use_underline">True</property>
-                                <property name="sensitive">False</property>
-                                <property name="halign">center</property>
-                                <property name="valign">end</property>
-                                <property name="vexpand">true</property>
-                                <signal name="clicked" handler="create_room" swapped="yes"/>
-                                <style>
-                                  <class name="suggested-action"/>
-                                  <class name="standalone-button"/>
-                                  <class name="pill"/>
-                                </style>
+                              <object class="AdwPreferencesGroup">
+                                <property name="visible" bind-source="visibility_private" bind-property="active" bind-flags="sync-create"/>
+                                <property name="margin-top">12</property>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">End-to-End Encryption</property>
+                                    <property name="subtitle" translatable="yes">Cannot be disabled later</property>
+                                    <property name="activatable_widget">encryption</property>
+                                    <child>
+                                      <object class="GtkSwitch" id="encryption">
+                                        <property name="valign">center</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkRevealer">
+                                    <property name="reveal-child" bind-source="encryption" bind-property="active" bind-flags="sync-create"/>
+                                    <property name="child">
+                                      <object class="GtkLabel">
+                                        <property name="wrap">True</property>
+                                        <property name="wrap-mode">word-char</property>
+                                        <property name="xalign">0.0</property>
+                                        <property name="margin-top">6</property>
+                                        <property name="label" translatable="yes">Fractal does not support online backup for encryption keys yet, so you will need to back them up manually or your message history will be lost if you lose access to all your sessions.</property>
+                                        <style>
+                                          <class name="warning"/>
+                                          <class name="caption"/>
+                                        </style>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="AdwPreferencesGroup">
+                                <property name="visible" bind-source="visibility_public" bind-property="active" bind-flags="sync-create"/>
+                                <property name="title" translatable="yes">Room Address</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="valign">center</property>
+                                    <property name="spacing">6</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label">#</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkEntry" id="room_address">
+                                        <property name="valign">center</property>
+                                        <property name="max-width-chars">20</property>
+                                        <signal name="changed" handler="validate_form" swapped="yes"/>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="server_name">
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkRevealer" id="room_address_error_revealer">
+                                    <property name="child">
+                                      <object class="GtkLabel" id="room_address_error">
+                                        <style>
+                                          <class name="error"/>
+                                          <class name="caption"/>
+                                        </style>
+                                        <property name="wrap">True</property>
+                                        <property name="wrap-mode">word-char</property>
+                                        <property name="xalign">0.0</property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
                               </object>
                             </child>
                           </object>
-                        </property>
+                        </child>
+                        <child>
+                          <object class="SpinnerButton" id="create_button">
+                            <property name="label" translatable="yes">_Create Room</property>
+                            <property name="use_underline">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="halign">center</property>
+                            <property name="valign">end</property>
+                            <property name="vexpand">true</property>
+                            <signal name="clicked" handler="create_room" swapped="yes"/>
+                            <style>
+                              <class name="suggested-action"/>
+                              <class name="standalone-button"/>
+                              <class name="pill"/>
+                            </style>
+                          </object>
+                        </child>
                       </object>
                     </property>
                   </object>
-                </child>
+                </property>
               </object>
             </property>
           </object>

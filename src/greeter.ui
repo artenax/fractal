@@ -2,15 +2,9 @@
 <interface>
   <template class="Greeter" parent="AdwBin">
     <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkHeaderBar">
-            <property name="title-widget">
-              <object class="AdwWindowTitle">
-                <property name="title">Fractal</property>
-              </object>
-            </property>
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar">
             <child type="start">
               <object class="GtkButton" id="back_button">
                 <property name="action-name">app.show-session</property>
@@ -36,7 +30,7 @@
             </child>
           </object>
         </child>
-        <child>
+        <property name="content">
           <object class="GtkScrolledWindow">
             <property name="hscrollbar-policy">never</property>
             <property name="propagate-natural-height">True</property>
@@ -131,7 +125,7 @@
               </object>
             </property>
           </object>
-        </child>
+        </property>
       </object>
     </child>
   </template>

@@ -1,35 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="AttachmentDialog" parent="GtkWindow">
+  <template class="AttachmentDialog" parent="AdwWindow">
     <property name="modal">True</property>
     <property name="title"></property>
     <property name="default-width">400</property>
     <property name="default-height">400</property>
     <property name="destroy-with-parent">True</property>
-    <property name="titlebar">
-      <object class="GtkHeaderBar">
-        <property name="show-title-buttons">False</property>
-        <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">_Cancel</property>
-            <property name="use-underline">True</property>
-            <property name="action-name">window.close</property>
+    <property name="content">
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="GtkHeaderBar">
+            <property name="show-title-buttons">False</property>
+            <child>
+              <object class="GtkButton">
+                <property name="label" translatable="yes">_Cancel</property>
+                <property name="use-underline">True</property>
+                <property name="action-name">window.close</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkButton" id="send_button">
+                <property name="label" translatable="yes">_Send</property>
+                <property name="use-underline">True</property>
+                <property name="action-name">attachment-dialog.send</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
-        <child type="end">
-          <object class="GtkButton" id="send_button">
-            <property name="label" translatable="yes">_Send</property>
-            <property name="use-underline">True</property>
-            <property name="action-name">attachment-dialog.send</property>
-            <style>
-              <class name="suggested-action"/>
-            </style>
-          </object>
-        </child>
-      </object>
-    </property>
-    <property name="child">
-      <object class="ComponentsMediaContentViewer" id="media">
+        <property name="content">
+          <object class="ComponentsMediaContentViewer" id="media"/>
+        </property>
       </object>
     </property>
     <child>

@@ -7,9 +7,8 @@
     <property name="default-width">500</property>
     <property name="default-height">300</property>
     <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child>
+      <object class="AdwToolbarView">
+        <child type="top">
           <object class="GtkHeaderBar">
             <child type="start">
               <object class="GtkButton">
@@ -20,7 +19,7 @@
             </child>
           </object>
         </child>
-        <child>
+        <property name="content">
           <object class="GtkScrolledWindow">
             <style>
               <class name="event-source-dialog"/>
@@ -48,7 +47,7 @@
               </object>
             </property>
           </object>
-        </child>
+        </property>
       </object>
     </child>
   </template>

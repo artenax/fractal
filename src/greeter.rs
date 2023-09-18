@@ -12,8 +12,6 @@ mod imp {
     #[template(resource = "/org/gnome/Fractal/ui/greeter.ui")]
     pub struct Greeter {
         #[template_child]
-        pub back_button: TemplateChild<gtk::Button>,
-        #[template_child]
         pub login_button: TemplateChild<gtk::Button>,
         #[template_child]
         pub offline_banner: TemplateChild<adw::Banner>,

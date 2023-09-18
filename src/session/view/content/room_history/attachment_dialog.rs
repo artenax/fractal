@@ -1,6 +1,7 @@
 use std::cell::Cell;
 
-use gtk::{gdk, gio, glib, glib::clone, prelude::*, subclass::prelude::*, CompositeTemplate};
+use adw::subclass::prelude::*;
+use gtk::{gdk, gio, glib, glib::clone, prelude::*, CompositeTemplate};
 use once_cell::sync::Lazy;
 
 use crate::components::MediaContentViewer;
@@ -24,7 +25,7 @@ mod imp {
     impl ObjectSubclass for AttachmentDialog {
         const NAME: &'static str = "AttachmentDialog";
         type Type = super::AttachmentDialog;
-        type ParentType = gtk::Window;
+        type ParentType = adw::Window;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -48,13 +49,15 @@ mod imp {
             SIGNALS.as_ref()
         }
     }
+
     impl WidgetImpl for AttachmentDialog {}
     impl WindowImpl for AttachmentDialog {}
+    impl AdwWindowImpl for AttachmentDialog {}
 }
 
 glib::wrapper! {
     pub struct AttachmentDialog(ObjectSubclass<imp::AttachmentDialog>)
-        @extends gtk::Widget, gtk::Window;
+        @extends gtk::Widget, gtk::Window, gtk::Root, adw::Window;
 }
 
 impl AttachmentDialog {
