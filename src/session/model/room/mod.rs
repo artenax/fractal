@@ -73,8 +73,13 @@ mod imp {
         /// this room is an invitation.
         pub inviter: RefCell<Option<Member>>,
         pub power_levels: RefCell<PowerLevels>,
-        /// The timestamp of the latest possibly unread event in this room.
-        pub latest_unread: Cell<u64>,
+        /// The timestamp of the room's latest activity.
+        ///
+        /// This is the timestamp of the latest event that counts as possibly
+        /// unread.
+        ///
+        /// If it is not known, it will return `0`.
+        pub latest_activity: Cell<u64>,
         /// The event of the user's read receipt for this room.
         pub read_receipt: RefCell<Option<AnySyncTimelineEvent>>,
         /// The latest read event in the room's timeline.
@@ -135,7 +140,7 @@ mod imp {
                         .read_only()
                         .build(),
                     glib::ParamSpecString::builder("topic").read_only().build(),
-                    glib::ParamSpecUInt64::builder("latest-unread")
+                    glib::ParamSpecUInt64::builder("latest-activity")
                         .read_only()
                         .build(),
                     glib::ParamSpecObject::builder::<Event>("latest-read")
@@ -202,7 +207,7 @@ mod imp {
                 "topic" => obj.topic().to_value(),
                 "members" => obj.members().to_value(),
                 "notification-count" => obj.notification_count().to_value(),
-                "latest-unread" => obj.latest_unread().to_value(),
+                "latest-activity" => obj.latest_activity().to_value(),
                 "latest-read" => obj.latest_read().to_value(),
                 "predecessor-id" => obj.predecessor_id().map(|id| id.as_str()).to_value(),
                 "is-tombstoned" => obj.is_tombstoned().to_value(),
@@ -1136,18 +1141,18 @@ impl Room {
     /// The timestamp of the room's latest possibly unread event.
     ///
     /// If it is not known, it will return `0`.
-    pub fn latest_unread(&self) -> u64 {
-        self.imp().latest_unread.get()
+    pub fn latest_activity(&self) -> u64 {
+        self.imp().latest_activity.get()
     }
 
     /// Set the timestamp of the room's latest possibly unread event.
-    fn set_latest_unread(&self, latest_unread: u64) {
-        if latest_unread == self.latest_unread() {
+    fn set_latest_activity(&self, latest_activity: u64) {
+        if latest_activity == self.latest_activity() {
             return;
         }
 
-        self.imp().latest_unread.set(latest_unread);
-        self.notify("latest-unread");
+        self.imp().latest_activity.set(latest_activity);
+        self.notify("latest-activity");
         self.update_highlight();
         // Necessary because we don't get read receipts for the user's own events.
         self.update_latest_read();
@@ -1568,17 +1573,17 @@ impl Room {
     /// events.
     ///
     /// The events must be in reverse chronological order.
-    pub fn update_latest_unread<'a>(&self, events: impl IntoIterator<Item = &'a Event>) {
-        let mut latest_unread = self.latest_unread();
+    pub fn update_latest_activity<'a>(&self, events: impl IntoIterator<Item = &'a Event>) {
+        let mut latest_activity = self.latest_activity();
 
         for event in events {
             if event.counts_as_unread() {
-                latest_unread = latest_unread.max(event.origin_server_ts_u64());
+                latest_activity = latest_activity.max(event.origin_server_ts_u64());
                 break;
             }
         }
 
-        self.set_latest_unread(latest_unread);
+        self.set_latest_activity(latest_activity);
     }
 
     /// Whether this room is encrypted.

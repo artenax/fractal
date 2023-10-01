@@ -185,7 +185,7 @@ impl Timeline {
                     .collect::<Vec<_>>();
 
                 // Try to update the latest unread message.
-                room.update_latest_unread(
+                room.update_latest_activity(
                     new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
                 );
 
@@ -203,7 +203,7 @@ impl Timeline {
 
                 // Try to update the latest unread message.
                 if let Some(event) = item.downcast_ref::<Event>() {
-                    room.update_latest_unread([event]);
+                    room.update_latest_activity([event]);
                 }
 
                 sdk_items.insert(0, &item);
@@ -214,7 +214,7 @@ impl Timeline {
 
                 // Try to update the latest unread message.
                 if let Some(event) = item.downcast_ref::<Event>() {
-                    room.update_latest_unread([event]);
+                    room.update_latest_activity([event]);
                 }
 
                 let pos = sdk_items.n_items();
@@ -241,7 +241,7 @@ impl Timeline {
 
                 // Try to update the latest unread message.
                 if let Some(event) = item.downcast_ref::<Event>() {
-                    room.update_latest_unread([event]);
+                    room.update_latest_activity([event]);
                 }
 
                 sdk_items.insert(pos, &item);
@@ -264,7 +264,7 @@ impl Timeline {
 
                 // Try to update the latest unread message.
                 if let Some(event) = item.downcast_ref::<Event>() {
-                    room.update_latest_unread([event]);
+                    room.update_latest_activity([event]);
                 }
 
                 // The item's header visibility might have changed.
@@ -296,7 +296,7 @@ impl Timeline {
                     .collect::<Vec<_>>();
 
                 // Try to update the latest unread message.
-                room.update_latest_unread(
+                room.update_latest_activity(
                     new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
                 );
 

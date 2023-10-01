@@ -273,7 +273,7 @@ impl DmUserList {
 
                         final_rooms
                             .into_iter()
-                            .max_by(|x, y| x.latest_unread().cmp(&y.latest_unread()))
+                            .max_by(|x, y| x.latest_activity().cmp(&y.latest_activity()))
                     } else {
                         None
                     };

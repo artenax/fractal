@@ -169,14 +169,15 @@ impl Category {
             let filter_model =
                 gtk::FilterListModel::new(Some(category_type_expr_model), Some(filter));
 
-            let room_latest_unread = Room::this_expression("latest-unread");
+            let room_latest_activity = Room::this_expression("latest-activity");
             let sorter = gtk::NumericSorter::builder()
-                .expression(&room_latest_unread)
+                .expression(&room_latest_activity)
                 .sort_order(gtk::SortType::Descending)
                 .build();
-            let latest_unread_expr_model =
-                ExpressionListModel::new(filter_model, room_latest_unread);
-            let sort_model = gtk::SortListModel::new(Some(latest_unread_expr_model), Some(sorter));
+            let latest_activity_expr_model =
+                ExpressionListModel::new(filter_model, room_latest_activity);
+            let sort_model =
+                gtk::SortListModel::new(Some(latest_activity_expr_model), Some(sorter));
             sort_model.upcast()
         } else {
             model
