@@ -484,13 +484,9 @@ impl GeneralPage {
         };
         let imp = self.imp();
 
-        let raw_name = imp.room_name_entry.text().to_string();
+        let raw_name = imp.room_name_entry.text();
         let trimmed_name = raw_name.trim();
-        let name = if trimmed_name.is_empty() {
-            None
-        } else {
-            Some(trimmed_name.to_owned())
-        };
+        let name = (!trimmed_name.is_empty()).then(|| trimmed_name.to_owned());
 
         let topic_buffer = imp.room_topic_text_view.buffer();
         let raw_topic = topic_buffer
@@ -498,7 +494,11 @@ impl GeneralPage {
             .to_string();
         let topic = raw_topic.trim().to_owned();
 
-        let name_changed = name != room.name();
+        let name_changed = if let Some(name) = &name {
+            *name != room.display_name()
+        } else {
+            room.name().is_some()
+        };
         let topic_changed = topic != room.topic().unwrap_or_default();
 
         if !name_changed && !topic_changed {
@@ -521,7 +521,8 @@ impl GeneralPage {
             };
             imp.changing_name.replace(Some(action));
 
-            let handle = spawn_tokio!(async move { matrix_room.set_name(name).await });
+            let handle =
+                spawn_tokio!(async move { matrix_room.set_name(name.unwrap_or_default()).await });
 
             // We don't need to handle the success of the request, we should receive the
             // change via sync.

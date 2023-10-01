@@ -278,6 +278,17 @@ impl Timeline {
                 sdk_items.remove(pos);
                 self.update_items_headers(pos, 1);
             }
+            VectorDiff::Truncate { length } => {
+                let new_len = length as u32;
+                let old_len = sdk_items.n_items();
+
+                for pos in new_len..old_len {
+                    let item = sdk_items.item(pos).and_downcast().unwrap();
+                    self.remove_item(&item);
+                }
+
+                sdk_items.splice(new_len, old_len - new_len, &[] as &[glib::Object]);
+            }
             VectorDiff::Reset { values } => {
                 let new_list = values
                     .into_iter()

@@ -8,8 +8,8 @@ use gtk::{
     glib::{clone, signal::SignalHandlerId},
 };
 use matrix_sdk::{
-    config::SyncSettings, matrix_auth::Session as MatrixSession, room::Room as MatrixRoom,
-    sync::SyncResponse, Client,
+    config::SyncSettings, matrix_auth::MatrixSession, room::Room as MatrixRoom, sync::SyncResponse,
+    Client,
 };
 use ruma::{
     api::client::{

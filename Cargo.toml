@@ -28,7 +28,7 @@ ashpd = { version = "0.6", default-features = false, features = [
     "tokio",
 ] }
 djb_hash = "0.1"
-eyeball-im = "0.2"
+eyeball-im = "0.4"
 futures-channel = "0.3"
 futures-util = "0.3"
 geo-uri = "0.2"
@@ -79,8 +79,8 @@ version = "0.7"
 features = ["v4_10"]
 
 [dependencies.matrix-sdk]
-git = "https://github.com/matrix-org/matrix-rust-sdk.git"
-rev = "4643bae28445e058080896a280083b32fd403146"
+git = "https://github.com/zecakeh/matrix-rust-sdk.git"
+rev = "ff9d8e78923cb006295bf8f6bd88558bdf21bb44"
 features = [
     "socks",
     "sso-login",
@@ -90,19 +90,18 @@ features = [
 ]
 
 [dependencies.matrix-sdk-ui]
-git = "https://github.com/matrix-org/matrix-rust-sdk.git"
-rev = "4643bae28445e058080896a280083b32fd403146"
+git = "https://github.com/zecakeh/matrix-rust-sdk.git"
+rev = "ff9d8e78923cb006295bf8f6bd88558bdf21bb44"
 default-features = false
 features = ["e2e-encryption", "native-tls"]
 
 [dependencies.ruma]
-# version = "0.8.2"
-git = "https://github.com/ruma/ruma.git"
-rev = "f1772ae5bc1d849655498f51b0fec7b0ef10e339"
+version = "0.9.1"
+# git = "https://github.com/ruma/ruma.git"
+# rev = "4ef6d1641bdd7d1c1586d2356c183798f3900bf1"
 features = [
     "unstable-unspecified",
-    "client-api-c",
-    "unstable-sanitize", 
+    "client-api-c", 
     "compat-key-id",
     "compat-user-id",
     "compat-empty-string-null",
@@ -110,6 +109,7 @@ features = [
     "compat-optional",
     "compat-unset-avatar",
     "compat-get-3pids",
+    "html",
 ]
 
 [dependencies.shumate]

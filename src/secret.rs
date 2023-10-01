@@ -3,7 +3,7 @@ use std::{collections::HashMap, ffi::OsStr, fmt, fs, path::PathBuf, string::From
 use gettextrs::gettext;
 use gtk::glib;
 use matrix_sdk::{
-    matrix_auth::{Session as MatrixSession, SessionTokens},
+    matrix_auth::{MatrixSession, MatrixSessionTokens},
     SessionMeta,
 };
 use once_cell::sync::Lazy;
@@ -314,7 +314,7 @@ impl StoredSession {
     pub fn with_login_data(homeserver: Url, data: MatrixSession) -> Self {
         let MatrixSession {
             meta: SessionMeta { user_id, device_id },
-            tokens: SessionTokens { access_token, .. },
+            tokens: MatrixSessionTokens { access_token, .. },
         } = data;
 
         let path = DATA_PATH.join(glib::uuid_string_random().as_str());
@@ -356,7 +356,7 @@ impl StoredSession {
 
         let data = MatrixSession {
             meta: SessionMeta { user_id, device_id },
-            tokens: SessionTokens {
+            tokens: MatrixSessionTokens {
                 access_token,
                 refresh_token: None,
             },

@@ -224,7 +224,7 @@ impl LoginHomeserverPage {
         match res {
             Ok((client, server_name)) => {
                 login.set_domain(server_name);
-                login.set_client(Some(client.clone())).await;
+                login.set_client(Some(client.clone()));
 
                 self.homeserver_login_types(client).await;
             }

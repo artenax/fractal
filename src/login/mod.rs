@@ -228,16 +228,8 @@ impl Login {
     }
 
     /// Set the Matrix client.
-    async fn set_client(&self, client: Option<Client>) {
-        let homeserver = if let Some(client) = client.clone() {
-            Some(
-                spawn_tokio!(async move { client.homeserver().await })
-                    .await
-                    .unwrap(),
-            )
-        } else {
-            None
-        };
+    fn set_client(&self, client: Option<Client>) {
+        let homeserver = client.as_ref().map(|client| client.homeserver());
 
         self.set_homeserver(homeserver);
         self.imp().client.replace(client);
@@ -485,9 +477,7 @@ impl Login {
         let client = self.client().await.unwrap();
         // The homeserver could have changed with the login response so get it from the
         // Client.
-        let homeserver = spawn_tokio!(async move { client.homeserver().await })
-            .await
-            .unwrap();
+        let homeserver = client.homeserver();
 
         match Session::new(homeserver, (&response).into()).await {
             Ok(session) => {

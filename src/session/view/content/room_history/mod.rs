@@ -40,7 +40,7 @@ use ruma::{
         receipt::ReceiptThread,
         room::{
             message::{
-                ForwardThread, LocationMessageEventContent, MessageFormat,
+                AddMentions, ForwardThread, LocationMessageEventContent, MessageFormat,
                 OriginalSyncRoomMessageEvent, RoomMessageEventContent,
             },
             power_levels::PowerLevelAction,
@@ -884,7 +884,11 @@ impl RoomHistory {
                 {
                     let full_related_message_event = related_message_event
                         .into_full_event(self.room().unwrap().room_id().to_owned());
-                    content = content.make_reply_to(&full_related_message_event, ForwardThread::Yes)
+                    content = content.make_reply_to(
+                        &full_related_message_event,
+                        ForwardThread::Yes,
+                        AddMentions::No,
+                    )
                 }
             }
 

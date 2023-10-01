@@ -294,9 +294,7 @@ impl AuthDialog {
         let session = session.ok_or(AuthError::MissingSessionId)?;
 
         let client = self.session().client();
-        let homeserver = spawn_tokio!(async move { client.homeserver().await })
-            .await
-            .unwrap();
+        let homeserver = client.homeserver();
         self.imp().stack.set_visible_child_name("fallback");
         self.setup_fallback_page(homeserver.as_str(), stage.as_ref(), &session);
         self.show_and_wait_for_response().await?;

@@ -1190,7 +1190,7 @@ impl Room {
         let timeline = self.timeline().matrix_timeline();
         let content = content.into();
 
-        let handle = spawn_tokio!(async move { timeline.send(content, None).await });
+        let handle = spawn_tokio!(async move { timeline.send(content).await });
 
         spawn!(
             glib::Priority::DEFAULT_IDLE,

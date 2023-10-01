@@ -161,7 +161,7 @@ impl UserPage {
                 let imp = obj.imp();
                 let client = obj.session().unwrap().client();
 
-                let homeserver = client.homeserver().await;
+                let homeserver = client.homeserver();
                 imp.homeserver.set_label(homeserver.as_ref());
 
                 let user_id = client.user_id().unwrap();
