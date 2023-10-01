@@ -13,8 +13,8 @@ use matrix_sdk_ui::timeline::{
 };
 use ruma::{
     events::{
-        room::message::MessageType, AnySyncMessageLikeEvent, AnySyncStateEvent,
-        AnySyncTimelineEvent, SyncMessageLikeEvent,
+        room::message::{MessageType, Relation},
+        AnySyncMessageLikeEvent, AnySyncStateEvent, AnySyncTimelineEvent, SyncMessageLikeEvent,
     },
     OwnedEventId,
 };
@@ -25,7 +25,7 @@ pub use self::{
     virtual_item::{VirtualItem, VirtualItemKind},
 };
 use super::{Event, EventKey, Room};
-use crate::{spawn, spawn_tokio};
+use crate::{prelude::*, spawn, spawn_tokio};
 
 #[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(u32)]
@@ -170,6 +170,11 @@ impl Timeline {
         self.imp().items.upcast_ref()
     }
 
+    /// The `GListModel` containing only the items provided by the SDK.
+    pub fn sdk_items(&self) -> &gio::ListModel {
+        self.imp().sdk_items.upcast_ref()
+    }
+
     /// Update this `Timeline` with the given diff.
     fn update(&self, diff: VectorDiff<Arc<SdkTimelineItem>>) {
         let imp = self.imp();
@@ -184,16 +189,16 @@ impl Timeline {
                     .map(|item| self.create_item(&item))
                     .collect::<Vec<_>>();
 
-                // Try to update the latest unread message.
-                room.update_latest_activity(
-                    new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
-                );
-
                 let pos = sdk_items.n_items();
                 let added = new_list.len() as u32;
 
                 sdk_items.extend_from_slice(&new_list);
                 self.update_items_headers(pos, added.max(1));
+
+                // Try to update the latest unread message.
+                room.update_latest_activity(
+                    new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
+                );
             }
             VectorDiff::Clear => {
                 self.clear();
@@ -201,25 +206,24 @@ impl Timeline {
             VectorDiff::PushFront { value } => {
                 let item = self.create_item(&value);
 
+                sdk_items.insert(0, &item);
+                self.update_items_headers(0, 1);
+
                 // Try to update the latest unread message.
                 if let Some(event) = item.downcast_ref::<Event>() {
                     room.update_latest_activity([event]);
                 }
-
-                sdk_items.insert(0, &item);
-                self.update_items_headers(0, 1);
             }
             VectorDiff::PushBack { value } => {
                 let item = self.create_item(&value);
+                let pos = sdk_items.n_items();
+                sdk_items.append(&item);
+                self.update_items_headers(pos, 1);
 
                 // Try to update the latest unread message.
                 if let Some(event) = item.downcast_ref::<Event>() {
                     room.update_latest_activity([event]);
                 }
-
-                let pos = sdk_items.n_items();
-                sdk_items.append(&item);
-                self.update_items_headers(pos, 1);
             }
             VectorDiff::PopFront => {
                 let item = sdk_items.item(0).and_downcast().unwrap();
@@ -239,13 +243,13 @@ impl Timeline {
                 let pos = index as u32;
                 let item = self.create_item(&value);
 
+                sdk_items.insert(pos, &item);
+                self.update_items_headers(pos, 1);
+
                 // Try to update the latest unread message.
                 if let Some(event) = item.downcast_ref::<Event>() {
                     room.update_latest_activity([event]);
                 }
-
-                sdk_items.insert(pos, &item);
-                self.update_items_headers(pos, 1);
             }
             VectorDiff::Set { index, value } => {
                 let pos = index as u32;
@@ -262,13 +266,13 @@ impl Timeline {
                     prev_item
                 };
 
+                // The item's header visibility might have changed.
+                self.update_items_headers(pos, 1);
+
                 // Try to update the latest unread message.
                 if let Some(event) = item.downcast_ref::<Event>() {
                     room.update_latest_activity([event]);
                 }
-
-                // The item's header visibility might have changed.
-                self.update_items_headers(pos, 1);
             }
             VectorDiff::Remove { index } => {
                 let pos = index as u32;
@@ -295,16 +299,16 @@ impl Timeline {
                     .map(|item| self.create_item(&item))
                     .collect::<Vec<_>>();
 
-                // Try to update the latest unread message.
-                room.update_latest_activity(
-                    new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
-                );
-
                 let removed = sdk_items.n_items();
                 let added = new_list.len() as u32;
 
                 sdk_items.splice(0, removed, &new_list);
                 self.update_items_headers(0, added.max(1));
+
+                // Try to update the latest unread message.
+                room.update_latest_activity(
+                    new_list.iter().filter_map(|i| i.downcast_ref::<Event>()),
+                );
             }
         }
 
@@ -509,6 +513,15 @@ impl Timeline {
                             AnySyncMessageLikeEvent::RoomMessage(
                                 SyncMessageLikeEvent::Original(ev),
                             ) => {
+                                if ev
+                                    .content
+                                    .relates_to
+                                    .as_ref()
+                                    .is_some_and(|rel| matches!(rel, Relation::Replacement(_)))
+                                {
+                                    return false;
+                                }
+
                                 matches!(
                                     ev.content.msgtype,
                                     MessageType::Audio(_)
@@ -661,5 +674,45 @@ impl Timeline {
         }
 
         self.imp().end_items.remove_all();
+    }
+
+    /// Whether this timeline has unread messages.
+    ///
+    /// Returns `None` if it is not possible to know, for example if there are
+    /// no events in the Timeline.
+    pub async fn has_unread_messages(&self) -> Option<bool> {
+        let own_user_id = self.room().session().user().unwrap().user_id();
+        let matrix_timeline = self.matrix_timeline();
+
+        let user_receipt_item = spawn_tokio!(async move {
+            matrix_timeline
+                .latest_user_read_receipt_timeline_event_id(&own_user_id)
+                .await
+        })
+        .await
+        .unwrap();
+
+        let sdk_items = &self.imp().sdk_items;
+        let count = sdk_items.n_items();
+
+        for pos in (0..count).rev() {
+            let Some(event) = sdk_items.item(pos).and_downcast::<Event>() else {
+                continue;
+            };
+
+            if user_receipt_item.is_some() && event.event_id() == user_receipt_item {
+                // The event is the oldest one, we have read it all.
+                return Some(false);
+            }
+            if event.counts_as_unread() {
+                // There is at least one unread event.
+                return Some(true);
+            }
+        }
+
+        // This should only happen if we do not have a read receipt item in the
+        // timeline, and there are not enough events in the timeline to know if there
+        // are unread messages.
+        None
     }
 }

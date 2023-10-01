@@ -22,7 +22,7 @@ use matrix_sdk::{
 use ruma::{
     events::{
         reaction::ReactionEventContent,
-        receipt::{ReceiptEventContent, ReceiptThread, ReceiptType},
+        receipt::{ReceiptEventContent, ReceiptType},
         relation::Annotation,
         room::power_levels::{PowerLevelAction, RoomPowerLevelsEventContent},
         tag::{TagInfo, TagName},
@@ -80,10 +80,8 @@ mod imp {
         ///
         /// If it is not known, it will return `0`.
         pub latest_activity: Cell<u64>,
-        /// The event of the user's read receipt for this room.
-        pub read_receipt: RefCell<Option<AnySyncTimelineEvent>>,
-        /// The latest read event in the room's timeline.
-        pub latest_read: RefCell<Option<Event>>,
+        /// Whether all messages of this room are read.
+        pub is_read: Cell<bool>,
         /// The highlight state of the room,
         pub highlight: Cell<HighlightFlags>,
         /// The ID of the room that was upgraded and that this one replaces.
@@ -143,7 +141,7 @@ mod imp {
                     glib::ParamSpecUInt64::builder("latest-activity")
                         .read_only()
                         .build(),
-                    glib::ParamSpecObject::builder::<Event>("latest-read")
+                    glib::ParamSpecBoolean::builder("is-read")
                         .read_only()
                         .build(),
                     glib::ParamSpecObject::builder::<MemberList>("members")
@@ -208,7 +206,7 @@ mod imp {
                 "members" => obj.members().to_value(),
                 "notification-count" => obj.notification_count().to_value(),
                 "latest-activity" => obj.latest_activity().to_value(),
-                "latest-read" => obj.latest_read().to_value(),
+                "is-read" => obj.is_read().to_value(),
                 "predecessor-id" => obj.predecessor_id().map(|id| id.as_str()).to_value(),
                 "is-tombstoned" => obj.is_tombstoned().to_value(),
                 "successor-id" => obj.successor_id().map(|id| id.as_str()).to_value(),
@@ -232,6 +230,14 @@ mod imp {
 
             obj.set_matrix_room(obj.session().client().get_room(obj.room_id()).unwrap());
             self.timeline.set(Timeline::new(&obj)).unwrap();
+
+            self.timeline
+                .get()
+                .unwrap()
+                .sdk_items()
+                .connect_items_changed(clone!(@weak obj => move |_, _, _, _| {
+                    obj.update_is_read();
+                }));
 
             // Initialize the avatar first since loading is async.
             self.avatar_data
@@ -689,156 +695,35 @@ impl Room {
     }
 
     fn setup_receipts(&self) {
-        spawn!(
-            glib::Priority::DEFAULT_IDLE,
-            clone!(@weak self as obj => async move {
-                let user_id = obj.session().user().unwrap().user_id();
-                let matrix_room = obj.matrix_room();
-
-                let handle = spawn_tokio!(async move { matrix_room.user_receipt(ReceiptType::Read, ReceiptThread::Unthreaded, &user_id).await });
-
-                match handle.await.unwrap() {
-                    Ok(Some((event_id, _))) => {
-                        obj.update_read_receipt(event_id).await;
-                    },
-                    Err(error) => {
-                        error!(
-                            "Couldn’t get the user’s read receipt for room {}: {error}",
-                            obj.room_id(),
-                        );
-                    }
-                    _ => {}
+        // Listen to changes in the read receipts.
+        let room_weak = glib::SendWeakRef::from(self.downgrade());
+        self.matrix_room().add_event_handler(
+            move |event: SyncEphemeralRoomEvent<ReceiptEventContent>| {
+                let room_weak = room_weak.clone();
+                async move {
+                    let ctx = glib::MainContext::default();
+                    ctx.spawn(async move {
+                        spawn!(async move {
+                            if let Some(obj) = room_weak.upgrade() {
+                                obj.handle_receipt_event(event.content).await
+                            }
+                        });
+                    });
                 }
-
-                // Listen to changes in the read receipts.
-                let room_weak = glib::SendWeakRef::from(obj.downgrade());
-                obj.matrix_room().add_event_handler(
-                    move |event: SyncEphemeralRoomEvent<ReceiptEventContent>| {
-                        let room_weak = room_weak.clone();
-                        async move {
-                            let ctx = glib::MainContext::default();
-                            ctx.spawn(async move {
-                                spawn!(async move {
-                                    if let Some(obj) = room_weak.upgrade() {
-                                        obj.handle_receipt_event(event.content).await
-                                    }
-                                });
-                            });
-                        }
-                    },
-                );
-            })
+            },
         );
     }
 
     async fn handle_receipt_event(&self, content: ReceiptEventContent) {
-        let user_id = self.session().user().unwrap().user_id();
+        let own_user_id = self.session().user().unwrap().user_id();
 
-        for (event_id, receipts) in content.iter() {
+        for (_event_id, receipts) in content.iter() {
             if let Some(users) = receipts.get(&ReceiptType::Read) {
-                for user in users.keys() {
-                    if user == &user_id {
-                        self.update_read_receipt(event_id.clone()).await;
-                        return;
-                    }
+                if users.contains_key(&own_user_id) {
+                    self.update_is_read();
                 }
             }
         }
-    }
-
-    /// Update the user's read receipt event for this room with the given event
-    /// ID.
-    async fn update_read_receipt(&self, event_id: OwnedEventId) {
-        if Some(event_id.as_ref()) == self.read_receipt().as_ref().map(|event| event.event_id()) {
-            return;
-        }
-
-        match self.timeline().fetch_event_by_id(event_id).await {
-            Ok(read_receipt) => {
-                self.set_read_receipt(Some(read_receipt));
-            }
-            Err(error) => {
-                error!(
-                    "Couldn’t get the event of the user’s read receipt for room {}: {error}",
-                    self.room_id(),
-                );
-            }
-        }
-    }
-
-    /// The user's read receipt event for this room.
-    pub fn read_receipt(&self) -> Option<AnySyncTimelineEvent> {
-        self.imp().read_receipt.borrow().clone()
-    }
-
-    /// Set the user's read receipt event for this room.
-    fn set_read_receipt(&self, read_receipt: Option<AnySyncTimelineEvent>) {
-        if read_receipt.as_ref().map(|event| event.event_id())
-            == self
-                .imp()
-                .read_receipt
-                .borrow()
-                .as_ref()
-                .map(|event| event.event_id())
-        {
-            return;
-        }
-
-        self.imp().read_receipt.replace(read_receipt);
-        self.update_latest_read()
-    }
-
-    fn update_latest_read(&self) {
-        let read_receipt = self.read_receipt();
-        let user_id = self.session().user().unwrap().user_id();
-        let timeline_items = self.timeline().items();
-
-        let latest_read = read_receipt.and_then(|read_receipt| {
-            (0..timeline_items.n_items()).rev().find_map(|i| {
-                timeline_items
-                    .item(i)
-                    .and_downcast_ref::<Event>()
-                    .and_then(|event| {
-                        // The user sent the event so it's the latest read event.
-                        // Necessary because we don't get read receipts for the user's own events.
-                        if event.sender_id() == user_id {
-                            return Some(event.to_owned());
-                        }
-
-                        // This is the event corresponding to the read receipt.
-                        if event.event_id().as_deref() == Some(read_receipt.event_id()) {
-                            return Some(event.to_owned());
-                        }
-
-                        // The event is older than the read receipt so it has been read.
-                        if event.counts_as_unread()
-                            && event.origin_server_ts() <= read_receipt.origin_server_ts()
-                        {
-                            return Some(event.to_owned());
-                        }
-
-                        None
-                    })
-            })
-        });
-
-        self.set_latest_read(latest_read);
-    }
-
-    /// The latest read event in the room's timeline.
-    pub fn latest_read(&self) -> Option<Event> {
-        self.imp().latest_read.borrow().clone()
-    }
-
-    /// Set the latest read event.
-    fn set_latest_read(&self, latest_read: Option<Event>) {
-        if latest_read == self.latest_read() {
-            return;
-        }
-
-        self.imp().latest_read.replace(latest_read);
-        self.notify("latest-read");
-        self.update_highlight();
     }
 
     async fn handle_typing_event(&self, content: TypingEventContent) {
@@ -893,6 +778,12 @@ impl Room {
     fn update_highlight(&self) {
         let mut highlight = HighlightFlags::empty();
 
+        if matches!(self.category(), RoomType::Left) {
+            // Consider that all left rooms are read.
+            self.set_highlight(highlight);
+            return;
+        }
+
         let counts = self
             .imp()
             .matrix_room
@@ -903,7 +794,7 @@ impl Room {
 
         if counts.highlight_count > 0 {
             highlight = HighlightFlags::all();
-        } else if counts.notification_count > 0 || self.has_unread_messages() {
+        } else if counts.notification_count > 0 || !self.is_read() {
             highlight = HighlightFlags::BOLD;
         }
 
@@ -925,30 +816,29 @@ impl Room {
         self.notify("highlight");
     }
 
-    /// Whether this room has unread messages.
-    fn has_unread_messages(&self) -> bool {
-        self.latest_read()
-            .filter(|latest_read| {
-                let timeline_items = self.timeline().items();
+    fn update_is_read(&self) {
+        spawn!(clone!(@weak self as obj => async move {
+            if let Some(has_unread) = obj.timeline().has_unread_messages().await {
+                obj.set_is_read(!has_unread);
+            }
 
-                for i in (0..timeline_items.n_items()).rev() {
-                    if let Some(event) = timeline_items.item(i).and_downcast_ref::<Event>() {
-                        // This is the event corresponding to the read receipt so there's no unread
-                        // messages.
-                        if event == latest_read {
-                            return true;
-                        }
+            obj.update_highlight();
+        }));
+    }
 
-                        // The user hasn't read the latest message.
-                        if event.counts_as_unread() {
-                            return false;
-                        }
-                    }
-                }
+    /// Whether all messages of this room are read.
+    pub fn is_read(&self) -> bool {
+        self.imp().is_read.get()
+    }
 
-                false
-            })
-            .is_none()
+    /// Set whether all messages of this room are read.
+    pub fn set_is_read(&self, is_read: bool) {
+        if is_read == self.is_read() {
+            return;
+        }
+
+        self.imp().is_read.set(is_read);
+        self.notify("is-read");
     }
 
     /// The name of this room.
@@ -1138,7 +1028,10 @@ impl Room {
             .handle_response_room(self.clone(), events);
     }
 
-    /// The timestamp of the room's latest possibly unread event.
+    /// The timestamp of the room's latest activity.
+    ///
+    /// This is the timestamp of the latest event that counts as possibly
+    /// unread.
     ///
     /// If it is not known, it will return `0`.
     pub fn latest_activity(&self) -> u64 {
@@ -1153,9 +1046,6 @@ impl Room {
 
         self.imp().latest_activity.set(latest_activity);
         self.notify("latest-activity");
-        self.update_highlight();
-        // Necessary because we don't get read receipts for the user's own events.
-        self.update_latest_read();
     }
 
     fn load_power_levels(&self) {
@@ -1569,8 +1459,7 @@ impl Room {
         self.imp().verification.borrow().clone()
     }
 
-    /// Update the latest possibly unread event of the room with the given
-    /// events.
+    /// Update the latest activity of the room with the given events.
     ///
     /// The events must be in reverse chronological order.
     pub fn update_latest_activity<'a>(&self, events: impl IntoIterator<Item = &'a Event>) {
