@@ -406,6 +406,7 @@ fn create_widget_for_html_block(
                 let view = sourceview::View::with_buffer(&buffer);
                 view.set_editable(false);
                 view.add_css_class("codeview");
+                view.add_css_class("frame");
                 scrolled.set_child(Some(&view));
                 scrolled.upcast()
             }
