@@ -15,6 +15,7 @@ use gtk::{
     CompositeTemplate,
 };
 use matrix_sdk::ruma::events::room::message::MessageType;
+use tracing::warn;
 
 pub use self::content::ContentFormat;
 use self::{content::MessageContent, media::MessageMedia, reaction_list::MessageReactionList};
@@ -244,7 +245,12 @@ impl MessageRow {
         };
 
         if matches!(message, MessageType::Image(_) | MessageType::Video(_)) {
-            let media_widget = imp.content.child().and_downcast::<MessageMedia>().unwrap();
+            let Some(media_widget) = imp.content.content_widget().and_downcast::<MessageMedia>()
+            else {
+                warn!("Trying to show media of a non-media message");
+                return;
+            };
+
             window.session_view().show_media(event, &media_widget);
         }
     }

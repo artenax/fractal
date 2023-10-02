@@ -110,6 +110,20 @@ impl MessageContent {
         self.notify("format");
     }
 
+    /// Access the widget with the own content of the event.
+    ///
+    /// This allows to access the descendant content while discarding the
+    /// content of a related message, like a replied-to event.
+    pub fn content_widget(&self) -> Option<gtk::Widget> {
+        let child = self.child()?;
+
+        if let Some(reply) = child.downcast_ref::<MessageReply>() {
+            reply.content().child()
+        } else {
+            Some(child)
+        }
+    }
+
     pub fn update_for_event(&self, event: &Event) {
         let format = self.format();
         if format == ContentFormat::Natural {
@@ -168,13 +182,9 @@ impl MessageContent {
 
     /// Get the texture displayed by this widget, if any.
     pub fn texture(&self) -> Option<gdk::Texture> {
-        let mut content = self.child()?;
-
-        if let Some(reply) = content.downcast_ref::<MessageReply>() {
-            content = reply.content().child()?;
-        }
-
-        content.downcast_ref::<MessageMedia>()?.texture()
+        self.content_widget()?
+            .downcast_ref::<MessageMedia>()?
+            .texture()
     }
 }
 
