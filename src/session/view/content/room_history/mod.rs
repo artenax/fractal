@@ -85,7 +85,7 @@ use crate::{
 /// The time to wait before considering that scrolling has ended.
 const SCROLL_TIMEOUT: Duration = Duration::from_millis(500);
 /// The time to wait before considering that messages on a screen where read.
-const READ_TIMEOUT: Duration = Duration::from_secs(10);
+const READ_TIMEOUT: Duration = Duration::from_secs(5);
 
 #[derive(Debug, Default, Hash, Eq, PartialEq, Clone, Copy, glib::Enum)]
 #[repr(i32)]
