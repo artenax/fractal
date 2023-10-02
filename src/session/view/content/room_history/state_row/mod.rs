@@ -333,32 +333,36 @@ impl StateRow {
     fn update_with_profile_change(&self, profile_change: &MemberProfileChange, display_name: &str) {
         let message = if let Some(displayname) = profile_change.displayname_change() {
             if let Some(prev_name) = &displayname.old {
-                if displayname.new.is_none() {
-                    gettext_f(
-                        // Translators: Do NOT translate the content between
-                        // '{' and '}', this is a variable name.
-                        "{previous_user_name} removed their display name.",
-                        &[("previous_user_name", prev_name)],
-                    )
-                } else {
+                if let Some(new_name) = &displayname.new {
                     gettext_f(
                         // Translators: Do NOT translate the content between
                         // '{' and '}', this is a variable name.
                         "{previous_user_name} changed their display name to {new_user_name}.",
                         &[
                             ("previous_user_name", prev_name),
-                            ("new_user_name", display_name),
+                            ("new_user_name", new_name),
                         ],
+                    )
+                } else {
+                    gettext_f(
+                        // Translators: Do NOT translate the content between
+                        // '{' and '}', this is a variable name.
+                        "{previous_user_name} removed their display name.",
+                        &[("previous_user_name", prev_name)],
                     )
                 }
             } else {
+                let new_name = displayname
+                    .new
+                    .as_ref()
+                    .expect("At least one displayname is set in a display name change");
                 gettext_f(
                     // Translators: Do NOT translate the content between
                     // '{' and '}', this is a variable name.
                     "{user_id} set their display name to {new_user_name}.",
                     &[
                         ("user_id", profile_change.user_id().as_ref()),
-                        ("new_user_name", display_name),
+                        ("new_user_name", new_name),
                     ],
                 )
             }
