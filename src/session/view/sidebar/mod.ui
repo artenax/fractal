@@ -129,9 +129,10 @@
         </child>
         <child type="top">
           <object class="GtkSearchBar" id="room_search">
-            <property name="hexpand">True</property>
             <property name="child">
-              <object class="GtkSearchEntry" id="room_search_entry"/>
+              <object class="GtkSearchEntry" id="room_search_entry">
+                <property name="hexpand">True</property>
+              </object>
             </property>
             <accessibility>
               <property name="label" translatable="yes">Room Search</property>
