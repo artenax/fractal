@@ -1,0 +1,11 @@
+# Publish the nightly (Devel) version
+
+include: 'https://gitlab.gnome.org/GNOME/citemplates/-/raw/master/flatpak/flatpak_ci_initiative.yml'
+
+publish_nightly@x86_64:
+  extends: .publish_nightly
+  needs: ['build@x86_64']
+
+publish_nightly@aarch64:
+  extends: .publish_nightly
+  needs: ['build@aarch64']

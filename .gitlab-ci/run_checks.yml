@@ -1,0 +1,18 @@
+# Configure and run code checks
+
+# Custom checks and lints
+checks:
+  stage: check
+  image: "rustlang/rust:nightly-slim"
+  script:
+    - scripts/checks.sh --verbose --force-install
+
+# Lint the code
+cargo-clippy:
+  stage: check
+  image: 'quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master'
+  tags:
+    - flatpak
+  script:
+    - flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
+    - echo "cargo clippy -- -D warnings" | flatpak-builder --disable-rofiles-fuse --build-shell=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}

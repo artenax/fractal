@@ -1,0 +1,67 @@
+# Generate a tarball, publish it to the package registry and create a release
+
+variables:
+  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/release-tarballs/${CI_COMMIT_TAG}"
+  RELEASE_TARBALL: "fractal-${CI_COMMIT_TAG}.tar.xz"
+  RELEASE_TARBALL_SHA: "fractal-${CI_COMMIT_TAG}.tar.xz.sha256sum"
+
+release-tarball:
+  stage: deploy
+  image: 'quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master'
+  variables:
+    MANIFEST_PATH: "build-aux/org.gnome.Fractal.json"
+    APP_ID: "org.gnome.Fractal"
+    CONFIG_OPTS: "-Dprofile=default"
+  tags:
+    - flatpak
+  script:
+    # Create flatpak manifest for release
+    - sed 's/org.gnome.Fractal.Devel/org.gnome.Fractal/g' build-aux/org.gnome.Fractal.Devel.json > ${MANIFEST_PATH}
+    - rewrite-flatpak-manifest ${MANIFEST_PATH} ${FLATPAK_MODULE} ${CONFIG_OPTS}
+
+    # Build tarball with vendored rust dependencies
+    - flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
+    # FIXME: We need --allow-dirty since the manifest is created in place
+    - echo "meson dist --allow-dirty" | flatpak-builder --disable-rofiles-fuse --build-shell=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}
+    - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-dist tarball
+
+    # Upload tarball
+    - |
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file tarball/${RELEASE_TARBALL} "${PACKAGE_REGISTRY_URL}/${RELEASE_TARBALL}"
+    - |
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file tarball/${RELEASE_TARBALL_SHA} "${PACKAGE_REGISTRY_URL}/${RELEASE_TARBALL_SHA}"
+
+    # Extract release notes from appstream
+    # FIXME: Appstream requires the files name to be `*.metainfo.xml`
+    - cp data/${APP_ID}.metainfo.xml.in.in data/${APP_ID}.metainfo.xml
+    - appstream-util appdata-to-news "data/${APP_ID}.metainfo.xml" |
+      awk '{ x[NR] = $0 } END { for ( i=5 ; i<=NR ; i++ ) { if (x[i] ~ /^$/ && x[i+1] ~ /^Version/ && x[i+2] ~ /^=/ && x[i+3] ~ /^Release/) exit; else print x[i]; }}' >
+      release_notes.txt
+  dependencies: []
+  artifacts:
+    paths:
+    - tarball
+    - release_notes.txt
+
+# https://gitlab.com/gitlab-org/gitlab/-/issues/271534 The default URL needs authentication right now, which is less than optimal...
+# Get the package_files ID instead and use that as download URL in the "release" step.
+release:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  script:
+    - apk add curl jq
+    - |
+      export PACKAGE_ID=$(curl "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages?sort=desc" | jq -c .[0].id)
+    - |
+      export RELEASE_TARBALL_DOWNLOAD_ID=$(curl "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/${PACKAGE_ID}/package_files" | jq -c .[0].id)
+      export RELEASE_TARBALL_SHA_DOWNLOAD_ID=$(curl "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/${PACKAGE_ID}/package_files" | jq -c .[1].id)
+
+    - export RELEASE_TARBALL_URL="${CI_PROJECT_URL}/-/package_files/$RELEASE_TARBALL_DOWNLOAD_ID/download"
+    - export RELEASE_TARBALL_SHA_URL="${CI_PROJECT_URL}/-/package_files/$RELEASE_TARBALL_SHA_DOWNLOAD_ID/download"
+    - cat release_notes.txt
+    - |
+      release-cli create --name "Release $CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
+        --assets-link "{\"name\":\"Tarball for ${CI_COMMIT_TAG}\",\"url\":\"${RELEASE_TARBALL_URL}\", \"filepath\": \"/tarball/${RELEASE_TARBALL}\"}" \
+        --assets-link "{\"name\":\"Checksum for ${CI_COMMIT_TAG}\",\"url\":\"${RELEASE_TARBALL_SHA_URL}\", \"filepath\": \"/tarball/${RELEASE_TARBALL_SHA}\"}" \
+        --description release_notes.txt
+  needs: ['release-tarball']
