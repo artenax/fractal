@@ -40,10 +40,6 @@
     <control>pointing</control>
     <control>touch</control>
   </recommends>
-  <custom>
-    <value key="Purism::form_factor">workstation</value>
-    <value key="Purism::form_factor">mobile</value>
-  </custom>
   
   <content_rating type="oars-1.1">
     <content_attribute id="social-chat">intense</content_attribute>
