@@ -40,7 +40,7 @@ gst_pbutils = { version = "0.21", package = "gstreamer-pbutils" }
 gst_play = { version = "0.21", package = "gstreamer-play" }
 gst_video = { version = "0.21", package = "gstreamer-video" }
 html-escape = "0.2"
-html2pango = "0.5"
+html2pango = "0.6"
 html5gum = "0.5"
 image = "0.24"
 indexmap = "2"
