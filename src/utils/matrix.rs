@@ -319,7 +319,7 @@ pub fn extract_mentions(s: &str, room: &Room) -> (String, Vec<(Pill, String)>) {
                         new_string,
                         r#" {}="{}""#,
                         String::from_utf8_lossy(attr_name),
-                        String::from_utf8_lossy(attr_value),
+                        html_escape(&String::from_utf8_lossy(attr_value)),
                     )
                     .unwrap();
                 }
