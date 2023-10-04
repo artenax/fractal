@@ -157,6 +157,7 @@
                             <property name="hscrollbar-policy">never</property>
                             <style>
                               <class name="room-history"/>
+                              <class name="undershoot-bottom"/>
                             </style>
                             <property name="child">
                               <object class="AdwClampScrollable">
@@ -184,146 +185,146 @@
                 </child>
               </object>
             </child>
-          </object>
-        </property>
-        <child type="bottom">
-          <object class="AdwClamp">
-            <property name="vexpand">False</property>
-            <property name="maximum-size">750</property>
-            <property name="tightening-threshold">550</property>
             <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkBox" id="related_event_toolbar">
-                    <style>
-                      <class name="related-event-toolbar"/>
-                    </style>
-                    <property name="spacing">12</property>
-                    <binding name="visible">
-                      <closure type="gboolean" function="object_is_some">
-                        <lookup name="related-event">ContentRoomHistory</lookup>
-                      </closure>
-                    </binding>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="margin-bottom">6</property>
-                        <property name="margin-top">8</property>
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="LabelWithWidgets" id="related_event_header">
-                            <style>
-                              <class name="heading"/>
-                            </style>
-                            <property name="valign">center</property>
-                            <property name="hexpand">true</property>
-                            <property name="margin-top">2</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="ContentMessageContent" id="related_event_content">
-                            <style>
-                              <class name="related-event-content"/>
-                              <class name="dim-label"/>
-                            </style>
-                            <property name="format">ellipsized</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkGestureClick">
-                            <signal name="pressed" handler="handle_related_event_click" swapped="yes"/>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
-                        <style>
-                          <class name="circular"/>
-                        </style>
-                        <property name="halign">end</property>
-                        <property name="valign">start</property>
-                        <property name="icon-name">window-close-symbolic</property>
-                        <property name="action-name">room-history.clear-related-event</property>
-                        <property name="tooltip-text" translatable="yes">Cancel</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
+              <object class="AdwClamp">
+                <property name="vexpand">False</property>
+                <property name="maximum-size">750</property>
+                <property name="tightening-threshold">550</property>
                 <child>
                   <object class="GtkBox">
-                    <style>
-                      <class name="toolbar"/>
-                    </style>
+                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkButton">
-                        <property name="valign">end</property>
-                        <property name="icon-name">mail-attachment-symbolic</property>
-                        <property name="action-name">room-history.select-file</property>
-                        <accessibility>
-                          <property name="label" translatable="yes">Browse Attachment</property>
-                        </accessibility>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
-                        <property name="valign">end</property>
-                        <property name="icon-name">emoji-people-symbolic</property>
-                        <property name="action-name">room-history.open-emoji</property>
-                        <accessibility>
-                          <property name="label" translatable="yes">Open Emoji Picker</property>
-                        </accessibility>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="CustomEntry">
+                      <object class="GtkBox" id="related_event_toolbar">
+                        <style>
+                          <class name="related-event-toolbar"/>
+                        </style>
+                        <property name="spacing">12</property>
+                        <binding name="visible">
+                          <closure type="gboolean" function="object_is_some">
+                            <lookup name="related-event">ContentRoomHistory</lookup>
+                          </closure>
+                        </binding>
                         <child>
-                          <object class="GtkScrolledWindow">
-                            <property name="vexpand">True</property>
-                            <property name="hexpand">True</property>
-                            <property name="vscrollbar-policy">external</property>
-                            <property name="max-content-height">200</property>
-                            <property name="propagate-natural-height">True</property>
-                            <property name="child">
-                              <object class="GtkSourceView" id="message_entry">
-                                <property name="hexpand">True</property>
-                                <property name="accepts-tab">False</property>
-                                <property name="top-margin">7</property>
-                                <property name="bottom-margin">7</property>
-                                <property name="wrap-mode">word</property>
-                                <accessibility>
-                                  <property name="label" translatable="yes">Message Entry</property>
-                                </accessibility>
+                          <object class="GtkBox">
+                            <property name="margin-bottom">6</property>
+                            <property name="margin-top">8</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="LabelWithWidgets" id="related_event_header">
+                                <style>
+                                  <class name="heading"/>
+                                </style>
+                                <property name="valign">center</property>
+                                <property name="hexpand">true</property>
+                                <property name="margin-top">2</property>
                               </object>
-                            </property>
+                            </child>
+                            <child>
+                              <object class="ContentMessageContent" id="related_event_content">
+                                <style>
+                                  <class name="related-event-content"/>
+                                  <class name="dim-label"/>
+                                </style>
+                                <property name="format">ellipsized</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkGestureClick">
+                                <signal name="pressed" handler="handle_related_event_click" swapped="yes"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton">
+                            <style>
+                              <class name="circular"/>
+                            </style>
+                            <property name="halign">end</property>
+                            <property name="valign">start</property>
+                            <property name="icon-name">window-close-symbolic</property>
+                            <property name="action-name">room-history.clear-related-event</property>
+                            <property name="tooltip-text" translatable="yes">Cancel</property>
                           </object>
                         </child>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuButton">
-                        <property name="valign">end</property>
-                        <property name="direction">up</property>
-                        <property name="icon-name">view-more-horizontal-symbolic</property>
-                        <property name="menu-model">message-menu-model</property>
-                        <accessibility>
-                          <property name="label" translatable="yes">Open Message Menu</property>
-                        </accessibility>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
-                        <property name="valign">end</property>
-                        <property name="icon-name">send-symbolic</property>
-                        <property name="focus-on-click">False</property>
-                        <property name="action-name">room-history.send-text-message</property>
+                      <object class="GtkBox">
                         <style>
-                          <class name="suggested-action"/>
-                          <class name="circular"/>
+                          <class name="toolbar"/>
                         </style>
-                        <accessibility>
-                          <property name="label" translatable="yes">Send Message</property>
-                        </accessibility>
+                        <child>
+                          <object class="GtkButton">
+                            <property name="valign">end</property>
+                            <property name="icon-name">mail-attachment-symbolic</property>
+                            <property name="action-name">room-history.select-file</property>
+                            <accessibility>
+                              <property name="label" translatable="yes">Browse Attachment</property>
+                            </accessibility>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton">
+                            <property name="valign">end</property>
+                            <property name="icon-name">emoji-people-symbolic</property>
+                            <property name="action-name">room-history.open-emoji</property>
+                            <accessibility>
+                              <property name="label" translatable="yes">Open Emoji Picker</property>
+                            </accessibility>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="CustomEntry">
+                            <child>
+                              <object class="GtkScrolledWindow">
+                                <property name="vexpand">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vscrollbar-policy">external</property>
+                                <property name="max-content-height">200</property>
+                                <property name="propagate-natural-height">True</property>
+                                <property name="child">
+                                  <object class="GtkSourceView" id="message_entry">
+                                    <property name="hexpand">True</property>
+                                    <property name="accepts-tab">False</property>
+                                    <property name="top-margin">7</property>
+                                    <property name="bottom-margin">7</property>
+                                    <property name="wrap-mode">word</property>
+                                    <accessibility>
+                                      <property name="label" translatable="yes">Message Entry</property>
+                                    </accessibility>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuButton">
+                            <property name="valign">end</property>
+                            <property name="direction">up</property>
+                            <property name="icon-name">view-more-horizontal-symbolic</property>
+                            <property name="menu-model">message-menu-model</property>
+                            <accessibility>
+                              <property name="label" translatable="yes">Open Message Menu</property>
+                            </accessibility>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton">
+                            <property name="valign">end</property>
+                            <property name="icon-name">send-symbolic</property>
+                            <property name="focus-on-click">False</property>
+                            <property name="action-name">room-history.send-text-message</property>
+                            <style>
+                              <class name="suggested-action"/>
+                              <class name="circular"/>
+                            </style>
+                            <accessibility>
+                              <property name="label" translatable="yes">Send Message</property>
+                            </accessibility>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -331,7 +332,7 @@
               </object>
             </child>
           </object>
-        </child>
+        </property>
       </object>
     </child>
   </template>
