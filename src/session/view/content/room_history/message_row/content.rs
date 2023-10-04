@@ -363,6 +363,16 @@ fn build_content(
             };
             child.with_text(gettext("Unable to decrypt this message, decryption will be retried once the keys are available."), format);
         }
+        TimelineItemContent::RedactedMessage => {
+            let child = if let Some(child) = parent.child().and_downcast::<MessageText>() {
+                child
+            } else {
+                let child = MessageText::new();
+                parent.set_child(Some(&child));
+                child
+            };
+            child.with_text(gettext("This message was redacted."), format);
+        }
         content => {
             warn!("Unsupported event content: {content:?}");
             let child = if let Some(child) = parent.child().and_downcast::<MessageText>() {
