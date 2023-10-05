@@ -12,19 +12,12 @@
         <child>
           <object class="AdwToolbarView">
             <child type="top">
-              <object class="AdwHeaderBar">
-                <style>
-                  <class name="osd"/>
-                </style>
-              </object>
+              <object class="AdwHeaderBar"/>
             </child>
             <property name="content">
               <object class="GtkScrolledWindow">
                 <property name="hscrollbar-policy">never</property>
                 <property name="vexpand">True</property>
-                <style>
-                  <class name="osd"/>
-                </style>
                 <child>
                   <object class="AdwClampScrollable">
                     <property name="maximum-size">1000</property>
