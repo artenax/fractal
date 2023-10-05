@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-09-17 16:24+0000\n"
-"PO-Revision-Date: 2023-09-17 21:02+0300\n"
+"POT-Creation-Date: 2023-10-04 13:03+0000\n"
+"PO-Revision-Date: 2023-10-05 20:01+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -134,7 +134,7 @@ msgid "Authenticate via Browser"
 msgstr "Розпізнавання за допомогою браузера"
 
 #: src/components/auth_dialog.ui:113
-#: src/session/view/content/room_history/mod.ui:246
+#: src/session/view/content/room_history/mod.ui:247
 #: src/session/view/content/room_history/verification_info_bar.rs:181
 #: src/session/view/content/verification/identity_verification_widget.ui:442
 msgid "Cancel"
@@ -206,17 +206,17 @@ msgstr "Сеанс успішно вилучено."
 msgid "Could not remove session from secret storage"
 msgstr "Не вдалося вилучити сеанс із зашифрованого сховища"
 
-#: src/error_page.ui:11
+#: src/error_page.ui:10
 #: src/session/view/content/room_details/invite_subpage/mod.ui:138
-#: src/session/view/create_dm_dialog/mod.ui:112
+#: src/session/view/create_dm_dialog/mod.ui:102
 msgid "Error"
 msgstr "Помилка"
 
-#: src/error_page.ui:18
+#: src/error_page.ui:17
 msgid "Secret Service Error"
 msgstr "Помилка «Секретної служби»"
 
-#: src/error_page.ui:40
+#: src/error_page.ui:39
 msgid ""
 "It seems like one of the Fractal sessions stored in the Secret Service is "
 "corrupted. If you know how to fix it you should do so."
@@ -225,7 +225,7 @@ msgstr ""
 "службі», пошкоджено. Якщо вам відомо, як виправити цю помилку, можете "
 "зробити це."
 
-#: src/error_page.ui:51
+#: src/error_page.ui:50
 msgid ""
 "Alternatively, we could disconnect this session for you. This means you will "
 "have to login again and you will lose access to your encrypted messages, "
@@ -237,16 +237,16 @@ msgstr ""
 "повідомлень, якщо сеанс не було відкрито у іншому клієнті або вами не було "
 "створено резервної копії ваших ключів шифрування."
 
-#: src/error_page.ui:74
+#: src/error_page.ui:73
 msgid "Clicking this button might disconnect more than one session!"
 msgstr ""
 "Натискання цієї кнопки може призвести до від'єднання декількох сеансів!"
 
-#: src/error_page.ui:86
+#: src/error_page.ui:85
 msgid "Disconnect the corrupted session"
 msgstr "Від'єднати пошкоджений сеанс"
 
-#: src/error_page.ui:109
+#: src/error_page.ui:108
 msgid ""
 "Fractal relies on a Secret Service Provider to manage your sensitive session "
 "information and an error occurred while we were trying to store or get your "
@@ -256,25 +256,25 @@ msgstr ""
 "«Секретну службу». Під час спроби зберегти або отримати дані вашого сеансу "
 "сталася помилка."
 
-#: src/error_page.ui:124
+#: src/error_page.ui:123
 msgid ""
 "Here are a few things that might help you fix issues with the Secret Service:"
 msgstr ""
 "Ось декілька порад, які можуть допомогти вам виправити проблеми із "
 "«Секретною службою»:"
 
-#: src/error_page.ui:147
+#: src/error_page.ui:146
 msgid ""
 "Make sure you have a Secret Service Provider installed, like gnome-keyring."
 msgstr ""
 "Переконайтеся, що встановлено обгортку «Секретної служби», наприклад gnome-"
 "keyring."
 
-#: src/error_page.ui:172
+#: src/error_page.ui:171
 msgid "Check that you have a default keyring and that it is unlocked."
 msgstr "Перевірте, чи є у вас типова в'язка ключів і чи її розблоковано."
 
-#: src/error_page.ui:187
+#: src/error_page.ui:186
 msgid ""
 "Check the application logs and your distribution’s documentation for more "
 "details."
@@ -282,28 +282,28 @@ msgstr ""
 "Ознайомтеся із журналом програми та документацією до вашого дистрибутива, "
 "щоб дізнатися більше."
 
-#: src/greeter.rs:77 src/login/mod.rs:636 src/window.rs:497
+#: src/greeter.rs:75 src/login/mod.rs:636 src/window.rs:497
 msgid "No network connection"
 msgstr "Немає з'єднання з мережею"
 
-#: src/greeter.rs:81 src/login/mod.rs:641 src/window.rs:501
+#: src/greeter.rs:79 src/login/mod.rs:641 src/window.rs:501
 msgid "No Internet connection"
 msgstr "Відсутнє з'єднання з інтернетом"
 
-#: src/greeter.ui:25 src/greeter.ui:33
+#: src/greeter.ui:19 src/greeter.ui:27
 msgid "About Fractal"
 msgstr "Про «Фрактал»"
 
 #. Fractal is the application name and shouldn't be translated
-#: src/greeter.ui:83
+#: src/greeter.ui:77
 msgid "Welcome to Fractal"
 msgstr "Вітаємо у «Фракталі»"
 
-#: src/greeter.ui:108
+#: src/greeter.ui:102
 msgid "_Log in"
 msgstr "_Увійти"
 
-#: src/greeter.ui:118
+#: src/greeter.ui:112
 msgid "_Create Account"
 msgstr "С_творити обліковий запис"
 
@@ -391,16 +391,16 @@ msgstr "Додаткові надавачі SSO"
 msgid "Unable to store session"
 msgstr "Не вдалося зберегти сеанс"
 
-#: src/login/mod.ui:91
+#: src/login/mod.ui:89
 msgid "Login Complete"
 msgstr "Вхід завершено"
 
-#: src/login/mod.ui:107
+#: src/login/mod.ui:105
 #: src/session/view/content/verification/identity_verification_widget.rs:520
 msgid "This session is ready to send and receive secure messages."
 msgstr "Цей сеанс готовий до надсилання і отримання захищених повідомлень."
 
-#: src/login/mod.ui:112
+#: src/login/mod.ui:110
 msgid "Start Chatting"
 msgstr "Почати спілкування"
 
@@ -1111,7 +1111,7 @@ msgid "General"
 msgstr "Загальні"
 
 #: src/session/view/account_settings/user_page/mod.ui:27
-#: src/session/view/room_creation.ui:66
+#: src/session/view/room_creation.ui:56
 msgid "Name"
 msgstr "Ім'я"
 
@@ -1127,11 +1127,11 @@ msgstr "Ідентифікатор користувача Matrix"
 msgid "Session ID"
 msgstr "Ідентифікатор сеансу"
 
-#: src/session/view/content/explore/mod.ui:56
+#: src/session/view/content/explore/mod.ui:59
 msgid "No rooms matching the search were found"
 msgstr "Не знайдено жодної кімнати, яка відповідає критерію пошуку"
 
-#: src/session/view/content/explore/mod.ui:97
+#: src/session/view/content/explore/mod.ui:100
 msgid "Room List"
 msgstr "Список кімнат"
 
@@ -1274,12 +1274,11 @@ msgstr[2] ""
 msgstr[3] "Не вдалося запросити {user} до {room}. Повторіть спробу пізніше."
 
 #: src/session/view/content/room_details/invite_subpage/mod.ui:4
-#| msgid "_Invite New Member"
 msgid "Invite New Members"
 msgstr "Запросити нових учасників"
 
 #: src/session/view/content/room_details/invite_subpage/mod.ui:13
-#: src/session/view/content/room_history/attachment_dialog.ui:14
+#: src/session/view/content/room_history/attachment_dialog.ui:16
 #: src/session/view/join_room_dialog.ui:9
 msgid "_Cancel"
 msgstr "_Скасувати"
@@ -1289,7 +1288,7 @@ msgid "I_nvite"
 msgstr "Запр_осити"
 
 #: src/session/view/content/room_details/invite_subpage/mod.ui:86
-#: src/session/view/create_dm_dialog/mod.ui:64
+#: src/session/view/create_dm_dialog/mod.ui:54
 msgid "Search"
 msgstr "Шукати"
 
@@ -1298,7 +1297,7 @@ msgid "Search for users to invite them to this room."
 msgstr "Шукати користувачів для запрошення їх до цієї кімнати."
 
 #: src/session/view/content/room_details/invite_subpage/mod.ui:131
-#: src/session/view/create_dm_dialog/mod.ui:100
+#: src/session/view/create_dm_dialog/mod.ui:90
 msgid "No Users Found"
 msgstr "Користувачів не знайдено"
 
@@ -1347,7 +1346,7 @@ msgstr "Пошук учасників кімнати"
 msgid "Search for room members"
 msgstr "Пошук учасників в кімнаті"
 
-#: src/session/view/content/room_history/attachment_dialog.ui:21
+#: src/session/view/content/room_history/attachment_dialog.ui:23
 msgid "_Send"
 msgstr "_Надіслати"
 
@@ -1462,22 +1461,27 @@ msgstr "Не вдалося отримати звуковий файл"
 msgid "Error reading audio file"
 msgstr "Помилка під час читання звукового файла"
 
-#: src/session/view/content/room_history/message_row/content.rs:321
+#: src/session/view/content/room_history/message_row/content.rs:331
 msgid "Identity verification was started"
 msgstr "Розпочато перевірку профілю"
 
-#: src/session/view/content/room_history/message_row/content.rs:332
-#: src/session/view/content/room_history/message_row/content.rs:365
+#: src/session/view/content/room_history/message_row/content.rs:342
+#: src/session/view/content/room_history/message_row/content.rs:385
 msgid "Unsupported event"
 msgstr "Непідтримувана подія"
 
-#: src/session/view/content/room_history/message_row/content.rs:354
+#: src/session/view/content/room_history/message_row/content.rs:364
 msgid ""
 "Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
 msgstr ""
 "Не вдалося розшифрувати це повідомлення, але програма повторить спробу, "
 "щойно стануть доступними ключі."
+
+#: src/session/view/content/room_history/message_row/content.rs:374
+#| msgid "This message was removed."
+msgid "This message was redacted."
+msgstr "Це повідомлення було змінено."
 
 #: src/session/view/content/room_history/message_row/location.rs:100
 msgid "Location is invalid and cannot be displayed"
@@ -1576,7 +1580,6 @@ msgid "Room _Details"
 msgstr "Інформація про _кімнату"
 
 #: src/session/view/content/room_history/mod.ui:11
-#| msgid "_Invite New Member"
 msgid "_Invite New Members"
 msgstr "З_апросити нових учасників"
 
@@ -1597,51 +1600,51 @@ msgstr "_Місце"
 msgid "_Markdown"
 msgstr "_Markdown"
 
-#: src/session/view/content/room_history/mod.ui:68
+#: src/session/view/content/room_history/mod.ui:70
 msgid "Room Settings"
 msgstr "Параметри кімнати"
 
-#: src/session/view/content/room_history/mod.ui:110
+#: src/session/view/content/room_history/mod.ui:112
 msgid "Unable to load room"
 msgstr "Не вдалося завантажити кімнату"
 
-#: src/session/view/content/room_history/mod.ui:111
+#: src/session/view/content/room_history/mod.ui:113
 msgid "Check your network connection."
 msgstr "Перевірте ваше з'єднання з мережею."
 
-#: src/session/view/content/room_history/mod.ui:114
+#: src/session/view/content/room_history/mod.ui:116
 msgid "Try Again"
 msgstr "Повторити спробу"
 
-#: src/session/view/content/room_history/mod.ui:139
+#: src/session/view/content/room_history/mod.ui:141
 msgid "Scroll to bottom"
 msgstr "Прокрутіть донизу"
 
-#: src/session/view/content/room_history/mod.ui:151
+#: src/session/view/content/room_history/mod.ui:153
 msgid "Drop Here to Send"
 msgstr "Скиньте сюди, щоб надіслати"
 
-#: src/session/view/content/room_history/mod.ui:171
+#: src/session/view/content/room_history/mod.ui:174
 msgid "Room History"
 msgstr "Журнал кімнати"
 
-#: src/session/view/content/room_history/mod.ui:262
+#: src/session/view/content/room_history/mod.ui:263
 msgid "Browse Attachment"
 msgstr "Навігація долученням"
 
-#: src/session/view/content/room_history/mod.ui:272
+#: src/session/view/content/room_history/mod.ui:273
 msgid "Open Emoji Picker"
 msgstr "Відкрити вибір емодзі"
 
-#: src/session/view/content/room_history/mod.ui:293
+#: src/session/view/content/room_history/mod.ui:294
 msgid "Message Entry"
 msgstr "Введення повідомлення"
 
-#: src/session/view/content/room_history/mod.ui:308
+#: src/session/view/content/room_history/mod.ui:309
 msgid "Open Message Menu"
 msgstr "Відкрити меню повідомлення"
 
-#: src/session/view/content/room_history/mod.ui:323
+#: src/session/view/content/room_history/mod.ui:324
 msgid "Send Message"
 msgstr "Надіслати повідомлення"
 
@@ -1680,7 +1683,7 @@ msgstr "Отримано повідомлення про непідтримув�
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
 #: src/session/view/content/room_history/state_row/mod.rs:239
-#: src/session/view/content/room_history/state_row/mod.rs:392
+#: src/session/view/content/room_history/state_row/mod.rs:396
 msgid "{user} joined this room."
 msgstr "{user} долучився/долучилася до цієї кімнати."
 
@@ -1757,36 +1760,36 @@ msgstr "Було отримано непідтримуваний запис по
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
 #: src/session/view/content/room_history/state_row/mod.rs:340
-msgid "{previous_user_name} removed their display name."
-msgstr "{previous_user_name} вилучено власне показане ім'я"
-
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/state_row/mod.rs:347
 msgid "{previous_user_name} changed their display name to {new_user_name}."
 msgstr "{previous_user_name} змінено показане ім'я на {new_user_name}."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/state_row/mod.rs:358
+#: src/session/view/content/room_history/state_row/mod.rs:350
+msgid "{previous_user_name} removed their display name."
+msgstr "{previous_user_name} вилучено власне показане ім'я"
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/view/content/room_history/state_row/mod.rs:362
 msgid "{user_id} set their display name to {new_user_name}."
 msgstr "{user_id} встановлено показане ім'я {new_user_name}."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/state_row/mod.rs:370
+#: src/session/view/content/room_history/state_row/mod.rs:374
 msgid "{user} set their avatar."
 msgstr "{user} встановлено аватар."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/state_row/mod.rs:377
+#: src/session/view/content/room_history/state_row/mod.rs:381
 msgid "{user} removed their avatar."
 msgstr "{user} вилучено аватар."
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/state_row/mod.rs:384
+#: src/session/view/content/room_history/state_row/mod.rs:388
 msgid "{user} changed their avatar."
 msgstr "{user} змінено аватар."
 
@@ -2167,19 +2170,19 @@ msgstr "Не вдалося розпочати безпосереднє спіл
 msgid "Direct Chat"
 msgstr "Безпосереднє спілкування"
 
-#: src/session/view/create_dm_dialog/mod.ui:41
+#: src/session/view/create_dm_dialog/mod.ui:31
 msgid "New Direct Chat"
 msgstr "Новий чат"
 
-#: src/session/view/create_dm_dialog/mod.ui:65
+#: src/session/view/create_dm_dialog/mod.ui:55
 msgid "Search for people to start a new chat with"
 msgstr "Шукати тих, з ким слід почати спілкування"
 
-#: src/session/view/create_dm_dialog/mod.ui:101
+#: src/session/view/create_dm_dialog/mod.ui:91
 msgid "No users matching the search pattern were found"
 msgstr "Не знайдено жодного користувача, який відповідає критерію пошуку"
 
-#: src/session/view/create_dm_dialog/mod.ui:113
+#: src/session/view/create_dm_dialog/mod.ui:103
 msgid "An error occurred while searching for matches"
 msgstr "Під час пошуку відповідників сталася помилка"
 
@@ -2230,43 +2233,43 @@ msgstr "Не може містити «#»"
 msgid "Too long. Use a shorter address."
 msgstr "Задовга. Скористайтеся коротшою адресою."
 
-#: src/session/view/room_creation.ui:49
+#: src/session/view/room_creation.ui:39
 msgid "New Room"
 msgstr "Нова кімната"
 
-#: src/session/view/room_creation.ui:73
+#: src/session/view/room_creation.ui:63
 msgid "Topic (Optional)"
 msgstr "Тема (необов'язкова)"
 
-#: src/session/view/room_creation.ui:81
+#: src/session/view/room_creation.ui:71
 msgid "Room Visibility"
 msgstr "Видимість кімнати"
 
-#: src/session/view/room_creation.ui:84
+#: src/session/view/room_creation.ui:74
 msgid "Private"
 msgstr "Приватна"
 
-#: src/session/view/room_creation.ui:85
+#: src/session/view/room_creation.ui:75
 msgid "Only invited people can join this room"
 msgstr "До цієї кімнати можуть долучатися лише запрошені люди"
 
-#: src/session/view/room_creation.ui:98
+#: src/session/view/room_creation.ui:88
 msgid "Public"
 msgstr "Відкрита"
 
-#: src/session/view/room_creation.ui:99
+#: src/session/view/room_creation.ui:89
 msgid "Anyone can find and join this room"
 msgstr "Цю кімнати може знаходити і долучатися до неї будь-хто"
 
-#: src/session/view/room_creation.ui:117
+#: src/session/view/room_creation.ui:107
 msgid "End-to-End Encryption"
 msgstr "Міжвузлове шифрування"
 
-#: src/session/view/room_creation.ui:118
+#: src/session/view/room_creation.ui:108
 msgid "Cannot be disabled later"
 msgstr "Не можна вимикати пізніше"
 
-#: src/session/view/room_creation.ui:136
+#: src/session/view/room_creation.ui:120
 msgid ""
 "Fractal does not support online backup for encryption keys yet, so you will "
 "need to back them up manually or your message history will be lost if you "
@@ -2277,11 +2280,11 @@ msgstr ""
 "вручну, інакше ви втратите ваш журнал повідомлень, якщо втратите доступ до "
 "усіх ваших сеансів."
 
-#: src/session/view/room_creation.ui:150
+#: src/session/view/room_creation.ui:134
 msgid "Room Address"
 msgstr "Адреса кімнати"
 
-#: src/session/view/room_creation.ui:200
+#: src/session/view/room_creation.ui:184
 msgid "_Create Room"
 msgstr "С_творити кімнату"
 
@@ -2412,23 +2415,23 @@ msgstr "Меню параметрів програми"
 msgid "Toggle Room Search"
 msgstr "Увімкнути або вимкнути пошук кімнати"
 
-#: src/session/view/sidebar/mod.ui:137
+#: src/session/view/sidebar/mod.ui:138
 msgid "Room Search"
 msgstr "Пошук кімнати"
 
-#: src/session/view/sidebar/mod.ui:138
+#: src/session/view/sidebar/mod.ui:139
 msgid "Search for a room"
 msgstr "Пошук кімнати"
 
-#: src/session/view/sidebar/mod.ui:147
+#: src/session/view/sidebar/mod.ui:148
 msgid "Offline"
 msgstr "Поза мережею"
 
-#: src/session/view/sidebar/mod.ui:162
+#: src/session/view/sidebar/mod.ui:163
 msgid "Sidebar"
 msgstr "Бічна панель"
 
-#: src/session/view/sidebar/mod.ui:163
+#: src/session/view/sidebar/mod.ui:164
 msgid "Allows to navigate between rooms"
 msgstr "Дозволяє навігацію між кімнатами"
 
@@ -2712,9 +2715,6 @@ msgstr "Не вдалося відновити попередні сеанси"
 
 #~ msgid "Enable Markdown Formatting"
 #~ msgstr "Увімкнути форматування Markdown"
-
-#~ msgid "This message was removed."
-#~ msgstr "Це повідомлення було вилучено."
 
 #~ msgid ""
 #~ "Scan the QR code from this session from another session logged into this "
