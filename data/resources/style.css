@@ -146,8 +146,9 @@ levelbar.discrete.error block.filled {
   background-color: @yellow_5;
 }
 
-media-viewer headerbar.osd {
-  background-color: rgba(0,0,0,.7);
+media-viewer headerbar {
+  background: black;
+  color: white;
 }
 
 media-content-viewer controls {

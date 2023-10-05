@@ -370,11 +370,9 @@ impl MediaViewer {
             imp.media.set_halign(gtk::Align::Fill);
             imp.toolbar_view
                 .set_top_bar_style(adw::ToolbarStyle::Raised);
-            imp.header_bar.add_css_class("osd");
         } else {
             imp.media.set_halign(gtk::Align::Center);
             imp.toolbar_view.set_top_bar_style(adw::ToolbarStyle::Flat);
-            imp.header_bar.remove_css_class("osd");
         }
 
         self.notify("fullscreened");
