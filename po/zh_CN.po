@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fractal master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/fractal/issues\n"
-"POT-Creation-Date: 2023-09-17 16:24+0000\n"
-"PO-Revision-Date: 2023-09-24 19:49+0800\n"
+"POT-Creation-Date: 2023-10-04 13:03+0000\n"
+"PO-Revision-Date: 2023-10-05 20:40+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Gtranslator 45.1\n"
+"X-Generator: Gtranslator 45.2\n"
 
 #: data/org.gnome.Fractal.desktop.in.in:3
 #: data/org.gnome.Fractal.metainfo.xml.in.in:7
@@ -125,7 +125,7 @@ msgid "Authenticate via Browser"
 msgstr "通过浏览器认证"
 
 #: src/components/auth_dialog.ui:113
-#: src/session/view/content/room_history/mod.ui:246
+#: src/session/view/content/room_history/mod.ui:247
 #: src/session/view/content/room_history/verification_info_bar.rs:181
 #: src/session/view/content/verification/identity_verification_widget.ui:442
 msgid "Cancel"
@@ -197,17 +197,17 @@ msgstr "会话已成功移除。"
 msgid "Could not remove session from secret storage"
 msgstr "无法从保密存储移除会话"
 
-#: src/error_page.ui:11
+#: src/error_page.ui:10
 #: src/session/view/content/room_details/invite_subpage/mod.ui:138
-#: src/session/view/create_dm_dialog/mod.ui:112
+#: src/session/view/create_dm_dialog/mod.ui:102
 msgid "Error"
 msgstr "错误"
 
-#: src/error_page.ui:18
+#: src/error_page.ui:17
 msgid "Secret Service Error"
 msgstr "保密服务错误"
 
-#: src/error_page.ui:40
+#: src/error_page.ui:39
 msgid ""
 "It seems like one of the Fractal sessions stored in the Secret Service is "
 "corrupted. If you know how to fix it you should do so."
@@ -215,7 +215,7 @@ msgstr ""
 "看起来其中一个存储在保密服务中的 Fractal 会话已损坏。如果您知道如何修复那么您"
 "应当这样做。"
 
-#: src/error_page.ui:51
+#: src/error_page.ui:50
 msgid ""
 "Alternatively, we could disconnect this session for you. This means you will "
 "have to login again and you will lose access to your encrypted messages, "
@@ -225,15 +225,15 @@ msgstr ""
 "替代方案是我们可以为您断开该会话的连接。这意味着您将重新登录并会丢失对您加密"
 "消息的访问权限，除非您在另一个客户端有打开的会话或您已经备份了加密密钥。"
 
-#: src/error_page.ui:74
+#: src/error_page.ui:73
 msgid "Clicking this button might disconnect more than one session!"
 msgstr "点击该按钮可能会断开不止一个会话连接！"
 
-#: src/error_page.ui:86
+#: src/error_page.ui:85
 msgid "Disconnect the corrupted session"
 msgstr "断开已损坏的会话连接"
 
-#: src/error_page.ui:109
+#: src/error_page.ui:108
 msgid ""
 "Fractal relies on a Secret Service Provider to manage your sensitive session "
 "information and an error occurred while we were trying to store or get your "
@@ -242,48 +242,48 @@ msgstr ""
 "Fractal 依赖于保密服务提供者来管理您的敏感会话信息且在我们尝试存储或获取您的"
 "会话时发生了错误。"
 
-#: src/error_page.ui:124
+#: src/error_page.ui:123
 msgid ""
 "Here are a few things that might help you fix issues with the Secret Service:"
 msgstr "这里有一些方法可能会帮助您修复与保密服务的问题："
 
-#: src/error_page.ui:147
+#: src/error_page.ui:146
 msgid ""
 "Make sure you have a Secret Service Provider installed, like gnome-keyring."
 msgstr "请确保您已安装了保密服务提供者，比如 gnome-keyring。"
 
-#: src/error_page.ui:172
+#: src/error_page.ui:171
 msgid "Check that you have a default keyring and that it is unlocked."
 msgstr "请检查您有一个默认的密钥环并已解锁。"
 
-#: src/error_page.ui:187
+#: src/error_page.ui:186
 msgid ""
 "Check the application logs and your distribution’s documentation for more "
 "details."
 msgstr "请查阅应用程序日志和您的发行版文档获取更多详情。"
 
-#: src/greeter.rs:77 src/login/mod.rs:636 src/window.rs:497
+#: src/greeter.rs:75 src/login/mod.rs:636 src/window.rs:497
 msgid "No network connection"
 msgstr "无网络连接"
 
-#: src/greeter.rs:81 src/login/mod.rs:641 src/window.rs:501
+#: src/greeter.rs:79 src/login/mod.rs:641 src/window.rs:501
 msgid "No Internet connection"
 msgstr "没有互联网连接"
 
-#: src/greeter.ui:25 src/greeter.ui:33
+#: src/greeter.ui:19 src/greeter.ui:27
 msgid "About Fractal"
 msgstr "关于 Fractal"
 
 #. Fractal is the application name and shouldn't be translated
-#: src/greeter.ui:83
+#: src/greeter.ui:77
 msgid "Welcome to Fractal"
 msgstr "欢迎使用 Fractal"
 
-#: src/greeter.ui:108
+#: src/greeter.ui:102
 msgid "_Log in"
 msgstr "登录(_L)"
 
-#: src/greeter.ui:118
+#: src/greeter.ui:112
 msgid "_Create Account"
 msgstr "创建账号(_C)"
 
@@ -369,16 +369,16 @@ msgstr "更多 SSO 提供者"
 msgid "Unable to store session"
 msgstr "无法存储会话"
 
-#: src/login/mod.ui:91
+#: src/login/mod.ui:89
 msgid "Login Complete"
 msgstr "登录完成"
 
-#: src/login/mod.ui:107
+#: src/login/mod.ui:105
 #: src/session/view/content/verification/identity_verification_widget.rs:520
 msgid "This session is ready to send and receive secure messages."
 msgstr "该会话已准备好发送和接收安全消息。"
 
-#: src/login/mod.ui:112
+#: src/login/mod.ui:110
 msgid "Start Chatting"
 msgstr "开始聊天"
 
@@ -1050,7 +1050,7 @@ msgid "General"
 msgstr "常规"
 
 #: src/session/view/account_settings/user_page/mod.ui:27
-#: src/session/view/room_creation.ui:66
+#: src/session/view/room_creation.ui:56
 msgid "Name"
 msgstr "名字"
 
@@ -1066,11 +1066,11 @@ msgstr "Matrix 用户标识"
 msgid "Session ID"
 msgstr "会话标识"
 
-#: src/session/view/content/explore/mod.ui:56
+#: src/session/view/content/explore/mod.ui:59
 msgid "No rooms matching the search were found"
 msgstr "未发现匹配搜索的聊天室"
 
-#: src/session/view/content/explore/mod.ui:97
+#: src/session/view/content/explore/mod.ui:100
 msgid "Room List"
 msgstr "聊天室列表"
 
@@ -1211,7 +1211,7 @@ msgid "Invite New Members"
 msgstr "邀请新成员"
 
 #: src/session/view/content/room_details/invite_subpage/mod.ui:13
-#: src/session/view/content/room_history/attachment_dialog.ui:14
+#: src/session/view/content/room_history/attachment_dialog.ui:16
 #: src/session/view/join_room_dialog.ui:9
 msgid "_Cancel"
 msgstr "取消(_C)"
@@ -1221,7 +1221,7 @@ msgid "I_nvite"
 msgstr "邀请(_N)"
 
 #: src/session/view/content/room_details/invite_subpage/mod.ui:86
-#: src/session/view/create_dm_dialog/mod.ui:64
+#: src/session/view/create_dm_dialog/mod.ui:54
 msgid "Search"
 msgstr "搜索"
 
@@ -1230,7 +1230,7 @@ msgid "Search for users to invite them to this room."
 msgstr "搜索用户来邀请他们到该聊天室。"
 
 #: src/session/view/content/room_details/invite_subpage/mod.ui:131
-#: src/session/view/create_dm_dialog/mod.ui:100
+#: src/session/view/create_dm_dialog/mod.ui:90
 msgid "No Users Found"
 msgstr "未找到用户"
 
@@ -1279,7 +1279,7 @@ msgstr "搜索聊天室成员"
 msgid "Search for room members"
 msgstr "搜索聊天室成员"
 
-#: src/session/view/content/room_history/attachment_dialog.ui:21
+#: src/session/view/content/room_history/attachment_dialog.ui:23
 msgid "_Send"
 msgstr "发送(_S)"
 
@@ -1394,20 +1394,24 @@ msgstr "无法找回音频文件"
 msgid "Error reading audio file"
 msgstr "读取音频文件时出错"
 
-#: src/session/view/content/room_history/message_row/content.rs:321
+#: src/session/view/content/room_history/message_row/content.rs:331
 msgid "Identity verification was started"
 msgstr "身份验证已开始"
 
-#: src/session/view/content/room_history/message_row/content.rs:332
-#: src/session/view/content/room_history/message_row/content.rs:365
+#: src/session/view/content/room_history/message_row/content.rs:342
+#: src/session/view/content/room_history/message_row/content.rs:385
 msgid "Unsupported event"
 msgstr "不支持的事件"
 
-#: src/session/view/content/room_history/message_row/content.rs:354
+#: src/session/view/content/room_history/message_row/content.rs:364
 msgid ""
 "Unable to decrypt this message, decryption will be retried once the keys are "
 "available."
 msgstr "无法解密该消息，但将在密钥可用时重试。"
+
+#: src/session/view/content/room_history/message_row/content.rs:374
+msgid "This message was redacted."
+msgstr "该消息被编辑过。"
 
 #: src/session/view/content/room_history/message_row/location.rs:100
 msgid "Location is invalid and cannot be displayed"
@@ -1526,51 +1530,51 @@ msgstr "位置(_L)"
 msgid "_Markdown"
 msgstr "_Markdown"
 
-#: src/session/view/content/room_history/mod.ui:68
+#: src/session/view/content/room_history/mod.ui:70
 msgid "Room Settings"
 msgstr "聊天室设置"
 
-#: src/session/view/content/room_history/mod.ui:110
+#: src/session/view/content/room_history/mod.ui:112
 msgid "Unable to load room"
 msgstr "无法加载聊天室"
 
-#: src/session/view/content/room_history/mod.ui:111
+#: src/session/view/content/room_history/mod.ui:113
 msgid "Check your network connection."
 msgstr "检查您的网络连接。"
 
-#: src/session/view/content/room_history/mod.ui:114
+#: src/session/view/content/room_history/mod.ui:116
 msgid "Try Again"
 msgstr "重试"
 
-#: src/session/view/content/room_history/mod.ui:139
+#: src/session/view/content/room_history/mod.ui:141
 msgid "Scroll to bottom"
 msgstr "滚动到底部"
 
-#: src/session/view/content/room_history/mod.ui:151
+#: src/session/view/content/room_history/mod.ui:153
 msgid "Drop Here to Send"
 msgstr "拖到这里发送"
 
-#: src/session/view/content/room_history/mod.ui:171
+#: src/session/view/content/room_history/mod.ui:174
 msgid "Room History"
 msgstr "聊天室历史"
 
-#: src/session/view/content/room_history/mod.ui:262
+#: src/session/view/content/room_history/mod.ui:263
 msgid "Browse Attachment"
 msgstr "浏览附件"
 
-#: src/session/view/content/room_history/mod.ui:272
+#: src/session/view/content/room_history/mod.ui:273
 msgid "Open Emoji Picker"
 msgstr "打开表情选择器"
 
-#: src/session/view/content/room_history/mod.ui:293
+#: src/session/view/content/room_history/mod.ui:294
 msgid "Message Entry"
 msgstr "消息条目"
 
-#: src/session/view/content/room_history/mod.ui:308
+#: src/session/view/content/room_history/mod.ui:309
 msgid "Open Message Menu"
 msgstr "打开消息菜单"
 
-#: src/session/view/content/room_history/mod.ui:323
+#: src/session/view/content/room_history/mod.ui:324
 msgid "Send Message"
 msgstr "发送消息"
 
@@ -1609,7 +1613,7 @@ msgstr "接收了不受支持的状态事件。"
 #. Translators: Do NOT translate the content between '{' and '}', this
 #. is a variable name.
 #: src/session/view/content/room_history/state_row/mod.rs:239
-#: src/session/view/content/room_history/state_row/mod.rs:392
+#: src/session/view/content/room_history/state_row/mod.rs:396
 msgid "{user} joined this room."
 msgstr "{user} 加入了该聊天室。"
 
@@ -1686,36 +1690,36 @@ msgstr "接收了不受支持的聊天室成员事件。"
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
 #: src/session/view/content/room_history/state_row/mod.rs:340
-msgid "{previous_user_name} removed their display name."
-msgstr "{previous_user_name} 移除了他们的展示名字。"
-
-#. Translators: Do NOT translate the content between
-#. '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/state_row/mod.rs:347
 msgid "{previous_user_name} changed their display name to {new_user_name}."
 msgstr "{previous_user_name} 已将他们的展示名字修改为 {new_user_name}。"
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/state_row/mod.rs:358
+#: src/session/view/content/room_history/state_row/mod.rs:350
+msgid "{previous_user_name} removed their display name."
+msgstr "{previous_user_name} 移除了他们的展示名字。"
+
+#. Translators: Do NOT translate the content between
+#. '{' and '}', this is a variable name.
+#: src/session/view/content/room_history/state_row/mod.rs:362
 msgid "{user_id} set their display name to {new_user_name}."
 msgstr "{user_id} 已将他们的展示名字设为 {new_user_name}。"
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/state_row/mod.rs:370
+#: src/session/view/content/room_history/state_row/mod.rs:374
 msgid "{user} set their avatar."
 msgstr "{user} 设置了他们的头像。"
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/state_row/mod.rs:377
+#: src/session/view/content/room_history/state_row/mod.rs:381
 msgid "{user} removed their avatar."
 msgstr "{user} 移除了他们的头像。"
 
 #. Translators: Do NOT translate the content between
 #. '{' and '}', this is a variable name.
-#: src/session/view/content/room_history/state_row/mod.rs:384
+#: src/session/view/content/room_history/state_row/mod.rs:388
 msgid "{user} changed their avatar."
 msgstr "{user} 更改了他们的头像。"
 
@@ -2061,19 +2065,19 @@ msgstr "创建新的直接聊天失败"
 msgid "Direct Chat"
 msgstr "直接聊天"
 
-#: src/session/view/create_dm_dialog/mod.ui:41
+#: src/session/view/create_dm_dialog/mod.ui:31
 msgid "New Direct Chat"
 msgstr "新建直接聊天"
 
-#: src/session/view/create_dm_dialog/mod.ui:65
+#: src/session/view/create_dm_dialog/mod.ui:55
 msgid "Search for people to start a new chat with"
 msgstr "搜索用户来开始新的聊天"
 
-#: src/session/view/create_dm_dialog/mod.ui:101
+#: src/session/view/create_dm_dialog/mod.ui:91
 msgid "No users matching the search pattern were found"
 msgstr "未发现匹配搜索方案的用户"
 
-#: src/session/view/create_dm_dialog/mod.ui:113
+#: src/session/view/create_dm_dialog/mod.ui:103
 msgid "An error occurred while searching for matches"
 msgstr "搜索匹配项时发生错误"
 
@@ -2122,43 +2126,43 @@ msgstr "不能包含“#”"
 msgid "Too long. Use a shorter address."
 msgstr "太长了。请使用短一点的地址。"
 
-#: src/session/view/room_creation.ui:49
+#: src/session/view/room_creation.ui:39
 msgid "New Room"
 msgstr "新建聊天室"
 
-#: src/session/view/room_creation.ui:73
+#: src/session/view/room_creation.ui:63
 msgid "Topic (Optional)"
 msgstr "主题（可选）"
 
-#: src/session/view/room_creation.ui:81
+#: src/session/view/room_creation.ui:71
 msgid "Room Visibility"
 msgstr "聊天室可见性"
 
-#: src/session/view/room_creation.ui:84
+#: src/session/view/room_creation.ui:74
 msgid "Private"
 msgstr "私人"
 
-#: src/session/view/room_creation.ui:85
+#: src/session/view/room_creation.ui:75
 msgid "Only invited people can join this room"
 msgstr "仅邀请的用户可以加入该聊天室"
 
-#: src/session/view/room_creation.ui:98
+#: src/session/view/room_creation.ui:88
 msgid "Public"
 msgstr "公开"
 
-#: src/session/view/room_creation.ui:99
+#: src/session/view/room_creation.ui:89
 msgid "Anyone can find and join this room"
 msgstr "任何人都可以找到并加入该聊天室"
 
-#: src/session/view/room_creation.ui:117
+#: src/session/view/room_creation.ui:107
 msgid "End-to-End Encryption"
 msgstr "端到端加密"
 
-#: src/session/view/room_creation.ui:118
+#: src/session/view/room_creation.ui:108
 msgid "Cannot be disabled later"
 msgstr "无法在之后禁用"
 
-#: src/session/view/room_creation.ui:136
+#: src/session/view/room_creation.ui:120
 msgid ""
 "Fractal does not support online backup for encryption keys yet, so you will "
 "need to back them up manually or your message history will be lost if you "
@@ -2167,11 +2171,11 @@ msgstr ""
 "Fractal 尚未支持在线备份加密密钥因此您需要手动备份，否则如果您丢失了对所有会"
 "话的访问则会丢失您的消息历史记录。"
 
-#: src/session/view/room_creation.ui:150
+#: src/session/view/room_creation.ui:134
 msgid "Room Address"
 msgstr "聊天室地址"
 
-#: src/session/view/room_creation.ui:200
+#: src/session/view/room_creation.ui:184
 msgid "_Create Room"
 msgstr "创建聊天室(_C)"
 
@@ -2302,23 +2306,23 @@ msgstr "应用设置菜单"
 msgid "Toggle Room Search"
 msgstr "切换聊天室搜索"
 
-#: src/session/view/sidebar/mod.ui:137
+#: src/session/view/sidebar/mod.ui:138
 msgid "Room Search"
 msgstr "聊天室搜索"
 
-#: src/session/view/sidebar/mod.ui:138
+#: src/session/view/sidebar/mod.ui:139
 msgid "Search for a room"
 msgstr "搜索聊天室"
 
-#: src/session/view/sidebar/mod.ui:147
+#: src/session/view/sidebar/mod.ui:148
 msgid "Offline"
 msgstr "离线"
 
-#: src/session/view/sidebar/mod.ui:162
+#: src/session/view/sidebar/mod.ui:163
 msgid "Sidebar"
 msgstr "侧边栏"
 
-#: src/session/view/sidebar/mod.ui:163
+#: src/session/view/sidebar/mod.ui:164
 msgid "Allows to navigate between rooms"
 msgstr "允许在聊天室间导览"
 
@@ -2528,9 +2532,6 @@ msgstr "恢复上次会话失败"
 
 #~ msgid "Choose avatar"
 #~ msgstr "选择头像"
-
-#~ msgid "This message was removed."
-#~ msgstr "该消息已移除。"
 
 #~ msgid "Get Started"
 #~ msgstr "开始"
