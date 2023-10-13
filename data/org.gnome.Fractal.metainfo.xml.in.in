@@ -35,11 +35,11 @@
     <display_length compare="ge">360</display_length>
     <internet>always</internet>
   </requires>
-  <recommends>
+  <supports>
     <control>keyboard</control>
     <control>pointing</control>
     <control>touch</control>
-  </recommends>
+  </supports>
   
   <content_rating type="oars-1.1">
     <content_attribute id="social-chat">intense</content_attribute>
