@@ -25,8 +25,7 @@ pub enum AvatarUriSource {
 mod imp {
     use std::cell::{Cell, RefCell};
 
-    use glib::object::WeakRef;
-    use once_cell::sync::Lazy;
+    use once_cell::sync::{Lazy, OnceCell};
 
     use super::*;
 
@@ -37,7 +36,7 @@ mod imp {
         pub uri: RefCell<Option<OwnedMxcUri>>,
         /// The source of the avatar's URI.
         pub uri_source: Cell<AvatarUriSource>,
-        pub session: WeakRef<Session>,
+        pub session: OnceCell<Session>,
     }
 
     #[glib::object_subclass]
@@ -79,7 +78,13 @@ mod imp {
                 "needed-size" => obj.set_needed_size(value.get().unwrap()),
                 "uri" => obj.set_uri(value.get::<&str>().ok().map(Into::into)),
                 "uri-source" => obj.set_uri_source(value.get().unwrap()),
-                "session" => self.session.set(value.get().ok().as_ref()),
+                "session" => {
+                    if let Some(session) = value.get().unwrap() {
+                        if self.session.set(session).is_err() {
+                            error!("Trying to set a session while it is already set");
+                        }
+                    }
+                }
                 _ => unimplemented!(),
             }
         }
@@ -121,8 +126,8 @@ impl AvatarImage {
     }
 
     /// The current session.
-    fn session(&self) -> Session {
-        self.imp().session.upgrade().unwrap()
+    fn session(&self) -> &Session {
+        self.imp().session.get().unwrap()
     }
 
     /// The image content as a paintable, if any.
