@@ -27,7 +27,6 @@ impl Default for UserActions {
 mod imp {
     use std::cell::{Cell, RefCell};
 
-    use glib::object::WeakRef;
     use once_cell::{sync::Lazy, unsync::OnceCell};
 
     use super::*;
@@ -36,7 +35,7 @@ mod imp {
     pub struct User {
         pub user_id: OnceCell<OwnedUserId>,
         pub display_name: RefCell<Option<String>>,
-        pub session: WeakRef<Session>,
+        pub session: OnceCell<Session>,
         pub avatar_data: OnceCell<AvatarData>,
         pub is_verified: Cell<bool>,
     }
@@ -85,7 +84,13 @@ mod imp {
                 "display-name" => {
                     self.obj().set_display_name(value.get().unwrap());
                 }
-                "session" => self.session.set(value.get().ok().as_ref()),
+                "session" => {
+                    if let Some(session) = value.get().unwrap() {
+                        if self.session.set(session).is_err() {
+                            error!("Trying to set a session while it is already set");
+                        }
+                    }
+                }
                 _ => unimplemented!(),
             }
         }
@@ -108,11 +113,8 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            let avatar_data = AvatarData::new(AvatarImage::new(
-                &obj.session(),
-                None,
-                AvatarUriSource::User,
-            ));
+            let avatar_data =
+                AvatarData::new(AvatarImage::new(obj.session(), None, AvatarUriSource::User));
             self.avatar_data.set(avatar_data).unwrap();
 
             obj.bind_property("display-name", obj.avatar_data(), "display-name")
@@ -152,7 +154,7 @@ impl User {
     }
 
     pub async fn verify_identity(&self) -> IdentityVerification {
-        let request = IdentityVerification::create(&self.session(), Some(self)).await;
+        let request = IdentityVerification::create(self.session(), Some(self)).await;
         self.session().verification_list().add(request.clone());
         // FIXME: actually listen to room events to get updates for verification state
         request.connect_notify_local(
@@ -188,8 +190,8 @@ impl User {
 
 pub trait UserExt: IsA<User> {
     /// The current session.
-    fn session(&self) -> Session {
-        self.upcast_ref().imp().session.upgrade().unwrap()
+    fn session(&self) -> &Session {
+        self.upcast_ref().imp().session.get().unwrap()
     }
 
     /// The ID of this user.
