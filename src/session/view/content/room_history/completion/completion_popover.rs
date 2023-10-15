@@ -6,8 +6,9 @@ use gtk::{
     CompositeTemplate,
 };
 use pulldown_cmark::{Event, Parser, Tag};
-use ruma::OwnedUserId;
+use ruma::{OwnedUserId, UserId};
 use secular::lower_lay_string;
+use tracing::error;
 
 use super::CompletionRow;
 use crate::{
@@ -32,7 +33,7 @@ mod imp {
     };
 
     use glib::subclass::InitializingObject;
-    use once_cell::sync::Lazy;
+    use once_cell::sync::{Lazy, OnceCell};
 
     use super::*;
 
@@ -62,6 +63,9 @@ mod imp {
         /// List of signal handler IDs for properties of members of the current
         /// list model with their position in it.
         pub members_watch: RefCell<HashMap<OwnedUserId, MemberWatch>>,
+        /// A channel sender to reevaluate a member when one of its properties
+        /// changes.
+        pub reevaluate_member_sender: OnceCell<glib::Sender<OwnedUserId>>,
     }
 
     #[glib::object_subclass]
@@ -330,25 +334,10 @@ impl CompletionPopover {
         if let Some(first_model) = self.first_model() {
             let imp = self.imp();
 
-            if let Some(old_members) = first_model.model() {
-                // Remove the old handlers.
-                if let Some(handler_id) = imp.members_changed_handler.take() {
-                    old_members.disconnect(handler_id);
-                }
-
-                let mut members_watch = imp.members_watch.take();
-                for member in old_members
-                    .snapshot()
-                    .into_iter()
-                    .filter_map(|obj| obj.downcast::<Member>().ok())
-                {
-                    if let Some(watch) = members_watch.remove(&member.user_id()) {
-                        for handler_id in watch.handlers {
-                            member.disconnect(handler_id);
-                        }
-                    }
-                }
-            }
+            // Remove the old handlers. We don't need to disconnect them since the members
+            // list is dropped anyway.
+            imp.members_changed_handler.take();
+            imp.members_watch.take();
 
             first_model.set_model(members);
 
@@ -400,31 +389,50 @@ impl CompletionPopover {
                 // models don't reevaluate the expressions when the membership
                 // or latest-activity change.
                 if idx < (pos + added) {
+                    let sender = self.reevaluate_member_sender().clone();
                     watch.handlers.push(member.connect_notify_local(
-                        Some("membership"),
-                        clone!(@weak self as obj => move |member, _| {
-                            obj.reevaluate_member(member);
-                        }),
-                    ));
-                    watch.handlers.push(member.connect_notify_local(
-                        Some("latest-activity"),
-                        clone!(@weak self as obj => move |member, _| {
-                            obj.reevaluate_member(member);
-                        }),
+                        None,
+                        move |member, param_spec| {
+                            if matches!(param_spec.name(), "membership" | "latest-activity") {
+                                if let Err(error) = sender.send(member.user_id()) {
+                                    error!(
+                                        "Failed to send member ID to reevaluate member: {error}"
+                                    );
+                                }
+                            }
+                        },
                     ));
                 }
             }
         }
     }
 
+    fn reevaluate_member_sender(&self) -> &glib::Sender<OwnedUserId> {
+        self.imp()
+            .reevaluate_member_sender
+            .get_or_init(|| {
+                let (sender, receiver) = glib::MainContext::channel::<OwnedUserId>(glib::Priority::DEFAULT_IDLE);
+
+                receiver.attach(
+                    None,
+                    clone!(@weak self as obj => @default-return glib::ControlFlow::Break, move |member_id| {
+                        obj.reevaluate_member(&member_id);
+                        glib::ControlFlow::Continue
+                    }),
+                );
+
+                sender
+            })
+    }
+
     /// Force the given member to be reevaluated.
-    fn reevaluate_member(&self, member: &Member) {
+    fn reevaluate_member(&self, member_id: &UserId) {
         if let Some(members) = self.members() {
             let pos = self
                 .imp()
                 .members_watch
                 .borrow()
-                .get(&member.user_id())
+                .get(member_id)
                 .map(|watch| watch.position);
 
             if let Some(pos) = pos {
