@@ -2,84 +2,103 @@
 <interface>
   <template class="ContentMessageRow" parent="AdwBin">
     <child>
-      <object class="GtkBox">
-        <property name="spacing">10</property>
+      <object class="GtkGrid">
+        <property name="column-spacing">10</property>
+        <property name="row-spacing">10</property>
         <child>
           <object class="ComponentsAvatar" id="avatar">
             <property name="size">36</property>
             <property name="valign">start</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="row">0</property>
+              <property name="row-span">4</property>
+            </layout>
           </object>
         </child>
         <child>
-          <object class="GtkBox">
-            <property name="orientation">vertical</property>
-            <property name="spacing">2</property>
+          <object class="GtkBox" id="header">
+            <property name="spacing">10</property>
+            <layout>
+              <property name="column">1</property>
+              <property name="row">0</property>
+              <property name="column-span">2</property>
+            </layout>
             <child>
-              <object class="GtkBox" id="header">
-                <property name="spacing">10</property>
-                <child>
-                  <object class="GtkLabel" id="display_name">
-                    <property name="hexpand">true</property>
-                    <property name="halign">start</property>
-                    <property name="ellipsize">end</property>
-                    <property name="selectable">True</property>
-                    <style>
-                      <class name="heading"/>
-                      <class name="accent"/>
-                    </style>
-                  </object>
-                </child>
-                <child type="end">
-                  <object class="GtkLabel" id="timestamp">
-                    <style>
-                      <class name="caption"/>
-                      <class name="timestamp"/>
-                      <class name="dim-label"/>
-                    </style>
-                  </object>
-                </child>
+              <object class="GtkLabel" id="display_name">
+                <property name="hexpand">true</property>
+                <property name="halign">start</property>
+                <property name="ellipsize">end</property>
+                <property name="selectable">True</property>
+                <style>
+                  <class name="heading"/>
+                  <class name="accent"/>
+                </style>
               </object>
             </child>
             <child>
-              <object class="GtkBox">
-                <property name="spacing">10</property>
-                <child>
-                  <object class="ContentMessageContent" id="content">
-                    <property name="hexpand">True</property>
-                    <property name="vexpand">True</property>
-                    <style>
-                      <class name="event-content"/>
-                    </style>
-                  </object>
-                </child>
-                <child type="end">
-                  <object class="GtkImage">
-                    <style>
-                      <class name="dim-label"/>
-                    </style>
-                    <property name="icon-name">document-edit-symbolic</property>
-                    <property name="tooltip-text" translatable="yes">Edited</property>
-                    <binding name="visible">
-                      <lookup name="is-edited" type="RoomEvent">
-                        <lookup name="event">ContentMessageRow</lookup>
-                      </lookup>
-                    </binding>
-                  </object>
-                </child>
+              <object class="GtkLabel" id="timestamp">
+                <style>
+                  <class name="caption"/>
+                  <class name="timestamp"/>
+                  <class name="dim-label"/>
+                </style>
               </object>
             </child>
-            <child>
-              <object class="ContentMessageReactionList" id="reactions"/>
-            </child>
-            <child>
-              <object class="ContentReadReceiptsList" id="read_receipts">
-                <binding name="visible">
-                  <lookup name="has-read-receipts" type="RoomEvent">
-                    <lookup name="event">ContentMessageRow</lookup>
-                  </lookup>
-                </binding>
-              </object>
-            </child>
+          </object>
+        </child>
+        <child>
+          <object class="ContentMessageContent" id="content">
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <layout>
+              <property name="column">1</property>
+              <property name="row">1</property>
+            </layout>
+            <style>
+              <class name="event-content"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkImage">
+            <style>
+              <class name="dim-label"/>
+            </style>
+            <property name="icon-name">document-edit-symbolic</property>
+            <property name="tooltip-text" translatable="yes">Edited</property>
+            <binding name="visible">
+              <lookup name="is-edited" type="RoomEvent">
+                <lookup name="event">ContentMessageRow</lookup>
+              </lookup>
+            </binding>
+            <layout>
+              <property name="column">2</property>
+              <property name="row">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="ContentMessageReactionList" id="reactions">
+            <layout>
+              <property name="column">1</property>
+              <property name="row">2</property>
+              <property name="column-span">2</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="ContentReadReceiptsList" id="read_receipts">
+            <binding name="visible">
+              <lookup name="has-read-receipts" type="RoomEvent">
+                <lookup name="event">ContentMessageRow</lookup>
+              </lookup>
+            </binding>
+            <layout>
+              <property name="column">1</property>
+              <property name="row">3</property>
+              <property name="column-span">2</property>
+            </layout>
           </object>
         </child>
       </object>
