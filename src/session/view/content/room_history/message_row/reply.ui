@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="ContentMessageReply" parent="GtkBox">
-    <property name="orientation">vertical</property>
-    <property name="spacing">3</property>
+  <template class="ContentMessageReply" parent="GtkGrid">
+    <property name="row-spacing">3</property>
     <child>
-      <object class="GtkBox">
+      <object class="GtkGrid">
+        <layout>
+          <property name="column">0</property>
+          <property name="row">0</property>
+        </layout>
         <style>
           <class name="quote"/>
         </style>
-        <property name="orientation">vertical</property>
-        <property name="spacing">3</property>
+        <property name="row-spacing">3</property>
         <child>
           <object class="GtkLabel" id="related_content_sender">
             <property name="hexpand">true</property>
             <property name="halign">start</property>
             <property name="ellipsize">end</property>
             <property name="selectable">True</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="row">0</property>
+            </layout>
             <style>
               <class name="heading"/>
               <class name="accent"/>
@@ -23,12 +29,22 @@
           </object>
         </child>
         <child>
-          <object class="AdwBin" id="related_content"/>
+          <object class="AdwBin" id="related_content">
+            <layout>
+              <property name="column">0</property>
+              <property name="row">1</property>
+            </layout>
+          </object>
         </child>
       </object>
     </child>
     <child>
-      <object class="AdwBin" id="content"/>
+      <object class="AdwBin" id="content">
+        <layout>
+          <property name="column">0</property>
+          <property name="row">1</property>
+        </layout>
+      </object>
     </child>
   </template>
 </interface>

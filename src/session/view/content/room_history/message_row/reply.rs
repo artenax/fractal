@@ -25,7 +25,7 @@ mod imp {
     impl ObjectSubclass for MessageReply {
         const NAME: &'static str = "ContentMessageReply";
         type Type = super::MessageReply;
-        type ParentType = gtk::Box;
+        type ParentType = gtk::Grid;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -40,12 +40,12 @@ mod imp {
 
     impl WidgetImpl for MessageReply {}
 
-    impl BoxImpl for MessageReply {}
+    impl GridImpl for MessageReply {}
 }
 
 glib::wrapper! {
     pub struct MessageReply(ObjectSubclass<imp::MessageReply>)
-        @extends gtk::Widget, gtk::Box, @implements gtk::Accessible;
+        @extends gtk::Widget, gtk::Grid, @implements gtk::Accessible;
 }
 
 impl MessageReply {
