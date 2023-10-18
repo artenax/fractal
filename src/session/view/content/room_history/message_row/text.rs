@@ -236,12 +236,12 @@ impl MessageText {
             let widget = create_widget_for_html_block(&blocks[0], room, ellipsize, false);
             self.set_child(Some(&widget));
         } else {
-            let child = gtk::Box::new(gtk::Orientation::Vertical, 6);
+            let child = gtk::Grid::builder().row_spacing(6).build();
             self.set_child(Some(&child));
 
-            for block in blocks {
+            for (row, block) in blocks.into_iter().enumerate() {
                 let widget = create_widget_for_html_block(&block, room, ellipsize, true);
-                child.append(&widget);
+                child.attach(&widget, 0, row as i32, 1, 1);
 
                 if ellipsize {
                     break;
@@ -329,52 +329,56 @@ fn create_widget_for_html_block(
             w
         }
         HtmlBlock::UList(elements) => {
-            let bx = gtk::Box::new(gtk::Orientation::Vertical, 6);
-            bx.set_margin_end(6);
-            bx.set_margin_start(6);
+            let grid = gtk::Grid::builder()
+                .row_spacing(6)
+                .column_spacing(6)
+                .margin_end(6)
+                .margin_start(6)
+                .build();
 
-            for li in elements.iter() {
-                let h_box = gtk::Box::new(gtk::Orientation::Horizontal, 6);
-
-                let bullet = gtk::Label::new(Some("•"));
-                bullet.set_valign(gtk::Align::Start);
+            for (row, li) in elements.iter().enumerate() {
+                let bullet = gtk::Label::builder()
+                    .label("•")
+                    .valign(gtk::Align::Baseline)
+                    .build();
 
                 let w = create_label_for_html(li, room, ellipsize, has_more || elements.len() > 1);
 
-                h_box.append(&bullet);
-                h_box.append(&w);
-                bx.append(&h_box);
+                grid.attach(&bullet, 0, row as i32, 1, 1);
+                grid.attach(&w, 1, row as i32, 1, 1);
 
                 if ellipsize {
                     break;
                 }
             }
 
-            bx.upcast()
+            grid.upcast()
         }
         HtmlBlock::OList(elements) => {
-            let bx = gtk::Box::new(gtk::Orientation::Vertical, 6);
-            bx.set_margin_end(6);
-            bx.set_margin_start(6);
+            let grid = gtk::Grid::builder()
+                .row_spacing(6)
+                .column_spacing(6)
+                .margin_end(6)
+                .margin_start(6)
+                .build();
 
-            for (i, ol) in elements.iter().enumerate() {
-                let h_box = gtk::Box::new(gtk::Orientation::Horizontal, 6);
-
-                let bullet = gtk::Label::new(Some(&format!("{}.", i + 1)));
-                bullet.set_valign(gtk::Align::Start);
+            for (row, ol) in elements.iter().enumerate() {
+                let bullet = gtk::Label::builder()
+                    .label(format!("{}.", row + 1))
+                    .valign(gtk::Align::Baseline)
+                    .build();
 
                 let w = create_label_for_html(ol, room, ellipsize, has_more || elements.len() > 1);
 
-                h_box.append(&bullet);
-                h_box.append(&w);
-                bx.append(&h_box);
+                grid.attach(&bullet, 0, row as i32, 1, 1);
+                grid.attach(&w, 1, row as i32, 1, 1);
 
                 if ellipsize {
                     break;
                 }
             }
 
-            bx.upcast()
+            grid.upcast()
         }
         HtmlBlock::Code(s) => {
             if ellipsize {
@@ -412,22 +416,26 @@ fn create_widget_for_html_block(
             }
         }
         HtmlBlock::Quote(blocks) => {
-            let bx = gtk::Box::new(gtk::Orientation::Vertical, 6);
-            bx.add_css_class("quote");
-            for block in blocks.iter() {
+            let grid = gtk::Grid::builder()
+                .row_spacing(6)
+                .css_classes(["quote"])
+                .build();
+
+            for (row, block) in blocks.iter().enumerate() {
                 let w = create_widget_for_html_block(
                     block,
                     room,
                     ellipsize,
                     has_more || blocks.len() > 1,
                 );
-                bx.append(&w);
+                grid.attach(&w, 0, row as i32, 1, 1);
 
                 if ellipsize {
                     break;
                 }
             }
-            bx.upcast()
+
+            grid.upcast()
         }
         HtmlBlock::Text(s) => create_label_for_html(s, room, ellipsize, has_more).upcast(),
         HtmlBlock::Separator => gtk::Separator::new(gtk::Orientation::Horizontal).upcast(),
