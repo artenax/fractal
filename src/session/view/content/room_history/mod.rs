@@ -1,7 +1,6 @@
 mod attachment_dialog;
 mod completion;
 mod divider_row;
-mod event_actions;
 mod item_row;
 mod message_row;
 mod read_receipts_list;
@@ -57,7 +56,6 @@ use self::{
     attachment_dialog::AttachmentDialog,
     completion::CompletionPopover,
     divider_row::DividerRow,
-    event_actions::EventActions,
     item_row::ItemRow,
     message_row::{content::MessageContent, MessageRow},
     read_receipts_list::ReadReceiptsList,

@@ -71,7 +71,6 @@ src/session/view/content/room_details/member_page/mod.rs
 src/session/view/content/room_details/member_page/mod.ui
 src/session/view/content/room_details/mod.ui
 src/session/view/content/room_history/attachment_dialog.ui
-src/session/view/content/room_history/event_actions.rs
 src/session/view/content/room_history/event_actions.ui
 src/session/view/content/room_history/item_row.rs
 src/session/view/content/room_history/message_row/audio.rs
